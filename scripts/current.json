@@ -19176,7 +19176,7 @@
             },
             "WindowBase": [
               {
-                "doc": "Create a window with the specified dimensions and flags.\n\n`flags` may be any of the following OR'd together:\n\n- `SDL_WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `SDL_WINDOW_OPENGL`: window usable with an OpenGL context\n- `SDL_WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `SDL_WINDOW_HIDDEN`: window is not visible\n- `SDL_WINDOW_BORDERLESS`: no window decoration\n- `SDL_WINDOW_RESIZABLE`: window can be resized\n- `SDL_WINDOW_MINIMIZED`: window is minimized\n- `SDL_WINDOW_MAXIMIZED`: window is maximized\n- `SDL_WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `SDL_WINDOW_INPUT_FOCUS`: window has input focus\n- `SDL_WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `SDL_WINDOW_EXTERNAL`: window not created by SDL\n- `SDL_WINDOW_MODAL`: window is modal\n- `SDL_WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `SDL_WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `SDL_WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `SDL_WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `SDL_WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `SDL_WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `SDL_WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `SDL_WINDOW_VULKAN`: window usable with a Vulkan instance\n- `SDL_WINDOW_METAL`: window usable with a Metal instance\n- `SDL_WINDOW_TRANSPARENT`: window with transparent buffer\n- `SDL_WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe SDL_Window is implicitly shown if SDL_WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use SDL_GetWindowSize() to query\nthe client area's size in window coordinates, and\nSDL_GetWindowSizeInPixels() or SDL_GetRenderOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nSDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the SDL_WINDOW_OPENGL or\nSDL_WINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(SDL_GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by SDL_DestroyWindow().\n\nIf SDL_WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nthis will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf SDL_WINDOW_METAL is specified on an OS that does not support Metal,\nthis will fail.\n\nIf you intend to use this window with an SDL_Renderer, you should use\nCreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param size the width and height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@post the window that was created, convertible to true on success or\nconvertible to false on failure; call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreateWindowAndRenderer()",
+                "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `SDL_WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `SDL_WINDOW_OPENGL`: window usable with an OpenGL context\n- `SDL_WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `SDL_WINDOW_HIDDEN`: window is not visible\n- `SDL_WINDOW_BORDERLESS`: no window decoration\n- `SDL_WINDOW_RESIZABLE`: window can be resized\n- `SDL_WINDOW_MINIMIZED`: window is minimized\n- `SDL_WINDOW_MAXIMIZED`: window is maximized\n- `SDL_WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `SDL_WINDOW_INPUT_FOCUS`: window has input focus\n- `SDL_WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `SDL_WINDOW_EXTERNAL`: window not created by SDL\n- `SDL_WINDOW_MODAL`: window is modal\n- `SDL_WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `SDL_WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `SDL_WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `SDL_WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `SDL_WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `SDL_WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `SDL_WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `SDL_WINDOW_VULKAN`: window usable with a Vulkan instance\n- `SDL_WINDOW_METAL`: window usable with a Metal instance\n- `SDL_WINDOW_TRANSPARENT`: window with transparent buffer\n- `SDL_WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe SDL_Window is implicitly shown if SDL_WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use SDL_GetWindowSize() to query\nthe client area's size in window coordinates, and\nSDL_GetWindowSizeInPixels() or SDL_GetRenderOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nSDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the SDL_WINDOW_OPENGL or\nSDL_WINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(SDL_GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by SDL_DestroyWindow().\n\nIf SDL_WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nthis will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf SDL_WINDOW_METAL is specified on an OS that does not support Metal,\nthis will fail.\n\nIf you intend to use this window with an SDL_Renderer, you should use\nCreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param size the width and height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@post the window that was created, convertible to true on success or\nconvertible to false on failure; call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreateWindowAndRenderer()",
                 "name": "WindowBase",
                 "kind": "function",
                 "type": "",
@@ -19196,11 +19196,11 @@
                   }
                 ],
                 "begin": 912,
-                "decl": 992,
-                "end": 997
+                "decl": 996,
+                "end": 1001
               },
               {
-                "doc": "Create a child popup window of the specified parent window.\n\nThe flags parameter **must** contain at least one of the following:\n\n- `SDL_WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any\n  input events.\n- `SDL_WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost\n  popup menu will implicitly gain the keyboard focus.\n\nThe following flags are not relevant to popup window creation and will be\nignored:\n\n- `SDL_WINDOW_MINIMIZED`\n- `SDL_WINDOW_MAXIMIZED`\n- `SDL_WINDOW_FULLSCREEN`\n- `SDL_WINDOW_BORDERLESS`\n\nThe following flags are incompatible with popup window creation and will\ncause it to fail:\n\n- `SDL_WINDOW_UTILITY`\n- `SDL_WINDOW_MODAL`\n\nThe parent parameter **must** be non-null and a valid window. The parent of\na popup window can be either a regular, toplevel window, or another popup\nwindow.\n\nPopup windows cannot be minimized, maximized, made fullscreen, raised,\nflash, be made a modal window, be the parent of a toplevel window, or grab\nthe mouse and/or keyboard. Attempts to do so will fail.\n\nPopup windows implicitly do not have a border/decorations and do not appear\non the taskbar/dock or in lists of windows such as alt-tab menus.\n\nIf a parent window is hidden or destroyed, any child popup windows will be\nrecursively hidden or destroyed as well. Child popup windows not explicitly\nhidden will be restored when the parent is shown.\n\n@param parent the parent of the window, must not be NULL.\n@param offset the x, y position of the popup window relative to the origin\n              of the parent.\n@param size the width and height of the window.\n@param flags SDL_WINDOW_TOOLTIP or SDL_WINDOW_POPUP_MENU, and zero or more\n             additional SDL_WindowFlags OR'd together.\n@post the window that was created, convertible to true on success or\nconvertible to false on failure; call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetParent()",
+                "doc": "Create a child popup window of the specified parent window.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThe flags parameter **must** contain at least one of the following:\n\n- `SDL_WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any\n  input events.\n- `SDL_WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost\n  popup menu will implicitly gain the keyboard focus.\n\nThe following flags are not relevant to popup window creation and will be\nignored:\n\n- `SDL_WINDOW_MINIMIZED`\n- `SDL_WINDOW_MAXIMIZED`\n- `SDL_WINDOW_FULLSCREEN`\n- `SDL_WINDOW_BORDERLESS`\n\nThe following flags are incompatible with popup window creation and will\ncause it to fail:\n\n- `SDL_WINDOW_UTILITY`\n- `SDL_WINDOW_MODAL`\n\nThe parent parameter **must** be non-null and a valid window. The parent of\na popup window can be either a regular, toplevel window, or another popup\nwindow.\n\nPopup windows cannot be minimized, maximized, made fullscreen, raised,\nflash, be made a modal window, be the parent of a toplevel window, or grab\nthe mouse and/or keyboard. Attempts to do so will fail.\n\nPopup windows implicitly do not have a border/decorations and do not appear\non the taskbar/dock or in lists of windows such as alt-tab menus.\n\nIf a parent window is hidden or destroyed, any child popup windows will be\nrecursively hidden or destroyed as well. Child popup windows not explicitly\nhidden will be restored when the parent is shown.\n\n@param parent the parent of the window, must not be NULL.\n@param offset the x, y position of the popup window relative to the origin\n              of the parent.\n@param size the width and height of the window.\n@param flags SDL_WINDOW_TOOLTIP or SDL_WINDOW_POPUP_MENU, and zero or more\n             additional SDL_WindowFlags OR'd together.\n@post the window that was created, convertible to true on success or\nconvertible to false on failure; call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetParent()",
                 "name": "WindowBase",
                 "kind": "function",
                 "type": "",
@@ -19223,12 +19223,12 @@
                     "default": "0"
                   }
                 ],
-                "begin": 997,
-                "decl": 1051,
-                "end": 1064
+                "begin": 1001,
+                "decl": 1059,
+                "end": 1072
               },
               {
-                "doc": "Create a window with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER`: the height of the window\n- `SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `SDL_PROP_WINDOW_CREATE_PARENT_POINTER`: an SDL_Window that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `SDL_PROP_WINDOW_CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER`: the width of the window\n- `SDL_PROP_WINDOW_CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `SDL_PROP_WINDOW_CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `SDL_WINDOW_OPENGL` flag set.\n- `SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in SDL_CreatePopupWindow().\n\nIf this window is being created to be used with an SDL_Renderer, you should\nnot add a graphics API specific property\n(`SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nSDL_ShowWindow().\n\n@param props the properties to use.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesRef\n@sa Properties",
+                "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER`: the height of the window\n- `SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `SDL_PROP_WINDOW_CREATE_PARENT_POINTER`: an SDL_Window that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `SDL_PROP_WINDOW_CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER`: the width of the window\n- `SDL_PROP_WINDOW_CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `SDL_PROP_WINDOW_CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `SDL_WINDOW_OPENGL` flag set.\n- `SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in SDL_CreatePopupWindow().\n\nIf this window is being created to be used with an SDL_Renderer, you should\nnot add a graphics API specific property\n(`SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nSDL_ShowWindow().\n\n@param props the properties to use.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesRef\n@sa Properties",
                 "name": "WindowBase",
                 "kind": "function",
                 "type": "",
@@ -19238,9 +19238,9 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "begin": 1064,
-                "decl": 1180,
-                "end": 1185
+                "begin": 1072,
+                "decl": 1192,
+                "end": 1197
               }
             ],
             "GetDisplay": {
@@ -19250,9 +19250,9 @@
               "type": "Display",
               "parameters": [],
               "immutable": true,
-              "begin": 1185,
-              "decl": 1192,
-              "end": 1194
+              "begin": 1197,
+              "decl": 1204,
+              "end": 1206
             },
             "GetPixelDensity": {
               "doc": "@brief Get the pixel density of a window.\n\nThis is a ratio of pixel size to window size. For example, if the window is\n1920x1080 and it has a high density back buffer of 3840x2160 pixels, it\nwould have a pixel density of 2.0.\n\n@returns the pixel density or 0.0f on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa WindowBase.GetDisplayScale()",
@@ -19261,9 +19261,9 @@
               "type": "float",
               "parameters": [],
               "immutable": true,
-              "begin": 1194,
-              "decl": 1208,
-              "end": 1210
+              "begin": 1206,
+              "decl": 1220,
+              "end": 1222
             },
             "GetDisplayScale": {
               "doc": "@brief Get the content display scale relative to a window's pixel size.\n\nThis is a combination of the window pixel density and the display content\nscale, and is the expected scale for displaying content in this window. For\nexample, if a 3840x2160 window had a display scale of 2.0, the user expects\nthe content to take twice as many pixels and be the same physical size as\nif it were being displayed in a 1920x1080 window with a display scale of\n1.0.\n\nConceptually this value corresponds to the scale display setting, and is\nupdated when that setting is changed, or the window moves to a display with\na different scale setting.\n\n@returns the display scale, or 0.0f on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.",
@@ -19272,9 +19272,9 @@
               "type": "float",
               "parameters": [],
               "immutable": true,
-              "begin": 1210,
-              "decl": 1229,
-              "end": 1231
+              "begin": 1222,
+              "decl": 1241,
+              "end": 1243
             },
             "SetFullscreenMode": {
               "doc": "Set the display mode to use when a window is visible and fullscreen.\n\nThis only affects the display mode used when the window is fullscreen. To\nchange the window size when the window is not fullscreen, use\nSDL_SetWindowSize().\n\nIf the window is currently in the fullscreen state, this request is\nasynchronous on some windowing systems and the new mode dimensions may not\nbe applied immediately upon the return of this function. If an immediate\nchange is required, call SDL_SyncWindow() to block until the changes have\ntaken effect.\n\nWhen the new mode takes effect, an SDL_EVENT_WINDOW_RESIZED and/or an\nSDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new\nmode dimensions.\n\n@param mode a pointer to the display mode to use, which can be NULL for\n            borderless fullscreen desktop mode, or one of the fullscreen\n            modes returned by SDL_GetFullscreenDisplayModes() to set an\n            exclusive fullscreen mode.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetFullscreenMode()\n@sa SetFullscreen()\n@sa Sync()",
@@ -19287,9 +19287,9 @@
                   "type": "OptionalRef<const DisplayMode>"
                 }
               ],
-              "begin": 1231,
-              "decl": 1263,
-              "end": 1268
+              "begin": 1243,
+              "decl": 1275,
+              "end": 1280
             },
             "GetFullscreenMode": {
               "doc": "Query the display mode to use when a window is visible at fullscreen.\n\n@returns a pointer to the exclusive fullscreen mode to use or NULL for\n         borderless fullscreen desktop mode.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetFullscreenMode()\n@sa SetFullscreen()",
@@ -19298,9 +19298,9 @@
               "type": "const DisplayMode *",
               "parameters": [],
               "immutable": true,
-              "begin": 1268,
-              "decl": 1281,
-              "end": 1286
+              "begin": 1280,
+              "decl": 1293,
+              "end": 1298
             },
             "GetICCProfile": {
               "doc": "Get the raw ICC profile data for the screen the window is currently on.\n\n@param size the size of the ICC profile.\n@returns the raw ICC profile data on success or NULL on failure; call\n         GetError() for more information. This should be freed with\n         SDL_free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -19314,9 +19314,9 @@
                 }
               ],
               "immutable": true,
-              "begin": 1286,
-              "decl": 1298,
-              "end": 1303
+              "begin": 1298,
+              "decl": 1310,
+              "end": 1315
             },
             "GetPixelFormat": {
               "doc": "Get the pixel format associated with the window.\n\n@returns the pixel format of the window on success or\n         SDL_PIXELFORMAT_UNKNOWN on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -19325,9 +19325,9 @@
               "type": "PixelFormat",
               "parameters": [],
               "immutable": true,
-              "begin": 1303,
-              "decl": 1314,
-              "end": 1319
+              "begin": 1315,
+              "decl": 1326,
+              "end": 1331
             },
             "GetID": {
               "doc": "@brief Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific SDL_Window objects.\n\n@returns the ID of the window on success or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.",
@@ -19336,9 +19336,9 @@
               "type": "WindowID",
               "parameters": [],
               "immutable": true,
-              "begin": 1319,
-              "decl": 1330,
-              "end": 1332
+              "begin": 1331,
+              "decl": 1342,
+              "end": 1344
             },
             "GetParent": {
               "doc": "Get parent of a window.\n\n@returns the parent of the window on success or NULL if the window has no\n         parent.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -19347,9 +19347,9 @@
               "type": "WindowRef",
               "parameters": [],
               "immutable": true,
-              "begin": 1332,
-              "decl": 1342,
-              "end": 1344
+              "begin": 1344,
+              "decl": 1354,
+              "end": 1356
             },
             "GetProperties": {
               "doc": "@brief Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `SDL_PROP_WINDOW_SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  SDL_COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to\nthe SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER`: the EGLSurface associated\nwith the window\n\nOn iOS:\n\n- `SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when SDL_GL_SwapWindow is called.\n- `SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER`: the device index\nassociated with the window (e.g. the X in /dev/dri/cardX)\n- `SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `SDL_PROP_WINDOW_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  assocated with metal views on the window\n\nOn OpenVR:\n\n- `SDL_PROP_WINDOW_OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for\nthe associated overlay window.\n\nOn Vivante:\n\n- `SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER`: the EGLSurface associated\nwith the window\n\nOn Windows:\n\n- `SDL_PROP_WINDOW_WIN32_HWND_POINTER`: the HWND associated with the\nwindow\n- `SDL_PROP_WINDOW_WIN32_HDC_POINTER`: the HDC associated with the window\n- `SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER`: the wl_display associated\nwith the window\n- `SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER`: the wl_surface associated\nwith the window\n- `SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface\nassociated with the window\n- `SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `SDL_PROP_WINDOW_X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `SDL_PROP_WINDOW_X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `SDL_PROP_WINDOW_X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@returns a valid property ID on success or falsy one on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.",
@@ -19358,9 +19358,9 @@
               "type": "PropertiesRef",
               "parameters": [],
               "immutable": true,
-              "begin": 1344,
-              "decl": 1462,
-              "end": 1467
+              "begin": 1356,
+              "decl": 1474,
+              "end": 1479
             },
             "GetFlags": {
               "doc": "Get the window flags.\n\n@returns a mask of the SDL_WindowFlags associated with `window`.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Hide()\n@sa Maximize()\n@sa Minimize()\n@sa SetFullscreen()\n@sa SetMouseGrab()\n@sa Show()",
@@ -19369,9 +19369,9 @@
               "type": "WindowFlags",
               "parameters": [],
               "immutable": true,
-              "begin": 1467,
-              "decl": 1483,
-              "end": 1485
+              "begin": 1479,
+              "decl": 1495,
+              "end": 1497
             },
             "SetTitle": {
               "doc": "Set the title of a window.\n\nThis string is expected to be in UTF-8 encoding.\n\n@param title the desired window title in UTF-8 format.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetTitle()",
@@ -19384,9 +19384,9 @@
                   "type": "StringParam"
                 }
               ],
-              "begin": 1485,
-              "decl": 1500,
-              "end": 1505
+              "begin": 1497,
+              "decl": 1512,
+              "end": 1517
             },
             "GetTitle": {
               "doc": "Get the title of a window.\n\n@returns the title of the window in UTF-8 format or \"\" if there is no\n         title.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTitle()",
@@ -19395,9 +19395,9 @@
               "type": "const char *",
               "parameters": [],
               "immutable": true,
-              "begin": 1505,
-              "decl": 1517,
-              "end": 1519
+              "begin": 1517,
+              "decl": 1529,
+              "end": 1531
             },
             "SetIcon": {
               "doc": "Set the icon for a window.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param icon an SDL_Surface structure containing the icon for the window.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -19410,9 +19410,9 @@
                   "type": "SurfaceRef"
                 }
               ],
-              "begin": 1519,
-              "decl": 1540,
-              "end": 1542
+              "begin": 1531,
+              "decl": 1552,
+              "end": 1554
             },
             "SetRect": {
               "doc": "@brief Request the window's position and size to be set.\n\n@param rect the rect containing the new coordinates\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa SetPosition()\n@sa SetSize()",
@@ -19425,9 +19425,9 @@
                   "type": "Rect"
                 }
               ],
-              "begin": 1542,
-              "decl": 1554,
-              "end": 1559
+              "begin": 1554,
+              "decl": 1566,
+              "end": 1571
             },
             "GetRect": {
               "doc": "Get the position and client size of a window.\n\nThis is the current position of the window as last reported by the\nwindowing system.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use SDL_GetWindowSizeInPixels()\nor SDL_GetRenderOutputSize() to get the real client area size in pixels.\n\n@return std::optional<Rect>",
@@ -19436,9 +19436,9 @@
               "type": "std::optional<Rect>",
               "parameters": [],
               "immutable": true,
-              "begin": 1559,
-              "decl": 1571,
-              "end": 1578
+              "begin": 1571,
+              "decl": 1583,
+              "end": 1590
             },
             "SetPosition": {
               "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nSetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call Sync() to block\nuntil the changes have taken effect.\n\nWhen the window position changes, an SDL_EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param p the x, y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPosition()\n@sa Sync()",
@@ -19451,9 +19451,9 @@
                   "type": "SDL_Point"
                 }
               ],
-              "begin": 1578,
-              "decl": 1614,
-              "end": 1619
+              "begin": 1590,
+              "decl": 1626,
+              "end": 1631
             },
             "GetPosition": [
               {
@@ -19463,9 +19463,9 @@
                 "type": "std::optional<Point>",
                 "parameters": [],
                 "immutable": true,
-                "begin": 1619,
-                "decl": 1635,
-                "end": 1641
+                "begin": 1631,
+                "decl": 1647,
+                "end": 1653
               },
               {
                 "doc": "Get the position of a window.\n\nThis is the current position of the window as last reported by the\nwindowing system.\n\nIf you do not need the value for one of the positions a NULL may be passed\nin the `x` or `y` parameter.\n\n@param x a pointer filled in with the x position of the window, may be\n         NULL.\n@param y a pointer filled in with the y position of the window, may be\n         NULL.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetPosition()",
@@ -19483,9 +19483,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1641,
-                "decl": 1663,
-                "end": 1668
+                "begin": 1653,
+                "decl": 1675,
+                "end": 1680
               }
             ],
             "SetSize": {
@@ -19499,9 +19499,9 @@
                   "type": "SDL_Point"
                 }
               ],
-              "begin": 1668,
-              "decl": 1701,
-              "end": 1703
+              "begin": 1680,
+              "decl": 1713,
+              "end": 1715
             },
             "GetSize": [
               {
@@ -19511,9 +19511,9 @@
                 "type": "std::optional<Point>",
                 "parameters": [],
                 "immutable": true,
-                "begin": 1703,
-                "decl": 1722,
-                "end": 1728
+                "begin": 1715,
+                "decl": 1734,
+                "end": 1740
               },
               {
                 "doc": "Get the size of a window's client area.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use GetSizeInPixels()\nor Renderer.GetOutputSize() to get the real client area size in pixels.\n\n@param w a pointer filled in with the width of the window, may be NULL.\n@param h a pointer filled in with the height of the window, may be NULL.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.GetOutputSize()\n@sa GetSizeInPixels()\n@sa SetSize()",
@@ -19531,9 +19531,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1728,
-                "decl": 1748,
-                "end": 1753
+                "begin": 1740,
+                "decl": 1760,
+                "end": 1765
               }
             ],
             "GetSafeArea": {
@@ -19543,9 +19543,9 @@
               "type": "std::optional<Rect>",
               "parameters": [],
               "immutable": true,
-              "begin": 1753,
-              "decl": 1770,
-              "end": 1776
+              "begin": 1765,
+              "decl": 1782,
+              "end": 1788
             },
             "SetAspectRatio": {
               "doc": "Request that the aspect ratio of a window's client area be set.\n\nThe aspect ratio is the ratio of width divided by height, e.g. 2560x1600\nwould be 1.6. Larger aspect ratios are wider and smaller aspect ratios are\nnarrower.\n\nIf, at the time of this request, the window in a fixed-size state, such as\nmaximized or fullscreen, the request will be deferred until the window\nexits this state and becomes resizable again.\n\nOn some windowing systems, this request is asynchronous and the new window\naspect ratio may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call SDL_SyncWindow()\nto block until the changes have taken effect.\n\nWhen the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact aspect ratio requested, as some windowing systems can\nrestrict the window size in certain scenarios (e.g. constraining the size\nof the content area to remain within the usable desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param min_aspect the minimum aspect ratio of the window, or 0.0f for no\n                  limit.\n@param max_aspect the maximum aspect ratio of the window, or 0.0f for no\n                  limit.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAspectRatio()\n@sa Sync()",
@@ -19562,9 +19562,9 @@
                   "type": "float"
                 }
               ],
-              "begin": 1776,
-              "decl": 1814,
-              "end": 1819
+              "begin": 1788,
+              "decl": 1826,
+              "end": 1831
             },
             "GetAspectRatio": {
               "doc": "Get the size of a window's client area.\n\n@param min_aspect a pointer filled in with the minimum aspect ratio of the\n                  window, may be NULL.\n@param max_aspect a pointer filled in with the maximum aspect ratio of the\n                  window, may be NULL.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetspectRatio()",
@@ -19582,9 +19582,9 @@
                 }
               ],
               "immutable": true,
-              "begin": 1819,
-              "decl": 1835,
-              "end": 1840
+              "begin": 1831,
+              "decl": 1847,
+              "end": 1852
             },
             "GetBordersSize": {
               "doc": "Get the size of a window's borders (decorations) around the client area.\n\nNote: If this function fails (returns false), the size values will be\ninitialized to 0, 0, 0, 0 (if a non-NULL pointer is provided), as if the\nwindow in question was borderless.\n\nNote: This function may fail on systems where the window has not yet been\ndecorated by the display server (for example, immediately after calling\nWindowBase::WindowBase()). It is recommended that you wait at least until\nthe window has been presented and composited, so that the window system has\na chance to decorate the window and provide the border dimensions to SDL.\n\nThis function also returns false if getting the information is not\nsupported.\n\n@param top pointer to variable for storing the size of the top border;\nNULL is permitted.\n@param left pointer to variable for storing the size of the left border;\n            NULL is permitted.\n@param bottom pointer to variable for storing the size of the bottom\n              border; NULL is permitted.\n@param right pointer to variable for storing the size of the right border;\n             NULL is permitted.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetSize()",
@@ -19610,9 +19610,9 @@
                 }
               ],
               "immutable": true,
-              "begin": 1840,
-              "decl": 1873,
-              "end": 1878
+              "begin": 1852,
+              "decl": 1885,
+              "end": 1890
             },
             "GetSizeInPixels": [
               {
@@ -19622,9 +19622,9 @@
                 "type": "std::optional<Point>",
                 "parameters": [],
                 "immutable": true,
-                "begin": 1878,
-                "decl": 1891,
-                "end": 1897
+                "begin": 1890,
+                "decl": 1903,
+                "end": 1909
               },
               {
                 "doc": "Get the size of a window's client area, in pixels.\n\n@param w a pointer to variable for storing the width in pixels, may be\n         NULL.\n@param h a pointer to variable for storing the height in pixels, may be\n         NULL.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetSize()",
@@ -19642,9 +19642,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1897,
-                "decl": 1913,
-                "end": 1918
+                "begin": 1909,
+                "decl": 1925,
+                "end": 1930
               }
             ],
             "SetMinimumSize": {
@@ -19658,9 +19658,9 @@
                   "type": "SDL_Point"
                 }
               ],
-              "begin": 1918,
-              "decl": 1932,
-              "end": 1937
+              "begin": 1930,
+              "decl": 1944,
+              "end": 1949
             },
             "GetMinimumSize": {
               "doc": "Get the minimum size of a window's client area.\n\n@param w a pointer filled in with the minimum width of the window, may be\n         NULL.\n@param h a pointer filled in with the minimum height of the window, may be\n         NULL.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetMaximumSize()\n@sa SetMinimumSize()",
@@ -19678,9 +19678,9 @@
                 }
               ],
               "immutable": true,
-              "begin": 1937,
-              "decl": 1954,
-              "end": 1959
+              "begin": 1949,
+              "decl": 1966,
+              "end": 1971
             },
             "SetMaximumSize": {
               "doc": "Set the maximum size of a window's client area.\n\n@param p the maximum width and height of the window, or 0 for no limit.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetMaximumSize()\n@sa SetMinimumSize()",
@@ -19693,9 +19693,9 @@
                   "type": "SDL_Point"
                 }
               ],
-              "begin": 1959,
-              "decl": 1973,
-              "end": 1978
+              "begin": 1971,
+              "decl": 1985,
+              "end": 1990
             },
             "GetMaximumSize": {
               "doc": "Get the maximum size of a window's client area.\n\n@param w a pointer filled in with the maximum width of the window, may be\n         NULL.\n@param h a pointer filled in with the maximum height of the window, may be\n         NULL.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetMinimumSize()\n@sa SetMaximumSize()",
@@ -19713,9 +19713,9 @@
                 }
               ],
               "immutable": true,
-              "begin": 1978,
-              "decl": 1995,
-              "end": 2000
+              "begin": 1990,
+              "decl": 2007,
+              "end": 2012
             },
             "SetBordered": {
               "doc": "Set the border state of a window.\n\nThis will add or remove the window's `SDL_WINDOW_BORDERLESS` flag and add\nor remove the border from the actual window. This is a no-op if the\nwindow's border already matches the requested state.\n\nYou can't change the border state of a fullscreen window.\n\n@param bordered false to remove border, true to add border.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetFlags()",
@@ -19728,9 +19728,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 2000,
-              "decl": 2019,
-              "end": 2024
+              "begin": 2012,
+              "decl": 2031,
+              "end": 2036
             },
             "SetResizable": {
               "doc": "Set the user-resizable state of a window.\n\nThis will add or remove the window's `SDL_WINDOW_RESIZABLE` flag and\nallow/disallow user resizing of the window. This is a no-op if the\nwindow's resizable state already matches the requested state.\n\nYou can't change the resizable state of a fullscreen window.\n\n@param resizable true to allow resizing, false to disallow.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetWindowFlags()",
@@ -19743,9 +19743,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 2024,
-              "decl": 2043,
-              "end": 2048
+              "begin": 2036,
+              "decl": 2055,
+              "end": 2060
             },
             "SetAlwaysOnTop": {
               "doc": "Set the window to always be above the others.\n\nThis will add or remove the window's `SDL_WINDOW_ALWAYS_ON_TOP` flag. This\nwill bring the window to the front and keep the window above the rest.\n\n@param on_top true to set the window always on top, false to disable.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetFlags()",
@@ -19758,9 +19758,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 2048,
-              "decl": 2064,
-              "end": 2069
+              "begin": 2060,
+              "decl": 2076,
+              "end": 2081
             },
             "Show": {
               "doc": "Show a window.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Hide()\n@sa Raise()",
@@ -19768,9 +19768,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2069,
-              "decl": 2082,
-              "end": 2084
+              "begin": 2081,
+              "decl": 2094,
+              "end": 2096
             },
             "Hide": {
               "doc": "Hide a window.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Show()\n@sa SDL_WINDOW_HIDDEN",
@@ -19778,9 +19778,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2084,
-              "decl": 2097,
-              "end": 2099
+              "begin": 2096,
+              "decl": 2109,
+              "end": 2111
             },
             "Raise": {
               "doc": "Request that a window be raised above other windows and gain the input\nfocus.\n\nThe result of this request is subject to desktop window manager policy,\nparticularly if raising the requested window would result in stealing\nfocus from another application. If the window is successfully raised and\ngains input focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted,\nand the window will have the SDL_WINDOW_INPUT_FOCUS flag set.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -19788,9 +19788,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2099,
-              "decl": 2116,
-              "end": 2118
+              "begin": 2111,
+              "decl": 2128,
+              "end": 2130
             },
             "Maximize": {
               "doc": "Request that the window be made as large as possible.\n\nNon-resizable windows can't be maximized. The window must have the\nSDL_WINDOW_RESIZABLE flag set, or this will have no effect.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call SDL_SyncWindow() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_MAXIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\nWhen maximizing a window, whether the constraints set via\nSDL_SetWindowMaximumSize() are honored depends on the policy of the window\nmanager. Win32 and macOS enforce the constraints when maximizing, while\nX11 and Wayland window managers may vary.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Minimize()\n@sa Restore()\n@sa Sync()",
@@ -19798,9 +19798,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2118,
-              "decl": 2149,
-              "end": 2151
+              "begin": 2130,
+              "decl": 2161,
+              "end": 2163
             },
             "Minimize": {
               "doc": "Request that the window be minimized to an iconic representation.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have been applied immediately upon the return of this\nfunction. If an immediate change is required, call SDL_SyncWindow() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_MINIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Maximize()\n@sa Restore()\n@sa Sync()",
@@ -19808,9 +19808,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2151,
-              "decl": 2177,
-              "end": 2179
+              "begin": 2163,
+              "decl": 2189,
+              "end": 2191
             },
             "Restore": {
               "doc": "Request that the size and position of a minimized or maximized window be\nrestored.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call SDL_SyncWindow() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_RESTORED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Maximize()\n@sa Minimize()\n@sa Sync()",
@@ -19818,9 +19818,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2179,
-              "decl": 2206,
-              "end": 2208
+              "begin": 2191,
+              "decl": 2218,
+              "end": 2220
             },
             "SetFullscreen": {
               "doc": "Request that the window's fullscreen state be changed.\n\nBy default a window in fullscreen state uses borderless fullscreen desktop\nmode, but a specific exclusive display mode can be set using\nSDL_SetWindowFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\nfullscreen state may not have have been applied immediately upon the\nreturn of this function. If an immediate change is required, call\nSDL_SyncWindow() to block until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_ENTER_FULLSCREEN or\nSDL_EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as\nthis is just a request, it can be denied by the windowing system.\n\n@param fullscreen true for fullscreen mode, false for windowed mode.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetFullscreenMode()\n@sa SetFullscreenMode()\n@sa Sync()\n@sa SDL_WINDOW_FULLSCREEN",
@@ -19833,9 +19833,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 2208,
-              "decl": 2237,
-              "end": 2242
+              "begin": 2220,
+              "decl": 2249,
+              "end": 2254
             },
             "Sync": {
               "doc": "Block until any pending window state is finalized.\n\nOn asynchronous windowing systems, this acts as a synchronization barrier\nfor pending window state. It will attempt to wait until any pending window\nstate has been applied and is guaranteed to return within finite time.\nNote that for how long it can potentially block depends on the underlying\nwindow system, as window state changes may involve somewhat lengthy\nanimations that must complete before the window is in its final requested\nstate.\n\nOn windowing systems where changes are immediate, this does nothing.\n\n@returns true on success or false if the operation timed out before the\n         window was in the requested state.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetSize()\n@sa SetPosition()\n@sa SetFullscreen()\n@sa Minimize()\n@sa Maximize()\n@sa Restore()\n@sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS",
@@ -19843,9 +19843,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2242,
-              "decl": 2270,
-              "end": 2272
+              "begin": 2254,
+              "decl": 2282,
+              "end": 2284
             },
             "GetRenderer": {
               "doc": "Get the renderer associated with a window.\n\n@returns the rendering context on success or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -19854,9 +19854,9 @@
               "type": "RendererRef",
               "parameters": [],
               "immutable": true,
-              "begin": 2272,
-              "decl": 2282,
-              "end": 2284
+              "begin": 2284,
+              "decl": 2294,
+              "end": 2296
             },
             "HasSurface": {
               "doc": "@brief Return whether the window has a surface associated with it.\n@returns true if there is a surface associated with the window, or false\n         otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa WindowBase.GetSurface()",
@@ -19865,9 +19865,9 @@
               "type": "bool",
               "parameters": [],
               "immutable": true,
-              "begin": 2284,
-              "decl": 2293,
-              "end": 2295
+              "begin": 2296,
+              "decl": 2305,
+              "end": 2307
             },
             "GetSurface": {
               "doc": "@brief Get the SDL surface associated with the window.\n\nA new surface will be created with the optimal format for the window, if\nnecessary. This surface will be freed when the window is destroyed. Do not\nfree this surface.\n\nThis surface will be invalidated if the window is resized. After resizing\na window this function must be called again to return a valid surface.\n\nYou may not combine this with 3D or the rendering API on this window.\n\nThis function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.\n@return the surface associated with the window, or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa DestroySurface()\n@sa HasSurface()\n@sa UpdateSurface()\n@sa UpdateSurfaceRects()",
@@ -19875,9 +19875,9 @@
               "kind": "function",
               "type": "SurfaceRef",
               "parameters": [],
-              "begin": 2295,
-              "decl": 2318,
-              "end": 2320
+              "begin": 2307,
+              "decl": 2330,
+              "end": 2332
             },
             "SetSurfaceVSync": {
               "doc": "Toggle VSync for the window surface.\n\nWhen a window surface is created, vsync defaults to\nSDL_WINDOW_SURFACE_VSYNC_DISABLED.\n\nThe `vsync` parameter can be 1 to synchronize present with every vertical\nrefresh, 2 to synchronize present with every second vertical refresh,\netc., SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive\nvsync), or SDL_WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value\nis supported by every driver, so you should check the return value to see\nwhether the requested setting is supported.\n\n@param vsync the vertical refresh sync interval.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetSurfaceVSync()",
@@ -19890,9 +19890,9 @@
                   "type": "int"
                 }
               ],
-              "begin": 2320,
-              "decl": 2343,
-              "end": 2348
+              "begin": 2332,
+              "decl": 2355,
+              "end": 2360
             },
             "GetSurfaceVSync": {
               "doc": "Get VSync for the window surface.\n\n@returns the current vertical refresh sync interval on success or\nstd::nullopt on failure; call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetSurfaceVSync()",
@@ -19901,9 +19901,9 @@
               "type": "std::optional<int>",
               "parameters": [],
               "immutable": true,
-              "begin": 2348,
-              "decl": 2360,
-              "end": 2366
+              "begin": 2360,
+              "decl": 2372,
+              "end": 2378
             },
             "UpdateSurface": {
               "doc": "@brief Copy the window surface to the screen.\n\nThis is the function you use to reflect any changes to the surface on the\nscreen.\n\nThis function is equivalent to the SDL 1.2 API SDL_Flip().\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa GetSurface()\n@sa UpdateSurfaceRects()",
@@ -19911,9 +19911,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2368,
-              "decl": 2384,
-              "end": 2386
+              "begin": 2380,
+              "decl": 2396,
+              "end": 2398
             },
             "UpdateSurfaceRects": {
               "doc": "Copy areas of the window surface to the screen.\n\nThis is the function you use to reflect changes to portions of the surface\non the screen.\n\nThis function is equivalent to the SDL 1.2 API SDL_UpdateRects().\n\nNote that this function will update _at least_ the rectangles specified,\nbut this is only intended as an optimization; in practice, this might\nupdate more of the screen (or all of the screen!), depending on what method\nSDL uses to send pixels to the system.\n\n@param rects an array of SDL_Rect structures representing areas of the\n             surface to copy, in pixels.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetSurface()\n@sa UpdateSurface()",
@@ -19926,9 +19926,9 @@
                   "type": "SpanRef<const SDL_Rect>"
                 }
               ],
-              "begin": 2386,
-              "decl": 2411,
-              "end": 2417
+              "begin": 2398,
+              "decl": 2423,
+              "end": 2429
             },
             "DestroySurface": {
               "doc": "Destroy the surface associated with the window.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetSurface()\n@sa HasSurface()",
@@ -19936,9 +19936,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2417,
-              "decl": 2430,
-              "end": 2432
+              "begin": 2429,
+              "decl": 2442,
+              "end": 2444
             },
             "SetKeyboardGrab": {
               "doc": "Set a window's keyboard grab mode.\n\nKeyboard grab enables capture of system keyboard shortcuts like Alt+Tab or\nthe Meta/Super key. Note that not all system keyboard shortcuts can be\ncaptured by applications (one example is Ctrl+Alt+Del on Windows).\n\nThis is primarily intended for specialized applications such as VNC\nclients or VM frontends. Normal games should not use keyboard grab.\n\nWhen keyboard grab is enabled, SDL will continue to handle Alt+Tab when\nthe window is full-screen to ensure the user is not trapped in your\napplication. If you have a custom keyboard shortcut to exit fullscreen\nmode, you may suppress this behavior with\n`SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED`.\n\nIf the caller enables a grab while another window is currently grabbed,\nthe other window loses its grab in favor of the caller's window.\n\n@param grabbed this is true to grab keyboard, and false to release.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetKeyboardGrab()\n@sa SetMouseGrab()",
@@ -19951,9 +19951,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 2432,
-              "decl": 2462,
-              "end": 2467
+              "begin": 2444,
+              "decl": 2474,
+              "end": 2479
             },
             "SetMouseGrab": {
               "doc": "Set a window's mouse grab mode.\n\nMouse grab confines the mouse cursor to the window.\n\n@param grabbed this is true to grab mouse, and false to release.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetMouseRect()\n@sa SetMouseRect()\n@sa SetMouseGrab()\n@sa SetKeyboardGrab()",
@@ -19966,9 +19966,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 2467,
-              "decl": 2485,
-              "end": 2490
+              "begin": 2479,
+              "decl": 2497,
+              "end": 2502
             },
             "GetKeyboardGrab": {
               "doc": "Get a window's keyboard grab mode.\n\n@returns true if keyboard is grabbed, and false otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetKeyboardGrab()",
@@ -19977,9 +19977,9 @@
               "type": "bool",
               "parameters": [],
               "immutable": true,
-              "begin": 2490,
-              "decl": 2501,
-              "end": 2503
+              "begin": 2502,
+              "decl": 2513,
+              "end": 2515
             },
             "GetMouseGrab": {
               "doc": "Get a window's mouse grab mode.\n\n@returns true if mouse is grabbed, and false otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetMouseRect()\n@sa SetMouseRect()\n@sa SetMouseGrab()\n@sa SetKeyboardGrab()",
@@ -19988,9 +19988,9 @@
               "type": "bool",
               "parameters": [],
               "immutable": true,
-              "begin": 2503,
-              "decl": 2517,
-              "end": 2519
+              "begin": 2515,
+              "decl": 2529,
+              "end": 2531
             },
             "SetMouseRect": {
               "doc": "Confines the cursor to the specified area of a window.\n\nNote that this does NOT grab the cursor, it only defines the area a cursor\nis restricted to when the window has mouse focus.\n\n@param rect a rectangle area in window-relative coordinates. If NULL the\n            barrier for the specified window will be destroyed.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetMouseRect()\n@sa GetMouseGrab()\n@sa SetMouseGrab()",
@@ -20003,9 +20003,9 @@
                   "type": "const SDL_Rect &"
                 }
               ],
-              "begin": 2519,
-              "decl": 2538,
-              "end": 2543
+              "begin": 2531,
+              "decl": 2550,
+              "end": 2555
             },
             "GetMouseRect": {
               "doc": "Get the mouse confinement rectangle of a window.\n\n@returns a pointer to the mouse confinement rectangle of a window, or NULL\n         if there isn't one.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetMouseRect()\n@sa GetMouseGrab()\n@sa SetMouseGrab()",
@@ -20014,9 +20014,9 @@
               "type": "const Rect *",
               "parameters": [],
               "immutable": true,
-              "begin": 2543,
-              "decl": 2557,
-              "end": 2559
+              "begin": 2555,
+              "decl": 2569,
+              "end": 2571
             },
             "SetOpacity": {
               "doc": "Set the opacity for a window.\n\nThe parameter `opacity` will be clamped internally between 0.0f\n(transparent) and 1.0f (opaque).\n\nThis function also returns false if setting the opacity isn't supported.\n\n@param opacity the opacity value (0.0f - transparent, 1.0f - opaque).\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetOpacity()",
@@ -20029,9 +20029,9 @@
                   "type": "float"
                 }
               ],
-              "begin": 2559,
-              "decl": 2577,
-              "end": 2582
+              "begin": 2571,
+              "decl": 2589,
+              "end": 2594
             },
             "GetOpacity": {
               "doc": "Get the opacity of a window.\n\nIf transparency isn't supported on this platform, opacity will be returned\nas 1.0f without error.\n\n@returns the opacity, (0.0f - transparent, 1.0f - opaque), or -1.0f on\n         failure; call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetOpacity()",
@@ -20040,9 +20040,9 @@
               "type": "float",
               "parameters": [],
               "immutable": true,
-              "begin": 2582,
-              "decl": 2597,
-              "end": 2599
+              "begin": 2594,
+              "decl": 2609,
+              "end": 2611
             },
             "SetParent": {
               "doc": "Set the window as a child of a parent window.\n\nIf the window is already the child of an existing window, it will be\nreparented to the new owner. Setting the parent window to NULL unparents\nthe window and removes child window status.\n\nIf a parent window is hidden or destroyed, the operation will be\nrecursively applied to child windows. Child windows hidden with the parent\nthat did not have their hidden status explicitly set will be restored when\nthe parent is shown.\n\nAttempting to set the parent of a window that is currently in the modal\nstate will fail. Use SDL_SetWindowModal() to cancel the modal status\nbefore attempting to change the parent.\n\nPopup windows cannot change parents and attempts to do so will fail.\n\nSetting a parent window that is currently the sibling or descendent of the\nchild window results in undefined behavior.\n\n@param parent the new parent window for the child window.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetModal()",
@@ -20055,9 +20055,9 @@
                   "type": "WindowRef"
                 }
               ],
-              "begin": 2599,
-              "decl": 2630,
-              "end": 2635
+              "begin": 2611,
+              "decl": 2642,
+              "end": 2647
             },
             "SetModal": {
               "doc": "Toggle the state of the window as modal.\n\nTo enable modal status on a window, the window must currently be the child\nwindow of a parent, or toggling modal status on will fail.\n\n@param modal true to toggle modal status on, false to toggle it off.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetParent()\n@sa SDL_WINDOW_MODAL",
@@ -20070,9 +20070,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 2635,
-              "decl": 2652,
-              "end": 2654
+              "begin": 2647,
+              "decl": 2664,
+              "end": 2666
             },
             "SetFocusable": {
               "doc": "Set whether the window may have input focus.\n\n@param focusable true to allow input focus, false to not allow input\nfocus.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -20085,9 +20085,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 2654,
-              "decl": 2666,
-              "end": 2671
+              "begin": 2666,
+              "decl": 2678,
+              "end": 2683
             },
             "ShowSystemMenu": {
               "doc": "Display the system-level window menu.\n\nThis default window menu is provided by the system and on some platforms\nprovides functionality for setting or changing privileged state on the\nwindow, such as moving it between workspaces or displays, or toggling the\nalways-on-top property.\n\nOn platforms or desktops where this is unsupported, this function does\nnothing.\n\n@param p the x, y coordinate of the menu, relative to the origin (top-left)\nof the client area.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -20100,9 +20100,9 @@
                   "type": "SDL_Point"
                 }
               ],
-              "begin": 2671,
-              "decl": 2691,
-              "end": 2696
+              "begin": 2683,
+              "decl": 2703,
+              "end": 2708
             },
             "SetHitTest": [
               {
@@ -20116,9 +20116,9 @@
                     "type": "HitTestCB"
                   }
                 ],
-                "begin": 2696,
-                "decl": 2740,
-                "end": 2752
+                "begin": 2708,
+                "decl": 2752,
+                "end": 2764
               },
               {
                 "doc": "Provide a callback that decides if a window region has special properties.\n\nNormally windows are dragged and resized by decorations provided by the\nsystem window manager (a title bar, borders, etc), but for some apps, it\nmakes sense to drag them from somewhere else inside the window itself; for\nexample, one might have a borderless window that wants to be draggable from\nany part, or simulate its own title bar, etc.\n\nThis function lets the app provide a callback that designates pieces of a\ngiven window as special. This callback is run during event processing if we\nneed to tell the OS to treat a region of the window specially; the use of\nthis callback is known as \"hit testing.\"\n\nMouse input may not be delivered to your application if it is within a\nspecial area; the OS will often apply that input to moving the window or\nresizing the window and not deliver it to the application.\n\nSpecifying NULL for a callback disables hit-testing. Hit-testing is\ndisabled by default.\n\nPlatforms that don't support this functionality will return false\nunconditionally, even if you're attempting to disable hit-testing.\n\nYour callback may fire at any time, and its firing does not indicate any\nspecific behavior (for example, on Windows, this certainly might fire when\nthe OS is deciding whether to drag your window, but it fires for lots of\nother reasons, too, some unrelated to anything you probably care about _and\nwhen the mouse isn't actually at the location it is testing_). Since this\ncan fire at any time, you should try to keep your callback efficient,\ndevoid of allocations, etc.\n\n@param callback the function to call when doing a hit-test.\n@param callback_data an app-defined void pointer passed to **callback**.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -20135,9 +20135,9 @@
                     "type": "void *"
                   }
                 ],
-                "begin": 2752,
-                "decl": 2793,
-                "end": 2798
+                "begin": 2764,
+                "decl": 2805,
+                "end": 2810
               }
             ],
             "SetShape": {
@@ -20151,9 +20151,9 @@
                   "type": "SurfaceRef"
                 }
               ],
-              "begin": 2798,
-              "decl": 2823,
-              "end": 2828
+              "begin": 2810,
+              "decl": 2835,
+              "end": 2840
             },
             "Flash": {
               "doc": "Request a window to demand attention from the user.\n\n@param operation the operation to perform.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -20166,9 +20166,9 @@
                   "type": "FlashOperation"
                 }
               ],
-              "begin": 2828,
-              "decl": 2839,
-              "end": 2844
+              "begin": 2840,
+              "decl": 2851,
+              "end": 2856
             },
             "StartTextInput": [
               {
@@ -20177,9 +20177,9 @@
                 "kind": "function",
                 "type": "bool",
                 "parameters": [],
-                "begin": 2844,
-                "decl": 2844,
-                "end": 2846
+                "begin": 2856,
+                "decl": 2856,
+                "end": 2858
               },
               {
                 "doc": "",
@@ -20192,9 +20192,9 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "begin": 2846,
-                "decl": 2846,
-                "end": 2848
+                "begin": 2858,
+                "decl": 2858,
+                "end": 2860
               }
             ],
             "IsTextInputActive": {
@@ -20204,9 +20204,9 @@
               "type": "bool",
               "parameters": [],
               "immutable": true,
-              "begin": 2848,
-              "decl": 2848,
-              "end": 2850
+              "begin": 2860,
+              "decl": 2860,
+              "end": 2862
             },
             "StopTextInput": {
               "doc": "",
@@ -20214,9 +20214,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2850,
-              "decl": 2850,
-              "end": 2852
+              "begin": 2862,
+              "decl": 2862,
+              "end": 2864
             },
             "ClearComposition": {
               "doc": "",
@@ -20224,9 +20224,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2852,
-              "decl": 2852,
-              "end": 2854
+              "begin": 2864,
+              "decl": 2864,
+              "end": 2866
             },
             "SetTextInputArea": {
               "doc": "",
@@ -20243,9 +20243,9 @@
                   "type": "int"
                 }
               ],
-              "begin": 2854,
-              "decl": 2854,
-              "end": 2856
+              "begin": 2866,
+              "decl": 2866,
+              "end": 2868
             },
             "GetTextInputArea": {
               "doc": "",
@@ -20262,9 +20262,9 @@
                   "type": "int *"
                 }
               ],
-              "begin": 2856,
-              "decl": 2856,
-              "end": 2858
+              "begin": 2868,
+              "decl": 2868,
+              "end": 2870
             },
             "Destroy": {
               "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nSDL_Window is no longer valid after this call.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -20272,9 +20272,9 @@
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "begin": 2858,
-              "decl": 2872,
-              "end": 2873
+              "begin": 2870,
+              "decl": 2884,
+              "end": 2885
             }
           },
           "template": [
@@ -20285,7 +20285,7 @@
           ],
           "begin": 898,
           "decl": 907,
-          "end": 2875
+          "end": 2887
         },
         "ObjectRef<SDL_Window>::doFree": {
           "doc": "Callback for window resource cleanup\n\n@private",
@@ -20299,18 +20299,18 @@
             }
           ],
           "template": [],
-          "begin": 2875,
-          "decl": 2880,
-          "end": 2887
+          "begin": 2887,
+          "decl": 2892,
+          "end": 2899
         },
         "SDL_WINDOWPOS_UNDEFINED_MASK": {
           "doc": "A magic value used with SDL_WINDOWPOS_UNDEFINED.\n\nGenerally this macro isn't used directly, but rather through\nSDL_WINDOWPOS_UNDEFINED or SDL_WINDOWPOS_UNDEFINED_DISPLAY.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_WINDOWPOS_UNDEFINED_MASK",
           "kind": "def",
           "value": "0x1FFF0000u",
-          "begin": 2889,
-          "decl": 2897,
-          "end": 2899
+          "begin": 2901,
+          "decl": 2909,
+          "end": 2911
         },
         "SDL_WINDOWPOS_UNDEFINED_DISPLAY": {
           "doc": "Used to indicate that you don't care what the window position is.\n\nIf you _really_ don't care, SDL_WINDOWPOS_UNDEFINED is the same, but always\nuses the primary display instead of specifying one.\n\n@param X the SDL_DisplayID of the display to use.\n\n@since This macro is available since SDL 3.2.0.",
@@ -20320,18 +20320,18 @@
           "parameters": [
             "X"
           ],
-          "begin": 2899,
-          "decl": 2909,
-          "end": 2911
+          "begin": 2911,
+          "decl": 2921,
+          "end": 2923
         },
         "SDL_WINDOWPOS_UNDEFINED": {
           "doc": "Used to indicate that you don't care what the window position/display is.\n\nThis always uses the primary display.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_WINDOWPOS_UNDEFINED",
           "kind": "def",
           "value": "SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)",
-          "begin": 2911,
-          "decl": 2918,
-          "end": 2920
+          "begin": 2923,
+          "decl": 2930,
+          "end": 2932
         },
         "SDL_WINDOWPOS_ISUNDEFINED": {
           "doc": "A macro to test if the window position is marked as \"undefined.\"\n\n@param X the window position value.\n\n@since This macro is available since SDL 3.2.0.",
@@ -20341,18 +20341,18 @@
           "parameters": [
             "X"
           ],
-          "begin": 2920,
-          "decl": 2927,
-          "end": 2930
+          "begin": 2932,
+          "decl": 2939,
+          "end": 2942
         },
         "SDL_WINDOWPOS_CENTERED_MASK": {
           "doc": "A magic value used with SDL_WINDOWPOS_CENTERED.\n\nGenerally this macro isn't used directly, but rather through\nSDL_WINDOWPOS_CENTERED or SDL_WINDOWPOS_CENTERED_DISPLAY.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_WINDOWPOS_CENTERED_MASK",
           "kind": "def",
           "value": "0x2FFF0000u",
-          "begin": 2930,
-          "decl": 2938,
-          "end": 2940
+          "begin": 2942,
+          "decl": 2950,
+          "end": 2952
         },
         "SDL_WINDOWPOS_CENTERED_DISPLAY": {
           "doc": "Used to indicate that the window position should be centered.\n\nSDL_WINDOWPOS_CENTERED is the same, but always uses the primary display\ninstead of specifying one.\n\n@param X the SDL_DisplayID of the display to use.\n\n@since This macro is available since SDL 3.2.0.",
@@ -20362,18 +20362,18 @@
           "parameters": [
             "X"
           ],
-          "begin": 2940,
-          "decl": 2950,
-          "end": 2952
+          "begin": 2952,
+          "decl": 2962,
+          "end": 2964
         },
         "SDL_WINDOWPOS_CENTERED": {
           "doc": "Used to indicate that the window position should be centered.\n\nThis always uses the primary display.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_WINDOWPOS_CENTERED",
           "kind": "def",
           "value": "SDL_WINDOWPOS_CENTERED_DISPLAY(0)",
-          "begin": 2952,
-          "decl": 2959,
-          "end": 2961
+          "begin": 2964,
+          "decl": 2971,
+          "end": 2973
         },
         "SDL_WINDOWPOS_ISCENTERED": {
           "doc": "A macro to test if the window position is marked as \"centered.\"\n\n@param X the window position value.\n\n@since This macro is available since SDL 3.2.0.",
@@ -20383,9 +20383,9 @@
           "parameters": [
             "X"
           ],
-          "begin": 2961,
-          "decl": 2968,
-          "end": 2971
+          "begin": 2973,
+          "decl": 2980,
+          "end": 2983
         },
         "GLContextBase": {
           "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource",
@@ -20397,9 +20397,9 @@
               "doc": "",
               "name": "T::T",
               "kind": "alias",
-              "begin": 2983,
-              "decl": 2983,
-              "end": 2985
+              "begin": 2995,
+              "decl": 2995,
+              "end": 2997
             },
             "GLContextBase": {
               "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with SDL_GL_GetProcAddress() and its related\nfunctions.\n\nSDL_GLContext is opaque to the application.\n\n@param window the window to associate with the context.\n@post the OpenGL context associated with `window` or NULL on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Destroy()\n@sa MakeCurrent()",
@@ -20412,9 +20412,9 @@
                   "type": "WindowRef"
                 }
               ],
-              "begin": 2985,
-              "decl": 3007,
-              "end": 3012
+              "begin": 2997,
+              "decl": 3019,
+              "end": 3024
             },
             "MakeCurrent": {
               "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
@@ -20427,9 +20427,9 @@
                   "type": "WindowRef"
                 }
               ],
-              "begin": 3012,
-              "decl": 3027,
-              "end": 3032
+              "begin": 3024,
+              "decl": 3039,
+              "end": 3044
             },
             "Destroy": {
               "doc": "Delete an OpenGL context.\n\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
@@ -20437,9 +20437,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 3032,
-              "decl": 3044,
-              "end": 3045
+              "begin": 3044,
+              "decl": 3056,
+              "end": 3057
             }
           },
           "template": [
@@ -20448,81 +20448,81 @@
               "type": "ObjectBox<SDL_GLContextState *>"
             }
           ],
-          "begin": 2973,
-          "decl": 2980,
-          "end": 3047
+          "begin": 2985,
+          "decl": 2992,
+          "end": 3059
         },
         "EGLDisplay": {
           "doc": "Opaque type for an EGL display.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLDisplay",
           "kind": "alias",
           "type": "SDL_EGLDisplay",
-          "begin": 3047,
-          "decl": 3052,
-          "end": 3054
+          "begin": 3059,
+          "decl": 3064,
+          "end": 3066
         },
         "EGLConfig": {
           "doc": "Opaque type for an EGL config.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLConfig",
           "kind": "alias",
           "type": "SDL_EGLConfig",
-          "begin": 3054,
-          "decl": 3059,
-          "end": 3061
+          "begin": 3066,
+          "decl": 3071,
+          "end": 3073
         },
         "EGLSurface": {
           "doc": "Opaque type for an EGL surface.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLSurface",
           "kind": "alias",
           "type": "SDL_EGLSurface",
-          "begin": 3061,
-          "decl": 3066,
-          "end": 3068
+          "begin": 3073,
+          "decl": 3078,
+          "end": 3080
         },
         "EGLAttrib": {
           "doc": "An EGL attribute, used when creating an EGL context.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLAttrib",
           "kind": "alias",
           "type": "SDL_EGLAttrib",
-          "begin": 3068,
-          "decl": 3073,
-          "end": 3075
+          "begin": 3080,
+          "decl": 3085,
+          "end": 3087
         },
         "EGLint": {
           "doc": "An EGL integer attribute, used when creating an EGL surface.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLint",
           "kind": "alias",
           "type": "SDL_EGLint",
-          "begin": 3075,
-          "decl": 3080,
-          "end": 3082
+          "begin": 3087,
+          "decl": 3092,
+          "end": 3094
         },
         "EGLAttribArrayCallback": {
           "doc": "EGL platform attribute initialization callback.\n\nThis is called when SDL is attempting to create an EGL context, to let the\napp add extra attributes to its eglGetPlatformDisplay() call.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns NULL, the SDL_CreateWindow\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with SDL_malloc() and will be\npassed to SDL_free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks()",
           "name": "EGLAttribArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLAttribArrayCallback",
-          "begin": 3082,
-          "decl": 3105,
-          "end": 3107
+          "begin": 3094,
+          "decl": 3117,
+          "end": 3119
         },
         "EGLIntArrayCallback": {
           "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns NULL, the SDL_CreateWindow\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with SDL_malloc() and will be\npassed to SDL_free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks()",
           "name": "EGLIntArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLIntArrayCallback",
-          "begin": 3107,
-          "decl": 3136,
-          "end": 3138
+          "begin": 3119,
+          "decl": 3148,
+          "end": 3150
         },
         "GLAttr": {
           "doc": "An enumeration of OpenGL configuration attributes.\n\nWhile you can set most OpenGL attributes normally, the attributes listed\nabove must be known before SDL creates the window that will be used with\nthe OpenGL context. These attributes are set and read with\nSDL_GL_SetAttribute() and SDL_GL_GetAttribute().\n\nIn some cases, these attributes are minimum requests; the GL does not\npromise to give you exactly what you asked for. It's possible to ask for a\n16-bit depth buffer and get a 24-bit one instead, for example, or to ask\nfor no stencil buffer and still have one available. Context creation should\nfail if the GL can't provide your requested attributes at a minimum, but\nyou should check to see exactly what you got.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "GLAttr",
           "kind": "alias",
           "type": "SDL_GLAttr",
-          "begin": 3143,
-          "decl": 3160,
-          "end": 3162
+          "begin": 3155,
+          "decl": 3172,
+          "end": 3174
         },
         "GL_RED_SIZE": {
           "doc": "the minimum number of bits for the red channel of the color buffer; defaults\nto 8.",
@@ -20530,9 +20530,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3162,
-          "decl": 3166,
-          "end": 3168
+          "begin": 3174,
+          "decl": 3178,
+          "end": 3180
         },
         "GL_GREEN_SIZE": {
           "doc": "the minimum number of bits for the green channel of the color buffer;\ndefaults to 8.",
@@ -20540,9 +20540,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3168,
-          "decl": 3172,
-          "end": 3174
+          "begin": 3180,
+          "decl": 3184,
+          "end": 3186
         },
         "GL_BLUE_SIZE": {
           "doc": "the minimum number of bits for the blue channel of the color buffer; defaults\nto 8.",
@@ -20550,9 +20550,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3174,
-          "decl": 3178,
-          "end": 3180
+          "begin": 3186,
+          "decl": 3190,
+          "end": 3192
         },
         "GL_ALPHA_SIZE": {
           "doc": "the minimum number of bits for the alpha channel of the color buffer;\ndefaults to 8.",
@@ -20560,9 +20560,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3180,
-          "decl": 3184,
-          "end": 3186
+          "begin": 3192,
+          "decl": 3196,
+          "end": 3198
         },
         "GL_BUFFER_SIZE": {
           "doc": "the minimum number of bits for frame buffer size; defaults to 0.",
@@ -20570,9 +20570,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3186,
-          "decl": 3189,
-          "end": 3191
+          "begin": 3198,
+          "decl": 3201,
+          "end": 3203
         },
         "GL_DOUBLEBUFFER": {
           "doc": "whether the output is single or double buffered; defaults to double buffering\non.",
@@ -20580,9 +20580,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3191,
-          "decl": 3195,
-          "end": 3197
+          "begin": 3203,
+          "decl": 3207,
+          "end": 3209
         },
         "GL_DEPTH_SIZE": {
           "doc": "the minimum number of bits in the depth buffer; defaults to 16.",
@@ -20590,9 +20590,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3197,
-          "decl": 3200,
-          "end": 3202
+          "begin": 3209,
+          "decl": 3212,
+          "end": 3214
         },
         "GL_STENCIL_SIZE": {
           "doc": "the minimum number of bits in the stencil buffer; defaults to 0.",
@@ -20600,9 +20600,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3202,
-          "decl": 3205,
-          "end": 3207
+          "begin": 3214,
+          "decl": 3217,
+          "end": 3219
         },
         "GL_ACCUM_RED_SIZE": {
           "doc": "the minimum number of bits for the red channel of the accumulation buffer;\ndefaults to 0.",
@@ -20610,9 +20610,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3207,
-          "decl": 3211,
-          "end": 3213
+          "begin": 3219,
+          "decl": 3223,
+          "end": 3225
         },
         "GL_ACCUM_GREEN_SIZE": {
           "doc": "the minimum number of bits for the green channel of the accumulation buffer;\ndefaults to 0.",
@@ -20620,9 +20620,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3213,
-          "decl": 3217,
-          "end": 3219
+          "begin": 3225,
+          "decl": 3229,
+          "end": 3231
         },
         "GL_ACCUM_BLUE_SIZE": {
           "doc": "the minimum number of bits for the blue channel of the accumulation buffer;\ndefaults to 0.",
@@ -20630,9 +20630,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3219,
-          "decl": 3223,
-          "end": 3225
+          "begin": 3231,
+          "decl": 3235,
+          "end": 3237
         },
         "GL_ACCUM_ALPHA_SIZE": {
           "doc": "the minimum number of bits for the alpha channel of the accumulation buffer;\ndefaults to 0.",
@@ -20640,9 +20640,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3225,
-          "decl": 3229,
-          "end": 3231
+          "begin": 3237,
+          "decl": 3241,
+          "end": 3243
         },
         "GL_STEREO": {
           "doc": "whether the output is stereo 3D; defaults to off.",
@@ -20650,9 +20650,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3231,
-          "decl": 3234,
-          "end": 3236
+          "begin": 3243,
+          "decl": 3246,
+          "end": 3248
         },
         "GL_MULTISAMPLEBUFFERS": {
           "doc": "the number of buffers used for multisample anti-aliasing; defaults to 0.",
@@ -20660,9 +20660,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3236,
-          "decl": 3239,
-          "end": 3241
+          "begin": 3248,
+          "decl": 3251,
+          "end": 3253
         },
         "GL_MULTISAMPLESAMPLES": {
           "doc": "the number of samples used around the current pixel used for multisample\nanti-aliasing.",
@@ -20670,9 +20670,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3241,
-          "decl": 3245,
-          "end": 3247
+          "begin": 3253,
+          "decl": 3257,
+          "end": 3259
         },
         "GL_ACCELERATED_VISUAL": {
           "doc": "set to 1 to require hardware acceleration, set to 0 to force software\nrendering; defaults to allow either.",
@@ -20680,9 +20680,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3247,
-          "decl": 3251,
-          "end": 3253
+          "begin": 3259,
+          "decl": 3263,
+          "end": 3265
         },
         "GL_RETAINED_BACKING": {
           "doc": "not used (deprecated).",
@@ -20690,9 +20690,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3253,
-          "decl": 3256,
-          "end": 3258
+          "begin": 3265,
+          "decl": 3268,
+          "end": 3270
         },
         "GL_CONTEXT_MAJOR_VERSION": {
           "doc": "OpenGL context major version.",
@@ -20700,9 +20700,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3258,
-          "decl": 3261,
-          "end": 3263
+          "begin": 3270,
+          "decl": 3273,
+          "end": 3275
         },
         "GL_CONTEXT_MINOR_VERSION": {
           "doc": "OpenGL context minor version.",
@@ -20710,9 +20710,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3263,
-          "decl": 3266,
-          "end": 3268
+          "begin": 3275,
+          "decl": 3278,
+          "end": 3280
         },
         "GL_CONTEXT_FLAGS": {
           "doc": "some combination of 0 or more of elements of the SDL_GLContextFlag\nenumeration; defaults to 0.",
@@ -20720,9 +20720,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3268,
-          "decl": 3272,
-          "end": 3274
+          "begin": 3280,
+          "decl": 3284,
+          "end": 3286
         },
         "GL_CONTEXT_PROFILE_MASK": {
           "doc": "type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default\nvalue depends on platform.",
@@ -20730,9 +20730,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3274,
-          "decl": 3278,
-          "end": 3280
+          "begin": 3286,
+          "decl": 3290,
+          "end": 3292
         },
         "GL_SHARE_WITH_CURRENT_CONTEXT": {
           "doc": "OpenGL context sharing; defaults to 0.",
@@ -20740,9 +20740,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3280,
-          "decl": 3283,
-          "end": 3286
+          "begin": 3292,
+          "decl": 3295,
+          "end": 3298
         },
         "GL_FRAMEBUFFER_SRGB_CAPABLE": {
           "doc": "requests sRGB capable visual; defaults to 0.",
@@ -20750,9 +20750,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3286,
-          "decl": 3289,
-          "end": 3291
+          "begin": 3298,
+          "decl": 3301,
+          "end": 3303
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR": {
           "doc": "sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to\nFLUSH.",
@@ -20760,9 +20760,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3291,
-          "decl": 3295,
-          "end": 3297
+          "begin": 3303,
+          "decl": 3307,
+          "end": 3309
         },
         "GL_CONTEXT_RESET_NOTIFICATION": {
           "doc": "set context reset notification. See SDL_GLContextResetNotification; defaults\nto NO_NOTIFICATION.",
@@ -20770,9 +20770,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3297,
-          "decl": 3301,
-          "end": 3304
+          "begin": 3309,
+          "decl": 3313,
+          "end": 3316
         },
         "GL_CONTEXT_NO_ERROR": {
           "doc": "",
@@ -20780,9 +20780,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3305,
-          "decl": 3305,
-          "end": 3307
+          "begin": 3317,
+          "decl": 3317,
+          "end": 3319
         },
         "GL_FLOATBUFFERS": {
           "doc": "",
@@ -20790,9 +20790,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3308,
-          "decl": 3308,
-          "end": 3310
+          "begin": 3320,
+          "decl": 3320,
+          "end": 3322
         },
         "GL_EGL_PLATFORM": {
           "doc": "",
@@ -20800,18 +20800,18 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3311,
-          "decl": 3311,
-          "end": 3313
+          "begin": 3323,
+          "decl": 3323,
+          "end": 3325
         },
         "GLProfile": {
           "doc": "Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLProfile",
           "kind": "alias",
           "type": "SDL_GLProfile",
-          "begin": 3320,
-          "decl": 3325,
-          "end": 3327
+          "begin": 3332,
+          "decl": 3337,
+          "end": 3339
         },
         "GL_CONTEXT_PROFILE_CORE": {
           "doc": "OpenGL Core Profile context",
@@ -20819,9 +20819,9 @@
           "kind": "var",
           "type": "GLProfile",
           "constexpr": true,
-          "begin": 3327,
-          "decl": 3330,
-          "end": 3332
+          "begin": 3339,
+          "decl": 3342,
+          "end": 3344
         },
         "GL_CONTEXT_PROFILE_COMPATIBILITY": {
           "doc": "OpenGL Compatibility Profile context",
@@ -20829,9 +20829,9 @@
           "kind": "var",
           "type": "GLProfile",
           "constexpr": true,
-          "begin": 3332,
-          "decl": 3335,
-          "end": 3338
+          "begin": 3344,
+          "decl": 3347,
+          "end": 3350
         },
         "GL_CONTEXT_PROFILE_ES": {
           "doc": "GLX_CONTEXT_ES2_PROFILE_BIT_EXT",
@@ -20839,18 +20839,18 @@
           "kind": "var",
           "type": "GLProfile",
           "constexpr": true,
-          "begin": 3338,
-          "decl": 3341,
-          "end": 3343
+          "begin": 3350,
+          "decl": 3353,
+          "end": 3355
         },
         "GLContextFlag": {
           "doc": "Possible flags to be set for the SDL_GL_CONTEXT_FLAGS attribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLContextFlag",
           "kind": "alias",
           "type": "SDL_GLContextFlag",
-          "begin": 3350,
-          "decl": 3355,
-          "end": 3357
+          "begin": 3362,
+          "decl": 3367,
+          "end": 3369
         },
         "GL_CONTEXT_DEBUG_FLAG": {
           "doc": "",
@@ -20858,9 +20858,9 @@
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3357,
-          "decl": 3357,
-          "end": 3359
+          "begin": 3369,
+          "decl": 3369,
+          "end": 3371
         },
         "GL_CONTEXT_FORWARD_COMPATIBLE_FLAG": {
           "doc": "",
@@ -20868,9 +20868,9 @@
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3359,
-          "decl": 3359,
-          "end": 3362
+          "begin": 3371,
+          "decl": 3371,
+          "end": 3374
         },
         "GL_CONTEXT_ROBUST_ACCESS_FLAG": {
           "doc": "",
@@ -20878,9 +20878,9 @@
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3362,
-          "decl": 3362,
-          "end": 3365
+          "begin": 3374,
+          "decl": 3374,
+          "end": 3377
         },
         "GL_CONTEXT_RESET_ISOLATION_FLAG": {
           "doc": "",
@@ -20888,18 +20888,18 @@
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3365,
-          "decl": 3365,
-          "end": 3368
+          "begin": 3377,
+          "decl": 3377,
+          "end": 3380
         },
         "GLContextReleaseFlag": {
           "doc": "Possible values to be set for the SDL_GL_CONTEXT_RELEASE_BEHAVIOR\nattribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLContextReleaseFlag",
           "kind": "alias",
           "type": "SDL_GLContextReleaseFlag",
-          "begin": 3375,
-          "decl": 3381,
-          "end": 3383
+          "begin": 3387,
+          "decl": 3393,
+          "end": 3395
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR_NONE": {
           "doc": "",
@@ -20907,9 +20907,9 @@
           "kind": "var",
           "type": "GLContextReleaseFlag",
           "constexpr": true,
-          "begin": 3383,
-          "decl": 3383,
-          "end": 3386
+          "begin": 3395,
+          "decl": 3395,
+          "end": 3398
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH": {
           "doc": "",
@@ -20917,18 +20917,18 @@
           "kind": "var",
           "type": "GLContextReleaseFlag",
           "constexpr": true,
-          "begin": 3386,
-          "decl": 3386,
-          "end": 3389
+          "begin": 3398,
+          "decl": 3398,
+          "end": 3401
         },
         "GLContextResetNotification": {
           "doc": "Possible values to be set SDL_GL_CONTEXT_RESET_NOTIFICATION attribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLContextResetNotification",
           "kind": "alias",
           "type": "SDL_GLContextResetNotification",
-          "begin": 3396,
-          "decl": 3401,
-          "end": 3403
+          "begin": 3408,
+          "decl": 3413,
+          "end": 3415
         },
         "GL_CONTEXT_RESET_NO_NOTIFICATION": {
           "doc": "",
@@ -20936,9 +20936,9 @@
           "kind": "var",
           "type": "GLContextResetNotification",
           "constexpr": true,
-          "begin": 3403,
-          "decl": 3403,
-          "end": 3406
+          "begin": 3415,
+          "decl": 3415,
+          "end": 3418
         },
         "GL_CONTEXT_RESET_LOSE_CONTEXT": {
           "doc": "",
@@ -20946,9 +20946,9 @@
           "kind": "var",
           "type": "GLContextResetNotification",
           "constexpr": true,
-          "begin": 3406,
-          "decl": 3406,
-          "end": 3409
+          "begin": 3418,
+          "decl": 3418,
+          "end": 3421
         },
         "GetNumVideoDrivers": {
           "doc": "Get the number of video drivers compiled into SDL.\n\n@returns the number of built in video drivers.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetVideoDriver()",
@@ -20956,9 +20956,9 @@
           "kind": "function",
           "type": "int",
           "parameters": [],
-          "begin": 3411,
-          "decl": 3422,
-          "end": 3424
+          "begin": 3423,
+          "decl": 3434,
+          "end": 3436
         },
         "GetVideoDriver": {
           "doc": "Get the name of a built in video driver.\n\nThe video drivers are presented in the order in which they are normally\nchecked during initialization.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"cocoa\",\n\"x11\" or \"windows\". These never have Unicode characters, and are not meant\nto be proper names.\n\n@param index the index of a video driver.\n@returns the name of the video driver with the given **index**.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetNumVideoDrivers()",
@@ -20971,9 +20971,9 @@
               "type": "int"
             }
           ],
-          "begin": 3424,
-          "decl": 3443,
-          "end": 3448
+          "begin": 3436,
+          "decl": 3455,
+          "end": 3460
         },
         "GetCurrentVideoDriver": {
           "doc": "Get the name of the currently initialized video driver.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"cocoa\",\n\"x11\" or \"windows\". These never have Unicode characters, and are not meant\nto be proper names.\n\n@returns the name of the current video driver or NULL if no driver has been\n         initialized.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetNumVideoDrivers()\n@sa GetVideoDriver()",
@@ -20981,9 +20981,9 @@
           "kind": "function",
           "type": "const char *",
           "parameters": [],
-          "begin": 3448,
-          "decl": 3465,
-          "end": 3470
+          "begin": 3460,
+          "decl": 3477,
+          "end": 3482
         },
         "GetSystemTheme": {
           "doc": "Get the current system theme.\n\n@returns the current system theme, light, dark, or unknown.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -20991,9 +20991,9 @@
           "kind": "function",
           "type": "SystemTheme",
           "parameters": [],
-          "begin": 3470,
-          "decl": 3479,
-          "end": 3481
+          "begin": 3482,
+          "decl": 3491,
+          "end": 3493
         },
         "prop::Display": {
           "doc": "",
@@ -21006,9 +21006,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3483,
-              "decl": 3483,
-              "end": 3485
+              "begin": 3495,
+              "decl": 3495,
+              "end": 3497
             },
             "KMSDRM_PANEL_ORIENTATION_NUMBER": {
               "doc": "",
@@ -21016,14 +21016,14 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3485,
-              "decl": 3485,
-              "end": 3488
+              "begin": 3497,
+              "decl": 3497,
+              "end": 3500
             }
           },
-          "begin": 3481,
-          "decl": 3481,
-          "end": 3490
+          "begin": 3493,
+          "decl": 3493,
+          "end": 3502
         },
         "GetWindows": {
           "doc": "Get a list of valid windows.\n\n@returns a NULL terminated array of SDL_Window pointers or NULL on failure;\n         call GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21031,9 +21031,9 @@
           "kind": "function",
           "type": "OwnArray<WindowRef>",
           "parameters": [],
-          "begin": 3490,
-          "decl": 3502,
-          "end": 3509
+          "begin": 3502,
+          "decl": 3514,
+          "end": 3521
         },
         "prop::Window": {
           "doc": "",
@@ -21046,9 +21046,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3511,
-              "decl": 3511,
-              "end": 3514
+              "begin": 3523,
+              "decl": 3523,
+              "end": 3526
             },
             "CREATE_BORDERLESS_BOOLEAN": {
               "doc": "",
@@ -21056,9 +21056,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3514,
-              "decl": 3514,
-              "end": 3517
+              "begin": 3526,
+              "decl": 3526,
+              "end": 3529
             },
             "CREATE_FOCUSABLE_BOOLEAN": {
               "doc": "",
@@ -21066,9 +21066,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3517,
-              "decl": 3517,
-              "end": 3520
+              "begin": 3529,
+              "decl": 3529,
+              "end": 3532
             },
             "CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN": {
               "doc": "",
@@ -21076,9 +21076,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3520,
-              "decl": 3520,
-              "end": 3523
+              "begin": 3532,
+              "decl": 3532,
+              "end": 3535
             },
             "CREATE_FLAGS_NUMBER": {
               "doc": "",
@@ -21086,9 +21086,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3523,
-              "decl": 3523,
-              "end": 3525
+              "begin": 3535,
+              "decl": 3535,
+              "end": 3537
             },
             "CREATE_FULLSCREEN_BOOLEAN": {
               "doc": "",
@@ -21096,9 +21096,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3525,
-              "decl": 3525,
-              "end": 3528
+              "begin": 3537,
+              "decl": 3537,
+              "end": 3540
             },
             "CREATE_HEIGHT_NUMBER": {
               "doc": "",
@@ -21106,9 +21106,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3528,
-              "decl": 3528,
-              "end": 3530
+              "begin": 3540,
+              "decl": 3540,
+              "end": 3542
             },
             "CREATE_HIDDEN_BOOLEAN": {
               "doc": "",
@@ -21116,9 +21116,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3530,
-              "decl": 3530,
-              "end": 3532
+              "begin": 3542,
+              "decl": 3542,
+              "end": 3544
             },
             "CREATE_HIGH_PIXEL_DENSITY_BOOLEAN": {
               "doc": "",
@@ -21126,9 +21126,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3532,
-              "decl": 3532,
-              "end": 3535
+              "begin": 3544,
+              "decl": 3544,
+              "end": 3547
             },
             "CREATE_MAXIMIZED_BOOLEAN": {
               "doc": "",
@@ -21136,9 +21136,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3535,
-              "decl": 3535,
-              "end": 3538
+              "begin": 3547,
+              "decl": 3547,
+              "end": 3550
             },
             "CREATE_MENU_BOOLEAN": {
               "doc": "",
@@ -21146,9 +21146,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3538,
-              "decl": 3538,
-              "end": 3540
+              "begin": 3550,
+              "decl": 3550,
+              "end": 3552
             },
             "CREATE_METAL_BOOLEAN": {
               "doc": "",
@@ -21156,9 +21156,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3540,
-              "decl": 3540,
-              "end": 3542
+              "begin": 3552,
+              "decl": 3552,
+              "end": 3554
             },
             "CREATE_MINIMIZED_BOOLEAN": {
               "doc": "",
@@ -21166,9 +21166,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3542,
-              "decl": 3542,
-              "end": 3545
+              "begin": 3554,
+              "decl": 3554,
+              "end": 3557
             },
             "CREATE_MODAL_BOOLEAN": {
               "doc": "",
@@ -21176,9 +21176,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3545,
-              "decl": 3545,
-              "end": 3547
+              "begin": 3557,
+              "decl": 3557,
+              "end": 3559
             },
             "CREATE_MOUSE_GRABBED_BOOLEAN": {
               "doc": "",
@@ -21186,9 +21186,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3547,
-              "decl": 3547,
-              "end": 3550
+              "begin": 3559,
+              "decl": 3559,
+              "end": 3562
             },
             "CREATE_OPENGL_BOOLEAN": {
               "doc": "",
@@ -21196,9 +21196,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3550,
-              "decl": 3550,
-              "end": 3552
+              "begin": 3562,
+              "decl": 3562,
+              "end": 3564
             },
             "CREATE_PARENT_POINTER": {
               "doc": "",
@@ -21206,9 +21206,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3552,
-              "decl": 3552,
-              "end": 3554
+              "begin": 3564,
+              "decl": 3564,
+              "end": 3566
             },
             "CREATE_RESIZABLE_BOOLEAN": {
               "doc": "",
@@ -21216,9 +21216,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3554,
-              "decl": 3554,
-              "end": 3557
+              "begin": 3566,
+              "decl": 3566,
+              "end": 3569
             },
             "CREATE_TITLE_STRING": {
               "doc": "",
@@ -21226,9 +21226,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3557,
-              "decl": 3557,
-              "end": 3559
+              "begin": 3569,
+              "decl": 3569,
+              "end": 3571
             },
             "CREATE_TRANSPARENT_BOOLEAN": {
               "doc": "",
@@ -21236,9 +21236,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3559,
-              "decl": 3559,
-              "end": 3562
+              "begin": 3571,
+              "decl": 3571,
+              "end": 3574
             },
             "CREATE_TOOLTIP_BOOLEAN": {
               "doc": "",
@@ -21246,9 +21246,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3562,
-              "decl": 3562,
-              "end": 3564
+              "begin": 3574,
+              "decl": 3574,
+              "end": 3576
             },
             "CREATE_UTILITY_BOOLEAN": {
               "doc": "",
@@ -21256,9 +21256,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3564,
-              "decl": 3564,
-              "end": 3566
+              "begin": 3576,
+              "decl": 3576,
+              "end": 3578
             },
             "CREATE_VULKAN_BOOLEAN": {
               "doc": "",
@@ -21266,9 +21266,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3566,
-              "decl": 3566,
-              "end": 3568
+              "begin": 3578,
+              "decl": 3578,
+              "end": 3580
             },
             "CREATE_WIDTH_NUMBER": {
               "doc": "",
@@ -21276,9 +21276,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3568,
-              "decl": 3568,
-              "end": 3570
+              "begin": 3580,
+              "decl": 3580,
+              "end": 3582
             },
             "CREATE_X_NUMBER": {
               "doc": "",
@@ -21286,9 +21286,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3570,
-              "decl": 3570,
-              "end": 3572
+              "begin": 3582,
+              "decl": 3582,
+              "end": 3584
             },
             "CREATE_Y_NUMBER": {
               "doc": "",
@@ -21296,9 +21296,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3572,
-              "decl": 3572,
-              "end": 3574
+              "begin": 3584,
+              "decl": 3584,
+              "end": 3586
             },
             "CREATE_COCOA_WINDOW_POINTER": {
               "doc": "",
@@ -21306,9 +21306,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3574,
-              "decl": 3574,
-              "end": 3577
+              "begin": 3586,
+              "decl": 3586,
+              "end": 3589
             },
             "CREATE_COCOA_VIEW_POINTER": {
               "doc": "",
@@ -21316,9 +21316,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3577,
-              "decl": 3577,
-              "end": 3580
+              "begin": 3589,
+              "decl": 3589,
+              "end": 3592
             },
             "CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN": {
               "doc": "",
@@ -21326,9 +21326,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3580,
-              "decl": 3580,
-              "end": 3583
+              "begin": 3592,
+              "decl": 3592,
+              "end": 3595
             },
             "CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN": {
               "doc": "",
@@ -21336,9 +21336,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3583,
-              "decl": 3583,
-              "end": 3586
+              "begin": 3595,
+              "decl": 3595,
+              "end": 3598
             },
             "CREATE_WAYLAND_WL_SURFACE_POINTER": {
               "doc": "",
@@ -21346,9 +21346,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3586,
-              "decl": 3586,
-              "end": 3589
+              "begin": 3598,
+              "decl": 3598,
+              "end": 3601
             },
             "CREATE_WIN32_HWND_POINTER": {
               "doc": "",
@@ -21356,9 +21356,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3589,
-              "decl": 3589,
-              "end": 3592
+              "begin": 3601,
+              "decl": 3601,
+              "end": 3604
             },
             "CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER": {
               "doc": "",
@@ -21366,9 +21366,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3592,
-              "decl": 3592,
-              "end": 3595
+              "begin": 3604,
+              "decl": 3604,
+              "end": 3607
             },
             "CREATE_X11_WINDOW_NUMBER": {
               "doc": "",
@@ -21376,9 +21376,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3595,
-              "decl": 3595,
-              "end": 3598
+              "begin": 3607,
+              "decl": 3607,
+              "end": 3610
             },
             "SHAPE_POINTER": {
               "doc": "",
@@ -21386,9 +21386,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3598,
-              "decl": 3598,
-              "end": 3600
+              "begin": 3610,
+              "decl": 3610,
+              "end": 3612
             },
             "HDR_ENABLED_BOOLEAN": {
               "doc": "",
@@ -21396,9 +21396,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3600,
-              "decl": 3600,
-              "end": 3602
+              "begin": 3612,
+              "decl": 3612,
+              "end": 3614
             },
             "SDR_WHITE_LEVEL_FLOAT": {
               "doc": "",
@@ -21406,9 +21406,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3602,
-              "decl": 3602,
-              "end": 3604
+              "begin": 3614,
+              "decl": 3614,
+              "end": 3616
             },
             "HDR_HEADROOM_FLOAT": {
               "doc": "",
@@ -21416,9 +21416,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3604,
-              "decl": 3604,
-              "end": 3606
+              "begin": 3616,
+              "decl": 3616,
+              "end": 3618
             },
             "ANDROID_WINDOW_POINTER": {
               "doc": "",
@@ -21426,9 +21426,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3606,
-              "decl": 3606,
-              "end": 3608
+              "begin": 3618,
+              "decl": 3618,
+              "end": 3620
             },
             "ANDROID_SURFACE_POINTER": {
               "doc": "",
@@ -21436,9 +21436,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3608,
-              "decl": 3608,
-              "end": 3611
+              "begin": 3620,
+              "decl": 3620,
+              "end": 3623
             },
             "UIKIT_WINDOW_POINTER": {
               "doc": "",
@@ -21446,9 +21446,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3611,
-              "decl": 3611,
-              "end": 3613
+              "begin": 3623,
+              "decl": 3623,
+              "end": 3625
             },
             "UIKIT_METAL_VIEW_TAG_NUMBER": {
               "doc": "",
@@ -21456,9 +21456,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3613,
-              "decl": 3613,
-              "end": 3616
+              "begin": 3625,
+              "decl": 3625,
+              "end": 3628
             },
             "UIKIT_OPENGL_FRAMEBUFFER_NUMBER": {
               "doc": "",
@@ -21466,9 +21466,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3616,
-              "decl": 3616,
-              "end": 3619
+              "begin": 3628,
+              "decl": 3628,
+              "end": 3631
             },
             "UIKIT_OPENGL_RENDERBUFFER_NUMBER": {
               "doc": "",
@@ -21476,9 +21476,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3619,
-              "decl": 3619,
-              "end": 3622
+              "begin": 3631,
+              "decl": 3631,
+              "end": 3634
             },
             "UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER": {
               "doc": "",
@@ -21486,9 +21486,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3622,
-              "decl": 3622,
-              "end": 3625
+              "begin": 3634,
+              "decl": 3634,
+              "end": 3637
             },
             "KMSDRM_DEVICE_INDEX_NUMBER": {
               "doc": "",
@@ -21496,9 +21496,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3625,
-              "decl": 3625,
-              "end": 3628
+              "begin": 3637,
+              "decl": 3637,
+              "end": 3640
             },
             "KMSDRM_DRM_FD_NUMBER": {
               "doc": "",
@@ -21506,9 +21506,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3628,
-              "decl": 3628,
-              "end": 3630
+              "begin": 3640,
+              "decl": 3640,
+              "end": 3642
             },
             "KMSDRM_GBM_DEVICE_POINTER": {
               "doc": "",
@@ -21516,9 +21516,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3630,
-              "decl": 3630,
-              "end": 3633
+              "begin": 3642,
+              "decl": 3642,
+              "end": 3645
             },
             "COCOA_WINDOW_POINTER": {
               "doc": "",
@@ -21526,9 +21526,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3633,
-              "decl": 3633,
-              "end": 3635
+              "begin": 3645,
+              "decl": 3645,
+              "end": 3647
             },
             "COCOA_METAL_VIEW_TAG_NUMBER": {
               "doc": "",
@@ -21536,9 +21536,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3635,
-              "decl": 3635,
-              "end": 3638
+              "begin": 3647,
+              "decl": 3647,
+              "end": 3650
             },
             "OPENVR_OVERLAY_ID": {
               "doc": "",
@@ -21546,9 +21546,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3638,
-              "decl": 3638,
-              "end": 3640
+              "begin": 3650,
+              "decl": 3650,
+              "end": 3652
             },
             "VIVANTE_DISPLAY_POINTER": {
               "doc": "",
@@ -21556,9 +21556,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3640,
-              "decl": 3640,
-              "end": 3643
+              "begin": 3652,
+              "decl": 3652,
+              "end": 3655
             },
             "VIVANTE_WINDOW_POINTER": {
               "doc": "",
@@ -21566,9 +21566,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3643,
-              "decl": 3643,
-              "end": 3645
+              "begin": 3655,
+              "decl": 3655,
+              "end": 3657
             },
             "VIVANTE_SURFACE_POINTER": {
               "doc": "",
@@ -21576,9 +21576,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3645,
-              "decl": 3645,
-              "end": 3648
+              "begin": 3657,
+              "decl": 3657,
+              "end": 3660
             },
             "WIN32_HWND_POINTER": {
               "doc": "",
@@ -21586,9 +21586,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3648,
-              "decl": 3648,
-              "end": 3650
+              "begin": 3660,
+              "decl": 3660,
+              "end": 3662
             },
             "WIN32_HDC_POINTER": {
               "doc": "",
@@ -21596,9 +21596,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3650,
-              "decl": 3650,
-              "end": 3652
+              "begin": 3662,
+              "decl": 3662,
+              "end": 3664
             },
             "WIN32_INSTANCE_POINTER": {
               "doc": "",
@@ -21606,9 +21606,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3652,
-              "decl": 3652,
-              "end": 3654
+              "begin": 3664,
+              "decl": 3664,
+              "end": 3666
             },
             "WAYLAND_DISPLAY_POINTER": {
               "doc": "",
@@ -21616,9 +21616,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3654,
-              "decl": 3654,
-              "end": 3657
+              "begin": 3666,
+              "decl": 3666,
+              "end": 3669
             },
             "WAYLAND_SURFACE_POINTER": {
               "doc": "",
@@ -21626,9 +21626,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3657,
-              "decl": 3657,
-              "end": 3660
+              "begin": 3669,
+              "decl": 3669,
+              "end": 3672
             },
             "WAYLAND_VIEWPORT_POINTER": {
               "doc": "",
@@ -21636,9 +21636,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3660,
-              "decl": 3660,
-              "end": 3663
+              "begin": 3672,
+              "decl": 3672,
+              "end": 3675
             },
             "WAYLAND_EGL_WINDOW_POINTER": {
               "doc": "",
@@ -21646,9 +21646,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3663,
-              "decl": 3663,
-              "end": 3666
+              "begin": 3675,
+              "decl": 3675,
+              "end": 3678
             },
             "WAYLAND_XDG_SURFACE_POINTER": {
               "doc": "",
@@ -21656,9 +21656,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3666,
-              "decl": 3666,
-              "end": 3669
+              "begin": 3678,
+              "decl": 3678,
+              "end": 3681
             },
             "WAYLAND_XDG_TOPLEVEL_POINTER": {
               "doc": "",
@@ -21666,9 +21666,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3669,
-              "decl": 3669,
-              "end": 3672
+              "begin": 3681,
+              "decl": 3681,
+              "end": 3684
             },
             "WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING": {
               "doc": "",
@@ -21676,9 +21676,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3672,
-              "decl": 3672,
-              "end": 3675
+              "begin": 3684,
+              "decl": 3684,
+              "end": 3687
             },
             "WAYLAND_XDG_POPUP_POINTER": {
               "doc": "",
@@ -21686,9 +21686,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3675,
-              "decl": 3675,
-              "end": 3678
+              "begin": 3687,
+              "decl": 3687,
+              "end": 3690
             },
             "WAYLAND_XDG_POSITIONER_POINTER": {
               "doc": "",
@@ -21696,9 +21696,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3678,
-              "decl": 3678,
-              "end": 3681
+              "begin": 3690,
+              "decl": 3690,
+              "end": 3693
             },
             "X11_DISPLAY_POINTER": {
               "doc": "",
@@ -21706,9 +21706,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3681,
-              "decl": 3681,
-              "end": 3683
+              "begin": 3693,
+              "decl": 3693,
+              "end": 3695
             },
             "X11_SCREEN_NUMBER": {
               "doc": "",
@@ -21716,9 +21716,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3683,
-              "decl": 3683,
-              "end": 3685
+              "begin": 3695,
+              "decl": 3695,
+              "end": 3697
             },
             "X11_WINDOW_NUMBER": {
               "doc": "",
@@ -21726,14 +21726,14 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3685,
-              "decl": 3685,
-              "end": 3687
+              "begin": 3697,
+              "decl": 3697,
+              "end": 3699
             }
           },
-          "begin": 3509,
-          "decl": 3509,
-          "end": 3689
+          "begin": 3521,
+          "decl": 3521,
+          "end": 3701
         },
         "GetWindowFromID": {
           "doc": "Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific SDL_Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or NULL if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetID()",
@@ -21746,27 +21746,27 @@
               "type": "WindowID"
             }
           ],
-          "begin": 3689,
-          "decl": 3705,
-          "end": 3710
+          "begin": 3701,
+          "decl": 3717,
+          "end": 3722
         },
         "SDL_WINDOW_SURFACE_VSYNC_DISABLED": {
           "doc": "",
           "name": "SDL_WINDOW_SURFACE_VSYNC_DISABLED",
           "kind": "def",
           "value": "0",
-          "begin": 3713,
-          "decl": 3713,
-          "end": 3715
+          "begin": 3725,
+          "decl": 3725,
+          "end": 3727
         },
         "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE": {
           "doc": "",
           "name": "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE",
           "kind": "def",
           "value": "(-1)",
-          "begin": 3716,
-          "decl": 3716,
-          "end": 3718
+          "begin": 3728,
+          "decl": 3728,
+          "end": 3730
         },
         "GetGrabbedWindow": {
           "doc": "Get the window that currently has an input grab enabled.\n\n@returns the window if input is grabbed or NULL otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetMouseGrab()\n@sa SetKeyboardGrab()",
@@ -21774,9 +21774,9 @@
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
-          "begin": 3720,
-          "decl": 3732,
-          "end": 3734
+          "begin": 3732,
+          "decl": 3744,
+          "end": 3746
         },
         "ScreenSaverEnabled": {
           "doc": "@brief  Check whether the screensaver is currently enabled.\n\nThe screensaver is disabled by default.\n\nThe default can also be changed using `SDL_HINT_VIDEO_ALLOW_SCREENSAVER`.\n\n@returns true if the screensaver is enabled, false if it is disabled.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa DisableScreenSaver()\n@sa EnableScreenSaver()",
@@ -21784,9 +21784,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3734,
-          "decl": 3748,
-          "end": 3750
+          "begin": 3746,
+          "decl": 3760,
+          "end": 3762
         },
         "EnableScreenSaver": {
           "doc": "@brief Allow the screen to be blanked by a screen saver.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa DisableScreenSaver()\n@sa ScreenSaverEnabled()",
@@ -21794,9 +21794,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3750,
-          "decl": 3761,
-          "end": 3763
+          "begin": 3762,
+          "decl": 3773,
+          "end": 3775
         },
         "DisableScreenSaver": {
           "doc": "@brief Prevent the screen from being blanked by a screen saver.\n\nIf you disable the screensaver, it is automatically re-enabled when SDL\nquits.\n\nThe screensaver is disabled by default, but this may by changed by\nSDL_HINT_VIDEO_ALLOW_SCREENSAVER.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa EnableScreenSaver()\n@sa ScreenSaverEnabled()",
@@ -21804,9 +21804,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3763,
-          "decl": 3780,
-          "end": 3782
+          "begin": 3775,
+          "decl": 3792,
+          "end": 3794
         },
         "GL_LoadLibrary": {
           "doc": "Dynamically load an OpenGL library.\n\nThis should be done after initializing the video driver, but before\ncreating any OpenGL windows. If no OpenGL library is loaded, the default\nlibrary will be loaded upon creation of the first OpenGL window.\n\nIf you do this, you need to retrieve all of the GL functions used in your\nprogram from the dynamic library using SDL_GL_GetProcAddress().\n\n@param path the platform dependent OpenGL library name, or NULL to open the\n            default OpenGL library.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetProcAddress()\n@sa GL_UnloadLibrary()",
@@ -21819,9 +21819,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3782,
-          "decl": 3804,
-          "end": 3809
+          "begin": 3794,
+          "decl": 3816,
+          "end": 3821
         },
         "GL_GetProcAddress": {
           "doc": "Get an OpenGL function by name.\n\nIf the GL library is loaded at runtime with SDL_GL_LoadLibrary(), then all\nGL functions must be retrieved this way. Usually this is used to retrieve\nfunction pointers to OpenGL extensions.\n\nThere are some quirks to looking up OpenGL functions that require some\nextra care from the application. If you code carefully, you can handle\nthese quirks without any platform-specific code, though:\n\n- On Windows, function pointers are specific to the current GL context;\n  this means you need to have created a GL context and made it current\n  before calling SDL_GL_GetProcAddress(). If you recreate your context or\n  create a second context, you should assume that any existing function\n  pointers aren't valid to use with it. This is (currently) a\n  Windows-specific limitation, and in practice lots of drivers don't suffer\n  this limitation, but it is still the way the wgl API is documented to\n  work and you should expect crashes if you don't respect it. Store a copy\n  of the function pointers that comes and goes with context lifespan.\n- On X11, function pointers returned by this function are valid for any\n  context, and can even be looked up before a context is created at all.\n  This means that, for at least some common OpenGL implementations, if you\n  look up a function that doesn't exist, you'll get a non-NULL result that\n  is _NOT_ safe to call. You must always make sure the function is actually\n  available for a given GL context before calling it, by checking for the\n  existence of the appropriate extension with SDL_GL_ExtensionSupported(),\n  or verifying that the version of OpenGL you're using offers the function\n  as core functionality.\n- Some OpenGL drivers, on all platforms, *will* return NULL if a function\n  isn't supported, but you can't count on this behavior. Check for\n  extensions you use, and if you get a NULL anyway, act as if that\n  extension wasn't available. This is probably a bug in the driver, but you\n  can code defensively for this scenario anyhow.\n- Just because you're on Linux/Unix, don't assume you'll be using X11.\n  Next-gen display servers are waiting to replace it, and may or may not\n  make the same promises about function pointers.\n- OpenGL function pointers must be declared `APIENTRY` as in the example\n  code. This will ensure the proper calling convention is followed on\n  platforms where this matters (Win32) thereby avoiding stack corruption.\n\n@param proc the name of an OpenGL function.\n@returns a pointer to the named OpenGL function. The returned pointer\n         should be cast to the appropriate function signature.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ExtensionSupported()\n@sa GL_LoadLibrary()\n@sa GL_UnloadLibrary()",
@@ -21834,9 +21834,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3809,
-          "decl": 3862,
-          "end": 3867
+          "begin": 3821,
+          "decl": 3874,
+          "end": 3879
         },
         "EGL_GetProcAddress": {
           "doc": "Get an EGL library function by name.\n\nIf an EGL library is loaded, this function allows applications to get entry\npoints for EGL functions. This is useful to provide to an EGL API and\nextension loader.\n\n@param proc the name of an EGL function.\n@returns a pointer to the named EGL function. The returned pointer should\n         be cast to the appropriate function signature.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EGL_GetCurrentDisplay()",
@@ -21849,9 +21849,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3867,
-          "decl": 3884,
-          "end": 3889
+          "begin": 3879,
+          "decl": 3896,
+          "end": 3901
         },
         "GL_UnloadLibrary": {
           "doc": "Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_LoadLibrary()",
@@ -21859,9 +21859,9 @@
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "begin": 3889,
-          "decl": 3898,
-          "end": 3900
+          "begin": 3901,
+          "decl": 3910,
+          "end": 3912
         },
         "GL_ExtensionSupported": {
           "doc": "Check if an OpenGL extension is supported for the current context.\n\nThis function operates on the current GL context; you must have created a\ncontext and it must be current before calling this function. Do not assume\nthat all contexts you create will have the same set of extensions\navailable, or that recreating an existing context will offer the same\nextensions again.\n\nWhile it's probably not a massive overhead, this function is not an O(1)\noperation. Check the extensions you care about after creating the GL\ncontext and save that information somewhere instead of calling the function\nevery time you need to know.\n\n@param extension the name of the extension to check.\n@returns true if the extension is supported, false otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21874,9 +21874,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3900,
-          "decl": 3921,
-          "end": 3926
+          "begin": 3912,
+          "decl": 3933,
+          "end": 3938
         },
         "GL_ResetAttributes": {
           "doc": "Reset all previously set OpenGL context attributes to their default values.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetAttribute()\n@sa GL_SetAttribute()",
@@ -21884,9 +21884,9 @@
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "begin": 3926,
-          "decl": 3936,
-          "end": 3938
+          "begin": 3938,
+          "decl": 3948,
+          "end": 3950
         },
         "GL_SetAttribute": {
           "doc": "Set an OpenGL window attribute before window creation.\n\nThis function sets the OpenGL attribute `attr` to `value`. The requested\nattributes should be set before creating an OpenGL window. You should use\nSDL_GL_GetAttribute() to check the values after creating the OpenGL\ncontext, since the values obtained can differ from the requested ones.\n\n@param attr an SDL_GLAttr enum value specifying the OpenGL attribute to\n            set.\n@param value the desired value for the attribute.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetAttribute()\n@sa GL_ResetAttributes()",
@@ -21903,9 +21903,9 @@
               "type": "int"
             }
           ],
-          "begin": 3938,
-          "decl": 3959,
-          "end": 3964
+          "begin": 3950,
+          "decl": 3971,
+          "end": 3976
         },
         "GL_GetAttribute": {
           "doc": "Get the actual value for an attribute from the current context.\n\n@param attr an SDL_GLAttr enum value specifying the OpenGL attribute to\n            get.\n@param value a pointer filled in with the current value of `attr`.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ResetAttributes()\n@sa GL_SetAttribute()",
@@ -21922,9 +21922,9 @@
               "type": "int *"
             }
           ],
-          "begin": 3964,
-          "decl": 3980,
-          "end": 3985
+          "begin": 3976,
+          "decl": 3992,
+          "end": 3997
         },
         "GL_GetCurrentWindow": {
           "doc": "Get the currently active OpenGL window.\n\n@returns the currently active OpenGL window on success or NULL on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21932,9 +21932,9 @@
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
-          "begin": 3985,
-          "decl": 3995,
-          "end": 3997
+          "begin": 3997,
+          "decl": 4007,
+          "end": 4009
         },
         "GL_GetCurrentContext": {
           "doc": "Get the currently active OpenGL context.\n\n@returns the currently active OpenGL context or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextBase.MakeCurrent()",
@@ -21942,9 +21942,9 @@
           "kind": "function",
           "type": "GLContextRef",
           "parameters": [],
-          "begin": 3997,
-          "decl": 4009,
-          "end": 4014
+          "begin": 4009,
+          "decl": 4021,
+          "end": 4026
         },
         "EGL_GetCurrentDisplay": {
           "doc": "Get the currently active EGL display.\n\n@returns the currently active EGL display or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21952,9 +21952,9 @@
           "kind": "function",
           "type": "EGLDisplay",
           "parameters": [],
-          "begin": 4014,
-          "decl": 4024,
-          "end": 4029
+          "begin": 4026,
+          "decl": 4036,
+          "end": 4041
         },
         "EGL_GetCurrentConfig": {
           "doc": "Get the currently active EGL config.\n\n@returns the currently active EGL config or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21962,9 +21962,9 @@
           "kind": "function",
           "type": "EGLConfig",
           "parameters": [],
-          "begin": 4029,
-          "decl": 4039,
-          "end": 4041
+          "begin": 4041,
+          "decl": 4051,
+          "end": 4053
         },
         "EGL_GetWindowSurface": {
           "doc": "Get the EGL surface associated with the window.\n\n@param window the window to query.\n@returns the EGLSurface pointer associated with the window, or NULL on\n         failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21977,9 +21977,9 @@
               "type": "WindowRef"
             }
           ],
-          "begin": 4041,
-          "decl": 4052,
-          "end": 4057
+          "begin": 4053,
+          "decl": 4064,
+          "end": 4069
         },
         "EGL_SetAttributeCallbacks": {
           "doc": "Sets the callbacks for defining custom EGLAttrib arrays for EGL\ninitialization.\n\nCallbacks that aren't needed can be set to NULL.\n\nNOTE: These callback pointers will be reset after SDL_GL_ResetAttributes.\n\n@param platformAttribCallback callback for attributes to pass to\n                              eglGetPlatformDisplay. May be NULL.\n@param surfaceAttribCallback callback for attributes to pass to\n                             eglCreateSurface. May be NULL.\n@param contextAttribCallback callback for attributes to pass to\n                             eglCreateContext. May be NULL.\n@param userdata a pointer that is passed to the callbacks.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -22004,9 +22004,9 @@
               "type": "void *"
             }
           ],
-          "begin": 4057,
-          "decl": 4077,
-          "end": 4089
+          "begin": 4069,
+          "decl": 4089,
+          "end": 4101
         },
         "GL_SetSwapInterval": {
           "doc": "Set the swap interval for the current OpenGL context.\n\nSome systems allow specifying -1 for the interval, to enable adaptive\nvsync. Adaptive vsync works the same as vsync, but if you've already missed\nthe vertical retrace for a given frame, it swaps buffers immediately, which\nmight be less jarring for the user during occasional framerate drops. If an\napplication requests adaptive vsync and the system does not support it,\nthis function will fail and return false. In such a case, you should\nprobably retry the call with 1 for the interval.\n\nAdaptive vsync is implemented for some glX drivers with\nGLX_EXT_swap_control_tear, and for some Windows drivers with\nWGL_EXT_swap_control_tear.\n\nRead more on the Khronos wiki:\nhttps://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync\n\n@param interval 0 for immediate updates, 1 for updates synchronized with\n                the vertical retrace, -1 for adaptive vsync.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetSwapInterval()",
@@ -22019,9 +22019,9 @@
               "type": "int"
             }
           ],
-          "begin": 4089,
-          "decl": 4118,
-          "end": 4123
+          "begin": 4101,
+          "decl": 4130,
+          "end": 4135
         },
         "GL_GetSwapInterval": {
           "doc": "Get the swap interval for the current OpenGL context.\n\nIf the system can't determine the swap interval, or there isn't a valid\ncurrent context, this function will set *interval to 0 as a safe default.\n\n@param interval output interval value. 0 if there is no vertical retrace\n                synchronization, 1 if the buffer swap is synchronized with\n                the vertical retrace, and -1 if late swaps happen\n                immediately instead of waiting for the next retrace.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_SetSwapInterval()",
@@ -22034,9 +22034,9 @@
               "type": "int *"
             }
           ],
-          "begin": 4123,
-          "decl": 4142,
-          "end": 4147
+          "begin": 4135,
+          "decl": 4154,
+          "end": 4159
         },
         "GL_SwapWindow": {
           "doc": "Update a window with OpenGL rendering.\n\nThis is used with double-buffered OpenGL contexts, which are the default.\n\nOn macOS, make sure you bind 0 to the draw framebuffer before swapping the\nwindow, otherwise nothing will happen. If you aren't using\nglBindFramebuffer(), this is the default and you won't have to do anything\nextra.\n\n@param window the window to change.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -22049,9 +22049,9 @@
               "type": "WindowRef"
             }
           ],
-          "begin": 4147,
-          "decl": 4165,
-          "end": 4170
+          "begin": 4159,
+          "decl": 4177,
+          "end": 4182
         },
         "ObjectRef<SDL_GLContextState>::doFree": {
           "doc": "Delete an OpenGL context.\n\n@param resource the OpenGL context to be deleted.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext\n@sa GLContextBase",
@@ -22065,15 +22065,15 @@
             }
           ],
           "template": [],
-          "begin": 4170,
-          "decl": 4182,
-          "end": 4188
+          "begin": 4182,
+          "decl": 4194,
+          "end": 4200
         }
       },
       "docBegin": 18,
       "docEnd": 46,
       "entriesBegin": 46,
-      "entriesEnd": 4188,
+      "entriesEnd": 4200,
       "namespace": "SDL"
     },
     "SDL3pp_render.h": {
