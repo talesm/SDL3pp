@@ -270,7 +270,7 @@ class Tokenizer {
         if (!token.doc)
           token.doc = checkInlineDoc(lastLine);
       } else {
-        if (lastLine.endsWith(";")) token.proto = true;
+        if (lastLine?.endsWith(";")) token.proto = true;
       }
     }
     this.extendToNextStart();

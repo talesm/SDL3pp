@@ -51,6 +51,7 @@ test("tokenize function", () => {
     kind: "function",
     name: "func",
     type: "int",
+    proto: true,
     parameters: "int a, int b",
   }]);
 });
@@ -64,6 +65,7 @@ test("tokenize function with reference specifier", () => {
     name: "func",
     type: "int",
     parameters: "int a, int b",
+    proto: true,
     reference: 1
   }]);
 });
@@ -76,6 +78,7 @@ test("tokenize function with reference specifier", () => {
     name: "func",
     type: "int",
     parameters: "int a, int b",
+    proto: true,
     reference: 2
   }]);
 });
@@ -89,6 +92,7 @@ test("tokenize function with default parameter", () => {
     name: "func",
     type: "int",
     parameters: "int a, int b = 12",
+    proto: true,
   }]);
 });
 
@@ -101,6 +105,7 @@ test("tokenize function returning a pointer", () => {
     name: "func",
     type: "const char *",
     parameters: "int a, int b",
+    proto: true,
   }]);
 });
 
@@ -201,6 +206,7 @@ test("tokenize function conversion operator to const pointer with body", () => {
     type: "",
     immutable: true,
     parameters: "",
+    proto: true,
   }]);
 });
 

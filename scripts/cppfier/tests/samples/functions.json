@@ -14,21 +14,24 @@
               "name": "value",
               "type": "const char *"
             }
-          ]
+          ],
+          "proto": true
         },
         "funcVoid": {
           "doc": "Documentation",
           "name": "funcVoid",
           "kind": "function",
           "type": "int",
-          "parameters": []
+          "parameters": [],
+          "proto": true
         },
         "funcEmpty": {
           "doc": "Documentation",
           "name": "funcEmpty",
           "kind": "function",
           "type": "int",
-          "parameters": []
+          "parameters": [],
+          "proto": true
         },
         "funcInt": [
           {
@@ -45,7 +48,8 @@
                 "name": "otherValue",
                 "type": "int"
               }
-            ]
+            ],
+            "proto": true
           },
           {
             "doc": "Documentation",
@@ -57,7 +61,8 @@
                 "name": "value",
                 "type": "int"
               }
-            ]
+            ],
+            "proto": true
           }
         ],
         "funcIntReturnsCStr": {
@@ -75,7 +80,8 @@
               "type": "int",
               "default": "0"
             }
-          ]
+          ],
+          "proto": true
         },
         "functionConstexpr": {
           "doc": "@brief Documentation",

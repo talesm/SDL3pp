@@ -33,7 +33,8 @@
               "name": "value",
               "type": "const MyType1 *"
             }
-          ]
+          ],
+          "proto": true
         },
         "MyGetType1Var1": {
           "doc": "",
@@ -45,7 +46,8 @@
               "name": "value",
               "type": "const MyType1 *"
             }
-          ]
+          ],
+          "proto": true
         },
         "MySetType1Var1": {
           "doc": "",
@@ -61,7 +63,8 @@
               "name": "var1",
               "type": "int"
             }
-          ]
+          ],
+          "proto": true
         },
         "MyType1GetVar2": {
           "doc": "",
@@ -73,7 +76,8 @@
               "name": "value",
               "type": "const MyType1 *"
             }
-          ]
+          ],
+          "proto": true
         },
         "MyType1SetVar2": {
           "doc": "",
@@ -89,7 +93,8 @@
               "name": "var2",
               "type": "const char *"
             }
-          ]
+          ],
+          "proto": true
         },
         "MyCreateType1": {
           "doc": "",
@@ -105,7 +110,8 @@
               "name": "var2",
               "type": "const char *"
             }
-          ]
+          ],
+          "proto": true
         },
         "MyByte": {
           "doc": "",
