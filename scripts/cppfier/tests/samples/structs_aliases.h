@@ -7,18 +7,18 @@ namespace name {
 
 using Type1 = MyType1;
 
-inline bool Type1Check(const Type1* value) { return MyType1Check(value); }
+inline bool Type1Check(const Type1& value) { return MyType1Check(&value); }
 
-inline int GetType1Var1(const Type1* value) { return MyGetType1Var1(value); }
+inline int GetType1Var1(const Type1& value) { return MyGetType1Var1(&value); }
 
 inline void SetType1Var1(Type1* value, int var1)
 {
   MySetType1Var1(value, var1);
 }
 
-inline const char* Type1GetVar2(const Type1* value)
+inline const char* Type1GetVar2(const Type1& value)
 {
-  return MyType1GetVar2(value);
+  return MyType1GetVar2(&value);
 }
 
 inline void Type1SetVar2(Type1* value, const char* var2)

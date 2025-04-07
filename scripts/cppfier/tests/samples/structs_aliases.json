@@ -18,7 +18,7 @@
           "parameters": [
             {
               "name": "value",
-              "type": "const Type1 *"
+              "type": "const Type1 &"
             }
           ]
         },
@@ -30,7 +30,7 @@
           "parameters": [
             {
               "name": "value",
-              "type": "const Type1 *"
+              "type": "const Type1 &"
             }
           ]
         },
@@ -58,7 +58,7 @@
           "parameters": [
             {
               "name": "value",
-              "type": "const Type1 *"
+              "type": "const Type1 &"
             }
           ]
         },
