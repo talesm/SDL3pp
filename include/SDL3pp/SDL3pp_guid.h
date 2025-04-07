@@ -17,8 +17,8 @@ namespace SDL {
  */
 
 /**
- * An SDL_GUID is a 128-bit identifier for an input device that identifies
- * that device across runs of SDL programs on the same platform.
+ * A GUID is a 128-bit identifier for an input device that identifies that
+ * device across runs of SDL programs on the same platform.
  *
  * If the device is detached and then re-attached to a different port, or if
  * the base system is rebooted, the device should still report the same GUID.
@@ -51,7 +51,7 @@ struct GUID : SDL_GUID
   }
 
   /**
-   * Convert a GUID string into a SDL_GUID structure.
+   * Convert a GUID string into a GUID structure.
    *
    * Performs no error checking. If this function is given a string containing
    * an invalid GUID, the function will silently succeed, but the GUID generated
@@ -63,7 +63,7 @@ struct GUID : SDL_GUID
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GUIDToString
+   * @sa GUID.ToString
    */
   GUID(StringParam pchGUID)
     : SDL_GUID(SDL_StringToGUID(pchGUID))
@@ -71,7 +71,7 @@ struct GUID : SDL_GUID
   }
 
   /**
-   * Get an ASCII string representation for a given SDL_GUID.
+   * Get an ASCII string representation for a given GUID.
    *
    * @returns pszGUID the ASCII string representation for
    *
@@ -79,7 +79,7 @@ struct GUID : SDL_GUID
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_StringToGUID
+   * @sa GUID.GUID
    */
   std::string ToString() const
   {

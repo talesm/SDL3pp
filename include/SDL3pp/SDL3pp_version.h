@@ -97,7 +97,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_GetVersion
+ * @sa GetVersion
  */
 #define SDL_VERSION                                                            \
   SDL_VERSIONNUM(SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
@@ -119,13 +119,13 @@ namespace SDL {
  * function returns the current version, while SDL_VERSION is the version you
  * compiled with.
  *
- * This function may be called safely at any time, even before SDL_Init().
+ * This function may be called safely at any time, even before InitSubSystem().
  *
  * @returns the version of the linked library.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetRevision
+ * @sa GetRevision
  */
 inline int GetVersion() { return SDL_GetVersion(); }
 
@@ -151,7 +151,7 @@ inline int GetVersion() { return SDL_GetVersion(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetVersion
+ * @sa GetVersion
  */
 inline const char* GetRevision() { return SDL_GetRevision(); }
 

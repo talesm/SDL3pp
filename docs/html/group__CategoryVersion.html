@@ -181,7 +181,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetVersion </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>GetVersion </dd></dl>
 
 </div>
 </div>
@@ -371,7 +371,7 @@ Functions</h2></td></tr>
 <p>You shouldn't use this function for anything but logging it for debugging purposes. The string is not intended to be reliable in any way.</p>
 <dl class="section return"><dt>Returns</dt><dd>an arbitrary string, uniquely identifying the exact revision of the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library in use.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetVersion </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVersion.html#ga477962941b910962edf1b91d120511fd" title="Get the version of SDL that is linked against your program.">GetVersion</a> </dd></dl>
 
 </div>
 </div>
@@ -398,10 +398,10 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>If you are linking to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> dynamically, then it is possible that the current version will be different than the version you compiled against. This function returns the current version, while SDL_VERSION is the version you compiled with.</p>
-<p>This function may be called safely at any time, even before SDL_Init().</p>
+<p>This function may be called safely at any time, even before <a class="el" href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e" title="Initialize the SDL library.">InitSubSystem()</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>the version of the linked library.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetRevision </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVersion.html#ga7b3594d2efbeb69076db59694679a559" title="Get the code revision of SDL that is linked against your program.">GetRevision</a> </dd></dl>
 
 </div>
 </div>

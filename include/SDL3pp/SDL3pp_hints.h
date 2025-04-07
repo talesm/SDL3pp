@@ -104,8 +104,7 @@ namespace SDL {
  * This is necessary for the right mouse button to work on some Android
  * devices, or to be able to trap the back button for use in your code
  * reliably. If this hint is true, the back button will show up as an
- * SDL_EVENT_KEY_DOWN / SDL_EVENT_KEY_UP pair with a keycode of
- * SDL_SCANCODE_AC_BACK.
+ * EVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of SCANCODE_AC_BACK.
  *
  * The variable can be set to the following values:
  *
@@ -127,7 +126,7 @@ namespace SDL {
  * together, as well as match applications with associated desktop settings
  * and icons.
  *
- * This will override SDL_PROP_APP_METADATA_IDENTIFIER_STRING, if set by the
+ * This will override prop::appMetaData.IDENTIFIER_STRING, if set by the
  * application.
  *
  * This hint should be set before SDL is initialized.
@@ -145,7 +144,7 @@ namespace SDL {
  * screensaver. You should use a string that describes your program ("My Game
  * 2: The Revenge")
  *
- * This will override SDL_PROP_APP_METADATA_NAME_STRING, if set by the
+ * This will override prop::appMetaData.NAME_STRING, if set by the
  * application.
  *
  * This hint should be set before SDL is initialized.
@@ -291,7 +290,7 @@ namespace SDL {
  * show up in a system control panel that lets the user adjust the volume on
  * specific audio streams instead of using one giant master volume slider.
  * Note that this is unrelated to the icon used by the windowing system, which
- * may be set with SDL_SetWindowIcon (or via desktop file on Wayland).
+ * may be set with WindowBase.SetIcon (or via desktop file on Wayland).
  *
  * Setting this to "" or leaving it unset will have SDL use a reasonable
  * default, "applications-games", which is likely to be installed. See
@@ -569,7 +568,7 @@ namespace SDL {
  *
  * The default value is unset, in which case SDL will try to figure out the
  * best camera backend on your behalf. This hint needs to be set before
- * SDL_Init() is called to be useful.
+ * InitSubSystem() is called to be useful.
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -639,7 +638,7 @@ namespace SDL {
  *
  * The variable can be set to the following values:
  *
- * - NULL: Select automatically (default, all platforms)
+ * - nullptr: Select automatically (default, all platforms)
  * - "portal": Use XDG Portals through DBus (Unix only)
  * - "zenity": Use the Zenity program (Unix only)
  *
@@ -652,10 +651,10 @@ namespace SDL {
 #define SDL_HINT_FILE_DIALOG_DRIVER "SDL_FILE_DIALOG_DRIVER"
 
 /**
- * Override for SDL_GetDisplayUsableBounds().
+ * Override for Display.GetUsableBounds().
  *
  * If set, this hint will override the expected results for
- * SDL_GetDisplayUsableBounds() for display index 0. Generally you don't want
+ * Display.GetUsableBounds() for display index 0. Generally you don't want
  * to do this, but this allows an embedded system to request that some of the
  * screen be reserved for other uses when paired with a well-behaved
  * application.
@@ -735,7 +734,7 @@ namespace SDL {
  * - "0": Do not show the on-screen keyboard.
  * - "1": Show the on-screen keyboard, if available.
  *
- * This hint must be set before SDL_StartTextInput() is called
+ * This hint must be set before WindowBase::StartTextInput() is called
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -771,10 +770,10 @@ namespace SDL {
  *
  * This is generally meant to be used to debug SDL itself, but can be useful
  * for application developers that need better visibility into what is going
- * on in the event queue. Logged events are sent through SDL_Log(), which
+ * on in the event queue. Logged events are sent through Log(), which
  * means by default they appear on stdout on most platforms or maybe
  * OutputDebugString() on Windows, and can be funneled by the app with
- * SDL_SetLogOutputFunction(), etc.
+ * SetLogOutputFunction(), etc.
  *
  * This hint can be set anytime.
  *
@@ -817,7 +816,7 @@ namespace SDL {
  * - "X": Enable 3D acceleration, using X where X is one of the valid
  *   rendering drivers. (e.g. "direct3d", "opengl", etc.)
  *
- * This hint should be set before calling SDL_GetWindowSurface()
+ * This hint should be set before calling WindowBase.GetSurface()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -945,7 +944,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling WindowBase::StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -957,7 +956,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling WindowBase::StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -972,7 +971,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling WindowBase::StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -988,7 +987,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling WindowBase::StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -999,7 +998,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling SDL_StartTextInput()
+ * This hint should be set before calling WindowBase::StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -1118,9 +1117,9 @@ namespace SDL {
  *
  * - "none" or "0": The application can't render any IME elements, and native
  *   UI should be used. (default)
- * - "composition": The application handles SDL_EVENT_TEXT_EDITING events and
+ * - "composition": The application handles EVENT_TEXT_EDITING events and
  *   can render the composition text.
- * - "candidates": The application handles SDL_EVENT_TEXT_EDITING_CANDIDATES
+ * - "candidates": The application handles EVENT_TEXT_EDITING_CANDIDATES
  *   and can render the candidate list.
  *
  * This hint should be set before SDL is initialized.
@@ -2237,14 +2236,14 @@ namespace SDL {
  * - "none": Keycode options are cleared, this overrides other options.
  * - "hide_numpad": The numpad keysyms will be translated into their
  *   non-numpad versions based on the current NumLock state. For example,
- *   SDLK_KP_4 would become SDLK_4 if SDL_KMOD_NUM is set in the event
+ *   SDLK_KP_4 would become SDLK_4 if KMOD_NUM is set in the event
  *   modifiers, and SDLK_LEFT if it is unset.
  * - "french_numbers": The number row on French keyboards is inverted, so
  *   pressing the 1 key would yield the keycode SDLK_1, or '1', instead of
  *   SDLK_AMPERSAND, or '&'
  * - "latin_letters": For keyboards using non-Latin letters, such as Russian
  *   or Thai, the letter keys generate keycodes as though it had an en_US
- *   layout. e.g. pressing the key associated with SDL_SCANCODE_A on a Russian
+ *   layout. e.g. pressing the key associated with SCANCODE_A on a Russian
  *   keyboard would yield 'a' instead of a Cyrillic letter.
  *
  * The default value for this hint is "french_numbers,latin_letters"
@@ -2252,8 +2251,8 @@ namespace SDL {
  * Some platforms like Emscripten only provide modified keycodes and the
  * options are not used.
  *
- * These options do not affect the return value of SDL_GetKeyFromScancode() or
- * SDL_GetScancodeFromKey(), they just apply to the keycode included in key
+ * These options do not affect the return value of Keycode::Keycode() or
+ * Keycode::GetScancode(), they just apply to the keycode included in key
  * events.
  *
  * This hint can be set anytime.
@@ -2340,7 +2339,7 @@ namespace SDL {
  *   (default)
  * - "1": The application may remain in the background when launched.
  *
- * This hint needs to be set before SDL_Init().
+ * This hint needs to be set before InitSubSystem().
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -2403,7 +2402,7 @@ namespace SDL {
  * ignored. This is particularly useful for applications like terminal
  * emulators and graphical user interfaces (GUIs) that rely on Alt key
  * functionality for shortcuts or navigation. This does not apply to
- * SDL_GetKeyFromScancode and only has an effect if IME is enabled.
+ * Keycode::Keycode and only has an effect if IME is enabled.
  *
  * This hint can be set anytime.
  *
@@ -2412,7 +2411,7 @@ namespace SDL {
 #define SDL_HINT_MAC_OPTION_AS_ALT "SDL_MAC_OPTION_AS_ALT"
 
 /**
- * A variable controlling whether SDL_EVENT_MOUSE_WHEEL event values will have
+ * A variable controlling whether EVENT_MOUSE_WHEEL event values will have
  * momentum on macOS.
  *
  * The variable can be set to the following values:
@@ -2420,7 +2419,7 @@ namespace SDL {
  * - "0": The mouse wheel events will have no momentum. (default)
  * - "1": The mouse wheel events will have momentum.
  *
- * This hint needs to be set before SDL_Init().
+ * This hint needs to be set before InitSubSystem().
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -2443,7 +2442,7 @@ namespace SDL {
  * this hint is ignored. When the hint can be used, it is allowed to be
  * changed at any time.
  *
- * This defaults to 0, and specifying NULL for the hint's value will restore
+ * This defaults to 0, and specifying nullptr for the hint's value will restore
  * the default.
  *
  * This hint can be set anytime.
@@ -2495,7 +2494,7 @@ namespace SDL {
  * This should be an integer corresponding to the SDL_SystemCursor enum. The
  * default value is zero (SDL_SYSTEM_CURSOR_DEFAULT).
  *
- * This hint needs to be set before SDL_Init().
+ * This hint needs to be set before InitSubSystem().
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -2688,7 +2687,7 @@ namespace SDL {
  * The variable can be set to the following values:
  *
  * - "0": SDL will install a SIGINT and SIGTERM handler, and when it catches a
- *   signal, convert it into an SDL_EVENT_QUIT event. (default)
+ *   signal, convert it into an EVENT_QUIT event. (default)
  * - "1": SDL will not install a signal handler at all.
  *
  * This hint should be set before SDL is initialized.
@@ -2734,11 +2733,11 @@ namespace SDL {
  * particular OpenGL ES implementation, e.g ANGLE, or emulator, e.g. those
  * from ARM, Imagination or Qualcomm. - Resolving OpenGL ES function addresses
  * at link time by linking with the OpenGL ES library instead of querying them
- * at run time with SDL_GL_GetProcAddress().
+ * at run time with GL_GetProcAddress().
  *
  * Caution: for an application to work with the default behaviour across
  * different OpenGL drivers it must query the OpenGL ES function addresses at
- * run time using SDL_GL_GetProcAddress().
+ * run time using GL_GetProcAddress().
  *
  * This variable is ignored on most platforms because OpenGL ES is native or
  * not supported.
@@ -2789,9 +2788,9 @@ namespace SDL {
  * A variable controlling the use of a sentinel event when polling the event
  * queue.
  *
- * When polling for events, SDL_PumpEvents is used to gather new events from
+ * When polling for events, PumpEvents is used to gather new events from
  * devices. If a device keeps producing new events between calls to
- * SDL_PumpEvents, a poll loop will become stuck until the new events stop.
+ * PumpEvents, a poll loop will become stuck until the new events stop.
  * This is most noticeable when moving a high frequency mouse.
  *
  * The variable can be set to the following values:
@@ -2806,11 +2805,11 @@ namespace SDL {
 #define SDL_HINT_POLL_SENTINEL "SDL_POLL_SENTINEL"
 
 /**
- * Override for SDL_GetPreferredLocales().
+ * Override for GetPreferredLocales().
  *
  * If set, this will be favored over anything the OS might report for the
  * user's preferred locales. Changing this hint at runtime will not generate a
- * SDL_EVENT_LOCALE_CHANGED event (but if you can change the hint, you can
+ * EVENT_LOCALE_CHANGED event (but if you can change the hint, you can
  * push your own event, if you want).
  *
  * The format of this hint is a comma-separated list of language and locale,
@@ -2824,19 +2823,19 @@ namespace SDL {
 #define SDL_HINT_PREFERRED_LOCALES "SDL_PREFERRED_LOCALES"
 
 /**
- * A variable that decides whether to send SDL_EVENT_QUIT when closing the
+ * A variable that decides whether to send EVENT_QUIT when closing the
  * last window.
  *
  * The variable can be set to the following values:
  *
- * - "0": SDL will not send an SDL_EVENT_QUIT event when the last window is
+ * - "0": SDL will not send an EVENT_QUIT event when the last window is
  *   requesting to close. Note that in this case, there are still other
- *   legitimate reasons one might get an SDL_EVENT_QUIT event: choosing "Quit"
+ *   legitimate reasons one might get an EVENT_QUIT event: choosing "Quit"
  *   from the macOS menu bar, sending a SIGINT (ctrl-c) on Unix, etc.
  * - "1": SDL will send a quit event when the last window is requesting to
  *   close. (default)
  *
- * If there is at least one active system tray icon, SDL_EVENT_QUIT will
+ * If there is at least one active system tray icon, EVENT_QUIT will
  * instead be sent when both the last window will be closed and the last tray
  * icon will be destroyed.
  *
@@ -3008,7 +3007,7 @@ namespace SDL {
  * A variable to control whether the return key on the soft keyboard should
  * hide the soft keyboard on Android and iOS.
  *
- * This hint sets the default value of SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN.
+ * This hint sets the default value of prop::TextInput.MULTILINE_BOOLEAN.
  *
  * The variable can be set to the following values:
  *
@@ -3079,7 +3078,7 @@ namespace SDL {
  * inhibiting the screensaver or other power-saving features.
  *
  * This hint lets you specify the "activity name" sent to the OS when
- * SDL_DisableScreenSaver() is used (or the screensaver is automatically
+ * DisableScreenSaver() is used (or the screensaver is automatically
  * disabled). The contents of this hint are used when the screensaver is
  * disabled. You should use a string that describes what your program is doing
  * (and, therefore, why the screensaver is disabled). For example, "Playing a
@@ -3088,7 +3087,7 @@ namespace SDL {
  * Setting this to "" or leaving it unset will have SDL use a reasonable
  * default: "Playing a game" or something similar.
  *
- * This hint should be set before calling SDL_DisableScreenSaver()
+ * This hint should be set before calling DisableScreenSaver()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3101,7 +3100,7 @@ namespace SDL {
  * This is useful as a debug tool to validate memory leaks, but shouldn't ever
  * be set in production applications, as other libraries used by the
  * application might use dbus under the hood and this can cause crashes if
- * they continue after SDL_Quit().
+ * they continue after Quit().
  *
  * The variable can be set to the following values:
  *
@@ -3286,7 +3285,7 @@ namespace SDL {
  *
  * When this hint is set, displays with matching name strings will be
  * prioritized in the list of displays, as exposed by calling
- * SDL_GetDisplays(), with the first listed becoming the primary display. The
+ * Display.GetAll(), with the first listed becoming the primary display. The
  * naming convention can vary depending on the environment, but it is usually
  * a connector name (e.g. 'DP-1', 'DP-2', 'HDMI-A-1',etc...).
  *
@@ -3396,10 +3395,10 @@ namespace SDL {
  * The variable can be set to the following values:
  *
  * - "0": Disable Spaces support (FULLSCREEN_DESKTOP won't use them and
- *   SDL_WINDOW_RESIZABLE windows won't offer the "fullscreen" button on their
+ *   WINDOW_RESIZABLE windows won't offer the "fullscreen" button on their
  *   titlebars).
  * - "1": Enable Spaces support (FULLSCREEN_DESKTOP will use them and
- *   SDL_WINDOW_RESIZABLE windows will offer the "fullscreen" button on their
+ *   WINDOW_RESIZABLE windows will offer the "fullscreen" button on their
  *   titlebars). (default)
  *
  * This hint should be set before creating a window.
@@ -3419,7 +3418,7 @@ namespace SDL {
  * - "1": The menu will be accessible when the window is in a fullscreen
  *   space.
  * - "auto": The menu will be hidden if fullscreen mode was toggled on
- *   programmatically via `SDL_SetWindowFullscreen()`, and accessible if
+ *   programmatically via `WindowBase.SetFullscreen()`, and accessible if
  *   fullscreen was entered via the "fullscreen" button on the window title
  *   bar. (default)
  *
@@ -3472,7 +3471,7 @@ namespace SDL {
  * return of the requesting function. Setting this hint will cause such
  * operations to block after every call until the pending operation has
  * completed. Setting this to '1' is the equivalent of calling
- * SDL_SyncWindow() after every function call.
+ * WindowBase.Sync() after every function call.
  *
  * Be aware that amount of time spent blocking while waiting for window
  * operations to complete can be quite lengthy, as animations may have to
@@ -3960,13 +3959,13 @@ namespace SDL {
 
 /**
  * A variable controlling whether the window is activated when the
- * SDL_RaiseWindow function is called.
+ * WindowBase.Raise function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the SDL_RaiseWindow function is
+ * - "0": The window is not activated when the WindowBase.Raise function is
  *   called.
- * - "1": The window is activated when the SDL_RaiseWindow function is called.
+ * - "1": The window is activated when the WindowBase.Raise function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -3977,13 +3976,13 @@ namespace SDL {
 
 /**
  * A variable controlling whether the window is activated when the
- * SDL_ShowWindow function is called.
+ * WindowBase.Show function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the SDL_ShowWindow function is
+ * - "0": The window is not activated when the WindowBase.Show function is
  *   called.
- * - "1": The window is activated when the SDL_ShowWindow function is called.
+ * - "1": The window is activated when the WindowBase.Show function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -4080,7 +4079,7 @@ namespace SDL {
  * The variable can be set to the following values:
  *
  * - "0": The window message loop is not run.
- * - "1": The window message loop is processed in SDL_PumpEvents(). (default)
+ * - "1": The window message loop is processed in PumpEvents(). (default)
  *
  * This hint can be set anytime.
  *
@@ -4231,10 +4230,10 @@ namespace SDL {
 /**
  * A variable specifying the type of an X11 window.
  *
- * During SDL_CreateWindow, SDL uses the _NET_WM_WINDOW_TYPE X11 property to
- * report to the window manager the type of window it wants to create. This
- * might be set to various things if SDL_WINDOW_TOOLTIP or
- * SDL_WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that
+ * During WindowBase.WindowBase, SDL uses the _NET_WM_WINDOW_TYPE X11 property
+ * to report to the window manager the type of window it wants to create. This
+ * might be set to various things if WINDOW_TOOLTIP or
+ * WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that
  * haven't set a specific type, this hint can be used to specify a custom
  * type. For example, a dock window might set this to
  * "_NET_WM_WINDOW_TYPE_DOCK".
@@ -4284,7 +4283,7 @@ namespace SDL {
  * - "always_ignore": Program continues on, ignoring this assertion failure
  *   for the rest of the run.
  *
- * Note that SDL_SetAssertionHandler offers a programmatic means to deal with
+ * Note that SetAssertionHandler offers a programmatic means to deal with
  * assertion failures through a callback, and this hint is largely intended to
  * be used via environment variables by end users and automated tools.
  *
@@ -4349,17 +4348,17 @@ constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE;
  *
  * @param name the hint to set.
  * @param value the value of the hint variable.
- * @param priority the SDL_HintPriority level for the hint.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @param priority the HintPriority level for the hint.
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetHint
- * @sa SDL_ResetHint
- * @sa SDL_SetHint
+ * @sa GetHint
+ * @sa ResetHint
+ * @sa SetHint
  */
 inline bool SetHintWithPriority(StringParam name,
                                 StringParam value,
@@ -4372,21 +4371,21 @@ inline bool SetHintWithPriority(StringParam name,
  * Set a hint with normal priority.
  *
  * Hints will not be set if there is an existing override hint or environment
- * variable that takes precedence. You can use SDL_SetHintWithPriority() to
+ * variable that takes precedence. You can use SetHintWithPriority() to
  * set the hint with override priority instead.
  *
  * @param name the hint to set.
  * @param value the value of the hint variable.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetHint
- * @sa SDL_ResetHint
- * @sa SDL_SetHintWithPriority
+ * @sa GetHint
+ * @sa ResetHint
+ * @sa SetHintWithPriority
  */
 inline bool SetHint(StringParam name, StringParam value)
 {
@@ -4396,20 +4395,20 @@ inline bool SetHint(StringParam name, StringParam value)
 /**
  * Reset a hint to the default value.
  *
- * This will reset a hint to the value of the environment variable, or NULL if
- * the environment isn't set. Callbacks will be called normally with this
+ * This will reset a hint to the value of the environment variable, or nullptr
+ * if the environment isn't set. Callbacks will be called normally with this
  * change.
  *
  * @param name the hint to set.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetHint
- * @sa SDL_ResetHints
+ * @sa SetHint
+ * @sa ResetHints
  */
 inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
 
@@ -4417,22 +4416,22 @@ inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
  * Reset all hints to the default values.
  *
  * This will reset all hints to the value of the associated environment
- * variable, or NULL if the environment isn't set. Callbacks will be called
+ * variable, or nullptr if the environment isn't set. Callbacks will be called
  * normally with this change.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ResetHint
+ * @sa ResetHint
  */
-inline void ResetHints() { return SDL_ResetHints(); }
+inline void ResetHints() { SDL_ResetHints(); }
 
 /**
  * Get the value of a hint.
  *
  * @param name the hint to query.
- * @returns the string value of a hint or NULL if the hint isn't set.
+ * @returns the string value of a hint or nullptr if the hint isn't set.
  *
  * @threadsafety It is safe to call this function from any thread, however the
  *               return value only remains valid until the hint is changed; if
@@ -4443,8 +4442,8 @@ inline void ResetHints() { return SDL_ResetHints(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetHint
- * @sa SDL_SetHintWithPriority
+ * @sa SetHint
+ * @sa SetHintWithPriority
  */
 inline const char* GetHint(StringParam name) { return SDL_GetHint(name); }
 
@@ -4460,8 +4459,8 @@ inline const char* GetHint(StringParam name) { return SDL_GetHint(name); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetHint
- * @sa SDL_SetHint
+ * @sa GetHint
+ * @sa SetHint
  */
 inline bool GetHintBoolean(StringParam name, bool default_value)
 {
@@ -4471,11 +4470,11 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
 /**
  * A callback used to send notifications of hint value changes.
  *
- * This is called an initial time during SDL_AddHintCallback with the hint's
+ * This is called an initial time during AddHintCallback with the hint's
  * current value, and then again each time the hint's value changes.
  *
- * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
- * @param name what was passed as `name` to SDL_AddHintCallback().
+ * @param userdata what was passed as `userdata` to AddHintCallback().
+ * @param name what was passed as `name` to AddHintCallback().
  * @param oldValue the previous hint value.
  * @param newValue the new value hint is to be set to.
  *
@@ -4485,7 +4484,7 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_AddHintCallback
+ * @sa AddHintCallback
  */
 using HintCallback = SDL_HintCallback;
 
@@ -4496,17 +4495,17 @@ using HintCallback = SDL_HintCallback;
  * initial value, and again each time the hint's value changes.
  *
  * @param name the hint to watch.
- * @param callback An SDL_HintCallback function that will be called when the
+ * @param callback An HintCallback function that will be called when the
  *                 hint value changes.
  * @param userdata a pointer to pass to the callback function.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_RemoveHintCallback
+ * @sa RemoveHintCallback
  */
 inline bool AddHintCallback(StringParam name,
                             HintCallback callback,
@@ -4519,7 +4518,7 @@ inline bool AddHintCallback(StringParam name,
  * Remove a function watching a particular hint.
  *
  * @param name the hint being watched.
- * @param callback an SDL_HintCallback function that will be called when the
+ * @param callback an HintCallback function that will be called when the
  *                 hint value changes.
  * @param userdata a pointer being passed to the callback function.
  *
@@ -4527,13 +4526,13 @@ inline bool AddHintCallback(StringParam name,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_AddHintCallback
+ * @sa AddHintCallback
  */
 inline void RemoveHintCallback(StringParam name,
                                HintCallback callback,
                                void* userdata)
 {
-  return SDL_RemoveHintCallback(name, callback, userdata);
+  SDL_RemoveHintCallback(name, callback, userdata);
 }
 
 /// @}
