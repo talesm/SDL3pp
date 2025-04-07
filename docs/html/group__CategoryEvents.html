@@ -312,9 +312,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::EventWatchAuxCal
 <tr class="memitem:ga5817c98a343be4119321d4593710dfe7" id="r_ga5817c98a343be4119321d4593710dfe7"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga5817c98a343be4119321d4593710dfe7">SDL::RegisterEvents</a> (int numevents)</td></tr>
 <tr class="memdesc:ga5817c98a343be4119321d4593710dfe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a set of user-defined events, and return the beginning event number for that set of events.  <br /></td></tr>
 <tr class="separator:ga5817c98a343be4119321d4593710dfe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7cc92b5447463da2a5f689c2ad5e3d85" id="r_ga7cc92b5447463da2a5f689c2ad5e3d85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga7cc92b5447463da2a5f689c2ad5e3d85">SDL::GetWindowFromEvent</a> (const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> *event)</td></tr>
-<tr class="memdesc:ga7cc92b5447463da2a5f689c2ad5e3d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get window associated with an event.  <br /></td></tr>
-<tr class="separator:ga7cc92b5447463da2a5f689c2ad5e3d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa281b3577811eeff00e5c19522773d95" id="r_gaa281b3577811eeff00e5c19522773d95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#gaa281b3577811eeff00e5c19522773d95">SDL::GetWindowFromEvent</a> (const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> &amp;event)</td></tr>
+<tr class="memdesc:gaa281b3577811eeff00e5c19522773d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get window associated with an event.  <br /></td></tr>
+<tr class="separator:gaa281b3577811eeff00e5c19522773d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">EventActions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>The type of action to request from <a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a>. </p>
@@ -1454,8 +1454,8 @@ StopTextInput() </dd></dl>
 
 </div>
 </div>
-<a id="ga7cc92b5447463da2a5f689c2ad5e3d85" name="ga7cc92b5447463da2a5f689c2ad5e3d85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7cc92b5447463da2a5f689c2ad5e3d85">&#9670;&#160;</a></span>GetWindowFromEvent()</h2>
+<a id="gaa281b3577811eeff00e5c19522773d95" name="gaa281b3577811eeff00e5c19522773d95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa281b3577811eeff00e5c19522773d95">&#9670;&#160;</a></span>GetWindowFromEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1466,7 +1466,7 @@ StopTextInput() </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> SDL::GetWindowFromEvent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> &amp;&#160;</td>
           <td class="paramname"><em>event</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1483,14 +1483,14 @@ StopTextInput() </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the associated window on success or NULL if there is none.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the associated window on success or nullptr if there is none.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12" title="Poll for currently pending events.">PollEvent()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga9fe4acc517213fe44e3d4e3fb8ea37f3" title="Poll for currently pending events.">PollEvent</a> </dd>
 <dd>
-<a class="el" href="group__CategoryEvents.html#gab6c50dc878f420b06aa3e72b6e1510bf" title="Wait indefinitely for the next available event.">WaitEvent()</a> </dd>
+<a class="el" href="group__CategoryEvents.html#gade3c59ad119ec95a0955d1a6c55f5866" title="Wait indefinitely for the next available event.">WaitEvent</a> </dd>
 <dd>
-<a class="el" href="group__CategoryEvents.html#ga8467dfac03ec857a6a2cdbb1d7527fbe" title="Wait until the specified timeout (in milliseconds) for the next available event.">WaitEventTimeout()</a> </dd></dl>
+<a class="el" href="group__CategoryEvents.html#ga8467dfac03ec857a6a2cdbb1d7527fbe" title="Wait until the specified timeout (in milliseconds) for the next available event.">WaitEventTimeout</a> </dd></dl>
 
 </div>
 </div>

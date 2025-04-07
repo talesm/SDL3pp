@@ -196,10 +196,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1587e04fa9c03bfdbfcffbfec2ce7fec" id="r_a1587e04fa9c03bfdbfcffbfec2ce7fec"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1Color.html">Color</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a1587e04fa9c03bfdbfcffbfec2ce7fec">GetColorAndAlphaMod</a> () const</td></tr>
 <tr class="memdesc:a1587e04fa9c03bfdbfcffbfec2ce7fec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color and alpha value multiplied into blit operations.  <br /></td></tr>
 <tr class="separator:a1587e04fa9c03bfdbfcffbfec2ce7fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f9754c71f9cc000b692c60d851d153f" id="r_a0f9754c71f9cc000b692c60d851d153f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a0f9754c71f9cc000b692c60d851d153f">SetBlendMode</a> (<a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a> blendMode)</td></tr>
+<tr class="memitem:a0f9754c71f9cc000b692c60d851d153f" id="r_a0f9754c71f9cc000b692c60d851d153f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a0f9754c71f9cc000b692c60d851d153f">SetBlendMode</a> (<a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a> blendMode)</td></tr>
 <tr class="memdesc:a0f9754c71f9cc000b692c60d851d153f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the blend mode used for blit operations.  <br /></td></tr>
 <tr class="separator:a0f9754c71f9cc000b692c60d851d153f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad685b0ccc046e4472c48f5636b730fa1" id="r_ad685b0ccc046e4472c48f5636b730fa1"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#ad685b0ccc046e4472c48f5636b730fa1">GetBlendMode</a> () const</td></tr>
+<tr class="memitem:ad685b0ccc046e4472c48f5636b730fa1" id="r_ad685b0ccc046e4472c48f5636b730fa1"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#ad685b0ccc046e4472c48f5636b730fa1">GetBlendMode</a> () const</td></tr>
 <tr class="memdesc:ad685b0ccc046e4472c48f5636b730fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the blend mode used for blit operations.  <br /></td></tr>
 <tr class="separator:ad685b0ccc046e4472c48f5636b730fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae14de89586edba11c5038593ce919593" id="r_ae14de89586edba11c5038593ce919593"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#ae14de89586edba11c5038593ce919593">SetClipRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect)</td></tr>
@@ -1439,7 +1439,7 @@ template&lt;ObjectBox&lt; SDL_Surface * &gt; T&gt; </div>
 <p>If this function is called for a surface that already has a palette, a new palette will be created to replace it.</p>
 <dl class="section return"><dt>Returns</dt><dd>a new SDL_Palette structure on success or NULL on failure (e.g. if the surface didn't have an index format); call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#ae2d8f415ea4792f619e4635b6ea0e831" title="Set a range of colors in a palette.">Palette.SetColors()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#a0a1ee60c24e660a9c6b9ad2157953fef" title="Set a range of colors in a palette.">Palette.SetColors()</a> </dd></dl>
 
 </div>
 </div>
@@ -1846,7 +1846,7 @@ template&lt;ObjectBox&lt; SDL_Surface * &gt; T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a> &gt; <a class="el" href="structSDL_1_1SurfaceBase.html">SDL::SurfaceBase</a>&lt; T &gt;::GetBlendMode </td>
+          <td class="memname">std::optional&lt; <a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a> &gt; <a class="el" href="structSDL_1_1SurfaceBase.html">SDL::SurfaceBase</a>&lt; T &gt;::GetBlendMode </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1943,7 +1943,7 @@ template&lt;ObjectBox&lt; SDL_Surface * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The color key is a pixel of the format used by the surface, as generated by <a class="el" href="group__CategoryPixels.html#ga4d73674c64778b176b90b9634053fbd1" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB()</a>.</p>
+<p>The color key is a pixel of the format used by the surface, as generated by <a class="el" href="group__CategoryPixels.html#ga4cbff25e6b58ddcdabed09145b23ad89" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB()</a>.</p>
 <p>If the surface doesn't have color key enabled this function returns std::nullopt.</p>
 <dl class="section return"><dt>Returns</dt><dd>the color key as <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> or std::nullopt if it does not have one.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -3033,7 +3033,7 @@ template&lt;ObjectBox&lt; SDL_Surface * &gt; T&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1SurfaceBase.html">SDL::SurfaceBase</a>&lt; T &gt;::SetBlendMode </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a>&#160;</td>
           <td class="paramname"><em>blendMode</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3567,7 +3567,7 @@ template&lt;ObjectBox&lt; SDL_Surface * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Like <a class="el" href="group__CategoryPixels.html#gabf7785228a05650c736095152e647a48" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA()</a>, this uses the entire 0..255 range when converting color components from pixel formats with less than 8 bits per RGB component.</p>
+<p>Like <a class="el" href="group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA()</a>, this uses the entire 0..255 range when converting color components from pixel formats with less than 8 bits per RGB component.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>the horizontal coordinate, 0 &lt;= x &lt; width. </td></tr>
@@ -3693,7 +3693,7 @@ template&lt;ObjectBox&lt; SDL_Surface * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Like <a class="el" href="group__CategoryPixels.html#gabf7785228a05650c736095152e647a48" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA()</a>, this uses the entire 0..255 range when converting color components from pixel formats with less than 8 bits per RGB component.</p>
+<p>Like <a class="el" href="group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA()</a>, this uses the entire 0..255 range when converting color components from pixel formats with less than 8 bits per RGB component.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>the horizontal coordinate, 0 &lt;= x &lt; width. </td></tr>

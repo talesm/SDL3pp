@@ -64,12 +64,13 @@ using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
 using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
 
 /**
- * The flags on an SDL_Surface.
+ * The flags on an SurfaceBase.
  *
  * These are generally considered read-only.
  *
+ * @since This datatype is available since SDL 3.2.0.
  */
-using SurfaceFlags = SDL_SurfaceFlags;
+using SurfaceFlags = Uint32;
 
 /**
  * Surface uses preallocated pixel memory

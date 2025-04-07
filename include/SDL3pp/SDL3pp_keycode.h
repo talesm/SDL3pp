@@ -26,7 +26,7 @@ namespace SDL {
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using Keymod = SDL_Keymod;
+using Keymod = Uint16;
 
 /**
  * no modifier is applicable.

@@ -3330,11 +3330,11 @@ constexpr GLAttr GL_EGL_PLATFORM = SDL_GL_EGL_PLATFORM;
  */
 
 /**
- * Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.
+ * Possible values to be set for the GL_CONTEXT_PROFILE_MASK attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using GLProfile = SDL_GLProfile;
+using GLProfile = Uint32;
 
 /**
  * OpenGL Core Profile context
@@ -3360,11 +3360,11 @@ constexpr GLProfile GL_CONTEXT_PROFILE_ES = SDL_GL_CONTEXT_PROFILE_ES;
  */
 
 /**
- * Possible flags to be set for the SDL_GL_CONTEXT_FLAGS attribute.
+ * Possible flags to be set for the GL_CONTEXT_FLAGS attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using GLContextFlag = SDL_GLContextFlag;
+using GLContextFlag = Uint32;
 
 constexpr GLContextFlag GL_CONTEXT_DEBUG_FLAG = SDL_GL_CONTEXT_DEBUG_FLAG;
 
@@ -3385,12 +3385,12 @@ constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG =
  */
 
 /**
- * Possible values to be set for the SDL_GL_CONTEXT_RELEASE_BEHAVIOR
+ * Possible values to be set for the GL_CONTEXT_RELEASE_BEHAVIOR
  * attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using GLContextReleaseFlag = SDL_GLContextReleaseFlag;
+using GLContextReleaseFlag = Uint32;
 
 constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE =
   SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
@@ -3406,11 +3406,11 @@ constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH =
  */
 
 /**
- * Possible values to be set SDL_GL_CONTEXT_RESET_NOTIFICATION attribute.
+ * Possible values to be set GL_CONTEXT_RESET_NOTIFICATION attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using GLContextResetNotification = SDL_GLContextResetNotification;
+using GLContextResetNotification = Uint32;
 
 constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION =
   SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;

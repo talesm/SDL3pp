@@ -634,11 +634,13 @@
       }
     },
     "SDL_log.h": {
+      "enumerations": {
+        "SDL_LogPriority": {
+          "includeAfter": "__begin",
+          "prefix": "SDL_LOG_PRIORITY_"
+        }
+      },
       "includeAfter": {
-        "__begin": {
-          "name": "LogPriority",
-          "kind": "placeholder"
-        },
         "SDL_LogOutputFunction": {
           "name": "LogOutputFunctionCB",
           "doc": "@sa LogOutputFunction",
@@ -1922,114 +1924,15 @@
           }
         }
       },
-      "transform": {
+      "wrappers": {
         "SDL_Color": {
-          "kind": "struct",
-          "entries": {
-            "Color": [
-              {
-                "kind": "function",
-                "constexpr": true,
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "SDL_Color",
-                    "name": "color",
-                    "default": "{0}"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "constexpr": true,
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "r",
-                    "type": "Uint8"
-                  },
-                  {
-                    "name": "g",
-                    "type": "Uint8"
-                  },
-                  {
-                    "name": "b",
-                    "type": "Uint8"
-                  },
-                  {
-                    "name": "a",
-                    "type": "Uint8",
-                    "default": "255"
-                  }
-                ]
-              }
-            ],
-            "operator<=>": {
-              "kind": "function",
-              "immutable": true,
-              "type": "auto",
-              "parameters": [
-                {
-                  "type": "const Color &",
-                  "name": "other"
-                }
-              ]
-            }
-          }
+          "ordered": true,
+          "invalidState": false
         },
         "SDL_FColor": {
-          "kind": "struct",
-          "entries": {
-            "FColor": [
-              {
-                "kind": "function",
-                "constexpr": true,
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "SDL_FColor",
-                    "name": "color",
-                    "default": "{0}"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "constexpr": true,
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "r",
-                    "type": "float"
-                  },
-                  {
-                    "name": "g",
-                    "type": "float"
-                  },
-                  {
-                    "name": "b",
-                    "type": "float"
-                  },
-                  {
-                    "name": "a",
-                    "type": "float",
-                    "default": "1"
-                  }
-                ]
-              }
-            ],
-            "operator<=>": {
-              "kind": "function",
-              "immutable": true,
-              "type": "auto",
-              "parameters": [
-                {
-                  "type": "const FColor &",
-                  "name": "other"
-                }
-              ]
-            }
-          }
+          "attribute": "color",
+          "ordered": true,
+          "invalidState": false
         }
       },
       "resources": {
@@ -2055,7 +1958,20 @@
                 }
               ]
             },
-            "SDL_SetPaletteColors": "function",
+            "SDL_SetPaletteColors": {
+              "parameters": [
+                {},
+                {
+                  "name": "colors",
+                  "type": "std::span<const SDL_Color>"
+                },
+                {
+                  "name": "firstcolor",
+                  "type": "int",
+                  "default": "0"
+                }
+              ]
+            },
             "SDL_DestroyPalette": "function"
           }
         }
@@ -4825,7 +4741,55 @@
                 }
               ]
             },
-            "SDL_RenderGeometryRaw": "function",
+            "SDL_RenderGeometryRaw": {
+              "parameters": [
+                {},
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                },
+                {
+                  "name": "xy",
+                  "type": "const float *"
+                },
+                {
+                  "name": "xy_stride",
+                  "type": "int"
+                },
+                {
+                  "name": "color",
+                  "type": "const FColor *"
+                },
+                {
+                  "name": "color_stride",
+                  "type": "int"
+                },
+                {
+                  "name": "uv",
+                  "type": "const float *"
+                },
+                {
+                  "name": "uv_stride",
+                  "type": "int"
+                },
+                {
+                  "name": "num_vertices",
+                  "type": "int"
+                },
+                {
+                  "name": "indices",
+                  "type": "const void *"
+                },
+                {
+                  "name": "num_indices",
+                  "type": "int"
+                },
+                {
+                  "name": "size_indices",
+                  "type": "int"
+                }
+              ]
+            },
             "SDL_RenderReadPixels": {
               "immutable": true,
               "type": "Surface",
@@ -5014,14 +4978,33 @@
               "parameters": [
                 {},
                 {
+                  "name": "rect",
                   "type": "OptionalRef<const SDL_Rect>"
                 },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {}
+                {
+                  "name": "Yplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "Ypitch",
+                  "type": "int"
+                },
+                {
+                  "name": "Uplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "Upitch",
+                  "type": "int"
+                },
+                {
+                  "name": "Vplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "Vpitch",
+                  "type": "int"
+                }
               ]
             },
             "SDL_UpdateNVTexture": {
@@ -5031,10 +5014,22 @@
                 {
                   "type": "OptionalRef<const SDL_Rect>"
                 },
-                {},
-                {},
-                {},
-                {}
+                {
+                  "name": "Yplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "Ypitch",
+                  "type": "int"
+                },
+                {
+                  "name": "UVplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "UVpitch",
+                  "type": "int"
+                }
               ]
             },
             "SDL_LockTexture": {
@@ -5217,66 +5212,10 @@
       }
     },
     "SDL_time.h": {
-      "transform": {
+      "wrappers": {
         "SDL_DateTime": {
-          "kind": "struct",
+          "ordered": true,
           "entries": {
-            "DateTime": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const SDL_DateTime &",
-                    "name": "dt"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "int",
-                    "name": "year"
-                  },
-                  {
-                    "type": "int",
-                    "name": "month"
-                  },
-                  {
-                    "type": "int",
-                    "name": "day"
-                  },
-                  {
-                    "type": "int",
-                    "name": "hour"
-                  },
-                  {
-                    "type": "int",
-                    "name": "minute"
-                  },
-                  {
-                    "type": "int",
-                    "name": "second"
-                  },
-                  {
-                    "type": "int",
-                    "name": "nanosecond"
-                  },
-                  {
-                    "type": "int",
-                    "name": "day_of_week"
-                  },
-                  {
-                    "type": "int",
-                    "name": "utc_offset"
-                  }
-                ]
-              }
-            ],
             "SDL_TimeToDateTime": {
               "name": "DateTime",
               "type": "",
@@ -5292,13 +5231,6 @@
                 }
               ]
             },
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": []
-            },
             "SDL_DateTimeToTime": {
               "name": "operator Time",
               "type": "",
@@ -5306,7 +5238,9 @@
               "parameters": []
             }
           }
-        },
+        }
+      },
+      "transform": {
         "SDL_GetCurrentTime": {
           "name": "Time::Current",
           "type": "Time"
@@ -5843,6 +5777,68 @@
             {
               "name": "props",
               "type": "PropertiesRef"
+            }
+          ]
+        }
+      },
+      "transform": {
+        "SDL_ShowOpenFileDialog": {
+          "parameters": [
+            {
+              "name": "callback",
+              "type": "DialogFileCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            },
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "filters",
+              "type": "const DialogFileFilter *"
+            },
+            {
+              "name": "nfilters",
+              "type": "int"
+            },
+            {
+              "name": "default_location",
+              "type": "StringParam"
+            },
+            {
+              "name": "allow_many",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_ShowSaveFileDialog": {
+          "parameters": [
+            {
+              "name": "callback",
+              "type": "DialogFileCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            },
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "filters",
+              "type": "const DialogFileFilter *"
+            },
+            {
+              "name": "nfilters",
+              "type": "int"
+            },
+            {
+              "name": "default_location",
+              "type": "StringParam"
             }
           ]
         }

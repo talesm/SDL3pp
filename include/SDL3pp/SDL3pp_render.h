@@ -4,6 +4,7 @@
 #include <SDL3/SDL_render.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
+#include "SDL3pp_events.h"
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_pixels.h"
@@ -732,9 +733,9 @@ struct RendererBase : T
    * This takes into account several states:
    *
    * - The window dimensions.
-   * - The logical presentation settings (SDL_SetRenderLogicalPresentation)
-   * - The scale (SDL_SetRenderScale)
-   * - The viewport (SDL_SetRenderViewport)
+   * - The logical presentation settings (RendererBase.SetLogicalPresentation)
+   * - The scale (RendererBase.SetScale)
+   * - The viewport (RendererBase.SetViewport)
    *
    * Various event types are converted with this function: mouse, touch, pen,
    * etc.
@@ -744,25 +745,26 @@ struct RendererBase : T
    *
    * Relative mouse coordinates (xrel and yrel event fields) are _also_
    * converted. Applications that do not want these fields converted should use
-   * SDL_RenderCoordinatesFromWindow() on the specific event fields instead of
-   * converting the entire event structure.
+   * RendererBase.RenderCoordinatesFromWindow() on the specific event fields
+   * instead of converting the entire event structure.
    *
    * Once converted, coordinates may be outside the rendering area.
    *
    * @param event the event to modify.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_RenderCoordinatesFromWindow
+   * @sa RendererBase.RenderCoordinatesFromWindow
    */
-  bool ConvertEventToRenderCoordinates(SDL_Event* event) const
+  bool ConvertEventToRenderCoordinates(Event* event) const
   {
     return SDL_ConvertEventToRenderCoordinates(T::get(), event);
   }
+
   /**
    * Reset the drawing area for rendering to the entire target
    *

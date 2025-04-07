@@ -29,13 +29,29 @@ namespace SDL {
  */
 struct DateTime : SDL_DateTime
 {
-  /// Constructor
-  constexpr DateTime(const SDL_DateTime& dt = {0})
-    : SDL_DateTime(dt)
+  /**
+   * Wraps DateTime.
+   *
+   * @param dateTime the value to be wrapped
+   */
+  constexpr DateTime(const SDL_DateTime& dateTime = {})
+    : SDL_DateTime(dateTime)
   {
   }
 
-  /// Constructor
+  /**
+   * Constructs from its fields.
+   *
+   * @param year the value for year.
+   * @param month the value for month.
+   * @param day the value for day.
+   * @param hour the value for hour.
+   * @param minute the value for minute.
+   * @param second the value for second.
+   * @param nanosecond the value for nanosecond.
+   * @param day_of_week the value for day_of_week.
+   * @param utc_offset the value for utc_offset.
+   */
   constexpr DateTime(int year,
                      int month,
                      int day,
@@ -62,9 +78,8 @@ struct DateTime : SDL_DateTime
    * the SDL_DateTime format.
    *
    * @param ticks the SDL_Time to be converted.
-   * @param localTime the resulting SDL_DateTime will be expressed in local time
-   *                  if true, otherwise it will be in Universal Coordinated
-   *                  Time (UTC).
+   * @param localTime the resulting DateTime will be expressed in local time if
+   *        true, otherwise it will be in Universal Coordinated Time (UTC).
    * @post true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -76,11 +91,189 @@ struct DateTime : SDL_DateTime
     SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
   }
 
+  constexpr auto operator<=>(const DateTime& other) const = default;
+
   /// Returns If valid
-  constexpr operator bool() const
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const
   {
     return year != 0 || month != 0 || day != 0 || hour != 0 || minute != 0 ||
            second != 0 || nanosecond != 0;
+  }
+
+  /**
+   * Get the year.
+   *
+   * @returns current year value.
+   */
+  constexpr int GetYear() const { return year; }
+
+  /**
+   * Set the year.
+   *
+   * @param newYear the new year value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetYear(int newYear)
+  {
+    year = newYear;
+    return *this;
+  }
+
+  /**
+   * Get the month.
+   *
+   * @returns current month value.
+   */
+  constexpr int GetMonth() const { return month; }
+
+  /**
+   * Set the month.
+   *
+   * @param newMonth the new month value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetMonth(int newMonth)
+  {
+    month = newMonth;
+    return *this;
+  }
+
+  /**
+   * Get the day.
+   *
+   * @returns current day value.
+   */
+  constexpr int GetDay() const { return day; }
+
+  /**
+   * Set the day.
+   *
+   * @param newDay the new day value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetDay(int newDay)
+  {
+    day = newDay;
+    return *this;
+  }
+
+  /**
+   * Get the hour.
+   *
+   * @returns current hour value.
+   */
+  constexpr int GetHour() const { return hour; }
+
+  /**
+   * Set the hour.
+   *
+   * @param newHour the new hour value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetHour(int newHour)
+  {
+    hour = newHour;
+    return *this;
+  }
+
+  /**
+   * Get the minute.
+   *
+   * @returns current minute value.
+   */
+  constexpr int GetMinute() const { return minute; }
+
+  /**
+   * Set the minute.
+   *
+   * @param newMinute the new minute value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetMinute(int newMinute)
+  {
+    minute = newMinute;
+    return *this;
+  }
+
+  /**
+   * Get the second.
+   *
+   * @returns current second value.
+   */
+  constexpr int GetSecond() const { return second; }
+
+  /**
+   * Set the second.
+   *
+   * @param newSecond the new second value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetSecond(int newSecond)
+  {
+    second = newSecond;
+    return *this;
+  }
+
+  /**
+   * Get the nanosecond.
+   *
+   * @returns current nanosecond value.
+   */
+  constexpr int GetNanosecond() const { return nanosecond; }
+
+  /**
+   * Set the nanosecond.
+   *
+   * @param newNanosecond the new nanosecond value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetNanosecond(int newNanosecond)
+  {
+    nanosecond = newNanosecond;
+    return *this;
+  }
+
+  /**
+   * Get the day_of_week.
+   *
+   * @returns current day_of_week value.
+   */
+  constexpr int GetDay_of_week() const { return day_of_week; }
+
+  /**
+   * Set the day_of_week.
+   *
+   * @param newDay_of_week the new day_of_week value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetDay_of_week(int newDay_of_week)
+  {
+    day_of_week = newDay_of_week;
+    return *this;
+  }
+
+  /**
+   * Get the utc_offset.
+   *
+   * @returns current utc_offset value.
+   */
+  constexpr int GetUtc_offset() const { return utc_offset; }
+
+  /**
+   * Set the utc_offset.
+   *
+   * @param newUtc_offset the new utc_offset value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetUtc_offset(int newUtc_offset)
+  {
+    utc_offset = newUtc_offset;
+    return *this;
   }
 
   /**

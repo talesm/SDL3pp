@@ -6678,13 +6678,17 @@ constexpr bool HasExactlyOneBitSet32(Uint32 x)
  */
 
 /**
- * @brief  A set of blend modes used in drawing operations.
+ * A set of blend modes used in drawing operations.
  *
  * These predefined blend modes are supported everywhere.
  *
  * Additional values may be obtained from ComposeCustomBlendMode().
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ComposeCustomBlendMode
  */
-using BlendMode = SDL_BlendMode;
+using BlendMode = Uint32;
 
 /**
  * no blending: dstRGBA = srcRGBA
@@ -12943,6 +12947,24 @@ inline OwnArray<Locale*> GetPreferredLocales()
  */
 using LogPriority = SDL_LogPriority;
 
+constexpr LogPriority LOG_PRIORITY_INVALID = SDL_LOG_PRIORITY_INVALID;
+
+constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE;
+
+constexpr LogPriority LOG_PRIORITY_VERBOSE = SDL_LOG_PRIORITY_VERBOSE;
+
+constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG;
+
+constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO;
+
+constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN;
+
+constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR;
+
+constexpr LogPriority LOG_PRIORITY_CRITICAL = SDL_LOG_PRIORITY_CRITICAL;
+
+constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT;
+
 /// @}
 
 /**
@@ -13371,31 +13393,6 @@ constexpr LogCategory LOG_CATEGORY_RESERVED9 = SDL_LOG_CATEGORY_RESERVED9;
 constexpr LogCategory LOG_CATEGORY_RESERVED10 = SDL_LOG_CATEGORY_RESERVED10;
 
 constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM;
-
-/// @}
-
-/**
- * @name LogPriorities
- * @{
- */
-
-constexpr LogPriority LOG_PRIORITY_INVALID = SDL_LOG_PRIORITY_INVALID;
-
-constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE;
-
-constexpr LogPriority LOG_PRIORITY_VERBOSE = SDL_LOG_PRIORITY_VERBOSE;
-
-constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG;
-
-constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO;
-
-constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN;
-
-constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR;
-
-constexpr LogPriority LOG_PRIORITY_CRITICAL = SDL_LOG_PRIORITY_CRITICAL;
-
-constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT;
 
 /// @}
 
@@ -15231,104 +15228,110 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  */
 struct Color : SDL_Color
 {
-  constexpr Color(SDL_Color color = {0})
+
+  /**
+   * Wraps Color.
+   *
+   * @param color the value to be wrapped.
+   */
+  constexpr Color(const SDL_Color& color = {})
     : SDL_Color(color)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param r the value for channel r.
+   * @param g the value for channel g.
+   * @param b the value for channel b.
+   * @param a the value for channel a.
+   */
   constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
     : SDL_Color{r, g, b, a}
   {
   }
 
   // Auto comparison operator
-  auto operator<=>(const Color& other) const = default;
+  constexpr auto operator<=>(const Color& other) const = default;
 
   /**
-   * Get the red component from the color
+   * Get the red component from the color.
    *
-   * @returns The red component from the color
+   * @returns The red component from the color.
    *
    */
-  constexpr Uint8 GetRed() const { return r; }
+  constexpr Uint8 GetR() const { return r; }
 
   /**
-   * Set the red component from the color
+   * Set the red component from the color.
    *
-   * @param[in] nr New red component value
-   *
-   * @returns Reference to self
-   *
+   * @param newR New red component value.
+   * @returns Reference to self.
    */
-  constexpr Color& SetRed(Uint8 nr)
+  constexpr Color& SetR(Uint8 newR)
   {
-    r = nr;
+    r = newR;
     return *this;
   }
 
   /**
-   * Get the green component from the color
+   * Get the green component from the color.
    *
-   * @returns The green component from the color
+   * @returns The green component from the color.
    *
    */
-  constexpr Uint8 GetGreen() const { return g; }
+  constexpr Uint8 GetG() const { return g; }
 
   /**
-   * Set the green component from the color
+   * Set the green component from the color.
    *
-   * @param[in] ng New green component value
-   *
-   * @returns Reference to self
-   *
+   * @param newG New green component value.
+   * @returns Reference to self.
    */
-  constexpr Color& SetGreen(Uint8 ng)
+  constexpr Color& SetG(Uint8 newG)
   {
-    g = ng;
+    g = newG;
     return *this;
   }
 
   /**
-   * Get the blue component from the color
+   * Get the blue component from the color.
    *
-   * @returns The blue component from the color
+   * @returns The blue component from the color.
    *
    */
-  constexpr Uint8 GetBlue() const { return b; }
+  constexpr Uint8 GetB() const { return b; }
 
   /**
-   * Set the blue component from the color
+   * Set the blue component from the color.
    *
-   * @param[in] nb New blue component value
-   *
-   * @returns Reference to self
-   *
+   * @param newB New blue component value.
+   * @returns Reference to self.
    */
-  constexpr Color& SetBlue(Uint8 nb)
+  constexpr Color& SetB(Uint8 newB)
   {
-    b = nb;
+    b = newB;
     return *this;
   }
 
   /**
-   * Get the alpha component from the color
+   * Get the alpha component from the color.
    *
-   * @returns The alpha component from the color
+   * @returns The alpha component from the color.
    *
    */
-  constexpr Uint8 GetAlpha() const { return a; }
+  constexpr Uint8 GetA() const { return a; }
 
   /**
-   * Set the alpha component from the color
+   * Set the alpha component from the color.
    *
-   * @param[in] na New alpha component value
-   *
-   * @returns Reference to self
-   *
+   * @param newA New alpha component value.
+   * @returns Reference to self.
    */
-  constexpr Color& SetAlpha(Uint8 na)
+  constexpr Color& SetA(Uint8 newA)
   {
-    a = na;
+    a = newA;
     return *this;
   }
 
@@ -15358,7 +15361,7 @@ struct Color : SDL_Color
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified.
    */
-  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
+  Uint32 Map(const PixelFormatDetails& format, PaletteRef palette) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -15387,7 +15390,7 @@ struct Color : SDL_Color
    * @sa Map()
    */
   static Color Get(Uint32 pixel,
-                   const PixelFormatDetails* format,
+                   const PixelFormatDetails& format,
                    PaletteRef palette);
 };
 
@@ -15403,104 +15406,110 @@ struct Color : SDL_Color
  */
 struct FColor : SDL_FColor
 {
-  constexpr FColor(SDL_FColor color = {0})
+
+  /**
+   * Wraps FColor.
+   *
+   * @param color the value to be wrapped.
+   */
+  constexpr FColor(const SDL_FColor& color = {})
     : SDL_FColor(color)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param r the value for r.
+   * @param g the value for g.
+   * @param b the value for b.
+   * @param a the value for a.
+   */
   constexpr FColor(float r, float g, float b, float a = 1)
     : SDL_FColor{r, g, b, a}
   {
   }
 
   // Auto comparison operator
-  auto operator<=>(const FColor& other) const = default;
+  constexpr auto operator<=>(const FColor& other) const = default;
 
   /**
-   * Get the red component from the color
+   * Get the red component from the color.
    *
-   * @returns The red component from the color
+   * @returns The red component from the color.
    *
    */
-  constexpr float GetRed() const { return r; }
+  constexpr float GetR() const { return r; }
 
   /**
-   * Set the red component from the color
+   * Set the red component from the color.
    *
-   * @param[in] nr New red component value
-   *
-   * @returns Reference to self
-   *
+   * @param newR New red component value.
+   * @returns Reference to self.
    */
-  constexpr FColor& SetRed(float nr)
+  constexpr FColor& SetR(float newR)
   {
-    r = nr;
+    r = newR;
     return *this;
   }
 
   /**
-   * Get the green component from the color
+   * Get the green component from the color.
    *
-   * @returns The green component from the color
+   * @returns The green component from the color.
    *
    */
-  constexpr float GetGreen() const { return g; }
+  constexpr float GetG() const { return g; }
 
   /**
-   * Set the green component from the color
+   * Set the green component from the color.
    *
-   * @param[in] ng New green component value
-   *
-   * @returns Reference to self
-   *
+   * @param newG New green component value.
+   * @returns Reference to self.
    */
-  constexpr FColor& SetGreen(float ng)
+  constexpr FColor& SetG(float newG)
   {
-    g = ng;
+    g = newG;
     return *this;
   }
 
   /**
-   * Get the blue component from the color
+   * Get the blue component from the color.
    *
-   * @returns The blue component from the color
+   * @returns The blue component from the color.
    *
    */
-  constexpr float GetBlue() const { return b; }
+  constexpr float GetB() const { return b; }
 
   /**
-   * Set the blue component from the color
+   * Set the blue component from the color.
    *
-   * @param[in] nb New blue component value
-   *
-   * @returns Reference to self
-   *
+   * @param newB New blue component value.
+   * @returns Reference to self.
    */
-  constexpr FColor& SetBlue(float nb)
+  constexpr FColor& SetB(float newB)
   {
-    b = nb;
+    b = newB;
     return *this;
   }
 
   /**
-   * Get the alpha component from the color
+   * Get the alpha component from the color.
    *
-   * @returns The alpha component from the color
+   * @returns The alpha component from the color.
    *
    */
-  constexpr float GetAlpha() const { return a; }
+  constexpr float GetA() const { return a; }
 
   /**
-   * Set the alpha component from the color
+   * Set the alpha component from the color.
    *
-   * @param[in] na New alpha component value
-   *
-   * @returns Reference to self
-   *
+   * @param newA New alpha component value.
+   * @returns Reference to self.
    */
-  constexpr FColor& SetAlpha(float na)
+  constexpr FColor& SetA(float newA)
   {
-    a = na;
+    a = newA;
     return *this;
   }
 };
@@ -15549,7 +15558,7 @@ struct PaletteBase : T
   /**
    * Set a range of colors in a palette.
    *
-   * @param colors an array of SDL_Color structures to copy into the palette.
+   * @param colors an array of Color structures to copy into the palette.
    * @param firstcolor the index of the first palette entry to modify.
    * @param ncolors the number of entries to modify.
    * @returns true on success or false on failure; call GetError() for more
@@ -15560,9 +15569,10 @@ struct PaletteBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool SetColors(const Color* colors, int firstcolor, int ncolors)
+  bool SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
   {
-    return SDL_SetPaletteColors(T::get(), colors, firstcolor, ncolors);
+    return SDL_SetPaletteColors(
+      T::get(), colors.data(), firstcolor, colors.size());
   }
 
   /**
@@ -15629,9 +15639,9 @@ inline void ObjectRef<SDL_Palette>::doFree(SDL_Palette* resource)
  * format the return value can be assigned to a Uint16, and similarly a Uint8
  * for an 8-bpp format).
  *
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ * @param format a reference to PixelFormatDetails describing the pixel
  *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
+ * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r the red component of the pixel in the range 0-255.
  * @param g the green component of the pixel in the range 0-255.
  * @param b the blue component of the pixel in the range 0-255.
@@ -15642,18 +15652,18 @@ inline void ObjectRef<SDL_Palette>::doFree(SDL_Palette* resource)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPixelFormatDetails()
- * @sa GetRGB()
- * @sa MapRGBA()
- * @sa Surface.MapColor()
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGB
+ * @sa MapRGBA
+ * @sa SurfaceBase.MapColor
  */
-inline Uint32 MapRGB(const PixelFormatDetails* format,
+inline Uint32 MapRGB(const PixelFormatDetails& format,
                      PaletteRef palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
 {
-  return SDL_MapRGB(format, palette.get(), r, g, b);
+  return SDL_MapRGB(&format, palette.get(), r, g, b);
 }
 
 /**
@@ -15674,9 +15684,9 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * format the return value can be assigned to a Uint16, and similarly a Uint8
  * for an 8-bpp format).
  *
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ * @param format a reference to PixelFormatDetails describing the pixel
  *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
+ * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r the red component of the pixel in the range 0-255.
  * @param g the green component of the pixel in the range 0-255.
  * @param b the blue component of the pixel in the range 0-255.
@@ -15688,19 +15698,19 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGBA()
- * @sa MapRGB()
- * @sa Surface.MapColor()
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGBA
+ * @sa MapRGB
+ * @sa SurfaceBase.MapColor
  */
-inline Uint32 MapRGBA(const PixelFormatDetails* format,
+inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       PaletteRef palette,
                       Uint8 r,
                       Uint8 g,
                       Uint8 b,
                       Uint8 a)
 {
-  return SDL_MapRGBA(format, palette.get(), r, g, b, a);
+  return SDL_MapRGBA(&format, palette.get(), r, g, b, a);
 }
 
 /**
@@ -15712,31 +15722,31 @@ inline Uint32 MapRGBA(const PixelFormatDetails* format,
  * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
  *
  * @param pixel a pixel value.
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ * @param format a reference to PixelFormatDetails describing the pixel
  *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r a pointer filled in with the red component, may be NULL.
- * @param g a pointer filled in with the green component, may be NULL.
- * @param b a pointer filled in with the blue component, may be NULL.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @param r a pointer filled in with the red component, may be nullptr.
+ * @param g a pointer filled in with the green component, may be nullptr.
+ * @param b a pointer filled in with the blue component, may be nullptr.
  *
  * @threadsafety It is safe to call this function from any thread, as long as
  *               the palette is not modified.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGBA()
- * @sa MapRGB()
- * @sa MapRGBA()
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGBA
+ * @sa MapRGB
+ * @sa MapRGBA
  */
 inline void GetRGB(Uint32 pixel,
-                   const PixelFormatDetails* format,
+                   const PixelFormatDetails& format,
                    PaletteRef palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, format, palette.get(), r, g, b);
+  SDL_GetRGB(pixel, &format, palette.get(), r, g, b);
 }
 
 /**
@@ -15751,48 +15761,48 @@ inline void GetRGB(Uint32 pixel,
  * (100% opaque).
  *
  * @param pixel a pixel value.
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ * @param format a reference to PixelFormatDetails describing the pixel
  *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r a pointer filled in with the red component, may be NULL.
- * @param g a pointer filled in with the green component, may be NULL.
- * @param b a pointer filled in with the blue component, may be NULL.
- * @param a a pointer filled in with the alpha component, may be NULL.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @param r a pointer filled in with the red component, may be nullptr.
+ * @param g a pointer filled in with the green component, may be nullptr.
+ * @param b a pointer filled in with the blue component, may be nullptr.
+ * @param a a pointer filled in with the alpha component, may be nullptr.
  *
  * @threadsafety It is safe to call this function from any thread, as long as
  *               the palette is not modified.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGB()
- * @sa MapRGB()
- * @sa MapRGBA()
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGB
+ * @sa MapRGB
+ * @sa MapRGBA
  */
 inline void GetRGBA(Uint32 pixel,
-                    const PixelFormatDetails* format,
+                    const PixelFormatDetails& format,
                     PaletteRef palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, format, palette.get(), r, g, b, a);
+  SDL_GetRGBA(pixel, &format, palette.get(), r, g, b, a);
 }
 
 /** @} */
 
 #pragma region impl
 
-inline Uint32 Color::Map(const PixelFormatDetails* format,
+inline Uint32 Color::Map(const PixelFormatDetails& format,
                          PaletteRef palette = nullptr) const
 {
   return MapRGBA(format, palette.get(), r, g, b, a);
 }
 
-inline Color Get(Uint32 pixel,
-                 const PixelFormatDetails* format,
-                 PaletteRef palette = nullptr)
+inline Color Color::Get(Uint32 pixel,
+                        const PixelFormatDetails& format,
+                        PaletteRef palette = nullptr)
 {
   Color c;
   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
@@ -15801,12 +15811,12 @@ inline Color Get(Uint32 pixel,
 
 inline Uint32 PixelFormat::Map(Color color, PaletteRef palette = nullptr) const
 {
-  return color.Map(GetDetails(), palette);
+  return color.Map(*GetDetails(), palette);
 }
 
 inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
 {
-  return Color::Get(pixel, GetDetails(), palette);
+  return Color::Get(pixel, *GetDetails(), palette);
 }
 
 #pragma endregion impl
@@ -16932,13 +16942,29 @@ constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
  */
 struct DateTime : SDL_DateTime
 {
-  /// Constructor
-  constexpr DateTime(const SDL_DateTime& dt = {0})
-    : SDL_DateTime(dt)
+  /**
+   * Wraps DateTime.
+   *
+   * @param dateTime the value to be wrapped
+   */
+  constexpr DateTime(const SDL_DateTime& dateTime = {})
+    : SDL_DateTime(dateTime)
   {
   }
 
-  /// Constructor
+  /**
+   * Constructs from its fields.
+   *
+   * @param year the value for year.
+   * @param month the value for month.
+   * @param day the value for day.
+   * @param hour the value for hour.
+   * @param minute the value for minute.
+   * @param second the value for second.
+   * @param nanosecond the value for nanosecond.
+   * @param day_of_week the value for day_of_week.
+   * @param utc_offset the value for utc_offset.
+   */
   constexpr DateTime(int year,
                      int month,
                      int day,
@@ -16965,9 +16991,8 @@ struct DateTime : SDL_DateTime
    * the SDL_DateTime format.
    *
    * @param ticks the SDL_Time to be converted.
-   * @param localTime the resulting SDL_DateTime will be expressed in local time
-   *                  if true, otherwise it will be in Universal Coordinated
-   *                  Time (UTC).
+   * @param localTime the resulting DateTime will be expressed in local time if
+   *        true, otherwise it will be in Universal Coordinated Time (UTC).
    * @post true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -16979,11 +17004,189 @@ struct DateTime : SDL_DateTime
     SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
   }
 
+  constexpr auto operator<=>(const DateTime& other) const = default;
+
   /// Returns If valid
-  constexpr operator bool() const
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const
   {
     return year != 0 || month != 0 || day != 0 || hour != 0 || minute != 0 ||
            second != 0 || nanosecond != 0;
+  }
+
+  /**
+   * Get the year.
+   *
+   * @returns current year value.
+   */
+  constexpr int GetYear() const { return year; }
+
+  /**
+   * Set the year.
+   *
+   * @param newYear the new year value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetYear(int newYear)
+  {
+    year = newYear;
+    return *this;
+  }
+
+  /**
+   * Get the month.
+   *
+   * @returns current month value.
+   */
+  constexpr int GetMonth() const { return month; }
+
+  /**
+   * Set the month.
+   *
+   * @param newMonth the new month value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetMonth(int newMonth)
+  {
+    month = newMonth;
+    return *this;
+  }
+
+  /**
+   * Get the day.
+   *
+   * @returns current day value.
+   */
+  constexpr int GetDay() const { return day; }
+
+  /**
+   * Set the day.
+   *
+   * @param newDay the new day value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetDay(int newDay)
+  {
+    day = newDay;
+    return *this;
+  }
+
+  /**
+   * Get the hour.
+   *
+   * @returns current hour value.
+   */
+  constexpr int GetHour() const { return hour; }
+
+  /**
+   * Set the hour.
+   *
+   * @param newHour the new hour value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetHour(int newHour)
+  {
+    hour = newHour;
+    return *this;
+  }
+
+  /**
+   * Get the minute.
+   *
+   * @returns current minute value.
+   */
+  constexpr int GetMinute() const { return minute; }
+
+  /**
+   * Set the minute.
+   *
+   * @param newMinute the new minute value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetMinute(int newMinute)
+  {
+    minute = newMinute;
+    return *this;
+  }
+
+  /**
+   * Get the second.
+   *
+   * @returns current second value.
+   */
+  constexpr int GetSecond() const { return second; }
+
+  /**
+   * Set the second.
+   *
+   * @param newSecond the new second value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetSecond(int newSecond)
+  {
+    second = newSecond;
+    return *this;
+  }
+
+  /**
+   * Get the nanosecond.
+   *
+   * @returns current nanosecond value.
+   */
+  constexpr int GetNanosecond() const { return nanosecond; }
+
+  /**
+   * Set the nanosecond.
+   *
+   * @param newNanosecond the new nanosecond value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetNanosecond(int newNanosecond)
+  {
+    nanosecond = newNanosecond;
+    return *this;
+  }
+
+  /**
+   * Get the day_of_week.
+   *
+   * @returns current day_of_week value.
+   */
+  constexpr int GetDay_of_week() const { return day_of_week; }
+
+  /**
+   * Set the day_of_week.
+   *
+   * @param newDay_of_week the new day_of_week value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetDay_of_week(int newDay_of_week)
+  {
+    day_of_week = newDay_of_week;
+    return *this;
+  }
+
+  /**
+   * Get the utc_offset.
+   *
+   * @returns current utc_offset value.
+   */
+  constexpr int GetUtc_offset() const { return utc_offset; }
+
+  /**
+   * Set the utc_offset.
+   *
+   * @param newUtc_offset the new utc_offset value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetUtc_offset(int newUtc_offset)
+  {
+    utc_offset = newUtc_offset;
+    return *this;
   }
 
   /**
@@ -18094,7 +18297,7 @@ inline bool SDL::updateActive(bool active)
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using Keymod = SDL_Keymod;
+using Keymod = Uint16;
 
 /**
  * no modifier is applicable.
@@ -23066,34 +23269,35 @@ struct IOStreamBase : T
   }
 
   /**
-   * Create a custom SDL_IOStream.
+   * Create a custom IOStreamBase.
    *
    * Applications do not need to use this function unless they are providing
-   * their own SDL_IOStream implementation. If you just need an SDL_IOStream to
+   * their own IOStreamBase implementation. If you just need an IOStreamBase to
    * read/write a common data source, you should use the built-in
-   * implementations in SDL, like SDL_IOFromFile() or SDL_IOFromMem(), etc.
+   * implementations in SDL, like IOStreamBase.IOStreamBase() or
+   * IOStreamBase.IOStreamBase(), etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
    *
-   * @param iface the interface that implements this SDL_IOStream, initialized
+   * @param iface the interface that implements this IOStreamBase, initialized
    *              using SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
    * @post the object is convertible to true if valid or false on failure; call
-   * GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CloseIO
+   * @sa IOStreamBase.Close
    * @sa SDL_INIT_INTERFACE
-   * @sa SDL_IOFromConstMem
-   * @sa SDL_IOFromFile
-   * @sa SDL_IOFromMem
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamBase.IOStreamBase
    */
-  IOStreamBase(const IOStreamInterface* iface, void* userdata)
-    : T(SDL_OpenIO(iface, userdata))
+  IOStreamBase(const IOStreamInterface& iface, void* userdata)
+    : T(SDL_OpenIO(&iface, userdata))
   {
   }
 
@@ -23101,7 +23305,6 @@ struct IOStreamBase : T
   IOStreamBase(std::span<U> mem)
     : IOStreamBase(mem.data(), mem.size_bytes())
   {
-    static_assert(false, "Not implemented");
   }
 
   /**
@@ -24156,12 +24359,13 @@ using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
 using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
 
 /**
- * The flags on an SDL_Surface.
+ * The flags on an SurfaceBase.
  *
  * These are generally considered read-only.
  *
+ * @since This datatype is available since SDL 3.2.0.
  */
-using SurfaceFlags = SDL_SurfaceFlags;
+using SurfaceFlags = Uint32;
 
 /**
  * Surface uses preallocated pixel memory
@@ -29553,11 +29757,11 @@ constexpr GLAttr GL_EGL_PLATFORM = SDL_GL_EGL_PLATFORM;
  */
 
 /**
- * Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.
+ * Possible values to be set for the GL_CONTEXT_PROFILE_MASK attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using GLProfile = SDL_GLProfile;
+using GLProfile = Uint32;
 
 /**
  * OpenGL Core Profile context
@@ -29583,11 +29787,11 @@ constexpr GLProfile GL_CONTEXT_PROFILE_ES = SDL_GL_CONTEXT_PROFILE_ES;
  */
 
 /**
- * Possible flags to be set for the SDL_GL_CONTEXT_FLAGS attribute.
+ * Possible flags to be set for the GL_CONTEXT_FLAGS attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using GLContextFlag = SDL_GLContextFlag;
+using GLContextFlag = Uint32;
 
 constexpr GLContextFlag GL_CONTEXT_DEBUG_FLAG = SDL_GL_CONTEXT_DEBUG_FLAG;
 
@@ -29608,12 +29812,12 @@ constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG =
  */
 
 /**
- * Possible values to be set for the SDL_GL_CONTEXT_RELEASE_BEHAVIOR
+ * Possible values to be set for the GL_CONTEXT_RELEASE_BEHAVIOR
  * attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using GLContextReleaseFlag = SDL_GLContextReleaseFlag;
+using GLContextReleaseFlag = Uint32;
 
 constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE =
   SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
@@ -29629,11 +29833,11 @@ constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH =
  */
 
 /**
- * Possible values to be set SDL_GL_CONTEXT_RESET_NOTIFICATION attribute.
+ * Possible values to be set GL_CONTEXT_RESET_NOTIFICATION attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using GLContextResetNotification = SDL_GLContextResetNotification;
+using GLContextResetNotification = Uint32;
 
 constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION =
   SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;
@@ -33005,19 +33209,19 @@ inline Uint32 RegisterEvents(int numevents)
  * Get window associated with an event.
  *
  * @param event an event containing a `windowID`.
- * @returns the associated window on success or NULL if there is none.
+ * @returns the associated window on success or nullptr if there is none.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa WaitEvent()
- * @sa WaitEventTimeout()
+ * @sa PollEvent
+ * @sa WaitEvent
+ * @sa WaitEventTimeout
  */
-inline WindowRef GetWindowFromEvent(const Event* event)
+inline WindowRef GetWindowFromEvent(const Event& event)
 {
-  return SDL_GetWindowFromEvent(event);
+  return SDL_GetWindowFromEvent(&event);
 }
 
 /// @}
@@ -34415,9 +34619,9 @@ struct RendererBase : T
    * This takes into account several states:
    *
    * - The window dimensions.
-   * - The logical presentation settings (SDL_SetRenderLogicalPresentation)
-   * - The scale (SDL_SetRenderScale)
-   * - The viewport (SDL_SetRenderViewport)
+   * - The logical presentation settings (RendererBase.SetLogicalPresentation)
+   * - The scale (RendererBase.SetScale)
+   * - The viewport (RendererBase.SetViewport)
    *
    * Various event types are converted with this function: mouse, touch, pen,
    * etc.
@@ -34427,25 +34631,26 @@ struct RendererBase : T
    *
    * Relative mouse coordinates (xrel and yrel event fields) are _also_
    * converted. Applications that do not want these fields converted should use
-   * SDL_RenderCoordinatesFromWindow() on the specific event fields instead of
-   * converting the entire event structure.
+   * RendererBase.RenderCoordinatesFromWindow() on the specific event fields
+   * instead of converting the entire event structure.
    *
    * Once converted, coordinates may be outside the rendering area.
    *
    * @param event the event to modify.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_RenderCoordinatesFromWindow
+   * @sa RendererBase.RenderCoordinatesFromWindow
    */
-  bool ConvertEventToRenderCoordinates(SDL_Event* event) const
+  bool ConvertEventToRenderCoordinates(Event* event) const
   {
     return SDL_ConvertEventToRenderCoordinates(T::get(), event);
   }
+
   /**
    * Reset the drawing area for rendering to the entire target
    *
@@ -39497,7 +39702,7 @@ using Text = TextBase<ObjectUnique<TTF_Text>>;
  * @sa FontBase.SetStyle
  * @sa FontBase.GetStyle
  */
-using FontStyleFlags = TTF_FontStyleFlags;
+using FontStyleFlags = Uint32;
 
 /**
  * No special style
@@ -39688,7 +39893,7 @@ constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
  *
  * @sa SubString
  */
-using SubStringFlags = TTF_SubStringFlags;
+using SubStringFlags = Uint32;
 
 /**
  * The mask for the flow direction for this substring
@@ -42524,10 +42729,10 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetPreviousSubString(const SubString* substring,
+  bool GetPreviousSubString(const SubString& substring,
                             SubString* previous) const
   {
-    return TTF_GetPreviousTextSubString(T::get(), substring, previous);
+    return TTF_GetPreviousTextSubString(T::get(), &substring, previous);
   }
 
   /**
@@ -42546,9 +42751,9 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetNextSubString(const SubString* substring, SubString* next) const
+  bool GetNextSubString(const SubString& substring, SubString* next) const
   {
-    return TTF_GetNextTextSubString(T::get(), substring, next);
+    return TTF_GetNextTextSubString(T::get(), &substring, next);
   }
 
   /**
@@ -42639,27 +42844,27 @@ public:
 
   constexpr SubStringIterator& operator++()
   {
-    m_text.GetNextSubString(&m_subString, &m_subString);
+    m_text.GetNextSubString(m_subString, &m_subString);
     return *this;
   }
 
   constexpr SubStringIterator operator++(int)
   {
     auto curr = *this;
-    m_text.GetNextSubString(&m_subString, &m_subString);
+    m_text.GetNextSubString(m_subString, &m_subString);
     return curr;
   }
 
   constexpr SubStringIterator& operator--()
   {
-    m_text.GetPreviousSubString(&m_subString, &m_subString);
+    m_text.GetPreviousSubString(m_subString, &m_subString);
     return *this;
   }
 
   constexpr SubStringIterator operator--(int)
   {
     auto curr = *this;
-    m_text.GetPreviousSubString(&m_subString, &m_subString);
+    m_text.GetPreviousSubString(m_subString, &m_subString);
     return curr;
   }
 

@@ -115,9 +115,9 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> 
 <tr class="memitem:a8ea21122bc06522344aee70aecdf90de" id="r_a8ea21122bc06522344aee70aecdf90de"><td class="memItemLeft" align="right" valign="top"><a id="a8ea21122bc06522344aee70aecdf90de" name="a8ea21122bc06522344aee70aecdf90de"></a>
 constexpr <a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int index) const</td></tr>
 <tr class="separator:a8ea21122bc06522344aee70aecdf90de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2d8f415ea4792f619e4635b6ea0e831" id="r_ae2d8f415ea4792f619e4635b6ea0e831"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#ae2d8f415ea4792f619e4635b6ea0e831">SetColors</a> (const <a class="el" href="structSDL_1_1Color.html">Color</a> *colors, int firstcolor, int ncolors)</td></tr>
-<tr class="memdesc:ae2d8f415ea4792f619e4635b6ea0e831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a range of colors in a palette.  <br /></td></tr>
-<tr class="separator:ae2d8f415ea4792f619e4635b6ea0e831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a1ee60c24e660a9c6b9ad2157953fef" id="r_a0a1ee60c24e660a9c6b9ad2157953fef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#a0a1ee60c24e660a9c6b9ad2157953fef">SetColors</a> (std::span&lt; const SDL_Color &gt; colors, int firstcolor=0)</td></tr>
+<tr class="memdesc:a0a1ee60c24e660a9c6b9ad2157953fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a range of colors in a palette.  <br /></td></tr>
+<tr class="separator:a0a1ee60c24e660a9c6b9ad2157953fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e2cd9445229758ee1d20e01304458ed" id="r_a4e2cd9445229758ee1d20e01304458ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#a4e2cd9445229758ee1d20e01304458ed">SetColors</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const SDL_Color &gt; colors, int firstcolor=0)</td></tr>
 <tr class="memdesc:a4e2cd9445229758ee1d20e01304458ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a range of colors in a palette.  <br /></td></tr>
 <tr class="separator:a4e2cd9445229758ee1d20e01304458ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,7 +169,7 @@ template&lt;ObjectBox&lt; SDL_Palette * &gt; T&gt; </div>
 <dl class="section post"><dt>Postcondition</dt><dd>this represents a new Palette structure convertible to true on success or converts to false on failure (e.g. if there wasn't enough memory); call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#ae2d8f415ea4792f619e4635b6ea0e831" title="Set a range of colors in a palette.">SetColors()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#a0a1ee60c24e660a9c6b9ad2157953fef" title="Set a range of colors in a palette.">SetColors()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#affe172cd76054e60ecbb95ae22141d84" title="Set the palette used by a surface.">Surface.SetPalette()</a> </dd></dl>
 
@@ -206,63 +206,8 @@ template&lt;ObjectBox&lt; SDL_Palette * &gt; T&gt; </div>
 
 </div>
 </div>
-<a id="ae2d8f415ea4792f619e4635b6ea0e831" name="ae2d8f415ea4792f619e4635b6ea0e831"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2d8f415ea4792f619e4635b6ea0e831">&#9670;&#160;</a></span>SetColors() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Palette * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1PaletteBase.html">SDL::PaletteBase</a>&lt; T &gt;::SetColors </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structSDL_1_1Color.html">Color</a> *&#160;</td>
-          <td class="paramname"><em>colors</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>firstcolor</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>ncolors</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">colors</td><td>an array of SDL_Color structures to copy into the palette. </td></tr>
-    <tr><td class="paramname">firstcolor</td><td>the index of the first palette entry to modify. </td></tr>
-    <tr><td class="paramname">ncolors</td><td>the number of entries to modify. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-</div>
-</div>
 <a id="a4e2cd9445229758ee1d20e01304458ed" name="a4e2cd9445229758ee1d20e01304458ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e2cd9445229758ee1d20e01304458ed">&#9670;&#160;</a></span>SetColors() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e2cd9445229758ee1d20e01304458ed">&#9670;&#160;</a></span>SetColors() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,6 +250,55 @@ template&lt;ObjectBox&lt; SDL_Palette * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread. </dd></dl>
+
+</div>
+</div>
+<a id="a0a1ee60c24e660a9c6b9ad2157953fef" name="a0a1ee60c24e660a9c6b9ad2157953fef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a1ee60c24e660a9c6b9ad2157953fef">&#9670;&#160;</a></span>SetColors() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;ObjectBox&lt; SDL_Palette * &gt; T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structSDL_1_1PaletteBase.html">SDL::PaletteBase</a>&lt; T &gt;::SetColors </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; const SDL_Color &gt;&#160;</td>
+          <td class="paramname"><em>colors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>firstcolor</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">colors</td><td>an array of <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> structures to copy into the palette. </td></tr>
+    <tr><td class="paramname">firstcolor</td><td>the index of the first palette entry to modify. </td></tr>
+    <tr><td class="paramname">ncolors</td><td>the number of entries to modify. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

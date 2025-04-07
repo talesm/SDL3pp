@@ -65,7 +65,6 @@ export interface ApiTransform {
   definitionPrefix?: string;
   renameRules?: ReplacementRule[];
   docRules?: ReplacementRule[];
-  typeMap?: StringMap;
   paramTypeMap?: StringMap;
   returnTypeMap?: StringMap;
 }

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['datetime_0',['datetime',['../structSDL_1_1DateTime.html#aee00aebad97035b43d0169e7f5cfef0a',1,'SDL::DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int nanosecond, int day_of_week, int utc_offset)'],['../structSDL_1_1DateTime.html#ae847319a174d7457b73a4c7b1cba76c8',1,'SDL::DateTime::DateTime(Time ticks, bool localTime=true)'],['../structSDL_1_1DateTime.html#a3937d1421622ee4b9f248325e4547ea0',1,'SDL::DateTime::DateTime(const SDL_DateTime &amp;dt={0})']]],
+  ['datetime_0',['datetime',['../structSDL_1_1DateTime.html#aee00aebad97035b43d0169e7f5cfef0a',1,'SDL::DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int nanosecond, int day_of_week, int utc_offset)'],['../structSDL_1_1DateTime.html#ae847319a174d7457b73a4c7b1cba76c8',1,'SDL::DateTime::DateTime(Time ticks, bool localTime=true)'],['../structSDL_1_1DateTime.html#a4e2c345a8dd24dbc1ac7f98dbbc9525c',1,'SDL::DateTime::DateTime(const SDL_DateTime &amp;dateTime={})']]],
   ['delay_1',['Delay',['../group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4',1,'SDL']]],
   ['delayprecise_2',['DelayPrecise',['../group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de',1,'SDL']]],
   ['deletestring_3',['DeleteString',['../structSDL_1_1TextBase.html#abaab7b22abe189d052ca505a58dea389',1,'SDL::TextBase']]],

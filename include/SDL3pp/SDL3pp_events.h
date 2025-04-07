@@ -1966,19 +1966,19 @@ inline Uint32 RegisterEvents(int numevents)
  * Get window associated with an event.
  *
  * @param event an event containing a `windowID`.
- * @returns the associated window on success or NULL if there is none.
+ * @returns the associated window on success or nullptr if there is none.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa WaitEvent()
- * @sa WaitEventTimeout()
+ * @sa PollEvent
+ * @sa WaitEvent
+ * @sa WaitEventTimeout
  */
-inline WindowRef GetWindowFromEvent(const Event* event)
+inline WindowRef GetWindowFromEvent(const Event& event)
 {
-  return SDL_GetWindowFromEvent(event);
+  return SDL_GetWindowFromEvent(&event);
 }
 
 /// @}

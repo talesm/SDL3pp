@@ -1586,104 +1586,110 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  */
 struct Color : SDL_Color
 {
-  constexpr Color(SDL_Color color = {0})
+
+  /**
+   * Wraps Color.
+   *
+   * @param color the value to be wrapped.
+   */
+  constexpr Color(const SDL_Color& color = {})
     : SDL_Color(color)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param r the value for channel r.
+   * @param g the value for channel g.
+   * @param b the value for channel b.
+   * @param a the value for channel a.
+   */
   constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
     : SDL_Color{r, g, b, a}
   {
   }
 
   // Auto comparison operator
-  auto operator<=>(const Color& other) const = default;
+  constexpr auto operator<=>(const Color& other) const = default;
 
   /**
-   * Get the red component from the color
+   * Get the red component from the color.
    *
-   * @returns The red component from the color
+   * @returns The red component from the color.
    *
    */
-  constexpr Uint8 GetRed() const { return r; }
+  constexpr Uint8 GetR() const { return r; }
 
   /**
-   * Set the red component from the color
+   * Set the red component from the color.
    *
-   * @param[in] nr New red component value
-   *
-   * @returns Reference to self
-   *
+   * @param newR New red component value.
+   * @returns Reference to self.
    */
-  constexpr Color& SetRed(Uint8 nr)
+  constexpr Color& SetR(Uint8 newR)
   {
-    r = nr;
+    r = newR;
     return *this;
   }
 
   /**
-   * Get the green component from the color
+   * Get the green component from the color.
    *
-   * @returns The green component from the color
+   * @returns The green component from the color.
    *
    */
-  constexpr Uint8 GetGreen() const { return g; }
+  constexpr Uint8 GetG() const { return g; }
 
   /**
-   * Set the green component from the color
+   * Set the green component from the color.
    *
-   * @param[in] ng New green component value
-   *
-   * @returns Reference to self
-   *
+   * @param newG New green component value.
+   * @returns Reference to self.
    */
-  constexpr Color& SetGreen(Uint8 ng)
+  constexpr Color& SetG(Uint8 newG)
   {
-    g = ng;
+    g = newG;
     return *this;
   }
 
   /**
-   * Get the blue component from the color
+   * Get the blue component from the color.
    *
-   * @returns The blue component from the color
+   * @returns The blue component from the color.
    *
    */
-  constexpr Uint8 GetBlue() const { return b; }
+  constexpr Uint8 GetB() const { return b; }
 
   /**
-   * Set the blue component from the color
+   * Set the blue component from the color.
    *
-   * @param[in] nb New blue component value
-   *
-   * @returns Reference to self
-   *
+   * @param newB New blue component value.
+   * @returns Reference to self.
    */
-  constexpr Color& SetBlue(Uint8 nb)
+  constexpr Color& SetB(Uint8 newB)
   {
-    b = nb;
+    b = newB;
     return *this;
   }
 
   /**
-   * Get the alpha component from the color
+   * Get the alpha component from the color.
    *
-   * @returns The alpha component from the color
+   * @returns The alpha component from the color.
    *
    */
-  constexpr Uint8 GetAlpha() const { return a; }
+  constexpr Uint8 GetA() const { return a; }
 
   /**
-   * Set the alpha component from the color
+   * Set the alpha component from the color.
    *
-   * @param[in] na New alpha component value
-   *
-   * @returns Reference to self
-   *
+   * @param newA New alpha component value.
+   * @returns Reference to self.
    */
-  constexpr Color& SetAlpha(Uint8 na)
+  constexpr Color& SetA(Uint8 newA)
   {
-    a = na;
+    a = newA;
     return *this;
   }
 
@@ -1713,7 +1719,7 @@ struct Color : SDL_Color
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified.
    */
-  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
+  Uint32 Map(const PixelFormatDetails& format, PaletteRef palette) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -1742,7 +1748,7 @@ struct Color : SDL_Color
    * @sa Map()
    */
   static Color Get(Uint32 pixel,
-                   const PixelFormatDetails* format,
+                   const PixelFormatDetails& format,
                    PaletteRef palette);
 };
 
@@ -1758,104 +1764,110 @@ struct Color : SDL_Color
  */
 struct FColor : SDL_FColor
 {
-  constexpr FColor(SDL_FColor color = {0})
+
+  /**
+   * Wraps FColor.
+   *
+   * @param color the value to be wrapped.
+   */
+  constexpr FColor(const SDL_FColor& color = {})
     : SDL_FColor(color)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param r the value for r.
+   * @param g the value for g.
+   * @param b the value for b.
+   * @param a the value for a.
+   */
   constexpr FColor(float r, float g, float b, float a = 1)
     : SDL_FColor{r, g, b, a}
   {
   }
 
   // Auto comparison operator
-  auto operator<=>(const FColor& other) const = default;
+  constexpr auto operator<=>(const FColor& other) const = default;
 
   /**
-   * Get the red component from the color
+   * Get the red component from the color.
    *
-   * @returns The red component from the color
+   * @returns The red component from the color.
    *
    */
-  constexpr float GetRed() const { return r; }
+  constexpr float GetR() const { return r; }
 
   /**
-   * Set the red component from the color
+   * Set the red component from the color.
    *
-   * @param[in] nr New red component value
-   *
-   * @returns Reference to self
-   *
+   * @param newR New red component value.
+   * @returns Reference to self.
    */
-  constexpr FColor& SetRed(float nr)
+  constexpr FColor& SetR(float newR)
   {
-    r = nr;
+    r = newR;
     return *this;
   }
 
   /**
-   * Get the green component from the color
+   * Get the green component from the color.
    *
-   * @returns The green component from the color
+   * @returns The green component from the color.
    *
    */
-  constexpr float GetGreen() const { return g; }
+  constexpr float GetG() const { return g; }
 
   /**
-   * Set the green component from the color
+   * Set the green component from the color.
    *
-   * @param[in] ng New green component value
-   *
-   * @returns Reference to self
-   *
+   * @param newG New green component value.
+   * @returns Reference to self.
    */
-  constexpr FColor& SetGreen(float ng)
+  constexpr FColor& SetG(float newG)
   {
-    g = ng;
+    g = newG;
     return *this;
   }
 
   /**
-   * Get the blue component from the color
+   * Get the blue component from the color.
    *
-   * @returns The blue component from the color
+   * @returns The blue component from the color.
    *
    */
-  constexpr float GetBlue() const { return b; }
+  constexpr float GetB() const { return b; }
 
   /**
-   * Set the blue component from the color
+   * Set the blue component from the color.
    *
-   * @param[in] nb New blue component value
-   *
-   * @returns Reference to self
-   *
+   * @param newB New blue component value.
+   * @returns Reference to self.
    */
-  constexpr FColor& SetBlue(float nb)
+  constexpr FColor& SetB(float newB)
   {
-    b = nb;
+    b = newB;
     return *this;
   }
 
   /**
-   * Get the alpha component from the color
+   * Get the alpha component from the color.
    *
-   * @returns The alpha component from the color
+   * @returns The alpha component from the color.
    *
    */
-  constexpr float GetAlpha() const { return a; }
+  constexpr float GetA() const { return a; }
 
   /**
-   * Set the alpha component from the color
+   * Set the alpha component from the color.
    *
-   * @param[in] na New alpha component value
-   *
-   * @returns Reference to self
-   *
+   * @param newA New alpha component value.
+   * @returns Reference to self.
    */
-  constexpr FColor& SetAlpha(float na)
+  constexpr FColor& SetA(float newA)
   {
-    a = na;
+    a = newA;
     return *this;
   }
 };
@@ -1904,7 +1916,7 @@ struct PaletteBase : T
   /**
    * Set a range of colors in a palette.
    *
-   * @param colors an array of SDL_Color structures to copy into the palette.
+   * @param colors an array of Color structures to copy into the palette.
    * @param firstcolor the index of the first palette entry to modify.
    * @param ncolors the number of entries to modify.
    * @returns true on success or false on failure; call GetError() for more
@@ -1915,9 +1927,10 @@ struct PaletteBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool SetColors(const Color* colors, int firstcolor, int ncolors)
+  bool SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
   {
-    return SDL_SetPaletteColors(T::get(), colors, firstcolor, ncolors);
+    return SDL_SetPaletteColors(
+      T::get(), colors.data(), firstcolor, colors.size());
   }
 
   /**
@@ -1984,9 +1997,9 @@ inline void ObjectRef<SDL_Palette>::doFree(SDL_Palette* resource)
  * format the return value can be assigned to a Uint16, and similarly a Uint8
  * for an 8-bpp format).
  *
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ * @param format a reference to PixelFormatDetails describing the pixel
  *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
+ * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r the red component of the pixel in the range 0-255.
  * @param g the green component of the pixel in the range 0-255.
  * @param b the blue component of the pixel in the range 0-255.
@@ -1997,18 +2010,18 @@ inline void ObjectRef<SDL_Palette>::doFree(SDL_Palette* resource)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPixelFormatDetails()
- * @sa GetRGB()
- * @sa MapRGBA()
- * @sa Surface.MapColor()
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGB
+ * @sa MapRGBA
+ * @sa SurfaceBase.MapColor
  */
-inline Uint32 MapRGB(const PixelFormatDetails* format,
+inline Uint32 MapRGB(const PixelFormatDetails& format,
                      PaletteRef palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
 {
-  return SDL_MapRGB(format, palette.get(), r, g, b);
+  return SDL_MapRGB(&format, palette.get(), r, g, b);
 }
 
 /**
@@ -2029,9 +2042,9 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  * format the return value can be assigned to a Uint16, and similarly a Uint8
  * for an 8-bpp format).
  *
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ * @param format a reference to PixelFormatDetails describing the pixel
  *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
+ * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r the red component of the pixel in the range 0-255.
  * @param g the green component of the pixel in the range 0-255.
  * @param b the blue component of the pixel in the range 0-255.
@@ -2043,19 +2056,19 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGBA()
- * @sa MapRGB()
- * @sa Surface.MapColor()
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGBA
+ * @sa MapRGB
+ * @sa SurfaceBase.MapColor
  */
-inline Uint32 MapRGBA(const PixelFormatDetails* format,
+inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       PaletteRef palette,
                       Uint8 r,
                       Uint8 g,
                       Uint8 b,
                       Uint8 a)
 {
-  return SDL_MapRGBA(format, palette.get(), r, g, b, a);
+  return SDL_MapRGBA(&format, palette.get(), r, g, b, a);
 }
 
 /**
@@ -2067,31 +2080,31 @@ inline Uint32 MapRGBA(const PixelFormatDetails* format,
  * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
  *
  * @param pixel a pixel value.
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ * @param format a reference to PixelFormatDetails describing the pixel
  *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r a pointer filled in with the red component, may be NULL.
- * @param g a pointer filled in with the green component, may be NULL.
- * @param b a pointer filled in with the blue component, may be NULL.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @param r a pointer filled in with the red component, may be nullptr.
+ * @param g a pointer filled in with the green component, may be nullptr.
+ * @param b a pointer filled in with the blue component, may be nullptr.
  *
  * @threadsafety It is safe to call this function from any thread, as long as
  *               the palette is not modified.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGBA()
- * @sa MapRGB()
- * @sa MapRGBA()
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGBA
+ * @sa MapRGB
+ * @sa MapRGBA
  */
 inline void GetRGB(Uint32 pixel,
-                   const PixelFormatDetails* format,
+                   const PixelFormatDetails& format,
                    PaletteRef palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, format, palette.get(), r, g, b);
+  SDL_GetRGB(pixel, &format, palette.get(), r, g, b);
 }
 
 /**
@@ -2106,48 +2119,48 @@ inline void GetRGB(Uint32 pixel,
  * (100% opaque).
  *
  * @param pixel a pixel value.
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ * @param format a reference to PixelFormatDetails describing the pixel
  *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r a pointer filled in with the red component, may be NULL.
- * @param g a pointer filled in with the green component, may be NULL.
- * @param b a pointer filled in with the blue component, may be NULL.
- * @param a a pointer filled in with the alpha component, may be NULL.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @param r a pointer filled in with the red component, may be nullptr.
+ * @param g a pointer filled in with the green component, may be nullptr.
+ * @param b a pointer filled in with the blue component, may be nullptr.
+ * @param a a pointer filled in with the alpha component, may be nullptr.
  *
  * @threadsafety It is safe to call this function from any thread, as long as
  *               the palette is not modified.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGB()
- * @sa MapRGB()
- * @sa MapRGBA()
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGB
+ * @sa MapRGB
+ * @sa MapRGBA
  */
 inline void GetRGBA(Uint32 pixel,
-                    const PixelFormatDetails* format,
+                    const PixelFormatDetails& format,
                     PaletteRef palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, format, palette.get(), r, g, b, a);
+  SDL_GetRGBA(pixel, &format, palette.get(), r, g, b, a);
 }
 
 /** @} */
 
 #pragma region impl
 
-inline Uint32 Color::Map(const PixelFormatDetails* format,
+inline Uint32 Color::Map(const PixelFormatDetails& format,
                          PaletteRef palette = nullptr) const
 {
   return MapRGBA(format, palette.get(), r, g, b, a);
 }
 
-inline Color Get(Uint32 pixel,
-                 const PixelFormatDetails* format,
-                 PaletteRef palette = nullptr)
+inline Color Color::Get(Uint32 pixel,
+                        const PixelFormatDetails& format,
+                        PaletteRef palette = nullptr)
 {
   Color c;
   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
@@ -2156,12 +2169,12 @@ inline Color Get(Uint32 pixel,
 
 inline Uint32 PixelFormat::Map(Color color, PaletteRef palette = nullptr) const
 {
-  return color.Map(GetDetails(), palette);
+  return color.Map(*GetDetails(), palette);
 }
 
 inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
 {
-  return Color::Get(pixel, GetDetails(), palette);
+  return Color::Get(pixel, *GetDetails(), palette);
 }
 
 #pragma endregion impl

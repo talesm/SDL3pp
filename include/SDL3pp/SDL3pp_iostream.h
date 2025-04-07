@@ -357,34 +357,35 @@ struct IOStreamBase : T
   }
 
   /**
-   * Create a custom SDL_IOStream.
+   * Create a custom IOStreamBase.
    *
    * Applications do not need to use this function unless they are providing
-   * their own SDL_IOStream implementation. If you just need an SDL_IOStream to
+   * their own IOStreamBase implementation. If you just need an IOStreamBase to
    * read/write a common data source, you should use the built-in
-   * implementations in SDL, like SDL_IOFromFile() or SDL_IOFromMem(), etc.
+   * implementations in SDL, like IOStreamBase.IOStreamBase() or
+   * IOStreamBase.IOStreamBase(), etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
    *
-   * @param iface the interface that implements this SDL_IOStream, initialized
+   * @param iface the interface that implements this IOStreamBase, initialized
    *              using SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
    * @post the object is convertible to true if valid or false on failure; call
-   * GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CloseIO
+   * @sa IOStreamBase.Close
    * @sa SDL_INIT_INTERFACE
-   * @sa SDL_IOFromConstMem
-   * @sa SDL_IOFromFile
-   * @sa SDL_IOFromMem
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamBase.IOStreamBase
    */
-  IOStreamBase(const IOStreamInterface* iface, void* userdata)
-    : T(SDL_OpenIO(iface, userdata))
+  IOStreamBase(const IOStreamInterface& iface, void* userdata)
+    : T(SDL_OpenIO(&iface, userdata))
   {
   }
 
@@ -392,7 +393,6 @@ struct IOStreamBase : T
   IOStreamBase(std::span<U> mem)
     : IOStreamBase(mem.data(), mem.size_bytes())
   {
-    static_assert(false, "Not implemented");
   }
 
   /**

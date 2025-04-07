@@ -118,9 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae97505e663f4683e64bd563e3d4d3319" id="r_ae97505e663f4683e64bd563e3d4d3319"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#ae97505e663f4683e64bd563e3d4d3319">IOStreamBase</a> (<a class="el" href="structSDL_1_1IOFromDynamicMem__CtorTag.html">IOFromDynamicMem_CtorTag</a>)</td></tr>
 <tr class="memdesc:ae97505e663f4683e64bd563e3d4d3319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to create an SDL_IOStream that is backed by dynamically allocated memory.  <br /></td></tr>
 <tr class="separator:ae97505e663f4683e64bd563e3d4d3319"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61811856398503ebcc4e8526e904ff44" id="r_a61811856398503ebcc4e8526e904ff44"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a61811856398503ebcc4e8526e904ff44">IOStreamBase</a> (const <a class="el" href="group__CategoryIOStream.html#gabc1c1a21fb3754b7ecd223f665cb2cd6">IOStreamInterface</a> *iface, void *userdata)</td></tr>
-<tr class="memdesc:a61811856398503ebcc4e8526e904ff44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a custom SDL_IOStream.  <br /></td></tr>
-<tr class="separator:a61811856398503ebcc4e8526e904ff44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae793ade659c906e6454fd06e40b091f3" id="r_ae793ade659c906e6454fd06e40b091f3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#ae793ade659c906e6454fd06e40b091f3">IOStreamBase</a> (const <a class="el" href="group__CategoryIOStream.html#gabc1c1a21fb3754b7ecd223f665cb2cd6">IOStreamInterface</a> &amp;iface, void *userdata)</td></tr>
+<tr class="memdesc:ae793ade659c906e6454fd06e40b091f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a custom <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a>.  <br /></td></tr>
+<tr class="separator:ae793ade659c906e6454fd06e40b091f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b16aac0f483a52e75d22a8ec51783af" id="r_a9b16aac0f483a52e75d22a8ec51783af"><td class="memTemplParams" colspan="2"><a id="a9b16aac0f483a52e75d22a8ec51783af" name="a9b16aac0f483a52e75d22a8ec51783af"></a>
 template&lt;class U &gt; </td></tr>
 <tr class="memitem:a9b16aac0f483a52e75d22a8ec51783af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>IOStreamBase</b> (std::span&lt; U &gt; mem)</td></tr>
@@ -533,8 +533,8 @@ SDL_WriteIO </dd></dl>
 
 </div>
 </div>
-<a id="a61811856398503ebcc4e8526e904ff44" name="a61811856398503ebcc4e8526e904ff44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61811856398503ebcc4e8526e904ff44">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[5/5]</span></h2>
+<a id="ae793ade659c906e6454fd06e40b091f3" name="ae793ade659c906e6454fd06e40b091f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae793ade659c906e6454fd06e40b091f3">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -547,7 +547,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::IOStreamBase </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__CategoryIOStream.html#gabc1c1a21fb3754b7ecd223f665cb2cd6">IOStreamInterface</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryIOStream.html#gabc1c1a21fb3754b7ecd223f665cb2cd6">IOStreamInterface</a> &amp;&#160;</td>
           <td class="paramname"><em>iface</em>, </td>
         </tr>
         <tr>
@@ -568,11 +568,11 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Applications do not need to use this function unless they are providing their own SDL_IOStream implementation. If you just need an SDL_IOStream to read/write a common data source, you should use the built-in implementations in <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>, like SDL_IOFromFile() or SDL_IOFromMem(), etc.</p>
+<p>Applications do not need to use this function unless they are providing their own <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> implementation. If you just need an <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> to read/write a common data source, you should use the built-in implementations in <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>, like <a class="el" href="structSDL_1_1IOStreamBase.html#a79455ffde3d382a7b6c23b9966df2b95" title="Use this function to create a new SDL_IOStream structure for reading from and/or writing to a named f...">IOStreamBase.IOStreamBase()</a> or <a class="el" href="structSDL_1_1IOStreamBase.html#a79455ffde3d382a7b6c23b9966df2b95" title="Use this function to create a new SDL_IOStream structure for reading from and/or writing to a named f...">IOStreamBase.IOStreamBase()</a>, etc.</p>
 <p>This function makes a copy of <code>iface</code> and the caller does not need to keep it around after this call.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">iface</td><td>the interface that implements this SDL_IOStream, initialized using <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE()</a>. </td></tr>
+    <tr><td class="paramname">iface</td><td>the interface that implements this <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a>, initialized using <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE()</a>. </td></tr>
     <tr><td class="paramname">userdata</td><td>the pointer that will be passed to the interface functions. </td></tr>
   </table>
   </dd>
@@ -580,15 +580,15 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section post"><dt>Postcondition</dt><dd>the object is convertible to true if valid or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_CloseIO </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#a837589f2802386ac80dc98aac85cba11" title="Close and free an allocated SDL_IOStream structure.">IOStreamBase.Close</a> </dd>
 <dd>
 <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE</a> </dd>
 <dd>
-SDL_IOFromConstMem </dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a79455ffde3d382a7b6c23b9966df2b95" title="Use this function to create a new SDL_IOStream structure for reading from and/or writing to a named f...">IOStreamBase.IOStreamBase</a> </dd>
 <dd>
-SDL_IOFromFile </dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a79455ffde3d382a7b6c23b9966df2b95" title="Use this function to create a new SDL_IOStream structure for reading from and/or writing to a named f...">IOStreamBase.IOStreamBase</a> </dd>
 <dd>
-SDL_IOFromMem </dd></dl>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a79455ffde3d382a7b6c23b9966df2b95" title="Use this function to create a new SDL_IOStream structure for reading from and/or writing to a named f...">IOStreamBase.IOStreamBase</a> </dd></dl>
 
 </div>
 </div>

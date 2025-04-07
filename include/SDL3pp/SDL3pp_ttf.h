@@ -177,7 +177,7 @@ using Text = TextBase<ObjectUnique<TTF_Text>>;
  * @sa FontBase.SetStyle
  * @sa FontBase.GetStyle
  */
-using FontStyleFlags = TTF_FontStyleFlags;
+using FontStyleFlags = Uint32;
 
 /**
  * No special style
@@ -368,7 +368,7 @@ constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
  *
  * @sa SubString
  */
-using SubStringFlags = TTF_SubStringFlags;
+using SubStringFlags = Uint32;
 
 /**
  * The mask for the flow direction for this substring
@@ -3204,10 +3204,10 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetPreviousSubString(const SubString* substring,
+  bool GetPreviousSubString(const SubString& substring,
                             SubString* previous) const
   {
-    return TTF_GetPreviousTextSubString(T::get(), substring, previous);
+    return TTF_GetPreviousTextSubString(T::get(), &substring, previous);
   }
 
   /**
@@ -3226,9 +3226,9 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetNextSubString(const SubString* substring, SubString* next) const
+  bool GetNextSubString(const SubString& substring, SubString* next) const
   {
-    return TTF_GetNextTextSubString(T::get(), substring, next);
+    return TTF_GetNextTextSubString(T::get(), &substring, next);
   }
 
   /**
@@ -3319,27 +3319,27 @@ public:
 
   constexpr SubStringIterator& operator++()
   {
-    m_text.GetNextSubString(&m_subString, &m_subString);
+    m_text.GetNextSubString(m_subString, &m_subString);
     return *this;
   }
 
   constexpr SubStringIterator operator++(int)
   {
     auto curr = *this;
-    m_text.GetNextSubString(&m_subString, &m_subString);
+    m_text.GetNextSubString(m_subString, &m_subString);
     return curr;
   }
 
   constexpr SubStringIterator& operator--()
   {
-    m_text.GetPreviousSubString(&m_subString, &m_subString);
+    m_text.GetPreviousSubString(m_subString, &m_subString);
     return *this;
   }
 
   constexpr SubStringIterator operator--(int)
   {
     auto curr = *this;
-    m_text.GetPreviousSubString(&m_subString, &m_subString);
+    m_text.GetPreviousSubString(m_subString, &m_subString);
     return curr;
   }
 

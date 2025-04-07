@@ -16,7 +16,7 @@ var searchData=
   ['blendfactor_5fsrc_5falpha_13',['BLENDFACTOR_SRC_ALPHA',['../group__CategoryBlendmode.html#ga76d933845e0aed08c6243630bdcf2286',1,'SDL']]],
   ['blendfactor_5fsrc_5fcolor_14',['BLENDFACTOR_SRC_COLOR',['../group__CategoryBlendmode.html#ga66486fa599a85f258fd93b0f36e379ed',1,'SDL']]],
   ['blendfactor_5fzero_15',['BLENDFACTOR_ZERO',['../group__CategoryBlendmode.html#ga00143e5f9f2940f2550cc752688287b3',1,'SDL']]],
-  ['blendmode_16',['BlendMode',['../group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694',1,'SDL']]],
+  ['blendmode_16',['BlendMode',['../group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962',1,'SDL']]],
   ['blendmode_5fadd_17',['BLENDMODE_ADD',['../group__CategoryBlendmode.html#ga910cec1f2c4b1df599a7387e130a900a',1,'SDL']]],
   ['blendmode_5fadd_5fpremultiplied_18',['BLENDMODE_ADD_PREMULTIPLIED',['../group__CategoryBlendmode.html#ga4a45ca8634e736bd50cc072498b1ede9',1,'SDL']]],
   ['blendmode_5fblend_19',['BLENDMODE_BLEND',['../group__CategoryBlendmode.html#gaa38070d807b6e89f76e8aa8d55f8c5a4',1,'SDL']]],

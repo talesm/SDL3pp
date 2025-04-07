@@ -264,7 +264,7 @@ var searchData=
   ['keycode_5fy_261',['KEYCODE_Y',['../group__CategoryKeycode.html#gab90ec3ad402ab5fd8a11abfabecf3fd2',1,'SDL']]],
   ['keycode_5fz_262',['KEYCODE_Z',['../group__CategoryKeycode.html#ga0352b515e57b1c10bfa56a7054e59a43',1,'SDL']]],
   ['keycodes_263',['Keyboard Keycodes',['../group__CategoryKeycode.html',1,'']]],
-  ['keymod_264',['Keymod',['../group__CategoryKeycode.html#ga63de8c90951ffeddfe81e1ddf45043fe',1,'SDL']]],
+  ['keymod_264',['Keymod',['../group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c',1,'SDL']]],
   ['keyvaluewrapper_265',['KeyValueWrapper',['../structSDL_1_1KeyValueWrapper.html',1,'SDL']]],
   ['kmod_5falt_266',['KMOD_ALT',['../group__CategoryKeycode.html#gabbb4960394f39cbcd1c04b3e03194280',1,'SDL']]],
   ['kmod_5fcaps_267',['KMOD_CAPS',['../group__CategoryKeycode.html#gaeecc88d39b5918e0c303baf69da0b4a6',1,'SDL']]],

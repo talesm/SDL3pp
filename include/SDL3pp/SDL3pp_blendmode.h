@@ -22,13 +22,17 @@ namespace SDL {
  */
 
 /**
- * @brief  A set of blend modes used in drawing operations.
+ * A set of blend modes used in drawing operations.
  *
  * These predefined blend modes are supported everywhere.
  *
  * Additional values may be obtained from ComposeCustomBlendMode().
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ComposeCustomBlendMode
  */
-using BlendMode = SDL_BlendMode;
+using BlendMode = Uint32;
 
 /**
  * no blending: dstRGBA = srcRGBA
