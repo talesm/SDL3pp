@@ -430,365 +430,373 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l02203" name="l02203"></a><span class="lineno"> 2203</span><span class="preprocessor">  &quot;SDL_JOYSTICK_ZERO_CENTERED_DEVICES&quot;</span></div>
 </div>
 <div class="line"><a id="l02204" name="l02204"></a><span class="lineno"> 2204</span> </div>
-<div class="line"><a id="l02225" name="l02225"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga725b0723789d1cf987547174f8918829"> 2225</a></span><span class="preprocessor">#define SDL_HINT_JOYSTICK_HAPTIC_AXES &quot;SDL_JOYSTICK_HAPTIC_AXES&quot;</span></div>
-<div class="line"><a id="l02226" name="l02226"></a><span class="lineno"> 2226</span> </div>
-<div class="line"><a id="l02259" name="l02259"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga667c8b0f39414f4809b739fe8cc624f5"> 2259</a></span><span class="preprocessor">#define SDL_HINT_KEYCODE_OPTIONS &quot;SDL_KEYCODE_OPTIONS&quot;</span></div>
-<div class="line"><a id="l02260" name="l02260"></a><span class="lineno"> 2260</span> </div>
-<div class="line"><a id="l02273" name="l02273"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa735bf5ee35ae9fcadd92e76d4243133"> 2273</a></span><span class="preprocessor">#define SDL_HINT_KMSDRM_DEVICE_INDEX &quot;SDL_KMSDRM_DEVICE_INDEX&quot;</span></div>
-<div class="line"><a id="l02274" name="l02274"></a><span class="lineno"> 2274</span> </div>
-<div class="line"><a id="l02301" name="l02301"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gacc1f6b4d070acbd87ccd578c72742248"> 2301</a></span><span class="preprocessor">#define SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER &quot;SDL_KMSDRM_REQUIRE_DRM_MASTER&quot;</span></div>
-<div class="line"><a id="l02302" name="l02302"></a><span class="lineno"> 2302</span> </div>
-<div class="line"><a id="l02327" name="l02327"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga65756e851cf882bb46b108ac096e7bf2"> 2327</a></span><span class="preprocessor">#define SDL_HINT_LOGGING &quot;SDL_LOGGING&quot;</span></div>
-<div class="line"><a id="l02328" name="l02328"></a><span class="lineno"> 2328</span> </div>
-<div class="line"><a id="l02343" name="l02343"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1b75df316decc7aae5bc31b0595c1b01"> 2343</a></span><span class="preprocessor">#define SDL_HINT_MAC_BACKGROUND_APP &quot;SDL_MAC_BACKGROUND_APP&quot;</span></div>
-<div class="line"><a id="l02344" name="l02344"></a><span class="lineno"> 2344</span> </div>
-<div class="foldopen" id="foldopen02359" data-start="" data-end="">
-<div class="line"><a id="l02359" name="l02359"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga63dd635fa195f590f645c1170f50968d"> 2359</a></span><span class="preprocessor">#define SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK                            \</span></div>
-<div class="line"><a id="l02360" name="l02360"></a><span class="lineno"> 2360</span><span class="preprocessor">  &quot;SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK&quot;</span></div>
+<div class="line"><a id="l02205" name="l02205"></a><span class="lineno"> 2205</span><span class="preprocessor">#if SDL_VERSION_ATLEAST(3, 2, 5)</span></div>
+<div class="line"><a id="l02206" name="l02206"></a><span class="lineno"> 2206</span> </div>
+<div class="line"><a id="l02227" name="l02227"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga725b0723789d1cf987547174f8918829"> 2227</a></span><span class="preprocessor">#define SDL_HINT_JOYSTICK_HAPTIC_AXES &quot;SDL_JOYSTICK_HAPTIC_AXES&quot;</span></div>
+<div class="line"><a id="l02228" name="l02228"></a><span class="lineno"> 2228</span> </div>
+<div class="line"><a id="l02229" name="l02229"></a><span class="lineno"> 2229</span><span class="preprocessor">#endif </span><span class="comment">// SDL_VERSION_ATLEAST(3, 2, 5)</span></div>
+<div class="line"><a id="l02230" name="l02230"></a><span class="lineno"> 2230</span> </div>
+<div class="line"><a id="l02263" name="l02263"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga667c8b0f39414f4809b739fe8cc624f5"> 2263</a></span><span class="preprocessor">#define SDL_HINT_KEYCODE_OPTIONS &quot;SDL_KEYCODE_OPTIONS&quot;</span></div>
+<div class="line"><a id="l02264" name="l02264"></a><span class="lineno"> 2264</span> </div>
+<div class="line"><a id="l02277" name="l02277"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa735bf5ee35ae9fcadd92e76d4243133"> 2277</a></span><span class="preprocessor">#define SDL_HINT_KMSDRM_DEVICE_INDEX &quot;SDL_KMSDRM_DEVICE_INDEX&quot;</span></div>
+<div class="line"><a id="l02278" name="l02278"></a><span class="lineno"> 2278</span> </div>
+<div class="line"><a id="l02305" name="l02305"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gacc1f6b4d070acbd87ccd578c72742248"> 2305</a></span><span class="preprocessor">#define SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER &quot;SDL_KMSDRM_REQUIRE_DRM_MASTER&quot;</span></div>
+<div class="line"><a id="l02306" name="l02306"></a><span class="lineno"> 2306</span> </div>
+<div class="line"><a id="l02331" name="l02331"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga65756e851cf882bb46b108ac096e7bf2"> 2331</a></span><span class="preprocessor">#define SDL_HINT_LOGGING &quot;SDL_LOGGING&quot;</span></div>
+<div class="line"><a id="l02332" name="l02332"></a><span class="lineno"> 2332</span> </div>
+<div class="line"><a id="l02347" name="l02347"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1b75df316decc7aae5bc31b0595c1b01"> 2347</a></span><span class="preprocessor">#define SDL_HINT_MAC_BACKGROUND_APP &quot;SDL_MAC_BACKGROUND_APP&quot;</span></div>
+<div class="line"><a id="l02348" name="l02348"></a><span class="lineno"> 2348</span> </div>
+<div class="foldopen" id="foldopen02363" data-start="" data-end="">
+<div class="line"><a id="l02363" name="l02363"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga63dd635fa195f590f645c1170f50968d"> 2363</a></span><span class="preprocessor">#define SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK                            \</span></div>
+<div class="line"><a id="l02364" name="l02364"></a><span class="lineno"> 2364</span><span class="preprocessor">  &quot;SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK&quot;</span></div>
 </div>
-<div class="line"><a id="l02361" name="l02361"></a><span class="lineno"> 2361</span> </div>
-<div class="line"><a id="l02383" name="l02383"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaaeee4e15abdc14a2e2141f4e44d716c8"> 2383</a></span><span class="preprocessor">#define SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH &quot;SDL_MAC_OPENGL_ASYNC_DISPATCH&quot;</span></div>
-<div class="line"><a id="l02384" name="l02384"></a><span class="lineno"> 2384</span> </div>
-<div class="line"><a id="l02408" name="l02408"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga744870452da96073c889ba162278dade"> 2408</a></span><span class="preprocessor">#define SDL_HINT_MAC_OPTION_AS_ALT &quot;SDL_MAC_OPTION_AS_ALT&quot;</span></div>
-<div class="line"><a id="l02409" name="l02409"></a><span class="lineno"> 2409</span> </div>
-<div class="line"><a id="l02423" name="l02423"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2520b37fea9c50f0171557565c2dbe1e"> 2423</a></span><span class="preprocessor">#define SDL_HINT_MAC_SCROLL_MOMENTUM &quot;SDL_MAC_SCROLL_MOMENTUM&quot;</span></div>
-<div class="line"><a id="l02424" name="l02424"></a><span class="lineno"> 2424</span> </div>
-<div class="line"><a id="l02449" name="l02449"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga61f435fb26ae8d17c51fed20fe38c868"> 2449</a></span><span class="preprocessor">#define SDL_HINT_MAIN_CALLBACK_RATE &quot;SDL_MAIN_CALLBACK_RATE&quot;</span></div>
-<div class="line"><a id="l02450" name="l02450"></a><span class="lineno"> 2450</span> </div>
-<div class="line"><a id="l02468" name="l02468"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa3bbf027f42e5dc4eaeb39e460849344"> 2468</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_AUTO_CAPTURE &quot;SDL_MOUSE_AUTO_CAPTURE&quot;</span></div>
-<div class="line"><a id="l02469" name="l02469"></a><span class="lineno"> 2469</span> </div>
-<div class="line"><a id="l02477" name="l02477"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga994debcf46f5f3a39bd80c259975d200"> 2477</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS &quot;SDL_MOUSE_DOUBLE_CLICK_RADIUS&quot;</span></div>
-<div class="line"><a id="l02478" name="l02478"></a><span class="lineno"> 2478</span> </div>
-<div class="line"><a id="l02486" name="l02486"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4e9442b90dd2ecd694c8adb74b38f39c"> 2486</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_DOUBLE_CLICK_TIME &quot;SDL_MOUSE_DOUBLE_CLICK_TIME&quot;</span></div>
-<div class="line"><a id="l02487" name="l02487"></a><span class="lineno"> 2487</span> </div>
-<div class="line"><a id="l02498" name="l02498"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa08268795a229a58179ca38cb6b80329"> 2498</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR &quot;SDL_MOUSE_DEFAULT_SYSTEM_CURSOR&quot;</span></div>
-<div class="line"><a id="l02499" name="l02499"></a><span class="lineno"> 2499</span> </div>
-<div class="foldopen" id="foldopen02530" data-start="" data-end="">
-<div class="line"><a id="l02530" name="l02530"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga42135971bd00b514aea4d2c057f8df0e"> 2530</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE                              \</span></div>
-<div class="line"><a id="l02531" name="l02531"></a><span class="lineno"> 2531</span><span class="preprocessor">  &quot;SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE&quot;</span></div>
+<div class="line"><a id="l02365" name="l02365"></a><span class="lineno"> 2365</span> </div>
+<div class="line"><a id="l02387" name="l02387"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaaeee4e15abdc14a2e2141f4e44d716c8"> 2387</a></span><span class="preprocessor">#define SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH &quot;SDL_MAC_OPENGL_ASYNC_DISPATCH&quot;</span></div>
+<div class="line"><a id="l02388" name="l02388"></a><span class="lineno"> 2388</span> </div>
+<div class="line"><a id="l02412" name="l02412"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga744870452da96073c889ba162278dade"> 2412</a></span><span class="preprocessor">#define SDL_HINT_MAC_OPTION_AS_ALT &quot;SDL_MAC_OPTION_AS_ALT&quot;</span></div>
+<div class="line"><a id="l02413" name="l02413"></a><span class="lineno"> 2413</span> </div>
+<div class="line"><a id="l02427" name="l02427"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2520b37fea9c50f0171557565c2dbe1e"> 2427</a></span><span class="preprocessor">#define SDL_HINT_MAC_SCROLL_MOMENTUM &quot;SDL_MAC_SCROLL_MOMENTUM&quot;</span></div>
+<div class="line"><a id="l02428" name="l02428"></a><span class="lineno"> 2428</span> </div>
+<div class="line"><a id="l02453" name="l02453"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga61f435fb26ae8d17c51fed20fe38c868"> 2453</a></span><span class="preprocessor">#define SDL_HINT_MAIN_CALLBACK_RATE &quot;SDL_MAIN_CALLBACK_RATE&quot;</span></div>
+<div class="line"><a id="l02454" name="l02454"></a><span class="lineno"> 2454</span> </div>
+<div class="line"><a id="l02472" name="l02472"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa3bbf027f42e5dc4eaeb39e460849344"> 2472</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_AUTO_CAPTURE &quot;SDL_MOUSE_AUTO_CAPTURE&quot;</span></div>
+<div class="line"><a id="l02473" name="l02473"></a><span class="lineno"> 2473</span> </div>
+<div class="line"><a id="l02481" name="l02481"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga994debcf46f5f3a39bd80c259975d200"> 2481</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS &quot;SDL_MOUSE_DOUBLE_CLICK_RADIUS&quot;</span></div>
+<div class="line"><a id="l02482" name="l02482"></a><span class="lineno"> 2482</span> </div>
+<div class="line"><a id="l02490" name="l02490"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4e9442b90dd2ecd694c8adb74b38f39c"> 2490</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_DOUBLE_CLICK_TIME &quot;SDL_MOUSE_DOUBLE_CLICK_TIME&quot;</span></div>
+<div class="line"><a id="l02491" name="l02491"></a><span class="lineno"> 2491</span> </div>
+<div class="line"><a id="l02502" name="l02502"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa08268795a229a58179ca38cb6b80329"> 2502</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR &quot;SDL_MOUSE_DEFAULT_SYSTEM_CURSOR&quot;</span></div>
+<div class="line"><a id="l02503" name="l02503"></a><span class="lineno"> 2503</span> </div>
+<div class="foldopen" id="foldopen02534" data-start="" data-end="">
+<div class="line"><a id="l02534" name="l02534"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga42135971bd00b514aea4d2c057f8df0e"> 2534</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE                              \</span></div>
+<div class="line"><a id="l02535" name="l02535"></a><span class="lineno"> 2535</span><span class="preprocessor">  &quot;SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE&quot;</span></div>
 </div>
-<div class="line"><a id="l02532" name="l02532"></a><span class="lineno"> 2532</span> </div>
-<div class="line"><a id="l02545" name="l02545"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga59083735a2377046c2fc72eb0a3e855f"> 2545</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH &quot;SDL_MOUSE_FOCUS_CLICKTHROUGH&quot;</span></div>
-<div class="line"><a id="l02546" name="l02546"></a><span class="lineno"> 2546</span> </div>
-<div class="line"><a id="l02555" name="l02555"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1a5034b3e1f390aed827bd627ebdd555"> 2555</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_NORMAL_SPEED_SCALE &quot;SDL_MOUSE_NORMAL_SPEED_SCALE&quot;</span></div>
-<div class="line"><a id="l02556" name="l02556"></a><span class="lineno"> 2556</span> </div>
-<div class="line"><a id="l02576" name="l02576"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga30f30b0cd7f7db65812d5e0177d52c5b"> 2576</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_MODE_CENTER &quot;SDL_MOUSE_RELATIVE_MODE_CENTER&quot;</span></div>
-<div class="line"><a id="l02577" name="l02577"></a><span class="lineno"> 2577</span> </div>
-<div class="line"><a id="l02586" name="l02586"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad69c295983ec1db56ea26af46f184ce7"> 2586</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE &quot;SDL_MOUSE_RELATIVE_SPEED_SCALE&quot;</span></div>
-<div class="line"><a id="l02587" name="l02587"></a><span class="lineno"> 2587</span> </div>
-<div class="line"><a id="l02605" name="l02605"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga3305b038a2b32e6ef1608698991e822a"> 2605</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE &quot;SDL_MOUSE_RELATIVE_SYSTEM_SCALE&quot;</span></div>
-<div class="line"><a id="l02606" name="l02606"></a><span class="lineno"> 2606</span> </div>
-<div class="line"><a id="l02624" name="l02624"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae51c386006d2420057e76975919e1ac4"> 2624</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_WARP_MOTION &quot;SDL_MOUSE_RELATIVE_WARP_MOTION&quot;</span></div>
-<div class="line"><a id="l02625" name="l02625"></a><span class="lineno"> 2625</span> </div>
-<div class="foldopen" id="foldopen02643" data-start="" data-end="">
-<div class="line"><a id="l02643" name="l02643"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga41e104864c6b71e2e594aca22506cc97"> 2643</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE                                 \</span></div>
-<div class="line"><a id="l02644" name="l02644"></a><span class="lineno"> 2644</span><span class="preprocessor">  &quot;SDL_MOUSE_RELATIVE_CURSOR_VISIBLE&quot;</span></div>
+<div class="line"><a id="l02536" name="l02536"></a><span class="lineno"> 2536</span> </div>
+<div class="line"><a id="l02549" name="l02549"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga59083735a2377046c2fc72eb0a3e855f"> 2549</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH &quot;SDL_MOUSE_FOCUS_CLICKTHROUGH&quot;</span></div>
+<div class="line"><a id="l02550" name="l02550"></a><span class="lineno"> 2550</span> </div>
+<div class="line"><a id="l02559" name="l02559"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1a5034b3e1f390aed827bd627ebdd555"> 2559</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_NORMAL_SPEED_SCALE &quot;SDL_MOUSE_NORMAL_SPEED_SCALE&quot;</span></div>
+<div class="line"><a id="l02560" name="l02560"></a><span class="lineno"> 2560</span> </div>
+<div class="line"><a id="l02580" name="l02580"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga30f30b0cd7f7db65812d5e0177d52c5b"> 2580</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_MODE_CENTER &quot;SDL_MOUSE_RELATIVE_MODE_CENTER&quot;</span></div>
+<div class="line"><a id="l02581" name="l02581"></a><span class="lineno"> 2581</span> </div>
+<div class="line"><a id="l02590" name="l02590"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad69c295983ec1db56ea26af46f184ce7"> 2590</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE &quot;SDL_MOUSE_RELATIVE_SPEED_SCALE&quot;</span></div>
+<div class="line"><a id="l02591" name="l02591"></a><span class="lineno"> 2591</span> </div>
+<div class="line"><a id="l02609" name="l02609"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga3305b038a2b32e6ef1608698991e822a"> 2609</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE &quot;SDL_MOUSE_RELATIVE_SYSTEM_SCALE&quot;</span></div>
+<div class="line"><a id="l02610" name="l02610"></a><span class="lineno"> 2610</span> </div>
+<div class="line"><a id="l02628" name="l02628"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae51c386006d2420057e76975919e1ac4"> 2628</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_WARP_MOTION &quot;SDL_MOUSE_RELATIVE_WARP_MOTION&quot;</span></div>
+<div class="line"><a id="l02629" name="l02629"></a><span class="lineno"> 2629</span> </div>
+<div class="foldopen" id="foldopen02647" data-start="" data-end="">
+<div class="line"><a id="l02647" name="l02647"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga41e104864c6b71e2e594aca22506cc97"> 2647</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE                                 \</span></div>
+<div class="line"><a id="l02648" name="l02648"></a><span class="lineno"> 2648</span><span class="preprocessor">  &quot;SDL_MOUSE_RELATIVE_CURSOR_VISIBLE&quot;</span></div>
 </div>
-<div class="line"><a id="l02645" name="l02645"></a><span class="lineno"> 2645</span> </div>
-<div class="line"><a id="l02661" name="l02661"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2e433b3f7bdc4cecf273339cc2c603fc"> 2661</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_TOUCH_EVENTS &quot;SDL_MOUSE_TOUCH_EVENTS&quot;</span></div>
-<div class="line"><a id="l02662" name="l02662"></a><span class="lineno"> 2662</span> </div>
-<div class="line"><a id="l02679" name="l02679"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1b866047d977ad4fd85810ffcfd7d05c"> 2679</a></span><span class="preprocessor">#define SDL_HINT_MUTE_CONSOLE_KEYBOARD &quot;SDL_MUTE_CONSOLE_KEYBOARD&quot;</span></div>
-<div class="line"><a id="l02680" name="l02680"></a><span class="lineno"> 2680</span> </div>
-<div class="line"><a id="l02694" name="l02694"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga58db46309f4295553ed4b0f1a4ccfa54"> 2694</a></span><span class="preprocessor">#define SDL_HINT_NO_SIGNAL_HANDLERS &quot;SDL_NO_SIGNAL_HANDLERS&quot;</span></div>
-<div class="line"><a id="l02695" name="l02695"></a><span class="lineno"> 2695</span> </div>
-<div class="line"><a id="l02705" name="l02705"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae3c5223389472a2e7672e3f8f1791133"> 2705</a></span><span class="preprocessor">#define SDL_HINT_OPENGL_LIBRARY &quot;SDL_OPENGL_LIBRARY&quot;</span></div>
-<div class="line"><a id="l02706" name="l02706"></a><span class="lineno"> 2706</span> </div>
-<div class="line"><a id="l02717" name="l02717"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga0c5174d4357bc5262063333a41fc64ef"> 2717</a></span><span class="preprocessor">#define SDL_HINT_EGL_LIBRARY &quot;SDL_EGL_LIBRARY&quot;</span></div>
-<div class="line"><a id="l02718" name="l02718"></a><span class="lineno"> 2718</span> </div>
-<div class="line"><a id="l02751" name="l02751"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gadce02dd2716ef92d3c787789ccfbb98e"> 2751</a></span><span class="preprocessor">#define SDL_HINT_OPENGL_ES_DRIVER &quot;SDL_OPENGL_ES_DRIVER&quot;</span></div>
-<div class="line"><a id="l02752" name="l02752"></a><span class="lineno"> 2752</span> </div>
-<div class="line"><a id="l02763" name="l02763"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad5b4e9969f4cccf347d8a10625da779a"> 2763</a></span><span class="preprocessor">#define SDL_HINT_OPENVR_LIBRARY &quot;SDL_OPENVR_LIBRARY&quot;</span></div>
-<div class="line"><a id="l02764" name="l02764"></a><span class="lineno"> 2764</span> </div>
-<div class="line"><a id="l02782" name="l02782"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1e2eef18b43aa15121d8250a408421ce"> 2782</a></span><span class="preprocessor">#define SDL_HINT_ORIENTATIONS &quot;SDL_ORIENTATIONS&quot;</span></div>
-<div class="line"><a id="l02783" name="l02783"></a><span class="lineno"> 2783</span> </div>
-<div class="line"><a id="l02802" name="l02802"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad87f87a8b1300c8401c004427027ea55"> 2802</a></span><span class="preprocessor">#define SDL_HINT_POLL_SENTINEL &quot;SDL_POLL_SENTINEL&quot;</span></div>
-<div class="line"><a id="l02803" name="l02803"></a><span class="lineno"> 2803</span> </div>
-<div class="line"><a id="l02820" name="l02820"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga58f4b26bb24cadfbb78ab1e6c73c9296"> 2820</a></span><span class="preprocessor">#define SDL_HINT_PREFERRED_LOCALES &quot;SDL_PREFERRED_LOCALES&quot;</span></div>
-<div class="line"><a id="l02821" name="l02821"></a><span class="lineno"> 2821</span> </div>
-<div class="line"><a id="l02843" name="l02843"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga6e249320b0e34906e237258615bc3570"> 2843</a></span><span class="preprocessor">#define SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE &quot;SDL_QUIT_ON_LAST_WINDOW_CLOSE&quot;</span></div>
-<div class="line"><a id="l02844" name="l02844"></a><span class="lineno"> 2844</span> </div>
-<div class="line"><a id="l02858" name="l02858"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga6e06533f9f12c456accacb7c1f40a58d"> 2858</a></span><span class="preprocessor">#define SDL_HINT_RENDER_DIRECT3D_THREADSAFE &quot;SDL_RENDER_DIRECT3D_THREADSAFE&quot;</span></div>
-<div class="line"><a id="l02859" name="l02859"></a><span class="lineno"> 2859</span> </div>
-<div class="line"><a id="l02874" name="l02874"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gac25a4eba109ed065d639f6054d2b842c"> 2874</a></span><span class="preprocessor">#define SDL_HINT_RENDER_DIRECT3D11_DEBUG &quot;SDL_RENDER_DIRECT3D11_DEBUG&quot;</span></div>
-<div class="line"><a id="l02875" name="l02875"></a><span class="lineno"> 2875</span> </div>
-<div class="line"><a id="l02888" name="l02888"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab624aef42b870d8b786030de60df3565"> 2888</a></span><span class="preprocessor">#define SDL_HINT_RENDER_VULKAN_DEBUG &quot;SDL_RENDER_VULKAN_DEBUG&quot;</span></div>
-<div class="line"><a id="l02889" name="l02889"></a><span class="lineno"> 2889</span> </div>
-<div class="line"><a id="l02902" name="l02902"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2d41df9bf362f53c81ba4ad93d04d5aa"> 2902</a></span><span class="preprocessor">#define SDL_HINT_RENDER_GPU_DEBUG &quot;SDL_RENDER_GPU_DEBUG&quot;</span></div>
-<div class="line"><a id="l02903" name="l02903"></a><span class="lineno"> 2903</span> </div>
-<div class="line"><a id="l02917" name="l02917"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga0295fa105e3e0e00fa73b4842f267b51"> 2917</a></span><span class="preprocessor">#define SDL_HINT_RENDER_GPU_LOW_POWER &quot;SDL_RENDER_GPU_LOW_POWER&quot;</span></div>
-<div class="line"><a id="l02918" name="l02918"></a><span class="lineno"> 2918</span> </div>
-<div class="line"><a id="l02950" name="l02950"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1ecf7a77582e3af7938b2f7c8d900aee"> 2950</a></span><span class="preprocessor">#define SDL_HINT_RENDER_DRIVER &quot;SDL_RENDER_DRIVER&quot;</span></div>
-<div class="line"><a id="l02951" name="l02951"></a><span class="lineno"> 2951</span> </div>
-<div class="line"><a id="l02968" name="l02968"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga35fec8176d76e48d72af24458271328d"> 2968</a></span><span class="preprocessor">#define SDL_HINT_RENDER_LINE_METHOD &quot;SDL_RENDER_LINE_METHOD&quot;</span></div>
-<div class="line"><a id="l02969" name="l02969"></a><span class="lineno"> 2969</span> </div>
-<div class="foldopen" id="foldopen02983" data-start="" data-end="">
-<div class="line"><a id="l02983" name="l02983"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga123207dad441be0fbf9e22fcd94fa545"> 2983</a></span><span class="preprocessor">#define SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE                          \</span></div>
-<div class="line"><a id="l02984" name="l02984"></a><span class="lineno"> 2984</span><span class="preprocessor">  &quot;SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE&quot;</span></div>
+<div class="line"><a id="l02649" name="l02649"></a><span class="lineno"> 2649</span> </div>
+<div class="line"><a id="l02665" name="l02665"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2e433b3f7bdc4cecf273339cc2c603fc"> 2665</a></span><span class="preprocessor">#define SDL_HINT_MOUSE_TOUCH_EVENTS &quot;SDL_MOUSE_TOUCH_EVENTS&quot;</span></div>
+<div class="line"><a id="l02666" name="l02666"></a><span class="lineno"> 2666</span> </div>
+<div class="line"><a id="l02683" name="l02683"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1b866047d977ad4fd85810ffcfd7d05c"> 2683</a></span><span class="preprocessor">#define SDL_HINT_MUTE_CONSOLE_KEYBOARD &quot;SDL_MUTE_CONSOLE_KEYBOARD&quot;</span></div>
+<div class="line"><a id="l02684" name="l02684"></a><span class="lineno"> 2684</span> </div>
+<div class="line"><a id="l02698" name="l02698"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga58db46309f4295553ed4b0f1a4ccfa54"> 2698</a></span><span class="preprocessor">#define SDL_HINT_NO_SIGNAL_HANDLERS &quot;SDL_NO_SIGNAL_HANDLERS&quot;</span></div>
+<div class="line"><a id="l02699" name="l02699"></a><span class="lineno"> 2699</span> </div>
+<div class="line"><a id="l02709" name="l02709"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae3c5223389472a2e7672e3f8f1791133"> 2709</a></span><span class="preprocessor">#define SDL_HINT_OPENGL_LIBRARY &quot;SDL_OPENGL_LIBRARY&quot;</span></div>
+<div class="line"><a id="l02710" name="l02710"></a><span class="lineno"> 2710</span> </div>
+<div class="line"><a id="l02721" name="l02721"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga0c5174d4357bc5262063333a41fc64ef"> 2721</a></span><span class="preprocessor">#define SDL_HINT_EGL_LIBRARY &quot;SDL_EGL_LIBRARY&quot;</span></div>
+<div class="line"><a id="l02722" name="l02722"></a><span class="lineno"> 2722</span> </div>
+<div class="line"><a id="l02755" name="l02755"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gadce02dd2716ef92d3c787789ccfbb98e"> 2755</a></span><span class="preprocessor">#define SDL_HINT_OPENGL_ES_DRIVER &quot;SDL_OPENGL_ES_DRIVER&quot;</span></div>
+<div class="line"><a id="l02756" name="l02756"></a><span class="lineno"> 2756</span> </div>
+<div class="line"><a id="l02767" name="l02767"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad5b4e9969f4cccf347d8a10625da779a"> 2767</a></span><span class="preprocessor">#define SDL_HINT_OPENVR_LIBRARY &quot;SDL_OPENVR_LIBRARY&quot;</span></div>
+<div class="line"><a id="l02768" name="l02768"></a><span class="lineno"> 2768</span> </div>
+<div class="line"><a id="l02786" name="l02786"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1e2eef18b43aa15121d8250a408421ce"> 2786</a></span><span class="preprocessor">#define SDL_HINT_ORIENTATIONS &quot;SDL_ORIENTATIONS&quot;</span></div>
+<div class="line"><a id="l02787" name="l02787"></a><span class="lineno"> 2787</span> </div>
+<div class="line"><a id="l02806" name="l02806"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad87f87a8b1300c8401c004427027ea55"> 2806</a></span><span class="preprocessor">#define SDL_HINT_POLL_SENTINEL &quot;SDL_POLL_SENTINEL&quot;</span></div>
+<div class="line"><a id="l02807" name="l02807"></a><span class="lineno"> 2807</span> </div>
+<div class="line"><a id="l02824" name="l02824"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga58f4b26bb24cadfbb78ab1e6c73c9296"> 2824</a></span><span class="preprocessor">#define SDL_HINT_PREFERRED_LOCALES &quot;SDL_PREFERRED_LOCALES&quot;</span></div>
+<div class="line"><a id="l02825" name="l02825"></a><span class="lineno"> 2825</span> </div>
+<div class="line"><a id="l02847" name="l02847"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga6e249320b0e34906e237258615bc3570"> 2847</a></span><span class="preprocessor">#define SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE &quot;SDL_QUIT_ON_LAST_WINDOW_CLOSE&quot;</span></div>
+<div class="line"><a id="l02848" name="l02848"></a><span class="lineno"> 2848</span> </div>
+<div class="line"><a id="l02862" name="l02862"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga6e06533f9f12c456accacb7c1f40a58d"> 2862</a></span><span class="preprocessor">#define SDL_HINT_RENDER_DIRECT3D_THREADSAFE &quot;SDL_RENDER_DIRECT3D_THREADSAFE&quot;</span></div>
+<div class="line"><a id="l02863" name="l02863"></a><span class="lineno"> 2863</span> </div>
+<div class="line"><a id="l02878" name="l02878"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gac25a4eba109ed065d639f6054d2b842c"> 2878</a></span><span class="preprocessor">#define SDL_HINT_RENDER_DIRECT3D11_DEBUG &quot;SDL_RENDER_DIRECT3D11_DEBUG&quot;</span></div>
+<div class="line"><a id="l02879" name="l02879"></a><span class="lineno"> 2879</span> </div>
+<div class="line"><a id="l02892" name="l02892"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab624aef42b870d8b786030de60df3565"> 2892</a></span><span class="preprocessor">#define SDL_HINT_RENDER_VULKAN_DEBUG &quot;SDL_RENDER_VULKAN_DEBUG&quot;</span></div>
+<div class="line"><a id="l02893" name="l02893"></a><span class="lineno"> 2893</span> </div>
+<div class="line"><a id="l02906" name="l02906"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2d41df9bf362f53c81ba4ad93d04d5aa"> 2906</a></span><span class="preprocessor">#define SDL_HINT_RENDER_GPU_DEBUG &quot;SDL_RENDER_GPU_DEBUG&quot;</span></div>
+<div class="line"><a id="l02907" name="l02907"></a><span class="lineno"> 2907</span> </div>
+<div class="line"><a id="l02921" name="l02921"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga0295fa105e3e0e00fa73b4842f267b51"> 2921</a></span><span class="preprocessor">#define SDL_HINT_RENDER_GPU_LOW_POWER &quot;SDL_RENDER_GPU_LOW_POWER&quot;</span></div>
+<div class="line"><a id="l02922" name="l02922"></a><span class="lineno"> 2922</span> </div>
+<div class="line"><a id="l02954" name="l02954"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1ecf7a77582e3af7938b2f7c8d900aee"> 2954</a></span><span class="preprocessor">#define SDL_HINT_RENDER_DRIVER &quot;SDL_RENDER_DRIVER&quot;</span></div>
+<div class="line"><a id="l02955" name="l02955"></a><span class="lineno"> 2955</span> </div>
+<div class="line"><a id="l02972" name="l02972"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga35fec8176d76e48d72af24458271328d"> 2972</a></span><span class="preprocessor">#define SDL_HINT_RENDER_LINE_METHOD &quot;SDL_RENDER_LINE_METHOD&quot;</span></div>
+<div class="line"><a id="l02973" name="l02973"></a><span class="lineno"> 2973</span> </div>
+<div class="foldopen" id="foldopen02987" data-start="" data-end="">
+<div class="line"><a id="l02987" name="l02987"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga123207dad441be0fbf9e22fcd94fa545"> 2987</a></span><span class="preprocessor">#define SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE                          \</span></div>
+<div class="line"><a id="l02988" name="l02988"></a><span class="lineno"> 2988</span><span class="preprocessor">  &quot;SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE&quot;</span></div>
 </div>
-<div class="line"><a id="l02985" name="l02985"></a><span class="lineno"> 2985</span> </div>
-<div class="line"><a id="l03001" name="l03001"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab512fdde4a91d3a271df7b59297fcf98"> 3001</a></span><span class="preprocessor">#define SDL_HINT_RENDER_VSYNC &quot;SDL_RENDER_VSYNC&quot;</span></div>
-<div class="line"><a id="l03002" name="l03002"></a><span class="lineno"> 3002</span> </div>
-<div class="line"><a id="l03018" name="l03018"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae840652b9ebd21e4317ee80e7b527339"> 3018</a></span><span class="preprocessor">#define SDL_HINT_RETURN_KEY_HIDES_IME &quot;SDL_RETURN_KEY_HIDES_IME&quot;</span></div>
-<div class="line"><a id="l03019" name="l03019"></a><span class="lineno"> 3019</span> </div>
-<div class="line"><a id="l03037" name="l03037"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga52a6bf663295014ad53bd47b760f05d5"> 3037</a></span><span class="preprocessor">#define SDL_HINT_ROG_GAMEPAD_MICE &quot;SDL_ROG_GAMEPAD_MICE&quot;</span></div>
-<div class="line"><a id="l03038" name="l03038"></a><span class="lineno"> 3038</span> </div>
-<div class="line"><a id="l03057" name="l03057"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaeea07a7843ea936cc493ae741dd0e033"> 3057</a></span><span class="preprocessor">#define SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED &quot;SDL_ROG_GAMEPAD_MICE_EXCLUDED&quot;</span></div>
-<div class="line"><a id="l03058" name="l03058"></a><span class="lineno"> 3058</span> </div>
-<div class="line"><a id="l03069" name="l03069"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga0e762eabcf52604adb9bcb9a554e3f32"> 3069</a></span><span class="preprocessor">#define SDL_HINT_RPI_VIDEO_LAYER &quot;SDL_RPI_VIDEO_LAYER&quot;</span></div>
-<div class="line"><a id="l03070" name="l03070"></a><span class="lineno"> 3070</span> </div>
-<div class="foldopen" id="foldopen03091" data-start="" data-end="">
-<div class="line"><a id="l03091" name="l03091"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga0c3ee5dc0010ebbc97555472e26853d5"> 3091</a></span><span class="preprocessor">#define SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME                             \</span></div>
-<div class="line"><a id="l03092" name="l03092"></a><span class="lineno"> 3092</span><span class="preprocessor">  &quot;SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME&quot;</span></div>
+<div class="line"><a id="l02989" name="l02989"></a><span class="lineno"> 2989</span> </div>
+<div class="line"><a id="l03005" name="l03005"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab512fdde4a91d3a271df7b59297fcf98"> 3005</a></span><span class="preprocessor">#define SDL_HINT_RENDER_VSYNC &quot;SDL_RENDER_VSYNC&quot;</span></div>
+<div class="line"><a id="l03006" name="l03006"></a><span class="lineno"> 3006</span> </div>
+<div class="line"><a id="l03022" name="l03022"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae840652b9ebd21e4317ee80e7b527339"> 3022</a></span><span class="preprocessor">#define SDL_HINT_RETURN_KEY_HIDES_IME &quot;SDL_RETURN_KEY_HIDES_IME&quot;</span></div>
+<div class="line"><a id="l03023" name="l03023"></a><span class="lineno"> 3023</span> </div>
+<div class="line"><a id="l03041" name="l03041"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga52a6bf663295014ad53bd47b760f05d5"> 3041</a></span><span class="preprocessor">#define SDL_HINT_ROG_GAMEPAD_MICE &quot;SDL_ROG_GAMEPAD_MICE&quot;</span></div>
+<div class="line"><a id="l03042" name="l03042"></a><span class="lineno"> 3042</span> </div>
+<div class="line"><a id="l03061" name="l03061"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaeea07a7843ea936cc493ae741dd0e033"> 3061</a></span><span class="preprocessor">#define SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED &quot;SDL_ROG_GAMEPAD_MICE_EXCLUDED&quot;</span></div>
+<div class="line"><a id="l03062" name="l03062"></a><span class="lineno"> 3062</span> </div>
+<div class="line"><a id="l03073" name="l03073"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga0e762eabcf52604adb9bcb9a554e3f32"> 3073</a></span><span class="preprocessor">#define SDL_HINT_RPI_VIDEO_LAYER &quot;SDL_RPI_VIDEO_LAYER&quot;</span></div>
+<div class="line"><a id="l03074" name="l03074"></a><span class="lineno"> 3074</span> </div>
+<div class="foldopen" id="foldopen03095" data-start="" data-end="">
+<div class="line"><a id="l03095" name="l03095"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga0c3ee5dc0010ebbc97555472e26853d5"> 3095</a></span><span class="preprocessor">#define SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME                             \</span></div>
+<div class="line"><a id="l03096" name="l03096"></a><span class="lineno"> 3096</span><span class="preprocessor">  &quot;SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME&quot;</span></div>
 </div>
-<div class="line"><a id="l03093" name="l03093"></a><span class="lineno"> 3093</span> </div>
-<div class="line"><a id="l03111" name="l03111"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga586a6bdbac5b0b53424a236761c70862"> 3111</a></span><span class="preprocessor">#define SDL_HINT_SHUTDOWN_DBUS_ON_QUIT &quot;SDL_SHUTDOWN_DBUS_ON_QUIT&quot;</span></div>
-<div class="line"><a id="l03112" name="l03112"></a><span class="lineno"> 3112</span> </div>
-<div class="line"><a id="l03125" name="l03125"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gabcc5faa3c185b6f3a3a6387bf12b7736"> 3125</a></span><span class="preprocessor">#define SDL_HINT_STORAGE_TITLE_DRIVER &quot;SDL_STORAGE_TITLE_DRIVER&quot;</span></div>
-<div class="line"><a id="l03126" name="l03126"></a><span class="lineno"> 3126</span> </div>
-<div class="line"><a id="l03139" name="l03139"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa1d905ac7f8d2959c7743f4e1fb10518"> 3139</a></span><span class="preprocessor">#define SDL_HINT_STORAGE_USER_DRIVER &quot;SDL_STORAGE_USER_DRIVER&quot;</span></div>
-<div class="line"><a id="l03140" name="l03140"></a><span class="lineno"> 3140</span> </div>
-<div class="foldopen" id="foldopen03168" data-start="" data-end="">
-<div class="line"><a id="l03168" name="l03168"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga60ffebe32576f285060421d0c75d103f"> 3168</a></span><span class="preprocessor">#define SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL                           \</span></div>
-<div class="line"><a id="l03169" name="l03169"></a><span class="lineno"> 3169</span><span class="preprocessor">  &quot;SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL&quot;</span></div>
+<div class="line"><a id="l03097" name="l03097"></a><span class="lineno"> 3097</span> </div>
+<div class="line"><a id="l03115" name="l03115"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga586a6bdbac5b0b53424a236761c70862"> 3115</a></span><span class="preprocessor">#define SDL_HINT_SHUTDOWN_DBUS_ON_QUIT &quot;SDL_SHUTDOWN_DBUS_ON_QUIT&quot;</span></div>
+<div class="line"><a id="l03116" name="l03116"></a><span class="lineno"> 3116</span> </div>
+<div class="line"><a id="l03129" name="l03129"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gabcc5faa3c185b6f3a3a6387bf12b7736"> 3129</a></span><span class="preprocessor">#define SDL_HINT_STORAGE_TITLE_DRIVER &quot;SDL_STORAGE_TITLE_DRIVER&quot;</span></div>
+<div class="line"><a id="l03130" name="l03130"></a><span class="lineno"> 3130</span> </div>
+<div class="line"><a id="l03143" name="l03143"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa1d905ac7f8d2959c7743f4e1fb10518"> 3143</a></span><span class="preprocessor">#define SDL_HINT_STORAGE_USER_DRIVER &quot;SDL_STORAGE_USER_DRIVER&quot;</span></div>
+<div class="line"><a id="l03144" name="l03144"></a><span class="lineno"> 3144</span> </div>
+<div class="foldopen" id="foldopen03172" data-start="" data-end="">
+<div class="line"><a id="l03172" name="l03172"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga60ffebe32576f285060421d0c75d103f"> 3172</a></span><span class="preprocessor">#define SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL                           \</span></div>
+<div class="line"><a id="l03173" name="l03173"></a><span class="lineno"> 3173</span><span class="preprocessor">  &quot;SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL&quot;</span></div>
 </div>
-<div class="line"><a id="l03170" name="l03170"></a><span class="lineno"> 3170</span> </div>
-<div class="line"><a id="l03192" name="l03192"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga28a5b3b2e99f6219d4b9f84c794ffbb2"> 3192</a></span><span class="preprocessor">#define SDL_HINT_THREAD_PRIORITY_POLICY &quot;SDL_THREAD_PRIORITY_POLICY&quot;</span></div>
-<div class="line"><a id="l03193" name="l03193"></a><span class="lineno"> 3193</span> </div>
-<div class="line"><a id="l03212" name="l03212"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafbc6ba9f809e07557eb369f763299174"> 3212</a></span><span class="preprocessor">#define SDL_HINT_TIMER_RESOLUTION &quot;SDL_TIMER_RESOLUTION&quot;</span></div>
-<div class="line"><a id="l03213" name="l03213"></a><span class="lineno"> 3213</span> </div>
-<div class="line"><a id="l03227" name="l03227"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga334b89b47382e48b03e24defe96b6163"> 3227</a></span><span class="preprocessor">#define SDL_HINT_TOUCH_MOUSE_EVENTS &quot;SDL_TOUCH_MOUSE_EVENTS&quot;</span></div>
-<div class="line"><a id="l03228" name="l03228"></a><span class="lineno"> 3228</span> </div>
-<div class="line"><a id="l03248" name="l03248"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga8f8a2e7ee48e4e87663b099bea42121c"> 3248</a></span><span class="preprocessor">#define SDL_HINT_TRACKPAD_IS_TOUCH_ONLY &quot;SDL_TRACKPAD_IS_TOUCH_ONLY&quot;</span></div>
-<div class="line"><a id="l03249" name="l03249"></a><span class="lineno"> 3249</span> </div>
-<div class="line"><a id="l03263" name="l03263"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga798d47734b79941d6acb861fb91811f4"> 3263</a></span><span class="preprocessor">#define SDL_HINT_TV_REMOTE_AS_JOYSTICK &quot;SDL_TV_REMOTE_AS_JOYSTICK&quot;</span></div>
-<div class="line"><a id="l03264" name="l03264"></a><span class="lineno"> 3264</span> </div>
-<div class="line"><a id="l03277" name="l03277"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7d3457c4003d46ddb560a96844ca1f85"> 3277</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_ALLOW_SCREENSAVER &quot;SDL_VIDEO_ALLOW_SCREENSAVER&quot;</span></div>
-<div class="line"><a id="l03278" name="l03278"></a><span class="lineno"> 3278</span> </div>
-<div class="line"><a id="l03302" name="l03302"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2d25efa900555e067aeba4e7e01d94ac"> 3302</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_DISPLAY_PRIORITY &quot;SDL_VIDEO_DISPLAY_PRIORITY&quot;</span></div>
-<div class="line"><a id="l03303" name="l03303"></a><span class="lineno"> 3303</span> </div>
-<div class="line"><a id="l03325" name="l03325"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab419844280b39c7c713ec7d7246e71a4"> 3325</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_DOUBLE_BUFFER &quot;SDL_VIDEO_DOUBLE_BUFFER&quot;</span></div>
-<div class="line"><a id="l03326" name="l03326"></a><span class="lineno"> 3326</span> </div>
-<div class="line"><a id="l03343" name="l03343"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad8fe5e29f8a402e65a5af280335db0f6"> 3343</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_DRIVER &quot;SDL_VIDEO_DRIVER&quot;</span></div>
-<div class="line"><a id="l03344" name="l03344"></a><span class="lineno"> 3344</span> </div>
-<div class="line"><a id="l03356" name="l03356"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga54219a4d34f7e2055e550add5711e1e8"> 3356</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES &quot;SDL_VIDEO_DUMMY_SAVE_FRAMES&quot;</span></div>
-<div class="line"><a id="l03357" name="l03357"></a><span class="lineno"> 3357</span> </div>
-<div class="foldopen" id="foldopen03370" data-start="" data-end="">
-<div class="line"><a id="l03370" name="l03370"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga347aafada086d8b1b60bdaeddb5e2da7"> 3370</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK                           \</span></div>
-<div class="line"><a id="l03371" name="l03371"></a><span class="lineno"> 3371</span><span class="preprocessor">  &quot;SDL_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK&quot;</span></div>
+<div class="line"><a id="l03174" name="l03174"></a><span class="lineno"> 3174</span> </div>
+<div class="line"><a id="l03196" name="l03196"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga28a5b3b2e99f6219d4b9f84c794ffbb2"> 3196</a></span><span class="preprocessor">#define SDL_HINT_THREAD_PRIORITY_POLICY &quot;SDL_THREAD_PRIORITY_POLICY&quot;</span></div>
+<div class="line"><a id="l03197" name="l03197"></a><span class="lineno"> 3197</span> </div>
+<div class="line"><a id="l03216" name="l03216"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafbc6ba9f809e07557eb369f763299174"> 3216</a></span><span class="preprocessor">#define SDL_HINT_TIMER_RESOLUTION &quot;SDL_TIMER_RESOLUTION&quot;</span></div>
+<div class="line"><a id="l03217" name="l03217"></a><span class="lineno"> 3217</span> </div>
+<div class="line"><a id="l03231" name="l03231"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga334b89b47382e48b03e24defe96b6163"> 3231</a></span><span class="preprocessor">#define SDL_HINT_TOUCH_MOUSE_EVENTS &quot;SDL_TOUCH_MOUSE_EVENTS&quot;</span></div>
+<div class="line"><a id="l03232" name="l03232"></a><span class="lineno"> 3232</span> </div>
+<div class="line"><a id="l03252" name="l03252"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga8f8a2e7ee48e4e87663b099bea42121c"> 3252</a></span><span class="preprocessor">#define SDL_HINT_TRACKPAD_IS_TOUCH_ONLY &quot;SDL_TRACKPAD_IS_TOUCH_ONLY&quot;</span></div>
+<div class="line"><a id="l03253" name="l03253"></a><span class="lineno"> 3253</span> </div>
+<div class="line"><a id="l03267" name="l03267"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga798d47734b79941d6acb861fb91811f4"> 3267</a></span><span class="preprocessor">#define SDL_HINT_TV_REMOTE_AS_JOYSTICK &quot;SDL_TV_REMOTE_AS_JOYSTICK&quot;</span></div>
+<div class="line"><a id="l03268" name="l03268"></a><span class="lineno"> 3268</span> </div>
+<div class="line"><a id="l03281" name="l03281"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7d3457c4003d46ddb560a96844ca1f85"> 3281</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_ALLOW_SCREENSAVER &quot;SDL_VIDEO_ALLOW_SCREENSAVER&quot;</span></div>
+<div class="line"><a id="l03282" name="l03282"></a><span class="lineno"> 3282</span> </div>
+<div class="line"><a id="l03306" name="l03306"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2d25efa900555e067aeba4e7e01d94ac"> 3306</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_DISPLAY_PRIORITY &quot;SDL_VIDEO_DISPLAY_PRIORITY&quot;</span></div>
+<div class="line"><a id="l03307" name="l03307"></a><span class="lineno"> 3307</span> </div>
+<div class="line"><a id="l03329" name="l03329"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab419844280b39c7c713ec7d7246e71a4"> 3329</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_DOUBLE_BUFFER &quot;SDL_VIDEO_DOUBLE_BUFFER&quot;</span></div>
+<div class="line"><a id="l03330" name="l03330"></a><span class="lineno"> 3330</span> </div>
+<div class="line"><a id="l03347" name="l03347"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad8fe5e29f8a402e65a5af280335db0f6"> 3347</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_DRIVER &quot;SDL_VIDEO_DRIVER&quot;</span></div>
+<div class="line"><a id="l03348" name="l03348"></a><span class="lineno"> 3348</span> </div>
+<div class="line"><a id="l03360" name="l03360"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga54219a4d34f7e2055e550add5711e1e8"> 3360</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES &quot;SDL_VIDEO_DUMMY_SAVE_FRAMES&quot;</span></div>
+<div class="line"><a id="l03361" name="l03361"></a><span class="lineno"> 3361</span> </div>
+<div class="foldopen" id="foldopen03374" data-start="" data-end="">
+<div class="line"><a id="l03374" name="l03374"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga347aafada086d8b1b60bdaeddb5e2da7"> 3374</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK                           \</span></div>
+<div class="line"><a id="l03375" name="l03375"></a><span class="lineno"> 3375</span><span class="preprocessor">  &quot;SDL_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK&quot;</span></div>
 </div>
-<div class="line"><a id="l03372" name="l03372"></a><span class="lineno"> 3372</span> </div>
-<div class="line"><a id="l03387" name="l03387"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa9684e4071b5317816a3f09989a4fcaa"> 3387</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_FORCE_EGL &quot;SDL_VIDEO_FORCE_EGL&quot;</span></div>
-<div class="line"><a id="l03388" name="l03388"></a><span class="lineno"> 3388</span> </div>
-<div class="line"><a id="l03405" name="l03405"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7f78bfa36d29dc21728bfabce8b336c3"> 3405</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES &quot;SDL_VIDEO_MAC_FULLSCREEN_SPACES&quot;</span></div>
-<div class="line"><a id="l03406" name="l03406"></a><span class="lineno"> 3406</span> </div>
-<div class="foldopen" id="foldopen03426" data-start="" data-end="">
-<div class="line"><a id="l03426" name="l03426"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga93520c0199059e9c83b2f188c0f9b0a8"> 3426</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY                          \</span></div>
-<div class="line"><a id="l03427" name="l03427"></a><span class="lineno"> 3427</span><span class="preprocessor">  &quot;SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY&quot;</span></div>
+<div class="line"><a id="l03376" name="l03376"></a><span class="lineno"> 3376</span> </div>
+<div class="line"><a id="l03391" name="l03391"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaa9684e4071b5317816a3f09989a4fcaa"> 3391</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_FORCE_EGL &quot;SDL_VIDEO_FORCE_EGL&quot;</span></div>
+<div class="line"><a id="l03392" name="l03392"></a><span class="lineno"> 3392</span> </div>
+<div class="line"><a id="l03409" name="l03409"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7f78bfa36d29dc21728bfabce8b336c3"> 3409</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES &quot;SDL_VIDEO_MAC_FULLSCREEN_SPACES&quot;</span></div>
+<div class="line"><a id="l03410" name="l03410"></a><span class="lineno"> 3410</span> </div>
+<div class="foldopen" id="foldopen03430" data-start="" data-end="">
+<div class="line"><a id="l03430" name="l03430"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga93520c0199059e9c83b2f188c0f9b0a8"> 3430</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY                          \</span></div>
+<div class="line"><a id="l03431" name="l03431"></a><span class="lineno"> 3431</span><span class="preprocessor">  &quot;SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY&quot;</span></div>
 </div>
-<div class="line"><a id="l03428" name="l03428"></a><span class="lineno"> 3428</span> </div>
-<div class="line"><a id="l03443" name="l03443"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga85488274590bff72c3d1dba5829443f6"> 3443</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS &quot;SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS&quot;</span></div>
-<div class="line"><a id="l03444" name="l03444"></a><span class="lineno"> 3444</span> </div>
-<div class="line"><a id="l03460" name="l03460"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad31478d7172ab043cfea09ac648e975e"> 3460</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES &quot;SDL_VIDEO_OFFSCREEN_SAVE_FRAMES&quot;</span></div>
-<div class="line"><a id="l03461" name="l03461"></a><span class="lineno"> 3461</span> </div>
-<div class="line"><a id="l03486" name="l03486"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7c5d601fb9c48608be750a22311df46c"> 3486</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS &quot;SDL_VIDEO_SYNC_WINDOW_OPERATIONS&quot;</span></div>
-<div class="line"><a id="l03487" name="l03487"></a><span class="lineno"> 3487</span> </div>
-<div class="line"><a id="l03504" name="l03504"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga6e194f2af9d8ae8ffdaae8b1df4a3a4d"> 3504</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR &quot;SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR&quot;</span></div>
-<div class="line"><a id="l03505" name="l03505"></a><span class="lineno"> 3505</span> </div>
-<div class="line"><a id="l03524" name="l03524"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaaa66dc45eda71cf7d58e3d1989dbac0a"> 3524</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION &quot;SDL_VIDEO_WAYLAND_MODE_EMULATION&quot;</span></div>
-<div class="line"><a id="l03525" name="l03525"></a><span class="lineno"> 3525</span> </div>
-<div class="line"><a id="l03546" name="l03546"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gadb87f95bcc5b76c83c09bb02d407cca1"> 3546</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_MODE_SCALING &quot;SDL_VIDEO_WAYLAND_MODE_SCALING&quot;</span></div>
-<div class="line"><a id="l03547" name="l03547"></a><span class="lineno"> 3547</span> </div>
-<div class="foldopen" id="foldopen03566" data-start="" data-end="">
-<div class="line"><a id="l03566" name="l03566"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga631bd1a3cc0bc03e9ff225d604749226"> 3566</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR                                 \</span></div>
-<div class="line"><a id="l03567" name="l03567"></a><span class="lineno"> 3567</span><span class="preprocessor">  &quot;SDL_VIDEO_WAYLAND_PREFER_LIBDECOR&quot;</span></div>
+<div class="line"><a id="l03432" name="l03432"></a><span class="lineno"> 3432</span> </div>
+<div class="line"><a id="l03447" name="l03447"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga85488274590bff72c3d1dba5829443f6"> 3447</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS &quot;SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS&quot;</span></div>
+<div class="line"><a id="l03448" name="l03448"></a><span class="lineno"> 3448</span> </div>
+<div class="line"><a id="l03464" name="l03464"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad31478d7172ab043cfea09ac648e975e"> 3464</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES &quot;SDL_VIDEO_OFFSCREEN_SAVE_FRAMES&quot;</span></div>
+<div class="line"><a id="l03465" name="l03465"></a><span class="lineno"> 3465</span> </div>
+<div class="line"><a id="l03490" name="l03490"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7c5d601fb9c48608be750a22311df46c"> 3490</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS &quot;SDL_VIDEO_SYNC_WINDOW_OPERATIONS&quot;</span></div>
+<div class="line"><a id="l03491" name="l03491"></a><span class="lineno"> 3491</span> </div>
+<div class="line"><a id="l03508" name="l03508"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga6e194f2af9d8ae8ffdaae8b1df4a3a4d"> 3508</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR &quot;SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR&quot;</span></div>
+<div class="line"><a id="l03509" name="l03509"></a><span class="lineno"> 3509</span> </div>
+<div class="line"><a id="l03528" name="l03528"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaaa66dc45eda71cf7d58e3d1989dbac0a"> 3528</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION &quot;SDL_VIDEO_WAYLAND_MODE_EMULATION&quot;</span></div>
+<div class="line"><a id="l03529" name="l03529"></a><span class="lineno"> 3529</span> </div>
+<div class="line"><a id="l03550" name="l03550"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gadb87f95bcc5b76c83c09bb02d407cca1"> 3550</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_MODE_SCALING &quot;SDL_VIDEO_WAYLAND_MODE_SCALING&quot;</span></div>
+<div class="line"><a id="l03551" name="l03551"></a><span class="lineno"> 3551</span> </div>
+<div class="foldopen" id="foldopen03570" data-start="" data-end="">
+<div class="line"><a id="l03570" name="l03570"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga631bd1a3cc0bc03e9ff225d604749226"> 3570</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR                                 \</span></div>
+<div class="line"><a id="l03571" name="l03571"></a><span class="lineno"> 3571</span><span class="preprocessor">  &quot;SDL_VIDEO_WAYLAND_PREFER_LIBDECOR&quot;</span></div>
 </div>
-<div class="line"><a id="l03568" name="l03568"></a><span class="lineno"> 3568</span> </div>
-<div class="foldopen" id="foldopen03606" data-start="" data-end="">
-<div class="line"><a id="l03606" name="l03606"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga5fee7ac8ab68ec9cc4d2c29cfeb0b2cd"> 3606</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY                                \</span></div>
-<div class="line"><a id="l03607" name="l03607"></a><span class="lineno"> 3607</span><span class="preprocessor">  &quot;SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY&quot;</span></div>
+<div class="line"><a id="l03572" name="l03572"></a><span class="lineno"> 3572</span> </div>
+<div class="foldopen" id="foldopen03610" data-start="" data-end="">
+<div class="line"><a id="l03610" name="l03610"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga5fee7ac8ab68ec9cc4d2c29cfeb0b2cd"> 3610</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY                                \</span></div>
+<div class="line"><a id="l03611" name="l03611"></a><span class="lineno"> 3611</span><span class="preprocessor">  &quot;SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY&quot;</span></div>
 </div>
-<div class="line"><a id="l03608" name="l03608"></a><span class="lineno"> 3608</span> </div>
-<div class="line"><a id="l03629" name="l03629"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1e91c63c1b9c4afd7c0349b4392270fd"> 3629</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WIN_D3DCOMPILER &quot;SDL_VIDEO_WIN_D3DCOMPILER&quot;</span></div>
-<div class="line"><a id="l03630" name="l03630"></a><span class="lineno"> 3630</span> </div>
-<div class="foldopen" id="foldopen03645" data-start="" data-end="">
-<div class="line"><a id="l03645" name="l03645"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga60a3e95f90876602e7d5ed5e901deb24"> 3645</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT                               \</span></div>
-<div class="line"><a id="l03646" name="l03646"></a><span class="lineno"> 3646</span><span class="preprocessor">  &quot;SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT&quot;</span></div>
+<div class="line"><a id="l03612" name="l03612"></a><span class="lineno"> 3612</span> </div>
+<div class="line"><a id="l03633" name="l03633"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1e91c63c1b9c4afd7c0349b4392270fd"> 3633</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_WIN_D3DCOMPILER &quot;SDL_VIDEO_WIN_D3DCOMPILER&quot;</span></div>
+<div class="line"><a id="l03634" name="l03634"></a><span class="lineno"> 3634</span> </div>
+<div class="line"><a id="l03635" name="l03635"></a><span class="lineno"> 3635</span><span class="preprocessor">#if SDL_VERSION_ATLEAST(3, 2, 10)</span></div>
+<div class="line"><a id="l03636" name="l03636"></a><span class="lineno"> 3636</span> </div>
+<div class="foldopen" id="foldopen03651" data-start="" data-end="">
+<div class="line"><a id="l03651" name="l03651"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga60a3e95f90876602e7d5ed5e901deb24"> 3651</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT                               \</span></div>
+<div class="line"><a id="l03652" name="l03652"></a><span class="lineno"> 3652</span><span class="preprocessor">  &quot;SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT&quot;</span></div>
 </div>
-<div class="line"><a id="l03647" name="l03647"></a><span class="lineno"> 3647</span> </div>
-<div class="foldopen" id="foldopen03661" data-start="" data-end="">
-<div class="line"><a id="l03661" name="l03661"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gabc592ad47225c77acdec3d778782a37e"> 3661</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR                            \</span></div>
-<div class="line"><a id="l03662" name="l03662"></a><span class="lineno"> 3662</span><span class="preprocessor">  &quot;SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR&quot;</span></div>
+<div class="line"><a id="l03653" name="l03653"></a><span class="lineno"> 3653</span> </div>
+<div class="line"><a id="l03654" name="l03654"></a><span class="lineno"> 3654</span><span class="preprocessor">#endif </span><span class="comment">// SDL_VERSION_ATLEAST(3, 2, 10)</span></div>
+<div class="line"><a id="l03655" name="l03655"></a><span class="lineno"> 3655</span> </div>
+<div class="foldopen" id="foldopen03669" data-start="" data-end="">
+<div class="line"><a id="l03669" name="l03669"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gabc592ad47225c77acdec3d778782a37e"> 3669</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR                            \</span></div>
+<div class="line"><a id="l03670" name="l03670"></a><span class="lineno"> 3670</span><span class="preprocessor">  &quot;SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR&quot;</span></div>
 </div>
-<div class="line"><a id="l03663" name="l03663"></a><span class="lineno"> 3663</span> </div>
-<div class="line"><a id="l03681" name="l03681"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga64cf86da8e0fab9201f5d6e677df1a87"> 3681</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_NET_WM_PING &quot;SDL_VIDEO_X11_NET_WM_PING&quot;</span></div>
-<div class="line"><a id="l03682" name="l03682"></a><span class="lineno"> 3682</span> </div>
-<div class="line"><a id="l03695" name="l03695"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4216cd975985f959a0f0d31891773e80"> 3695</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_NODIRECTCOLOR &quot;SDL_VIDEO_X11_NODIRECTCOLOR&quot;</span></div>
-<div class="line"><a id="l03696" name="l03696"></a><span class="lineno"> 3696</span> </div>
-<div class="line"><a id="l03706" name="l03706"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaeec8a080fde50f2247f7cc30e6444ce9"> 3706</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_SCALING_FACTOR &quot;SDL_VIDEO_X11_SCALING_FACTOR&quot;</span></div>
-<div class="line"><a id="l03707" name="l03707"></a><span class="lineno"> 3707</span> </div>
-<div class="line"><a id="l03715" name="l03715"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gadb5461554160f28396f9b47be574ef39"> 3715</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_VISUALID &quot;SDL_VIDEO_X11_VISUALID&quot;</span></div>
-<div class="line"><a id="l03716" name="l03716"></a><span class="lineno"> 3716</span> </div>
-<div class="line"><a id="l03724" name="l03724"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga6ebe6c6452f73318bd2cb84e51ed08f8"> 3724</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_WINDOW_VISUALID &quot;SDL_VIDEO_X11_WINDOW_VISUALID&quot;</span></div>
-<div class="line"><a id="l03725" name="l03725"></a><span class="lineno"> 3725</span> </div>
-<div class="line"><a id="l03738" name="l03738"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab78bba735481c64f25a01799c0266058"> 3738</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_XRANDR &quot;SDL_VIDEO_X11_XRANDR&quot;</span></div>
-<div class="line"><a id="l03739" name="l03739"></a><span class="lineno"> 3739</span> </div>
-<div class="line"><a id="l03753" name="l03753"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga13ab5392ac69745f63f514a4b344d97d"> 3753</a></span><span class="preprocessor">#define SDL_HINT_VITA_ENABLE_BACK_TOUCH &quot;SDL_VITA_ENABLE_BACK_TOUCH&quot;</span></div>
-<div class="line"><a id="l03754" name="l03754"></a><span class="lineno"> 3754</span> </div>
-<div class="line"><a id="l03768" name="l03768"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga8653df9cf28c48d3898292d84a565eba"> 3768</a></span><span class="preprocessor">#define SDL_HINT_VITA_ENABLE_FRONT_TOUCH &quot;SDL_VITA_ENABLE_FRONT_TOUCH&quot;</span></div>
-<div class="line"><a id="l03769" name="l03769"></a><span class="lineno"> 3769</span> </div>
-<div class="line"><a id="l03779" name="l03779"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga09cdce4cb26a4ff325e1edec308306e9"> 3779</a></span><span class="preprocessor">#define SDL_HINT_VITA_MODULE_PATH &quot;SDL_VITA_MODULE_PATH&quot;</span></div>
-<div class="line"><a id="l03780" name="l03780"></a><span class="lineno"> 3780</span> </div>
-<div class="line"><a id="l03792" name="l03792"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafbfa079bb3e8cbc42a3275f7f4b24b1e"> 3792</a></span><span class="preprocessor">#define SDL_HINT_VITA_PVR_INIT &quot;SDL_VITA_PVR_INIT&quot;</span></div>
-<div class="line"><a id="l03793" name="l03793"></a><span class="lineno"> 3793</span> </div>
-<div class="line"><a id="l03807" name="l03807"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4c9e66ddd1687e37a89c5e3d5c0f9e65"> 3807</a></span><span class="preprocessor">#define SDL_HINT_VITA_RESOLUTION &quot;SDL_VITA_RESOLUTION&quot;</span></div>
-<div class="line"><a id="l03808" name="l03808"></a><span class="lineno"> 3808</span> </div>
-<div class="line"><a id="l03822" name="l03822"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga186d1393346f875ca524373c08f374f0"> 3822</a></span><span class="preprocessor">#define SDL_HINT_VITA_PVR_OPENGL &quot;SDL_VITA_PVR_OPENGL&quot;</span></div>
-<div class="line"><a id="l03823" name="l03823"></a><span class="lineno"> 3823</span> </div>
-<div class="line"><a id="l03838" name="l03838"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae89c85f77f0d1e1f7716f4c81c96dac3"> 3838</a></span><span class="preprocessor">#define SDL_HINT_VITA_TOUCH_MOUSE_DEVICE &quot;SDL_VITA_TOUCH_MOUSE_DEVICE&quot;</span></div>
-<div class="line"><a id="l03839" name="l03839"></a><span class="lineno"> 3839</span> </div>
-<div class="line"><a id="l03849" name="l03849"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga03d9ef41bdd2ac885445031ab1b0790e"> 3849</a></span><span class="preprocessor">#define SDL_HINT_VULKAN_DISPLAY &quot;SDL_VULKAN_DISPLAY&quot;</span></div>
-<div class="line"><a id="l03850" name="l03850"></a><span class="lineno"> 3850</span> </div>
-<div class="line"><a id="l03859" name="l03859"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga3a94042dbfe70ed5bfbe597ee93a11e5"> 3859</a></span><span class="preprocessor">#define SDL_HINT_VULKAN_LIBRARY &quot;SDL_VULKAN_LIBRARY&quot;</span></div>
-<div class="line"><a id="l03860" name="l03860"></a><span class="lineno"> 3860</span> </div>
-<div class="line"><a id="l03891" name="l03891"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga9b502b557707a58d9f51c593ca0077e2"> 3891</a></span><span class="preprocessor">#define SDL_HINT_WAVE_FACT_CHUNK &quot;SDL_WAVE_FACT_CHUNK&quot;</span></div>
-<div class="line"><a id="l03892" name="l03892"></a><span class="lineno"> 3892</span> </div>
-<div class="line"><a id="l03903" name="l03903"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad5a9d2f81ab9bbe5dc63396837b96afd"> 3903</a></span><span class="preprocessor">#define SDL_HINT_WAVE_CHUNK_LIMIT &quot;SDL_WAVE_CHUNK_LIMIT&quot;</span></div>
-<div class="line"><a id="l03904" name="l03904"></a><span class="lineno"> 3904</span> </div>
-<div class="line"><a id="l03931" name="l03931"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gabf565db22ddc2f8a3842d42db9a71e8b"> 3931</a></span><span class="preprocessor">#define SDL_HINT_WAVE_RIFF_CHUNK_SIZE &quot;SDL_WAVE_RIFF_CHUNK_SIZE&quot;</span></div>
-<div class="line"><a id="l03932" name="l03932"></a><span class="lineno"> 3932</span> </div>
-<div class="line"><a id="l03951" name="l03951"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga464d623d2f0edb55e2da44d09e32e72a"> 3951</a></span><span class="preprocessor">#define SDL_HINT_WAVE_TRUNCATION &quot;SDL_WAVE_TRUNCATION&quot;</span></div>
-<div class="line"><a id="l03952" name="l03952"></a><span class="lineno"> 3952</span> </div>
-<div class="line"><a id="l03968" name="l03968"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga80b2d96b116d894ff3c01b05d8c3ce4d"> 3968</a></span><span class="preprocessor">#define SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED &quot;SDL_WINDOW_ACTIVATE_WHEN_RAISED&quot;</span></div>
-<div class="line"><a id="l03969" name="l03969"></a><span class="lineno"> 3969</span> </div>
-<div class="line"><a id="l03985" name="l03985"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga15998731fd8689dbca378af8321bcd38"> 3985</a></span><span class="preprocessor">#define SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN &quot;SDL_WINDOW_ACTIVATE_WHEN_SHOWN&quot;</span></div>
-<div class="line"><a id="l03986" name="l03986"></a><span class="lineno"> 3986</span> </div>
-<div class="line"><a id="l04003" name="l04003"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga80e9fc35e14239135087e9d34e57f9c9"> 4003</a></span><span class="preprocessor">#define SDL_HINT_WINDOW_ALLOW_TOPMOST &quot;SDL_WINDOW_ALLOW_TOPMOST&quot;</span></div>
-<div class="line"><a id="l04004" name="l04004"></a><span class="lineno"> 4004</span> </div>
-<div class="foldopen" id="foldopen04019" data-start="" data-end="">
-<div class="line"><a id="l04019" name="l04019"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab34ea46e0365bd0546c6fa6f4b56d86e"> 4019</a></span><span class="preprocessor">#define SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN                       \</span></div>
-<div class="line"><a id="l04020" name="l04020"></a><span class="lineno"> 4020</span><span class="preprocessor">  &quot;SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN&quot;</span></div>
+<div class="line"><a id="l03671" name="l03671"></a><span class="lineno"> 3671</span> </div>
+<div class="line"><a id="l03689" name="l03689"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga64cf86da8e0fab9201f5d6e677df1a87"> 3689</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_NET_WM_PING &quot;SDL_VIDEO_X11_NET_WM_PING&quot;</span></div>
+<div class="line"><a id="l03690" name="l03690"></a><span class="lineno"> 3690</span> </div>
+<div class="line"><a id="l03703" name="l03703"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4216cd975985f959a0f0d31891773e80"> 3703</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_NODIRECTCOLOR &quot;SDL_VIDEO_X11_NODIRECTCOLOR&quot;</span></div>
+<div class="line"><a id="l03704" name="l03704"></a><span class="lineno"> 3704</span> </div>
+<div class="line"><a id="l03714" name="l03714"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaeec8a080fde50f2247f7cc30e6444ce9"> 3714</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_SCALING_FACTOR &quot;SDL_VIDEO_X11_SCALING_FACTOR&quot;</span></div>
+<div class="line"><a id="l03715" name="l03715"></a><span class="lineno"> 3715</span> </div>
+<div class="line"><a id="l03723" name="l03723"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gadb5461554160f28396f9b47be574ef39"> 3723</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_VISUALID &quot;SDL_VIDEO_X11_VISUALID&quot;</span></div>
+<div class="line"><a id="l03724" name="l03724"></a><span class="lineno"> 3724</span> </div>
+<div class="line"><a id="l03732" name="l03732"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga6ebe6c6452f73318bd2cb84e51ed08f8"> 3732</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_WINDOW_VISUALID &quot;SDL_VIDEO_X11_WINDOW_VISUALID&quot;</span></div>
+<div class="line"><a id="l03733" name="l03733"></a><span class="lineno"> 3733</span> </div>
+<div class="line"><a id="l03746" name="l03746"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab78bba735481c64f25a01799c0266058"> 3746</a></span><span class="preprocessor">#define SDL_HINT_VIDEO_X11_XRANDR &quot;SDL_VIDEO_X11_XRANDR&quot;</span></div>
+<div class="line"><a id="l03747" name="l03747"></a><span class="lineno"> 3747</span> </div>
+<div class="line"><a id="l03761" name="l03761"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga13ab5392ac69745f63f514a4b344d97d"> 3761</a></span><span class="preprocessor">#define SDL_HINT_VITA_ENABLE_BACK_TOUCH &quot;SDL_VITA_ENABLE_BACK_TOUCH&quot;</span></div>
+<div class="line"><a id="l03762" name="l03762"></a><span class="lineno"> 3762</span> </div>
+<div class="line"><a id="l03776" name="l03776"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga8653df9cf28c48d3898292d84a565eba"> 3776</a></span><span class="preprocessor">#define SDL_HINT_VITA_ENABLE_FRONT_TOUCH &quot;SDL_VITA_ENABLE_FRONT_TOUCH&quot;</span></div>
+<div class="line"><a id="l03777" name="l03777"></a><span class="lineno"> 3777</span> </div>
+<div class="line"><a id="l03787" name="l03787"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga09cdce4cb26a4ff325e1edec308306e9"> 3787</a></span><span class="preprocessor">#define SDL_HINT_VITA_MODULE_PATH &quot;SDL_VITA_MODULE_PATH&quot;</span></div>
+<div class="line"><a id="l03788" name="l03788"></a><span class="lineno"> 3788</span> </div>
+<div class="line"><a id="l03800" name="l03800"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafbfa079bb3e8cbc42a3275f7f4b24b1e"> 3800</a></span><span class="preprocessor">#define SDL_HINT_VITA_PVR_INIT &quot;SDL_VITA_PVR_INIT&quot;</span></div>
+<div class="line"><a id="l03801" name="l03801"></a><span class="lineno"> 3801</span> </div>
+<div class="line"><a id="l03815" name="l03815"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4c9e66ddd1687e37a89c5e3d5c0f9e65"> 3815</a></span><span class="preprocessor">#define SDL_HINT_VITA_RESOLUTION &quot;SDL_VITA_RESOLUTION&quot;</span></div>
+<div class="line"><a id="l03816" name="l03816"></a><span class="lineno"> 3816</span> </div>
+<div class="line"><a id="l03830" name="l03830"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga186d1393346f875ca524373c08f374f0"> 3830</a></span><span class="preprocessor">#define SDL_HINT_VITA_PVR_OPENGL &quot;SDL_VITA_PVR_OPENGL&quot;</span></div>
+<div class="line"><a id="l03831" name="l03831"></a><span class="lineno"> 3831</span> </div>
+<div class="line"><a id="l03846" name="l03846"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae89c85f77f0d1e1f7716f4c81c96dac3"> 3846</a></span><span class="preprocessor">#define SDL_HINT_VITA_TOUCH_MOUSE_DEVICE &quot;SDL_VITA_TOUCH_MOUSE_DEVICE&quot;</span></div>
+<div class="line"><a id="l03847" name="l03847"></a><span class="lineno"> 3847</span> </div>
+<div class="line"><a id="l03857" name="l03857"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga03d9ef41bdd2ac885445031ab1b0790e"> 3857</a></span><span class="preprocessor">#define SDL_HINT_VULKAN_DISPLAY &quot;SDL_VULKAN_DISPLAY&quot;</span></div>
+<div class="line"><a id="l03858" name="l03858"></a><span class="lineno"> 3858</span> </div>
+<div class="line"><a id="l03867" name="l03867"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga3a94042dbfe70ed5bfbe597ee93a11e5"> 3867</a></span><span class="preprocessor">#define SDL_HINT_VULKAN_LIBRARY &quot;SDL_VULKAN_LIBRARY&quot;</span></div>
+<div class="line"><a id="l03868" name="l03868"></a><span class="lineno"> 3868</span> </div>
+<div class="line"><a id="l03899" name="l03899"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga9b502b557707a58d9f51c593ca0077e2"> 3899</a></span><span class="preprocessor">#define SDL_HINT_WAVE_FACT_CHUNK &quot;SDL_WAVE_FACT_CHUNK&quot;</span></div>
+<div class="line"><a id="l03900" name="l03900"></a><span class="lineno"> 3900</span> </div>
+<div class="line"><a id="l03911" name="l03911"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad5a9d2f81ab9bbe5dc63396837b96afd"> 3911</a></span><span class="preprocessor">#define SDL_HINT_WAVE_CHUNK_LIMIT &quot;SDL_WAVE_CHUNK_LIMIT&quot;</span></div>
+<div class="line"><a id="l03912" name="l03912"></a><span class="lineno"> 3912</span> </div>
+<div class="line"><a id="l03939" name="l03939"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gabf565db22ddc2f8a3842d42db9a71e8b"> 3939</a></span><span class="preprocessor">#define SDL_HINT_WAVE_RIFF_CHUNK_SIZE &quot;SDL_WAVE_RIFF_CHUNK_SIZE&quot;</span></div>
+<div class="line"><a id="l03940" name="l03940"></a><span class="lineno"> 3940</span> </div>
+<div class="line"><a id="l03959" name="l03959"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga464d623d2f0edb55e2da44d09e32e72a"> 3959</a></span><span class="preprocessor">#define SDL_HINT_WAVE_TRUNCATION &quot;SDL_WAVE_TRUNCATION&quot;</span></div>
+<div class="line"><a id="l03960" name="l03960"></a><span class="lineno"> 3960</span> </div>
+<div class="line"><a id="l03976" name="l03976"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga80b2d96b116d894ff3c01b05d8c3ce4d"> 3976</a></span><span class="preprocessor">#define SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED &quot;SDL_WINDOW_ACTIVATE_WHEN_RAISED&quot;</span></div>
+<div class="line"><a id="l03977" name="l03977"></a><span class="lineno"> 3977</span> </div>
+<div class="line"><a id="l03993" name="l03993"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga15998731fd8689dbca378af8321bcd38"> 3993</a></span><span class="preprocessor">#define SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN &quot;SDL_WINDOW_ACTIVATE_WHEN_SHOWN&quot;</span></div>
+<div class="line"><a id="l03994" name="l03994"></a><span class="lineno"> 3994</span> </div>
+<div class="line"><a id="l04011" name="l04011"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga80e9fc35e14239135087e9d34e57f9c9"> 4011</a></span><span class="preprocessor">#define SDL_HINT_WINDOW_ALLOW_TOPMOST &quot;SDL_WINDOW_ALLOW_TOPMOST&quot;</span></div>
+<div class="line"><a id="l04012" name="l04012"></a><span class="lineno"> 4012</span> </div>
+<div class="foldopen" id="foldopen04027" data-start="" data-end="">
+<div class="line"><a id="l04027" name="l04027"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gab34ea46e0365bd0546c6fa6f4b56d86e"> 4027</a></span><span class="preprocessor">#define SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN                       \</span></div>
+<div class="line"><a id="l04028" name="l04028"></a><span class="lineno"> 4028</span><span class="preprocessor">  &quot;SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN&quot;</span></div>
 </div>
-<div class="line"><a id="l04021" name="l04021"></a><span class="lineno"> 4021</span> </div>
-<div class="line"><a id="l04036" name="l04036"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gabcd2e214b002e1f67934e9146ca455bc"> 4036</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4 &quot;SDL_WINDOWS_CLOSE_ON_ALT_F4&quot;</span></div>
-<div class="line"><a id="l04037" name="l04037"></a><span class="lineno"> 4037</span> </div>
-<div class="foldopen" id="foldopen04065" data-start="" data-end="">
-<div class="line"><a id="l04065" name="l04065"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1257837ca9e302f3c4a20634b2a10438"> 4065</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS                                 \</span></div>
-<div class="line"><a id="l04066" name="l04066"></a><span class="lineno"> 4066</span><span class="preprocessor">  &quot;SDL_WINDOWS_ENABLE_MENU_MNEMONICS&quot;</span></div>
+<div class="line"><a id="l04029" name="l04029"></a><span class="lineno"> 4029</span> </div>
+<div class="line"><a id="l04044" name="l04044"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gabcd2e214b002e1f67934e9146ca455bc"> 4044</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4 &quot;SDL_WINDOWS_CLOSE_ON_ALT_F4&quot;</span></div>
+<div class="line"><a id="l04045" name="l04045"></a><span class="lineno"> 4045</span> </div>
+<div class="foldopen" id="foldopen04073" data-start="" data-end="">
+<div class="line"><a id="l04073" name="l04073"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga1257837ca9e302f3c4a20634b2a10438"> 4073</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS                                 \</span></div>
+<div class="line"><a id="l04074" name="l04074"></a><span class="lineno"> 4074</span><span class="preprocessor">  &quot;SDL_WINDOWS_ENABLE_MENU_MNEMONICS&quot;</span></div>
 </div>
-<div class="line"><a id="l04067" name="l04067"></a><span class="lineno"> 4067</span> </div>
-<div class="line"><a id="l04081" name="l04081"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4751d59cbeb36e0e41139f2f3273602d"> 4081</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP &quot;SDL_WINDOWS_ENABLE_MESSAGELOOP&quot;</span></div>
-<div class="line"><a id="l04082" name="l04082"></a><span class="lineno"> 4082</span> </div>
-<div class="line"><a id="l04097" name="l04097"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga83070b0330f364ae7f66bdeb19bb250e"> 4097</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_GAMEINPUT &quot;SDL_WINDOWS_GAMEINPUT&quot;</span></div>
-<div class="line"><a id="l04098" name="l04098"></a><span class="lineno"> 4098</span> </div>
-<div class="line"><a id="l04111" name="l04111"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae6224c312c973cc503db0b51535b306c"> 4111</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_RAW_KEYBOARD &quot;SDL_WINDOWS_RAW_KEYBOARD&quot;</span></div>
-<div class="line"><a id="l04112" name="l04112"></a><span class="lineno"> 4112</span> </div>
-<div class="foldopen" id="foldopen04132" data-start="" data-end="">
-<div class="line"><a id="l04132" name="l04132"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga09d0dc09f5a54f499d3715912a19151f"> 4132</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL                                \</span></div>
-<div class="line"><a id="l04133" name="l04133"></a><span class="lineno"> 4133</span><span class="preprocessor">  &quot;SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL&quot;</span></div>
+<div class="line"><a id="l04075" name="l04075"></a><span class="lineno"> 4075</span> </div>
+<div class="line"><a id="l04089" name="l04089"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4751d59cbeb36e0e41139f2f3273602d"> 4089</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP &quot;SDL_WINDOWS_ENABLE_MESSAGELOOP&quot;</span></div>
+<div class="line"><a id="l04090" name="l04090"></a><span class="lineno"> 4090</span> </div>
+<div class="line"><a id="l04105" name="l04105"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga83070b0330f364ae7f66bdeb19bb250e"> 4105</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_GAMEINPUT &quot;SDL_WINDOWS_GAMEINPUT&quot;</span></div>
+<div class="line"><a id="l04106" name="l04106"></a><span class="lineno"> 4106</span> </div>
+<div class="line"><a id="l04119" name="l04119"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gae6224c312c973cc503db0b51535b306c"> 4119</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_RAW_KEYBOARD &quot;SDL_WINDOWS_RAW_KEYBOARD&quot;</span></div>
+<div class="line"><a id="l04120" name="l04120"></a><span class="lineno"> 4120</span> </div>
+<div class="foldopen" id="foldopen04140" data-start="" data-end="">
+<div class="line"><a id="l04140" name="l04140"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga09d0dc09f5a54f499d3715912a19151f"> 4140</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL                                \</span></div>
+<div class="line"><a id="l04141" name="l04141"></a><span class="lineno"> 4141</span><span class="preprocessor">  &quot;SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL&quot;</span></div>
 </div>
-<div class="line"><a id="l04134" name="l04134"></a><span class="lineno"> 4134</span> </div>
-<div class="line"><a id="l04143" name="l04143"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2a5b224b4a44f6a884a3b4bb6bd4fc97"> 4143</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_INTRESOURCE_ICON &quot;SDL_WINDOWS_INTRESOURCE_ICON&quot;</span></div>
-<div class="line"><a id="l04144" name="l04144"></a><span class="lineno"> 4144</span> </div>
-<div class="foldopen" id="foldopen04153" data-start="" data-end="">
-<div class="line"><a id="l04153" name="l04153"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7da3b0170a9ad3d1ee9e9e9d491d697a"> 4153</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL                                \</span></div>
-<div class="line"><a id="l04154" name="l04154"></a><span class="lineno"> 4154</span><span class="preprocessor">  &quot;SDL_WINDOWS_INTRESOURCE_ICON_SMALL&quot;</span></div>
+<div class="line"><a id="l04142" name="l04142"></a><span class="lineno"> 4142</span> </div>
+<div class="line"><a id="l04151" name="l04151"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga2a5b224b4a44f6a884a3b4bb6bd4fc97"> 4151</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_INTRESOURCE_ICON &quot;SDL_WINDOWS_INTRESOURCE_ICON&quot;</span></div>
+<div class="line"><a id="l04152" name="l04152"></a><span class="lineno"> 4152</span> </div>
+<div class="foldopen" id="foldopen04161" data-start="" data-end="">
+<div class="line"><a id="l04161" name="l04161"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7da3b0170a9ad3d1ee9e9e9d491d697a"> 4161</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL                                \</span></div>
+<div class="line"><a id="l04162" name="l04162"></a><span class="lineno"> 4162</span><span class="preprocessor">  &quot;SDL_WINDOWS_INTRESOURCE_ICON_SMALL&quot;</span></div>
 </div>
-<div class="line"><a id="l04155" name="l04155"></a><span class="lineno"> 4155</span> </div>
-<div class="line"><a id="l04182" name="l04182"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga83ec849e306ddb83759806a2dbf44682"> 4182</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_USE_D3D9EX &quot;SDL_WINDOWS_USE_D3D9EX&quot;</span></div>
-<div class="line"><a id="l04183" name="l04183"></a><span class="lineno"> 4183</span> </div>
-<div class="foldopen" id="foldopen04199" data-start="" data-end="">
-<div class="line"><a id="l04199" name="l04199"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7d3d35472f1be7f4a287d628b68f3685"> 4199</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE                                 \</span></div>
-<div class="line"><a id="l04200" name="l04200"></a><span class="lineno"> 4200</span><span class="preprocessor">  &quot;SDL_WINDOWS_ERASE_BACKGROUND_MODE&quot;</span></div>
+<div class="line"><a id="l04163" name="l04163"></a><span class="lineno"> 4163</span> </div>
+<div class="line"><a id="l04190" name="l04190"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga83ec849e306ddb83759806a2dbf44682"> 4190</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_USE_D3D9EX &quot;SDL_WINDOWS_USE_D3D9EX&quot;</span></div>
+<div class="line"><a id="l04191" name="l04191"></a><span class="lineno"> 4191</span> </div>
+<div class="foldopen" id="foldopen04207" data-start="" data-end="">
+<div class="line"><a id="l04207" name="l04207"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga7d3d35472f1be7f4a287d628b68f3685"> 4207</a></span><span class="preprocessor">#define SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE                                 \</span></div>
+<div class="line"><a id="l04208" name="l04208"></a><span class="lineno"> 4208</span><span class="preprocessor">  &quot;SDL_WINDOWS_ERASE_BACKGROUND_MODE&quot;</span></div>
 </div>
-<div class="line"><a id="l04201" name="l04201"></a><span class="lineno"> 4201</span> </div>
-<div class="line"><a id="l04221" name="l04221"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafd9e992ec99ebab318a9f73c6d9ba2ce"> 4221</a></span><span class="preprocessor">#define SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT &quot;SDL_X11_FORCE_OVERRIDE_REDIRECT&quot;</span></div>
-<div class="line"><a id="l04222" name="l04222"></a><span class="lineno"> 4222</span> </div>
-<div class="line"><a id="l04238" name="l04238"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gadf64ea7426a2fecbf2aec55da0d73750"> 4238</a></span><span class="preprocessor">#define SDL_HINT_X11_WINDOW_TYPE &quot;SDL_X11_WINDOW_TYPE&quot;</span></div>
-<div class="line"><a id="l04239" name="l04239"></a><span class="lineno"> 4239</span> </div>
-<div class="line"><a id="l04249" name="l04249"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaf54cc114868a77950c75f517469e0264"> 4249</a></span><span class="preprocessor">#define SDL_HINT_X11_XCB_LIBRARY &quot;SDL_X11_XCB_LIBRARY&quot;</span></div>
-<div class="line"><a id="l04250" name="l04250"></a><span class="lineno"> 4250</span> </div>
-<div class="line"><a id="l04264" name="l04264"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga74031ed3b17889222462108800b91c3c"> 4264</a></span><span class="preprocessor">#define SDL_HINT_XINPUT_ENABLED &quot;SDL_XINPUT_ENABLED&quot;</span></div>
-<div class="line"><a id="l04265" name="l04265"></a><span class="lineno"> 4265</span> </div>
-<div class="line"><a id="l04288" name="l04288"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga97d54a6ba254420c974b6add1e841486"> 4288</a></span><span class="preprocessor">#define SDL_HINT_ASSERT &quot;SDL_ASSERT&quot;</span></div>
-<div class="line"><a id="l04289" name="l04289"></a><span class="lineno"> 4289</span> </div>
-<div class="line"><a id="l04303" name="l04303"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga68c4d7768de02983c9cd88b813486922"> 4303</a></span><span class="preprocessor">#define SDL_HINT_PEN_MOUSE_EVENTS &quot;SDL_PEN_MOUSE_EVENTS&quot;</span></div>
-<div class="line"><a id="l04304" name="l04304"></a><span class="lineno"> 4304</span> </div>
-<div class="line"><a id="l04318" name="l04318"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga706f36041d6a5ff23967e4ea69ec703f"> 4318</a></span><span class="preprocessor">#define SDL_HINT_PEN_TOUCH_EVENTS &quot;SDL_PEN_TOUCH_EVENTS&quot;</span></div>
-<div class="line"><a id="l04319" name="l04319"></a><span class="lineno"> 4319</span> </div>
-<div class="line"><a id="l04320" name="l04320"></a><span class="lineno"> 4320</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DOC</span></div>
-<div class="line"><a id="l04321" name="l04321"></a><span class="lineno"> 4321</span> </div>
-<div class="line"><a id="l04327" name="l04327"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09"> 4327</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> = SDL_HintPriority;</div>
-<div class="line"><a id="l04328" name="l04328"></a><span class="lineno"> 4328</span> </div>
-<div class="line"><a id="l04329" name="l04329"></a><span class="lineno"> 4329</span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> HINT_DEFAULT = SDL_HINT_DEFAULT;</div>
-<div class="line"><a id="l04330" name="l04330"></a><span class="lineno"> 4330</span> </div>
-<div class="line"><a id="l04331" name="l04331"></a><span class="lineno"> 4331</span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> HINT_NORMAL = SDL_HINT_NORMAL;</div>
-<div class="line"><a id="l04332" name="l04332"></a><span class="lineno"> 4332</span> </div>
-<div class="line"><a id="l04333" name="l04333"></a><span class="lineno"> 4333</span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> HINT_OVERRIDE = SDL_HINT_OVERRIDE;</div>
-<div class="line"><a id="l04334" name="l04334"></a><span class="lineno"> 4334</span> </div>
-<div class="foldopen" id="foldopen04356" data-start="{" data-end="}">
-<div class="line"><a id="l04356" name="l04356"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga79443e78187ce85b4e8779ee407d57a5"> 4356</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga79443e78187ce85b4e8779ee407d57a5">SetHintWithPriority</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
-<div class="line"><a id="l04357" name="l04357"></a><span class="lineno"> 4357</span>                                <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> value,</div>
-<div class="line"><a id="l04358" name="l04358"></a><span class="lineno"> 4358</span>                                <a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> priority)</div>
-<div class="line"><a id="l04359" name="l04359"></a><span class="lineno"> 4359</span>{</div>
-<div class="line"><a id="l04360" name="l04360"></a><span class="lineno"> 4360</span>  <span class="keywordflow">return</span> SDL_SetHintWithPriority(name, value, priority);</div>
-<div class="line"><a id="l04361" name="l04361"></a><span class="lineno"> 4361</span>}</div>
+<div class="line"><a id="l04209" name="l04209"></a><span class="lineno"> 4209</span> </div>
+<div class="line"><a id="l04229" name="l04229"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafd9e992ec99ebab318a9f73c6d9ba2ce"> 4229</a></span><span class="preprocessor">#define SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT &quot;SDL_X11_FORCE_OVERRIDE_REDIRECT&quot;</span></div>
+<div class="line"><a id="l04230" name="l04230"></a><span class="lineno"> 4230</span> </div>
+<div class="line"><a id="l04246" name="l04246"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gadf64ea7426a2fecbf2aec55da0d73750"> 4246</a></span><span class="preprocessor">#define SDL_HINT_X11_WINDOW_TYPE &quot;SDL_X11_WINDOW_TYPE&quot;</span></div>
+<div class="line"><a id="l04247" name="l04247"></a><span class="lineno"> 4247</span> </div>
+<div class="line"><a id="l04257" name="l04257"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gaf54cc114868a77950c75f517469e0264"> 4257</a></span><span class="preprocessor">#define SDL_HINT_X11_XCB_LIBRARY &quot;SDL_X11_XCB_LIBRARY&quot;</span></div>
+<div class="line"><a id="l04258" name="l04258"></a><span class="lineno"> 4258</span> </div>
+<div class="line"><a id="l04272" name="l04272"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga74031ed3b17889222462108800b91c3c"> 4272</a></span><span class="preprocessor">#define SDL_HINT_XINPUT_ENABLED &quot;SDL_XINPUT_ENABLED&quot;</span></div>
+<div class="line"><a id="l04273" name="l04273"></a><span class="lineno"> 4273</span> </div>
+<div class="line"><a id="l04296" name="l04296"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga97d54a6ba254420c974b6add1e841486"> 4296</a></span><span class="preprocessor">#define SDL_HINT_ASSERT &quot;SDL_ASSERT&quot;</span></div>
+<div class="line"><a id="l04297" name="l04297"></a><span class="lineno"> 4297</span> </div>
+<div class="line"><a id="l04311" name="l04311"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga68c4d7768de02983c9cd88b813486922"> 4311</a></span><span class="preprocessor">#define SDL_HINT_PEN_MOUSE_EVENTS &quot;SDL_PEN_MOUSE_EVENTS&quot;</span></div>
+<div class="line"><a id="l04312" name="l04312"></a><span class="lineno"> 4312</span> </div>
+<div class="line"><a id="l04326" name="l04326"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga706f36041d6a5ff23967e4ea69ec703f"> 4326</a></span><span class="preprocessor">#define SDL_HINT_PEN_TOUCH_EVENTS &quot;SDL_PEN_TOUCH_EVENTS&quot;</span></div>
+<div class="line"><a id="l04327" name="l04327"></a><span class="lineno"> 4327</span> </div>
+<div class="line"><a id="l04328" name="l04328"></a><span class="lineno"> 4328</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DOC</span></div>
+<div class="line"><a id="l04329" name="l04329"></a><span class="lineno"> 4329</span> </div>
+<div class="line"><a id="l04335" name="l04335"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09"> 4335</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> = SDL_HintPriority;</div>
+<div class="line"><a id="l04336" name="l04336"></a><span class="lineno"> 4336</span> </div>
+<div class="line"><a id="l04337" name="l04337"></a><span class="lineno"> 4337</span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> HINT_DEFAULT = SDL_HINT_DEFAULT;</div>
+<div class="line"><a id="l04338" name="l04338"></a><span class="lineno"> 4338</span> </div>
+<div class="line"><a id="l04339" name="l04339"></a><span class="lineno"> 4339</span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> HINT_NORMAL = SDL_HINT_NORMAL;</div>
+<div class="line"><a id="l04340" name="l04340"></a><span class="lineno"> 4340</span> </div>
+<div class="line"><a id="l04341" name="l04341"></a><span class="lineno"> 4341</span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> HINT_OVERRIDE = SDL_HINT_OVERRIDE;</div>
+<div class="line"><a id="l04342" name="l04342"></a><span class="lineno"> 4342</span> </div>
+<div class="foldopen" id="foldopen04364" data-start="{" data-end="}">
+<div class="line"><a id="l04364" name="l04364"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga79443e78187ce85b4e8779ee407d57a5"> 4364</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga79443e78187ce85b4e8779ee407d57a5">SetHintWithPriority</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
+<div class="line"><a id="l04365" name="l04365"></a><span class="lineno"> 4365</span>                                <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> value,</div>
+<div class="line"><a id="l04366" name="l04366"></a><span class="lineno"> 4366</span>                                <a class="code hl_typedef" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">HintPriority</a> priority)</div>
+<div class="line"><a id="l04367" name="l04367"></a><span class="lineno"> 4367</span>{</div>
+<div class="line"><a id="l04368" name="l04368"></a><span class="lineno"> 4368</span>  <span class="keywordflow">return</span> SDL_SetHintWithPriority(name, value, priority);</div>
+<div class="line"><a id="l04369" name="l04369"></a><span class="lineno"> 4369</span>}</div>
 </div>
-<div class="line"><a id="l04362" name="l04362"></a><span class="lineno"> 4362</span> </div>
-<div class="foldopen" id="foldopen04383" data-start="{" data-end="}">
-<div class="line"><a id="l04383" name="l04383"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga286b94e01c538f61a4655ec4c2e48056"> 4383</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga286b94e01c538f61a4655ec4c2e48056">SetHint</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> value)</div>
-<div class="line"><a id="l04384" name="l04384"></a><span class="lineno"> 4384</span>{</div>
-<div class="line"><a id="l04385" name="l04385"></a><span class="lineno"> 4385</span>  <span class="keywordflow">return</span> SDL_SetHint(name, value);</div>
-<div class="line"><a id="l04386" name="l04386"></a><span class="lineno"> 4386</span>}</div>
+<div class="line"><a id="l04370" name="l04370"></a><span class="lineno"> 4370</span> </div>
+<div class="foldopen" id="foldopen04391" data-start="{" data-end="}">
+<div class="line"><a id="l04391" name="l04391"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga286b94e01c538f61a4655ec4c2e48056"> 4391</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga286b94e01c538f61a4655ec4c2e48056">SetHint</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> value)</div>
+<div class="line"><a id="l04392" name="l04392"></a><span class="lineno"> 4392</span>{</div>
+<div class="line"><a id="l04393" name="l04393"></a><span class="lineno"> 4393</span>  <span class="keywordflow">return</span> SDL_SetHint(name, value);</div>
+<div class="line"><a id="l04394" name="l04394"></a><span class="lineno"> 4394</span>}</div>
 </div>
-<div class="line"><a id="l04387" name="l04387"></a><span class="lineno"> 4387</span> </div>
-<div class="line"><a id="l04406" name="l04406"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga9fe31cb9be887719fd3086126773f71e"> 4406</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga9fe31cb9be887719fd3086126773f71e">ResetHint</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name) { <span class="keywordflow">return</span> SDL_ResetHint(name); }</div>
-<div class="line"><a id="l04407" name="l04407"></a><span class="lineno"> 4407</span> </div>
-<div class="line"><a id="l04421" name="l04421"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad709e6b20dd2df0329eb643060abcf8e"> 4421</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#gad709e6b20dd2df0329eb643060abcf8e">ResetHints</a>() { <span class="keywordflow">return</span> SDL_ResetHints(); }</div>
-<div class="line"><a id="l04422" name="l04422"></a><span class="lineno"> 4422</span> </div>
-<div class="line"><a id="l04441" name="l04441"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad12209cf860f8f3e98d8d008e248a4c8"> 4441</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="group__CategoryHints.html#gad12209cf860f8f3e98d8d008e248a4c8">GetHint</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name) { <span class="keywordflow">return</span> SDL_GetHint(name); }</div>
-<div class="line"><a id="l04442" name="l04442"></a><span class="lineno"> 4442</span> </div>
-<div class="foldopen" id="foldopen04458" data-start="{" data-end="}">
-<div class="line"><a id="l04458" name="l04458"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga644d79b02ef6e68e46536a224a8fe5a1"> 4458</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga644d79b02ef6e68e46536a224a8fe5a1">GetHintBoolean</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name, <span class="keywordtype">bool</span> default_value)</div>
-<div class="line"><a id="l04459" name="l04459"></a><span class="lineno"> 4459</span>{</div>
-<div class="line"><a id="l04460" name="l04460"></a><span class="lineno"> 4460</span>  <span class="keywordflow">return</span> SDL_GetHintBoolean(name, default_value);</div>
-<div class="line"><a id="l04461" name="l04461"></a><span class="lineno"> 4461</span>}</div>
+<div class="line"><a id="l04395" name="l04395"></a><span class="lineno"> 4395</span> </div>
+<div class="line"><a id="l04414" name="l04414"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga9fe31cb9be887719fd3086126773f71e"> 4414</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga9fe31cb9be887719fd3086126773f71e">ResetHint</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name) { <span class="keywordflow">return</span> SDL_ResetHint(name); }</div>
+<div class="line"><a id="l04415" name="l04415"></a><span class="lineno"> 4415</span> </div>
+<div class="line"><a id="l04429" name="l04429"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad709e6b20dd2df0329eb643060abcf8e"> 4429</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#gad709e6b20dd2df0329eb643060abcf8e">ResetHints</a>() { <span class="keywordflow">return</span> SDL_ResetHints(); }</div>
+<div class="line"><a id="l04430" name="l04430"></a><span class="lineno"> 4430</span> </div>
+<div class="line"><a id="l04449" name="l04449"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gad12209cf860f8f3e98d8d008e248a4c8"> 4449</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="group__CategoryHints.html#gad12209cf860f8f3e98d8d008e248a4c8">GetHint</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name) { <span class="keywordflow">return</span> SDL_GetHint(name); }</div>
+<div class="line"><a id="l04450" name="l04450"></a><span class="lineno"> 4450</span> </div>
+<div class="foldopen" id="foldopen04466" data-start="{" data-end="}">
+<div class="line"><a id="l04466" name="l04466"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga644d79b02ef6e68e46536a224a8fe5a1"> 4466</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga644d79b02ef6e68e46536a224a8fe5a1">GetHintBoolean</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name, <span class="keywordtype">bool</span> default_value)</div>
+<div class="line"><a id="l04467" name="l04467"></a><span class="lineno"> 4467</span>{</div>
+<div class="line"><a id="l04468" name="l04468"></a><span class="lineno"> 4468</span>  <span class="keywordflow">return</span> SDL_GetHintBoolean(name, default_value);</div>
+<div class="line"><a id="l04469" name="l04469"></a><span class="lineno"> 4469</span>}</div>
 </div>
-<div class="line"><a id="l04462" name="l04462"></a><span class="lineno"> 4462</span> </div>
-<div class="line"><a id="l04482" name="l04482"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798"> 4482</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> = SDL_HintCallback;</div>
-<div class="line"><a id="l04483" name="l04483"></a><span class="lineno"> 4483</span> </div>
-<div class="foldopen" id="foldopen04503" data-start="{" data-end="}">
-<div class="line"><a id="l04503" name="l04503"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga293a8f14c58c606a6238906426dec936"> 4503</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga293a8f14c58c606a6238906426dec936">AddHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
-<div class="line"><a id="l04504" name="l04504"></a><span class="lineno"> 4504</span>                            <a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback,</div>
-<div class="line"><a id="l04505" name="l04505"></a><span class="lineno"> 4505</span>                            <span class="keywordtype">void</span>* userdata)</div>
-<div class="line"><a id="l04506" name="l04506"></a><span class="lineno"> 4506</span>{</div>
-<div class="line"><a id="l04507" name="l04507"></a><span class="lineno"> 4507</span>  <span class="keywordflow">return</span> SDL_AddHintCallback(name, callback, userdata);</div>
-<div class="line"><a id="l04508" name="l04508"></a><span class="lineno"> 4508</span>}</div>
+<div class="line"><a id="l04470" name="l04470"></a><span class="lineno"> 4470</span> </div>
+<div class="line"><a id="l04490" name="l04490"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798"> 4490</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> = SDL_HintCallback;</div>
+<div class="line"><a id="l04491" name="l04491"></a><span class="lineno"> 4491</span> </div>
+<div class="foldopen" id="foldopen04511" data-start="{" data-end="}">
+<div class="line"><a id="l04511" name="l04511"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga293a8f14c58c606a6238906426dec936"> 4511</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryHints.html#ga293a8f14c58c606a6238906426dec936">AddHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
+<div class="line"><a id="l04512" name="l04512"></a><span class="lineno"> 4512</span>                            <a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback,</div>
+<div class="line"><a id="l04513" name="l04513"></a><span class="lineno"> 4513</span>                            <span class="keywordtype">void</span>* userdata)</div>
+<div class="line"><a id="l04514" name="l04514"></a><span class="lineno"> 4514</span>{</div>
+<div class="line"><a id="l04515" name="l04515"></a><span class="lineno"> 4515</span>  <span class="keywordflow">return</span> SDL_AddHintCallback(name, callback, userdata);</div>
+<div class="line"><a id="l04516" name="l04516"></a><span class="lineno"> 4516</span>}</div>
 </div>
-<div class="line"><a id="l04509" name="l04509"></a><span class="lineno"> 4509</span> </div>
-<div class="foldopen" id="foldopen04524" data-start="{" data-end="}">
-<div class="line"><a id="l04524" name="l04524"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f"> 4524</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">RemoveHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
-<div class="line"><a id="l04525" name="l04525"></a><span class="lineno"> 4525</span>                               <a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback,</div>
-<div class="line"><a id="l04526" name="l04526"></a><span class="lineno"> 4526</span>                               <span class="keywordtype">void</span>* userdata)</div>
-<div class="line"><a id="l04527" name="l04527"></a><span class="lineno"> 4527</span>{</div>
-<div class="line"><a id="l04528" name="l04528"></a><span class="lineno"> 4528</span>  <span class="keywordflow">return</span> SDL_RemoveHintCallback(name, callback, userdata);</div>
-<div class="line"><a id="l04529" name="l04529"></a><span class="lineno"> 4529</span>}</div>
+<div class="line"><a id="l04517" name="l04517"></a><span class="lineno"> 4517</span> </div>
+<div class="foldopen" id="foldopen04532" data-start="{" data-end="}">
+<div class="line"><a id="l04532" name="l04532"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f"> 4532</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">RemoveHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
+<div class="line"><a id="l04533" name="l04533"></a><span class="lineno"> 4533</span>                               <a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback,</div>
+<div class="line"><a id="l04534" name="l04534"></a><span class="lineno"> 4534</span>                               <span class="keywordtype">void</span>* userdata)</div>
+<div class="line"><a id="l04535" name="l04535"></a><span class="lineno"> 4535</span>{</div>
+<div class="line"><a id="l04536" name="l04536"></a><span class="lineno"> 4536</span>  <span class="keywordflow">return</span> SDL_RemoveHintCallback(name, callback, userdata);</div>
+<div class="line"><a id="l04537" name="l04537"></a><span class="lineno"> 4537</span>}</div>
 </div>
-<div class="line"><a id="l04530" name="l04530"></a><span class="lineno"> 4530</span> </div>
-<div class="line"><a id="l04532" name="l04532"></a><span class="lineno"> 4532</span> </div>
-<div class="line"><a id="l04533" name="l04533"></a><span class="lineno"> 4533</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l04534" name="l04534"></a><span class="lineno"> 4534</span> </div>
-<div class="line"><a id="l04535" name="l04535"></a><span class="lineno"> 4535</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_HINTS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l04538" name="l04538"></a><span class="lineno"> 4538</span> </div>
+<div class="line"><a id="l04540" name="l04540"></a><span class="lineno"> 4540</span> </div>
+<div class="line"><a id="l04541" name="l04541"></a><span class="lineno"> 4541</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l04542" name="l04542"></a><span class="lineno"> 4542</span> </div>
+<div class="line"><a id="l04543" name="l04543"></a><span class="lineno"> 4543</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_HINTS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSDL_1_1StringParam_html"><div class="ttname"><a href="classSDL_1_1StringParam.html">SDL::StringParam</a></div><div class="ttdoc">Helpers to use C++ strings parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:32</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_ga286b94e01c538f61a4655ec4c2e48056"><div class="ttname"><a href="group__CategoryHints.html#ga286b94e01c538f61a4655ec4c2e48056">SDL::SetHint</a></div><div class="ttdeci">bool SetHint(StringParam name, StringParam value)</div><div class="ttdoc">Set a hint with normal priority.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4383</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_ga293a8f14c58c606a6238906426dec936"><div class="ttname"><a href="group__CategoryHints.html#ga293a8f14c58c606a6238906426dec936">SDL::AddHintCallback</a></div><div class="ttdeci">bool AddHintCallback(StringParam name, HintCallback callback, void *userdata)</div><div class="ttdoc">Add a function to watch a particular hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4503</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_ga644d79b02ef6e68e46536a224a8fe5a1"><div class="ttname"><a href="group__CategoryHints.html#ga644d79b02ef6e68e46536a224a8fe5a1">SDL::GetHintBoolean</a></div><div class="ttdeci">bool GetHintBoolean(StringParam name, bool default_value)</div><div class="ttdoc">Get the boolean value of a hint variable.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4458</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_ga79443e78187ce85b4e8779ee407d57a5"><div class="ttname"><a href="group__CategoryHints.html#ga79443e78187ce85b4e8779ee407d57a5">SDL::SetHintWithPriority</a></div><div class="ttdeci">bool SetHintWithPriority(StringParam name, StringParam value, HintPriority priority)</div><div class="ttdoc">Set a hint with a specific priority.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4356</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_ga9fe31cb9be887719fd3086126773f71e"><div class="ttname"><a href="group__CategoryHints.html#ga9fe31cb9be887719fd3086126773f71e">SDL::ResetHint</a></div><div class="ttdeci">bool ResetHint(StringParam name)</div><div class="ttdoc">Reset a hint to the default value.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4406</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_gacd539b8e58b229520381376dda93705f"><div class="ttname"><a href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">SDL::RemoveHintCallback</a></div><div class="ttdeci">void RemoveHintCallback(StringParam name, HintCallback callback, void *userdata)</div><div class="ttdoc">Remove a function watching a particular hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4524</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_gad12209cf860f8f3e98d8d008e248a4c8"><div class="ttname"><a href="group__CategoryHints.html#gad12209cf860f8f3e98d8d008e248a4c8">SDL::GetHint</a></div><div class="ttdeci">const char * GetHint(StringParam name)</div><div class="ttdoc">Get the value of a hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4441</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_gad709e6b20dd2df0329eb643060abcf8e"><div class="ttname"><a href="group__CategoryHints.html#gad709e6b20dd2df0329eb643060abcf8e">SDL::ResetHints</a></div><div class="ttdeci">void ResetHints()</div><div class="ttdoc">Reset all hints to the default values.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4421</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_gad9e5496fe76c6f22540c47d37a9add09"><div class="ttname"><a href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">SDL::HintPriority</a></div><div class="ttdeci">SDL_HintPriority HintPriority</div><div class="ttdoc">An enumeration of hint priorities.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4327</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_gafca244836857d1f55905d488451a6798"><div class="ttname"><a href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">SDL::HintCallback</a></div><div class="ttdeci">SDL_HintCallback HintCallback</div><div class="ttdoc">A callback used to send notifications of hint value changes.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4482</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_ga286b94e01c538f61a4655ec4c2e48056"><div class="ttname"><a href="group__CategoryHints.html#ga286b94e01c538f61a4655ec4c2e48056">SDL::SetHint</a></div><div class="ttdeci">bool SetHint(StringParam name, StringParam value)</div><div class="ttdoc">Set a hint with normal priority.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4391</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_ga293a8f14c58c606a6238906426dec936"><div class="ttname"><a href="group__CategoryHints.html#ga293a8f14c58c606a6238906426dec936">SDL::AddHintCallback</a></div><div class="ttdeci">bool AddHintCallback(StringParam name, HintCallback callback, void *userdata)</div><div class="ttdoc">Add a function to watch a particular hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4511</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_ga644d79b02ef6e68e46536a224a8fe5a1"><div class="ttname"><a href="group__CategoryHints.html#ga644d79b02ef6e68e46536a224a8fe5a1">SDL::GetHintBoolean</a></div><div class="ttdeci">bool GetHintBoolean(StringParam name, bool default_value)</div><div class="ttdoc">Get the boolean value of a hint variable.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4466</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_ga79443e78187ce85b4e8779ee407d57a5"><div class="ttname"><a href="group__CategoryHints.html#ga79443e78187ce85b4e8779ee407d57a5">SDL::SetHintWithPriority</a></div><div class="ttdeci">bool SetHintWithPriority(StringParam name, StringParam value, HintPriority priority)</div><div class="ttdoc">Set a hint with a specific priority.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4364</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_ga9fe31cb9be887719fd3086126773f71e"><div class="ttname"><a href="group__CategoryHints.html#ga9fe31cb9be887719fd3086126773f71e">SDL::ResetHint</a></div><div class="ttdeci">bool ResetHint(StringParam name)</div><div class="ttdoc">Reset a hint to the default value.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4414</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_gacd539b8e58b229520381376dda93705f"><div class="ttname"><a href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">SDL::RemoveHintCallback</a></div><div class="ttdeci">void RemoveHintCallback(StringParam name, HintCallback callback, void *userdata)</div><div class="ttdoc">Remove a function watching a particular hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4532</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_gad12209cf860f8f3e98d8d008e248a4c8"><div class="ttname"><a href="group__CategoryHints.html#gad12209cf860f8f3e98d8d008e248a4c8">SDL::GetHint</a></div><div class="ttdeci">const char * GetHint(StringParam name)</div><div class="ttdoc">Get the value of a hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4449</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_gad709e6b20dd2df0329eb643060abcf8e"><div class="ttname"><a href="group__CategoryHints.html#gad709e6b20dd2df0329eb643060abcf8e">SDL::ResetHints</a></div><div class="ttdeci">void ResetHints()</div><div class="ttdoc">Reset all hints to the default values.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4429</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_gad9e5496fe76c6f22540c47d37a9add09"><div class="ttname"><a href="group__CategoryHints.html#gad9e5496fe76c6f22540c47d37a9add09">SDL::HintPriority</a></div><div class="ttdeci">SDL_HintPriority HintPriority</div><div class="ttdoc">An enumeration of hint priorities.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4335</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_gafca244836857d1f55905d488451a6798"><div class="ttname"><a href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">SDL::HintCallback</a></div><div class="ttdeci">SDL_HintCallback HintCallback</div><div class="ttdoc">A callback used to send notifications of hint value changes.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4490</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -10081,6 +10081,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
 #define SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES                                \
   "SDL_JOYSTICK_ZERO_CENTERED_DEVICES"
 
+#if SDL_VERSION_ATLEAST(3, 2, 5)
+
 /**
  * A variable containing a list of devices and their desired number of haptic
  * (force feedback) enabled axis.
@@ -10102,6 +10104,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * @since This hint is available since SDL 3.2.5.
  */
 #define SDL_HINT_JOYSTICK_HAPTIC_AXES "SDL_JOYSTICK_HAPTIC_AXES"
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 5)
 
 /**
  * A variable that controls keycode representation in keyboard events.
@@ -11507,6 +11511,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  */
 #define SDL_HINT_VIDEO_WIN_D3DCOMPILER "SDL_VIDEO_WIN_D3DCOMPILER"
 
+#if SDL_VERSION_ATLEAST(3, 2, 10)
+
 /**
  * A variable controlling whether SDL should call XSelectInput() to enable
  * input events on X11 windows wrapped by SDL windows.
@@ -11523,6 +11529,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  */
 #define SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT                               \
   "SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT"
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**
  * A variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint
@@ -14506,14 +14514,14 @@ constexpr PixelFormat PIXELFORMAT_P010 = SDL_PIXELFORMAT_P010;
  */
 constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES = SDL_PIXELFORMAT_EXTERNAL_OES;
 
-#if SDL_VERSION_ATLEAST(3, 2, 9)
+#if SDL_VERSION_ATLEAST(3, 2, 10)
 /**
  * Motion JPEG
  * @since SDL 3.2.10
  */
 constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG;
 
-#endif
+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
 constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32;
 
@@ -24393,13 +24401,14 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  */
 using ScaleMode = SDL_ScaleMode;
 
-#if SDL_VERSION_ATLEAST(3, 2, 9)
+#if SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**
  * @since SDL 3.2.10
  */
 constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID;
-#endif
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**
  * nearest pixel sampling
@@ -25619,6 +25628,7 @@ struct SurfaceBase : T
   }
 
 #if SDL_VERSION_ATLEAST(3, 2, 4)
+
   /**
    * Perform a stretched pixel copy from one surface to another.
    *
@@ -25646,7 +25656,8 @@ struct SurfaceBase : T
     return SDL_StretchSurface(
       src.get(), &srcrect, T::get(), &dstrect, scaleMode);
   }
-#endif
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 4)
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different

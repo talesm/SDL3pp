@@ -11,6 +11,23 @@
       "replacement": "SDL3pp_$1.h"
     }
   ],
+  "minVersions": {
+    "SDL": {
+      "major": 3,
+      "minor": 2,
+      "patch": 0
+    },
+    "SDL_TTF": {
+      "major": 3,
+      "minor": 2,
+      "patch": 0
+    },
+    "SDL_IMAGE": {
+      "major": 3,
+      "minor": 2,
+      "patch": 0
+    }
+  },
   "paramTypeMap": {
     "const char *": "StringParam",
     "SDL_IOStream *": "ObjectBox<SDL_IOStream> auto &&",
@@ -3024,6 +3041,12 @@
             },
             "SDL_StretchSurface": {
               "kind": "function",
+              "since": {
+                "tag": "SDL",
+                "major": 3,
+                "minor": 2,
+                "patch": 4
+              },
               "parameters": [
                 {
                   "name": "this"

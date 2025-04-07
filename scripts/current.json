@@ -2234,1062 +2234,1074 @@
           "name": "SDL_HINT_JOYSTICK_HAPTIC_AXES",
           "kind": "def",
           "value": "\"SDL_JOYSTICK_HAPTIC_AXES\"",
-          "begin": 2205,
-          "decl": 2225,
-          "end": 2227
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 2,
+            "patch": 5
+          },
+          "begin": 2207,
+          "decl": 2227,
+          "end": 2229
         },
         "SDL_HINT_KEYCODE_OPTIONS": {
           "doc": "A variable that controls keycode representation in keyboard events.\n\nThis variable is a comma separated set of options for translating keycodes\nin events:\n\n- \"none\": Keycode options are cleared, this overrides other options.\n- \"hide_numpad\": The numpad keysyms will be translated into their\n  non-numpad versions based on the current NumLock state. For example,\n  SDLK_KP_4 would become SDLK_4 if SDL_KMOD_NUM is set in the event\n  modifiers, and SDLK_LEFT if it is unset.\n- \"french_numbers\": The number row on French keyboards is inverted, so\n  pressing the 1 key would yield the keycode SDLK_1, or '1', instead of\n  SDLK_AMPERSAND, or '&'\n- \"latin_letters\": For keyboards using non-Latin letters, such as Russian\n  or Thai, the letter keys generate keycodes as though it had an en_US\n  layout. e.g. pressing the key associated with SDL_SCANCODE_A on a Russian\n  keyboard would yield 'a' instead of a Cyrillic letter.\n\nThe default value for this hint is \"french_numbers,latin_letters\"\n\nSome platforms like Emscripten only provide modified keycodes and the\noptions are not used.\n\nThese options do not affect the return value of SDL_GetKeyFromScancode() or\nSDL_GetScancodeFromKey(), they just apply to the keycode included in key\nevents.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_KEYCODE_OPTIONS",
           "kind": "def",
           "value": "\"SDL_KEYCODE_OPTIONS\"",
-          "begin": 2227,
-          "decl": 2259,
-          "end": 2261
+          "begin": 2231,
+          "decl": 2263,
+          "end": 2265
         },
         "SDL_HINT_KMSDRM_DEVICE_INDEX": {
           "doc": "A variable that controls what KMSDRM device to use.\n\nSDL might open something like \"/dev/dri/cardNN\" to access KMSDRM\nfunctionality, where \"NN\" is a device index number. SDL makes a guess at\nthe best index to use (usually zero), but the app or user can set this hint\nto a number between 0 and 99 to force selection.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_KMSDRM_DEVICE_INDEX",
           "kind": "def",
           "value": "\"SDL_KMSDRM_DEVICE_INDEX\"",
-          "begin": 2261,
-          "decl": 2273,
-          "end": 2275
+          "begin": 2265,
+          "decl": 2277,
+          "end": 2279
         },
         "SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER": {
           "doc": "A variable that controls whether SDL requires DRM master access in order to\ninitialize the KMSDRM video backend.\n\nThe DRM subsystem has a concept of a \"DRM master\" which is a DRM client\nthat has the ability to set planes, set cursor, etc. When SDL is DRM\nmaster, it can draw to the screen using the SDL rendering APIs. Without DRM\nmaster, SDL is still able to process input and query attributes of attached\ndisplays, but it cannot change display state or draw to the screen\ndirectly.\n\nIn some cases, it can be useful to have the KMSDRM backend even if it\ncannot be used for rendering. An app may want to use SDL for input\nprocessing while using another rendering API (such as an MMAL overlay on\nRaspberry Pi) or using its own code to render to DRM overlays that SDL\ndoesn't support.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will allow usage of the KMSDRM backend without DRM master.\n- \"1\": SDL Will require DRM master to use the KMSDRM backend. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER",
           "kind": "def",
           "value": "\"SDL_KMSDRM_REQUIRE_DRM_MASTER\"",
-          "begin": 2275,
-          "decl": 2301,
-          "end": 2303
+          "begin": 2279,
+          "decl": 2305,
+          "end": 2307
         },
         "SDL_HINT_LOGGING": {
           "doc": "A variable controlling the default SDL log levels.\n\nThis variable is a comma separated set of category=level tokens that define\nthe default logging levels for SDL applications.\n\nThe category can be a numeric category, one of \"app\", \"error\", \"assert\",\n\"system\", \"audio\", \"video\", \"render\", \"input\", \"test\", or `*` for any\nunspecified category.\n\nThe level can be a numeric level, one of \"verbose\", \"debug\", \"info\",\n\"warn\", \"error\", \"critical\", or \"quiet\" to disable that category.\n\nYou can omit the category if you want to set the logging level for all\ncategories.\n\nIf this hint isn't set, the default log levels are equivalent to:\n\n`app=info,assert=warn,test=verbose,*=error`\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_LOGGING",
           "kind": "def",
           "value": "\"SDL_LOGGING\"",
-          "begin": 2303,
-          "decl": 2327,
-          "end": 2329
+          "begin": 2307,
+          "decl": 2331,
+          "end": 2333
         },
         "SDL_HINT_MAC_BACKGROUND_APP": {
           "doc": "A variable controlling whether to force the application to become the\nforeground process when launched on macOS.\n\nThe variable can be set to the following values:\n\n- \"0\": The application is brought to the foreground when launched.\n  (default)\n- \"1\": The application may remain in the background when launched.\n\nThis hint needs to be set before SDL_Init().\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MAC_BACKGROUND_APP",
           "kind": "def",
           "value": "\"SDL_MAC_BACKGROUND_APP\"",
-          "begin": 2329,
-          "decl": 2343,
-          "end": 2345
+          "begin": 2333,
+          "decl": 2347,
+          "end": 2349
         },
         "SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK": {
           "doc": "A variable that determines whether Ctrl+Click should generate a right-click\nevent on macOS.\n\nThe variable can be set to the following values:\n\n- \"0\": Ctrl+Click does not generate a right mouse button click event.\n  (default)\n- \"1\": Ctrl+Click generated a right mouse button click event.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK",
           "kind": "def",
           "value": "\\\n  \"SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK\"",
-          "begin": 2345,
-          "decl": 2359,
-          "end": 2362
+          "begin": 2349,
+          "decl": 2363,
+          "end": 2366
         },
         "SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH": {
           "doc": "A variable controlling whether dispatching OpenGL context updates should\nblock the dispatching thread until the main thread finishes processing on\nmacOS.\n\nThe variable can be set to the following values:\n\n- \"0\": Dispatching OpenGL context updates will block the dispatching thread\n  until the main thread finishes processing. (default)\n- \"1\": Dispatching OpenGL context updates will allow the dispatching thread\n  to continue execution.\n\nGenerally you want the default, but if you have OpenGL code in a background\nthread on a Mac, and the main thread hangs because it's waiting for that\nbackground thread, but that background thread is also hanging because it's\nwaiting for the main thread to do an update, this might fix your issue.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH",
           "kind": "def",
           "value": "\"SDL_MAC_OPENGL_ASYNC_DISPATCH\"",
-          "begin": 2362,
-          "decl": 2383,
-          "end": 2385
+          "begin": 2366,
+          "decl": 2387,
+          "end": 2389
         },
         "SDL_HINT_MAC_OPTION_AS_ALT": {
           "doc": "A variable controlling whether the Option key on macOS should be remapped\nto act as the Alt key.\n\nThe variable can be set to the following values:\n\n- \"none\": The Option key is not remapped to Alt. (default)\n- \"only_left\": Only the left Option key is remapped to Alt.\n- \"only_right\": Only the right Option key is remapped to Alt.\n- \"both\": Both Option keys are remapped to Alt.\n\nThis will prevent the triggering of key compositions that rely on the\nOption key, but will still send the Alt modifier for keyboard events. In\nthe case that both Alt and Option are pressed, the Option key will be\nignored. This is particularly useful for applications like terminal\nemulators and graphical user interfaces (GUIs) that rely on Alt key\nfunctionality for shortcuts or navigation. This does not apply to\nSDL_GetKeyFromScancode and only has an effect if IME is enabled.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MAC_OPTION_AS_ALT",
           "kind": "def",
           "value": "\"SDL_MAC_OPTION_AS_ALT\"",
-          "begin": 2385,
-          "decl": 2408,
-          "end": 2410
+          "begin": 2389,
+          "decl": 2412,
+          "end": 2414
         },
         "SDL_HINT_MAC_SCROLL_MOMENTUM": {
           "doc": "A variable controlling whether SDL_EVENT_MOUSE_WHEEL event values will have\nmomentum on macOS.\n\nThe variable can be set to the following values:\n\n- \"0\": The mouse wheel events will have no momentum. (default)\n- \"1\": The mouse wheel events will have momentum.\n\nThis hint needs to be set before SDL_Init().\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MAC_SCROLL_MOMENTUM",
           "kind": "def",
           "value": "\"SDL_MAC_SCROLL_MOMENTUM\"",
-          "begin": 2410,
-          "decl": 2423,
-          "end": 2425
+          "begin": 2414,
+          "decl": 2427,
+          "end": 2429
         },
         "SDL_HINT_MAIN_CALLBACK_RATE": {
           "doc": "Request SDL_AppIterate() be called at a specific rate.\n\nIf this is set to a number, it represents Hz, so \"60\" means try to iterate\n60 times per second. \"0\" means to iterate as fast as possible. Negative\nvalues are illegal, but reserved, in case they are useful in a future\nrevision of SDL.\n\nThere are other strings that have special meaning. If set to \"waitevent\",\nSDL_AppIterate will not be called until new event(s) have arrived (and been\nprocessed by SDL_AppEvent). This can be useful for apps that are completely\nidle except in response to input.\n\nOn some platforms, or if you are using SDL_main instead of SDL_AppIterate,\nthis hint is ignored. When the hint can be used, it is allowed to be\nchanged at any time.\n\nThis defaults to 0, and specifying NULL for the hint's value will restore\nthe default.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MAIN_CALLBACK_RATE",
           "kind": "def",
           "value": "\"SDL_MAIN_CALLBACK_RATE\"",
-          "begin": 2425,
-          "decl": 2449,
-          "end": 2451
+          "begin": 2429,
+          "decl": 2453,
+          "end": 2455
         },
         "SDL_HINT_MOUSE_AUTO_CAPTURE": {
           "doc": "A variable controlling whether the mouse is captured while mouse buttons\nare pressed.\n\nThe variable can be set to the following values:\n\n- \"0\": The mouse is not captured while mouse buttons are pressed.\n- \"1\": The mouse is captured while mouse buttons are pressed.\n\nBy default the mouse is captured while mouse buttons are pressed so if the\nmouse is dragged outside the window, the application continues to receive\nmouse events until the button is released.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_AUTO_CAPTURE",
           "kind": "def",
           "value": "\"SDL_MOUSE_AUTO_CAPTURE\"",
-          "begin": 2451,
-          "decl": 2468,
-          "end": 2470
+          "begin": 2455,
+          "decl": 2472,
+          "end": 2474
         },
         "SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS": {
           "doc": "A variable setting the double click radius, in pixels.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS",
           "kind": "def",
           "value": "\"SDL_MOUSE_DOUBLE_CLICK_RADIUS\"",
-          "begin": 2470,
-          "decl": 2477,
-          "end": 2479
+          "begin": 2474,
+          "decl": 2481,
+          "end": 2483
         },
         "SDL_HINT_MOUSE_DOUBLE_CLICK_TIME": {
           "doc": "A variable setting the double click time, in milliseconds.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_DOUBLE_CLICK_TIME",
           "kind": "def",
           "value": "\"SDL_MOUSE_DOUBLE_CLICK_TIME\"",
-          "begin": 2479,
-          "decl": 2486,
-          "end": 2488
+          "begin": 2483,
+          "decl": 2490,
+          "end": 2492
         },
         "SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR": {
           "doc": "A variable setting which system cursor to use as the default cursor.\n\nThis should be an integer corresponding to the SDL_SystemCursor enum. The\ndefault value is zero (SDL_SYSTEM_CURSOR_DEFAULT).\n\nThis hint needs to be set before SDL_Init().\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR",
           "kind": "def",
           "value": "\"SDL_MOUSE_DEFAULT_SYSTEM_CURSOR\"",
-          "begin": 2488,
-          "decl": 2498,
-          "end": 2500
+          "begin": 2492,
+          "decl": 2502,
+          "end": 2504
         },
         "SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE": {
           "doc": "A variable controlling whether warping a hidden mouse cursor will activate\nrelative mouse mode.\n\nWhen this hint is set, the mouse cursor is hidden, and multiple warps to\nthe window center occur within a short time period, SDL will emulate mouse\nwarps using relative mouse mode. This can provide smoother and more\nreliable mouse motion for some older games, which continuously calculate\nthe distance travelled by the mouse pointer and warp it back to the center\nof the window, rather than using relative mouse motion.\n\nNote that relative mouse mode may have different mouse acceleration\nbehavior than pointer warps.\n\nIf your application needs to repeatedly warp the hidden mouse cursor at a\nhigh-frequency for other purposes, it should disable this hint.\n\nThe variable can be set to the following values:\n\n- \"0\": Attempts to warp the mouse will always be made.\n- \"1\": Some mouse warps will be emulated by forcing relative mouse mode.\n  (default)\n\nIf not set, this is automatically enabled unless an application uses\nrelative mouse mode directly.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE",
           "kind": "def",
           "value": "\\\n  \"SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE\"",
-          "begin": 2500,
-          "decl": 2530,
-          "end": 2533
+          "begin": 2504,
+          "decl": 2534,
+          "end": 2537
         },
         "SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH": {
           "doc": "Allow mouse click events when clicking to focus an SDL window.\n\nThe variable can be set to the following values:\n\n- \"0\": Ignore mouse clicks that activate a window. (default)\n- \"1\": Generate events for mouse clicks that activate a window.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH",
           "kind": "def",
           "value": "\"SDL_MOUSE_FOCUS_CLICKTHROUGH\"",
-          "begin": 2533,
-          "decl": 2545,
-          "end": 2547
+          "begin": 2537,
+          "decl": 2549,
+          "end": 2551
         },
         "SDL_HINT_MOUSE_NORMAL_SPEED_SCALE": {
           "doc": "A variable setting the speed scale for mouse motion, in floating point,\nwhen the mouse is not in relative mode.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_NORMAL_SPEED_SCALE",
           "kind": "def",
           "value": "\"SDL_MOUSE_NORMAL_SPEED_SCALE\"",
-          "begin": 2547,
-          "decl": 2555,
-          "end": 2557
+          "begin": 2551,
+          "decl": 2559,
+          "end": 2561
         },
         "SDL_HINT_MOUSE_RELATIVE_MODE_CENTER": {
           "doc": "A variable controlling whether relative mouse mode constrains the mouse to\nthe center of the window.\n\nConstraining to the center of the window works better for FPS games and\nwhen the application is running over RDP. Constraining to the whole window\nworks better for 2D games and increases the chance that the mouse will be\nin the correct position when using high DPI mice.\n\nThe variable can be set to the following values:\n\n- \"0\": Relative mouse mode constrains the mouse to the window.\n- \"1\": Relative mouse mode constrains the mouse to the center of the\n  window. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_RELATIVE_MODE_CENTER",
           "kind": "def",
           "value": "\"SDL_MOUSE_RELATIVE_MODE_CENTER\"",
-          "begin": 2557,
-          "decl": 2576,
-          "end": 2578
+          "begin": 2561,
+          "decl": 2580,
+          "end": 2582
         },
         "SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE": {
           "doc": "A variable setting the scale for mouse motion, in floating point, when the\nmouse is in relative mode.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE",
           "kind": "def",
           "value": "\"SDL_MOUSE_RELATIVE_SPEED_SCALE\"",
-          "begin": 2578,
-          "decl": 2586,
-          "end": 2588
+          "begin": 2582,
+          "decl": 2590,
+          "end": 2592
         },
         "SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE": {
           "doc": "A variable controlling whether the system mouse acceleration curve is used\nfor relative mouse motion.\n\nThe variable can be set to the following values:\n\n- \"0\": Relative mouse motion will be unscaled. (default)\n- \"1\": Relative mouse motion will be scaled using the system mouse\n  acceleration curve.\n\nIf SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE is set, that will be applied after\nsystem speed scale.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE",
           "kind": "def",
           "value": "\"SDL_MOUSE_RELATIVE_SYSTEM_SCALE\"",
-          "begin": 2588,
-          "decl": 2605,
-          "end": 2607
+          "begin": 2592,
+          "decl": 2609,
+          "end": 2611
         },
         "SDL_HINT_MOUSE_RELATIVE_WARP_MOTION": {
           "doc": "A variable controlling whether a motion event should be generated for mouse\nwarping in relative mode.\n\nThe variable can be set to the following values:\n\n- \"0\": Warping the mouse will not generate a motion event in relative mode\n- \"1\": Warping the mouse will generate a motion event in relative mode\n\nBy default warping the mouse will not generate motion events in relative\nmode. This avoids the application having to filter out large relative\nmotion due to warping.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_RELATIVE_WARP_MOTION",
           "kind": "def",
           "value": "\"SDL_MOUSE_RELATIVE_WARP_MOTION\"",
-          "begin": 2607,
-          "decl": 2624,
-          "end": 2626
+          "begin": 2611,
+          "decl": 2628,
+          "end": 2630
         },
         "SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE": {
           "doc": "A variable controlling whether the hardware cursor stays visible when\nrelative mode is active.\n\nThis variable can be set to the following values:\n\n- \"0\": The cursor will be hidden while relative mode is active (default)\n- \"1\": The cursor will remain visible while relative mode is active\n\nNote that for systems without raw hardware inputs, relative mode is\nimplemented using warping, so the hardware cursor will visibly warp between\nframes if this is enabled on those systems.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE",
           "kind": "def",
           "value": "\\\n  \"SDL_MOUSE_RELATIVE_CURSOR_VISIBLE\"",
-          "begin": 2626,
-          "decl": 2643,
-          "end": 2646
+          "begin": 2630,
+          "decl": 2647,
+          "end": 2650
         },
         "SDL_HINT_MOUSE_TOUCH_EVENTS": {
           "doc": "A variable controlling whether mouse events should generate synthetic touch\nevents.\n\nThe variable can be set to the following values:\n\n- \"0\": Mouse events will not generate touch events. (default for desktop\n  platforms)\n- \"1\": Mouse events will generate touch events. (default for mobile\n  platforms, such as Android and iOS)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MOUSE_TOUCH_EVENTS",
           "kind": "def",
           "value": "\"SDL_MOUSE_TOUCH_EVENTS\"",
-          "begin": 2646,
-          "decl": 2661,
-          "end": 2663
+          "begin": 2650,
+          "decl": 2665,
+          "end": 2667
         },
         "SDL_HINT_MUTE_CONSOLE_KEYBOARD": {
           "doc": "A variable controlling whether the keyboard should be muted on the console.\n\nNormally the keyboard is muted while SDL applications are running so that\nkeyboard input doesn't show up as key strokes on the console. This hint\nallows you to turn that off for debugging purposes.\n\nThe variable can be set to the following values:\n\n- \"0\": Allow keystrokes to go through to the console.\n- \"1\": Mute keyboard input so it doesn't show up on the console. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MUTE_CONSOLE_KEYBOARD",
           "kind": "def",
           "value": "\"SDL_MUTE_CONSOLE_KEYBOARD\"",
-          "begin": 2663,
-          "decl": 2679,
-          "end": 2681
+          "begin": 2667,
+          "decl": 2683,
+          "end": 2685
         },
         "SDL_HINT_NO_SIGNAL_HANDLERS": {
           "doc": "Tell SDL not to catch the SIGINT or SIGTERM signals on POSIX platforms.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will install a SIGINT and SIGTERM handler, and when it catches a\n  signal, convert it into an SDL_EVENT_QUIT event. (default)\n- \"1\": SDL will not install a signal handler at all.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_NO_SIGNAL_HANDLERS",
           "kind": "def",
           "value": "\"SDL_NO_SIGNAL_HANDLERS\"",
-          "begin": 2681,
-          "decl": 2694,
-          "end": 2696
+          "begin": 2685,
+          "decl": 2698,
+          "end": 2700
         },
         "SDL_HINT_OPENGL_LIBRARY": {
           "doc": "Specify the OpenGL library to load.\n\nThis hint should be set before creating an OpenGL window or creating an\nOpenGL context. If this hint isn't set, SDL will choose a reasonable\ndefault.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_OPENGL_LIBRARY",
           "kind": "def",
           "value": "\"SDL_OPENGL_LIBRARY\"",
-          "begin": 2696,
-          "decl": 2705,
-          "end": 2707
+          "begin": 2700,
+          "decl": 2709,
+          "end": 2711
         },
         "SDL_HINT_EGL_LIBRARY": {
           "doc": "Specify the EGL library to load.\n\nThis hint should be set before creating an OpenGL window or creating an\nOpenGL context. This hint is only considered if SDL is using EGL to manage\nOpenGL contexts. If this hint isn't set, SDL will choose a reasonable\ndefault.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_EGL_LIBRARY",
           "kind": "def",
           "value": "\"SDL_EGL_LIBRARY\"",
-          "begin": 2707,
-          "decl": 2717,
-          "end": 2719
+          "begin": 2711,
+          "decl": 2721,
+          "end": 2723
         },
         "SDL_HINT_OPENGL_ES_DRIVER": {
           "doc": "A variable controlling what driver to use for OpenGL ES contexts.\n\nOn some platforms, currently Windows and X11, OpenGL drivers may support\ncreating contexts with an OpenGL ES profile. By default SDL uses these\nprofiles, when available, otherwise it attempts to load an OpenGL ES\nlibrary, e.g. that provided by the ANGLE project. This variable controls\nwhether SDL follows this default behaviour or will always load an OpenGL ES\nlibrary.\n\nCircumstances where this is useful include - Testing an app with a\nparticular OpenGL ES implementation, e.g ANGLE, or emulator, e.g. those\nfrom ARM, Imagination or Qualcomm. - Resolving OpenGL ES function addresses\nat link time by linking with the OpenGL ES library instead of querying them\nat run time with SDL_GL_GetProcAddress().\n\nCaution: for an application to work with the default behaviour across\ndifferent OpenGL drivers it must query the OpenGL ES function addresses at\nrun time using SDL_GL_GetProcAddress().\n\nThis variable is ignored on most platforms because OpenGL ES is native or\nnot supported.\n\nThe variable can be set to the following values:\n\n- \"0\": Use ES profile of OpenGL, if available. (default)\n- \"1\": Load OpenGL ES library using the default library names.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_OPENGL_ES_DRIVER",
           "kind": "def",
           "value": "\"SDL_OPENGL_ES_DRIVER\"",
-          "begin": 2719,
-          "decl": 2751,
-          "end": 2753
+          "begin": 2723,
+          "decl": 2755,
+          "end": 2757
         },
         "SDL_HINT_OPENVR_LIBRARY": {
           "doc": "Mechanism to specify openvr_api library location\n\nBy default, when using the OpenVR driver, it will search for the API\nlibrary in the current folder. But, if you wish to use a system API you can\nspecify that by using this hint. This should be the full or relative path\nto a .dll on Windows or .so on Linux.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_OPENVR_LIBRARY",
           "kind": "def",
           "value": "\"SDL_OPENVR_LIBRARY\"",
-          "begin": 2753,
-          "decl": 2763,
-          "end": 2765
+          "begin": 2757,
+          "decl": 2767,
+          "end": 2769
         },
         "SDL_HINT_ORIENTATIONS": {
           "doc": "A variable controlling which orientations are allowed on iOS/Android.\n\nIn some circumstances it is necessary to be able to explicitly control\nwhich UI orientations are allowed.\n\nThis variable is a space delimited list of the following values:\n\n- \"LandscapeLeft\"\n- \"LandscapeRight\"\n- \"Portrait\"\n- \"PortraitUpsideDown\"\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_ORIENTATIONS",
           "kind": "def",
           "value": "\"SDL_ORIENTATIONS\"",
-          "begin": 2765,
-          "decl": 2782,
-          "end": 2784
+          "begin": 2769,
+          "decl": 2786,
+          "end": 2788
         },
         "SDL_HINT_POLL_SENTINEL": {
           "doc": "A variable controlling the use of a sentinel event when polling the event\nqueue.\n\nWhen polling for events, SDL_PumpEvents is used to gather new events from\ndevices. If a device keeps producing new events between calls to\nSDL_PumpEvents, a poll loop will become stuck until the new events stop.\nThis is most noticeable when moving a high frequency mouse.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable poll sentinels.\n- \"1\": Enable poll sentinels. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_POLL_SENTINEL",
           "kind": "def",
           "value": "\"SDL_POLL_SENTINEL\"",
-          "begin": 2784,
-          "decl": 2802,
-          "end": 2804
+          "begin": 2788,
+          "decl": 2806,
+          "end": 2808
         },
         "SDL_HINT_PREFERRED_LOCALES": {
           "doc": "Override for SDL_GetPreferredLocales().\n\nIf set, this will be favored over anything the OS might report for the\nuser's preferred locales. Changing this hint at runtime will not generate a\nSDL_EVENT_LOCALE_CHANGED event (but if you can change the hint, you can\npush your own event, if you want).\n\nThe format of this hint is a comma-separated list of language and locale,\ncombined with an underscore, as is a common format: \"en_GB\". Locale is\noptional: \"en\". So you might have a list like this: \"en_GB,jp,es_PT\"\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_PREFERRED_LOCALES",
           "kind": "def",
           "value": "\"SDL_PREFERRED_LOCALES\"",
-          "begin": 2804,
-          "decl": 2820,
-          "end": 2822
+          "begin": 2808,
+          "decl": 2824,
+          "end": 2826
         },
         "SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE": {
           "doc": "A variable that decides whether to send SDL_EVENT_QUIT when closing the\nlast window.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will not send an SDL_EVENT_QUIT event when the last window is\n  requesting to close. Note that in this case, there are still other\n  legitimate reasons one might get an SDL_EVENT_QUIT event: choosing \"Quit\"\n  from the macOS menu bar, sending a SIGINT (ctrl-c) on Unix, etc.\n- \"1\": SDL will send a quit event when the last window is requesting to\n  close. (default)\n\nIf there is at least one active system tray icon, SDL_EVENT_QUIT will\ninstead be sent when both the last window will be closed and the last tray\nicon will be destroyed.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE",
           "kind": "def",
           "value": "\"SDL_QUIT_ON_LAST_WINDOW_CLOSE\"",
-          "begin": 2822,
-          "decl": 2843,
-          "end": 2845
+          "begin": 2826,
+          "decl": 2847,
+          "end": 2849
         },
         "SDL_HINT_RENDER_DIRECT3D_THREADSAFE": {
           "doc": "A variable controlling whether the Direct3D device is initialized for\nthread-safe operations.\n\nThe variable can be set to the following values:\n\n- \"0\": Thread-safety is not enabled. (default)\n- \"1\": Thread-safety is enabled.\n\nThis hint should be set before creating a renderer.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_DIRECT3D_THREADSAFE",
           "kind": "def",
           "value": "\"SDL_RENDER_DIRECT3D_THREADSAFE\"",
-          "begin": 2845,
-          "decl": 2858,
-          "end": 2860
+          "begin": 2849,
+          "decl": 2862,
+          "end": 2864
         },
         "SDL_HINT_RENDER_DIRECT3D11_DEBUG": {
           "doc": "A variable controlling whether to enable Direct3D 11+'s Debug Layer.\n\nThis variable does not have any effect on the Direct3D 9 based renderer.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable Debug Layer use. (default)\n- \"1\": Enable Debug Layer use.\n\nThis hint should be set before creating a renderer.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_DIRECT3D11_DEBUG",
           "kind": "def",
           "value": "\"SDL_RENDER_DIRECT3D11_DEBUG\"",
-          "begin": 2860,
-          "decl": 2874,
-          "end": 2876
+          "begin": 2864,
+          "decl": 2878,
+          "end": 2880
         },
         "SDL_HINT_RENDER_VULKAN_DEBUG": {
           "doc": "A variable controlling whether to enable Vulkan Validation Layers.\n\nThis variable can be set to the following values:\n\n- \"0\": Disable Validation Layer use\n- \"1\": Enable Validation Layer use\n\nBy default, SDL does not use Vulkan Validation Layers.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_VULKAN_DEBUG",
           "kind": "def",
           "value": "\"SDL_RENDER_VULKAN_DEBUG\"",
-          "begin": 2876,
-          "decl": 2888,
-          "end": 2890
+          "begin": 2880,
+          "decl": 2892,
+          "end": 2894
         },
         "SDL_HINT_RENDER_GPU_DEBUG": {
           "doc": "A variable controlling whether to create the GPU device in debug mode.\n\nThis variable can be set to the following values:\n\n- \"0\": Disable debug mode use (default)\n- \"1\": Enable debug mode use\n\nThis hint should be set before creating a renderer.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_GPU_DEBUG",
           "kind": "def",
           "value": "\"SDL_RENDER_GPU_DEBUG\"",
-          "begin": 2890,
-          "decl": 2902,
-          "end": 2904
+          "begin": 2894,
+          "decl": 2906,
+          "end": 2908
         },
         "SDL_HINT_RENDER_GPU_LOW_POWER": {
           "doc": "A variable controlling whether to prefer a low-power GPU on multi-GPU\nsystems.\n\nThis variable can be set to the following values:\n\n- \"0\": Prefer high-performance GPU (default)\n- \"1\": Prefer low-power GPU\n\nThis hint should be set before creating a renderer.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_GPU_LOW_POWER",
           "kind": "def",
           "value": "\"SDL_RENDER_GPU_LOW_POWER\"",
-          "begin": 2904,
-          "decl": 2917,
-          "end": 2919
+          "begin": 2908,
+          "decl": 2921,
+          "end": 2923
         },
         "SDL_HINT_RENDER_DRIVER": {
           "doc": "A variable specifying which render driver to use.\n\nIf the application doesn't pick a specific renderer to use, this variable\nspecifies the name of the preferred renderer. If the preferred renderer\ncan't be initialized, creating a renderer will fail.\n\nThis variable is case insensitive and can be set to the following values:\n\n- \"direct3d\"\n- \"direct3d11\"\n- \"direct3d12\"\n- \"opengl\"\n- \"opengles2\"\n- \"opengles\"\n- \"metal\"\n- \"vulkan\"\n- \"gpu\"\n- \"software\"\n\nThis hint accepts a comma-separated list of driver names, and each will be\ntried in the order listed when creating a renderer until one succeeds or\nall of them fail.\n\nThe default varies by platform, but it's the first one in the list that is\navailable on the current platform.\n\nThis hint should be set before creating a renderer.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_DRIVER",
           "kind": "def",
           "value": "\"SDL_RENDER_DRIVER\"",
-          "begin": 2919,
-          "decl": 2950,
-          "end": 2952
+          "begin": 2923,
+          "decl": 2954,
+          "end": 2956
         },
         "SDL_HINT_RENDER_LINE_METHOD": {
           "doc": "A variable controlling how the 2D render API renders lines.\n\nThe variable can be set to the following values:\n\n- \"0\": Use the default line drawing method (Bresenham's line algorithm)\n- \"1\": Use the driver point API using Bresenham's line algorithm (correct,\n  draws many points)\n- \"2\": Use the driver line API (occasionally misses line endpoints based on\n  hardware driver quirks\n- \"3\": Use the driver geometry API (correct, draws thicker diagonal lines)\n\nThis hint should be set before creating a renderer.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_LINE_METHOD",
           "kind": "def",
           "value": "\"SDL_RENDER_LINE_METHOD\"",
-          "begin": 2952,
-          "decl": 2968,
-          "end": 2970
+          "begin": 2956,
+          "decl": 2972,
+          "end": 2974
         },
         "SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE": {
           "doc": "A variable controlling whether the Metal render driver select low power\ndevice over default one.\n\nThe variable can be set to the following values:\n\n- \"0\": Use the preferred OS device. (default)\n- \"1\": Select a low power device.\n\nThis hint should be set before creating a renderer.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE",
           "kind": "def",
           "value": "\\\n  \"SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE\"",
-          "begin": 2970,
-          "decl": 2983,
-          "end": 2986
+          "begin": 2974,
+          "decl": 2987,
+          "end": 2990
         },
         "SDL_HINT_RENDER_VSYNC": {
           "doc": "A variable controlling whether updates to the SDL screen surface should be\nsynchronized with the vertical refresh, to avoid tearing.\n\nThis hint overrides the application preference when creating a renderer.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable vsync. (default)\n- \"1\": Enable vsync.\n\nThis hint should be set before creating a renderer.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RENDER_VSYNC",
           "kind": "def",
           "value": "\"SDL_RENDER_VSYNC\"",
-          "begin": 2986,
-          "decl": 3001,
-          "end": 3003
+          "begin": 2990,
+          "decl": 3005,
+          "end": 3007
         },
         "SDL_HINT_RETURN_KEY_HIDES_IME": {
           "doc": "A variable to control whether the return key on the soft keyboard should\nhide the soft keyboard on Android and iOS.\n\nThis hint sets the default value of SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN.\n\nThe variable can be set to the following values:\n\n- \"0\": The return key will be handled as a key event. (default)\n- \"1\": The return key will hide the keyboard.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RETURN_KEY_HIDES_IME",
           "kind": "def",
           "value": "\"SDL_RETURN_KEY_HIDES_IME\"",
-          "begin": 3003,
-          "decl": 3018,
-          "end": 3020
+          "begin": 3007,
+          "decl": 3022,
+          "end": 3024
         },
         "SDL_HINT_ROG_GAMEPAD_MICE": {
           "doc": "A variable containing a list of ROG gamepad capable mice.\n\nThe format of the string is a comma separated list of USB VID/PID pairs in\nhexadecimal form, e.g.\n\n`0xAAAA/0xBBBB,0xCCCC/0xDDDD`\n\nThe variable can also take the form of \"@file\", in which case the named\nfile will be loaded and interpreted as the value of the variable.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.\n\n@sa SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED",
           "name": "SDL_HINT_ROG_GAMEPAD_MICE",
           "kind": "def",
           "value": "\"SDL_ROG_GAMEPAD_MICE\"",
-          "begin": 3020,
-          "decl": 3037,
-          "end": 3039
+          "begin": 3024,
+          "decl": 3041,
+          "end": 3043
         },
         "SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED": {
           "doc": "A variable containing a list of devices that are not ROG gamepad capable\nmice.\n\nThis will override SDL_HINT_ROG_GAMEPAD_MICE and the built in device list.\n\nThe format of the string is a comma separated list of USB VID/PID pairs in\nhexadecimal form, e.g.\n\n`0xAAAA/0xBBBB,0xCCCC/0xDDDD`\n\nThe variable can also take the form of \"@file\", in which case the named\nfile will be loaded and interpreted as the value of the variable.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED",
           "kind": "def",
           "value": "\"SDL_ROG_GAMEPAD_MICE_EXCLUDED\"",
-          "begin": 3039,
-          "decl": 3057,
-          "end": 3059
+          "begin": 3043,
+          "decl": 3061,
+          "end": 3063
         },
         "SDL_HINT_RPI_VIDEO_LAYER": {
           "doc": "A variable controlling which Dispmanx layer to use on a Raspberry PI.\n\nAlso known as Z-order. The variable can take a negative or positive value.\nThe default is 10000.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RPI_VIDEO_LAYER",
           "kind": "def",
           "value": "\"SDL_RPI_VIDEO_LAYER\"",
-          "begin": 3059,
-          "decl": 3069,
-          "end": 3071
+          "begin": 3063,
+          "decl": 3073,
+          "end": 3075
         },
         "SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME": {
           "doc": "Specify an \"activity name\" for screensaver inhibition.\n\nSome platforms, notably Linux desktops, list the applications which are\ninhibiting the screensaver or other power-saving features.\n\nThis hint lets you specify the \"activity name\" sent to the OS when\nSDL_DisableScreenSaver() is used (or the screensaver is automatically\ndisabled). The contents of this hint are used when the screensaver is\ndisabled. You should use a string that describes what your program is doing\n(and, therefore, why the screensaver is disabled). For example, \"Playing a\ngame\" or \"Watching a video\".\n\nSetting this to \"\" or leaving it unset will have SDL use a reasonable\ndefault: \"Playing a game\" or something similar.\n\nThis hint should be set before calling SDL_DisableScreenSaver()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME",
           "kind": "def",
           "value": "\\\n  \"SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME\"",
-          "begin": 3071,
-          "decl": 3091,
-          "end": 3094
+          "begin": 3075,
+          "decl": 3095,
+          "end": 3098
         },
         "SDL_HINT_SHUTDOWN_DBUS_ON_QUIT": {
           "doc": "A variable controlling whether SDL calls dbus_shutdown() on quit.\n\nThis is useful as a debug tool to validate memory leaks, but shouldn't ever\nbe set in production applications, as other libraries used by the\napplication might use dbus under the hood and this can cause crashes if\nthey continue after SDL_Quit().\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will not call dbus_shutdown() on quit. (default)\n- \"1\": SDL will call dbus_shutdown() on quit.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_SHUTDOWN_DBUS_ON_QUIT",
           "kind": "def",
           "value": "\"SDL_SHUTDOWN_DBUS_ON_QUIT\"",
-          "begin": 3094,
-          "decl": 3111,
-          "end": 3113
+          "begin": 3098,
+          "decl": 3115,
+          "end": 3117
         },
         "SDL_HINT_STORAGE_TITLE_DRIVER": {
           "doc": "A variable that specifies a backend to use for title storage.\n\nBy default, SDL will try all available storage backends in a reasonable\norder until it finds one that can work, but this hint allows the app or\nuser to force a specific target, such as \"pc\" if, say, you are on Steam but\nwant to avoid SteamRemoteStorage for title data.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_STORAGE_TITLE_DRIVER",
           "kind": "def",
           "value": "\"SDL_STORAGE_TITLE_DRIVER\"",
-          "begin": 3113,
-          "decl": 3125,
-          "end": 3127
+          "begin": 3117,
+          "decl": 3129,
+          "end": 3131
         },
         "SDL_HINT_STORAGE_USER_DRIVER": {
           "doc": "A variable that specifies a backend to use for user storage.\n\nBy default, SDL will try all available storage backends in a reasonable\norder until it finds one that can work, but this hint allows the app or\nuser to force a specific target, such as \"pc\" if, say, you are on Steam but\nwant to avoid SteamRemoteStorage for user data.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_STORAGE_USER_DRIVER",
           "kind": "def",
           "value": "\"SDL_STORAGE_USER_DRIVER\"",
-          "begin": 3127,
-          "decl": 3139,
-          "end": 3141
+          "begin": 3131,
+          "decl": 3143,
+          "end": 3145
         },
         "SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL": {
           "doc": "Specifies whether SDL_THREAD_PRIORITY_TIME_CRITICAL should be treated as\nrealtime.\n\nOn some platforms, like Linux, a realtime priority thread may be subject to\nrestrictions that require special handling by the application. This hint\nexists to let SDL know that the app is prepared to handle said\nrestrictions.\n\nOn Linux, SDL will apply the following configuration to any thread that\nbecomes realtime:\n\n- The SCHED_RESET_ON_FORK bit will be set on the scheduling policy,\n- An RLIMIT_RTTIME budget will be configured to the rtkit specified limit.\n- Exceeding this limit will result in the kernel sending SIGKILL to the\n  app, refer to the man pages for more information.\n\nThe variable can be set to the following values:\n\n- \"0\": default platform specific behaviour\n- \"1\": Force SDL_THREAD_PRIORITY_TIME_CRITICAL to a realtime scheduling\n  policy\n\nThis hint should be set before calling SDL_SetCurrentThreadPriority()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL",
           "kind": "def",
           "value": "\\\n  \"SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL\"",
-          "begin": 3141,
-          "decl": 3168,
-          "end": 3171
+          "begin": 3145,
+          "decl": 3172,
+          "end": 3175
         },
         "SDL_HINT_THREAD_PRIORITY_POLICY": {
           "doc": "A string specifying additional information to use with\nSDL_SetCurrentThreadPriority.\n\nBy default SDL_SetCurrentThreadPriority will make appropriate system\nchanges in order to apply a thread priority. For example on systems using\npthreads the scheduler policy is changed automatically to a policy that\nworks well with a given priority. Code which has specific requirements can\noverride SDL's default behavior with this hint.\n\npthread hint values are \"current\", \"other\", \"fifo\" and \"rr\". Currently no\nother platform hint values are defined but may be in the future.\n\nOn Linux, the kernel may send SIGKILL to realtime tasks which exceed the\ndistro configured execution budget for rtkit. This budget can be queried\nthrough RLIMIT_RTTIME after calling SDL_SetCurrentThreadPriority().\n\nThis hint should be set before calling SDL_SetCurrentThreadPriority()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_THREAD_PRIORITY_POLICY",
           "kind": "def",
           "value": "\"SDL_THREAD_PRIORITY_POLICY\"",
-          "begin": 3171,
-          "decl": 3192,
-          "end": 3194
+          "begin": 3175,
+          "decl": 3196,
+          "end": 3198
         },
         "SDL_HINT_TIMER_RESOLUTION": {
           "doc": "A variable that controls the timer resolution, in milliseconds.\n\nThe higher resolution the timer, the more frequently the CPU services timer\ninterrupts, and the more precise delays are, but this takes up power and\nCPU time. This hint is only used on Windows.\n\nSee this blog post for more information:\nhttp://randomascii.wordpress.com/2013/07/08/windows-timer-resolution-megawatts-wasted/\n\nThe default value is \"1\".\n\nIf this variable is set to \"0\", the system timer resolution is not set.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_TIMER_RESOLUTION",
           "kind": "def",
           "value": "\"SDL_TIMER_RESOLUTION\"",
-          "begin": 3194,
-          "decl": 3212,
-          "end": 3214
+          "begin": 3198,
+          "decl": 3216,
+          "end": 3218
         },
         "SDL_HINT_TOUCH_MOUSE_EVENTS": {
           "doc": "A variable controlling whether touch events should generate synthetic mouse\nevents.\n\nThe variable can be set to the following values:\n\n- \"0\": Touch events will not generate mouse events.\n- \"1\": Touch events will generate mouse events. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_TOUCH_MOUSE_EVENTS",
           "kind": "def",
           "value": "\"SDL_TOUCH_MOUSE_EVENTS\"",
-          "begin": 3214,
-          "decl": 3227,
-          "end": 3229
+          "begin": 3218,
+          "decl": 3231,
+          "end": 3233
         },
         "SDL_HINT_TRACKPAD_IS_TOUCH_ONLY": {
           "doc": "A variable controlling whether trackpads should be treated as touch\ndevices.\n\nOn macOS (and possibly other platforms in the future), SDL will report\ntouches on a trackpad as mouse input, which is generally what users expect\nfrom this device; however, these are often actually full multitouch-capable\ntouch devices, so it might be preferable to some apps to treat them as\nsuch.\n\nThe variable can be set to the following values:\n\n- \"0\": Trackpad will send mouse events. (default)\n- \"1\": Trackpad will send touch events.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_TRACKPAD_IS_TOUCH_ONLY",
           "kind": "def",
           "value": "\"SDL_TRACKPAD_IS_TOUCH_ONLY\"",
-          "begin": 3229,
-          "decl": 3248,
-          "end": 3250
+          "begin": 3233,
+          "decl": 3252,
+          "end": 3254
         },
         "SDL_HINT_TV_REMOTE_AS_JOYSTICK": {
           "doc": "A variable controlling whether the Android / tvOS remotes should be listed\nas joystick devices, instead of sending keyboard events.\n\nThe variable can be set to the following values:\n\n- \"0\": Remotes send enter/escape/arrow key events.\n- \"1\": Remotes are available as 2 axis, 2 button joysticks. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_TV_REMOTE_AS_JOYSTICK",
           "kind": "def",
           "value": "\"SDL_TV_REMOTE_AS_JOYSTICK\"",
-          "begin": 3250,
-          "decl": 3263,
-          "end": 3265
+          "begin": 3254,
+          "decl": 3267,
+          "end": 3269
         },
         "SDL_HINT_VIDEO_ALLOW_SCREENSAVER": {
           "doc": "A variable controlling whether the screensaver is enabled.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable screensaver. (default)\n- \"1\": Enable screensaver.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_ALLOW_SCREENSAVER",
           "kind": "def",
           "value": "\"SDL_VIDEO_ALLOW_SCREENSAVER\"",
-          "begin": 3265,
-          "decl": 3277,
-          "end": 3279
+          "begin": 3269,
+          "decl": 3281,
+          "end": 3283
         },
         "SDL_HINT_VIDEO_DISPLAY_PRIORITY": {
           "doc": "A comma separated list containing the names of the displays that SDL should\nsort to the front of the display list.\n\nWhen this hint is set, displays with matching name strings will be\nprioritized in the list of displays, as exposed by calling\nSDL_GetDisplays(), with the first listed becoming the primary display. The\nnaming convention can vary depending on the environment, but it is usually\na connector name (e.g. 'DP-1', 'DP-2', 'HDMI-A-1',etc...).\n\nOn Wayland and X11 desktops, the connector names associated with displays\ncan typically be found by using the `xrandr` utility.\n\nThis hint is currently supported on the following drivers:\n\n- KMSDRM (kmsdrm)\n- Wayland (wayland)\n- X11 (x11)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_DISPLAY_PRIORITY",
           "kind": "def",
           "value": "\"SDL_VIDEO_DISPLAY_PRIORITY\"",
-          "begin": 3279,
-          "decl": 3302,
-          "end": 3304
+          "begin": 3283,
+          "decl": 3306,
+          "end": 3308
         },
         "SDL_HINT_VIDEO_DOUBLE_BUFFER": {
           "doc": "Tell the video driver that we only want a double buffer.\n\nBy default, most lowlevel 2D APIs will use a triple buffer scheme that\nwastes no CPU time on waiting for vsync after issuing a flip, but\nintroduces a frame of latency. On the other hand, using a double buffer\nscheme instead is recommended for cases where low latency is an important\nfactor because we save a whole frame of latency.\n\nWe do so by waiting for vsync immediately after issuing a flip, usually\njust after eglSwapBuffers call in the backend's *_SwapWindow function.\n\nThis hint is currently supported on the following drivers:\n\n- Raspberry Pi (raspberrypi)\n- Wayland (wayland)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_DOUBLE_BUFFER",
           "kind": "def",
           "value": "\"SDL_VIDEO_DOUBLE_BUFFER\"",
-          "begin": 3304,
-          "decl": 3325,
-          "end": 3327
+          "begin": 3308,
+          "decl": 3329,
+          "end": 3331
         },
         "SDL_HINT_VIDEO_DRIVER": {
           "doc": "A variable that specifies a video backend to use.\n\nBy default, SDL will try all available video backends in a reasonable order\nuntil it finds one that can work, but this hint allows the app or user to\nforce a specific target, such as \"x11\" if, say, you are on Wayland but want\nto try talking to the X server instead.\n\nThis hint accepts a comma-separated list of driver names, and each will be\ntried in the order listed during init, until one succeeds or all of them\nfail.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_DRIVER",
           "kind": "def",
           "value": "\"SDL_VIDEO_DRIVER\"",
-          "begin": 3327,
-          "decl": 3343,
-          "end": 3345
+          "begin": 3331,
+          "decl": 3347,
+          "end": 3349
         },
         "SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES": {
           "doc": "A variable controlling whether the dummy video driver saves output frames.\n\n- \"0\": Video frames are not saved to disk. (default)\n- \"1\": Video frames are saved to files in the format \"SDL_windowX-Y.bmp\",\n  where X is the window ID, and Y is the frame number.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES",
           "kind": "def",
           "value": "\"SDL_VIDEO_DUMMY_SAVE_FRAMES\"",
-          "begin": 3345,
-          "decl": 3356,
-          "end": 3358
+          "begin": 3349,
+          "decl": 3360,
+          "end": 3362
         },
         "SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK": {
           "doc": "If eglGetPlatformDisplay fails, fall back to calling eglGetDisplay.\n\nThe variable can be set to one of the following values:\n\n- \"0\": Do not fall back to eglGetDisplay.\n- \"1\": Fall back to eglGetDisplay if eglGetPlatformDisplay fails. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK",
           "kind": "def",
           "value": "\\\n  \"SDL_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK\"",
-          "begin": 3358,
-          "decl": 3370,
-          "end": 3373
+          "begin": 3362,
+          "decl": 3374,
+          "end": 3377
         },
         "SDL_HINT_VIDEO_FORCE_EGL": {
           "doc": "A variable controlling whether the OpenGL context should be created with\nEGL.\n\nThe variable can be set to the following values:\n\n- \"0\": Use platform-specific GL context creation API (GLX, WGL, CGL, etc).\n  (default)\n- \"1\": Use EGL\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_FORCE_EGL",
           "kind": "def",
           "value": "\"SDL_VIDEO_FORCE_EGL\"",
-          "begin": 3373,
-          "decl": 3387,
-          "end": 3389
+          "begin": 3377,
+          "decl": 3391,
+          "end": 3393
         },
         "SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES": {
           "doc": "A variable that specifies the policy for fullscreen Spaces on macOS.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable Spaces support (FULLSCREEN_DESKTOP won't use them and\n  SDL_WINDOW_RESIZABLE windows won't offer the \"fullscreen\" button on their\n  titlebars).\n- \"1\": Enable Spaces support (FULLSCREEN_DESKTOP will use them and\n  SDL_WINDOW_RESIZABLE windows will offer the \"fullscreen\" button on their\n  titlebars). (default)\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES",
           "kind": "def",
           "value": "\"SDL_VIDEO_MAC_FULLSCREEN_SPACES\"",
-          "begin": 3389,
-          "decl": 3405,
-          "end": 3407
+          "begin": 3393,
+          "decl": 3409,
+          "end": 3411
         },
         "SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY": {
           "doc": "A variable that specifies the menu visibility when a window is fullscreen\nin Spaces on macOS.\n\nThe variable can be set to the following values:\n\n- \"0\": The menu will be hidden when the window is in a fullscreen space,\n  and not accessible by moving the mouse to the top of the screen.\n- \"1\": The menu will be accessible when the window is in a fullscreen\n  space.\n- \"auto\": The menu will be hidden if fullscreen mode was toggled on\n  programmatically via `SDL_SetWindowFullscreen()`, and accessible if\n  fullscreen was entered via the \"fullscreen\" button on the window title\n  bar. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY",
           "kind": "def",
           "value": "\\\n  \"SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY\"",
-          "begin": 3407,
-          "decl": 3426,
-          "end": 3429
+          "begin": 3411,
+          "decl": 3430,
+          "end": 3433
         },
         "SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS": {
           "doc": "A variable controlling whether fullscreen windows are minimized when they\nlose focus.\n\nThe variable can be set to the following values:\n\n- \"0\": Fullscreen windows will not be minimized when they lose focus.\n  (default)\n- \"1\": Fullscreen windows are minimized when they lose focus.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS",
           "kind": "def",
           "value": "\"SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS\"",
-          "begin": 3429,
-          "decl": 3443,
-          "end": 3445
+          "begin": 3433,
+          "decl": 3447,
+          "end": 3449
         },
         "SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES": {
           "doc": "A variable controlling whether the offscreen video driver saves output\nframes.\n\nThis only saves frames that are generated using software rendering, not\naccelerated OpenGL rendering.\n\n- \"0\": Video frames are not saved to disk. (default)\n- \"1\": Video frames are saved to files in the format \"SDL_windowX-Y.bmp\",\n  where X is the window ID, and Y is the frame number.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES",
           "kind": "def",
           "value": "\"SDL_VIDEO_OFFSCREEN_SAVE_FRAMES\"",
-          "begin": 3445,
-          "decl": 3460,
-          "end": 3462
+          "begin": 3449,
+          "decl": 3464,
+          "end": 3466
         },
         "SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS": {
           "doc": "A variable controlling whether all window operations will block until\ncomplete.\n\nWindow systems that run asynchronously may not have the results of window\noperations that resize or move the window applied immediately upon the\nreturn of the requesting function. Setting this hint will cause such\noperations to block after every call until the pending operation has\ncompleted. Setting this to '1' is the equivalent of calling\nSDL_SyncWindow() after every function call.\n\nBe aware that amount of time spent blocking while waiting for window\noperations to complete can be quite lengthy, as animations may have to\ncomplete, which can take upwards of multiple seconds in some cases.\n\nThe variable can be set to the following values:\n\n- \"0\": Window operations are non-blocking. (default)\n- \"1\": Window operations will block until completed.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS",
           "kind": "def",
           "value": "\"SDL_VIDEO_SYNC_WINDOW_OPERATIONS\"",
-          "begin": 3462,
-          "decl": 3486,
-          "end": 3488
+          "begin": 3466,
+          "decl": 3490,
+          "end": 3492
         },
         "SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR": {
           "doc": "A variable controlling whether the libdecor Wayland backend is allowed to\nbe used.\n\nlibdecor is used over xdg-shell when xdg-decoration protocol is\nunavailable.\n\nThe variable can be set to the following values:\n\n- \"0\": libdecor use is disabled.\n- \"1\": libdecor use is enabled. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR",
           "kind": "def",
           "value": "\"SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR\"",
-          "begin": 3488,
-          "decl": 3504,
-          "end": 3506
+          "begin": 3492,
+          "decl": 3508,
+          "end": 3510
         },
         "SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION": {
           "doc": "A variable controlling whether video mode emulation is enabled under\nWayland.\n\nWhen this hint is set, a standard set of emulated CVT video modes will be\nexposed for use by the application. If it is disabled, the only modes\nexposed will be the logical desktop size and, in the case of a scaled\ndesktop, the native display resolution.\n\nThe variable can be set to the following values:\n\n- \"0\": Video mode emulation is disabled.\n- \"1\": Video mode emulation is enabled. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION",
           "kind": "def",
           "value": "\"SDL_VIDEO_WAYLAND_MODE_EMULATION\"",
-          "begin": 3506,
-          "decl": 3524,
-          "end": 3526
+          "begin": 3510,
+          "decl": 3528,
+          "end": 3530
         },
         "SDL_HINT_VIDEO_WAYLAND_MODE_SCALING": {
           "doc": "A variable controlling how modes with a non-native aspect ratio are\ndisplayed under Wayland.\n\nWhen this hint is set, the requested scaling will be used when displaying\nfullscreen video modes that don't match the display's native aspect ratio.\nThis is contingent on compositor viewport support.\n\nThe variable can be set to the following values:\n\n- \"aspect\" - Video modes will be displayed scaled, in their proper aspect\n  ratio, with black bars.\n- \"stretch\" - Video modes will be scaled to fill the entire display.\n  (default)\n- \"none\" - Video modes will be displayed as 1:1 with no scaling.\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_WAYLAND_MODE_SCALING",
           "kind": "def",
           "value": "\"SDL_VIDEO_WAYLAND_MODE_SCALING\"",
-          "begin": 3526,
-          "decl": 3546,
-          "end": 3548
+          "begin": 3530,
+          "decl": 3550,
+          "end": 3552
         },
         "SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR": {
           "doc": "A variable controlling whether the libdecor Wayland backend is preferred\nover native decorations.\n\nWhen this hint is set, libdecor will be used to provide window decorations,\neven if xdg-decoration is available. (Note that, by default, libdecor will\nuse xdg-decoration itself if available).\n\nThe variable can be set to the following values:\n\n- \"0\": libdecor is enabled only if server-side decorations are unavailable.\n  (default)\n- \"1\": libdecor is always enabled if available.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR",
           "kind": "def",
           "value": "\\\n  \"SDL_VIDEO_WAYLAND_PREFER_LIBDECOR\"",
-          "begin": 3548,
-          "decl": 3566,
-          "end": 3569
+          "begin": 3552,
+          "decl": 3570,
+          "end": 3573
         },
         "SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY": {
           "doc": "A variable forcing non-DPI-aware Wayland windows to output at 1:1 scaling.\n\nThis must be set before initializing the video subsystem.\n\nWhen this hint is set, Wayland windows that are not flagged as being\nDPI-aware will be output with scaling designed to force 1:1 pixel mapping.\n\nThis is intended to allow legacy applications to be displayed without\ndesktop scaling being applied, and has issues with certain display\nconfigurations, as this forces the window to behave in a way that Wayland\ndesktops were not designed to accommodate:\n\n- Rounding errors can result with odd window sizes and/or desktop scales,\n  which can cause the window contents to appear slightly blurry.\n- Positioning the window may be imprecise due to unit conversions and\n  rounding.\n- The window may be unusably small on scaled desktops.\n- The window may jump in size when moving between displays of different\n  scale factors.\n- Displays may appear to overlap when using a multi-monitor setup with\n  scaling enabled.\n- Possible loss of cursor precision due to the logical size of the window\n  being reduced.\n\nNew applications should be designed with proper DPI awareness handling\ninstead of enabling this.\n\nThe variable can be set to the following values:\n\n- \"0\": Windows will be scaled normally.\n- \"1\": Windows will be forced to scale to achieve 1:1 output.\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY",
           "kind": "def",
           "value": "\\\n  \"SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY\"",
-          "begin": 3569,
-          "decl": 3606,
-          "end": 3609
+          "begin": 3573,
+          "decl": 3610,
+          "end": 3613
         },
         "SDL_HINT_VIDEO_WIN_D3DCOMPILER": {
           "doc": "A variable specifying which shader compiler to preload when using the\nChrome ANGLE binaries.\n\nSDL has EGL and OpenGL ES2 support on Windows via the ANGLE project. It can\nuse two different sets of binaries, those compiled by the user from source\nor those provided by the Chrome browser. In the later case, these binaries\nrequire that SDL loads a DLL providing the shader compiler.\n\nThe variable can be set to the following values:\n\n- \"d3dcompiler_46.dll\" - best for Vista or later. (default)\n- \"d3dcompiler_43.dll\" - for XP support.\n- \"none\" - do not load any library, useful if you compiled ANGLE from\n  source and included the compiler in your binaries.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_WIN_D3DCOMPILER",
           "kind": "def",
           "value": "\"SDL_VIDEO_WIN_D3DCOMPILER\"",
-          "begin": 3609,
-          "decl": 3629,
-          "end": 3631
+          "begin": 3613,
+          "decl": 3633,
+          "end": 3635
         },
         "SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT": {
           "doc": "A variable controlling whether SDL should call XSelectInput() to enable\ninput events on X11 windows wrapped by SDL windows.\n\nThe variable can be set to the following values:\n\n- \"0\": Don't call XSelectInput(), assuming the native window code has done\n  it already.\n- \"1\": Call XSelectInput() to enable input events. (default)\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.10.",
           "name": "SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT",
           "kind": "def",
           "value": "\\\n  \"SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT\"",
-          "begin": 3631,
-          "decl": 3645,
-          "end": 3648
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 2,
+            "patch": 10
+          },
+          "begin": 3637,
+          "decl": 3651,
+          "end": 3654
         },
         "SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR": {
           "doc": "A variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint\nshould be used.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable _NET_WM_BYPASS_COMPOSITOR.\n- \"1\": Enable _NET_WM_BYPASS_COMPOSITOR. (default)\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR",
           "kind": "def",
           "value": "\\\n  \"SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR\"",
-          "begin": 3648,
-          "decl": 3661,
-          "end": 3664
+          "begin": 3656,
+          "decl": 3669,
+          "end": 3672
         },
         "SDL_HINT_VIDEO_X11_NET_WM_PING": {
           "doc": "A variable controlling whether the X11 _NET_WM_PING protocol should be\nsupported.\n\nBy default SDL will use _NET_WM_PING, but for applications that know they\nwill not always be able to respond to ping requests in a timely manner they\ncan turn it off to avoid the window manager thinking the app is hung.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable _NET_WM_PING.\n- \"1\": Enable _NET_WM_PING. (default)\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_X11_NET_WM_PING",
           "kind": "def",
           "value": "\"SDL_VIDEO_X11_NET_WM_PING\"",
-          "begin": 3664,
-          "decl": 3681,
-          "end": 3683
+          "begin": 3672,
+          "decl": 3689,
+          "end": 3691
         },
         "SDL_HINT_VIDEO_X11_NODIRECTCOLOR": {
           "doc": "A variable controlling whether SDL uses DirectColor visuals.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable DirectColor visuals.\n- \"1\": Enable DirectColor visuals. (default)\n\nThis hint should be set before initializing the video subsystem.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_X11_NODIRECTCOLOR",
           "kind": "def",
           "value": "\"SDL_VIDEO_X11_NODIRECTCOLOR\"",
-          "begin": 3683,
-          "decl": 3695,
-          "end": 3697
+          "begin": 3691,
+          "decl": 3703,
+          "end": 3705
         },
         "SDL_HINT_VIDEO_X11_SCALING_FACTOR": {
           "doc": "A variable forcing the content scaling factor for X11 displays.\n\nThe variable can be set to a floating point value in the range 1.0-10.0f\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_X11_SCALING_FACTOR",
           "kind": "def",
           "value": "\"SDL_VIDEO_X11_SCALING_FACTOR\"",
-          "begin": 3697,
-          "decl": 3706,
-          "end": 3708
+          "begin": 3705,
+          "decl": 3714,
+          "end": 3716
         },
         "SDL_HINT_VIDEO_X11_VISUALID": {
           "doc": "A variable forcing the visual ID used for X11 display modes.\n\nThis hint should be set before initializing the video subsystem.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_X11_VISUALID",
           "kind": "def",
           "value": "\"SDL_VIDEO_X11_VISUALID\"",
-          "begin": 3708,
-          "decl": 3715,
-          "end": 3717
+          "begin": 3716,
+          "decl": 3723,
+          "end": 3725
         },
         "SDL_HINT_VIDEO_X11_WINDOW_VISUALID": {
           "doc": "A variable forcing the visual ID chosen for new X11 windows.\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_X11_WINDOW_VISUALID",
           "kind": "def",
           "value": "\"SDL_VIDEO_X11_WINDOW_VISUALID\"",
-          "begin": 3717,
-          "decl": 3724,
-          "end": 3726
+          "begin": 3725,
+          "decl": 3732,
+          "end": 3734
         },
         "SDL_HINT_VIDEO_X11_XRANDR": {
           "doc": "A variable controlling whether the X11 XRandR extension should be used.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable XRandR.\n- \"1\": Enable XRandR. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VIDEO_X11_XRANDR",
           "kind": "def",
           "value": "\"SDL_VIDEO_X11_XRANDR\"",
-          "begin": 3726,
-          "decl": 3738,
-          "end": 3740
+          "begin": 3734,
+          "decl": 3746,
+          "end": 3748
         },
         "SDL_HINT_VITA_ENABLE_BACK_TOUCH": {
           "doc": "A variable controlling whether touch should be enabled on the back panel of\nthe PlayStation Vita.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable touch on the back panel.\n- \"1\": Enable touch on the back panel. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VITA_ENABLE_BACK_TOUCH",
           "kind": "def",
           "value": "\"SDL_VITA_ENABLE_BACK_TOUCH\"",
-          "begin": 3740,
-          "decl": 3753,
-          "end": 3755
+          "begin": 3748,
+          "decl": 3761,
+          "end": 3763
         },
         "SDL_HINT_VITA_ENABLE_FRONT_TOUCH": {
           "doc": "A variable controlling whether touch should be enabled on the front panel\nof the PlayStation Vita.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable touch on the front panel.\n- \"1\": Enable touch on the front panel. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VITA_ENABLE_FRONT_TOUCH",
           "kind": "def",
           "value": "\"SDL_VITA_ENABLE_FRONT_TOUCH\"",
-          "begin": 3755,
-          "decl": 3768,
-          "end": 3770
+          "begin": 3763,
+          "decl": 3776,
+          "end": 3778
         },
         "SDL_HINT_VITA_MODULE_PATH": {
           "doc": "A variable controlling the module path on the PlayStation Vita.\n\nThis hint defaults to \"app0:module\"\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VITA_MODULE_PATH",
           "kind": "def",
           "value": "\"SDL_VITA_MODULE_PATH\"",
-          "begin": 3770,
-          "decl": 3779,
-          "end": 3781
+          "begin": 3778,
+          "decl": 3787,
+          "end": 3789
         },
         "SDL_HINT_VITA_PVR_INIT": {
           "doc": "A variable controlling whether to perform PVR initialization on the\nPlayStation Vita.\n\n- \"0\": Skip PVR initialization.\n- \"1\": Perform the normal PVR initialization. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VITA_PVR_INIT",
           "kind": "def",
           "value": "\"SDL_VITA_PVR_INIT\"",
-          "begin": 3781,
-          "decl": 3792,
-          "end": 3794
+          "begin": 3789,
+          "decl": 3800,
+          "end": 3802
         },
         "SDL_HINT_VITA_RESOLUTION": {
           "doc": "A variable overriding the resolution reported on the PlayStation Vita.\n\nThe variable can be set to the following values:\n\n- \"544\": 544p (default)\n- \"720\": 725p for PSTV\n- \"1080\": 1088i for PSTV\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VITA_RESOLUTION",
           "kind": "def",
           "value": "\"SDL_VITA_RESOLUTION\"",
-          "begin": 3794,
-          "decl": 3807,
-          "end": 3809
+          "begin": 3802,
+          "decl": 3815,
+          "end": 3817
         },
         "SDL_HINT_VITA_PVR_OPENGL": {
           "doc": "A variable controlling whether OpenGL should be used instead of OpenGL ES\non the PlayStation Vita.\n\nThe variable can be set to the following values:\n\n- \"0\": Use OpenGL ES. (default)\n- \"1\": Use OpenGL.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VITA_PVR_OPENGL",
           "kind": "def",
           "value": "\"SDL_VITA_PVR_OPENGL\"",
-          "begin": 3809,
-          "decl": 3822,
-          "end": 3824
+          "begin": 3817,
+          "decl": 3830,
+          "end": 3832
         },
         "SDL_HINT_VITA_TOUCH_MOUSE_DEVICE": {
           "doc": "A variable controlling which touchpad should generate synthetic mouse\nevents.\n\nThe variable can be set to the following values:\n\n- \"0\": Only front touchpad should generate mouse events. (default)\n- \"1\": Only back touchpad should generate mouse events.\n- \"2\": Both touchpads should generate mouse events.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VITA_TOUCH_MOUSE_DEVICE",
           "kind": "def",
           "value": "\"SDL_VITA_TOUCH_MOUSE_DEVICE\"",
-          "begin": 3824,
-          "decl": 3838,
-          "end": 3840
+          "begin": 3832,
+          "decl": 3846,
+          "end": 3848
         },
         "SDL_HINT_VULKAN_DISPLAY": {
           "doc": "A variable overriding the display index used in SDL_Vulkan_CreateSurface()\n\nThe display index starts at 0, which is the default.\n\nThis hint should be set before calling SDL_Vulkan_CreateSurface()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VULKAN_DISPLAY",
           "kind": "def",
           "value": "\"SDL_VULKAN_DISPLAY\"",
-          "begin": 3840,
-          "decl": 3849,
-          "end": 3851
+          "begin": 3848,
+          "decl": 3857,
+          "end": 3859
         },
         "SDL_HINT_VULKAN_LIBRARY": {
           "doc": "Specify the Vulkan library to load.\n\nThis hint should be set before creating a Vulkan window or calling\nSDL_Vulkan_LoadLibrary().\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_VULKAN_LIBRARY",
           "kind": "def",
           "value": "\"SDL_VULKAN_LIBRARY\"",
-          "begin": 3851,
-          "decl": 3859,
-          "end": 3861
+          "begin": 3859,
+          "decl": 3867,
+          "end": 3869
         },
         "SDL_HINT_WAVE_FACT_CHUNK": {
           "doc": "A variable controlling how the fact chunk affects the loading of a WAVE\nfile.\n\nThe fact chunk stores information about the number of samples of a WAVE\nfile. The Standards Update from Microsoft notes that this value can be used\nto 'determine the length of the data in seconds'. This is especially useful\nfor compressed formats (for which this is a mandatory chunk) if they\nproduce multiple sample frames per block and truncating the block is not\nallowed. The fact chunk can exactly specify how many sample frames there\nshould be in this case.\n\nUnfortunately, most application seem to ignore the fact chunk and so SDL\nignores it by default as well.\n\nThe variable can be set to the following values:\n\n- \"truncate\" - Use the number of samples to truncate the wave data if the\n  fact chunk is present and valid.\n- \"strict\" - Like \"truncate\", but raise an error if the fact chunk is\n  invalid, not present for non-PCM formats, or if the data chunk doesn't\n  have that many samples.\n- \"ignorezero\" - Like \"truncate\", but ignore fact chunk if the number of\n  samples is zero.\n- \"ignore\" - Ignore fact chunk entirely. (default)\n\nThis hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WAVE_FACT_CHUNK",
           "kind": "def",
           "value": "\"SDL_WAVE_FACT_CHUNK\"",
-          "begin": 3861,
-          "decl": 3891,
-          "end": 3893
+          "begin": 3869,
+          "decl": 3899,
+          "end": 3901
         },
         "SDL_HINT_WAVE_CHUNK_LIMIT": {
           "doc": "A variable controlling the maximum number of chunks in a WAVE file.\n\nThis sets an upper bound on the number of chunks in a WAVE file to avoid\nwasting time on malformed or corrupt WAVE files. This defaults to \"10000\".\n\nThis hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WAVE_CHUNK_LIMIT",
           "kind": "def",
           "value": "\"SDL_WAVE_CHUNK_LIMIT\"",
-          "begin": 3893,
-          "decl": 3903,
-          "end": 3905
+          "begin": 3901,
+          "decl": 3911,
+          "end": 3913
         },
         "SDL_HINT_WAVE_RIFF_CHUNK_SIZE": {
           "doc": "A variable controlling how the size of the RIFF chunk affects the loading\nof a WAVE file.\n\nThe size of the RIFF chunk (which includes all the sub-chunks of the WAVE\nfile) is not always reliable. In case the size is wrong, it's possible to\njust ignore it and step through the chunks until a fixed limit is reached.\n\nNote that files that have trailing data unrelated to the WAVE file or\ncorrupt files may slow down the loading process without a reliable\nboundary. By default, SDL stops after 10000 chunks to prevent wasting time.\nUse SDL_HINT_WAVE_CHUNK_LIMIT to adjust this value.\n\nThe variable can be set to the following values:\n\n- \"force\" - Always use the RIFF chunk size as a boundary for the chunk\n  search.\n- \"ignorezero\" - Like \"force\", but a zero size searches up to 4 GiB.\n  (default)\n- \"ignore\" - Ignore the RIFF chunk size and always search up to 4 GiB.\n- \"maximum\" - Search for chunks until the end of file. (not recommended)\n\nThis hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WAVE_RIFF_CHUNK_SIZE",
           "kind": "def",
           "value": "\"SDL_WAVE_RIFF_CHUNK_SIZE\"",
-          "begin": 3905,
-          "decl": 3931,
-          "end": 3933
+          "begin": 3913,
+          "decl": 3939,
+          "end": 3941
         },
         "SDL_HINT_WAVE_TRUNCATION": {
           "doc": "A variable controlling how a truncated WAVE file is handled.\n\nA WAVE file is considered truncated if any of the chunks are incomplete or\nthe data chunk size is not a multiple of the block size. By default, SDL\ndecodes until the first incomplete block, as most applications seem to do.\n\nThe variable can be set to the following values:\n\n- \"verystrict\" - Raise an error if the file is truncated.\n- \"strict\" - Like \"verystrict\", but the size of the RIFF chunk is ignored.\n- \"dropframe\" - Decode until the first incomplete sample frame.\n- \"dropblock\" - Decode until the first incomplete block. (default)\n\nThis hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WAVE_TRUNCATION",
           "kind": "def",
           "value": "\"SDL_WAVE_TRUNCATION\"",
-          "begin": 3933,
-          "decl": 3951,
-          "end": 3953
+          "begin": 3941,
+          "decl": 3959,
+          "end": 3961
         },
         "SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED": {
           "doc": "A variable controlling whether the window is activated when the\nSDL_RaiseWindow function is called.\n\nThe variable can be set to the following values:\n\n- \"0\": The window is not activated when the SDL_RaiseWindow function is\n  called.\n- \"1\": The window is activated when the SDL_RaiseWindow function is called.\n  (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED",
           "kind": "def",
           "value": "\"SDL_WINDOW_ACTIVATE_WHEN_RAISED\"",
-          "begin": 3953,
-          "decl": 3968,
-          "end": 3970
+          "begin": 3961,
+          "decl": 3976,
+          "end": 3978
         },
         "SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN": {
           "doc": "A variable controlling whether the window is activated when the\nSDL_ShowWindow function is called.\n\nThe variable can be set to the following values:\n\n- \"0\": The window is not activated when the SDL_ShowWindow function is\n  called.\n- \"1\": The window is activated when the SDL_ShowWindow function is called.\n  (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN",
           "kind": "def",
           "value": "\"SDL_WINDOW_ACTIVATE_WHEN_SHOWN\"",
-          "begin": 3970,
-          "decl": 3985,
-          "end": 3987
+          "begin": 3978,
+          "decl": 3993,
+          "end": 3995
         },
         "SDL_HINT_WINDOW_ALLOW_TOPMOST": {
           "doc": "If set to \"0\" then never set the top-most flag on an SDL Window even if the\napplication requests it.\n\nThis is a debugging aid for developers and not expected to be used by end\nusers.\n\nThe variable can be set to the following values:\n\n- \"0\": don't allow topmost\n- \"1\": allow topmost (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOW_ALLOW_TOPMOST",
           "kind": "def",
           "value": "\"SDL_WINDOW_ALLOW_TOPMOST\"",
-          "begin": 3987,
-          "decl": 4003,
-          "end": 4005
+          "begin": 3995,
+          "decl": 4011,
+          "end": 4013
         },
         "SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN": {
           "doc": "A variable controlling whether the window frame and title bar are\ninteractive when the cursor is hidden.\n\nThe variable can be set to the following values:\n\n- \"0\": The window frame is not interactive when the cursor is hidden (no\n  move, resize, etc).\n- \"1\": The window frame is interactive when the cursor is hidden. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN",
           "kind": "def",
           "value": "\\\n  \"SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN\"",
-          "begin": 4005,
-          "decl": 4019,
-          "end": 4022
+          "begin": 4013,
+          "decl": 4027,
+          "end": 4030
         },
         "SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4": {
           "doc": "A variable controlling whether SDL generates window-close events for Alt+F4\non Windows.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will only do normal key handling for Alt+F4.\n- \"1\": SDL will generate a window-close event when it sees Alt+F4.\n  (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4",
           "kind": "def",
           "value": "\"SDL_WINDOWS_CLOSE_ON_ALT_F4\"",
-          "begin": 4022,
-          "decl": 4036,
-          "end": 4038
+          "begin": 4030,
+          "decl": 4044,
+          "end": 4046
         },
         "SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS": {
           "doc": "A variable controlling whether menus can be opened with their keyboard\nshortcut (Alt+mnemonic).\n\nIf the mnemonics are enabled, then menus can be opened by pressing the Alt\nkey and the corresponding mnemonic (for example, Alt+F opens the File\nmenu). However, in case an invalid mnemonic is pressed, Windows makes an\naudible beep to convey that nothing happened. This is true even if the\nwindow has no menu at all!\n\nBecause most SDL applications don't have menus, and some want to use the\nAlt key for other purposes, SDL disables mnemonics (and the beeping) by\ndefault.\n\nNote: This also affects keyboard events: with mnemonics enabled, when a\nmenu is opened from the keyboard, you will not receive a KEYUP event for\nthe mnemonic key, and *might* not receive one for Alt.\n\nThe variable can be set to the following values:\n\n- \"0\": Alt+mnemonic does nothing, no beeping. (default)\n- \"1\": Alt+mnemonic opens menus, invalid mnemonics produce a beep.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS",
           "kind": "def",
           "value": "\\\n  \"SDL_WINDOWS_ENABLE_MENU_MNEMONICS\"",
-          "begin": 4038,
-          "decl": 4065,
-          "end": 4068
+          "begin": 4046,
+          "decl": 4073,
+          "end": 4076
         },
         "SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP": {
           "doc": "A variable controlling whether the windows message loop is processed by\nSDL.\n\nThe variable can be set to the following values:\n\n- \"0\": The window message loop is not run.\n- \"1\": The window message loop is processed in SDL_PumpEvents(). (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
           "kind": "def",
           "value": "\"SDL_WINDOWS_ENABLE_MESSAGELOOP\"",
-          "begin": 4068,
-          "decl": 4081,
-          "end": 4083
+          "begin": 4076,
+          "decl": 4089,
+          "end": 4091
         },
         "SDL_HINT_WINDOWS_GAMEINPUT": {
           "doc": "A variable controlling whether GameInput is used for raw keyboard and mouse\non Windows.\n\nThe variable can be set to the following values:\n\n- \"0\": GameInput is not used for raw keyboard and mouse events.\n- \"1\": GameInput is used for raw keyboard and mouse events, if available.\n  (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_GAMEINPUT",
           "kind": "def",
           "value": "\"SDL_WINDOWS_GAMEINPUT\"",
-          "begin": 4083,
-          "decl": 4097,
-          "end": 4099
+          "begin": 4091,
+          "decl": 4105,
+          "end": 4107
         },
         "SDL_HINT_WINDOWS_RAW_KEYBOARD": {
           "doc": "A variable controlling whether raw keyboard events are used on Windows.\n\nThe variable can be set to the following values:\n\n- \"0\": The Windows message loop is used for keyboard events. (default)\n- \"1\": Low latency raw keyboard events are used.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_RAW_KEYBOARD",
           "kind": "def",
           "value": "\"SDL_WINDOWS_RAW_KEYBOARD\"",
-          "begin": 4099,
-          "decl": 4111,
-          "end": 4113
+          "begin": 4107,
+          "decl": 4119,
+          "end": 4121
         },
         "SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL": {
           "doc": "A variable controlling whether SDL uses Kernel Semaphores on Windows.\n\nKernel Semaphores are inter-process and require a context switch on every\ninteraction. On Windows 8 and newer, the WaitOnAddress API is available.\nUsing that and atomics to implement semaphores increases performance. SDL\nwill fall back to Kernel Objects on older OS versions or if forced to by\nthis hint.\n\nThe variable can be set to the following values:\n\n- \"0\": Use Atomics and WaitOnAddress API when available, otherwise fall\n  back to Kernel Objects. (default)\n- \"1\": Force the use of Kernel Objects in all cases.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL",
           "kind": "def",
           "value": "\\\n  \"SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL\"",
-          "begin": 4113,
-          "decl": 4132,
-          "end": 4135
+          "begin": 4121,
+          "decl": 4140,
+          "end": 4143
         },
         "SDL_HINT_WINDOWS_INTRESOURCE_ICON": {
           "doc": "A variable to specify custom icon resource id from RC file on Windows\nplatform.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_INTRESOURCE_ICON",
           "kind": "def",
           "value": "\"SDL_WINDOWS_INTRESOURCE_ICON\"",
-          "begin": 4135,
-          "decl": 4143,
-          "end": 4145
+          "begin": 4143,
+          "decl": 4151,
+          "end": 4153
         },
         "SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL": {
           "doc": "A variable to specify custom icon resource id from RC file on Windows\nplatform.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL",
           "kind": "def",
           "value": "\\\n  \"SDL_WINDOWS_INTRESOURCE_ICON_SMALL\"",
-          "begin": 4145,
-          "decl": 4153,
-          "end": 4156
+          "begin": 4153,
+          "decl": 4161,
+          "end": 4164
         },
         "SDL_HINT_WINDOWS_USE_D3D9EX": {
           "doc": "A variable controlling whether SDL uses the D3D9Ex API introduced in\nWindows Vista, instead of normal D3D9.\n\nDirect3D 9Ex contains changes to state management that can eliminate device\nloss errors during scenarios like Alt+Tab or UAC prompts. D3D9Ex may\nrequire some changes to your application to cope with the new behavior, so\nthis is disabled by default.\n\nFor more information on Direct3D 9Ex, see:\n\n-\nhttps://docs.microsoft.com/en-us/windows/win32/direct3darticles/graphics-apis-in-windows-vista#direct3d-9ex\n-\nhttps://docs.microsoft.com/en-us/windows/win32/direct3darticles/direct3d-9ex-improvements\n\nThe variable can be set to the following values:\n\n- \"0\": Use the original Direct3D 9 API. (default)\n- \"1\": Use the Direct3D 9Ex API on Vista and later (and fall back if D3D9Ex\n  is unavailable)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_USE_D3D9EX",
           "kind": "def",
           "value": "\"SDL_WINDOWS_USE_D3D9EX\"",
-          "begin": 4156,
-          "decl": 4182,
-          "end": 4184
+          "begin": 4164,
+          "decl": 4190,
+          "end": 4192
         },
         "SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE": {
           "doc": "A variable controlling whether SDL will clear the window contents when the\nWM_ERASEBKGND message is received.\n\nThe variable can be set to the following values:\n\n- \"0\"/\"never\": Never clear the window.\n- \"1\"/\"initial\": Clear the window when the first WM_ERASEBKGND event fires.\n  (default)\n- \"2\"/\"always\": Clear the window on every WM_ERASEBKGND event.\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE",
           "kind": "def",
           "value": "\\\n  \"SDL_WINDOWS_ERASE_BACKGROUND_MODE\"",
-          "begin": 4184,
-          "decl": 4199,
-          "end": 4202
+          "begin": 4192,
+          "decl": 4207,
+          "end": 4210
         },
         "SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT": {
           "doc": "A variable controlling whether X11 windows are marked as override-redirect.\n\nIf set, this _might_ increase framerate at the expense of the desktop not\nworking as expected. Override-redirect windows aren't noticed by the window\nmanager at all.\n\nYou should probably only use this for fullscreen windows, and you probably\nshouldn't even use it for that. But it's here if you want to try!\n\nThe variable can be set to the following values:\n\n- \"0\": Do not mark the window as override-redirect. (default)\n- \"1\": Mark the window as override-redirect.\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT",
           "kind": "def",
           "value": "\"SDL_X11_FORCE_OVERRIDE_REDIRECT\"",
-          "begin": 4202,
-          "decl": 4221,
-          "end": 4223
+          "begin": 4210,
+          "decl": 4229,
+          "end": 4231
         },
         "SDL_HINT_X11_WINDOW_TYPE": {
           "doc": "A variable specifying the type of an X11 window.\n\nDuring SDL_CreateWindow, SDL uses the _NET_WM_WINDOW_TYPE X11 property to\nreport to the window manager the type of window it wants to create. This\nmight be set to various things if SDL_WINDOW_TOOLTIP or\nSDL_WINDOW_POPUP_MENU, etc, were specified. For \"normal\" windows that\nhaven't set a specific type, this hint can be used to specify a custom\ntype. For example, a dock window might set this to\n\"_NET_WM_WINDOW_TYPE_DOCK\".\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_X11_WINDOW_TYPE",
           "kind": "def",
           "value": "\"SDL_X11_WINDOW_TYPE\"",
-          "begin": 4223,
-          "decl": 4238,
-          "end": 4240
+          "begin": 4231,
+          "decl": 4246,
+          "end": 4248
         },
         "SDL_HINT_X11_XCB_LIBRARY": {
           "doc": "Specify the XCB library to load for the X11 driver.\n\nThe default is platform-specific, often \"libX11-xcb.so.1\".\n\nThis hint should be set before initializing the video subsystem.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_X11_XCB_LIBRARY",
           "kind": "def",
           "value": "\"SDL_X11_XCB_LIBRARY\"",
-          "begin": 4240,
-          "decl": 4249,
-          "end": 4251
+          "begin": 4248,
+          "decl": 4257,
+          "end": 4259
         },
         "SDL_HINT_XINPUT_ENABLED": {
           "doc": "A variable controlling whether XInput should be used for controller\nhandling.\n\nThe variable can be set to the following values:\n\n- \"0\": XInput is not enabled.\n- \"1\": XInput is enabled. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_XINPUT_ENABLED",
           "kind": "def",
           "value": "\"SDL_XINPUT_ENABLED\"",
-          "begin": 4251,
-          "decl": 4264,
-          "end": 4266
+          "begin": 4259,
+          "decl": 4272,
+          "end": 4274
         },
         "SDL_HINT_ASSERT": {
           "doc": "A variable controlling response to SDL_assert failures.\n\nThe variable can be set to the following case-sensitive values:\n\n- \"abort\": Program terminates immediately.\n- \"break\": Program triggers a debugger breakpoint.\n- \"retry\": Program reruns the SDL_assert's test again.\n- \"ignore\": Program continues on, ignoring this assertion failure this\n  time.\n- \"always_ignore\": Program continues on, ignoring this assertion failure\n  for the rest of the run.\n\nNote that SDL_SetAssertionHandler offers a programmatic means to deal with\nassertion failures through a callback, and this hint is largely intended to\nbe used via environment variables by end users and automated tools.\n\nThis hint should be set before an assertion failure is triggered and can be\nchanged at any time.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_ASSERT",
           "kind": "def",
           "value": "\"SDL_ASSERT\"",
-          "begin": 4266,
-          "decl": 4288,
-          "end": 4290
+          "begin": 4274,
+          "decl": 4296,
+          "end": 4298
         },
         "SDL_HINT_PEN_MOUSE_EVENTS": {
           "doc": "A variable controlling whether pen events should generate synthetic mouse\nevents.\n\nThe variable can be set to the following values:\n\n- \"0\": Pen events will not generate mouse events.\n- \"1\": Pen events will generate mouse events. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_PEN_MOUSE_EVENTS",
           "kind": "def",
           "value": "\"SDL_PEN_MOUSE_EVENTS\"",
-          "begin": 4290,
-          "decl": 4303,
-          "end": 4305
+          "begin": 4298,
+          "decl": 4311,
+          "end": 4313
         },
         "SDL_HINT_PEN_TOUCH_EVENTS": {
           "doc": "A variable controlling whether pen events should generate synthetic touch\nevents.\n\nThe variable can be set to the following values:\n\n- \"0\": Pen events will not generate touch events.\n- \"1\": Pen events will generate touch events. (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_PEN_TOUCH_EVENTS",
           "kind": "def",
           "value": "\"SDL_PEN_TOUCH_EVENTS\"",
-          "begin": 4305,
-          "decl": 4318,
-          "end": 4320
+          "begin": 4313,
+          "decl": 4326,
+          "end": 4328
         },
         "HintPriority": {
           "doc": "An enumeration of hint priorities.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "HintPriority",
           "kind": "alias",
           "type": "SDL_HintPriority",
-          "begin": 4322,
-          "decl": 4327,
-          "end": 4329
+          "begin": 4330,
+          "decl": 4335,
+          "end": 4337
         },
         "HINT_DEFAULT": {
           "doc": "",
@@ -3297,9 +3309,9 @@
           "kind": "var",
           "type": "HintPriority",
           "constexpr": true,
-          "begin": 4329,
-          "decl": 4329,
-          "end": 4331
+          "begin": 4337,
+          "decl": 4337,
+          "end": 4339
         },
         "HINT_NORMAL": {
           "doc": "",
@@ -3307,9 +3319,9 @@
           "kind": "var",
           "type": "HintPriority",
           "constexpr": true,
-          "begin": 4331,
-          "decl": 4331,
-          "end": 4333
+          "begin": 4339,
+          "decl": 4339,
+          "end": 4341
         },
         "HINT_OVERRIDE": {
           "doc": "",
@@ -3317,9 +3329,9 @@
           "kind": "var",
           "type": "HintPriority",
           "constexpr": true,
-          "begin": 4333,
-          "decl": 4333,
-          "end": 4335
+          "begin": 4341,
+          "decl": 4341,
+          "end": 4343
         },
         "SetHintWithPriority": {
           "doc": "Set a hint with a specific priority.\n\nThe priority controls the behavior when setting a hint that already has a\nvalue. Hints will replace existing hints of their priority and lower.\nEnvironment variables are considered to have override priority.\n\n@param name the hint to set.\n@param value the value of the hint variable.\n@param priority the SDL_HintPriority level for the hint.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetHint\n@sa SDL_ResetHint\n@sa SDL_SetHint",
@@ -3340,9 +3352,9 @@
               "type": "HintPriority"
             }
           ],
-          "begin": 4335,
-          "decl": 4356,
-          "end": 4363
+          "begin": 4343,
+          "decl": 4364,
+          "end": 4371
         },
         "SetHint": {
           "doc": "Set a hint with normal priority.\n\nHints will not be set if there is an existing override hint or environment\nvariable that takes precedence. You can use SDL_SetHintWithPriority() to\nset the hint with override priority instead.\n\n@param name the hint to set.\n@param value the value of the hint variable.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetHint\n@sa SDL_ResetHint\n@sa SDL_SetHintWithPriority",
@@ -3359,9 +3371,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 4363,
-          "decl": 4383,
-          "end": 4388
+          "begin": 4371,
+          "decl": 4391,
+          "end": 4396
         },
         "ResetHint": {
           "doc": "Reset a hint to the default value.\n\nThis will reset a hint to the value of the environment variable, or NULL if\nthe environment isn't set. Callbacks will be called normally with this\nchange.\n\n@param name the hint to set.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetHint\n@sa SDL_ResetHints",
@@ -3374,9 +3386,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 4388,
-          "decl": 4406,
-          "end": 4408
+          "begin": 4396,
+          "decl": 4414,
+          "end": 4416
         },
         "ResetHints": {
           "doc": "Reset all hints to the default values.\n\nThis will reset all hints to the value of the associated environment\nvariable, or NULL if the environment isn't set. Callbacks will be called\nnormally with this change.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ResetHint",
@@ -3384,9 +3396,9 @@
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "begin": 4408,
-          "decl": 4421,
-          "end": 4423
+          "begin": 4416,
+          "decl": 4429,
+          "end": 4431
         },
         "GetHint": {
           "doc": "Get the value of a hint.\n\n@param name the hint to query.\n@returns the string value of a hint or NULL if the hint isn't set.\n\n@threadsafety It is safe to call this function from any thread, however the\n              return value only remains valid until the hint is changed; if\n              another thread might do so, the app should supply locks\n              and/or make a copy of the string. Note that using a hint\n              callback instead is always thread-safe, as SDL holds a lock\n              on the thread subsystem during the callback.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetHint\n@sa SDL_SetHintWithPriority",
@@ -3399,9 +3411,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 4423,
-          "decl": 4441,
-          "end": 4443
+          "begin": 4431,
+          "decl": 4449,
+          "end": 4451
         },
         "GetHintBoolean": {
           "doc": "Get the boolean value of a hint variable.\n\n@param name the name of the hint to get the boolean value from.\n@param default_value the value to return if the hint does not exist.\n@returns the boolean value of a hint or the provided default value if the\n         hint does not exist.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetHint\n@sa SDL_SetHint",
@@ -3418,18 +3430,18 @@
               "type": "bool"
             }
           ],
-          "begin": 4443,
-          "decl": 4458,
-          "end": 4463
+          "begin": 4451,
+          "decl": 4466,
+          "end": 4471
         },
         "HintCallback": {
           "doc": "A callback used to send notifications of hint value changes.\n\nThis is called an initial time during SDL_AddHintCallback with the hint's\ncurrent value, and then again each time the hint's value changes.\n\n@param userdata what was passed as `userdata` to SDL_AddHintCallback().\n@param name what was passed as `name` to SDL_AddHintCallback().\n@param oldValue the previous hint value.\n@param newValue the new value hint is to be set to.\n\n@threadsafety This callback is fired from whatever thread is setting a new\n              hint value. SDL holds a lock on the hint subsystem when\n              calling this callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_AddHintCallback",
           "name": "HintCallback",
           "kind": "alias",
           "type": "SDL_HintCallback",
-          "begin": 4463,
-          "decl": 4482,
-          "end": 4484
+          "begin": 4471,
+          "decl": 4490,
+          "end": 4492
         },
         "AddHintCallback": {
           "doc": "Add a function to watch a particular hint.\n\nThe callback function is called _during_ this function, to provide it an\ninitial value, and again each time the hint's value changes.\n\n@param name the hint to watch.\n@param callback An SDL_HintCallback function that will be called when the\n                hint value changes.\n@param userdata a pointer to pass to the callback function.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RemoveHintCallback",
@@ -3450,9 +3462,9 @@
               "type": "void *"
             }
           ],
-          "begin": 4484,
-          "decl": 4503,
-          "end": 4510
+          "begin": 4492,
+          "decl": 4511,
+          "end": 4518
         },
         "RemoveHintCallback": {
           "doc": "Remove a function watching a particular hint.\n\n@param name the hint being watched.\n@param callback an SDL_HintCallback function that will be called when the\n                hint value changes.\n@param userdata a pointer being passed to the callback function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddHintCallback",
@@ -3473,15 +3485,15 @@
               "type": "void *"
             }
           ],
-          "begin": 4510,
-          "decl": 4524,
-          "end": 4531
+          "begin": 4518,
+          "decl": 4532,
+          "end": 4539
         }
       },
       "docBegin": 9,
       "docEnd": 26,
       "entriesBegin": 26,
-      "entriesEnd": 4531,
+      "entriesEnd": 4539,
       "namespace": "SDL"
     },
     "SDL3pp_properties.h": {
@@ -14324,6 +14336,12 @@
           "doc": "Motion JPEG\n@since SDL 3.2.10",
           "name": "PIXELFORMAT_MJPG",
           "kind": "var",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 2,
+            "patch": 10
+          },
           "type": "PixelFormat",
           "constexpr": true,
           "begin": 868,
@@ -19005,11 +19023,17 @@
           "doc": "@since SDL 3.2.10",
           "name": "SCALEMODE_INVALID",
           "kind": "var",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 2,
+            "patch": 10
+          },
           "type": "ScaleMode",
           "constexpr": true,
           "begin": 103,
           "decl": 106,
-          "end": 107
+          "end": 108
         },
         "SCALEMODE_NEAREST": {
           "doc": "nearest pixel sampling",
@@ -19017,9 +19041,9 @@
           "kind": "var",
           "type": "ScaleMode",
           "constexpr": true,
-          "begin": 109,
-          "decl": 112,
-          "end": 114
+          "begin": 110,
+          "decl": 113,
+          "end": 115
         },
         "SCALEMODE_LINEAR": {
           "doc": "linear filtering",
@@ -19027,18 +19051,18 @@
           "kind": "var",
           "type": "ScaleMode",
           "constexpr": true,
-          "begin": 114,
-          "decl": 117,
-          "end": 119
+          "begin": 115,
+          "decl": 118,
+          "end": 120
         },
         "FlipMode": {
           "doc": "The flip mode.",
           "name": "FlipMode",
           "kind": "alias",
           "type": "SDL_FlipMode",
-          "begin": 119,
-          "decl": 123,
-          "end": 125
+          "begin": 120,
+          "decl": 124,
+          "end": 126
         },
         "FLIP_NONE": {
           "doc": "Do not flip",
@@ -19046,9 +19070,9 @@
           "kind": "var",
           "type": "FlipMode",
           "constexpr": true,
-          "begin": 125,
-          "decl": 128,
-          "end": 130
+          "begin": 126,
+          "decl": 129,
+          "end": 131
         },
         "FLIP_HORIZONTAL": {
           "doc": "flip horizontally",
@@ -19056,9 +19080,9 @@
           "kind": "var",
           "type": "FlipMode",
           "constexpr": true,
-          "begin": 130,
-          "decl": 133,
-          "end": 135
+          "begin": 131,
+          "decl": 134,
+          "end": 136
         },
         "FLIP_VERTICAL": {
           "doc": "flip vertically",
@@ -19066,9 +19090,9 @@
           "kind": "var",
           "type": "FlipMode",
           "constexpr": true,
-          "begin": 135,
-          "decl": 138,
-          "end": 140
+          "begin": 136,
+          "decl": 139,
+          "end": 141
         },
         "SurfaceBase": {
           "doc": "A collection of pixels used in software blitting.\n\nPixels are arranged in memory in rows, with the top row first. Each row\noccupies an amount of memory given by the pitch (sometimes known as the row\nstride in non-SDL APIs).\n\nWithin each row, pixels are arranged from left to right until the width is\nreached. Each pixel occupies a number of bits appropriate for its format,\nwith most formats representing each pixel as one or more whole bytes (in\nsome indexed formats, instead multiple pixels are packed into each byte),\nand a byte order given by the format. After encoding all pixels, any\nremaining bytes to reach the pitch are used as padding to reach a desired\nalignment, and have undefined contents.\n\nWhen a surface holds YUV format data, the planes are assumed to be\ncontiguous without padding between them, e.g. a 32x32 surface in NV12\nformat with a pitch of 32 would consist of 32x32 bytes of Y plane followed\nby 32x16 bytes of UV plane.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SurfaceBase::SurfaceBase()\n\n@cat resource\n\n@sa resource\n@sa Surface\n@sa SurfaceRef",
@@ -19080,9 +19104,9 @@
               "doc": "",
               "name": "T::T",
               "kind": "alias",
-              "begin": 173,
-              "decl": 173,
-              "end": 175
+              "begin": 174,
+              "decl": 174,
+              "end": 176
             },
             "SurfaceBase": [
               {
@@ -19097,9 +19121,9 @@
                   }
                 ],
                 "proto": true,
-                "begin": 175,
-                "decl": 188,
-                "end": 190
+                "begin": 176,
+                "decl": 189,
+                "end": 191
               },
               {
                 "doc": "Allocate a new surface with a specific pixel format.\n\nThe pixels of the new surface are initialized to zero.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@post the new structure that is created and convertible to true on success\nor convertible to false on failure; call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
@@ -19120,9 +19144,9 @@
                     "type": "PixelFormat"
                   }
                 ],
-                "begin": 190,
-                "decl": 203,
-                "end": 208
+                "begin": 191,
+                "decl": 204,
+                "end": 209
               },
               {
                 "doc": "Allocate a new surface with a specific pixel format and existing\npixel data.\n\nNo copy is made of the pixel data. Pixel data is not managed automatically;\nyou must free the surface before you free the pixel data.\n\nPitch is the offset in bytes from one row of pixels to the next, e.g.\n`width*4` for `SDL_PIXELFORMAT_RGBA8888`.\n\nYou may pass NULL for pixels and 0 for pitch to create a surface that you\nwill fill in with valid values later.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@param pixels a pointer to existing pixel data.\n@param pitch the number of bytes between each row, including padding.\n@post the new structure that is created and convertible to true on success\nor convertible to false on failure; call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
@@ -19151,9 +19175,9 @@
                     "type": "int"
                   }
                 ],
-                "begin": 208,
-                "decl": 231,
-                "end": 240
+                "begin": 209,
+                "decl": 232,
+                "end": 241
               }
             ],
             "GetProperties": {
@@ -19163,9 +19187,9 @@
               "type": "PropertiesRef",
               "parameters": [],
               "immutable": true,
-              "begin": 240,
-              "decl": 265,
-              "end": 270
+              "begin": 241,
+              "decl": 266,
+              "end": 271
             },
             "SetColorspace": {
               "doc": "Set the colorspace used by a surface.\n\nSetting the colorspace doesn't change the pixels, only how they are\ninterpreted in color operations.\n\n@param colorspace a Colorspace value describing the surface colorspace.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetColorspace()",
@@ -19178,9 +19202,9 @@
                   "type": "Colorspace"
                 }
               ],
-              "begin": 270,
-              "decl": 284,
-              "end": 289
+              "begin": 271,
+              "decl": 285,
+              "end": 290
             },
             "GetColorspace": {
               "doc": "Get the colorspace used by a surface.\n\nThe colorspace defaults to SDL_COLORSPACE_SRGB_LINEAR for floating point\nformats, SDL_COLORSPACE_HDR10 for 10-bit formats, SDL_COLORSPACE_SRGB for\nother RGB surfaces and SDL_COLORSPACE_BT709_FULL for YUV textures.\n\n@returns the colorspace used by the surface, or SDL_COLORSPACE_UNKNOWN if\n         the surface is NULL.",
@@ -19189,9 +19213,9 @@
               "type": "Colorspace",
               "parameters": [],
               "immutable": true,
-              "begin": 289,
-              "decl": 299,
-              "end": 304
+              "begin": 290,
+              "decl": 300,
+              "end": 305
             },
             "CreatePalette": {
               "doc": "Create a palette and associate it with a surface.\n\nThis function creates a palette compatible with the provided surface. The\npalette is then returned for you to modify, and the surface will\nautomatically use the new palette in future operations. You do not need to\ndestroy the returned palette, it will be freed when the reference count\nreaches 0, usually when the surface is destroyed.\n\nBitmap surfaces (with format SDL_PIXELFORMAT_INDEX1LSB or\nSDL_PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as\nwhite and 1 as black. Other surfaces will get a palette initialized with\nwhite in every entry.\n\nIf this function is called for a surface that already has a palette, a new\npalette will be created to replace it.\n\n@returns a new SDL_Palette structure on success or NULL on failure (e.g. if\n         the surface didn't have an index format); call GetError() for\n         more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette.SetColors()",
@@ -19199,9 +19223,9 @@
               "kind": "function",
               "type": "PaletteRef",
               "parameters": [],
-              "begin": 304,
-              "decl": 329,
-              "end": 331
+              "begin": 305,
+              "decl": 330,
+              "end": 332
             },
             "SetPalette": {
               "doc": "Set the palette used by a surface.\n\nA single palette can be shared with many surfaces.\n\n@param palette the Palette to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Palette::Palette()\n@sa GetPalette()",
@@ -19214,9 +19238,9 @@
                   "type": "PaletteRef"
                 }
               ],
-              "begin": 331,
-              "decl": 345,
-              "end": 350
+              "begin": 332,
+              "decl": 346,
+              "end": 351
             },
             "GetPalette": {
               "doc": "Get the palette used by a surface.\n\n@returns a pointer to the palette used by the surface, or NULL if there is\n         no palette used.",
@@ -19225,9 +19249,9 @@
               "type": "PaletteRef",
               "parameters": [],
               "immutable": true,
-              "begin": 350,
-              "decl": 356,
-              "end": 358
+              "begin": 351,
+              "decl": 357,
+              "end": 359
             },
             "AddAlternateImage": {
               "doc": "Add an alternate version of a surface.\n\nThis function adds an alternate version of this surface, usually used for\ncontent with high DPI representations like cursors or icons. The size,\nformat, and content do not need to match the original surface, and these\nalternate versions will not be updated when the original surface changes.\n\nThis function adds a reference to the alternate version, so you should call\nSDL_DestroySurface() on the image after this call.\n\n@param image a pointer to an alternate SDL_Surface to associate with this\n             surface.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RemoveAlternateImages()\n@sa GetImages()\n@sa HasAlternateImages()",
@@ -19240,9 +19264,9 @@
                   "type": "SurfaceRef"
                 }
               ],
-              "begin": 358,
-              "decl": 380,
-              "end": 385
+              "begin": 359,
+              "decl": 381,
+              "end": 386
             },
             "HasAlternateImages": {
               "doc": "Return whether a surface has alternate versions available.\n\n@returns true if alternate versions are available or false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AddAlternateImage()\n@sa RemoveAlternateImages()\n@sa GetImages()",
@@ -19251,9 +19275,9 @@
               "type": "bool",
               "parameters": [],
               "immutable": true,
-              "begin": 385,
-              "decl": 396,
-              "end": 401
+              "begin": 386,
+              "decl": 397,
+              "end": 402
             },
             "GetImages": {
               "doc": "Get an array including all versions of a surface.\n\nThis returns all versions of a surface, with the surface being queried as\nthe first element in the returned array.\n\nFreeing the array of surfaces does not affect the surfaces in the array.\nThey are still referenced by the surface being queried and will be cleaned\nup normally.\n\n@returns a NULL terminated array of SDL_Surface pointers or NULL on\n         failure; call SDL_GetError() for more information. This should be\n         freed with SDL_free() when it is no longer needed.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AddAlternateImage()\n@sa RemoveAlternateImages()\n@sa HasAlternateImages()",
@@ -19262,9 +19286,9 @@
               "type": "OwnArray<SurfaceRef *>",
               "parameters": [],
               "immutable": true,
-              "begin": 401,
-              "decl": 423,
-              "end": 431
+              "begin": 402,
+              "decl": 424,
+              "end": 432
             },
             "RemoveAlternateImages": {
               "doc": "Remove all alternate versions of a surface.\n\nThis function removes a reference from all the alternative versions,\ndestroying them if this is the last reference to them.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AddAlternateImage()\n@sa GetImages()\n@sa HasAlternateImages()",
@@ -19272,9 +19296,9 @@
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "begin": 431,
-              "decl": 443,
-              "end": 445
+              "begin": 432,
+              "decl": 444,
+              "end": 446
             },
             "MustLock": {
               "doc": "Evaluates to true if the surface needs to be locked before access.\n\n@since This macro is available since SDL 3.2.0.",
@@ -19284,9 +19308,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 445,
-              "decl": 450,
-              "end": 452
+              "begin": 446,
+              "decl": 451,
+              "end": 453
             },
             "Lock": {
               "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to SurfaceBase.Lock() / Unlock(), you can write\nto and read from `GetPixels()`, using the pixel format stored in\n`GetFormat()`. Once you are done accessing the surface, you should use\nUnlock() to release it or let the destructor take care of this\nfor you.\n\nNot all surfaces require locking. If `SurfaceBase.MustLock(surface)`\nevaluates to false, then you can read and write to the surface at any time,\nand the pixel format of the surface will not change.\n\n@returns SurfaceLock object that converts to true on success or false on\nfailure; call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MustLock()\n@sa SurfaceLock.Unlock()",
@@ -19296,9 +19320,9 @@
               "parameters": [],
               "reference": 1,
               "proto": true,
-              "begin": 452,
-              "decl": 473,
-              "end": 475
+              "begin": 453,
+              "decl": 474,
+              "end": 476
             },
             "SetRLE": {
               "doc": "Set the RLE acceleration hint for a surface.\n\nIf RLE is enabled, color key and alpha blending blits are much faster, but\nthe surface must be locked before directly accessing the pixels.\n\n@param enabled true to enable RLE acceleration, false to disable it.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -19311,9 +19335,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 475,
-              "decl": 485,
-              "end": 487
+              "begin": 476,
+              "decl": 486,
+              "end": 488
             },
             "HasRLE": {
               "doc": "Returns whether the surface is RLE enabled.\n\n@returns true if the surface is RLE enabled, false otherwise.",
@@ -19322,9 +19346,9 @@
               "type": "bool",
               "parameters": [],
               "immutable": true,
-              "begin": 487,
-              "decl": 492,
-              "end": 494
+              "begin": 488,
+              "decl": 493,
+              "end": 495
             },
             "SetColorKey": [
               {
@@ -19338,9 +19362,9 @@
                     "type": "Color"
                   }
                 ],
-                "begin": 494,
-                "decl": 514,
-                "end": 516
+                "begin": 495,
+                "decl": 515,
+                "end": 517
               },
               {
                 "doc": "Set the color key (transparent pixel) in a surface.\n\nThe color key defines a pixel value that will be treated as transparent in\na blit. For example, one can use this to specify that cyan pixels should be\nconsidered transparent, and therefore not rendered.\n\nIt is a pixel of the format used by the surface, as generated by\nSDL_MapRGB().\n\n@param key the transparent pixel or std::nullopt to disable it.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetColorKey()\n@sa SetRLE()\n@sa HasColorKey()",
@@ -19353,9 +19377,9 @@
                     "type": "std::optional<Uint32>"
                   }
                 ],
-                "begin": 516,
-                "decl": 536,
-                "end": 541
+                "begin": 517,
+                "decl": 537,
+                "end": 542
               }
             ],
             "ClearColorKey": {
@@ -19364,9 +19388,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 541,
-              "decl": 551,
-              "end": 553
+              "begin": 542,
+              "decl": 552,
+              "end": 554
             },
             "HasColorKey": {
               "doc": "Returns whether the surface has a color key.\n\n@returns true if the surface has a color key, false otherwise.",
@@ -19375,9 +19399,9 @@
               "type": "bool",
               "parameters": [],
               "immutable": true,
-              "begin": 553,
-              "decl": 558,
-              "end": 560
+              "begin": 554,
+              "decl": 559,
+              "end": 561
             },
             "GetColorKey": [
               {
@@ -19387,9 +19411,9 @@
                 "type": "std::optional<Color>",
                 "parameters": [],
                 "immutable": true,
-                "begin": 560,
-                "decl": 576,
-                "end": 582
+                "begin": 561,
+                "decl": 577,
+                "end": 583
               },
               {
                 "doc": "Get the color key (transparent pixel) for a surface.\n\nThe color key is a pixel of the format used by the surface, as generated by\nSDL_MapRGB().\n\nIf the surface doesn't have color key enabled this function returns false.\n\n@param key a pointer filled in with the transparent pixel.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetColorKey()\n@sa HasColorKey()",
@@ -19403,9 +19427,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 582,
-                "decl": 599,
-                "end": 608
+                "begin": 583,
+                "decl": 600,
+                "end": 609
               },
               {
                 "doc": "Get the color key (transparent pixel) for a surface.\n\nThe color key is a pixel of the format used by the surface, as generated by\nSDL_MapRGB().\n\nIf the surface doesn't have color key enabled this function returns false.\n\n@param key a pointer filled in with the transparent pixel.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetColorKey()\n@sa HasColorKey()",
@@ -19419,9 +19443,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 608,
-                "decl": 625,
-                "end": 630
+                "begin": 609,
+                "decl": 626,
+                "end": 631
               }
             ],
             "SetColorMod": {
@@ -19443,9 +19467,9 @@
                   "type": "Uint8"
                 }
               ],
-              "begin": 630,
-              "decl": 645,
-              "end": 650
+              "begin": 631,
+              "decl": 646,
+              "end": 651
             },
             "GetColorMod": {
               "doc": "Get the additional color value multiplied into blit operations.\n\n@param r a pointer filled in with the current red color value.\n@param g a pointer filled in with the current green color value.\n@param b a pointer filled in with the current blue color value.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -19467,9 +19491,9 @@
                 }
               ],
               "immutable": true,
-              "begin": 650,
-              "decl": 659,
-              "end": 664
+              "begin": 651,
+              "decl": 660,
+              "end": 665
             },
             "SetAlphaMod": {
               "doc": "Set an additional alpha value used in blit operations.\n\nWhen this surface is blitted, during the blit operation the source alpha\nvalue is modulated by this alpha value according to the following formula:\n\n`srcA = srcA * (alpha / 255)`\n\n@param alpha the alpha value multiplied into blit operations.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -19482,9 +19506,9 @@
                   "type": "Uint8"
                 }
               ],
-              "begin": 664,
-              "decl": 676,
-              "end": 681
+              "begin": 665,
+              "decl": 677,
+              "end": 682
             },
             "GetAlphaMod": {
               "doc": "Get the additional alpha value used in blit operations.\n\n@returns alpha on success or std::nullopt on failure; call GetError()\nfor more information.",
@@ -19493,9 +19517,9 @@
               "type": "std::optional<Uint8>",
               "parameters": [],
               "immutable": true,
-              "begin": 681,
-              "decl": 687,
-              "end": 693
+              "begin": 682,
+              "decl": 688,
+              "end": 694
             },
             "SetColorAndAlphaMod": {
               "doc": "Set an additional color and alpha value multiplied into blit\noperations.\n\nWhen this surface is blitted, during the blit operation each source color\nchannel is modulated by the appropriate color value according to the\nfollowing formula:\n\n`srcC = srcC * (color / 255)`\n`srcA = srcA * (alpha / 255)`\n\n@param color the color to be multiplied in blit operations\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -19508,9 +19532,9 @@
                   "type": "Color"
                 }
               ],
-              "begin": 693,
-              "decl": 708,
-              "end": 713
+              "begin": 694,
+              "decl": 709,
+              "end": 714
             },
             "GetColorAndAlphaMod": {
               "doc": "Get the additional color and alpha value multiplied into blit\noperations.\n\n@returns a Color containing RGBA value on success or std::nullopt on\nfailure; call GetError() for more information.",
@@ -19519,9 +19543,9 @@
               "type": "std::optional<Color>",
               "parameters": [],
               "immutable": true,
-              "begin": 713,
-              "decl": 720,
-              "end": 729
+              "begin": 714,
+              "decl": 721,
+              "end": 730
             },
             "SetBlendMode": {
               "doc": "Set the blend mode used for blit operations.\n\nTo copy a surface to another surface (or texture) without blending with the\nexisting data, the blendmode of the SOURCE surface should be set to\n`SDL_BLENDMODE_NONE`.\n\n@param blendMode the SDL_BlendMode to use for blit blending.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetBlendMode()",
@@ -19534,9 +19558,9 @@
                   "type": "BlendMode"
                 }
               ],
-              "begin": 729,
-              "decl": 744,
-              "end": 749
+              "begin": 730,
+              "decl": 745,
+              "end": 750
             },
             "GetBlendMode": {
               "doc": "Get the blend mode used for blit operations.\n\n@return the blendMode on success or std::nullopt on failure; call\nGetError() for more information.",
@@ -19545,9 +19569,9 @@
               "type": "std::optional<BlendMode>",
               "parameters": [],
               "immutable": true,
-              "begin": 749,
-              "decl": 755,
-              "end": 763
+              "begin": 750,
+              "decl": 756,
+              "end": 764
             },
             "SetClipRect": {
               "doc": "Set the clipping rectangle for a surface.\n\nWhen `surface` is the destination of a blit, only the area within the clip\nrectangle is drawn into.\n\nNote that blits are automatically clipped to the edges of the source and\ndestination surfaces.\n\n@param rect the SDL_Rect structure representing the clipping rectangle or\n       nullopt to disable it\n@returns true if the rectangle intersects the surface, otherwise false and\n         blits will be completely clipped.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ResetClipRect()",
@@ -19560,9 +19584,9 @@
                   "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
-              "begin": 763,
-              "decl": 781,
-              "end": 786
+              "begin": 764,
+              "decl": 782,
+              "end": 787
             },
             "ResetClipRect": {
               "doc": "Disable the clipping rectangle for a surface.\n\n@returns true if clips was reset successfully\n\n@sa SetClipRect()",
@@ -19570,9 +19594,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 786,
-              "decl": 793,
-              "end": 795
+              "begin": 787,
+              "decl": 794,
+              "end": 796
             },
             "GetClipRect": {
               "doc": "Get the clipping rectangle for a surface.\n\nWhen `surface` is the destination of a blit, only the area within the clip\nrectangle is drawn into.\n\n@returns the Rect structure filled in with the clipping rectangle for the\nsurface on success, or std::nullopt on failure; call GetError() for\nmore information.",
@@ -19581,9 +19605,9 @@
               "type": "std::optional<Rect>",
               "parameters": [],
               "immutable": true,
-              "begin": 795,
-              "decl": 805,
-              "end": 811
+              "begin": 796,
+              "decl": 806,
+              "end": 812
             },
             "Flip": {
               "doc": "Flip a surface vertically or horizontally.\n\n@param flip the direction to flip.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
@@ -19596,9 +19620,9 @@
                   "type": "FlipMode"
                 }
               ],
-              "begin": 811,
-              "decl": 820,
-              "end": 822
+              "begin": 812,
+              "decl": 821,
+              "end": 823
             },
             "Duplicate": {
               "doc": "Creates a new surface identical to the existing surface.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\nThe returned surface  automatically calls SDL_free after result is out of\nscope.\n\n@returns a copy of the surface or NULL on failure; call GetError() for\n         more information.",
@@ -19607,9 +19631,9 @@
               "type": "Surface",
               "parameters": [],
               "immutable": true,
-              "begin": 822,
-              "decl": 834,
-              "end": 836
+              "begin": 823,
+              "decl": 835,
+              "end": 837
             },
             "Scale": {
               "doc": "Creates a new surface identical to the existing surface, scaled to\nthe desired size.\n\nThe returned surface  automatically calls SDL_free after result is out of\nscope.\n\n@param width the width of the new surface.\n@param height the height of the new surface.\n@param scaleMode the ScaleMode to be used.\n@returns a copy of the surface or NULL on failure; call GetError() for\n         more information.",
@@ -19631,9 +19655,9 @@
                 }
               ],
               "immutable": true,
-              "begin": 836,
-              "decl": 849,
-              "end": 854
+              "begin": 837,
+              "decl": 850,
+              "end": 855
             },
             "Convert": [
               {
@@ -19648,9 +19672,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 854,
-                "decl": 874,
-                "end": 879
+                "begin": 855,
+                "decl": 875,
+                "end": 880
               },
               {
                 "doc": "Copy an existing surface to a new surface of the specified format and\ncolorspace.\n\nThis function converts an existing surface to a new format and colorspace\nand returns the new surface. This will perform any pixel format and\ncolorspace conversion needed.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\n@param format the new pixel format.\n@param palette an optional palette to use for indexed formats, may be NULL.\n@param colorspace the new colorspace.\n@param props an SDL_PropertiesID with additional color properties, or 0.\n@returns the new SDL_Surface structure that is created or NULL on failure;\n         call SDL_GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
@@ -19676,9 +19700,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 879,
-                "decl": 899,
-                "end": 908
+                "begin": 880,
+                "decl": 900,
+                "end": 909
               }
             ],
             "PremultiplyAlpha": {
@@ -19692,9 +19716,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 908,
-              "decl": 920,
-              "end": 925
+              "begin": 909,
+              "decl": 921,
+              "end": 926
             },
             "Clear": {
               "doc": "Clear a surface with a specific color, with floating point precision.\n\nThis function handles all surface formats, and ignores any clip rectangle.\n\nIf the surface is YUV, the color is assumed to be in the sRGB colorspace,\notherwise the color is assumed to be in the colorspace of the surface.\n\n@param color the color of the pixel, normally in the range 0-1.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
@@ -19707,9 +19731,9 @@
                   "type": "SDL_FColor"
                 }
               ],
-              "begin": 927,
-              "decl": 941,
-              "end": 946
+              "begin": 928,
+              "decl": 942,
+              "end": 947
             },
             "Fill": [
               {
@@ -19723,9 +19747,9 @@
                     "type": "SDL_Color"
                   }
                 ],
-                "begin": 946,
-                "decl": 962,
-                "end": 964
+                "begin": 947,
+                "decl": 963,
+                "end": 965
               },
               {
                 "doc": "Perform a fast fill of a rectangle with a specific color.\n\n`color` should be a pixel of the format used by the surface, and can be\ngenerated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an\nalpha component then the destination is simply filled with that alpha\ninformation, no blending takes place.\n\nIf there is a clip rectangle set on the destination (set via\nSDL_SetSurfaceClipRect()), then this function will fill based on the\nthe clip rectangle.\n\n@param color the color to fill with.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -19738,9 +19762,9 @@
                     "type": "Uint32"
                   }
                 ],
-                "begin": 964,
-                "decl": 980,
-                "end": 985
+                "begin": 965,
+                "decl": 981,
+                "end": 986
               }
             ],
             "FillRect": [
@@ -19759,9 +19783,9 @@
                     "type": "SDL_Color"
                   }
                 ],
-                "begin": 985,
-                "decl": 997,
-                "end": 1002
+                "begin": 986,
+                "decl": 998,
+                "end": 1003
               },
               {
                 "doc": "Perform a fast fill of a rectangle with a specific color.\n\n`color` should be a pixel of the format used by the surface, and can be\ngenerated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an\nalpha component then the destination is simply filled with that alpha\ninformation, no blending takes place.\n\nIf there is a clip rectangle set on the destination (set via\nSDL_SetSurfaceClipRect()), then this function will fill based on the\nintersection of the clip rectangle and `rect`.\n\n@param rect the SDL_Rect structure representing the rectangle to fill.\n@param color the color to fill with.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -19778,9 +19802,9 @@
                     "type": "Uint32"
                   }
                 ],
-                "begin": 1002,
-                "decl": 1019,
-                "end": 1024
+                "begin": 1003,
+                "decl": 1020,
+                "end": 1025
               }
             ],
             "FillRects": [
@@ -19799,9 +19823,9 @@
                     "type": "SDL_Color"
                   }
                 ],
-                "begin": 1024,
-                "decl": 1040,
-                "end": 1045
+                "begin": 1025,
+                "decl": 1041,
+                "end": 1046
               },
               {
                 "doc": "Perform a fast fill of a set of rectangles with a specific color.\n\n`color` should be a pixel of the format used by the surface, and can be\ngenerated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an\nalpha component then the destination is simply filled with that alpha\ninformation, no blending takes place.\n\nIf there is a clip rectangle set on the destination (set via\nSDL_SetSurfaceClipRect()), then this function will fill based on the\nintersection of the clip rectangle and `rect`.\n\n@param rects an array of SDL_Rects representing the rectangles to fill.\n@param color the color to fill with.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FillRect()",
@@ -19818,9 +19842,9 @@
                     "type": "Uint32"
                   }
                 ],
-                "begin": 1045,
-                "decl": 1066,
-                "end": 1072
+                "begin": 1046,
+                "decl": 1067,
+                "end": 1073
               }
             ],
             "Blit": [
@@ -19843,9 +19867,9 @@
                     "type": "const SDL_Point &"
                   }
                 ],
-                "begin": 1072,
-                "decl": 1146,
-                "end": 1153
+                "begin": 1073,
+                "decl": 1147,
+                "end": 1154
               },
               {
                 "doc": "Performs a fast blit from the source surface to the destination surface\nwith clipping.\n\nIf either `srcrect` or `dstrect` are NULL, the entire surface (`src` or\n`dst`) is copied while ensuring clipping to `dst->clip_rect`.\n\nThe final blit rectangles are saved in `srcrect` and `dstrect` after all\nclipping is performed.\n\nThe blit function should not be called on a locked surface.\n\nThe blit semantics for surfaces with and without blending and colorkey are\ndefined as follows:\n\n```\n   RGBA->RGB:\n     Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGBA:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB, set destination alpha to source per-surface alpha value.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n\n  RGBA->RGBA:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy all of RGBA to the destination.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGB:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n```\n\n@param src the SDL_Surface structure to be copied from.\n@param srcrect the SDL_Rect structure representing the rectangle to be\n               copied, or NULL to copy the entire surface.\n@param dstrect the SDL_Point structure representing the x and y position in\n               the destination surface, or NULL for (0,0). The width and\n               height are ignored, and are copied from `srcrect`. If you\n               want a specific width and height, you should use\n               SDL_BlitSurfaceScaled().\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa BlitScaled()",
@@ -19866,9 +19890,9 @@
                     "type": "OptionalRef<const SDL_Rect>"
                   }
                 ],
-                "begin": 1153,
-                "decl": 1227,
-                "end": 1234
+                "begin": 1154,
+                "decl": 1228,
+                "end": 1235
               }
             ],
             "BlitUnchecked": {
@@ -19890,9 +19914,9 @@
                   "type": "const SDL_Rect &"
                 }
               ],
-              "begin": 1234,
-              "decl": 1256,
-              "end": 1263
+              "begin": 1235,
+              "decl": 1257,
+              "end": 1264
             },
             "BlitScaled": {
               "doc": "Perform a scaled blit to a destination surface, which may be of a different\nformat.\n\n@param src the SDL_Surface structure to be copied from.\n@param srcrect the SDL_Rect structure representing the rectangle to be\n               copied, or NULL to copy the entire surface.\n@param dstrect the SDL_Rect structure representing the target rectangle in\n               the destination surface, or NULL to fill the entire\n               destination surface.\n@param scaleMode the SDL_ScaleMode to be used.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Blit()",
@@ -19917,9 +19941,9 @@
                   "type": "ScaleMode"
                 }
               ],
-              "begin": 1263,
-              "decl": 1285,
-              "end": 1294
+              "begin": 1264,
+              "decl": 1286,
+              "end": 1295
             },
             "BlitUncheckedScaled": {
               "doc": "Perform low-level surface scaled blitting only.\n\nThis is a semi-private function and it performs low-level surface blitting,\nassuming the input rectangles have already been clipped.\n\n@param src the SDL_Surface structure to be copied from.\n@param srcrect the SDL_Rect structure representing the rectangle to be\n               copied, may not be NULL.\n@param dstrect the SDL_Rect structure representing the target rectangle in\n               the destination surface, may not be NULL.\n@param scaleMode the SDL_ScaleMode to be used.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa BlitScaled()",
@@ -19944,14 +19968,20 @@
                   "type": "ScaleMode"
                 }
               ],
-              "begin": 1294,
-              "decl": 1317,
-              "end": 1326
+              "begin": 1295,
+              "decl": 1318,
+              "end": 1327
             },
             "Stretch": {
               "doc": "Perform a stretched pixel copy from one surface to another.\n\n@param src the Surface structure to be copied from.\n@param srcrect the Rect structure representing the rectangle to be\n               copied.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface.\n@param scaleMode the ScaleMode to be used.\n@returns true on success or false on failure; GetError() for more\n         information.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.4.\n\n@sa BlitScaled()",
               "name": "Stretch",
               "kind": "function",
+              "since": {
+                "tag": "SDL",
+                "major": 3,
+                "minor": 2,
+                "patch": 4
+              },
               "type": "bool",
               "parameters": [
                 {
@@ -19971,9 +20001,9 @@
                   "type": "ScaleMode"
                 }
               ],
-              "begin": 1327,
-              "decl": 1346,
-              "end": 1354
+              "begin": 1329,
+              "decl": 1348,
+              "end": 1357
             },
             "BlitTiled": {
               "doc": "Perform a tiled blit to a destination surface, which may be of a different\nformat.\n\nThe pixels in `srcrect` will be repeated as many times as needed to\ncompletely fill `dstrect`.\n\n@param src the SDL_Surface structure to be copied from.\n@param srcrect the SDL_Rect structure representing the rectangle to be\n               copied, or NULL to copy the entire surface.\n@param dstrect the SDL_Rect structure representing the target rectangle in\n               the destination surface, or NULL to fill the entire surface.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Blit()",
@@ -19994,9 +20024,9 @@
                   "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
-              "begin": 1356,
-              "decl": 1379,
-              "end": 1386
+              "begin": 1359,
+              "decl": 1382,
+              "end": 1389
             },
             "BlitTiledWithScale": {
               "doc": "Perform a scaled and tiled blit to a destination surface, which may be of a\ndifferent format.\n\nThe pixels in `srcrect` will be scaled and repeated as many times as needed\nto completely fill `dstrect`.\n\n@param src the SDL_Surface structure to be copied from.\n@param srcrect the SDL_Rect structure representing the rectangle to be\n               copied, or NULL to copy the entire surface.\n@param scale the scale used to transform srcrect into the destination\n             rectangle, e.g. a 32x32 texture with a scale of 2 would fill\n             64x64 tiles.\n@param scaleMode scale algorithm to be used.\n@param dstrect the SDL_Rect structure representing the target rectangle in\n               the destination surface, or NULL to fill the entire surface.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Blit()",
@@ -20025,9 +20055,9 @@
                   "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
-              "begin": 1386,
-              "decl": 1413,
-              "end": 1423
+              "begin": 1389,
+              "decl": 1416,
+              "end": 1426
             },
             "Blit9Grid": {
               "doc": "Perform a scaled blit using the 9-grid algorithm to a destination surface,\nwhich may be of a different format.\n\nThe pixels in the source surface are split into a 3x3 grid, using the\ndifferent corner sizes for each corner, and the sides and center making up\nthe remaining pixels. The corners are then scaled using `scale` and fit\ninto the corners of the destination rectangle. The sides and center are\nthen stretched into place to cover the remaining destination rectangle.\n\n@param src the SDL_Surface structure to be copied from.\n@param left_width the width, in pixels, of the left corners in `srcrect`.\n@param right_width the width, in pixels, of the right corners in `srcrect`.\n@param top_height the height, in pixels, of the top corners in `srcrect`.\n@param bottom_height the height, in pixels, of the bottom corners in\n                     `srcrect`.\n@param dstrect the SDL_Rect structure representing the target rectangle in\n               the destination surface, or NULL to fill the entire surface.\n@param srcrect the SDL_Rect structure representing the rectangle to be used\n               for the 9-grid, or NULL to use the entire surface.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Blit()",
@@ -20064,9 +20094,9 @@
                   "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
-              "begin": 1423,
-              "decl": 1454,
-              "end": 1473
+              "begin": 1426,
+              "decl": 1457,
+              "end": 1476
             },
             "Blit9GridWithScale": {
               "doc": "Perform a scaled blit using the 9-grid algorithm to a destination surface,\nwhich may be of a different format.\n\nThe pixels in the source surface are split into a 3x3 grid, using the\ndifferent corner sizes for each corner, and the sides and center making up\nthe remaining pixels. The corners are then scaled using `scale` and fit\ninto the corners of the destination rectangle. The sides and center are\nthen stretched into place to cover the remaining destination rectangle.\n\n@param src the SDL_Surface structure to be copied from.\n@param left_width the width, in pixels, of the left corners in `srcrect`.\n@param right_width the width, in pixels, of the right corners in `srcrect`.\n@param top_height the height, in pixels, of the top corners in `srcrect`.\n@param bottom_height the height, in pixels, of the bottom corners in\n                     `srcrect`.\n@param scale the scale used to transform the corner of `srcrect` into the\n             corner of `dstrect`, or 0.0f for an unscaled blit.\n@param scaleMode scale algorithm to be used.\n@param dstrect the SDL_Rect structure representing the target rectangle in\n               the destination surface, or NULL to fill the entire surface.\n@param srcrect the SDL_Rect structure representing the rectangle to be used\n               for the 9-grid, or NULL to use the entire surface.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Blit()",
@@ -20111,9 +20141,9 @@
                   "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
-              "begin": 1473,
-              "decl": 1507,
-              "end": 1529
+              "begin": 1476,
+              "decl": 1510,
+              "end": 1532
             },
             "MapColor": [
               {
@@ -20128,9 +20158,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1529,
-                "decl": 1550,
-                "end": 1555
+                "begin": 1532,
+                "decl": 1553,
+                "end": 1558
               },
               {
                 "doc": "Map an RGB triple to an opaque pixel value for a surface.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the surface pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.",
@@ -20152,9 +20182,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1555,
-                "decl": 1578,
-                "end": 1583
+                "begin": 1558,
+                "decl": 1581,
+                "end": 1586
               },
               {
                 "doc": "Map an RGBA quadruple to a pixel value for a surface.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the surface pixel format has no alpha component the alpha value will be\nignored (as it will be in formats with a palette).\n\nIf the surface has a palette, the index of the closest matching color in\nthe palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@return a pixel value.",
@@ -20180,9 +20210,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1583,
-                "decl": 1607,
-                "end": 1612
+                "begin": 1586,
+                "decl": 1610,
+                "end": 1615
               }
             ],
             "ReadPixel": [
@@ -20202,9 +20232,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1612,
-                "decl": 1624,
-                "end": 1630
+                "begin": 1615,
+                "decl": 1627,
+                "end": 1633
               },
               {
                 "doc": "This function prioritizes correctness over speed: it is suitable for\nunit tests, but is not intended for use in a game engine.\n\nLike SDL_GetRGBA, this uses the entire 0..255 range when converting color\ncomponents from pixel formats with less than 8 bits per RGB component.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param c a color pointer to be filled with the color information. Must not\n         be NULL.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -20226,9 +20256,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1630,
-                "decl": 1644,
-                "end": 1649
+                "begin": 1633,
+                "decl": 1647,
+                "end": 1652
               },
               {
                 "doc": "Retrieves a single pixel from a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param c a color pointer to be filled with the color information. Must not\n         be NULL.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -20250,9 +20280,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1649,
-                "decl": 1662,
-                "end": 1667
+                "begin": 1652,
+                "decl": 1665,
+                "end": 1670
               },
               {
                 "doc": "Retrieves a single pixel from a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\nLike SDL_GetRGBA, this uses the entire 0..255 range when converting color\ncomponents from pixel formats with less than 8 bits per RGB component.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r a pointer filled in with the red channel, 0-255, or NULL to ignore\n         this channel.\n@param g a pointer filled in with the green channel, 0-255, or NULL to\n         ignore this channel.\n@param b a pointer filled in with the blue channel, 0-255, or NULL to\n         ignore this channel.\n@param a a pointer filled in with the alpha channel, 0-255, or NULL to\n         ignore this channel.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
@@ -20286,9 +20316,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1667,
-                "decl": 1691,
-                "end": 1696
+                "begin": 1670,
+                "decl": 1694,
+                "end": 1699
               },
               {
                 "doc": "Retrieves a single pixel from a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r a pointer filled in with the red channel, normally in the range\n         0-1, or NULL to ignore this channel.\n@param g a pointer filled in with the green channel, normally in the range\n         0-1, or NULL to ignore this channel.\n@param b a pointer filled in with the blue channel, normally in the range\n         0-1, or NULL to ignore this channel.\n@param a a pointer filled in with the alpha channel, normally in the range\n         0-1, or NULL to ignore this channel.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -20322,9 +20352,9 @@
                   }
                 ],
                 "immutable": true,
-                "begin": 1696,
-                "decl": 1715,
-                "end": 1720
+                "begin": 1699,
+                "decl": 1718,
+                "end": 1723
               }
             ],
             "WritePixel": [
@@ -20347,9 +20377,9 @@
                     "type": "SDL_Color"
                   }
                 ],
-                "begin": 1720,
-                "decl": 1733,
-                "end": 1738
+                "begin": 1723,
+                "decl": 1736,
+                "end": 1741
               },
               {
                 "doc": "Writes a single pixel to a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param c the color values, normally in the range 0-1.\n@returns true on success or false on failure; call GetError() for\nmore information.",
@@ -20370,9 +20400,9 @@
                     "type": "SDL_FColor"
                   }
                 ],
-                "begin": 1738,
-                "decl": 1750,
-                "end": 1755
+                "begin": 1741,
+                "decl": 1753,
+                "end": 1758
               },
               {
                 "doc": "This function prioritizes correctness over speed: it is suitable for\nunit tests, but is not intended for use in a game engine.\n\nLike MapRGBA(), this uses the entire 0..255 range when converting color\ncomponents from pixel formats with less than 8 bits per RGB component.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r the red channel value, 0-255.\n@param g the green channel value, 0-255.\n@param b the blue channel value, 0-255.\n@param a the alpha channel value, 0-255.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -20405,9 +20435,9 @@
                     "type": "Uint8"
                   }
                 ],
-                "begin": 1755,
-                "decl": 1771,
-                "end": 1776
+                "begin": 1758,
+                "decl": 1774,
+                "end": 1779
               },
               {
                 "doc": "Writes a single pixel to a surface.\n\nThis function prioritizes correctness over speed: it is suitable for unit\ntests, but is not intended for use in a game engine.\n\n@param x the horizontal coordinate, 0 <= x < width.\n@param y the vertical coordinate, 0 <= y < height.\n@param r the red channel value, normally in the range 0-1.\n@param g the green channel value, normally in the range 0-1.\n@param b the blue channel value, normally in the range 0-1.\n@param a the alpha channel value, normally in the range 0-1.\n@returns true on success or false on failure; call GetError() for more\n         information.",
@@ -20440,9 +20470,9 @@
                     "type": "float"
                   }
                 ],
-                "begin": 1776,
-                "decl": 1791,
-                "end": 1796
+                "begin": 1779,
+                "decl": 1794,
+                "end": 1799
               }
             ],
             "GetWidth": {
@@ -20452,9 +20482,9 @@
               "type": "int",
               "parameters": [],
               "immutable": true,
-              "begin": 1796,
-              "decl": 1799,
-              "end": 1801
+              "begin": 1799,
+              "decl": 1802,
+              "end": 1804
             },
             "GetHeight": {
               "doc": "Get the height in pixels.",
@@ -20463,9 +20493,9 @@
               "type": "int",
               "parameters": [],
               "immutable": true,
-              "begin": 1801,
-              "decl": 1804,
-              "end": 1806
+              "begin": 1804,
+              "decl": 1807,
+              "end": 1809
             },
             "GetSize": {
               "doc": "Get the size in pixels.",
@@ -20474,9 +20504,9 @@
               "type": "Point",
               "parameters": [],
               "immutable": true,
-              "begin": 1806,
-              "decl": 1809,
-              "end": 1811
+              "begin": 1809,
+              "decl": 1812,
+              "end": 1814
             },
             "GetFormat": {
               "doc": "Get the pixel format.",
@@ -20485,9 +20515,9 @@
               "type": "PixelFormat",
               "parameters": [],
               "immutable": true,
-              "begin": 1811,
-              "decl": 1814,
-              "end": 1816
+              "begin": 1814,
+              "decl": 1817,
+              "end": 1819
             },
             "Destroy": {
               "doc": "Free a surface.\n\nThis makes this object empty\n\n@since This function is available since SDL 3.2.0.",
@@ -20495,9 +20525,9 @@
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "begin": 1816,
-              "decl": 1823,
-              "end": 1824
+              "begin": 1819,
+              "decl": 1826,
+              "end": 1827
             }
           },
           "template": [
@@ -20506,9 +20536,9 @@
               "type": "ObjectBox<SDL_Surface *>"
             }
           ],
-          "begin": 140,
-          "decl": 170,
-          "end": 1826
+          "begin": 141,
+          "decl": 171,
+          "end": 1829
         },
         "ObjectRef<SDL_Surface>::doFree": {
           "doc": "Callback for surface resource cleanup\n\n@private",
@@ -20522,9 +20552,9 @@
             }
           ],
           "template": [],
-          "begin": 1826,
-          "decl": 1831,
-          "end": 1837
+          "begin": 1829,
+          "decl": 1834,
+          "end": 1840
         },
         "SurfaceLock": {
           "doc": "Locks a Surface for access to its pixels\n\nOnly really necessary if Surface.MustLock() returns t",
@@ -20536,9 +20566,9 @@
               "name": "surface",
               "kind": "var",
               "type": "SurfaceRef",
-              "begin": 1844,
-              "decl": 1844,
-              "end": 1846
+              "begin": 1847,
+              "decl": 1847,
+              "end": 1849
             },
             "SurfaceLock": [
               {
@@ -20553,9 +20583,9 @@
                   }
                 ],
                 "explicit": true,
-                "begin": 1846,
-                "decl": 1849,
-                "end": 1855
+                "begin": 1849,
+                "decl": 1852,
+                "end": 1858
               },
               {
                 "doc": "",
@@ -20563,9 +20593,9 @@
                 "kind": "function",
                 "type": "",
                 "parameters": [],
-                "begin": 1857,
-                "decl": 1857,
-                "end": 1862
+                "begin": 1860,
+                "decl": 1860,
+                "end": 1865
               },
               {
                 "doc": "",
@@ -20579,9 +20609,9 @@
                   }
                 ],
                 "proto": true,
-                "begin": 1863,
-                "decl": 1863,
-                "end": 1865
+                "begin": 1866,
+                "decl": 1866,
+                "end": 1868
               },
               {
                 "doc": "",
@@ -20594,9 +20624,9 @@
                     "type": "SurfaceLock &&"
                   }
                 ],
-                "begin": 1866,
-                "decl": 1866,
-                "end": 1871
+                "begin": 1869,
+                "decl": 1869,
+                "end": 1874
               }
             ],
             "~SurfaceLock": {
@@ -20605,9 +20635,9 @@
               "kind": "function",
               "type": "",
               "parameters": [],
-              "begin": 1871,
-              "decl": 1875,
-              "end": 1877
+              "begin": 1874,
+              "decl": 1878,
+              "end": 1880
             },
             "operator=": {
               "doc": "",
@@ -20620,9 +20650,9 @@
                   "type": "SurfaceLock"
                 }
               ],
-              "begin": 1878,
-              "decl": 1878,
-              "end": 1884
+              "begin": 1881,
+              "decl": 1881,
+              "end": 1887
             },
             "operator bool": {
               "doc": "Returns true if lock is active",
@@ -20632,9 +20662,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 1884,
-              "decl": 1887,
-              "end": 1889
+              "begin": 1887,
+              "decl": 1890,
+              "end": 1892
             },
             "Unlock": {
               "doc": "Release the locked surface after directly accessing the pixels.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Lock()",
@@ -20642,9 +20672,9 @@
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "begin": 1889,
-              "decl": 1896,
-              "end": 1898
+              "begin": 1892,
+              "decl": 1899,
+              "end": 1901
             },
             "GetPixels": {
               "doc": "Get the pixels",
@@ -20653,9 +20683,9 @@
               "type": "void *",
               "parameters": [],
               "immutable": true,
-              "begin": 1898,
-              "decl": 1901,
-              "end": 1903
+              "begin": 1901,
+              "decl": 1904,
+              "end": 1906
             },
             "GetPitch": {
               "doc": "Get pitch (the number of bytes between the start of one row the next)",
@@ -20664,9 +20694,9 @@
               "type": "int",
               "parameters": [],
               "immutable": true,
-              "begin": 1903,
-              "decl": 1906,
-              "end": 1908
+              "begin": 1906,
+              "decl": 1909,
+              "end": 1911
             },
             "GetFormat": {
               "doc": "Get the pixel format",
@@ -20675,9 +20705,9 @@
               "type": "PixelFormat",
               "parameters": [],
               "immutable": true,
-              "begin": 1908,
-              "decl": 1911,
-              "end": 1913
+              "begin": 1911,
+              "decl": 1914,
+              "end": 1916
             },
             "SurfaceBase": {
               "doc": "",
@@ -20690,14 +20720,14 @@
                   "type": "ObjectBox<SDL_Surface *>"
                 }
               ],
-              "begin": 1913,
-              "decl": 1913,
-              "end": 1915
+              "begin": 1916,
+              "decl": 1916,
+              "end": 1918
             }
           },
-          "begin": 1837,
-          "decl": 1842,
-          "end": 1917
+          "begin": 1840,
+          "decl": 1845,
+          "end": 1920
         },
         "prop::Surface": {
           "doc": "",
@@ -20710,9 +20740,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 1919,
-              "decl": 1919,
-              "end": 1921
+              "begin": 1922,
+              "decl": 1922,
+              "end": 1924
             },
             "HDR_HEADROOM_FLOAT": {
               "doc": "",
@@ -20720,9 +20750,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 1921,
-              "decl": 1921,
-              "end": 1923
+              "begin": 1924,
+              "decl": 1924,
+              "end": 1926
             },
             "TONEMAP_OPERATOR_STRING": {
               "doc": "",
@@ -20730,9 +20760,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 1923,
-              "decl": 1923,
-              "end": 1926
+              "begin": 1926,
+              "decl": 1926,
+              "end": 1929
             },
             "HOTSPOT_X_NUMBER": {
               "doc": "",
@@ -20740,9 +20770,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 1926,
-              "decl": 1926,
-              "end": 1928
+              "begin": 1929,
+              "decl": 1929,
+              "end": 1931
             },
             "HOTSPOT_Y_NUMBER": {
               "doc": "",
@@ -20750,14 +20780,14 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 1928,
-              "decl": 1928,
-              "end": 1930
+              "begin": 1931,
+              "decl": 1931,
+              "end": 1933
             }
           },
-          "begin": 1917,
-          "decl": 1917,
-          "end": 1932
+          "begin": 1920,
+          "decl": 1920,
+          "end": 1935
         },
         "LoadBMP": [
           {
@@ -20771,9 +20801,9 @@
                 "type": "ObjectBox<SDL_IOStream> auto &&"
               }
             ],
-            "begin": 1932,
-            "decl": 1945,
-            "end": 1950
+            "begin": 1935,
+            "decl": 1948,
+            "end": 1953
           },
           {
             "doc": "Load a BMP image from a file.\n\n@param file the BMP file to load.\n@returns a Surface with the loaded content or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveBMP()",
@@ -20786,9 +20816,9 @@
                 "type": "StringParam"
               }
             ],
-            "begin": 1950,
-            "decl": 1963,
-            "end": 1965
+            "begin": 1953,
+            "decl": 1966,
+            "end": 1968
           }
         ],
         "SaveBMP": [
@@ -20807,9 +20837,9 @@
                 "type": "ObjectBox<SDL_IOStream> auto &&"
               }
             ],
-            "begin": 1965,
-            "decl": 1985,
-            "end": 1990
+            "begin": 1968,
+            "decl": 1988,
+            "end": 1993
           },
           {
             "doc": "Save a surface to a file.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param surface the SDL_Surface structure containing the image to be saved.\n@param file a file to save to.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadBMP()",
@@ -20826,9 +20856,9 @@
                 "type": "StringParam"
               }
             ],
-            "begin": 1990,
-            "decl": 2008,
-            "end": 2013
+            "begin": 1993,
+            "decl": 2011,
+            "end": 2016
           }
         ],
         "ConvertPixels": {
@@ -20870,9 +20900,9 @@
               "type": "int"
             }
           ],
-          "begin": 2013,
-          "decl": 2031,
-          "end": 2044
+          "begin": 2016,
+          "decl": 2034,
+          "end": 2047
         },
         "ConvertPixelsAndColorspace": {
           "doc": "Copy a block of pixels of one format and colorspace to another format and\ncolorspace.\n\n@param width the width of the block to copy, in pixels.\n@param height the height of the block to copy, in pixels.\n@param src_format an SDL_PixelFormat value of the `src` pixels format.\n@param src_colorspace an SDL_Colorspace value describing the colorspace of\n                      the `src` pixels.\n@param src_properties an SDL_PropertiesID with additional source color\n                      properties, or 0.\n@param src a pointer to the source pixels.\n@param src_pitch the pitch of the source pixels, in bytes.\n@param dst_format an SDL_PixelFormat value of the `dst` pixels format.\n@param dst_colorspace an SDL_Colorspace value describing the colorspace of\n                      the `dst` pixels.\n@param dst_properties an SDL_PropertiesID with additional destination color\n                      properties, or 0.\n@param dst a pointer to be filled in with new pixel data.\n@param dst_pitch the pitch of the destination pixels, in bytes.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConvertPixels()",
@@ -20929,9 +20959,9 @@
               "type": "int"
             }
           ],
-          "begin": 2044,
-          "decl": 2071,
-          "end": 2098
+          "begin": 2047,
+          "decl": 2074,
+          "end": 2101
         },
         "PremultiplyAlpha": {
           "doc": "Premultiply the alpha on a block of pixels.\n\nThis is safe to use with src == dst, but not for other overlapping areas.\n\n@param width the width of the block to convert, in pixels.\n@param height the height of the block to convert, in pixels.\n@param src_format an SDL_PixelFormat value of the `src` pixels format.\n@param src a pointer to the source pixels.\n@param src_pitch the pitch of the source pixels, in bytes.\n@param dst_format an SDL_PixelFormat value of the `dst` pixels format.\n@param dst a pointer to be filled in with premultiplied pixel data.\n@param dst_pitch the pitch of the destination pixels, in bytes.\n@param linear true to convert from sRGB to linear space for the alpha\n              multiplication, false to do multiplication in sRGB space.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
@@ -20976,15 +21006,15 @@
               "type": "bool"
             }
           ],
-          "begin": 2098,
-          "decl": 2118,
-          "end": 2139
+          "begin": 2101,
+          "decl": 2121,
+          "end": 2142
         }
       },
       "docBegin": 20,
       "docEnd": 39,
       "entriesBegin": 39,
-      "entriesEnd": 2139,
+      "entriesEnd": 2142,
       "namespace": "SDL"
     },
     "SDL3pp_events.h": {
@@ -39510,6 +39540,12 @@
               "doc": "Query a font's weight, in terms of the lightness/heaviness of the strokes.\n\n@returns the font's current weight.\n\n@threadsafety This function should be called on the thread that created the\n              font.\n\n@since This function is available since SDL_ttf 3.2.2.",
               "name": "GetWeight",
               "kind": "function",
+              "since": {
+                "tag": "SDL_TTF",
+                "major": 3,
+                "minor": 2,
+                "patch": 2
+              },
               "type": "int",
               "parameters": [],
               "immutable": true,

@@ -243,6 +243,7 @@ class ContentParser {
       kind: /** @type {ApiEntryKind}*/(token.kind),
       value: token.value,
     };
+    if (token.since) entry.since = token.since;
     switch (token.kind) {
       case "alias":
         if (token.type) entry.type = normalizeType(token.type);

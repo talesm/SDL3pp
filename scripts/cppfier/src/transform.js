@@ -2,7 +2,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag } from "./types"
  */
 
 /**
@@ -84,6 +84,8 @@ class ApiContext {
     /** @type {Set<string>} */
     this.blacklist = new Set();
 
+    this.minVersions = transform.minVersions ?? {};
+
     /** @type {StringMap} */
     this.paramTypeMap = {};
     Object.assign(this.paramTypeMap, transform.paramTypeMap ?? {});
@@ -122,6 +124,18 @@ class ApiContext {
 
   addReturnType(originalType, targetType) {
     if (!this.returnTypeMap[originalType]) this.returnTypeMap[originalType] = targetType;
+  }
+
+  /** @param {VersionTag} version  */
+  isAfterMinVersion(version) {
+    const tag = this.minVersions[version.tag];
+    if (!tag) return false;
+    if (version.major > tag.major) return true;
+    if (version.major < tag.major) return false;
+    if (version.minor > tag.minor) return true;
+    if (version.minor < tag.minor) return false;
+    if (version.patch > tag.patch) return true;
+    /* if (version.patch <= tag.patch)*/ return false;
   }
 }
 
@@ -1011,13 +1025,36 @@ function transformEntriesDocRefs(entries, context) {
   for (const entry of Object.values(entries)) {
     if (Array.isArray(entry)) {
       entry.forEach(e => {
-        if (e.doc) e.doc = resolveDocRefs(e.doc, context);
+        if (e.doc) {
+          if (!e.since) e.since = resolveVersionDoc(e.doc, context);
+          e.doc = resolveDocRefs(e.doc, context);
+        }
       });
     } else {
-      if (entry.doc) entry.doc = resolveDocRefs(entry.doc, context);
+      if (entry.doc) {
+        if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
+        entry.doc = resolveDocRefs(entry.doc, context);
+      }
       if (entry.entries) transformEntriesDocRefs(entry.entries, context);
     }
   }
+}
+
+/** 
+ * @param {string} doc  
+ * @param {ApiContext} context 
+ */
+function resolveVersionDoc(doc, context) {
+  const m = /^@since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
+  if (!m) return undefined;
+  /** @type {VersionTag} */
+  const version = {
+    tag: m[1].toUpperCase(),
+    major: +m[2],
+    minor: +m[3],
+    patch: +m[4],
+  };
+  if (context.isAfterMinVersion(version)) return version;
 }
 
 /**

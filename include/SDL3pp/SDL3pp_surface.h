@@ -98,13 +98,14 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  */
 using ScaleMode = SDL_ScaleMode;
 
-#if SDL_VERSION_ATLEAST(3, 2, 9)
+#if SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**
  * @since SDL 3.2.10
  */
 constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID;
-#endif
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**
  * nearest pixel sampling
@@ -1324,6 +1325,7 @@ struct SurfaceBase : T
   }
 
 #if SDL_VERSION_ATLEAST(3, 2, 4)
+
   /**
    * Perform a stretched pixel copy from one surface to another.
    *
@@ -1351,7 +1353,8 @@ struct SurfaceBase : T
     return SDL_StretchSurface(
       src.get(), &srcrect, T::get(), &dstrect, scaleMode);
   }
-#endif
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 4)
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different

@@ -30,7 +30,15 @@ interface ApiEntryBase {
   reference?: number;
   proto?: boolean
   static?: boolean;
+  since?: VersionTag;
   explicit?: boolean;
+}
+
+export interface VersionTag {
+  tag: string;
+  major: number;
+  minor: number;
+  patch: number;
 }
 
 export interface ApiEntry extends ApiEntryBase {
@@ -67,6 +75,7 @@ export interface ApiTransform {
   docRules?: ReplacementRule[];
   paramTypeMap?: StringMap;
   returnTypeMap?: StringMap;
+  minVersions?: Dict<VersionTag>
 }
 
 export interface ApiFileTransform {
@@ -198,4 +207,5 @@ export interface FileToken {
   end: number;
   spaces: number;
   doc?: string;
+  since?: VersionTag;
 }

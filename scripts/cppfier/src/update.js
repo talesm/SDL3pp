@@ -204,6 +204,8 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
     system.log(`${name} changed "${change}" from ${begin} to ${end}`);
     if (change === "parameters") {
       system.log(`  parameters went from "${JSON.stringify(sourceEntry.parameters)}" to "${JSON.stringify(targetEntry.parameters)}"`);
+    } else if (change !== 'since') {
+      delete targetEntry.since;
     }
     changes.push({ begin, end, replacement: generateEntry(targetEntry, prefix) + "\n" });
   } else {
@@ -338,29 +340,38 @@ function generateEntry(entry, prefix) {
   prefix = prefix ?? '';
   const doc = generateDocString(entry.doc, prefix);
   const template = generateTemplateSignature(entry.template, prefix);
-  switch (entry.kind) {
-    case "alias":
-      if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
-      return `${doc}${template}${prefix}using ${entry.name} = ${entry.type};`;
-    case "def":
-      return doc + generateDef(entry);
-    case "forward":
-      return '// Forward decl\n' + template + generateStructSignature(entry, prefix) + ';';
-    case "function":
-      return doc + template + generateFunction(entry, prefix);
-    case "ns":
-      return doc + generateNS(entry);
-    case "struct":
-      return doc + template + generateStruct(entry, prefix);
-    case "var":
-      const varStr = generateVar(entry, prefix);
-      if (entry.doc && !entry.doc.includes("\n") && (entry.doc.length + varStr.length + prefix.length) < 80) {
-        return template + varStr + " ///< " + entry.doc;
-      }
-      return doc + template + varStr;
-    default:
-      system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
-      return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
+  const version = entry.since;
+  if (!version) return doGenerate(entry);
+  const versionStr = `${version.tag}_VERSION_ATLEAST(${version.major}, ${version.minor}, ${version.patch})`;
+  return `#if ${versionStr}\n\n${doGenerate(entry)}\n\n#endif // ${versionStr}`;
+
+  /** @param {ApiEntry} entry  */
+  function doGenerate(entry) {
+    switch (entry.kind) {
+      case "alias":
+        if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
+        return `${doc}${template}${prefix}using ${entry.name} = ${entry.type};`;
+      case "def":
+        return doc + generateDef(entry);
+      case "forward":
+        return '// Forward decl\n' + template + generateStructSignature(entry, prefix) + ';';
+      case "function":
+        return doc + template + generateFunction(entry, prefix);
+      case "ns":
+        return doc + generateNS(entry);
+      case "struct":
+        return doc + template + generateStruct(entry, prefix);
+      case "var":
+        const varStr = generateVar(entry, prefix);
+        if (entry.doc && !entry.doc.includes("\n") && (entry.doc.length + varStr.length + prefix.length) < 80) {
+          return template + varStr + " ///< " + entry.doc;
+        }
+        return doc + template + varStr;
+      default:
+        system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
+        return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
+    }
+
   }
 }
 

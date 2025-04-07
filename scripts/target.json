@@ -1620,7 +1620,13 @@
           "name": "SDL_HINT_JOYSTICK_HAPTIC_AXES",
           "kind": "def",
           "value": "\"SDL_JOYSTICK_HAPTIC_AXES\"",
-          "sourceName": "SDL_HINT_JOYSTICK_HAPTIC_AXES"
+          "sourceName": "SDL_HINT_JOYSTICK_HAPTIC_AXES",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 2,
+            "patch": 5
+          }
         },
         "SDL_HINT_KEYCODE_OPTIONS": {
           "doc": "A variable that controls keycode representation in keyboard events.\n\nThis variable is a comma separated set of options for translating keycodes\nin events:\n\n- \"none\": Keycode options are cleared, this overrides other options.\n- \"hide_numpad\": The numpad keysyms will be translated into their\n  non-numpad versions based on the current NumLock state. For example,\n  SDLK_KP_4 would become SDLK_4 if KMOD_NUM is set in the event\n  modifiers, and SDLK_LEFT if it is unset.\n- \"french_numbers\": The number row on French keyboards is inverted, so\n  pressing the 1 key would yield the keycode SDLK_1, or '1', instead of\n  SDLK_AMPERSAND, or '&'\n- \"latin_letters\": For keyboards using non-Latin letters, such as Russian\n  or Thai, the letter keys generate keycodes as though it had an en_US\n  layout. e.g. pressing the key associated with SCANCODE_A on a Russian\n  keyboard would yield 'a' instead of a Cyrillic letter.\n\nThe default value for this hint is \"french_numbers,latin_letters\"\n\nSome platforms like Emscripten only provide modified keycodes and the\noptions are not used.\n\nThese options do not affect the return value of Keycode::Keycode() or\nKeycode::GetScancode(), they just apply to the keycode included in key\nevents.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
@@ -2145,7 +2151,13 @@
           "name": "SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT",
           "kind": "def",
           "value": "\"SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT\"",
-          "sourceName": "SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT"
+          "sourceName": "SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 2,
+            "patch": 10
+          }
         },
         "SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR": {
           "doc": "A variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint\nshould be used.\n\nThe variable can be set to the following values:\n\n- \"0\": Disable _NET_WM_BYPASS_COMPOSITOR.\n- \"1\": Enable _NET_WM_BYPASS_COMPOSITOR. (default)\n\nThis hint should be set before creating a window.\n\n@since This hint is available since SDL 3.2.0.",
@@ -15528,7 +15540,13 @@
                   "type": "ScaleMode"
                 }
               ],
-              "sourceName": "SDL_StretchSurface"
+              "sourceName": "SDL_StretchSurface",
+              "since": {
+                "tag": "SDL",
+                "major": 3,
+                "minor": 2,
+                "patch": 4
+              }
             },
             "BlitTiled": {
               "doc": "Perform a tiled blit to a destination surface, which may be of a different\nformat.\n\nThe pixels in `srcrect` will be repeated as many times as needed to\ncompletely fill `dstrect`.\n\n@param srcrect the Rect structure representing the rectangle to be\n               copied, or nullptr to copy the entire surface.\n@param dst the SurfaceBase structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, or nullptr to fill the entire surface.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Blit",
@@ -31713,7 +31731,13 @@
               "type": "int",
               "parameters": [],
               "sourceName": "TTF_GetFontWeight",
-              "immutable": true
+              "immutable": true,
+              "since": {
+                "tag": "SDL_TTF",
+                "major": 3,
+                "minor": 2,
+                "patch": 2
+              }
             },
             "SetWrapAlignment": {
               "doc": "Set a font's current wrap alignment option.\n\nThis updates any TextBase objects using this font.\n\n@param align the new wrap alignment option.\n\n@threadsafety This function should be called on the thread that created the\n              font.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontBase.GetWrapAlignment",

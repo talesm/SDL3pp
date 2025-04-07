@@ -1,6 +1,6 @@
 const { system } = require("./utils");
 /**
- * @import {FileToken} from "./types"
+ * @import {FileToken, VersionTag} from "./types"
  */
 
 const ignorePrefixes = [
@@ -38,6 +38,9 @@ class Tokenizer {
     this.lines = lines;
     this.lineCount = 0;
     this.lastLine = "";
+
+    /** @type {VersionTag} */
+    this.since = undefined;
   }
 
   /** @private */
@@ -85,6 +88,19 @@ class Tokenizer {
       spaces: m?.[0]?.length ?? 0,
       kind: null,
     };
+
+
+    if (m = /^#(?:el)?if (\w+)_VERSION_ATLEAST\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/.exec(line)) {
+      this.since = {
+        tag: m[1],
+        major: +m[2],
+        minor: +m[3],
+        patch: +m[4],
+      };
+    } else if (m = /^#endif\s*\/\/\s*(\w+)_VERSION_ATLEAST\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/.exec(line)) {
+      this.since = null;
+    }
+    token.since = this.since;
 
     if (/^\/\/\s*Forward decl/.test(line)) {
       token.kind = "doc";
