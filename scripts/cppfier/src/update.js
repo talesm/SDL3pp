@@ -579,10 +579,10 @@ function resetEntriesDoc(entries) {
  */
 function resetEntryDoc(entry) {
   if (Array.isArray(entry)) {
-    entry.forEach(e => delete e.doc);
+    entry.forEach(e => e.doc = "");
     return;
   }
-  delete entry.doc;
+  entry.doc = "";
   if (entry.entries) resetEntriesDoc(entry.entries);
 }
 

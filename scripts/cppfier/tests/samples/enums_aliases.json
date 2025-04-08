@@ -11,21 +11,21 @@
           "type": "MyEnum"
         },
         "ENUM_VALUE0": {
-          "doc": "",
+          "doc": "ENUM_VALUE0",
           "name": "ENUM_VALUE0",
           "kind": "var",
           "type": "Enum",
           "constexpr": true
         },
         "ENUM_VALUE1": {
-          "doc": "",
+          "doc": "ENUM_VALUE1",
           "name": "ENUM_VALUE1",
           "kind": "var",
           "type": "Enum",
           "constexpr": true
         },
         "ENUM_VALUE_N": {
-          "doc": "",
+          "doc": "ENUM_VALUE_N",
           "name": "ENUM_VALUE_N",
           "kind": "var",
           "type": "Enum",
@@ -38,21 +38,21 @@
           "type": "MyEnumBit"
         },
         "BIT_VALUE0": {
-          "doc": "",
+          "doc": "BIT_VALUE0",
           "name": "BIT_VALUE0",
           "kind": "var",
           "type": "EnumBit",
           "constexpr": true
         },
         "BIT_VALUE1": {
-          "doc": "",
+          "doc": "BIT_VALUE1",
           "name": "BIT_VALUE1",
           "kind": "var",
           "type": "EnumBit",
           "constexpr": true
         },
         "BIT_VALUE2": {
-          "doc": "",
+          "doc": "BIT_VALUE2",
           "name": "BIT_VALUE2",
           "kind": "var",
           "type": "EnumBit",

@@ -3,5 +3,15 @@
     "enums_aliases.h"
   ],
   "api": "tests/samples/enums_aliases.json",
-  "baseDir": "tests/samples/"
+  "baseDir": "tests/samples/",
+  "sourceApi": "tests/samples/enums.json",
+  "transform": {
+    "prefixes": "My",
+    "renameRules": [
+      {
+        "pattern": "^([^.]*)",
+        "replacement": "$1_aliases"
+      }
+    ]
+  }
 }
