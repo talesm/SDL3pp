@@ -14,5 +14,5 @@ var searchData=
   ['println_11',['println',['../structSDL_1_1IOStreamBase.html#aa66f43e6d2249328e9c88094337fd4d0',1,'SDL::IOStreamBase']]],
   ['propertieslock_12',['propertieslock',['../classSDL_1_1PropertiesLock.html#a04852e4684c91ad9ebbd7dc56c24c3cd',1,'SDL::PropertiesLock::PropertiesLock()'],['../classSDL_1_1PropertiesLock.html#adacdec5b1374935554b6a70640abb69b',1,'SDL::PropertiesLock::PropertiesLock(PropertiesLock &amp;&amp;other)']]],
   ['pumpevents_13',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
-  ['pushevent_14',['PushEvent',['../group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576',1,'SDL']]]
+  ['pushevent_14',['pushevent',['../group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576',1,'SDL::PushEvent(Event *event)'],['../group__CategoryEvents.html#gad4b7289dcacfa19eb1f868a42b9c1e69',1,'SDL::PushEvent(const Event &amp;event)']]]
 ];

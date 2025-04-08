@@ -1287,7 +1287,7 @@ namespace SDL {
  *
  * `0xAAAA/0xBBBB,0xCCCC/0xDDDD`
  *
- * The variable can also take the form of @file, in which case the named file
+ * The variable can also take the form of file, in which case the named file
  * will be loaded and interpreted as the value of the variable.
  *
  * This hint can be set anytime.
@@ -4333,11 +4333,11 @@ namespace SDL {
  */
 using HintPriority = SDL_HintPriority;
 
-constexpr HintPriority HINT_DEFAULT = SDL_HINT_DEFAULT;
+constexpr HintPriority HINT_DEFAULT = SDL_HINT_DEFAULT; ///< DEFAULT
 
-constexpr HintPriority HINT_NORMAL = SDL_HINT_NORMAL;
+constexpr HintPriority HINT_NORMAL = SDL_HINT_NORMAL; ///< NORMAL
 
-constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE;
+constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE; ///< OVERRIDE
 
 /**
  * Set a hint with a specific priority.

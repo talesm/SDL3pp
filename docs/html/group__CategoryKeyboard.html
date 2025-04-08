@@ -125,13 +125,13 @@ Functions</h2></td></tr>
 <tr class="memitem:gabba95047638ff076e42db09f4c84c959" id="r_gabba95047638ff076e42db09f4c84c959"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gabba95047638ff076e42db09f4c84c959">SDL::ScreenKeyboardShown</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window)</td></tr>
 <tr class="memdesc:gabba95047638ff076e42db09f4c84c959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the screen keyboard is shown for given window.  <br /></td></tr>
 <tr class="separator:gabba95047638ff076e42db09f4c84c959"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaacfec5794b9e40b989c6a874856a8ef3" id="r_gaacfec5794b9e40b989c6a874856a8ef3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gaacfec5794b9e40b989c6a874856a8ef3">SDL::Keycode::Keycode</a> (<a class="el" href="structSDL_1_1Scancode.html">Scancode</a> scancode, <a class="el" href="group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c">Keymod</a> modstate=0, bool key_event=false)</td></tr>
+<tr class="memitem:gaacfec5794b9e40b989c6a874856a8ef3" id="r_gaacfec5794b9e40b989c6a874856a8ef3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gaacfec5794b9e40b989c6a874856a8ef3">SDL::Keycode::Keycode</a> (<a class="el" href="classSDL_1_1Scancode.html">Scancode</a> scancode, <a class="el" href="group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c">Keymod</a> modstate=0, bool key_event=false)</td></tr>
 <tr class="memdesc:gaacfec5794b9e40b989c6a874856a8ef3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the key code corresponding to the given scancode according to the current keyboard layout.  <br /></td></tr>
 <tr class="separator:gaacfec5794b9e40b989c6a874856a8ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4435ab0e101c9ed4bbe9ab791a81f546" id="r_ga4435ab0e101c9ed4bbe9ab791a81f546"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga4435ab0e101c9ed4bbe9ab791a81f546">SDL::Keycode::Keycode</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
 <tr class="memdesc:ga4435ab0e101c9ed4bbe9ab791a81f546"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a key code from a human-readable name.  <br /></td></tr>
 <tr class="separator:ga4435ab0e101c9ed4bbe9ab791a81f546"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c32d8fabe02c7f376e2a56591c94f0c" id="r_ga9c32d8fabe02c7f376e2a56591c94f0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Scancode.html">Scancode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga9c32d8fabe02c7f376e2a56591c94f0c">SDL::Keycode::GetScancode</a> (<a class="el" href="group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c">Keymod</a> *modstate) const</td></tr>
+<tr class="memitem:ga9c32d8fabe02c7f376e2a56591c94f0c" id="r_ga9c32d8fabe02c7f376e2a56591c94f0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Scancode.html">Scancode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga9c32d8fabe02c7f376e2a56591c94f0c">SDL::Keycode::GetScancode</a> (<a class="el" href="group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c">Keymod</a> *modstate) const</td></tr>
 <tr class="memdesc:ga9c32d8fabe02c7f376e2a56591c94f0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the scancode corresponding to the given key code according to the current keyboard layout.  <br /></td></tr>
 <tr class="separator:ga9c32d8fabe02c7f376e2a56591c94f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4504ebe77988ff8f2b956d53bfeaba9b" id="r_ga4504ebe77988ff8f2b956d53bfeaba9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga4504ebe77988ff8f2b956d53bfeaba9b">SDL::Scancode::SetName</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
@@ -434,7 +434,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 </table>
 </div><div class="memdoc">
 <p>The pointer returned is a pointer to an internal <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> array. It will be valid for the whole lifetime of the application and should not be freed by the caller.</p>
-<p>A array element with a value of true means that the key is pressed and a value of false means that it is not. Indexes into this array are obtained by using <a class="el" href="structSDL_1_1Scancode.html" title="The SDL keyboard scancode representation.">Scancode</a> values.</p>
+<p>A array element with a value of true means that the key is pressed and a value of false means that it is not. Indexes into this array are obtained by using <a class="el" href="classSDL_1_1Scancode.html" title="The SDL keyboard scancode representation.">Scancode</a> values.</p>
 <p>Use <a class="el" href="group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09" title="Pump the event loop, gathering events from the input devices.">PumpEvents()</a> to update the state array.</p>
 <p>This function gives you the current state after all events have been processed, so if a key or button has been pressed and released before you process events, then the pressed state will never show up in the <a class="el" href="group__CategoryKeyboard.html#ga18341c0c48766a04399a796d51347df1" title="Get a snapshot of the current state of the keyboard.">GetKeyboardState()</a> calls.</p>
 <p>Note: This function doesn't take into account whether shift has been pressed or not.</p>
@@ -564,7 +564,7 @@ GetScancodeFromName </dd>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structSDL_1_1Scancode.html">Scancode</a> SDL::Keycode::GetScancode </td>
+          <td class="memname"><a class="el" href="classSDL_1_1Scancode.html">Scancode</a> SDL::Keycode::GetScancode </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c">Keymod</a> *&#160;</td>
           <td class="paramname"><em>modstate</em></td><td>)</td>
@@ -584,7 +584,7 @@ GetScancodeFromName </dd>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="structSDL_1_1Scancode.html" title="The SDL keyboard scancode representation.">Scancode</a> that corresponds to the given <a class="el" href="classSDL_1_1Keycode.html" title="The SDL virtual key representation.">Keycode</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classSDL_1_1Scancode.html" title="The SDL keyboard scancode representation.">Scancode</a> that corresponds to the given <a class="el" href="classSDL_1_1Keycode.html" title="The SDL virtual key representation.">Keycode</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Keycode.html#a4570e66d30e3c7fe6e8ac432866ab16a" title="Wraps Keycode.">Keycode::Keycode</a> </dd>
@@ -746,7 +746,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
         <tr>
           <td class="memname">SDL::Keycode::Keycode </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1Scancode.html">Scancode</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1Scancode.html">Scancode</a>&#160;</td>
           <td class="paramname"><em>scancode</em>, </td>
         </tr>
         <tr>
@@ -776,7 +776,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <p>If you want to get the keycode as it would be delivered in key events, including options specified in SDL_HINT_KEYCODE_OPTIONS, then you should pass <code>key_event</code> as true. Otherwise this function simply translates the scancode based on the given modifier state.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">scancode</td><td>the desired <a class="el" href="structSDL_1_1Scancode.html" title="The SDL keyboard scancode representation.">Scancode</a> to query. </td></tr>
+    <tr><td class="paramname">scancode</td><td>the desired <a class="el" href="classSDL_1_1Scancode.html" title="The SDL keyboard scancode representation.">Scancode</a> to query. </td></tr>
     <tr><td class="paramname">modstate</td><td>the modifier state to use when translating the scancode to a keycode. </td></tr>
     <tr><td class="paramname">key_event</td><td>true if the keycode will be used in key events.</td></tr>
   </table>
@@ -826,7 +826,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="group__CategoryKeyboard.html#ga10fe971ef54ae1b74a829da9ec588465" title="Get a human-readable name for a key.">Keycode::GetName</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Scancode.html#a965dbd35eeb40302f701409d8d0bc87f" title="Wraps Scancode.">Scancode::Scancode</a> </dd></dl>
+<a class="el" href="classSDL_1_1Scancode.html#a965dbd35eeb40302f701409d8d0bc87f" title="Wraps Scancode.">Scancode::Scancode</a> </dd></dl>
 
 </div>
 </div>
@@ -888,7 +888,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the <a class="el" href="structSDL_1_1Scancode.html" title="The SDL keyboard scancode representation.">Scancode</a>, or <code>SCANCODE_UNKNOWN</code> if the name wasn't recognized; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the <a class="el" href="classSDL_1_1Scancode.html" title="The SDL keyboard scancode representation.">Scancode</a>, or <code>SCANCODE_UNKNOWN</code> if the name wasn't recognized; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1Keycode.html#a4570e66d30e3c7fe6e8ac432866ab16a" title="Wraps Keycode.">Keycode::Keycode</a> </dd>

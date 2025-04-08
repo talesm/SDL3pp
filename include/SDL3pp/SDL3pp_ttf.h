@@ -226,7 +226,7 @@ constexpr FontStyleFlags STYLE_STRIKETHROUGH = TTF_STYLE_STRIKETHROUGH;
 using HintingFlags = TTF_HintingFlags;
 
 /// Invalid grid-fitting
-constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID;
+constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID; ///< INVALID
 
 /**
  * Normal hinting applies standard grid-fitting.
@@ -270,15 +270,16 @@ using HorizontalAlignment = TTF_HorizontalAlignment;
 
 /// Invalid alignment
 constexpr HorizontalAlignment HORIZONTAL_ALIGN_INVALID =
-  TTF_HORIZONTAL_ALIGN_INVALID;
+  TTF_HORIZONTAL_ALIGN_INVALID; ///< INVALID
 
-constexpr HorizontalAlignment HORIZONTAL_ALIGN_LEFT = TTF_HORIZONTAL_ALIGN_LEFT;
+constexpr HorizontalAlignment HORIZONTAL_ALIGN_LEFT =
+  TTF_HORIZONTAL_ALIGN_LEFT; ///< LEFT
 
 constexpr HorizontalAlignment HORIZONTAL_ALIGN_CENTER =
-  TTF_HORIZONTAL_ALIGN_CENTER;
+  TTF_HORIZONTAL_ALIGN_CENTER; ///< CENTER
 
 constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
-  TTF_HORIZONTAL_ALIGN_RIGHT;
+  TTF_HORIZONTAL_ALIGN_RIGHT; ///< RIGHT
 
 /// @}
 
@@ -300,7 +301,7 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
 using Direction = TTF_Direction;
 
 /// Invalid direction
-constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID;
+constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID; ///< INVALID
 
 /**
  * Left to Right.
@@ -337,7 +338,7 @@ constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT;
 using ImageType = TTF_ImageType;
 
 /// Invalid state
-constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID;
+constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID; ///< INVALID
 
 /**
  * The color channels are white.
@@ -412,13 +413,13 @@ using GPUTextEngineWinding = TTF_GPUTextEngineWinding;
 
 /// Invalid state
 constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
-  TTF_GPU_TEXTENGINE_WINDING_INVALID;
+  TTF_GPU_TEXTENGINE_WINDING_INVALID; ///< INVALID
 
 constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_CLOCKWISE =
-  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE;
+  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE; ///< CLOCKWISE
 
 constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
-  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE;
+  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE; ///< COUNTER_CLOCKWISE
 
 /// @}
 

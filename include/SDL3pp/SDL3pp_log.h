@@ -71,23 +71,26 @@ namespace SDL {
  */
 using LogPriority = SDL_LogPriority;
 
-constexpr LogPriority LOG_PRIORITY_INVALID = SDL_LOG_PRIORITY_INVALID;
+constexpr LogPriority LOG_PRIORITY_INVALID =
+  SDL_LOG_PRIORITY_INVALID; ///< INVALID
 
-constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE;
+constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE; ///< TRACE
 
-constexpr LogPriority LOG_PRIORITY_VERBOSE = SDL_LOG_PRIORITY_VERBOSE;
+constexpr LogPriority LOG_PRIORITY_VERBOSE =
+  SDL_LOG_PRIORITY_VERBOSE; ///< VERBOSE
 
-constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG;
+constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG; ///< DEBUG
 
-constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO;
+constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO; ///< INFO
 
-constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN;
+constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN; ///< WARN
 
-constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR;
+constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR; ///< ERROR
 
-constexpr LogPriority LOG_PRIORITY_CRITICAL = SDL_LOG_PRIORITY_CRITICAL;
+constexpr LogPriority LOG_PRIORITY_CRITICAL =
+  SDL_LOG_PRIORITY_CRITICAL; ///< CRITICAL
 
-constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT;
+constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
 
 /// @}
 
@@ -117,20 +120,25 @@ class LogCategory
   int m_category;
 
 public:
+  /// Constructor from int.
   constexpr explicit LogCategory(int category)
     : m_category(category)
   {
   }
 
+  /// Constructor from SDL_LogCategory.
   constexpr LogCategory(SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION)
     : m_category(category)
   {
   }
 
+  /// Conversion operator to int.
   constexpr operator int() { return m_category; }
 
+  /// Conversion operator to SDL_LogCategory
   constexpr operator SDL_LogCategory() { return SDL_LogCategory(m_category); }
 
+  /// Comparison operator
   constexpr auto operator<=>(const LogCategory& other) const = default;
 
   /**
@@ -478,45 +486,55 @@ public:
   }
 };
 
-constexpr LogCategory LOG_CATEGORY_APPLICATION = SDL_LOG_CATEGORY_APPLICATION;
+constexpr LogCategory LOG_CATEGORY_APPLICATION =
+  SDL_LOG_CATEGORY_APPLICATION; ///< APPLICATION
 
-constexpr LogCategory LOG_CATEGORY_ERROR = SDL_LOG_CATEGORY_ERROR;
+constexpr LogCategory LOG_CATEGORY_ERROR = SDL_LOG_CATEGORY_ERROR; ///< ERROR
 
-constexpr LogCategory LOG_CATEGORY_ASSERT = SDL_LOG_CATEGORY_ASSERT;
+constexpr LogCategory LOG_CATEGORY_ASSERT = SDL_LOG_CATEGORY_ASSERT; ///< ASSERT
 
-constexpr LogCategory LOG_CATEGORY_SYSTEM = SDL_LOG_CATEGORY_SYSTEM;
+constexpr LogCategory LOG_CATEGORY_SYSTEM = SDL_LOG_CATEGORY_SYSTEM; ///< SYSTEM
 
-constexpr LogCategory LOG_CATEGORY_AUDIO = SDL_LOG_CATEGORY_AUDIO;
+constexpr LogCategory LOG_CATEGORY_AUDIO = SDL_LOG_CATEGORY_AUDIO; ///< AUDIO
 
-constexpr LogCategory LOG_CATEGORY_VIDEO = SDL_LOG_CATEGORY_VIDEO;
+constexpr LogCategory LOG_CATEGORY_VIDEO = SDL_LOG_CATEGORY_VIDEO; ///< VIDEO
 
-constexpr LogCategory LOG_CATEGORY_RENDER = SDL_LOG_CATEGORY_RENDER;
+constexpr LogCategory LOG_CATEGORY_RENDER = SDL_LOG_CATEGORY_RENDER; ///< RENDER
 
-constexpr LogCategory LOG_CATEGORY_INPUT = SDL_LOG_CATEGORY_INPUT;
+constexpr LogCategory LOG_CATEGORY_INPUT = SDL_LOG_CATEGORY_INPUT; ///< INPUT
 
-constexpr LogCategory LOG_CATEGORY_TEST = SDL_LOG_CATEGORY_TEST;
+constexpr LogCategory LOG_CATEGORY_TEST = SDL_LOG_CATEGORY_TEST; ///< TEST
 
-constexpr LogCategory LOG_CATEGORY_GPU = SDL_LOG_CATEGORY_GPU;
+constexpr LogCategory LOG_CATEGORY_GPU = SDL_LOG_CATEGORY_GPU; ///< GPU
 
-constexpr LogCategory LOG_CATEGORY_RESERVED2 = SDL_LOG_CATEGORY_RESERVED2;
+constexpr LogCategory LOG_CATEGORY_RESERVED2 =
+  SDL_LOG_CATEGORY_RESERVED2; ///< RESERVED2
 
-constexpr LogCategory LOG_CATEGORY_RESERVED3 = SDL_LOG_CATEGORY_RESERVED3;
+constexpr LogCategory LOG_CATEGORY_RESERVED3 =
+  SDL_LOG_CATEGORY_RESERVED3; ///< RESERVED3
 
-constexpr LogCategory LOG_CATEGORY_RESERVED4 = SDL_LOG_CATEGORY_RESERVED4;
+constexpr LogCategory LOG_CATEGORY_RESERVED4 =
+  SDL_LOG_CATEGORY_RESERVED4; ///< RESERVED4
 
-constexpr LogCategory LOG_CATEGORY_RESERVED5 = SDL_LOG_CATEGORY_RESERVED5;
+constexpr LogCategory LOG_CATEGORY_RESERVED5 =
+  SDL_LOG_CATEGORY_RESERVED5; ///< RESERVED5
 
-constexpr LogCategory LOG_CATEGORY_RESERVED6 = SDL_LOG_CATEGORY_RESERVED6;
+constexpr LogCategory LOG_CATEGORY_RESERVED6 =
+  SDL_LOG_CATEGORY_RESERVED6; ///< RESERVED6
 
-constexpr LogCategory LOG_CATEGORY_RESERVED7 = SDL_LOG_CATEGORY_RESERVED7;
+constexpr LogCategory LOG_CATEGORY_RESERVED7 =
+  SDL_LOG_CATEGORY_RESERVED7; ///< RESERVED7
 
-constexpr LogCategory LOG_CATEGORY_RESERVED8 = SDL_LOG_CATEGORY_RESERVED8;
+constexpr LogCategory LOG_CATEGORY_RESERVED8 =
+  SDL_LOG_CATEGORY_RESERVED8; ///< RESERVED8
 
-constexpr LogCategory LOG_CATEGORY_RESERVED9 = SDL_LOG_CATEGORY_RESERVED9;
+constexpr LogCategory LOG_CATEGORY_RESERVED9 =
+  SDL_LOG_CATEGORY_RESERVED9; ///< RESERVED9
 
-constexpr LogCategory LOG_CATEGORY_RESERVED10 = SDL_LOG_CATEGORY_RESERVED10;
+constexpr LogCategory LOG_CATEGORY_RESERVED10 =
+  SDL_LOG_CATEGORY_RESERVED10; ///< RESERVED10
 
-constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM;
+constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM; ///< CUSTOM
 
 /// @}
 

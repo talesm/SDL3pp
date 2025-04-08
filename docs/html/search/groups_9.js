@@ -6,6 +6,7 @@ var searchData=
   ['info_3',['Locale Info',['../group__CategoryLocale.html',1,'']]],
   ['information_4',['Platform and CPU Information',['../group__CategoriesPlatformAndCpuInformation.html',1,'']]],
   ['initialization_20and_20shutdown_5',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]],
-  ['input_20events_6',['Input Events',['../group__CategoriesEvents.html',1,'']]],
-  ['intrinsics_20detection_7',['Compiler Intrinsics Detection',['../group__CategoryIntrinsics.html',1,'']]]
+  ['initialization_20flags_6',['Initialization flags',['../group__InitFlags.html',1,'']]],
+  ['input_20events_7',['Input Events',['../group__CategoriesEvents.html',1,'']]],
+  ['intrinsics_20detection_8',['Compiler Intrinsics Detection',['../group__CategoryIntrinsics.html',1,'']]]
 ];

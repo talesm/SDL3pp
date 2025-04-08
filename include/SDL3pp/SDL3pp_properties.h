@@ -158,6 +158,23 @@ using EnumeratePropertiesCB =
 // Forward decl
 struct PropertiesLock;
 
+constexpr PropertyType PROPERTY_TYPE_INVALID =
+  SDL_PROPERTY_TYPE_INVALID; ///< INVALID
+
+constexpr PropertyType PROPERTY_TYPE_POINTER =
+  SDL_PROPERTY_TYPE_POINTER; ///< POINTER
+
+constexpr PropertyType PROPERTY_TYPE_STRING =
+  SDL_PROPERTY_TYPE_STRING; ///< STRING
+
+constexpr PropertyType PROPERTY_TYPE_NUMBER =
+  SDL_PROPERTY_TYPE_NUMBER; ///< NUMBER
+
+constexpr PropertyType PROPERTY_TYPE_FLOAT = SDL_PROPERTY_TYPE_FLOAT; ///< FLOAT
+
+constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
+  SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
+
 /**
  * Wrap properties id
  *
@@ -766,6 +783,7 @@ public:
    */
   ~PropertiesLock() { Unlock(); }
 
+  /// Assignment operator
   PropertiesLock& operator=(PropertiesLock other)
   {
     std::swap(properties, other.properties);
@@ -791,18 +809,6 @@ public:
   template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
   friend class PropertiesBase;
 };
-
-constexpr PropertyType PROPERTY_TYPE_INVALID = SDL_PROPERTY_TYPE_INVALID;
-
-constexpr PropertyType PROPERTY_TYPE_POINTER = SDL_PROPERTY_TYPE_POINTER;
-
-constexpr PropertyType PROPERTY_TYPE_STRING = SDL_PROPERTY_TYPE_STRING;
-
-constexpr PropertyType PROPERTY_TYPE_NUMBER = SDL_PROPERTY_TYPE_NUMBER;
-
-constexpr PropertyType PROPERTY_TYPE_FLOAT = SDL_PROPERTY_TYPE_FLOAT;
-
-constexpr PropertyType PROPERTY_TYPE_BOOLEAN = SDL_PROPERTY_TYPE_BOOLEAN;
 
 /**
  * Get the global SDL properties.

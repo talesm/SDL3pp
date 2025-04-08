@@ -655,6 +655,9 @@
         "SDL_LogPriority": {
           "includeAfter": "__begin",
           "prefix": "SDL_LOG_PRIORITY_"
+        },
+        "SDL_LogCategory": {
+          "prefix": "SDL_LOG_CATEGORY_"
         }
       },
       "includeAfter": {
@@ -1009,6 +1012,18 @@
         }
       }
     },
+    "SDL_hints.h": {
+      "enumerations": {
+        "SDL_HintPriority": {
+          "prefix": "SDL_HINT_",
+          "values": [
+            "SDL_HINT_DEFAULT",
+            "SDL_HINT_NORMAL",
+            "SDL_HINT_OVERRIDE"
+          ]
+        }
+      }
+    },
     "SDL_properties.h": {
       "includeAfter": {
         "__begin": [
@@ -1126,6 +1141,12 @@
               "parameters": []
             }
           }
+        }
+      },
+      "enumerations": {
+        "SDL_PropertyType": {
+          "includeAfter": "__begin",
+          "prefix": "SDL_PROPERTY_TYPE_"
         }
       },
       "resources": {
@@ -5457,6 +5478,11 @@
             }
           ]
         }
+      },
+      "enumerations": {
+        "SDL_EventType": {
+          "prefix": "SDL_EVENT_"
+        }
       }
     },
     "SDL_scancode.h": {
@@ -5717,6 +5743,9 @@
         },
         "SDL_MessageBoxButtonFlags": {
           "prefix": "SDL_MESSAGEBOX_BUTTON_"
+        },
+        "SDL_MessageBoxColorType": {
+          "prefix": "SDL_MESSAGEBOX_COLOR_"
         }
       },
       "transform": {
@@ -5875,6 +5904,11 @@
               "type": "PropertiesRef"
             }
           ]
+        }
+      },
+      "enumerations": {
+        "SDL_FileDialogType": {
+          "prefix": "SDL_FILEDIALOG_"
         }
       },
       "transform": {
@@ -6221,47 +6255,12 @@
           ]
         }
       },
+      "enumerations": {
+        "SDL_InitFlags": {
+          "prefix": "SDL_INIT_"
+        }
+      },
       "transform": {
-        "SDL_INIT_AUDIO": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "InitFlags"
-        },
-        "SDL_INIT_VIDEO": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "InitFlags"
-        },
-        "SDL_INIT_JOYSTICK": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "InitFlags"
-        },
-        "SDL_INIT_HAPTIC": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "InitFlags"
-        },
-        "SDL_INIT_GAMEPAD": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "InitFlags"
-        },
-        "SDL_INIT_EVENTS": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "InitFlags"
-        },
-        "SDL_INIT_SENSOR": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "InitFlags"
-        },
-        "SDL_INIT_CAMERA": {
-          "kind": "var",
-          "constexpr": true,
-          "type": "InitFlags"
-        },
         "SDL_Init": {
           "name": "InitSubSystem"
         },
@@ -7189,15 +7188,19 @@
           "includeAfter": "__begin"
         },
         "TTF_HintingFlags": {
+          "prefix": "TTF_HINTING_",
           "includeAfter": "__begin"
         },
         "TTF_HorizontalAlignment": {
+          "prefix": "TTF_HORIZONTAL_ALIGN_",
           "includeAfter": "__begin"
         },
         "TTF_Direction": {
+          "prefix": "TTF_DIRECTION_",
           "includeAfter": "__begin"
         },
         "TTF_ImageType": {
+          "prefix": "TTF_IMAGE_",
           "includeAfter": "__begin"
         },
         "TTF_SubStringFlags": {
@@ -7205,7 +7208,7 @@
           "includeAfter": "__begin"
         },
         "TTF_GPUTextEngineWinding": {
-          "prefix": "TTF_SUBSTRING_",
+          "prefix": "TTF_GPU_TEXTENGINE_WINDING_",
           "includeAfter": "__begin"
         }
       },

@@ -493,11 +493,14 @@ inline void ShowOpenFolderDialog(DialogFileCB callback,
  */
 using FileDialogType = SDL_FileDialogType;
 
-constexpr FileDialogType FILEDIALOG_OPENFILE = SDL_FILEDIALOG_OPENFILE;
+constexpr FileDialogType FILEDIALOG_OPENFILE =
+  SDL_FILEDIALOG_OPENFILE; ///< OPENFILE
 
-constexpr FileDialogType FILEDIALOG_SAVEFILE = SDL_FILEDIALOG_SAVEFILE;
+constexpr FileDialogType FILEDIALOG_SAVEFILE =
+  SDL_FILEDIALOG_SAVEFILE; ///< SAVEFILE
 
-constexpr FileDialogType FILEDIALOG_OPENFOLDER = SDL_FILEDIALOG_OPENFOLDER;
+constexpr FileDialogType FILEDIALOG_OPENFOLDER =
+  SDL_FILEDIALOG_OPENFOLDER; ///< OPENFOLDER
 
 /**
  * Create and launch a file dialog with the specified properties.

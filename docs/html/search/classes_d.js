@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['scancode_0',['Scancode',['../structSDL_1_1Scancode.html',1,'SDL']]],
+  ['scancode_0',['Scancode',['../classSDL_1_1Scancode.html',1,'SDL']]],
   ['sdl_1',['SDL',['../classSDL_1_1SDL.html',1,'SDL']]],
   ['sharedobjectbase_2',['SharedObjectBase',['../structSDL_1_1SharedObjectBase.html',1,'SDL']]],
   ['spanref_3',['SpanRef',['../classSDL_1_1SpanRef.html',1,'SDL']]],

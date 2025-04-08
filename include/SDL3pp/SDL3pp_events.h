@@ -161,9 +161,11 @@ constexpr EventType EVENT_DISPLAY_CURRENT_MODE_CHANGED =
 constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
   SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED;
 
-constexpr EventType EVENT_DISPLAY_FIRST = SDL_EVENT_DISPLAY_FIRST;
+constexpr EventType EVENT_DISPLAY_FIRST =
+  SDL_EVENT_DISPLAY_FIRST; ///< DISPLAY_FIRST
 
-constexpr EventType EVENT_DISPLAY_LAST = SDL_EVENT_DISPLAY_LAST;
+constexpr EventType EVENT_DISPLAY_LAST =
+  SDL_EVENT_DISPLAY_LAST; ///< DISPLAY_LAST
 
 /**
  * Window has been shown
@@ -305,9 +307,10 @@ constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
 constexpr EventType EVENT_WINDOW_HDR_STATE_CHANGED =
   SDL_EVENT_WINDOW_HDR_STATE_CHANGED;
 
-constexpr EventType EVENT_WINDOW_FIRST = SDL_EVENT_WINDOW_FIRST;
+constexpr EventType EVENT_WINDOW_FIRST =
+  SDL_EVENT_WINDOW_FIRST; ///< WINDOW_FIRST
 
-constexpr EventType EVENT_WINDOW_LAST = SDL_EVENT_WINDOW_LAST;
+constexpr EventType EVENT_WINDOW_LAST = SDL_EVENT_WINDOW_LAST; ///< WINDOW_LAST
 
 /**
  * Key pressed
@@ -493,13 +496,15 @@ constexpr EventType EVENT_GAMEPAD_UPDATE_COMPLETE =
 constexpr EventType EVENT_GAMEPAD_STEAM_HANDLE_UPDATED =
   SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED;
 
-constexpr EventType EVENT_FINGER_DOWN = SDL_EVENT_FINGER_DOWN;
+constexpr EventType EVENT_FINGER_DOWN = SDL_EVENT_FINGER_DOWN; ///< FINGER_DOWN
 
-constexpr EventType EVENT_FINGER_UP = SDL_EVENT_FINGER_UP;
+constexpr EventType EVENT_FINGER_UP = SDL_EVENT_FINGER_UP; ///< FINGER_UP
 
-constexpr EventType EVENT_FINGER_MOTION = SDL_EVENT_FINGER_MOTION;
+constexpr EventType EVENT_FINGER_MOTION =
+  SDL_EVENT_FINGER_MOTION; ///< FINGER_MOTION
 
-constexpr EventType EVENT_FINGER_CANCELED = SDL_EVENT_FINGER_CANCELED;
+constexpr EventType EVENT_FINGER_CANCELED =
+  SDL_EVENT_FINGER_CANCELED; ///< FINGER_CANCELED
 
 /**
  * The clipboard or primary selection changed
@@ -629,13 +634,13 @@ constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
  */
 constexpr EventType EVENT_RENDER_DEVICE_LOST = SDL_EVENT_RENDER_DEVICE_LOST;
 
-constexpr EventType EVENT_PRIVATE0 = SDL_EVENT_PRIVATE0;
+constexpr EventType EVENT_PRIVATE0 = SDL_EVENT_PRIVATE0; ///< PRIVATE0
 
-constexpr EventType EVENT_PRIVATE1 = SDL_EVENT_PRIVATE1;
+constexpr EventType EVENT_PRIVATE1 = SDL_EVENT_PRIVATE1; ///< PRIVATE1
 
-constexpr EventType EVENT_PRIVATE2 = SDL_EVENT_PRIVATE2;
+constexpr EventType EVENT_PRIVATE2 = SDL_EVENT_PRIVATE2; ///< PRIVATE2
 
-constexpr EventType EVENT_PRIVATE3 = SDL_EVENT_PRIVATE3;
+constexpr EventType EVENT_PRIVATE3 = SDL_EVENT_PRIVATE3; ///< PRIVATE3
 
 /**
  * Signals the end of an event poll cycle
@@ -653,7 +658,8 @@ constexpr EventType EVENT_USER = SDL_EVENT_USER;
  */
 constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
 
-constexpr EventType EVENT_ENUM_PADDING = SDL_EVENT_ENUM_PADDING;
+constexpr EventType EVENT_ENUM_PADDING =
+  SDL_EVENT_ENUM_PADDING; ///< ENUM_PADDING
 
 /// @}
 
@@ -1474,6 +1480,7 @@ inline std::optional<Event> WaitEventTimeout(
   if (Event event; WaitEventTimeout(&event, timeoutDuration)) return event;
   return std::nullopt;
 }
+
 /**
  * Add an event to the event queue.
  *
@@ -1508,6 +1515,38 @@ inline std::optional<Event> WaitEventTimeout(
  */
 inline bool PushEvent(Event* event) { return SDL_PushEvent(event); }
 
+/**
+ * Add an event to the event queue.
+ *
+ * The event queue can actually be used as a two way communication channel.
+ * Not only can events be read from the queue, but the user can also push
+ * their own events onto it. `event` is a pointer to the event structure you
+ * wish to push onto the queue. The event is copied into the queue, and the
+ * caller may dispose of the memory pointed to after SDL_PushEvent() returns.
+ *
+ * Note: Pushing device input events onto the queue doesn't modify the state
+ * of the device within SDL.
+ *
+ * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
+ * the event filter but events added with SDL_PeepEvents() do not.
+ *
+ * For pushing application-specific events, please use SDL_RegisterEvents() to
+ * get an event type that does not conflict with other code that also wants
+ * its own custom event types.
+ *
+ * @param event the SDL_Event to be added to the queue.
+ * @returns true on success, false if the event was filtered or on failure;
+ *          call GetError() for more information. A common reason for
+ *          error is the event queue being full.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PeepEvents()
+ * @sa PollEvent()
+ * @sa RegisterEvents()
+ */
 inline bool PushEvent(const Event& event)
 {
   return PushEvent(const_cast<Event*>(&event));
@@ -1568,6 +1607,7 @@ class EventWatchHandle
   void* id;
 
 public:
+  /// @private
   constexpr explicit EventWatchHandle(void* id = nullptr)
     : id(id)
   {
@@ -1729,7 +1769,7 @@ inline EventFilterCB GetEventFilter()
   };
 }
 
-// Ignore me
+/// @private
 inline bool EventWatchAuxCallback(void* userdata, Event* event)
 {
   auto& f = *static_cast<EventFilterCB*>(userdata);

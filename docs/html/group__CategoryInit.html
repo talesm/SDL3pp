@@ -71,6 +71,7 @@ $(function() {
 
 <div class="header">
   <div class="summary">
+<a href="#groups">Modules</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Initialization and Shutdown<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a></div></div></div>
@@ -80,18 +81,20 @@ $(function() {
 <p>All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> programs need to initialize the library before starting to work with it.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:group__InitFlags" id="r_group__InitFlags"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__InitFlags.html">Initialization flags</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1InitFlagsExtra.html">SDL::InitFlagsExtra</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization flags for <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> satellite libraries.  <a href="structSDL_1_1InitFlagsExtra.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SDL.html">SDL::SDL</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library.  <a href="classSDL_1_1SDL.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga7621ccbf8a8e81e8ff90b14397f87c1e" id="r_ga7621ccbf8a8e81e8ff90b14397f87c1e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e">SDL::InitSubSystem</a> (<a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a> flags)</td></tr>
+<tr class="memitem:ga7621ccbf8a8e81e8ff90b14397f87c1e" id="r_ga7621ccbf8a8e81e8ff90b14397f87c1e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e">SDL::InitSubSystem</a> (<a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> flags)</td></tr>
 <tr class="memdesc:ga7621ccbf8a8e81e8ff90b14397f87c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library.  <br /></td></tr>
 <tr class="separator:ga7621ccbf8a8e81e8ff90b14397f87c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga45db347d388a41f9e58648e93d7e0309" id="r_ga45db347d388a41f9e58648e93d7e0309"><td class="memTemplParams" colspan="2">template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </td></tr>
@@ -102,7 +105,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gae44a351b2413d47441e10eb683fadc2c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gae44a351b2413d47441e10eb683fadc2c">SDL::InitSubSystem</a> (FLAG flag0, FLAG flag1, FLAGS... flags)</td></tr>
 <tr class="memdesc:gae44a351b2413d47441e10eb683fadc2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library.  <br /></td></tr>
 <tr class="separator:gae44a351b2413d47441e10eb683fadc2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac6d7bd19a4918a51d2a4fc0501f77da5" id="r_gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5">SDL::QuitSubSystem</a> (<a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a> flags)</td></tr>
+<tr class="memitem:gac6d7bd19a4918a51d2a4fc0501f77da5" id="r_gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5">SDL::QuitSubSystem</a> (<a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> flags)</td></tr>
 <tr class="memdesc:gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shut down specific <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> subsystems.  <br /></td></tr>
 <tr class="separator:gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga756cb42233cdb7b4f1d2c92051a37c84" id="r_ga756cb42233cdb7b4f1d2c92051a37c84"><td class="memTemplParams" colspan="2">template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </td></tr>
@@ -113,7 +116,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4a1c2a4b2335da731b48e9cba9987730"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga4a1c2a4b2335da731b48e9cba9987730">SDL::QuitSubSystem</a> (FLAG flag0, FLAG flag1, FLAGS... flags)</td></tr>
 <tr class="memdesc:ga4a1c2a4b2335da731b48e9cba9987730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shut down specific <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> subsystems.  <br /></td></tr>
 <tr class="separator:ga4a1c2a4b2335da731b48e9cba9987730"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa17083ba3ec421956acec4075284b453" id="r_gaa17083ba3ec421956acec4075284b453"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453">SDL::WasInit</a> (<a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a> flags)</td></tr>
+<tr class="memitem:gaa17083ba3ec421956acec4075284b453" id="r_gaa17083ba3ec421956acec4075284b453"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453">SDL::WasInit</a> (<a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a> flags)</td></tr>
 <tr class="memdesc:gaa17083ba3ec421956acec4075284b453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if all of the specified subsystems which are currently initialized.  <br /></td></tr>
 <tr class="separator:gaa17083ba3ec421956acec4075284b453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga15ebc8497801e6e5d14871b2678e87be" id="r_ga15ebc8497801e6e5d14871b2678e87be"><td class="memTemplParams" colspan="2">template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </td></tr>
@@ -145,43 +148,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7ae0a016d954f3a072c0a49d9dd9caf2" id="r_ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
 <tr class="memdesc:ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get metadata about your app.  <br /></td></tr>
 <tr class="separator:ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">InitFlags</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p>Initialization flags </p>
-</td></tr>
-<tr class="memitem:gafd0701244620c6298147fe6cc25a4771" id="r_gafd0701244620c6298147fe6cc25a4771"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">SDL::InitFlags</a> = SDL_InitFlags</td></tr>
-<tr class="memdesc:gafd0701244620c6298147fe6cc25a4771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization flags for <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.  <br /></td></tr>
-<tr class="separator:gafd0701244620c6298147fe6cc25a4771"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga65bdd3a913bd08eea41fd70fb49e5079" id="r_ga65bdd3a913bd08eea41fd70fb49e5079"><td class="memItemLeft" align="right" valign="top"><a id="ga65bdd3a913bd08eea41fd70fb49e5079" name="ga65bdd3a913bd08eea41fd70fb49e5079"></a>
-constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_AUDIO</b> = SDL_INIT_AUDIO</td></tr>
-<tr class="memdesc:ga65bdd3a913bd08eea41fd70fb49e5079"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_AUDIO</code> implies <code>SDL_INIT_EVENTS</code> <br /></td></tr>
-<tr class="separator:ga65bdd3a913bd08eea41fd70fb49e5079"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga63ca590321877744a1050ab71ff4e3c5" id="r_ga63ca590321877744a1050ab71ff4e3c5"><td class="memItemLeft" align="right" valign="top"><a id="ga63ca590321877744a1050ab71ff4e3c5" name="ga63ca590321877744a1050ab71ff4e3c5"></a>
-constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_VIDEO</b> = SDL_INIT_VIDEO</td></tr>
-<tr class="memdesc:ga63ca590321877744a1050ab71ff4e3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_VIDEO</code> implies <code>SDL_INIT_EVENTS</code>, should be initialized on the main thread <br /></td></tr>
-<tr class="separator:ga63ca590321877744a1050ab71ff4e3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5eee8ab4cd2f485ee9fa63baa8c1bc3e" id="r_ga5eee8ab4cd2f485ee9fa63baa8c1bc3e"><td class="memItemLeft" align="right" valign="top"><a id="ga5eee8ab4cd2f485ee9fa63baa8c1bc3e" name="ga5eee8ab4cd2f485ee9fa63baa8c1bc3e"></a>
-constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_JOYSTICK</b> = SDL_INIT_JOYSTICK</td></tr>
-<tr class="memdesc:ga5eee8ab4cd2f485ee9fa63baa8c1bc3e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_JOYSTICK</code> implies <code>SDL_INIT_EVENTS</code>, should be initialized on the same thread as SDL_INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD <br /></td></tr>
-<tr class="separator:ga5eee8ab4cd2f485ee9fa63baa8c1bc3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadaddabe3fa4d4f145f4b50ffd8baaac1" id="r_gadaddabe3fa4d4f145f4b50ffd8baaac1"><td class="memItemLeft" align="right" valign="top"><a id="gadaddabe3fa4d4f145f4b50ffd8baaac1" name="gadaddabe3fa4d4f145f4b50ffd8baaac1"></a>
-constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_HAPTIC</b> = SDL_INIT_HAPTIC</td></tr>
-<tr class="separator:gadaddabe3fa4d4f145f4b50ffd8baaac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad27cfffc691d96fe45bcca2daf80a83b" id="r_gad27cfffc691d96fe45bcca2daf80a83b"><td class="memItemLeft" align="right" valign="top"><a id="gad27cfffc691d96fe45bcca2daf80a83b" name="gad27cfffc691d96fe45bcca2daf80a83b"></a>
-constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_GAMEPAD</b> = SDL_INIT_GAMEPAD</td></tr>
-<tr class="memdesc:gad27cfffc691d96fe45bcca2daf80a83b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_GAMEPAD</code> implies <code>SDL_INIT_JOYSTICK</code> <br /></td></tr>
-<tr class="separator:gad27cfffc691d96fe45bcca2daf80a83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9a65ec9e9aeee92fbd1928335d689ef5" id="r_ga9a65ec9e9aeee92fbd1928335d689ef5"><td class="memItemLeft" align="right" valign="top"><a id="ga9a65ec9e9aeee92fbd1928335d689ef5" name="ga9a65ec9e9aeee92fbd1928335d689ef5"></a>
-constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_EVENTS</b> = SDL_INIT_EVENTS</td></tr>
-<tr class="separator:ga9a65ec9e9aeee92fbd1928335d689ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga075264ef70aa0e1e7832a07477f1246c" id="r_ga075264ef70aa0e1e7832a07477f1246c"><td class="memItemLeft" align="right" valign="top"><a id="ga075264ef70aa0e1e7832a07477f1246c" name="ga075264ef70aa0e1e7832a07477f1246c"></a>
-constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_SENSOR</b> = SDL_INIT_SENSOR</td></tr>
-<tr class="memdesc:ga075264ef70aa0e1e7832a07477f1246c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_SENSOR</code> implies <code>SDL_INIT_EVENTS</code> <br /></td></tr>
-<tr class="separator:ga075264ef70aa0e1e7832a07477f1246c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaecde345a1ce196a269e1f25c70b9878a" id="r_gaecde345a1ce196a269e1f25c70b9878a"><td class="memItemLeft" align="right" valign="top"><a id="gaecde345a1ce196a269e1f25c70b9878a" name="gaecde345a1ce196a269e1f25c70b9878a"></a>
-constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_CAMERA</b> = SDL_INIT_CAMERA</td></tr>
-<tr class="memdesc:gaecde345a1ce196a269e1f25c70b9878a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_CAMERA</code> implies <code>SDL_INIT_EVENTS</code> <br /></td></tr>
-<tr class="separator:gaecde345a1ce196a269e1f25c70b9878a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">AppResult</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>App result for Main callback </p>
@@ -338,25 +304,6 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
 <p>Returning SDL_APP_CONTINUE from these functions will let the app continue to run.</p>
 <p>See <a href="https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3">Main callbacks in SDL3</a> for complete details.</p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
-
-</div>
-</div>
-<a id="gafd0701244620c6298147fe6cc25a4771" name="gafd0701244620c6298147fe6cc25a4771"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafd0701244620c6298147fe6cc25a4771">&#9670;&#160;</a></span>InitFlags</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">SDL::InitFlags</a> = typedef SDL_InitFlags</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd>Init </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e" title="Initialize the SDL library.">InitSubSystem</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1InitFlagsExtra.html" title="Initialization flags for SDL satellite libraries.">InitFlagsExtra</a> </dd></dl>
 
 </div>
 </div>
@@ -631,7 +578,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
         <tr>
           <td class="memname">bool SDL::InitSubSystem </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a>&#160;</td>
           <td class="paramname"><em>flags</em></td><td>)</td>
           <td></td>
         </tr>
@@ -875,7 +822,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
         <tr>
           <td class="memname">void SDL::QuitSubSystem </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a>&#160;</td>
           <td class="paramname"><em>flags</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1266,7 +1213,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
         <tr>
           <td class="memname">bool SDL::WasInit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__InitFlags.html#ga3f64dea7a0f3ad5e14c81da630a0d27d">InitFlags</a>&#160;</td>
           <td class="paramname"><em>flags</em></td><td>)</td>
           <td></td>
         </tr>

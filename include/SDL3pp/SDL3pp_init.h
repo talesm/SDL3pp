@@ -43,9 +43,7 @@ namespace SDL {
  */
 
 /**
- * @name InitFlags
- *
- * Initialization flags
+ * @defgroup InitFlags Initialization flags
  *
  * @{
  */
@@ -53,11 +51,18 @@ namespace SDL {
 /**
  * Initialization flags for SDL
  *
- * @sa Init
+ * These are the flags which may be passed to InitSubSystem(). You should
+ * specify the subsystems which you will be using in your application.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
  * @sa InitSubSystem
  * @sa InitFlagsExtra
+ * @sa Quit
+ * @sa QuitSubSystem
+ * @sa WasInit
  */
-using InitFlags = SDL_InitFlags;
+using InitFlags = Uint32;
 
 /**
  * Initialization flags for SDL satellite libraries
@@ -73,42 +78,32 @@ using InitFlags = SDL_InitFlags;
 struct InitFlagsExtra
 {};
 
-/**
- * `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_AUDIO = SDL_INIT_AUDIO;
+constexpr InitFlags INIT_AUDIO =
+  SDL_INIT_AUDIO; ///< `INIT_AUDIO` implies `INIT_EVENTS`
 
 /**
- * `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main
- * thread
+ * `INIT_VIDEO` implies `INIT_EVENTS`, should be initialized on the main thread
  */
-constexpr inline InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
+constexpr InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
 
 /**
- * `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the
- * same thread as SDL_INIT_VIDEO on Windows if you don't set
- * SDL_HINT_JOYSTICK_THREAD
+ * `INIT_JOYSTICK` implies `INIT_EVENTS`, should be initialized on the same
+ * thread as INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD
  */
-constexpr inline InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
+constexpr InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
 
-constexpr inline InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC;
+constexpr InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC; ///< HAPTIC
 
-/**
- * `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`
- */
-constexpr inline InitFlags INIT_GAMEPAD = SDL_INIT_GAMEPAD;
+constexpr InitFlags INIT_GAMEPAD =
+  SDL_INIT_GAMEPAD; ///< `INIT_GAMEPAD` implies `INIT_JOYSTICK`
 
-constexpr inline InitFlags INIT_EVENTS = SDL_INIT_EVENTS;
+constexpr InitFlags INIT_EVENTS = SDL_INIT_EVENTS; ///< EVENTS
 
-/**
- * `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_SENSOR = SDL_INIT_SENSOR;
+constexpr InitFlags INIT_SENSOR =
+  SDL_INIT_SENSOR; ///< `INIT_SENSOR` implies `INIT_EVENTS`
 
-/**
- * `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_CAMERA = SDL_INIT_CAMERA;
+constexpr InitFlags INIT_CAMERA =
+  SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
 
 /// @}
 
@@ -591,7 +586,7 @@ public:
   // Copy ctor
   SDL(const SDL& other) = delete;
 
-  // Move ctor
+  /// Move ctor
   constexpr SDL(SDL&& other)
     : m_active(other.m_active)
   {
@@ -601,6 +596,7 @@ public:
   // Dtor
   ~SDL() { reset(); }
 
+  /// Assignment operator
   SDL& operator=(SDL rhs)
   {
     std::swap(m_active, rhs.m_active);

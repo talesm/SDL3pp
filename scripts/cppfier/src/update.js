@@ -125,8 +125,10 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix = "") {
   }
   /** @type {Change[]} */
   const changes = [];
+  const processed = new Set();
   let sourceIndex = 0;
   for (const targetName of targetNames) {
+    processed.add(targetName);
     const targetEntry = targetEntries[targetName];
     let index = sourceNames.indexOf(targetName, sourceIndex);
     if (index == -1) {
@@ -137,17 +139,56 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix = "") {
         replacement: generateEntry(targetEntry, prefix) + "\n",
       });
     } else if (sourceIndex < sourceNames.length) {
-      if (sourceIndex < index) {
-        logEntryDeletion(Object.values(sourceEntries).slice(sourceIndex, index));
+      let deleteBegin = null;
+      if (sourceIndex <= index) {
+        let deleteEnd = null;
+        while (sourceIndex < index) {
+          const sourceName = sourceNames[sourceIndex];
+          const sourceEntry = sourceEntries[sourceName];
+          if (!processed.has(sourceName) && sourceEntries[sourceName]) {
+            begin = getBegin(sourceEntry);
+            if (deleteBegin != null) {
+              changes.push({
+                begin: deleteBegin,
+                end: deleteEnd
+              });
+            }
+            break;
+          }
+          logEntryDeletion(sourceEntry);
+          const currBegin = getBegin(sourceEntry);
+          if (deleteEnd != null && currBegin !== deleteEnd) {
+            if (deleteBegin != null) {
+              changes.push({
+                begin: deleteBegin,
+                end: deleteEnd
+              });
+            }
+            deleteBegin = currBegin;
+          } else if (deleteBegin == null) deleteBegin = currBegin;
+          deleteEnd = getEnd(sourceEntry);
+          sourceIndex += 1;
+        }
+      } else {
+        begin = getBegin(sourceEntries[sourceNames[sourceIndex]]);
       }
-      begin = getBegin(sourceEntries[sourceNames[sourceIndex]]);
-      const sourceEntry = sourceEntries[targetName];
-      const sourceEntryEnd = getEnd(sourceEntry);
-      changes.push(...checkEntryChanges(targetName, sourceEntry, targetEntry, begin, sourceEntryEnd, prefix));
-      begin = sourceEntryEnd;
-      sourceIndex = index + 1;
+      if (sourceIndex === index) {
+        const sourceEntry = sourceEntries[targetName];
+        const sourceEntryBegin = deleteBegin ?? getBegin(sourceEntry);
+        const sourceEntryEnd = getEnd(sourceEntry);
+        changes.push(...checkEntryChanges(targetName, sourceEntry, targetEntry, sourceEntryBegin, sourceEntryEnd, prefix));
+        begin = sourceEntryEnd;
+        sourceIndex++;
+      } else {
+        logEntryAddition(targetEntry, begin);
+        changes.push({
+          begin,
+          end: begin,
+          replacement: generateEntry(targetEntry, prefix) + '\n',
+        });
+      }
     } else {
-      logEntryAddition(targetEntry, begin);
+      logEntryAddition(targetEntry, end);
       changes.push({
         begin: end,
         end,
@@ -363,7 +404,7 @@ function generateEntry(entry, prefix) {
         return doc + template + generateStruct(entry, prefix);
       case "var":
         const varStr = generateVar(entry, prefix);
-        if (entry.doc && !entry.doc.includes("\n") && (entry.doc.length + varStr.length + prefix.length) < 80) {
+        if (entry.doc && !entry.doc.includes("\n") && entry.doc.length <= 50) {
           return template + varStr + " ///< " + entry.doc;
         }
         return doc + template + varStr;
