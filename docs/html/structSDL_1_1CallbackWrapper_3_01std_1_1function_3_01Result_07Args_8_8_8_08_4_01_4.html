@@ -89,20 +89,23 @@ $(function() {
 Public Types</h2></td></tr>
 <tr class="memitem:aec3b3e063c680d493ea7ff389b854f02" id="r_aec3b3e063c680d493ea7ff389b854f02"><td class="memItemLeft" align="right" valign="top"><a id="aec3b3e063c680d493ea7ff389b854f02" name="aec3b3e063c680d493ea7ff389b854f02"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>ValueType</b> = std::function&lt; Result(Args...)&gt;</td></tr>
+<tr class="memdesc:aec3b3e063c680d493ea7ff389b854f02"><td class="mdescLeft">&#160;</td><td class="mdescRight">The wrapped std::function type. <br /></td></tr>
 <tr class="separator:aec3b3e063c680d493ea7ff389b854f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7eb5d8619da99489183c9ae4fb2ffdff" id="r_a7eb5d8619da99489183c9ae4fb2ffdff"><td class="memItemLeft" align="right" valign="top">static ValueType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">Wrap</a> (ValueType &amp;&amp;cb)</td></tr>
+<tr class="memitem:a7eb5d8619da99489183c9ae4fb2ffdff" id="r_a7eb5d8619da99489183c9ae4fb2ffdff"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">Wrap</a> (<a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> &amp;&amp;cb)</td></tr>
 <tr class="memdesc:a7eb5d8619da99489183c9ae4fb2ffdff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the callback into a void* pointer.  <br /></td></tr>
 <tr class="separator:a7eb5d8619da99489183c9ae4fb2ffdff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23ffb37123f536c10bf57c177d541b5a" id="r_a23ffb37123f536c10bf57c177d541b5a"><td class="memItemLeft" align="right" valign="top"><a id="a23ffb37123f536c10bf57c177d541b5a" name="a23ffb37123f536c10bf57c177d541b5a"></a>
 static Result&#160;</td><td class="memItemRight" valign="bottom"><b>CallOnce</b> (void *handle, Args... args)</td></tr>
+<tr class="memdesc:a23ffb37123f536c10bf57c177d541b5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call once and release. <br /></td></tr>
 <tr class="separator:a23ffb37123f536c10bf57c177d541b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52275d6ea5de9b6a8cb695788f17ab5b" id="r_a52275d6ea5de9b6a8cb695788f17ab5b"><td class="memItemLeft" align="right" valign="top"><a id="a52275d6ea5de9b6a8cb695788f17ab5b" name="a52275d6ea5de9b6a8cb695788f17ab5b"></a>
 static Result&#160;</td><td class="memItemRight" valign="bottom"><b>CallOnceSuffixed</b> (Args... args, void *handle)</td></tr>
+<tr class="memdesc:a52275d6ea5de9b6a8cb695788f17ab5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call once and release with suffix handle. <br /></td></tr>
 <tr class="separator:a52275d6ea5de9b6a8cb695788f17ab5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aa8ec0153862902dfe98f0ec6b9c47c" id="r_a2aa8ec0153862902dfe98f0ec6b9c47c"><td class="memItemLeft" align="right" valign="top">static ValueType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">release</a> (void *handle)</td></tr>
+<tr class="memitem:a2aa8ec0153862902dfe98f0ec6b9c47c" id="r_a2aa8ec0153862902dfe98f0ec6b9c47c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">release</a> (void *handle)</td></tr>
 <tr class="memdesc:a2aa8ec0153862902dfe98f0ec6b9c47c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership from the function and delete handle.  <br /></td></tr>
 <tr class="separator:a2aa8ec0153862902dfe98f0ec6b9c47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -110,11 +113,11 @@ static Result&#160;</td><td class="memItemRight" valign="bottom"><b>CallOnceSuff
 <div class="textblock"><div class="compoundTemplParams">template&lt;class Result, class... Args&gt;<br />
 struct SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;</div><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">F</td><td>the function type</td></tr>
+    <tr><td class="paramname">F</td><td>the function type.</td></tr>
   </table>
   </dd>
 </dl>
-<p>For the simpler case, where no transformation is done on the parameters, you can just pass CallOnce() or CallOnceSuffixed(). Otherwise use <a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c" title="Transfer ownership from the function and delete handle.">release()</a>.</p>
+<p>For the simpler case, where no transformation is done on the parameters, you can just pass <a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a23ffb37123f536c10bf57c177d541b5a" title="Call once and release.">CallOnce()</a> or <a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a52275d6ea5de9b6a8cb695788f17ab5b" title="Call once and release with suffix handle.">CallOnceSuffixed()</a>. Otherwise use <a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c" title="Transfer ownership from the function and delete handle.">release()</a>.</p>
 <p>In all cases, use Wrap to change the callback into a void* pointer. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2aa8ec0153862902dfe98f0ec6b9c47c" name="a2aa8ec0153862902dfe98f0ec6b9c47c"></a>
@@ -129,7 +132,7 @@ template&lt;class Result , class... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static ValueType <a class="el" href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a>&lt; std::function&lt; Result(Args...)&gt; &gt;::release </td>
+          <td class="memname">static <a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> <a class="el" href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a>&lt; std::function&lt; Result(Args...)&gt; &gt;::release </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>handle</em></td><td>)</td>
@@ -144,7 +147,7 @@ template&lt;class Result , class... Args&gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>the handle to be released</td></tr>
+    <tr><td class="paramname">handle</td><td>the handle to be released.</td></tr>
   </table>
   </dd>
 </dl>
@@ -164,9 +167,9 @@ template&lt;class Result , class... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static ValueType * <a class="el" href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a>&lt; std::function&lt; Result(Args...)&gt; &gt;::Wrap </td>
+          <td class="memname">static <a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> * <a class="el" href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a>&lt; std::function&lt; Result(Args...)&gt; &gt;::Wrap </td>
           <td>(</td>
-          <td class="paramtype">ValueType &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>

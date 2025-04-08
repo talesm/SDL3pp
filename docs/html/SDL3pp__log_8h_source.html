@@ -332,7 +332,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="foldopen" id="foldopen00730" data-start="{" data-end="}">
 <div class="line"><a id="l00730" name="l00730"></a><span class="lineno"><a class="line" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d">  730</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d">SetLogOutputFunction</a>(<a class="code hl_typedef" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a> callback, <span class="keywordtype">void</span>* userdata)</div>
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>{</div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>  <a class="code hl_struct" href="structSDL_1_1UniqueWrapper.html">UniqueWrapper&lt;LogOutputFunctionCB&gt;::erase</a>();</div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>  <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597">UniqueWrapper&lt;LogOutputFunctionCB&gt;::erase</a>();</div>
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>  <span class="keywordflow">return</span> SDL_SetLogOutputFunction(callback, userdata);</div>
 <div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>}</div>
 </div>
@@ -387,7 +387,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryLog_html_gaae40ad42b1a6520c9a29192c24b5dce6"><div class="ttname"><a href="group__CategoryLog.html#gaae40ad42b1a6520c9a29192c24b5dce6">SDL::GetLogOutputFunction</a></div><div class="ttdeci">LogOutputFunctionCB GetLogOutputFunction()</div><div class="ttdoc">Get the current log output function.</div><div class="ttdef"><b>Definition</b> SDL3pp_log.h:697</div></div>
 <div class="ttc" id="agroup__CategoryLog_html_gad4438e5c07b0ca31e83093d4c973f1a2"><div class="ttname"><a href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2">SDL::GetDefaultLogOutputFunction</a></div><div class="ttdeci">LogOutputFunction GetDefaultLogOutputFunction()</div><div class="ttdoc">Get the default log output function.</div><div class="ttdef"><b>Definition</b> SDL3pp_log.h:658</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
-<div class="ttc" id="astructSDL_1_1UniqueWrapper_html"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html">SDL::UniqueWrapper</a></div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:145</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html">SDL::UniqueWrapper</a></div><div class="ttdoc">Stored Wrapper unique by type result callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:187</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_ad40be15b116d0b9c7b2fd66d72ceb597"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597">SDL::UniqueWrapper::erase</a></div><div class="ttdeci">static void erase()</div><div class="ttdoc">Erase value from store.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:236</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

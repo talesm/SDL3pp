@@ -193,7 +193,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="foldopen" id="foldopen00392" data-start="{" data-end="}">
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga316ad0cf487c0d9ca4fa27c1c23ee2cf">  392</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryTimer.html#ga316ad0cf487c0d9ca4fa27c1c23ee2cf">RemoveTimer</a>(<a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <span class="keywordtype">id</span>)</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>{</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  <span class="keyword">delete</span> <a class="code hl_struct" href="structSDL_1_1KeyValueWrapper.html">KeyValueWrapper&lt;TimerID, TimerCB*&gt;::release</a>(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  <span class="keyword">delete</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#aa6baae1afe60baa7aebc2a0008e31ec4">KeyValueWrapper&lt;TimerID, TimerCB*&gt;::release</a>(<span class="keywordtype">id</span>);</div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  <span class="keywordflow">return</span> SDL_RemoveTimer(<span class="keywordtype">id</span>);</div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>}</div>
 </div>
@@ -219,7 +219,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryTimer_html_gada9d792477503fe89dade93666a5df44"><div class="ttname"><a href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">SDL::Time::FromPosix</a></div><div class="ttdeci">static constexpr Time FromPosix(Sint64 time)</div><div class="ttdoc">Convert seconds to nanoseconds.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:43</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
 <div class="ttc" id="astructSDL_1_1CallbackWrapper_html"><div class="ttname"><a href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a></div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:20</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a></div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:80</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a></div><div class="ttdoc">Wrapper key to value result callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:91</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_aa6baae1afe60baa7aebc2a0008e31ec4"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#aa6baae1afe60baa7aebc2a0008e31ec4">SDL::KeyValueWrapper::release</a></div><div class="ttdeci">static ValueType release(KeyType key)</div><div class="ttdoc">Return unwrapped value associated by key and remove association.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:132</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
