@@ -196,7 +196,42 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix = "") {
       });
     }
   }
-
+  let deleteBegin = null;
+  let deleteEnd = null;
+  while (sourceIndex < sourceNames.length) {
+    const sourceName = sourceNames[sourceIndex];
+    const sourceEntry = sourceEntries[sourceName];
+    if (!targetEntries[sourceName]) {
+      begin = getBegin(sourceEntry);
+      if (deleteBegin != null) {
+        changes.push({
+          begin: deleteBegin,
+          end: deleteEnd
+        });
+      }
+      deleteBegin = null;
+    } else {
+      logEntryDeletion(sourceEntry);
+      const currBegin = getBegin(sourceEntry);
+      if (deleteEnd != null && currBegin !== deleteEnd) {
+        if (deleteBegin != null) {
+          changes.push({
+            begin: deleteBegin,
+            end: deleteEnd
+          });
+        }
+        deleteBegin = currBegin;
+      } else if (deleteBegin == null) deleteBegin = currBegin;
+      deleteEnd = getEnd(sourceEntry);
+    }
+    sourceIndex += 1;
+  }
+  if (deleteBegin) {
+    changes.push({
+      begin: deleteBegin,
+      end: deleteEnd
+    });
+  }
   return changes;
 }
 

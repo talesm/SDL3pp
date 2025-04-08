@@ -5526,6 +5526,137 @@ const transform = {
         }
       }
     },
+    "SDL_tray.h": {
+      enumerations: {
+        "SDL_TrayEntryFlags": {
+          prefix: "SDL_TRAYENTRY_",
+          includeAfter: "__begin",
+        }
+      },
+      includeAfter: {
+        "__begin": {
+          name: "TrayMenu",
+          kind: "forward"
+        },
+        "SDL_Tray": [{
+          name: "TrayCallback"
+        }, {
+          name: "TrayCB",
+          kind: "alias",
+          type: "std::function<void(TrayEntryRef)>"
+        }],
+        "SDL_InsertTrayEntryAt": {
+          name: "TrayMenu::AppendEntry",
+          kind: "function",
+          type: "TrayEntry",
+          static: false,
+          parameters: [
+            {
+              type: "StringParam",
+              name: "label"
+            },
+            {
+              type: "TrayEntryFlags",
+              name: "flags"
+            },
+          ],
+        }
+      },
+      resources: {
+        "SDL_Tray": {
+          entries: {
+            "SDL_CreateTray": "ctor",
+            "SDL_SetTrayIcon": "function",
+            "SDL_SetTrayTooltip": "function",
+            "SDL_UpdateTrays": "function",
+            "SDL_DestroyTray": "function"
+          }
+        },
+        "SDL_TrayEntry": {
+          free: "SDL_RemoveTrayEntry",
+          entries: {
+            "SDL_CreateTraySubmenu": {
+              name: "CreateSubmenu",
+            },
+            "SDL_GetTraySubmenu": {
+              name: "GetSubmenu",
+            },
+            "SDL_SetTrayEntryLabel": {
+              name: "SetLabel",
+            },
+            "SDL_GetTrayEntryLabel": {
+              name: "GetLabel",
+              immutable: true,
+            },
+            "SDL_SetTrayEntryChecked": {
+              name: "SetChecked",
+            },
+            "SDL_GetTrayEntryChecked": {
+              name: "GetChecked",
+              immutable: true,
+            },
+            "SDL_SetTrayEntryEnabled": {
+              name: "SetEnabled",
+            },
+            "SDL_GetTrayEntryEnabled": {
+              name: "GetEnabled",
+              immutable: true,
+            },
+            "SetCallback": {
+              kind: "function",
+              type: "void",
+              parameters: [{
+                type: "TrayCB",
+                name: "callback",
+              }],
+            },
+            "SDL_SetTrayEntryCallback": {
+              name: "SetCallback",
+            },
+            "SDL_ClickTrayEntry": {
+              name: "Click",
+            },
+            "SDL_GetTrayEntryParent": {
+              name: "GetParent",
+            },
+            "SDL_RemoveTrayEntry": {
+              name: "Remove",
+            },
+          }
+        },
+      },
+      wrappers: {
+        "SDL_TrayMenu": {},
+      },
+      transform: {
+        "SDL_CreateTrayMenu": {
+          name: "TrayBase::CreateMenu",
+        },
+        "SDL_GetTrayMenu": {
+          name: "TrayBase::GetMenu",
+          immutable: true,
+        },
+        "SDL_GetTrayEntries": {
+          name: "TrayMenu::GetEntries",
+          type: "RefArray<TrayEntry>",
+          parameters: [{}],
+        },
+        "SDL_InsertTrayEntryAt": {
+          name: "TrayMenu::InsertEntry",
+          type: "TrayEntry",
+        },
+        "SDL_GetTrayMenuParentEntry": {
+          name: "TrayMenu::GetParentEntry",
+          type: "TrayEntryRef",
+          immutable: true,
+        },
+        "SDL_GetTrayMenuParentTray": {
+          name: "TrayMenu::GetParentTray",
+          type: "TrayRef",
+          immutable: true,
+        }
+      }
+    },
     "SDL_video.h": {
       includeAfter: {
         "__begin": [

@@ -30,6 +30,7 @@
     "SDL_power.h",
     "SDL_messagebox.h",
     "SDL_dialog.h",
+    "SDL_tray.h",
     "SDL_locale.h",
     "SDL_stdinc.h",
     "SDL_guid.h",

@@ -17,5 +17,12 @@ var searchData=
   ['timercb_14',['TimerCB',['../group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
   ['timerid_15',['TimerID',['../group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146',1,'SDL']]],
   ['touchfingerevent_16',['TouchFingerEvent',['../group__CategoryEvents.html#ga4e1360399f8cfe47ae4efacbdcf59040',1,'SDL']]],
-  ['transfercharacteristics_17',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]]
+  ['transfercharacteristics_17',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]],
+  ['tray_18',['Tray',['../group__CategoryTray.html#ga3667759165d594f48077dcd47f9f6877',1,'SDL']]],
+  ['traycallback_19',['TrayCallback',['../group__CategoryTray.html#gadc1822495fb3688687bf1d837d3cce20',1,'SDL']]],
+  ['traycb_20',['TrayCB',['../group__CategoryTray.html#gafa724f0f9ab6ed6c855bc2f8fa8738d0',1,'SDL']]],
+  ['trayentry_21',['TrayEntry',['../group__CategoryTray.html#ga39ae8614327fbf46c98b723008631f73',1,'SDL']]],
+  ['trayentryflags_22',['TrayEntryFlags',['../group__CategoryTray.html#gae3f0fe92d36aa87cc4f5f720c5064c4b',1,'SDL']]],
+  ['trayentryref_23',['TrayEntryRef',['../group__CategoryTray.html#gab802fdd6f266269656e98ca9681ef785',1,'SDL']]],
+  ['trayref_24',['TrayRef',['../group__CategoryTray.html#ga7668a2befbc2fc0b22aaf0d96b8f9ead',1,'SDL']]]
 ];

@@ -98,7 +98,7 @@ Process Control                     | SDL3pp_process.h
 @ref CategoryPower                  | SDL3pp_power.h           
 @ref CategoryMessagebox             | SDL3pp_messagebox.h 
 @ref CategoryDialog                 | SDL3pp_dialog.h         
-System Tray                         | SDL3pp_tray.h             
+@ref CategoryTray                   | SDL3pp_tray.h             
 @ref CategoryLocale                 | SDL3pp_locale.h
 ~~Platform-specific Functionality~~ | SDL3pp_system.h 
 @ref CategoryStdinc                 | SDL3pp_stdinc.h
@@ -185,6 +185,7 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryPower
 @addtogroup CategoryMessagebox
 @addtogroup CategoryDialog
+@addtogroup CategoryTray
 @addtogroup CategoryLocale
 @addtogroup CategoryStdinc
 @addtogroup CategoryGUID

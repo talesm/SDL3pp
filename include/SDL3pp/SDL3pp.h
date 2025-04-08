@@ -62,7 +62,7 @@
 #include "SDL3pp_time.h"
 #include "SDL3pp_timer.h"
 // #include "SDL3pp_touch.h"
-// #include "SDL3pp_tray.h"
+#include "SDL3pp_tray.h"
 #include "SDL3pp_version.h"
 #include "SDL3pp_video.h"
 

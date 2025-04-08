@@ -21849,6 +21849,401 @@
         }
       }
     },
+    "SDL_tray.h": {
+      "name": "SDL_tray.h",
+      "doc": "# CategoryTray\n\nSDL offers a way to add items to the \"system tray\" (more correctly called\nthe \"notification area\" on Windows). On platforms that offer this concept,\nan SDL app can add a tray icon, submenus, checkboxes, and clickable\nentries, and register a callback that is fired when the user clicks on\nthese pieces.",
+      "entries": {
+        "SDL_Tray": {
+          "doc": "An opaque handle representing a toplevel system tray object.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_Tray",
+          "kind": "alias",
+          "type": "struct SDL_Tray"
+        },
+        "SDL_TrayMenu": {
+          "doc": "An opaque handle representing a menu/submenu on a system tray object.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_TrayMenu",
+          "kind": "alias",
+          "type": "struct SDL_TrayMenu"
+        },
+        "SDL_TrayEntry": {
+          "doc": "An opaque handle representing an entry on a system tray object.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_TrayEntry",
+          "kind": "alias",
+          "type": "struct SDL_TrayEntry"
+        },
+        "SDL_TrayEntryFlags": {
+          "doc": "Flags that control the creation of system tray entries.\n\nSome of these flags are required; exactly one of them must be specified at\nthe time a tray entry is created. Other flags are optional; zero or more of\nthose can be OR'ed together with the required flag.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_InsertTrayEntryAt",
+          "name": "SDL_TrayEntryFlags",
+          "kind": "alias",
+          "type": "Uint32"
+        },
+        "SDL_TRAYENTRY_BUTTON": {
+          "doc": "Make the entry a simple button. Required.",
+          "name": "SDL_TRAYENTRY_BUTTON",
+          "kind": "def",
+          "value": "0x00000001u"
+        },
+        "SDL_TRAYENTRY_CHECKBOX": {
+          "doc": "Make the entry a checkbox. Required.",
+          "name": "SDL_TRAYENTRY_CHECKBOX",
+          "kind": "def",
+          "value": "0x00000002u"
+        },
+        "SDL_TRAYENTRY_SUBMENU": {
+          "doc": "Prepare the entry to have a submenu. Required",
+          "name": "SDL_TRAYENTRY_SUBMENU",
+          "kind": "def",
+          "value": "0x00000004u"
+        },
+        "SDL_TRAYENTRY_DISABLED": {
+          "doc": "Make the entry disabled. Optional.",
+          "name": "SDL_TRAYENTRY_DISABLED",
+          "kind": "def",
+          "value": "0x80000000u"
+        },
+        "SDL_TRAYENTRY_CHECKED": {
+          "doc": "Make the entry checked. This is valid only for checkboxes. Optional.",
+          "name": "SDL_TRAYENTRY_CHECKED",
+          "kind": "def",
+          "value": "0x40000000u"
+        },
+        "SDL_TrayCallback": {
+          "doc": "A callback that is invoked when a tray entry is selected.\n\n\\param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n\\param entry the tray entry that was selected.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetTrayEntryCallback",
+          "name": "SDL_TrayCallback",
+          "kind": "callback",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "userdata",
+              "type": "void *"
+            },
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_CreateTray": {
+          "doc": "Create an icon to be placed in the operating system's tray, or equivalent.\n\nMany platforms advise not using a system tray unless persistence is a\nnecessary feature. Avoid needlessly creating a tray icon, as the user may\nfeel like it clutters their interface.\n\nUsing tray icons require the video subsystem.\n\n\\param icon a surface to be used as icon. May be NULL.\n\\param tooltip a tooltip to be displayed when the mouse hovers the icon in\n               UTF-8 encoding. Not supported on all platforms. May be NULL.\n\\returns The newly created system tray icon.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateTrayMenu\n\\sa SDL_GetTrayMenu\n\\sa SDL_DestroyTray",
+          "name": "SDL_CreateTray",
+          "kind": "function",
+          "type": "SDL_Tray *",
+          "parameters": [
+            {
+              "name": "icon",
+              "type": "SDL_Surface *"
+            },
+            {
+              "name": "tooltip",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_SetTrayIcon": {
+          "doc": "Updates the system tray icon's icon.\n\n\\param tray the tray icon to be updated.\n\\param icon the new icon. May be NULL.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateTray",
+          "name": "SDL_SetTrayIcon",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "tray",
+              "type": "SDL_Tray *"
+            },
+            {
+              "name": "icon",
+              "type": "SDL_Surface *"
+            }
+          ]
+        },
+        "SDL_SetTrayTooltip": {
+          "doc": "Updates the system tray icon's tooltip.\n\n\\param tray the tray icon to be updated.\n\\param tooltip the new tooltip in UTF-8 encoding. May be NULL.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateTray",
+          "name": "SDL_SetTrayTooltip",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "tray",
+              "type": "SDL_Tray *"
+            },
+            {
+              "name": "tooltip",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_CreateTrayMenu": {
+          "doc": "Create a menu for a system tray.\n\nThis should be called at most once per tray icon.\n\nThis function does the same thing as SDL_CreateTraySubmenu(), except that\nit takes a SDL_Tray instead of a SDL_TrayEntry.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n\\param tray the tray to bind the menu to.\n\\returns the newly created menu.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateTray\n\\sa SDL_GetTrayMenu\n\\sa SDL_GetTrayMenuParentTray",
+          "name": "SDL_CreateTrayMenu",
+          "kind": "function",
+          "type": "SDL_TrayMenu *",
+          "parameters": [
+            {
+              "name": "tray",
+              "type": "SDL_Tray *"
+            }
+          ]
+        },
+        "SDL_CreateTraySubmenu": {
+          "doc": "Create a submenu for a system tray entry.\n\nThis should be called at most once per tray entry.\n\nThis function does the same thing as SDL_CreateTrayMenu, except that it\ntakes a SDL_TrayEntry instead of a SDL_Tray.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n\\param entry the tray entry to bind the menu to.\n\\returns the newly created menu.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_InsertTrayEntryAt\n\\sa SDL_GetTraySubmenu\n\\sa SDL_GetTrayMenuParentEntry",
+          "name": "SDL_CreateTraySubmenu",
+          "kind": "function",
+          "type": "SDL_TrayMenu *",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_GetTrayMenu": {
+          "doc": "Gets a previously created tray menu.\n\nYou should have called SDL_CreateTrayMenu() on the tray object. This\nfunction allows you to fetch it again later.\n\nThis function does the same thing as SDL_GetTraySubmenu(), except that it\ntakes a SDL_Tray instead of a SDL_TrayEntry.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n\\param tray the tray entry to bind the menu to.\n\\returns the newly created menu.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateTray\n\\sa SDL_CreateTrayMenu",
+          "name": "SDL_GetTrayMenu",
+          "kind": "function",
+          "type": "SDL_TrayMenu *",
+          "parameters": [
+            {
+              "name": "tray",
+              "type": "SDL_Tray *"
+            }
+          ]
+        },
+        "SDL_GetTraySubmenu": {
+          "doc": "Gets a previously created tray entry submenu.\n\nYou should have called SDL_CreateTraySubmenu() on the entry object. This\nfunction allows you to fetch it again later.\n\nThis function does the same thing as SDL_GetTrayMenu(), except that it\ntakes a SDL_TrayEntry instead of a SDL_Tray.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n\\param entry the tray entry to bind the menu to.\n\\returns the newly created menu.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_InsertTrayEntryAt\n\\sa SDL_CreateTraySubmenu",
+          "name": "SDL_GetTraySubmenu",
+          "kind": "function",
+          "type": "SDL_TrayMenu *",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_GetTrayEntries": {
+          "doc": "Returns a list of entries in the menu, in order.\n\n\\param menu The menu to get entries from.\n\\param count An optional pointer to obtain the number of entries in the\n             menu.\n\\returns a NULL-terminated list of entries within the given menu. The\n         pointer becomes invalid when any function that inserts or deletes\n         entries in the menu is called.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_RemoveTrayEntry\n\\sa SDL_InsertTrayEntryAt",
+          "name": "SDL_GetTrayEntries",
+          "kind": "function",
+          "type": "const SDL_TrayEntry **",
+          "parameters": [
+            {
+              "name": "menu",
+              "type": "SDL_TrayMenu *"
+            },
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_RemoveTrayEntry": {
+          "doc": "Removes a tray entry.\n\n\\param entry The entry to be deleted.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTrayEntries\n\\sa SDL_InsertTrayEntryAt",
+          "name": "SDL_RemoveTrayEntry",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_InsertTrayEntryAt": {
+          "doc": "Insert a tray entry at a given position.\n\nIf label is NULL, the entry will be a separator. Many functions won't work\nfor an entry that is a separator.\n\nAn entry does not need to be destroyed; it will be destroyed with the tray.\n\n\\param menu the menu to append the entry to.\n\\param pos the desired position for the new entry. Entries at or following\n           this place will be moved. If pos is -1, the entry is appended.\n\\param label the text to be displayed on the entry, in UTF-8 encoding, or\n             NULL for a separator.\n\\param flags a combination of flags, some of which are mandatory.\n\\returns the newly created entry, or NULL if pos is out of bounds.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_TrayEntryFlags\n\\sa SDL_GetTrayEntries\n\\sa SDL_RemoveTrayEntry\n\\sa SDL_GetTrayEntryParent",
+          "name": "SDL_InsertTrayEntryAt",
+          "kind": "function",
+          "type": "SDL_TrayEntry *",
+          "parameters": [
+            {
+              "name": "menu",
+              "type": "SDL_TrayMenu *"
+            },
+            {
+              "name": "pos",
+              "type": "int"
+            },
+            {
+              "name": "label",
+              "type": "const char *"
+            },
+            {
+              "name": "flags",
+              "type": "SDL_TrayEntryFlags"
+            }
+          ]
+        },
+        "SDL_SetTrayEntryLabel": {
+          "doc": "Sets the label of an entry.\n\nAn entry cannot change between a separator and an ordinary entry; that is,\nit is not possible to set a non-NULL label on an entry that has a NULL\nlabel (separators), or to set a NULL label to an entry that has a non-NULL\nlabel. The function will silently fail if that happens.\n\n\\param entry the entry to be updated.\n\\param label the new label for the entry in UTF-8 encoding.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTrayEntries\n\\sa SDL_InsertTrayEntryAt\n\\sa SDL_GetTrayEntryLabel",
+          "name": "SDL_SetTrayEntryLabel",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            },
+            {
+              "name": "label",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_GetTrayEntryLabel": {
+          "doc": "Gets the label of an entry.\n\nIf the returned value is NULL, the entry is a separator.\n\n\\param entry the entry to be read.\n\\returns the label of the entry in UTF-8 encoding.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTrayEntries\n\\sa SDL_InsertTrayEntryAt\n\\sa SDL_SetTrayEntryLabel",
+          "name": "SDL_GetTrayEntryLabel",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_SetTrayEntryChecked": {
+          "doc": "Sets whether or not an entry is checked.\n\nThe entry must have been created with the SDL_TRAYENTRY_CHECKBOX flag.\n\n\\param entry the entry to be updated.\n\\param checked true if the entry should be checked; false otherwise.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTrayEntries\n\\sa SDL_InsertTrayEntryAt\n\\sa SDL_GetTrayEntryChecked",
+          "name": "SDL_SetTrayEntryChecked",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            },
+            {
+              "name": "checked",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_GetTrayEntryChecked": {
+          "doc": "Gets whether or not an entry is checked.\n\nThe entry must have been created with the SDL_TRAYENTRY_CHECKBOX flag.\n\n\\param entry the entry to be read.\n\\returns true if the entry is checked; false otherwise.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTrayEntries\n\\sa SDL_InsertTrayEntryAt\n\\sa SDL_SetTrayEntryChecked",
+          "name": "SDL_GetTrayEntryChecked",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_SetTrayEntryEnabled": {
+          "doc": "Sets whether or not an entry is enabled.\n\n\\param entry the entry to be updated.\n\\param enabled true if the entry should be enabled; false otherwise.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTrayEntries\n\\sa SDL_InsertTrayEntryAt\n\\sa SDL_GetTrayEntryEnabled",
+          "name": "SDL_SetTrayEntryEnabled",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_GetTrayEntryEnabled": {
+          "doc": "Gets whether or not an entry is enabled.\n\n\\param entry the entry to be read.\n\\returns true if the entry is enabled; false otherwise.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTrayEntries\n\\sa SDL_InsertTrayEntryAt\n\\sa SDL_SetTrayEntryEnabled",
+          "name": "SDL_GetTrayEntryEnabled",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_SetTrayEntryCallback": {
+          "doc": "Sets a callback to be invoked when the entry is selected.\n\n\\param entry the entry to be updated.\n\\param callback a callback to be invoked when the entry is selected.\n\\param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTrayEntries\n\\sa SDL_InsertTrayEntryAt",
+          "name": "SDL_SetTrayEntryCallback",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            },
+            {
+              "name": "callback",
+              "type": "SDL_TrayCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_ClickTrayEntry": {
+          "doc": "Simulate a click on a tray entry.\n\n\\param entry The entry to activate.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_ClickTrayEntry",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_DestroyTray": {
+          "doc": "Destroys a tray object.\n\nThis also destroys all associated menus and entries.\n\n\\param tray the tray icon to be destroyed.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateTray",
+          "name": "SDL_DestroyTray",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "tray",
+              "type": "SDL_Tray *"
+            }
+          ]
+        },
+        "SDL_GetTrayEntryParent": {
+          "doc": "Gets the menu containing a certain tray entry.\n\n\\param entry the entry for which to get the parent menu.\n\\returns the parent menu.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_InsertTrayEntryAt",
+          "name": "SDL_GetTrayEntryParent",
+          "kind": "function",
+          "type": "SDL_TrayMenu *",
+          "parameters": [
+            {
+              "name": "entry",
+              "type": "SDL_TrayEntry *"
+            }
+          ]
+        },
+        "SDL_GetTrayMenuParentEntry": {
+          "doc": "Gets the entry for which the menu is a submenu, if the current menu is a\nsubmenu.\n\nEither this function or SDL_GetTrayMenuParentTray() will return non-NULL\nfor any given menu.\n\n\\param menu the menu for which to get the parent entry.\n\\returns the parent entry, or NULL if this menu is not a submenu.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateTraySubmenu\n\\sa SDL_GetTrayMenuParentTray",
+          "name": "SDL_GetTrayMenuParentEntry",
+          "kind": "function",
+          "type": "SDL_TrayEntry *",
+          "parameters": [
+            {
+              "name": "menu",
+              "type": "SDL_TrayMenu *"
+            }
+          ]
+        },
+        "SDL_GetTrayMenuParentTray": {
+          "doc": "Gets the tray for which this menu is the first-level menu, if the current\nmenu isn't a submenu.\n\nEither this function or SDL_GetTrayMenuParentEntry() will return non-NULL\nfor any given menu.\n\n\\param menu the menu for which to get the parent enttrayry.\n\\returns the parent tray, or NULL if this menu is a submenu.\n\n\\threadsafety This function should be called on the thread that created the\n              tray.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateTrayMenu\n\\sa SDL_GetTrayMenuParentEntry",
+          "name": "SDL_GetTrayMenuParentTray",
+          "kind": "function",
+          "type": "SDL_Tray *",
+          "parameters": [
+            {
+              "name": "menu",
+              "type": "SDL_TrayMenu *"
+            }
+          ]
+        },
+        "SDL_UpdateTrays": {
+          "doc": "Update the trays.\n\nThis is called automatically by the event loop and is only needed if you're\nusing trays but aren't handling SDL events.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_UpdateTrays",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        }
+      }
+    },
     "SDL_locale.h": {
       "name": "SDL_locale.h",
       "doc": "# CategoryLocale\n\nSDL locale services.\n\nThis provides a way to get a list of preferred locales (language plus\ncountry) for the user. There is exactly one function:\nSDL_GetPreferredLocales(), which handles all the heavy lifting, and offers\ndocumentation on all the strange ways humans might have configured their\nlanguage settings.",

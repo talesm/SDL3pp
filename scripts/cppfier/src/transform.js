@@ -285,18 +285,19 @@ function expandNamespaces(sourceEntries, transform, context) {
  */
 function expandWrappers(sourceEntries, transform, context) {
   const wrappers = transform.wrappers ?? {};
-  for (const [type, wrapper] of Object.entries(wrappers)) {
-    const sourceEntry = sourceEntries[type];
+  for (const [sourceType, wrapper] of Object.entries(wrappers)) {
+    const sourceEntry = sourceEntries[sourceType];
     if (Array.isArray(sourceEntry)) continue;
 
     wrapper.kind = "struct";
-    combineObject(wrapper, transform.transform[type] ?? {});
-    transform.transform[type] = wrapper;
-    const targetType = wrapper.name ?? transformName(type, context);
+    combineObject(wrapper, transform.transform[sourceType] ?? {});
+    transform.transform[sourceType] = wrapper;
+    const targetType = wrapper.name ?? transformName(sourceType, context);
     if (wrapper.includeAfter) {
       includeAfter(targetType, transform, wrapper.includeAfter);
     }
     const isStruct = sourceEntry.kind === "struct" && !wrapper.type;
+    const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
     const constexpr = wrapper.constexpr !== false;
     const param = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
     const attribute = "m_" + param;
@@ -320,7 +321,7 @@ function expandWrappers(sourceEntries, transform, context) {
         name: param,
         default: wrapper.defaultValue ?? "{}"
       }],
-      doc: `Wraps ${type}.\n\n@param ${param} the value to be wrapped`
+      doc: `Wraps ${sourceType}.\n\n@param ${param} the value to be wrapped`
     });
     if (wrapper.ordered) {
       insertEntry(entries, {
@@ -365,7 +366,7 @@ function expandWrappers(sourceEntries, transform, context) {
       constexpr,
       immutable: true,
       parameters: [],
-      doc: `Unwraps to the underlying ${type}.\n\n@returns the underlying ${type}.`
+      doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${type}.`
     });
     if (wrapper.invalidState !== false) insertEntry(entries, {
       kind: "function",
@@ -379,7 +380,7 @@ function expandWrappers(sourceEntries, transform, context) {
     });
 
     if (isStruct) {
-      wrapper.type = type;
+      wrapper.type = sourceType;
       /** @type {ApiParameter[]} */
       const parameters = [];
       for (const attrib of Object.values(sourceEntry.entries)) {
@@ -430,6 +431,10 @@ function expandWrappers(sourceEntries, transform, context) {
       delete wrapper.entries[targetType];
     }
     wrapper.entries = { ...entries, ...(wrapper.entries ?? {}) };
+    if (type !== sourceType) {
+      context.addParamType(type, targetType);
+      context.addReturnType(type, targetType);
+    }
 
     delete wrapper.invalidState;
     delete wrapper.attribute;
@@ -769,6 +774,7 @@ function transformHierarchy(targetEntries, context) {
     const entry = targetEntries[key];
     const typeName = obj.name;
     const targetName = path[path.length - 1];
+    const isSameFile = !!targetEntries[path[0]];
     if (Array.isArray(entry)) {
       entry.forEach(e => prepareForTypeInsert(e, targetName, typeName));
     } else prepareForTypeInsert(entry, targetName, typeName);
@@ -779,22 +785,24 @@ function transformHierarchy(targetEntries, context) {
       entry.forEach(e => {
         insertEntry(obj.entries, {
           ...e,
-          doc: "",
+          doc: (isSameFile && e.doc) || "",
           proto: true,
         });
         e.name = makeMemberName(key, obj.template);;
         e.template = obj.template;
         delete e.static;
+        if (isSameFile) delete e.doc;
       });
     } else {
       insertEntry(obj.entries, {
         ...entry,
-        doc: "",
+        doc: (isSameFile && entry.doc) || "",
         proto: true,
       });
       entry.name = makeMemberName(key, obj.template);
       entry.template = obj.template;
       delete entry.static;
+      if (isSameFile) delete entry.doc;
     }
   }
 

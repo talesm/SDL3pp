@@ -32,5 +32,10 @@ var searchData=
   ['transfer_5fcharacteristics_5fsmpte428_29',['TRANSFER_CHARACTERISTICS_SMPTE428',['../group__CategoryPixels.html#ga53cad8871d4a4e7d8801c0ef0487cffb',1,'SDL']]],
   ['transfer_5fcharacteristics_5fsrgb_30',['TRANSFER_CHARACTERISTICS_SRGB',['../group__CategoryPixels.html#ga59652dbc190661efeebcd1b39c64d763',1,'SDL']]],
   ['transfer_5fcharacteristics_5funknown_31',['TRANSFER_CHARACTERISTICS_UNKNOWN',['../group__CategoryPixels.html#gad233d6d5100c24bab856652a415d11b2',1,'SDL']]],
-  ['transfer_5fcharacteristics_5funspecified_32',['TRANSFER_CHARACTERISTICS_UNSPECIFIED',['../group__CategoryPixels.html#gabf9b0c3030212c9dc28301c90a9decfb',1,'SDL']]]
+  ['transfer_5fcharacteristics_5funspecified_32',['TRANSFER_CHARACTERISTICS_UNSPECIFIED',['../group__CategoryPixels.html#gabf9b0c3030212c9dc28301c90a9decfb',1,'SDL']]],
+  ['trayentry_5fbutton_33',['TRAYENTRY_BUTTON',['../group__CategoryTray.html#ga27b1c8890baf5fe1615899d034864357',1,'SDL']]],
+  ['trayentry_5fcheckbox_34',['TRAYENTRY_CHECKBOX',['../group__CategoryTray.html#gaeda28a4301db5ff03110bbfb34326814',1,'SDL']]],
+  ['trayentry_5fchecked_35',['TRAYENTRY_CHECKED',['../group__CategoryTray.html#gae14c2e39d9b3d9238f0577b8125d5e2d',1,'SDL']]],
+  ['trayentry_5fdisabled_36',['TRAYENTRY_DISABLED',['../group__CategoryTray.html#ga4323b2637202194491f80ecf014490c8',1,'SDL']]],
+  ['trayentry_5fsubmenu_37',['TRAYENTRY_SUBMENU',['../group__CategoryTray.html#gaeca79be4675e7ecf647cadfa80d13449',1,'SDL']]]
 ];

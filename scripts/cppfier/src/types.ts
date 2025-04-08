@@ -100,6 +100,8 @@ export interface ApiEntryTransform extends ApiEntryBase {
 export interface ApiResource extends ApiEntryTransform {
   kind?: "struct";
 
+  includeAfter?: string;
+
   /**
    * Name of free function. By default it uses the first subentry with
    * containing "Destroy", "Close" or "free" substring, in that order.
