@@ -5821,11 +5821,7 @@
             },
             {
               "name": "filters",
-              "type": "const DialogFileFilter *"
-            },
-            {
-              "name": "nfilters",
-              "type": "int"
+              "type": "std::span<const DialogFileFilter>"
             },
             {
               "name": "default_location",
@@ -5853,11 +5849,7 @@
             },
             {
               "name": "filters",
-              "type": "const DialogFileFilter *"
-            },
-            {
-              "name": "nfilters",
-              "type": "int"
+              "type": "std::span<const DialogFileFilter>"
             },
             {
               "name": "default_location",

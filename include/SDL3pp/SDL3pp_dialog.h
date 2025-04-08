@@ -153,11 +153,10 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be nullptr. Not all platforms support
+ * @param filters a list of filters, may be empty. Not all platforms support
  *                this option, and platforms that do support it may allow the
  *                user to ignore the filters. If non-nullptr, it must remain
  *                valid at least until the callback is invoked.
- * @param nfilters the number of filters. Ignored if filters is nullptr.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
  *                         option.
@@ -178,17 +177,16 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  */
 inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window,
-                               const DialogFileFilter* filters,
-                               int nfilters,
-                               StringParam default_location,
-                               bool allow_many)
+                               WindowRef window = {},
+                               std::span<const DialogFileFilter> filters = {},
+                               StringParam default_location = {},
+                               bool allow_many = false)
 {
   SDL_ShowOpenFileDialog(callback,
                          userdata,
                          window.get(),
-                         filters,
-                         nfilters,
+                         filters.data(),
+                         filters.size(),
                          default_location,
                          allow_many);
 }
@@ -241,17 +239,16 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               WindowRef window,
-                               std::span<const DialogFileFilter> filters,
-                               StringParam default_location,
-                               bool allow_many)
+                               WindowRef window = {},
+                               std::span<const DialogFileFilter> filters = {},
+                               StringParam default_location = {},
+                               bool allow_many = false)
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFileDialog(&Wrapper::CallOnce,
                      Wrapper::Wrap(std::move(callback)),
                      window,
-                     filters.data(),
-                     filters.size(),
+                     filters,
                      std::move(default_location),
                      allow_many);
 }
@@ -283,11 +280,10 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be nullptr. Not all platforms support
+ * @param filters a list of filters, may be empty. Not all platforms support
  *                this option, and platforms that do support it may allow the
  *                user to ignore the filters. If non-nullptr, it must remain
  *                valid at least until the callback is invoked.
- * @param nfilters the number of filters. Ignored if filters is nullptr.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
  *                         option.
@@ -306,13 +302,16 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window,
-                               const DialogFileFilter* filters,
-                               int nfilters,
-                               StringParam default_location)
+                               WindowRef window = {},
+                               std::span<const DialogFileFilter> filters = {},
+                               StringParam default_location = {})
 {
-  SDL_ShowSaveFileDialog(
-    callback, userdata, window.get(), filters, nfilters, default_location);
+  SDL_ShowSaveFileDialog(callback,
+                         userdata,
+                         window.get(),
+                         filters.data(),
+                         filters.size(),
+                         default_location);
 }
 
 /**
@@ -361,16 +360,15 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               WindowRef window,
-                               std::span<const DialogFileFilter> filters,
-                               StringParam default_location)
+                               WindowRef window = {},
+                               std::span<const DialogFileFilter> filters = {},
+                               StringParam default_location = {})
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowSaveFileDialog(&Wrapper::CallOnce,
                      Wrapper::Wrap(std::move(callback)),
                      window,
-                     filters.data(),
-                     filters.size(),
+                     filters,
                      std::move(default_location));
 }
 
@@ -420,9 +418,9 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 WindowRef window,
-                                 StringParam default_location,
-                                 bool allow_many)
+                                 WindowRef window = {},
+                                 StringParam default_location = {},
+                                 bool allow_many = false)
 {
   SDL_ShowOpenFolderDialog(
     callback, userdata, window.get(), default_location, allow_many);
@@ -471,9 +469,9 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 WindowRef window,
-                                 StringParam default_location,
-                                 bool allow_many)
+                                 WindowRef window = {},
+                                 StringParam default_location = {},
+                                 bool allow_many = false)
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFolderDialog(&Wrapper::CallOnce,

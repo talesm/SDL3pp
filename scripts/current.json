@@ -32646,7 +32646,7 @@
         },
         "ShowOpenFileDialog": [
           {
-            "doc": "Displays a dialog that lets the user select a file on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be nullptr. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param nfilters the number of filters. Ignored if filters is nullptr.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this\n                        option.\n@param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
+            "doc": "Displays a dialog that lets the user select a file on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be empty. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this\n                        option.\n@param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
             "name": "ShowOpenFileDialog",
             "kind": "function",
             "type": "void",
@@ -32661,28 +32661,28 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "{}"
               },
               {
                 "name": "filters",
-                "type": "const DialogFileFilter *"
-              },
-              {
-                "name": "nfilters",
-                "type": "int"
+                "type": "std::span<const DialogFileFilter>",
+                "default": "{}"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "{}"
               },
               {
                 "name": "allow_many",
-                "type": "bool"
+                "type": "bool",
+                "default": "false"
               }
             ],
             "begin": 129,
-            "decl": 179,
-            "end": 196
+            "decl": 178,
+            "end": 194
           },
           {
             "doc": "Displays a dialog that lets the user select a file on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be nullptr. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this\n                        option.\n@param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
@@ -32696,29 +32696,33 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "{}"
               },
               {
                 "name": "filters",
-                "type": "std::span<const DialogFileFilter>"
+                "type": "std::span<const DialogFileFilter>",
+                "default": "{}"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "{}"
               },
               {
                 "name": "allow_many",
-                "type": "bool"
+                "type": "bool",
+                "default": "false"
               }
             ],
-            "begin": 196,
-            "decl": 243,
-            "end": 259
+            "begin": 194,
+            "decl": 241,
+            "end": 256
           }
         ],
         "ShowSaveFileDialog": [
           {
-            "doc": "Displays a dialog that lets the user choose a new or existing file on their\nfilesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nThe chosen file may or may not already exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be nullptr. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param nfilters the number of filters. Ignored if filters is nullptr.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this\n                        option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
+            "doc": "Displays a dialog that lets the user choose a new or existing file on their\nfilesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nThe chosen file may or may not already exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be empty. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this\n                        option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
             "name": "ShowSaveFileDialog",
             "kind": "function",
             "type": "void",
@@ -32733,24 +32737,23 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "{}"
               },
               {
                 "name": "filters",
-                "type": "const DialogFileFilter *"
-              },
-              {
-                "name": "nfilters",
-                "type": "int"
+                "type": "std::span<const DialogFileFilter>",
+                "default": "{}"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "{}"
               }
             ],
-            "begin": 259,
-            "decl": 307,
-            "end": 318
+            "begin": 256,
+            "decl": 303,
+            "end": 317
           },
           {
             "doc": "Displays a dialog that lets the user choose a new or existing file on their\nfilesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nThe chosen file may or may not already exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be nullptr. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this\n                        option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
@@ -32764,20 +32767,23 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "{}"
               },
               {
                 "name": "filters",
-                "type": "std::span<const DialogFileFilter>"
+                "type": "std::span<const DialogFileFilter>",
+                "default": "{}"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "{}"
               }
             ],
-            "begin": 318,
-            "decl": 363,
-            "end": 377
+            "begin": 317,
+            "decl": 362,
+            "end": 375
           }
         ],
         "ShowOpenFolderDialog": [
@@ -32797,20 +32803,23 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "{}"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "{}"
               },
               {
                 "name": "allow_many",
-                "type": "bool"
+                "type": "bool",
+                "default": "false"
               }
             ],
-            "begin": 377,
-            "decl": 421,
-            "end": 431
+            "begin": 375,
+            "decl": 419,
+            "end": 429
           },
           {
             "doc": "Displays a dialog that lets the user select a folder on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this\n                        option.\n@param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowFileDialogWithProperties",
@@ -32824,20 +32833,23 @@
               },
               {
                 "name": "window",
-                "type": "WindowRef"
+                "type": "WindowRef",
+                "default": "{}"
               },
               {
                 "name": "default_location",
-                "type": "StringParam"
+                "type": "StringParam",
+                "default": "{}"
               },
               {
                 "name": "allow_many",
-                "type": "bool"
+                "type": "bool",
+                "default": "false"
               }
             ],
-            "begin": 431,
-            "decl": 473,
-            "end": 486
+            "begin": 429,
+            "decl": 471,
+            "end": 484
           }
         ],
         "FileDialogType": {
@@ -32845,9 +32857,9 @@
           "name": "FileDialogType",
           "kind": "alias",
           "type": "SDL_FileDialogType",
-          "begin": 486,
-          "decl": 496,
-          "end": 498
+          "begin": 484,
+          "decl": 494,
+          "end": 496
         },
         "FILEDIALOG_OPENFILE": {
           "doc": "",
@@ -32855,9 +32867,9 @@
           "kind": "var",
           "type": "FileDialogType",
           "constexpr": true,
-          "begin": 498,
-          "decl": 498,
-          "end": 500
+          "begin": 496,
+          "decl": 496,
+          "end": 498
         },
         "FILEDIALOG_SAVEFILE": {
           "doc": "",
@@ -32865,9 +32877,9 @@
           "kind": "var",
           "type": "FileDialogType",
           "constexpr": true,
-          "begin": 500,
-          "decl": 500,
-          "end": 502
+          "begin": 498,
+          "decl": 498,
+          "end": 500
         },
         "FILEDIALOG_OPENFOLDER": {
           "doc": "",
@@ -32875,9 +32887,9 @@
           "kind": "var",
           "type": "FileDialogType",
           "constexpr": true,
-          "begin": 502,
-          "decl": 502,
-          "end": 504
+          "begin": 500,
+          "decl": 500,
+          "end": 502
         },
         "ShowFileDialogWithProperties": [
           {
@@ -32903,9 +32915,9 @@
                 "type": "PropertiesRef"
               }
             ],
-            "begin": 504,
-            "decl": 551,
-            "end": 559
+            "begin": 502,
+            "decl": 549,
+            "end": 557
           },
           {
             "doc": "Create and launch a file dialog with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_FILE_DIALOG_FILTERS_POINTER`: a pointer to a list of\n  DialogFileFilter structs, which will be used as filters for\n  file-based selections. Ignored if the dialog is an \"Open Folder\" dialog.\n  If non-nullptr, the array of filters must remain valid at least until the\n  callback is invoked.\n- `SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER`: the number of filters in the\n  array of filters, if it exists.\n- `SDL_PROP_FILE_DIALOG_WINDOW_POINTER`: the window that the dialog should\n  be modal for.\n- `SDL_PROP_FILE_DIALOG_LOCATION_STRING`: the default folder or file to\n  start the dialog at.\n- `SDL_PROP_FILE_DIALOG_MANY_BOOLEAN`: true to allow the user to select\n  more than one entry.\n- `SDL_PROP_FILE_DIALOG_TITLE_STRING`: the title for the dialog.\n- `SDL_PROP_FILE_DIALOG_ACCEPT_STRING`: the label that the accept button\n  should have.\n- `SDL_PROP_FILE_DIALOG_CANCEL_STRING`: the label that the cancel button\n  should have.\n\nNote that each platform may or may not support any of the properties.\n\n@param type the type of file dialog.\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param props the properties to use.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FileDialogType\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog",
@@ -32926,9 +32938,9 @@
                 "type": "PropertiesRef"
               }
             ],
-            "begin": 559,
-            "decl": 604,
-            "end": 614
+            "begin": 557,
+            "decl": 602,
+            "end": 612
           }
         ],
         "prop::FileDialog": {
@@ -32942,9 +32954,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 616,
-              "decl": 616,
-              "end": 618
+              "begin": 614,
+              "decl": 614,
+              "end": 616
             },
             "NFILTERS_NUMBER": {
               "doc": "",
@@ -32952,9 +32964,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 618,
-              "decl": 618,
-              "end": 620
+              "begin": 616,
+              "decl": 616,
+              "end": 618
             },
             "WINDOW_POINTER": {
               "doc": "",
@@ -32962,9 +32974,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 620,
-              "decl": 620,
-              "end": 622
+              "begin": 618,
+              "decl": 618,
+              "end": 620
             },
             "LOCATION_STRING": {
               "doc": "",
@@ -32972,9 +32984,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 622,
-              "decl": 622,
-              "end": 624
+              "begin": 620,
+              "decl": 620,
+              "end": 622
             },
             "MANY_BOOLEAN": {
               "doc": "",
@@ -32982,9 +32994,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 624,
-              "decl": 624,
-              "end": 626
+              "begin": 622,
+              "decl": 622,
+              "end": 624
             },
             "TITLE_STRING": {
               "doc": "",
@@ -32992,9 +33004,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 626,
-              "decl": 626,
-              "end": 628
+              "begin": 624,
+              "decl": 624,
+              "end": 626
             },
             "ACCEPT_STRING": {
               "doc": "",
@@ -33002,9 +33014,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 628,
-              "decl": 628,
-              "end": 630
+              "begin": 626,
+              "decl": 626,
+              "end": 628
             },
             "CANCEL_STRING": {
               "doc": "",
@@ -33012,20 +33024,20 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 630,
-              "decl": 630,
-              "end": 632
+              "begin": 628,
+              "decl": 628,
+              "end": 630
             }
           },
-          "begin": 614,
-          "decl": 614,
-          "end": 634
+          "begin": 612,
+          "decl": 612,
+          "end": 632
         }
       },
       "docBegin": 11,
       "docEnd": 29,
       "entriesBegin": 29,
-      "entriesEnd": 634,
+      "entriesEnd": 632,
       "namespace": "SDL"
     },
     "SDL3pp_locale.h": {
