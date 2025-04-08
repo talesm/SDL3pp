@@ -209,6 +209,12 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/current.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/transform.json
+    COMMAND node scripts/gen-transform ${PROJECT_SOURCE_DIR}/scripts/transform.json
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/gen-transform.js
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
 # Target SDL3pp state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
     COMMAND node scripts/cppfier transform scripts/config-target.json

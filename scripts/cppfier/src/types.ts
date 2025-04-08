@@ -60,7 +60,7 @@ export type ApiEntries = Dict<ApiEntry | ApiEntry[]>;
 export type ApiParameters = (string | ApiParameter)[];
 
 export interface ApiParameter {
-  name: string;
+  name?: string;
   type?: string;
   default?: string;
 }
@@ -182,7 +182,7 @@ export interface ApiEnumeration extends ApiEntryTransform {
 
 export type QuickTransform = "placeholder" | "immutable" | "ctor" | ApiEntryKind;
 
-export type ApiSubEntryTransformMap = Dict<ApiEntryTransform | ApiEntry[] | QuickTransform>;
+export type ApiSubEntryTransformMap = Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>;
 
 export interface ReplacementRule {
   pattern: RegExp;
