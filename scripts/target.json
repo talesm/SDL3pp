@@ -261,7 +261,7 @@
         },
         "InitSubSystem": [
           {
-            "doc": "Initialize the SDL library.\n\nInitSubSystem() simply forwards to calling SDL_InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nSDL_InitSubSystem() might be preferred.\n\nThe file I/O (for example: IOStreamBase.IOStreamBase) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInitSubSystem fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling InitSubSystem, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa SDL_InitSubSystem\n@sa Quit\n@sa SetMainReady\n@sa WasInit",
+            "doc": "Initialize the SDL library.\n\nInitSubSystem() simply forwards to calling SDL_InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nSDL_InitSubSystem() might be preferred.\n\nThe file I/O (for example: IOStreamBase.IOStreamBase) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nInitSubSystem fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `INIT_HAPTIC`: haptic (force feedback) subsystem\n- `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `INIT_EVENTS`: events subsystem\n- `INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call QuitSubSystem()\nfor each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or\ncall Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling InitSubSystem, using either SetAppMetadata() or\nSetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAppMetadata\n@sa SetAppMetadataProperty\n@sa SDL_InitSubSystem\n@sa Quit\n@sa SetMainReady\n@sa WasInit",
             "name": "InitSubSystem",
             "kind": "function",
             "type": "bool",
@@ -25854,6 +25854,262 @@
             }
           ],
           "sourceName": "SDL_GetPowerInfo"
+        }
+      }
+    },
+    "SDL3pp_messagebox.h": {
+      "name": "SDL3pp_messagebox.h",
+      "doc": "@defgroup CategoryMessagebox Category Messagebox\n\nSDL offers a simple message box API, which is useful for simple alerts,\nsuch as informing the user when something fatal happens at startup without\nthe need to build a UI for it (or informing the user _before_ your UI is\nready).\n\nThese message boxes are native system dialogs where possible.\n\nThere is both a customizable function (MessageBox.Show()) that offers\nlots of options for what to display and reports on what choice the user\nmade, and also a much-simplified version (ShowSimpleMessageBox()),\nmerely takes a text message and title, and waits until the user presses a\nsingle \"OK\" UI button. Often, this is all that is necessary.",
+      "entries": {
+        "MessageBoxFlags": {
+          "doc": "Message box flags.\n\nIf supported will display warning icon, etc.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "MessageBoxFlags",
+          "kind": "alias",
+          "type": "Uint32",
+          "sourceName": "SDL_MessageBoxFlags"
+        },
+        "MESSAGEBOX_ERROR": {
+          "doc": "error dialog",
+          "name": "MESSAGEBOX_ERROR",
+          "kind": "var",
+          "value": "0x00000010u",
+          "sourceName": "SDL_MESSAGEBOX_ERROR",
+          "constexpr": true,
+          "type": "MessageBoxFlags"
+        },
+        "MESSAGEBOX_WARNING": {
+          "doc": "warning dialog",
+          "name": "MESSAGEBOX_WARNING",
+          "kind": "var",
+          "value": "0x00000020u",
+          "sourceName": "SDL_MESSAGEBOX_WARNING",
+          "constexpr": true,
+          "type": "MessageBoxFlags"
+        },
+        "MESSAGEBOX_INFORMATION": {
+          "doc": "informational dialog",
+          "name": "MESSAGEBOX_INFORMATION",
+          "kind": "var",
+          "value": "0x00000040u",
+          "sourceName": "SDL_MESSAGEBOX_INFORMATION",
+          "constexpr": true,
+          "type": "MessageBoxFlags"
+        },
+        "MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT": {
+          "doc": "buttons placed left to right",
+          "name": "MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
+          "kind": "var",
+          "value": "0x00000080u",
+          "sourceName": "SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
+          "constexpr": true,
+          "type": "MessageBoxFlags"
+        },
+        "MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT": {
+          "doc": "buttons placed right to left",
+          "name": "MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT",
+          "kind": "var",
+          "value": "0x00000100u",
+          "sourceName": "SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT",
+          "constexpr": true,
+          "type": "MessageBoxFlags"
+        },
+        "MessageBoxButtonFlags": {
+          "doc": "MessageBoxButtonData flags.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "MessageBoxButtonFlags",
+          "kind": "alias",
+          "type": "Uint32",
+          "sourceName": "SDL_MessageBoxButtonFlags"
+        },
+        "MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT": {
+          "doc": "Marks the default button when return is hit",
+          "name": "MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT",
+          "kind": "var",
+          "value": "0x00000001u",
+          "sourceName": "SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT",
+          "constexpr": true,
+          "type": "MessageBoxButtonFlags"
+        },
+        "MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT": {
+          "doc": "Marks the default button when escape is hit",
+          "name": "MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT",
+          "kind": "var",
+          "value": "0x00000002u",
+          "sourceName": "SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT",
+          "constexpr": true,
+          "type": "MessageBoxButtonFlags"
+        },
+        "MessageBoxButtonData": {
+          "doc": "Individual button data.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MessageBoxButtonData",
+          "kind": "alias",
+          "sourceName": "SDL_MessageBoxButtonData",
+          "type": "SDL_MessageBoxButtonData"
+        },
+        "MessageBoxColor": {
+          "doc": "RGB value used in a message box color scheme\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MessageBoxColor",
+          "kind": "alias",
+          "sourceName": "SDL_MessageBoxColor",
+          "type": "SDL_MessageBoxColor"
+        },
+        "MessageBoxColorType": {
+          "doc": "An enumeration of indices inside the colors array of\nMessageBoxColorScheme.",
+          "name": "MessageBoxColorType",
+          "kind": "alias",
+          "sourceName": "SDL_MessageBoxColorType",
+          "type": "SDL_MessageBoxColorType"
+        },
+        "MESSAGEBOX_COLOR_BACKGROUND": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_BACKGROUND",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "sourceName": "SDL_MESSAGEBOX_COLOR_BACKGROUND",
+          "constexpr": true
+        },
+        "MESSAGEBOX_COLOR_TEXT": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_TEXT",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "sourceName": "SDL_MESSAGEBOX_COLOR_TEXT",
+          "constexpr": true
+        },
+        "MESSAGEBOX_COLOR_BUTTON_BORDER": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_BUTTON_BORDER",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "sourceName": "SDL_MESSAGEBOX_COLOR_BUTTON_BORDER",
+          "constexpr": true
+        },
+        "MESSAGEBOX_COLOR_BUTTON_BACKGROUND": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_BUTTON_BACKGROUND",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "sourceName": "SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND",
+          "constexpr": true
+        },
+        "MESSAGEBOX_COLOR_BUTTON_SELECTED": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_BUTTON_SELECTED",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "sourceName": "SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED",
+          "constexpr": true
+        },
+        "MESSAGEBOX_COLOR_COUNT": {
+          "doc": "[object Object]",
+          "name": "MESSAGEBOX_COLOR_COUNT",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "sourceName": "SDL_MESSAGEBOX_COLOR_COUNT",
+          "constexpr": true
+        },
+        "MessageBoxColorScheme": {
+          "doc": "A set of colors to use for message box dialogs\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MessageBoxColorScheme",
+          "kind": "alias",
+          "sourceName": "SDL_MessageBoxColorScheme",
+          "type": "SDL_MessageBoxColorScheme"
+        },
+        "MessageBox": {
+          "doc": "MessageBox structure containing title, text, window, etc.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MessageBox",
+          "kind": "struct",
+          "sourceName": "SDL_MessageBoxData",
+          "type": "SDL_MessageBoxData",
+          "entries": {
+            "MessageBox": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_MessageBoxData &",
+                    "name": "messageBox",
+                    "default": "{}"
+                  }
+                ],
+                "name": "MessageBox",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "MessageBoxFlags",
+                    "name": "flags"
+                  },
+                  {
+                    "type": "WindowRef",
+                    "name": "window"
+                  },
+                  {
+                    "type": "const char *",
+                    "name": "title"
+                  },
+                  {
+                    "type": "const char *",
+                    "name": "message"
+                  },
+                  {
+                    "type": "std::span<const MessageBoxButtonData>",
+                    "name": "buttons"
+                  },
+                  {
+                    "type": "OptionalRef<const MessageBoxColorScheme>",
+                    "name": "colorScheme"
+                  }
+                ],
+                "name": "MessageBox",
+                "doc": ""
+              }
+            ],
+            "Show": {
+              "doc": "Create a modal message box.\n\nIf your needs aren't complex, it might be easier to use\nShowSimpleMessageBox.\n\nThis function should be called on the thread that created the parent\nwindow, or on the main thread if the messagebox has no parent. It will\nblock execution of that thread until the user clicks a button or closes the\nmessagebox.\n\nThis function may be called at any time, even before InitSubSystem(). This makes\nit useful for reporting errors like a failure to create a renderer or\nOpenGL context.\n\nOn X11, SDL rolls its own dialog box with X11 primitives instead of a\nformal toolkit like GTK+ or Qt.\n\nNote that if InitSubSystem() would fail because there isn't any available video\ntarget, this function is likely to fail for the same reasons. If this is a\nconcern, check the return value from this function and fall back to writing\nto stderr if you can.\n\n                      other options.\n@param buttonid the pointer to which user id of hit button should be\n                copied.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ShowSimpleMessageBox",
+              "name": "Show",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "buttonid",
+                  "type": "int *"
+                }
+              ],
+              "sourceName": "SDL_ShowMessageBox",
+              "immutable": true
+            }
+          }
+        },
+        "ShowSimpleMessageBox": {
+          "doc": "Display a simple modal message box.\n\nIf your needs aren't complex, this function is preferred over\nMessageBox.Show.\n\n`flags` may be any of the following:\n\n- `MESSAGEBOX_ERROR`: error dialog\n- `MESSAGEBOX_WARNING`: warning dialog\n- `MESSAGEBOX_INFORMATION`: informational dialog\n\nThis function should be called on the thread that created the parent\nwindow, or on the main thread if the messagebox has no parent. It will\nblock execution of that thread until the user clicks a button or closes the\nmessagebox.\n\nThis function may be called at any time, even before InitSubSystem(). This makes\nit useful for reporting errors like a failure to create a renderer or\nOpenGL context.\n\nOn X11, SDL rolls its own dialog box with X11 primitives instead of a\nformal toolkit like GTK+ or Qt.\n\nNote that if InitSubSystem() would fail because there isn't any available video\ntarget, this function is likely to fail for the same reasons. If this is a\nconcern, check the return value from this function and fall back to writing\nto stderr if you can.\n\n@param flags an MessageBoxFlags value.\n@param title UTF-8 title text.\n@param message UTF-8 message text.\n@param window the parent window, or nullptr for no parent.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MessageBox.Show",
+          "name": "ShowSimpleMessageBox",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "MessageBoxFlags"
+            },
+            {
+              "name": "title",
+              "type": "StringParam"
+            },
+            {
+              "name": "message",
+              "type": "StringParam"
+            },
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "sourceName": "SDL_ShowSimpleMessageBox"
         }
       }
     },

@@ -34,7 +34,7 @@ var searchData=
   ['clearerror_31',['ClearError',['../group__CategoryError.html#ga7307f5502856bade5976f55c8adf5326',1,'SDL']]],
   ['clearfallbacks_32',['ClearFallbacks',['../structSDL_1_1FontBase.html#ae84d5a8b851688b3cd8212ac61f024f6',1,'SDL::FontBase']]],
   ['clipboardevent_33',['ClipboardEvent',['../group__CategoryEvents.html#ga34d947bd68046b49ad2ee1fa599184b5',1,'SDL']]],
-  ['close_34',['close',['../structSDL_1_1FontBase.html#a19b695d2e810438ea6e60e61d7c25816',1,'SDL::FontBase::Close()'],['../structSDL_1_1IOStreamBase.html#a837589f2802386ac80dc98aac85cba11',1,'SDL::IOStreamBase::Close()'],['../structSDL_1_1IConvBase.html#ae99c167b7ae250819364ec59b56f2d66',1,'SDL::IConvBase::close()']]],
+  ['close_34',['close',['../structSDL_1_1IConvBase.html#ae99c167b7ae250819364ec59b56f2d66',1,'SDL::IConvBase::close()'],['../structSDL_1_1FontBase.html#a19b695d2e810438ea6e60e61d7c25816',1,'SDL::FontBase::Close()'],['../structSDL_1_1IOStreamBase.html#a837589f2802386ac80dc98aac85cba11',1,'SDL::IOStreamBase::Close()']]],
   ['color_35',['color',['../structSDL_1_1Color.html#a71ce01aa4a42d9c4a9f3543c876fcd6a',1,'SDL::Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a=255)'],['../structSDL_1_1Color.html#abb2447266e78d0a620ddf7be7bf572d3',1,'SDL::Color::Color(const SDL_Color &amp;color={})'],['../structSDL_1_1Color.html',1,'SDL::Color']]],
   ['color_5fprimaries_5fbt2020_36',['COLOR_PRIMARIES_BT2020',['../group__CategoryPixels.html#ga8bd7bd2c015dd8a8af701e9ade454465',1,'SDL']]],
   ['color_5fprimaries_5fbt470bg_37',['COLOR_PRIMARIES_BT470BG',['../group__CategoryPixels.html#ga5d1ddfd06c1ba1f19f88c8a7b2bf902f',1,'SDL']]],

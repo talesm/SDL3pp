@@ -39,7 +39,7 @@
 #include "SDL3pp_loadso.h"
 #include "SDL3pp_locale.h"
 #include "SDL3pp_log.h"
-// #include "SDL3pp_messagebox.h"
+#include "SDL3pp_messagebox.h"
 // #include "SDL3pp_metal.h"
 #include "SDL3pp_misc.h"
 // #include "SDL3pp_mouse.h"

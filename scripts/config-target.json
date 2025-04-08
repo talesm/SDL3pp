@@ -28,6 +28,7 @@
     "SDL3pp_bits.h",
     "SDL3pp_loadso.h",
     "SDL3pp_power.h",
+    "SDL3pp_messagebox.h",
     "SDL3pp_dialog.h",
     "SDL3pp_locale.h",
     "SDL3pp_stdinc.h",

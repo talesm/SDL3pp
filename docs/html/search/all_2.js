@@ -39,9 +39,10 @@ var searchData=
   ['blittiledwithscale_36',['BlitTiledWithScale',['../structSDL_1_1SurfaceBase.html#afb9f1b4da9aa119c2ce85c1131998a60',1,'SDL::SurfaceBase']]],
   ['blitunchecked_37',['BlitUnchecked',['../structSDL_1_1SurfaceBase.html#a7cc2f9636c7f7a27e8ab781dfb6a2e1a',1,'SDL::SurfaceBase']]],
   ['blituncheckedscaled_38',['BlitUncheckedScaled',['../structSDL_1_1SurfaceBase.html#a179d7007783477815fd684f5ea6ef301',1,'SDL::SurfaceBase']]],
-  ['bsearch_39',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
-  ['bsearch_5fr_40',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
-  ['building_41',['Building',['../index.html#building',1,'']]],
-  ['by_20category_42',['API by Category',['../ApiByCategory.html',1,'']]],
-  ['byte_20order_20and_20byte_20swapping_43',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
+  ['boxes_39',['Message Boxes',['../group__CategoryMessagebox.html',1,'']]],
+  ['bsearch_40',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
+  ['bsearch_5fr_41',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
+  ['building_42',['Building',['../index.html#building',1,'']]],
+  ['by_20category_43',['API by Category',['../ApiByCategory.html',1,'']]],
+  ['byte_20order_20and_20byte_20swapping_44',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
 ];

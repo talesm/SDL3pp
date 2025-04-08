@@ -28,6 +28,7 @@
     "SDL_bits.h",
     "SDL_loadso.h",
     "SDL_power.h",
+    "SDL_messagebox.h",
     "SDL_dialog.h",
     "SDL_locale.h",
     "SDL_stdinc.h",

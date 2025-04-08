@@ -21356,6 +21356,261 @@
         }
       }
     },
+    "SDL_messagebox.h": {
+      "name": "SDL_messagebox.h",
+      "doc": "# CategoryMessagebox\n\nSDL offers a simple message box API, which is useful for simple alerts,\nsuch as informing the user when something fatal happens at startup without\nthe need to build a UI for it (or informing the user _before_ your UI is\nready).\n\nThese message boxes are native system dialogs where possible.\n\nThere is both a customizable function (SDL_ShowMessageBox()) that offers\nlots of options for what to display and reports on what choice the user\nmade, and also a much-simplified version (SDL_ShowSimpleMessageBox()),\nmerely takes a text message and title, and waits until the user presses a\nsingle \"OK\" UI button. Often, this is all that is necessary.",
+      "entries": {
+        "SDL_MessageBoxFlags": {
+          "doc": "Message box flags.\n\nIf supported will display warning icon, etc.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_MessageBoxFlags",
+          "kind": "alias",
+          "type": "Uint32"
+        },
+        "SDL_MESSAGEBOX_ERROR": {
+          "doc": "error dialog",
+          "name": "SDL_MESSAGEBOX_ERROR",
+          "kind": "def",
+          "value": "0x00000010u"
+        },
+        "SDL_MESSAGEBOX_WARNING": {
+          "doc": "warning dialog",
+          "name": "SDL_MESSAGEBOX_WARNING",
+          "kind": "def",
+          "value": "0x00000020u"
+        },
+        "SDL_MESSAGEBOX_INFORMATION": {
+          "doc": "informational dialog",
+          "name": "SDL_MESSAGEBOX_INFORMATION",
+          "kind": "def",
+          "value": "0x00000040u"
+        },
+        "SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT": {
+          "doc": "buttons placed left to right",
+          "name": "SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
+          "kind": "def",
+          "value": "0x00000080u"
+        },
+        "SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT": {
+          "doc": "buttons placed right to left",
+          "name": "SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT",
+          "kind": "def",
+          "value": "0x00000100u"
+        },
+        "SDL_MessageBoxButtonFlags": {
+          "doc": "SDL_MessageBoxButtonData flags.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_MessageBoxButtonFlags",
+          "kind": "alias",
+          "type": "Uint32"
+        },
+        "SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT": {
+          "doc": "Marks the default button when return is hit",
+          "name": "SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT",
+          "kind": "def",
+          "value": "0x00000001u"
+        },
+        "SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT": {
+          "doc": "Marks the default button when escape is hit",
+          "name": "SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT",
+          "kind": "def",
+          "value": "0x00000002u"
+        },
+        "SDL_MessageBoxButtonData": {
+          "doc": "Individual button data.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_MessageBoxButtonData",
+          "kind": "struct",
+          "entries": {
+            "flags": {
+              "doc": "",
+              "name": "flags",
+              "kind": "var",
+              "type": "SDL_MessageBoxButtonFlags"
+            },
+            "buttonID": {
+              "doc": "User defined button id (value returned via SDL_ShowMessageBox)",
+              "name": "buttonID",
+              "kind": "var",
+              "type": "int"
+            },
+            "text": {
+              "doc": "The UTF-8 button text",
+              "name": "text",
+              "kind": "var",
+              "type": "const char *"
+            }
+          }
+        },
+        "SDL_MessageBoxColor": {
+          "doc": "RGB value used in a message box color scheme\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_MessageBoxColor",
+          "kind": "struct",
+          "entries": {
+            "r": {
+              "doc": "",
+              "name": "r",
+              "kind": "var",
+              "type": "Uint8"
+            },
+            "g": {
+              "doc": "",
+              "name": "g",
+              "kind": "var",
+              "type": "Uint8"
+            },
+            "b": {
+              "doc": "",
+              "name": "b",
+              "kind": "var",
+              "type": "Uint8"
+            }
+          }
+        },
+        "SDL_MessageBoxColorType": {
+          "doc": "An enumeration of indices inside the colors array of\nSDL_MessageBoxColorScheme.",
+          "name": "SDL_MessageBoxColorType",
+          "kind": "enum",
+          "entries": {
+            "SDL_MESSAGEBOX_COLOR_BACKGROUND": {
+              "doc": "",
+              "name": "SDL_MESSAGEBOX_COLOR_BACKGROUND",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MESSAGEBOX_COLOR_TEXT": {
+              "doc": "",
+              "name": "SDL_MESSAGEBOX_COLOR_TEXT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MESSAGEBOX_COLOR_BUTTON_BORDER": {
+              "doc": "",
+              "name": "SDL_MESSAGEBOX_COLOR_BUTTON_BORDER",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND": {
+              "doc": "",
+              "name": "SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED": {
+              "doc": "",
+              "name": "SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MESSAGEBOX_COLOR_COUNT": {
+              "doc": "[object Object]",
+              "name": "SDL_MESSAGEBOX_COLOR_COUNT",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_MessageBoxColorScheme": {
+          "doc": "A set of colors to use for message box dialogs\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_MessageBoxColorScheme",
+          "kind": "struct",
+          "entries": {
+            "colors": {
+              "doc": "",
+              "name": "colors",
+              "kind": "var",
+              "type": "SDL_MessageBoxColor"
+            }
+          }
+        },
+        "SDL_MessageBoxData": {
+          "doc": "MessageBox structure containing title, text, window, etc.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_MessageBoxData",
+          "kind": "struct",
+          "entries": {
+            "flags": {
+              "doc": "",
+              "name": "flags",
+              "kind": "var",
+              "type": "SDL_MessageBoxFlags"
+            },
+            "window": {
+              "doc": "Parent window, can be NULL",
+              "name": "window",
+              "kind": "var",
+              "type": "SDL_Window *"
+            },
+            "title": {
+              "doc": "UTF-8 title",
+              "name": "title",
+              "kind": "var",
+              "type": "const char *"
+            },
+            "message": {
+              "doc": "UTF-8 message text",
+              "name": "message",
+              "kind": "var",
+              "type": "const char *"
+            },
+            "numbuttons": {
+              "doc": "",
+              "name": "numbuttons",
+              "kind": "var",
+              "type": "int"
+            },
+            "buttons": {
+              "doc": "",
+              "name": "buttons",
+              "kind": "var",
+              "type": "SDL_MessageBoxButtonData"
+            },
+            "colorScheme": {
+              "doc": "SDL_MessageBoxColorScheme, can be NULL to use system settings",
+              "name": "colorScheme",
+              "kind": "var",
+              "type": "SDL_MessageBoxColorScheme"
+            }
+          }
+        },
+        "SDL_ShowMessageBox": {
+          "doc": "Create a modal message box.\n\nIf your needs aren't complex, it might be easier to use\nSDL_ShowSimpleMessageBox.\n\nThis function should be called on the thread that created the parent\nwindow, or on the main thread if the messagebox has no parent. It will\nblock execution of that thread until the user clicks a button or closes the\nmessagebox.\n\nThis function may be called at any time, even before SDL_Init(). This makes\nit useful for reporting errors like a failure to create a renderer or\nOpenGL context.\n\nOn X11, SDL rolls its own dialog box with X11 primitives instead of a\nformal toolkit like GTK+ or Qt.\n\nNote that if SDL_Init() would fail because there isn't any available video\ntarget, this function is likely to fail for the same reasons. If this is a\nconcern, check the return value from this function and fall back to writing\nto stderr if you can.\n\n\\param messageboxdata the SDL_MessageBoxData structure with title, text and\n                      other options.\n\\param buttonid the pointer to which user id of hit button should be\n                copied.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ShowSimpleMessageBox",
+          "name": "SDL_ShowMessageBox",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "messageboxdata",
+              "type": "const SDL_MessageBoxData *"
+            },
+            {
+              "name": "buttonid",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_ShowSimpleMessageBox": {
+          "doc": "Display a simple modal message box.\n\nIf your needs aren't complex, this function is preferred over\nSDL_ShowMessageBox.\n\n`flags` may be any of the following:\n\n- `SDL_MESSAGEBOX_ERROR`: error dialog\n- `SDL_MESSAGEBOX_WARNING`: warning dialog\n- `SDL_MESSAGEBOX_INFORMATION`: informational dialog\n\nThis function should be called on the thread that created the parent\nwindow, or on the main thread if the messagebox has no parent. It will\nblock execution of that thread until the user clicks a button or closes the\nmessagebox.\n\nThis function may be called at any time, even before SDL_Init(). This makes\nit useful for reporting errors like a failure to create a renderer or\nOpenGL context.\n\nOn X11, SDL rolls its own dialog box with X11 primitives instead of a\nformal toolkit like GTK+ or Qt.\n\nNote that if SDL_Init() would fail because there isn't any available video\ntarget, this function is likely to fail for the same reasons. If this is a\nconcern, check the return value from this function and fall back to writing\nto stderr if you can.\n\n\\param flags an SDL_MessageBoxFlags value.\n\\param title UTF-8 title text.\n\\param message UTF-8 message text.\n\\param window the parent window, or NULL for no parent.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ShowMessageBox",
+          "name": "SDL_ShowSimpleMessageBox",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "SDL_MessageBoxFlags"
+            },
+            {
+              "name": "title",
+              "type": "const char *"
+            },
+            {
+              "name": "message",
+              "type": "const char *"
+            },
+            {
+              "name": "window",
+              "type": "SDL_Window *"
+            }
+          ]
+        }
+      }
+    },
     "SDL_dialog.h": {
       "name": "SDL_dialog.h",
       "doc": "# CategoryDialog\n\nFile dialog support.\n\nSDL offers file dialogs, to let users select files with native GUI\ninterfaces. There are \"open\" dialogs, \"save\" dialogs, and folder selection\ndialogs. The app can control some details, such as filtering to specific\nfiles, or whether multiple files can be selected by the user.\n\nNote that launching a file dialog is a non-blocking operation; control\nreturns to the app immediately, and a callback is called later (possibly in\nanother thread) when the user makes a choice.",

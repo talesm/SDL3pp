@@ -32613,6 +32613,478 @@
       "entriesEnd": 110,
       "namespace": "SDL"
     },
+    "SDL3pp_messagebox.h": {
+      "name": "SDL3pp_messagebox.h",
+      "doc": "@defgroup CategoryMessagebox Message Boxes\n\nSDL offers a simple message box API, which is useful for simple alerts,\nsuch as informing the user when something fatal happens at startup without\nthe need to build a UI for it (or informing the user _before_ your UI is\nready).\n\nThese message boxes are native system dialogs where possible.\n\nThere is both a customizable function (ShowMessageBox()) that offers\nlots of options for what to display and reports on what choice the user\nmade, and also a much-simplified version (ShowSimpleMessageBox()),\nmerely takes a text message and title, and waits until the user presses a\nsingle \"OK\" UI button. Often, this is all that is necessary.",
+      "entries": {
+        "MessageBoxFlags": {
+          "doc": "Message box flags.\n\nIf supported will display warning icon, etc.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "MessageBoxFlags",
+          "kind": "alias",
+          "type": "Uint32",
+          "begin": 35,
+          "decl": 42,
+          "end": 44
+        },
+        "MESSAGEBOX_ERROR": {
+          "doc": "error dialog",
+          "name": "MESSAGEBOX_ERROR",
+          "kind": "var",
+          "type": "MessageBoxFlags",
+          "constexpr": true,
+          "begin": 44,
+          "decl": 44,
+          "end": 47
+        },
+        "MESSAGEBOX_WARNING": {
+          "doc": "warning dialog",
+          "name": "MESSAGEBOX_WARNING",
+          "kind": "var",
+          "type": "MessageBoxFlags",
+          "constexpr": true,
+          "begin": 47,
+          "decl": 50,
+          "end": 52
+        },
+        "MESSAGEBOX_INFORMATION": {
+          "doc": "informational dialog",
+          "name": "MESSAGEBOX_INFORMATION",
+          "kind": "var",
+          "type": "MessageBoxFlags",
+          "constexpr": true,
+          "begin": 52,
+          "decl": 55,
+          "end": 57
+        },
+        "MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT": {
+          "doc": "buttons placed left to right",
+          "name": "MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
+          "kind": "var",
+          "type": "MessageBoxFlags",
+          "constexpr": true,
+          "begin": 57,
+          "decl": 60,
+          "end": 63
+        },
+        "MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT": {
+          "doc": "buttons placed right to left",
+          "name": "MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT",
+          "kind": "var",
+          "type": "MessageBoxFlags",
+          "constexpr": true,
+          "begin": 63,
+          "decl": 66,
+          "end": 69
+        },
+        "MessageBoxButtonFlags": {
+          "doc": "MessageBoxButtonData flags.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "MessageBoxButtonFlags",
+          "kind": "alias",
+          "type": "Uint32",
+          "begin": 76,
+          "decl": 81,
+          "end": 83
+        },
+        "MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT": {
+          "doc": "Marks the default button when return is hit",
+          "name": "MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT",
+          "kind": "var",
+          "type": "MessageBoxButtonFlags",
+          "constexpr": true,
+          "begin": 83,
+          "decl": 86,
+          "end": 89
+        },
+        "MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT": {
+          "doc": "Marks the default button when escape is hit",
+          "name": "MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT",
+          "kind": "var",
+          "type": "MessageBoxButtonFlags",
+          "constexpr": true,
+          "begin": 89,
+          "decl": 92,
+          "end": 95
+        },
+        "MessageBoxButtonData": {
+          "doc": "Individual button data.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MessageBoxButtonData",
+          "kind": "alias",
+          "type": "SDL_MessageBoxButtonData",
+          "begin": 97,
+          "decl": 102,
+          "end": 104
+        },
+        "MessageBoxColor": {
+          "doc": "RGB value used in a message box color scheme\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MessageBoxColor",
+          "kind": "alias",
+          "type": "SDL_MessageBoxColor",
+          "begin": 104,
+          "decl": 109,
+          "end": 111
+        },
+        "MessageBoxColorType": {
+          "doc": "An enumeration of indices inside the colors array of\nMessageBoxColorScheme.",
+          "name": "MessageBoxColorType",
+          "kind": "alias",
+          "type": "SDL_MessageBoxColorType",
+          "begin": 116,
+          "decl": 120,
+          "end": 122
+        },
+        "MESSAGEBOX_COLOR_BACKGROUND": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_BACKGROUND",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "constexpr": true,
+          "begin": 122,
+          "decl": 122,
+          "end": 125
+        },
+        "MESSAGEBOX_COLOR_TEXT": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_TEXT",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "constexpr": true,
+          "begin": 125,
+          "decl": 125,
+          "end": 127
+        },
+        "MESSAGEBOX_COLOR_BUTTON_BORDER": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_BUTTON_BORDER",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "constexpr": true,
+          "begin": 127,
+          "decl": 127,
+          "end": 130
+        },
+        "MESSAGEBOX_COLOR_BUTTON_BACKGROUND": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_BUTTON_BACKGROUND",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "constexpr": true,
+          "begin": 130,
+          "decl": 130,
+          "end": 133
+        },
+        "MESSAGEBOX_COLOR_BUTTON_SELECTED": {
+          "doc": "",
+          "name": "MESSAGEBOX_COLOR_BUTTON_SELECTED",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "constexpr": true,
+          "begin": 133,
+          "decl": 133,
+          "end": 136
+        },
+        "MESSAGEBOX_COLOR_COUNT": {
+          "doc": "Count",
+          "name": "MESSAGEBOX_COLOR_COUNT",
+          "kind": "var",
+          "type": "MessageBoxColorType",
+          "constexpr": true,
+          "begin": 136,
+          "decl": 139,
+          "end": 142
+        },
+        "MessageBoxColorScheme": {
+          "doc": "A set of colors to use for message box dialogs\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MessageBoxColorScheme",
+          "kind": "alias",
+          "type": "SDL_MessageBoxColorScheme",
+          "begin": 144,
+          "decl": 149,
+          "end": 151
+        },
+        "MessageBox": {
+          "doc": "MessageBox structure containing title, text, window, etc.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MessageBox",
+          "kind": "struct",
+          "type": "SDL_MessageBoxData",
+          "entries": {
+            "MessageBox": [
+              {
+                "doc": "Wraps MessageBox.\n\n@param messageBox the value to be wrapped",
+                "name": "MessageBox",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "messageBox",
+                    "type": "const SDL_MessageBoxData &",
+                    "default": "{}"
+                  }
+                ],
+                "constexpr": true,
+                "begin": 158,
+                "decl": 163,
+                "end": 168
+              },
+              {
+                "doc": "Constructs from its fields.\n\n@param flags the value for flags.\n@param window the value for window.\n@param title the value for title.\n@param message the value for message.\n@param buttons the value for buttons.\n@param colorScheme the value for colorScheme.",
+                "name": "MessageBox",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "flags",
+                    "type": "MessageBoxFlags"
+                  },
+                  {
+                    "name": "window",
+                    "type": "WindowRef"
+                  },
+                  {
+                    "name": "title",
+                    "type": "const char *"
+                  },
+                  {
+                    "name": "message",
+                    "type": "const char *"
+                  },
+                  {
+                    "name": "buttons",
+                    "type": "std::span<const MessageBoxButtonData>"
+                  },
+                  {
+                    "name": "colorScheme",
+                    "type": "OptionalRef<const MessageBoxColorScheme>"
+                  }
+                ],
+                "constexpr": true,
+                "begin": 168,
+                "decl": 178,
+                "end": 194
+              }
+            ],
+            "Show": {
+              "doc": "Create a modal message box.\n\nIf your needs aren't complex, it might be easier to use\nShowSimpleMessageBox.\n\nThis function should be called on the thread that created the parent\nwindow, or on the main thread if the messagebox has no parent. It will\nblock execution of that thread until the user clicks a button or closes the\nmessagebox.\n\nThis function may be called at any time, even before InitSubSystem(). This\nmakes it useful for reporting errors like a failure to create a renderer or\nOpenGL context.\n\nOn X11, SDL rolls its own dialog box with X11 primitives instead of a\nformal toolkit like GTK+ or Qt.\n\nNote that if InitSubSystem() would fail because there isn't any available\nvideo target, this function is likely to fail for the same reasons. If this\nis a concern, check the return value from this function and fall back to\nwriting to stderr if you can.\n\n@param buttonid the pointer to which user id of hit button should be\n                copied.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ShowSimpleMessageBox",
+              "name": "Show",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "buttonid",
+                  "type": "int *"
+                }
+              ],
+              "immutable": true,
+              "begin": 194,
+              "decl": 226,
+              "end": 228
+            },
+            "GetFlags": {
+              "doc": "Get the flags.\n\n@returns current flags value.",
+              "name": "GetFlags",
+              "kind": "function",
+              "type": "SDL_MessageBoxFlags",
+              "parameters": [],
+              "constexpr": true,
+              "immutable": true,
+              "begin": 228,
+              "decl": 233,
+              "end": 235
+            },
+            "SetFlags": {
+              "doc": "Set the flags.\n\n@param newFlags the new flags value.\n@returns Reference to self.",
+              "name": "SetFlags",
+              "kind": "function",
+              "type": "MessageBox &",
+              "parameters": [
+                {
+                  "name": "newFlags",
+                  "type": "SDL_MessageBoxFlags"
+                }
+              ],
+              "constexpr": true,
+              "begin": 235,
+              "decl": 241,
+              "end": 247
+            },
+            "GetWindow": {
+              "doc": "Get the window.\n\n@returns current window value.",
+              "name": "GetWindow",
+              "kind": "function",
+              "type": "WindowRef",
+              "parameters": [],
+              "constexpr": true,
+              "immutable": true,
+              "begin": 247,
+              "decl": 252,
+              "end": 254
+            },
+            "SetWindow": {
+              "doc": "Set the window.\n\n@param newWindow the new window value.\n@returns Reference to self.",
+              "name": "SetWindow",
+              "kind": "function",
+              "type": "MessageBox &",
+              "parameters": [
+                {
+                  "name": "newWindow",
+                  "type": "WindowRef"
+                }
+              ],
+              "constexpr": true,
+              "begin": 254,
+              "decl": 260,
+              "end": 266
+            },
+            "GetTitle": {
+              "doc": "Get the title.\n\n@returns current title value.",
+              "name": "GetTitle",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "constexpr": true,
+              "immutable": true,
+              "begin": 266,
+              "decl": 271,
+              "end": 273
+            },
+            "SetTitle": {
+              "doc": "Set the title.\n\n@param newTitle the new title value.\n@returns Reference to self.",
+              "name": "SetTitle",
+              "kind": "function",
+              "type": "MessageBox &",
+              "parameters": [
+                {
+                  "name": "newTitle",
+                  "type": "const char *"
+                }
+              ],
+              "constexpr": true,
+              "begin": 273,
+              "decl": 279,
+              "end": 285
+            },
+            "GetMessage": {
+              "doc": "Get the message.\n\n@returns current message value.",
+              "name": "GetMessage",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "constexpr": true,
+              "immutable": true,
+              "begin": 285,
+              "decl": 290,
+              "end": 292
+            },
+            "SetMessage": {
+              "doc": "Set the message.\n\n@param newMessage the new message value.\n@returns Reference to self.",
+              "name": "SetMessage",
+              "kind": "function",
+              "type": "MessageBox &",
+              "parameters": [
+                {
+                  "name": "newMessage",
+                  "type": "const char *"
+                }
+              ],
+              "constexpr": true,
+              "begin": 292,
+              "decl": 298,
+              "end": 304
+            },
+            "GetButtons": {
+              "doc": "Get the buttons.\n\n@returns current buttons value.",
+              "name": "GetButtons",
+              "kind": "function",
+              "type": "std::span<const MessageBoxButtonData>",
+              "parameters": [],
+              "constexpr": true,
+              "immutable": true,
+              "begin": 304,
+              "decl": 309,
+              "end": 315
+            },
+            "SetButtons": {
+              "doc": "Set the buttons.\n\n@param newButtons the new buttons value.\n@returns Reference to self.",
+              "name": "SetButtons",
+              "kind": "function",
+              "type": "MessageBox &",
+              "parameters": [
+                {
+                  "name": "newButtons",
+                  "type": "std::span<const MessageBoxButtonData>"
+                }
+              ],
+              "constexpr": true,
+              "begin": 315,
+              "decl": 321,
+              "end": 334
+            },
+            "GetColorScheme": {
+              "doc": "Get the colorScheme.\n\n@returns current colorScheme value.",
+              "name": "GetColorScheme",
+              "kind": "function",
+              "type": "const MessageBoxColorScheme *",
+              "parameters": [],
+              "constexpr": true,
+              "immutable": true,
+              "begin": 334,
+              "decl": 339,
+              "end": 344
+            },
+            "SetColorScheme": {
+              "doc": "Set the colorScheme.\n\n@param newColorScheme the new colorScheme value.\n@returns Reference to self.",
+              "name": "SetColorScheme",
+              "kind": "function",
+              "type": "MessageBox &",
+              "parameters": [
+                {
+                  "name": "newColorScheme",
+                  "type": "OptionalRef<const MessageBoxColorScheme>"
+                }
+              ],
+              "constexpr": true,
+              "begin": 344,
+              "decl": 350,
+              "end": 356
+            }
+          },
+          "begin": 151,
+          "decl": 156,
+          "end": 358
+        },
+        "ShowSimpleMessageBox": {
+          "doc": "Display a simple modal message box.\n\nIf your needs aren't complex, this function is preferred over\nMessageBox.Show.\n\n`flags` may be any of the following:\n\n- `MESSAGEBOX_ERROR`: error dialog\n- `MESSAGEBOX_WARNING`: warning dialog\n- `MESSAGEBOX_INFORMATION`: informational dialog\n\nThis function should be called on the thread that created the parent\nwindow, or on the main thread if the messagebox has no parent. It will\nblock execution of that thread until the user clicks a button or closes the\nmessagebox.\n\nThis function may be called at any time, even before InitSubSystem(). This\nmakes it useful for reporting errors like a failure to create a renderer or\nOpenGL context.\n\nOn X11, SDL rolls its own dialog box with X11 primitives instead of a\nformal toolkit like GTK+ or Qt.\n\nNote that if InitSubSystem() would fail because there isn't any available\nvideo target, this function is likely to fail for the same reasons. If this\nis a concern, check the return value from this function and fall back to\nwriting to stderr if you can.\n\n@param flags an MessageBoxFlags value.\n@param title UTF-8 title text.\n@param message UTF-8 message text.\n@param window the parent window, or nullptr for no parent.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MessageBox.Show",
+          "name": "ShowSimpleMessageBox",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "MessageBoxFlags"
+            },
+            {
+              "name": "title",
+              "type": "StringParam"
+            },
+            {
+              "name": "message",
+              "type": "StringParam"
+            },
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "begin": 358,
+          "decl": 398,
+          "end": 406
+        }
+      },
+      "docBegin": 10,
+      "docEnd": 30,
+      "entriesBegin": 30,
+      "entriesEnd": 406,
+      "namespace": "SDL"
+    },
     "SDL3pp_dialog.h": {
       "name": "SDL3pp_dialog.h",
       "doc": "@defgroup CategoryDialog File Dialogs\n\nFile dialog support.\n\nSDL offers file dialogs, to let users select files with native GUI\ninterfaces. There are \"open\" dialogs, \"save\" dialogs, and folder selection\ndialogs. The app can control some details, such as filtering to specific\nfiles, or whether multiple files can be selected by the user.\n\nNote that launching a file dialog is a non-blocking operation; control\nreturns to the app immediately, and a callback is called later (possibly in\nanother thread) when the user makes a choice.",

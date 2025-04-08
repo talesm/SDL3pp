@@ -5701,6 +5701,76 @@
         }
       }
     },
+    "SDL_messagebox.h": {
+      "enumerations": {
+        "SDL_MessageBoxFlags": {
+          "values": [
+            "SDL_MESSAGEBOX_ERROR",
+            "SDL_MESSAGEBOX_WARNING",
+            "SDL_MESSAGEBOX_INFORMATION",
+            "SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
+            "SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT"
+          ]
+        },
+        "SDL_MessageBoxButtonFlags": {
+          "prefix": "SDL_MESSAGEBOX_BUTTON_"
+        }
+      },
+      "transform": {
+        "SDL_MessageBoxData": {
+          "name": "MessageBox",
+          "type": "SDL_MessageBoxData",
+          "entries": {
+            "MessageBox": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_MessageBoxData &",
+                    "name": "messageBox",
+                    "default": "{}"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "MessageBoxFlags",
+                    "name": "flags"
+                  },
+                  {
+                    "type": "WindowRef",
+                    "name": "window"
+                  },
+                  {
+                    "type": "const char *",
+                    "name": "title"
+                  },
+                  {
+                    "type": "const char *",
+                    "name": "message"
+                  },
+                  {
+                    "type": "std::span<const MessageBoxButtonData>",
+                    "name": "buttons"
+                  },
+                  {
+                    "type": "OptionalRef<const MessageBoxColorScheme>",
+                    "name": "colorScheme"
+                  }
+                ]
+              }
+            ],
+            "SDL_ShowMessageBox": "function"
+          }
+        }
+      }
+    },
     "SDL_dialog.h": {
       "namespacesMap": {
         "SDL_PROP_FILE_DIALOG_": "prop::FileDialog"

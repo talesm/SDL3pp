@@ -14,11 +14,12 @@ var searchData=
   ['memmove_11',['memmove',['../group__CategoryStdinc.html#ga166c29b5162d190b0002720452a5ef43',1,'SDL']]],
   ['memset_12',['memset',['../group__CategoryStdinc.html#ga5a6487beb5a07d1110c8afe1fe030446',1,'SDL']]],
   ['memset4_13',['memset4',['../group__CategoryStdinc.html#ga8e06e75cea4ef203bf1f3c967f8bff54',1,'SDL']]],
-  ['min_14',['min',['../group__CategoryStdinc.html#ga37591dc3dcb6bb89de19a61acdec4ef3',1,'SDL']]],
-  ['minimize_15',['Minimize',['../structSDL_1_1WindowBase.html#ab4791bd71e83da23414a50725aabfb73',1,'SDL::WindowBase']]],
-  ['modf_16',['modf',['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL']]],
-  ['modff_17',['modff',['../group__CategoryStdinc.html#ga0108470ee7d88fa093ddf12185060c10',1,'SDL']]],
-  ['mostsignificantbitindex32_18',['MostSignificantBitIndex32',['../group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee',1,'SDL']]],
-  ['murmur3_5f32_19',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
-  ['mustlock_20',['MustLock',['../structSDL_1_1SurfaceBase.html#a6b0bf68e5aa38621f0a9777cca093d9e',1,'SDL::SurfaceBase']]]
+  ['messagebox_14',['messagebox',['../structSDL_1_1MessageBox.html#ab3180b114bb29701aadbb78c1b24f21e',1,'SDL::MessageBox::MessageBox(MessageBoxFlags flags, WindowRef window, const char *title, const char *message, std::span&lt; const MessageBoxButtonData &gt; buttons, OptionalRef&lt; const MessageBoxColorScheme &gt; colorScheme)'],['../structSDL_1_1MessageBox.html#a761e3c246f031304d5c26b5a2f509b47',1,'SDL::MessageBox::MessageBox(const SDL_MessageBoxData &amp;messageBox={})']]],
+  ['min_15',['min',['../group__CategoryStdinc.html#ga37591dc3dcb6bb89de19a61acdec4ef3',1,'SDL']]],
+  ['minimize_16',['Minimize',['../structSDL_1_1WindowBase.html#ab4791bd71e83da23414a50725aabfb73',1,'SDL::WindowBase']]],
+  ['modf_17',['modf',['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL']]],
+  ['modff_18',['modff',['../group__CategoryStdinc.html#ga0108470ee7d88fa093ddf12185060c10',1,'SDL']]],
+  ['mostsignificantbitindex32_19',['MostSignificantBitIndex32',['../group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee',1,'SDL']]],
+  ['murmur3_5f32_20',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
+  ['mustlock_21',['MustLock',['../structSDL_1_1SurfaceBase.html#a6b0bf68e5aa38621f0a9777cca093d9e',1,'SDL::SurfaceBase']]]
 ];
