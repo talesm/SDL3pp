@@ -346,6 +346,7 @@ function expandWrappers(sourceEntries, transform, context) {
           type: `const ${targetType} &`,
           name: "other",
         }],
+        doc: "Default comparison operator"
       });
     } else {
       insertEntry(entries, {
@@ -358,6 +359,7 @@ function expandWrappers(sourceEntries, transform, context) {
           type: `const ${targetType} &`,
           name: "other",
         }],
+        doc: "Default comparison operator"
       });
     }
     if (wrapper.nullable) insertEntry(entries, {

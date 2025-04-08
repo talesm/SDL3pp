@@ -492,7 +492,9 @@ public:
   {
   }
 
-  /// True if a valid display
+  /**
+   * Default comparison operator
+   */
   constexpr bool operator==(const Display& other) const = default;
 
   /**
@@ -505,7 +507,7 @@ public:
   /**
    * Check if valid.
    *
-   * @returns True if valid state, false otherwise.
+   * @returns True if valid display, false otherwise.
    */
   constexpr explicit operator bool() const { return m_displayID != 0; }
 
@@ -3374,17 +3376,20 @@ constexpr GLContextFlag GL_CONTEXT_DEBUG_FLAG = SDL_GL_CONTEXT_DEBUG_FLAG;
 /**
  * FORWARD_COMPATIBLE_FLAG
  */
-constexpr GLContextFlag GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
+constexpr GLContextFlag GL_CONTEXT_FORWARD_COMPATIBLE_FLAG =
+  SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
 
 /**
  * ROBUST_ACCESS_FLAG
  */
-constexpr GLContextFlag GL_CONTEXT_ROBUST_ACCESS_FLAG = SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG;
+constexpr GLContextFlag GL_CONTEXT_ROBUST_ACCESS_FLAG =
+  SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG;
 
 /**
  * RESET_ISOLATION_FLAG
  */
-constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG = SDL_GL_CONTEXT_RESET_ISOLATION_FLAG;
+constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG =
+  SDL_GL_CONTEXT_RESET_ISOLATION_FLAG;
 
 /// @}
 
@@ -3404,12 +3409,14 @@ using GLContextReleaseFlag = Uint32;
 /**
  * BEHAVIOR_NONE
  */
-constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE = SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
+constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE =
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
 
 /**
  * BEHAVIOR_FLUSH
  */
-constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH;
+constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH =
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH;
 
 /// @}
 
@@ -3428,12 +3435,14 @@ using GLContextResetNotification = Uint32;
 /**
  * NO_NOTIFICATION
  */
-constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION = SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;
+constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION =
+  SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;
 
 /**
  * LOSE_CONTEXT
  */
-constexpr GLContextResetNotification GL_CONTEXT_RESET_LOSE_CONTEXT = SDL_GL_CONTEXT_RESET_LOSE_CONTEXT;
+constexpr GLContextResetNotification GL_CONTEXT_RESET_LOSE_CONTEXT =
+  SDL_GL_CONTEXT_RESET_LOSE_CONTEXT;
 
 /// @}
 

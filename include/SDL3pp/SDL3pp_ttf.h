@@ -425,6 +425,8 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 #ifdef SDL3PP_DOC
 
 /**
+ * @name TTF version
+ * @{
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
 #define SDL_TTF_MAJOR_VERSION
@@ -432,6 +434,8 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 #define SDL_TTF_MINOR_VERSION
 
 #define SDL_TTF_MICRO_VERSION
+
+///@}
 
 /**
  * This is the version number macro for the current SDL_ttf version.

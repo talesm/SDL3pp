@@ -91,6 +91,9 @@ struct DateTime : SDL_DateTime
     SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
   }
 
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const DateTime& other) const = default;
 
   /// Returns If valid

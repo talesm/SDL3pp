@@ -149,6 +149,9 @@ public:
   {
   }
 
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const Keycode& other) const = default;
 
   // Convert from scancode

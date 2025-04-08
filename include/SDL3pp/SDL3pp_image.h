@@ -56,6 +56,8 @@ using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
 #ifdef SDL3PP_DOC
 
 /**
+ * @name Image version
+ * @{
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
 #define SDL_IMAGE_MAJOR_VERSION
@@ -63,6 +65,8 @@ using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
 #define SDL_IMAGE_MINOR_VERSION
 
 #define SDL_IMAGE_MICRO_VERSION
+
+/// @}
 
 /**
  * This is the version number macro for the current SDL_image version.

@@ -1610,7 +1610,9 @@ struct Color : SDL_Color
   {
   }
 
-  // Auto comparison operator
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const Color& other) const = default;
 
   /**
@@ -1788,7 +1790,9 @@ struct FColor : SDL_FColor
   {
   }
 
-  // Auto comparison operator
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const FColor& other) const = default;
 
   /**

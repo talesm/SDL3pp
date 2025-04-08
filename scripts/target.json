@@ -4917,7 +4917,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "operator SDL_DisplayID": {
               "kind": "function",
@@ -12623,7 +12623,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "GetR": {
               "kind": "function",
@@ -12775,7 +12775,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "GetR": {
               "kind": "function",
@@ -13453,7 +13453,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "operator bool": {
               "kind": "function",
@@ -13578,7 +13578,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "operator bool": {
               "kind": "function",
@@ -13727,7 +13727,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "operator bool": {
               "doc": "@sa Empty()",
@@ -14207,7 +14207,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "operator bool": {
               "doc": "@sa Empty()",
@@ -18934,7 +18934,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "operator SDL_Keycode": {
               "kind": "function",
@@ -21403,7 +21403,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "operator SDL_Scancode": {
               "kind": "function",
@@ -23726,7 +23726,7 @@
                   "name": "other"
                 }
               ],
-              "doc": ""
+              "doc": "Default comparison operator"
             },
             "operator bool": {
               "kind": "function",

@@ -103,16 +103,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga895f91173346a028d25202ced75b549e" id="r_ga895f91173346a028d25202ced75b549e"><td class="memItemLeft" align="right" valign="top"><a id="ga895f91173346a028d25202ced75b549e" name="ga895f91173346a028d25202ced75b549e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SDL_TTF_MAJOR_VERSION</b></td></tr>
-<tr class="memdesc:ga895f91173346a028d25202ced75b549e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO. <br /></td></tr>
-<tr class="separator:ga895f91173346a028d25202ced75b549e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae192fcc5f145ad3ffb3652fe4ab768bb" id="r_gae192fcc5f145ad3ffb3652fe4ab768bb"><td class="memItemLeft" align="right" valign="top"><a id="gae192fcc5f145ad3ffb3652fe4ab768bb" name="gae192fcc5f145ad3ffb3652fe4ab768bb"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SDL_TTF_MINOR_VERSION</b></td></tr>
-<tr class="separator:gae192fcc5f145ad3ffb3652fe4ab768bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga284a1a15cc497ffe1bdd9cb625d6f2b6" id="r_ga284a1a15cc497ffe1bdd9cb625d6f2b6"><td class="memItemLeft" align="right" valign="top"><a id="ga284a1a15cc497ffe1bdd9cb625d6f2b6" name="ga284a1a15cc497ffe1bdd9cb625d6f2b6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SDL_TTF_MICRO_VERSION</b></td></tr>
-<tr class="separator:ga284a1a15cc497ffe1bdd9cb625d6f2b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga92d4b4754927346b9cfb79fe8905a747" id="r_ga92d4b4754927346b9cfb79fe8905a747"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga92d4b4754927346b9cfb79fe8905a747">SDL_TTF_VERSION</a></td></tr>
 <tr class="memdesc:ga92d4b4754927346b9cfb79fe8905a747"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the version number macro for the current SDL_ttf version.  <br /></td></tr>
 <tr class="separator:ga92d4b4754927346b9cfb79fe8905a747"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -405,8 +395,7 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#ga4093a44b42b26b9a1f196
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  <a class="code hl_define" href="group__CategoryVersion.html#ga68644ee0efbb70a4e3abf66f4971a357">SDL_VERSIONNUM</a>(                                                              \</div>
-<div class="line">    <a class="code hl_define" href="group__CategorySDLTTF.html#ga895f91173346a028d25202ced75b549e">SDL_TTF_MAJOR_VERSION</a>, SDL_TTF_MINOR_VERSION, SDL_TTF_MICRO_VERSION)</div>
-<div class="ttc" id="agroup__CategorySDLTTF_html_ga895f91173346a028d25202ced75b549e"><div class="ttname"><a href="group__CategorySDLTTF.html#ga895f91173346a028d25202ced75b549e">SDL_TTF_MAJOR_VERSION</a></div><div class="ttdeci">#define SDL_TTF_MAJOR_VERSION</div><div class="ttdoc">Printable format: &quot;%d.%d.%d&quot;, MAJOR, MINOR, MICRO.</div><div class="ttdef"><b>Definition</b> SDL3pp_ttf.h:430</div></div>
+<div class="line">    SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_MICRO_VERSION)</div>
 <div class="ttc" id="agroup__CategoryVersion_html_ga68644ee0efbb70a4e3abf66f4971a357"><div class="ttname"><a href="group__CategoryVersion.html#ga68644ee0efbb70a4e3abf66f4971a357">SDL_VERSIONNUM</a></div><div class="ttdeci">#define SDL_VERSIONNUM(major, minor, patch)</div><div class="ttdoc">This macro turns the version numbers into a numeric value.</div><div class="ttdef"><b>Definition</b> SDL3pp_version.h:59</div></div>
 </div><!-- fragment -->
 </div>
@@ -442,9 +431,9 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#ga4093a44b42b26b9a1f196
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  ((<a class="code hl_define" href="group__CategorySDLTTF.html#ga895f91173346a028d25202ced75b549e">SDL_TTF_MAJOR_VERSION</a> &gt;= X) &amp;&amp;                                             \</div>
-<div class="line">   (<a class="code hl_define" href="group__CategorySDLTTF.html#ga895f91173346a028d25202ced75b549e">SDL_TTF_MAJOR_VERSION</a> &gt; X || SDL_TTF_MINOR_VERSION &gt;= Y) &amp;&amp;                \</div>
-<div class="line">   (<a class="code hl_define" href="group__CategorySDLTTF.html#ga895f91173346a028d25202ced75b549e">SDL_TTF_MAJOR_VERSION</a> &gt; X || SDL_TTF_MINOR_VERSION &gt; Y ||                  \</div>
+<b>Value:</b><div class="fragment"><div class="line">  ((SDL_TTF_MAJOR_VERSION &gt;= X) &amp;&amp;                                             \</div>
+<div class="line">   (SDL_TTF_MAJOR_VERSION &gt; X || SDL_TTF_MINOR_VERSION &gt;= Y) &amp;&amp;                \</div>
+<div class="line">   (SDL_TTF_MAJOR_VERSION &gt; X || SDL_TTF_MINOR_VERSION &gt; Y ||                  \</div>
 <div class="line">    SDL_TTF_MICRO_VERSION &gt;= Z))</div>
 </div><!-- fragment -->
 </div>

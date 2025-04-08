@@ -15310,7 +15310,9 @@ struct Color : SDL_Color
   {
   }
 
-  // Auto comparison operator
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const Color& other) const = default;
 
   /**
@@ -15488,7 +15490,9 @@ struct FColor : SDL_FColor
   {
   }
 
-  // Auto comparison operator
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const FColor& other) const = default;
 
   /**
@@ -16333,6 +16337,9 @@ struct Scancode
   // Get scan code from name
   Scancode(StringParam name);
 
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const Scancode& other) const = default;
 
   /**
@@ -17062,6 +17069,9 @@ struct DateTime : SDL_DateTime
     SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
   }
 
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const DateTime& other) const = default;
 
   /// Returns If valid
@@ -18478,6 +18488,9 @@ public:
   {
   }
 
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const Keycode& other) const = default;
 
   // Convert from scancode
@@ -20421,7 +20434,9 @@ struct Point : SDL_Point
   {
   }
 
-  // Auto comparison operator
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const Point& other) const = default;
 
   /**
@@ -20816,6 +20831,9 @@ struct FPoint : SDL_FPoint
   {
   }
 
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const FPoint& other) const = default;
 
   /**
@@ -21754,6 +21772,7 @@ struct FRect : SDL_FRect
   {
   }
 
+  /// Constructs from top-left corner plus size
   constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
     : FRect{corner.x, corner.y, size.x, size.y}
   {
@@ -26980,7 +26999,9 @@ public:
   {
   }
 
-  /// True if a valid display
+  /**
+   * Default comparison operator
+   */
   constexpr bool operator==(const Display& other) const = default;
 
   /**
@@ -26993,7 +27014,7 @@ public:
   /**
    * Check if valid.
    *
-   * @returns True if valid state, false otherwise.
+   * @returns True if valid display, false otherwise.
    */
   constexpr explicit operator bool() const { return m_displayID != 0; }
 
@@ -29862,17 +29883,20 @@ constexpr GLContextFlag GL_CONTEXT_DEBUG_FLAG = SDL_GL_CONTEXT_DEBUG_FLAG;
 /**
  * FORWARD_COMPATIBLE_FLAG
  */
-constexpr GLContextFlag GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
+constexpr GLContextFlag GL_CONTEXT_FORWARD_COMPATIBLE_FLAG =
+  SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
 
 /**
  * ROBUST_ACCESS_FLAG
  */
-constexpr GLContextFlag GL_CONTEXT_ROBUST_ACCESS_FLAG = SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG;
+constexpr GLContextFlag GL_CONTEXT_ROBUST_ACCESS_FLAG =
+  SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG;
 
 /**
  * RESET_ISOLATION_FLAG
  */
-constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG = SDL_GL_CONTEXT_RESET_ISOLATION_FLAG;
+constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG =
+  SDL_GL_CONTEXT_RESET_ISOLATION_FLAG;
 
 /// @}
 
@@ -29892,12 +29916,14 @@ using GLContextReleaseFlag = Uint32;
 /**
  * BEHAVIOR_NONE
  */
-constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE = SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
+constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE =
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
 
 /**
  * BEHAVIOR_FLUSH
  */
-constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH;
+constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH =
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH;
 
 /// @}
 
@@ -29916,12 +29942,14 @@ using GLContextResetNotification = Uint32;
 /**
  * NO_NOTIFICATION
  */
-constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION = SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;
+constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION =
+  SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;
 
 /**
  * LOSE_CONTEXT
  */
-constexpr GLContextResetNotification GL_CONTEXT_RESET_LOSE_CONTEXT = SDL_GL_CONTEXT_RESET_LOSE_CONTEXT;
+constexpr GLContextResetNotification GL_CONTEXT_RESET_LOSE_CONTEXT =
+  SDL_GL_CONTEXT_RESET_LOSE_CONTEXT;
 
 /// @}
 
@@ -37895,6 +37923,8 @@ using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
 #ifdef SDL3PP_DOC
 
 /**
+ * @name Image version
+ * @{
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
 #define SDL_IMAGE_MAJOR_VERSION
@@ -37902,6 +37932,8 @@ using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
 #define SDL_IMAGE_MINOR_VERSION
 
 #define SDL_IMAGE_MICRO_VERSION
+
+/// @}
 
 /**
  * This is the version number macro for the current SDL_image version.
@@ -40424,6 +40456,8 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 #ifdef SDL3PP_DOC
 
 /**
+ * @name TTF version
+ * @{
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
 #define SDL_TTF_MAJOR_VERSION
@@ -40431,6 +40465,8 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 #define SDL_TTF_MINOR_VERSION
 
 #define SDL_TTF_MICRO_VERSION
+
+///@}
 
 /**
  * This is the version number macro for the current SDL_ttf version.

@@ -54,6 +54,9 @@ struct Scancode
   // Get scan code from name
   Scancode(StringParam name);
 
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const Scancode& other) const = default;
 
   /**

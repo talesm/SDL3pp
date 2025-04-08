@@ -68,7 +68,9 @@ struct Point : SDL_Point
   {
   }
 
-  // Auto comparison operator
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const Point& other) const = default;
 
   /**
@@ -463,6 +465,9 @@ struct FPoint : SDL_FPoint
   {
   }
 
+  /**
+   * Default comparison operator
+   */
   constexpr auto operator<=>(const FPoint& other) const = default;
 
   /**
@@ -1401,6 +1406,7 @@ struct FRect : SDL_FRect
   {
   }
 
+  /// Constructs from top-left corner plus size
   constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
     : FRect{corner.x, corner.y, size.x, size.y}
   {
