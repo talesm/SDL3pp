@@ -6585,7 +6585,7 @@
           "sourceName": "SDL_GLContextFlag"
         },
         "GL_CONTEXT_DEBUG_FLAG": {
-          "doc": "",
+          "doc": "DEBUG_FLAG",
           "name": "GL_CONTEXT_DEBUG_FLAG",
           "kind": "var",
           "value": "0x0001",
@@ -6594,7 +6594,7 @@
           "type": "GLContextFlag"
         },
         "GL_CONTEXT_FORWARD_COMPATIBLE_FLAG": {
-          "doc": "",
+          "doc": "FORWARD_COMPATIBLE_FLAG",
           "name": "GL_CONTEXT_FORWARD_COMPATIBLE_FLAG",
           "kind": "var",
           "value": "0x0002",
@@ -6603,7 +6603,7 @@
           "type": "GLContextFlag"
         },
         "GL_CONTEXT_ROBUST_ACCESS_FLAG": {
-          "doc": "",
+          "doc": "ROBUST_ACCESS_FLAG",
           "name": "GL_CONTEXT_ROBUST_ACCESS_FLAG",
           "kind": "var",
           "value": "0x0004",
@@ -6612,7 +6612,7 @@
           "type": "GLContextFlag"
         },
         "GL_CONTEXT_RESET_ISOLATION_FLAG": {
-          "doc": "",
+          "doc": "RESET_ISOLATION_FLAG",
           "name": "GL_CONTEXT_RESET_ISOLATION_FLAG",
           "kind": "var",
           "value": "0x0008",
@@ -6628,7 +6628,7 @@
           "sourceName": "SDL_GLContextReleaseFlag"
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR_NONE": {
-          "doc": "",
+          "doc": "BEHAVIOR_NONE",
           "name": "GL_CONTEXT_RELEASE_BEHAVIOR_NONE",
           "kind": "var",
           "value": "0x0000",
@@ -6637,7 +6637,7 @@
           "type": "GLContextReleaseFlag"
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH": {
-          "doc": "",
+          "doc": "BEHAVIOR_FLUSH",
           "name": "GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH",
           "kind": "var",
           "value": "0x0001",
@@ -6653,7 +6653,7 @@
           "sourceName": "SDL_GLContextResetNotification"
         },
         "GL_CONTEXT_RESET_NO_NOTIFICATION": {
-          "doc": "",
+          "doc": "NO_NOTIFICATION",
           "name": "GL_CONTEXT_RESET_NO_NOTIFICATION",
           "kind": "var",
           "value": "0x0000",
@@ -6662,7 +6662,7 @@
           "type": "GLContextResetNotification"
         },
         "GL_CONTEXT_RESET_LOSE_CONTEXT": {
-          "doc": "",
+          "doc": "LOSE_CONTEXT",
           "name": "GL_CONTEXT_RESET_LOSE_CONTEXT",
           "kind": "var",
           "value": "0x0001",
@@ -13192,7 +13192,7 @@
           "type": "BlendMode"
         },
         "BLENDMODE_INVALID": {
-          "doc": "",
+          "doc": "INVALID",
           "name": "BLENDMODE_INVALID",
           "kind": "var",
           "value": "0x7FFFFFFFu",
@@ -19001,7 +19001,7 @@
           }
         },
         "KEYCODE_EXTENDED_MASK": {
-          "doc": "",
+          "doc": "EXTENDED_MASK",
           "name": "KEYCODE_EXTENDED_MASK",
           "kind": "var",
           "value": "(1u << 29)",
@@ -19010,7 +19010,7 @@
           "type": "Keycode"
         },
         "KEYCODE_SCANCODE_MASK": {
-          "doc": "",
+          "doc": "SCANCODE_MASK",
           "name": "KEYCODE_SCANCODE_MASK",
           "kind": "var",
           "value": "(1u << 30)",
@@ -19043,7 +19043,7 @@
           "type": "Keycode"
         },
         "KEYCODE_RETURN": {
-          "doc": "'@r'",
+          "doc": "'\\r'",
           "name": "KEYCODE_RETURN",
           "kind": "var",
           "value": "0x0000000du",
@@ -19052,7 +19052,7 @@
           "type": "Keycode"
         },
         "KEYCODE_ESCAPE": {
-          "doc": "'@x1B'",
+          "doc": "'\\x1B'",
           "name": "KEYCODE_ESCAPE",
           "kind": "var",
           "value": "0x0000001bu",
@@ -19061,7 +19061,7 @@
           "type": "Keycode"
         },
         "KEYCODE_BACKSPACE": {
-          "doc": "'@b'",
+          "doc": "'\\b'",
           "name": "KEYCODE_BACKSPACE",
           "kind": "var",
           "value": "0x00000008u",
@@ -19070,7 +19070,7 @@
           "type": "Keycode"
         },
         "KEYCODE_TAB": {
-          "doc": "'@t'",
+          "doc": "'\\t'",
           "name": "KEYCODE_TAB",
           "kind": "var",
           "value": "0x00000009u",
@@ -19700,7 +19700,7 @@
           "type": "Keycode"
         },
         "KEYCODE_DELETE": {
-          "doc": "'@x7F'",
+          "doc": "'\\x7F'",
           "name": "KEYCODE_DELETE",
           "kind": "var",
           "value": "0x0000007fu",
@@ -19709,7 +19709,7 @@
           "type": "Keycode"
         },
         "KEYCODE_PLUSMINUS": {
-          "doc": "'@xB1'",
+          "doc": "'\\xB1'",
           "name": "KEYCODE_PLUSMINUS",
           "kind": "var",
           "value": "0x000000b1u",

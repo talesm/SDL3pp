@@ -6780,8 +6780,7 @@ constexpr BlendMode BLENDMODE_MOD = SDL_BLENDMODE_MOD;
  */
 constexpr BlendMode BLENDMODE_MUL = SDL_BLENDMODE_MUL;
 
-/// Invalid blendmode
-constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID;
+constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID; ///< INVALID
 
 ///@}
 
@@ -18503,21 +18502,21 @@ public:
    */
   constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
 
-  // Get name
-
+  /// Has Extended flag.
   constexpr bool IsExtended() const { return m_keycode & SDLK_EXTENDED_MASK; }
 
-  /// Has Scancode flag
+  /// Has Scancode flag.
   constexpr bool IsScancode() const { return m_keycode & SDLK_SCANCODE_MASK; }
 
   Scancode GetScancode(Keymod* modstate) const;
 
+  // Get name.
   const char* GetName() const;
 };
 
-constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK;
+constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
 
-constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK;
+constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
 
 /**
  * Transform scancode to keycode
@@ -18532,13 +18531,13 @@ constexpr Keycode ScancodeToKeycode(Scancode x)
 
 constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
 
-constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '@r'
+constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
 
-constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '@x1B'
+constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
 
-constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '@b'
+constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
 
-constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '@t'
+constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
 
 constexpr Keycode KEYCODE_SPACE = SDLK_SPACE; ///< ' '
 
@@ -18678,9 +18677,9 @@ constexpr Keycode KEYCODE_RIGHTBRACE = SDLK_RIGHTBRACE; ///< '}'
 
 constexpr Keycode KEYCODE_TILDE = SDLK_TILDE; ///< '~'
 
-constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '@x7F'
+constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
 
-constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '@xB1'
+constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
 
 /**
  * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CAPSLOCK)
@@ -29855,16 +29854,25 @@ constexpr GLProfile GL_CONTEXT_PROFILE_ES = SDL_GL_CONTEXT_PROFILE_ES;
  */
 using GLContextFlag = Uint32;
 
+/**
+ * DEBUG_FLAG
+ */
 constexpr GLContextFlag GL_CONTEXT_DEBUG_FLAG = SDL_GL_CONTEXT_DEBUG_FLAG;
 
-constexpr GLContextFlag GL_CONTEXT_FORWARD_COMPATIBLE_FLAG =
-  SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
+/**
+ * FORWARD_COMPATIBLE_FLAG
+ */
+constexpr GLContextFlag GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
 
-constexpr GLContextFlag GL_CONTEXT_ROBUST_ACCESS_FLAG =
-  SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG;
+/**
+ * ROBUST_ACCESS_FLAG
+ */
+constexpr GLContextFlag GL_CONTEXT_ROBUST_ACCESS_FLAG = SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG;
 
-constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG =
-  SDL_GL_CONTEXT_RESET_ISOLATION_FLAG;
+/**
+ * RESET_ISOLATION_FLAG
+ */
+constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG = SDL_GL_CONTEXT_RESET_ISOLATION_FLAG;
 
 /// @}
 
@@ -29881,11 +29889,15 @@ constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG =
  */
 using GLContextReleaseFlag = Uint32;
 
-constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE =
-  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
+/**
+ * BEHAVIOR_NONE
+ */
+constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE = SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
 
-constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH =
-  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH;
+/**
+ * BEHAVIOR_FLUSH
+ */
+constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH;
 
 /// @}
 
@@ -29901,11 +29913,15 @@ constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH =
  */
 using GLContextResetNotification = Uint32;
 
-constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION =
-  SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;
+/**
+ * NO_NOTIFICATION
+ */
+constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION = SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;
 
-constexpr GLContextResetNotification GL_CONTEXT_RESET_LOSE_CONTEXT =
-  SDL_GL_CONTEXT_RESET_LOSE_CONTEXT;
+/**
+ * LOSE_CONTEXT
+ */
+constexpr GLContextResetNotification GL_CONTEXT_RESET_LOSE_CONTEXT = SDL_GL_CONTEXT_RESET_LOSE_CONTEXT;
 
 /// @}
 

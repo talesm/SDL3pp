@@ -582,13 +582,13 @@ function expandEnumerations(sourceEntries, transform, context) {
     }
 
     let values = enumTransform.values;
+    const prefix = enumTransform.prefix ?? (type.toUpperCase() + "_");
     /** @type {StringMap} */
     const newNames = {};
     if (!values?.length) {
       if (sourceEntry.kind === "enum") {
         values = Object.keys(sourceEntry.entries);
       } else {
-        const prefix = enumTransform.prefix ?? type.toUpperCase();
         values = Object.values(sourceEntries)
           .filter(e => !Array.isArray(e)
             && e.kind === "def"
@@ -603,32 +603,30 @@ function expandEnumerations(sourceEntries, transform, context) {
       }
     }
     for (const value of values) {
-      addTransform(value, {
+      /** @type {ApiEntryTransform} */
+      const entry = {
         kind: "var",
         constexpr: true,
         type: targetType,
-      }, enumTransform.includeAfter, newNames[value]);
+      };
+      const newName = newNames[value];
+      combineObject(entry, transform.transform[value] || {});
+      if (newName) entry.name = newName;
+      const targetName = entry.name ?? transformName(value, context);
+      if (!entry.doc) {
+        // @ts-ignore
+        const sourceDoc = sourceEntries[value]?.doc;
+        entry.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : targetName);
+      }
+      context.nameMap[value] = targetName;
+      if (enumTransform.includeAfter) includeAfter(targetName, transform, enumTransform.includeAfter);
+      transform.transform[value] = entry;
     }
 
     delete enumTransform.values;
     delete enumTransform.prefix;
     delete enumTransform.includeAfter;
     delete enumTransform.newPrefix;
-  }
-
-  /** 
-   * @param {string}            name 
-   * @param {ApiEntryTransform} entry  
-   * @param {string=}           includeAfterKey 
-   * @param {string=}           newName
-   */
-  function addTransform(name, entry, includeAfterKey, newName) {
-    combineObject(entry, transform.transform[name] || {});
-    if (newName) entry.name = newName;
-    const targetName = entry.name ?? transformName(name, context);
-    context.nameMap[name] = targetName;
-    if (includeAfterKey) includeAfter(targetName, transform, includeAfterKey);
-    transform.transform[name] = entry;
   }
 }
 

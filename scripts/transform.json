@@ -3910,9 +3910,10 @@
       },
       "enumerations": {
         "SDL_GLProfile": {
-          "prefix": "SDL_GL_CONTEXT_PROFILE"
+          "prefix": "SDL_GL_CONTEXT_PROFILE_"
         },
         "SDL_GLContextFlag": {
+          "prefix": "SDL_GL_CONTEXT_",
           "values": [
             "SDL_GL_CONTEXT_DEBUG_FLAG",
             "SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG",
@@ -3921,12 +3922,14 @@
           ]
         },
         "SDL_GLContextReleaseFlag": {
+          "prefix": "SDL_GL_CONTEXT_RELEASE_",
           "values": [
             "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE",
             "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH"
           ]
         },
         "SDL_GLContextResetNotification": {
+          "prefix": "SDL_GL_CONTEXT_RESET_",
           "values": [
             "SDL_GL_CONTEXT_RESET_NO_NOTIFICATION",
             "SDL_GL_CONTEXT_RESET_LOSE_CONTEXT"

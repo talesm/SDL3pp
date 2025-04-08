@@ -72,8 +72,7 @@ constexpr BlendMode BLENDMODE_MOD = SDL_BLENDMODE_MOD;
  */
 constexpr BlendMode BLENDMODE_MUL = SDL_BLENDMODE_MUL;
 
-/// Invalid blendmode
-constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID;
+constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID; ///< INVALID
 
 ///@}
 

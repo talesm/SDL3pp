@@ -8310,102 +8310,102 @@
           "end": 3369
         },
         "GL_CONTEXT_DEBUG_FLAG": {
-          "doc": "",
+          "doc": "DEBUG_FLAG",
           "name": "GL_CONTEXT_DEBUG_FLAG",
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
           "begin": 3369,
-          "decl": 3369,
-          "end": 3371
+          "decl": 3372,
+          "end": 3374
         },
         "GL_CONTEXT_FORWARD_COMPATIBLE_FLAG": {
-          "doc": "",
+          "doc": "FORWARD_COMPATIBLE_FLAG",
           "name": "GL_CONTEXT_FORWARD_COMPATIBLE_FLAG",
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3371,
-          "decl": 3371,
-          "end": 3374
+          "begin": 3374,
+          "decl": 3377,
+          "end": 3379
         },
         "GL_CONTEXT_ROBUST_ACCESS_FLAG": {
-          "doc": "",
+          "doc": "ROBUST_ACCESS_FLAG",
           "name": "GL_CONTEXT_ROBUST_ACCESS_FLAG",
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3374,
-          "decl": 3374,
-          "end": 3377
+          "begin": 3379,
+          "decl": 3382,
+          "end": 3384
         },
         "GL_CONTEXT_RESET_ISOLATION_FLAG": {
-          "doc": "",
+          "doc": "RESET_ISOLATION_FLAG",
           "name": "GL_CONTEXT_RESET_ISOLATION_FLAG",
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3377,
-          "decl": 3377,
-          "end": 3380
+          "begin": 3384,
+          "decl": 3387,
+          "end": 3389
         },
         "GLContextReleaseFlag": {
           "doc": "Possible values to be set for the GL_CONTEXT_RELEASE_BEHAVIOR\nattribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLContextReleaseFlag",
           "kind": "alias",
           "type": "Uint32",
-          "begin": 3387,
-          "decl": 3393,
-          "end": 3395
+          "begin": 3396,
+          "decl": 3402,
+          "end": 3404
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR_NONE": {
-          "doc": "",
+          "doc": "BEHAVIOR_NONE",
           "name": "GL_CONTEXT_RELEASE_BEHAVIOR_NONE",
           "kind": "var",
           "type": "GLContextReleaseFlag",
           "constexpr": true,
-          "begin": 3395,
-          "decl": 3395,
-          "end": 3398
+          "begin": 3404,
+          "decl": 3407,
+          "end": 3409
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH": {
-          "doc": "",
+          "doc": "BEHAVIOR_FLUSH",
           "name": "GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH",
           "kind": "var",
           "type": "GLContextReleaseFlag",
           "constexpr": true,
-          "begin": 3398,
-          "decl": 3398,
-          "end": 3401
+          "begin": 3409,
+          "decl": 3412,
+          "end": 3414
         },
         "GLContextResetNotification": {
           "doc": "Possible values to be set GL_CONTEXT_RESET_NOTIFICATION attribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLContextResetNotification",
           "kind": "alias",
           "type": "Uint32",
-          "begin": 3408,
-          "decl": 3413,
-          "end": 3415
+          "begin": 3421,
+          "decl": 3426,
+          "end": 3428
         },
         "GL_CONTEXT_RESET_NO_NOTIFICATION": {
-          "doc": "",
+          "doc": "NO_NOTIFICATION",
           "name": "GL_CONTEXT_RESET_NO_NOTIFICATION",
           "kind": "var",
           "type": "GLContextResetNotification",
           "constexpr": true,
-          "begin": 3415,
-          "decl": 3415,
-          "end": 3418
+          "begin": 3428,
+          "decl": 3431,
+          "end": 3433
         },
         "GL_CONTEXT_RESET_LOSE_CONTEXT": {
-          "doc": "",
+          "doc": "LOSE_CONTEXT",
           "name": "GL_CONTEXT_RESET_LOSE_CONTEXT",
           "kind": "var",
           "type": "GLContextResetNotification",
           "constexpr": true,
-          "begin": 3418,
-          "decl": 3418,
-          "end": 3421
+          "begin": 3433,
+          "decl": 3436,
+          "end": 3438
         },
         "GetNumVideoDrivers": {
           "doc": "Get the number of video drivers compiled into SDL.\n\n@returns the number of built in video drivers.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetVideoDriver()",
@@ -8413,9 +8413,9 @@
           "kind": "function",
           "type": "int",
           "parameters": [],
-          "begin": 3423,
-          "decl": 3434,
-          "end": 3436
+          "begin": 3440,
+          "decl": 3451,
+          "end": 3453
         },
         "GetVideoDriver": {
           "doc": "Get the name of a built in video driver.\n\nThe video drivers are presented in the order in which they are normally\nchecked during initialization.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"cocoa\",\n\"x11\" or \"windows\". These never have Unicode characters, and are not meant\nto be proper names.\n\n@param index the index of a video driver.\n@returns the name of the video driver with the given **index**.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetNumVideoDrivers()",
@@ -8428,9 +8428,9 @@
               "type": "int"
             }
           ],
-          "begin": 3436,
-          "decl": 3455,
-          "end": 3460
+          "begin": 3453,
+          "decl": 3472,
+          "end": 3477
         },
         "GetCurrentVideoDriver": {
           "doc": "Get the name of the currently initialized video driver.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"cocoa\",\n\"x11\" or \"windows\". These never have Unicode characters, and are not meant\nto be proper names.\n\n@returns the name of the current video driver or NULL if no driver has been\n         initialized.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetNumVideoDrivers()\n@sa GetVideoDriver()",
@@ -8438,9 +8438,9 @@
           "kind": "function",
           "type": "const char *",
           "parameters": [],
-          "begin": 3460,
-          "decl": 3477,
-          "end": 3482
+          "begin": 3477,
+          "decl": 3494,
+          "end": 3499
         },
         "GetSystemTheme": {
           "doc": "Get the current system theme.\n\n@returns the current system theme, light, dark, or unknown.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -8448,9 +8448,9 @@
           "kind": "function",
           "type": "SystemTheme",
           "parameters": [],
-          "begin": 3482,
-          "decl": 3491,
-          "end": 3493
+          "begin": 3499,
+          "decl": 3508,
+          "end": 3510
         },
         "prop::Display": {
           "doc": "",
@@ -8463,9 +8463,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3495,
-              "decl": 3495,
-              "end": 3497
+              "begin": 3512,
+              "decl": 3512,
+              "end": 3514
             },
             "KMSDRM_PANEL_ORIENTATION_NUMBER": {
               "doc": "",
@@ -8473,14 +8473,14 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3497,
-              "decl": 3497,
-              "end": 3500
+              "begin": 3514,
+              "decl": 3514,
+              "end": 3517
             }
           },
-          "begin": 3493,
-          "decl": 3493,
-          "end": 3502
+          "begin": 3510,
+          "decl": 3510,
+          "end": 3519
         },
         "GetWindows": {
           "doc": "Get a list of valid windows.\n\n@returns a NULL terminated array of SDL_Window pointers or NULL on failure;\n         call GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -8488,9 +8488,9 @@
           "kind": "function",
           "type": "OwnArray<WindowRef>",
           "parameters": [],
-          "begin": 3502,
-          "decl": 3514,
-          "end": 3521
+          "begin": 3519,
+          "decl": 3531,
+          "end": 3538
         },
         "prop::Window": {
           "doc": "",
@@ -8503,9 +8503,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3523,
-              "decl": 3523,
-              "end": 3526
+              "begin": 3540,
+              "decl": 3540,
+              "end": 3543
             },
             "CREATE_BORDERLESS_BOOLEAN": {
               "doc": "",
@@ -8513,9 +8513,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3526,
-              "decl": 3526,
-              "end": 3529
+              "begin": 3543,
+              "decl": 3543,
+              "end": 3546
             },
             "CREATE_FOCUSABLE_BOOLEAN": {
               "doc": "",
@@ -8523,9 +8523,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3529,
-              "decl": 3529,
-              "end": 3532
+              "begin": 3546,
+              "decl": 3546,
+              "end": 3549
             },
             "CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN": {
               "doc": "",
@@ -8533,9 +8533,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3532,
-              "decl": 3532,
-              "end": 3535
+              "begin": 3549,
+              "decl": 3549,
+              "end": 3552
             },
             "CREATE_FLAGS_NUMBER": {
               "doc": "",
@@ -8543,9 +8543,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3535,
-              "decl": 3535,
-              "end": 3537
+              "begin": 3552,
+              "decl": 3552,
+              "end": 3554
             },
             "CREATE_FULLSCREEN_BOOLEAN": {
               "doc": "",
@@ -8553,9 +8553,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3537,
-              "decl": 3537,
-              "end": 3540
+              "begin": 3554,
+              "decl": 3554,
+              "end": 3557
             },
             "CREATE_HEIGHT_NUMBER": {
               "doc": "",
@@ -8563,9 +8563,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3540,
-              "decl": 3540,
-              "end": 3542
+              "begin": 3557,
+              "decl": 3557,
+              "end": 3559
             },
             "CREATE_HIDDEN_BOOLEAN": {
               "doc": "",
@@ -8573,9 +8573,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3542,
-              "decl": 3542,
-              "end": 3544
+              "begin": 3559,
+              "decl": 3559,
+              "end": 3561
             },
             "CREATE_HIGH_PIXEL_DENSITY_BOOLEAN": {
               "doc": "",
@@ -8583,9 +8583,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3544,
-              "decl": 3544,
-              "end": 3547
+              "begin": 3561,
+              "decl": 3561,
+              "end": 3564
             },
             "CREATE_MAXIMIZED_BOOLEAN": {
               "doc": "",
@@ -8593,9 +8593,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3547,
-              "decl": 3547,
-              "end": 3550
+              "begin": 3564,
+              "decl": 3564,
+              "end": 3567
             },
             "CREATE_MENU_BOOLEAN": {
               "doc": "",
@@ -8603,9 +8603,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3550,
-              "decl": 3550,
-              "end": 3552
+              "begin": 3567,
+              "decl": 3567,
+              "end": 3569
             },
             "CREATE_METAL_BOOLEAN": {
               "doc": "",
@@ -8613,9 +8613,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3552,
-              "decl": 3552,
-              "end": 3554
+              "begin": 3569,
+              "decl": 3569,
+              "end": 3571
             },
             "CREATE_MINIMIZED_BOOLEAN": {
               "doc": "",
@@ -8623,9 +8623,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3554,
-              "decl": 3554,
-              "end": 3557
+              "begin": 3571,
+              "decl": 3571,
+              "end": 3574
             },
             "CREATE_MODAL_BOOLEAN": {
               "doc": "",
@@ -8633,9 +8633,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3557,
-              "decl": 3557,
-              "end": 3559
+              "begin": 3574,
+              "decl": 3574,
+              "end": 3576
             },
             "CREATE_MOUSE_GRABBED_BOOLEAN": {
               "doc": "",
@@ -8643,9 +8643,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3559,
-              "decl": 3559,
-              "end": 3562
+              "begin": 3576,
+              "decl": 3576,
+              "end": 3579
             },
             "CREATE_OPENGL_BOOLEAN": {
               "doc": "",
@@ -8653,9 +8653,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3562,
-              "decl": 3562,
-              "end": 3564
+              "begin": 3579,
+              "decl": 3579,
+              "end": 3581
             },
             "CREATE_PARENT_POINTER": {
               "doc": "",
@@ -8663,9 +8663,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3564,
-              "decl": 3564,
-              "end": 3566
+              "begin": 3581,
+              "decl": 3581,
+              "end": 3583
             },
             "CREATE_RESIZABLE_BOOLEAN": {
               "doc": "",
@@ -8673,9 +8673,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3566,
-              "decl": 3566,
-              "end": 3569
+              "begin": 3583,
+              "decl": 3583,
+              "end": 3586
             },
             "CREATE_TITLE_STRING": {
               "doc": "",
@@ -8683,9 +8683,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3569,
-              "decl": 3569,
-              "end": 3571
+              "begin": 3586,
+              "decl": 3586,
+              "end": 3588
             },
             "CREATE_TRANSPARENT_BOOLEAN": {
               "doc": "",
@@ -8693,9 +8693,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3571,
-              "decl": 3571,
-              "end": 3574
+              "begin": 3588,
+              "decl": 3588,
+              "end": 3591
             },
             "CREATE_TOOLTIP_BOOLEAN": {
               "doc": "",
@@ -8703,9 +8703,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3574,
-              "decl": 3574,
-              "end": 3576
+              "begin": 3591,
+              "decl": 3591,
+              "end": 3593
             },
             "CREATE_UTILITY_BOOLEAN": {
               "doc": "",
@@ -8713,9 +8713,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3576,
-              "decl": 3576,
-              "end": 3578
+              "begin": 3593,
+              "decl": 3593,
+              "end": 3595
             },
             "CREATE_VULKAN_BOOLEAN": {
               "doc": "",
@@ -8723,9 +8723,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3578,
-              "decl": 3578,
-              "end": 3580
+              "begin": 3595,
+              "decl": 3595,
+              "end": 3597
             },
             "CREATE_WIDTH_NUMBER": {
               "doc": "",
@@ -8733,9 +8733,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3580,
-              "decl": 3580,
-              "end": 3582
+              "begin": 3597,
+              "decl": 3597,
+              "end": 3599
             },
             "CREATE_X_NUMBER": {
               "doc": "",
@@ -8743,9 +8743,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3582,
-              "decl": 3582,
-              "end": 3584
+              "begin": 3599,
+              "decl": 3599,
+              "end": 3601
             },
             "CREATE_Y_NUMBER": {
               "doc": "",
@@ -8753,9 +8753,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3584,
-              "decl": 3584,
-              "end": 3586
+              "begin": 3601,
+              "decl": 3601,
+              "end": 3603
             },
             "CREATE_COCOA_WINDOW_POINTER": {
               "doc": "",
@@ -8763,9 +8763,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3586,
-              "decl": 3586,
-              "end": 3589
+              "begin": 3603,
+              "decl": 3603,
+              "end": 3606
             },
             "CREATE_COCOA_VIEW_POINTER": {
               "doc": "",
@@ -8773,9 +8773,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3589,
-              "decl": 3589,
-              "end": 3592
+              "begin": 3606,
+              "decl": 3606,
+              "end": 3609
             },
             "CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN": {
               "doc": "",
@@ -8783,9 +8783,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3592,
-              "decl": 3592,
-              "end": 3595
+              "begin": 3609,
+              "decl": 3609,
+              "end": 3612
             },
             "CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN": {
               "doc": "",
@@ -8793,9 +8793,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3595,
-              "decl": 3595,
-              "end": 3598
+              "begin": 3612,
+              "decl": 3612,
+              "end": 3615
             },
             "CREATE_WAYLAND_WL_SURFACE_POINTER": {
               "doc": "",
@@ -8803,9 +8803,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3598,
-              "decl": 3598,
-              "end": 3601
+              "begin": 3615,
+              "decl": 3615,
+              "end": 3618
             },
             "CREATE_WIN32_HWND_POINTER": {
               "doc": "",
@@ -8813,9 +8813,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3601,
-              "decl": 3601,
-              "end": 3604
+              "begin": 3618,
+              "decl": 3618,
+              "end": 3621
             },
             "CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER": {
               "doc": "",
@@ -8823,9 +8823,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3604,
-              "decl": 3604,
-              "end": 3607
+              "begin": 3621,
+              "decl": 3621,
+              "end": 3624
             },
             "CREATE_X11_WINDOW_NUMBER": {
               "doc": "",
@@ -8833,9 +8833,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3607,
-              "decl": 3607,
-              "end": 3610
+              "begin": 3624,
+              "decl": 3624,
+              "end": 3627
             },
             "SHAPE_POINTER": {
               "doc": "",
@@ -8843,9 +8843,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3610,
-              "decl": 3610,
-              "end": 3612
+              "begin": 3627,
+              "decl": 3627,
+              "end": 3629
             },
             "HDR_ENABLED_BOOLEAN": {
               "doc": "",
@@ -8853,9 +8853,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3612,
-              "decl": 3612,
-              "end": 3614
+              "begin": 3629,
+              "decl": 3629,
+              "end": 3631
             },
             "SDR_WHITE_LEVEL_FLOAT": {
               "doc": "",
@@ -8863,9 +8863,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3614,
-              "decl": 3614,
-              "end": 3616
+              "begin": 3631,
+              "decl": 3631,
+              "end": 3633
             },
             "HDR_HEADROOM_FLOAT": {
               "doc": "",
@@ -8873,9 +8873,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3616,
-              "decl": 3616,
-              "end": 3618
+              "begin": 3633,
+              "decl": 3633,
+              "end": 3635
             },
             "ANDROID_WINDOW_POINTER": {
               "doc": "",
@@ -8883,9 +8883,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3618,
-              "decl": 3618,
-              "end": 3620
+              "begin": 3635,
+              "decl": 3635,
+              "end": 3637
             },
             "ANDROID_SURFACE_POINTER": {
               "doc": "",
@@ -8893,9 +8893,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3620,
-              "decl": 3620,
-              "end": 3623
+              "begin": 3637,
+              "decl": 3637,
+              "end": 3640
             },
             "UIKIT_WINDOW_POINTER": {
               "doc": "",
@@ -8903,9 +8903,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3623,
-              "decl": 3623,
-              "end": 3625
+              "begin": 3640,
+              "decl": 3640,
+              "end": 3642
             },
             "UIKIT_METAL_VIEW_TAG_NUMBER": {
               "doc": "",
@@ -8913,9 +8913,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3625,
-              "decl": 3625,
-              "end": 3628
+              "begin": 3642,
+              "decl": 3642,
+              "end": 3645
             },
             "UIKIT_OPENGL_FRAMEBUFFER_NUMBER": {
               "doc": "",
@@ -8923,9 +8923,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3628,
-              "decl": 3628,
-              "end": 3631
+              "begin": 3645,
+              "decl": 3645,
+              "end": 3648
             },
             "UIKIT_OPENGL_RENDERBUFFER_NUMBER": {
               "doc": "",
@@ -8933,9 +8933,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3631,
-              "decl": 3631,
-              "end": 3634
+              "begin": 3648,
+              "decl": 3648,
+              "end": 3651
             },
             "UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER": {
               "doc": "",
@@ -8943,9 +8943,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3634,
-              "decl": 3634,
-              "end": 3637
+              "begin": 3651,
+              "decl": 3651,
+              "end": 3654
             },
             "KMSDRM_DEVICE_INDEX_NUMBER": {
               "doc": "",
@@ -8953,9 +8953,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3637,
-              "decl": 3637,
-              "end": 3640
+              "begin": 3654,
+              "decl": 3654,
+              "end": 3657
             },
             "KMSDRM_DRM_FD_NUMBER": {
               "doc": "",
@@ -8963,9 +8963,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3640,
-              "decl": 3640,
-              "end": 3642
+              "begin": 3657,
+              "decl": 3657,
+              "end": 3659
             },
             "KMSDRM_GBM_DEVICE_POINTER": {
               "doc": "",
@@ -8973,9 +8973,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3642,
-              "decl": 3642,
-              "end": 3645
+              "begin": 3659,
+              "decl": 3659,
+              "end": 3662
             },
             "COCOA_WINDOW_POINTER": {
               "doc": "",
@@ -8983,9 +8983,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3645,
-              "decl": 3645,
-              "end": 3647
+              "begin": 3662,
+              "decl": 3662,
+              "end": 3664
             },
             "COCOA_METAL_VIEW_TAG_NUMBER": {
               "doc": "",
@@ -8993,9 +8993,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3647,
-              "decl": 3647,
-              "end": 3650
+              "begin": 3664,
+              "decl": 3664,
+              "end": 3667
             },
             "OPENVR_OVERLAY_ID": {
               "doc": "",
@@ -9003,9 +9003,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3650,
-              "decl": 3650,
-              "end": 3652
+              "begin": 3667,
+              "decl": 3667,
+              "end": 3669
             },
             "VIVANTE_DISPLAY_POINTER": {
               "doc": "",
@@ -9013,9 +9013,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3652,
-              "decl": 3652,
-              "end": 3655
+              "begin": 3669,
+              "decl": 3669,
+              "end": 3672
             },
             "VIVANTE_WINDOW_POINTER": {
               "doc": "",
@@ -9023,9 +9023,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3655,
-              "decl": 3655,
-              "end": 3657
+              "begin": 3672,
+              "decl": 3672,
+              "end": 3674
             },
             "VIVANTE_SURFACE_POINTER": {
               "doc": "",
@@ -9033,9 +9033,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3657,
-              "decl": 3657,
-              "end": 3660
+              "begin": 3674,
+              "decl": 3674,
+              "end": 3677
             },
             "WIN32_HWND_POINTER": {
               "doc": "",
@@ -9043,9 +9043,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3660,
-              "decl": 3660,
-              "end": 3662
+              "begin": 3677,
+              "decl": 3677,
+              "end": 3679
             },
             "WIN32_HDC_POINTER": {
               "doc": "",
@@ -9053,9 +9053,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3662,
-              "decl": 3662,
-              "end": 3664
+              "begin": 3679,
+              "decl": 3679,
+              "end": 3681
             },
             "WIN32_INSTANCE_POINTER": {
               "doc": "",
@@ -9063,9 +9063,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3664,
-              "decl": 3664,
-              "end": 3666
+              "begin": 3681,
+              "decl": 3681,
+              "end": 3683
             },
             "WAYLAND_DISPLAY_POINTER": {
               "doc": "",
@@ -9073,9 +9073,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3666,
-              "decl": 3666,
-              "end": 3669
+              "begin": 3683,
+              "decl": 3683,
+              "end": 3686
             },
             "WAYLAND_SURFACE_POINTER": {
               "doc": "",
@@ -9083,9 +9083,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3669,
-              "decl": 3669,
-              "end": 3672
+              "begin": 3686,
+              "decl": 3686,
+              "end": 3689
             },
             "WAYLAND_VIEWPORT_POINTER": {
               "doc": "",
@@ -9093,9 +9093,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3672,
-              "decl": 3672,
-              "end": 3675
+              "begin": 3689,
+              "decl": 3689,
+              "end": 3692
             },
             "WAYLAND_EGL_WINDOW_POINTER": {
               "doc": "",
@@ -9103,9 +9103,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3675,
-              "decl": 3675,
-              "end": 3678
+              "begin": 3692,
+              "decl": 3692,
+              "end": 3695
             },
             "WAYLAND_XDG_SURFACE_POINTER": {
               "doc": "",
@@ -9113,9 +9113,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3678,
-              "decl": 3678,
-              "end": 3681
+              "begin": 3695,
+              "decl": 3695,
+              "end": 3698
             },
             "WAYLAND_XDG_TOPLEVEL_POINTER": {
               "doc": "",
@@ -9123,9 +9123,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3681,
-              "decl": 3681,
-              "end": 3684
+              "begin": 3698,
+              "decl": 3698,
+              "end": 3701
             },
             "WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING": {
               "doc": "",
@@ -9133,9 +9133,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3684,
-              "decl": 3684,
-              "end": 3687
+              "begin": 3701,
+              "decl": 3701,
+              "end": 3704
             },
             "WAYLAND_XDG_POPUP_POINTER": {
               "doc": "",
@@ -9143,9 +9143,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3687,
-              "decl": 3687,
-              "end": 3690
+              "begin": 3704,
+              "decl": 3704,
+              "end": 3707
             },
             "WAYLAND_XDG_POSITIONER_POINTER": {
               "doc": "",
@@ -9153,9 +9153,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3690,
-              "decl": 3690,
-              "end": 3693
+              "begin": 3707,
+              "decl": 3707,
+              "end": 3710
             },
             "X11_DISPLAY_POINTER": {
               "doc": "",
@@ -9163,9 +9163,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3693,
-              "decl": 3693,
-              "end": 3695
+              "begin": 3710,
+              "decl": 3710,
+              "end": 3712
             },
             "X11_SCREEN_NUMBER": {
               "doc": "",
@@ -9173,9 +9173,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3695,
-              "decl": 3695,
-              "end": 3697
+              "begin": 3712,
+              "decl": 3712,
+              "end": 3714
             },
             "X11_WINDOW_NUMBER": {
               "doc": "",
@@ -9183,14 +9183,14 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3697,
-              "decl": 3697,
-              "end": 3699
+              "begin": 3714,
+              "decl": 3714,
+              "end": 3716
             }
           },
-          "begin": 3521,
-          "decl": 3521,
-          "end": 3701
+          "begin": 3538,
+          "decl": 3538,
+          "end": 3718
         },
         "GetWindowFromID": {
           "doc": "Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific SDL_Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or NULL if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetID()",
@@ -9203,27 +9203,27 @@
               "type": "WindowID"
             }
           ],
-          "begin": 3701,
-          "decl": 3717,
-          "end": 3722
+          "begin": 3718,
+          "decl": 3734,
+          "end": 3739
         },
         "SDL_WINDOW_SURFACE_VSYNC_DISABLED": {
           "doc": "",
           "name": "SDL_WINDOW_SURFACE_VSYNC_DISABLED",
           "kind": "def",
           "value": "0",
-          "begin": 3725,
-          "decl": 3725,
-          "end": 3727
+          "begin": 3742,
+          "decl": 3742,
+          "end": 3744
         },
         "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE": {
           "doc": "",
           "name": "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE",
           "kind": "def",
           "value": "(-1)",
-          "begin": 3728,
-          "decl": 3728,
-          "end": 3730
+          "begin": 3745,
+          "decl": 3745,
+          "end": 3747
         },
         "GetGrabbedWindow": {
           "doc": "Get the window that currently has an input grab enabled.\n\n@returns the window if input is grabbed or NULL otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetMouseGrab()\n@sa SetKeyboardGrab()",
@@ -9231,9 +9231,9 @@
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
-          "begin": 3732,
-          "decl": 3744,
-          "end": 3746
+          "begin": 3749,
+          "decl": 3761,
+          "end": 3763
         },
         "ScreenSaverEnabled": {
           "doc": "@brief  Check whether the screensaver is currently enabled.\n\nThe screensaver is disabled by default.\n\nThe default can also be changed using `SDL_HINT_VIDEO_ALLOW_SCREENSAVER`.\n\n@returns true if the screensaver is enabled, false if it is disabled.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa DisableScreenSaver()\n@sa EnableScreenSaver()",
@@ -9241,9 +9241,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3746,
-          "decl": 3760,
-          "end": 3762
+          "begin": 3763,
+          "decl": 3777,
+          "end": 3779
         },
         "EnableScreenSaver": {
           "doc": "@brief Allow the screen to be blanked by a screen saver.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa DisableScreenSaver()\n@sa ScreenSaverEnabled()",
@@ -9251,9 +9251,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3762,
-          "decl": 3773,
-          "end": 3775
+          "begin": 3779,
+          "decl": 3790,
+          "end": 3792
         },
         "DisableScreenSaver": {
           "doc": "@brief Prevent the screen from being blanked by a screen saver.\n\nIf you disable the screensaver, it is automatically re-enabled when SDL\nquits.\n\nThe screensaver is disabled by default, but this may by changed by\nSDL_HINT_VIDEO_ALLOW_SCREENSAVER.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa EnableScreenSaver()\n@sa ScreenSaverEnabled()",
@@ -9261,9 +9261,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3775,
-          "decl": 3792,
-          "end": 3794
+          "begin": 3792,
+          "decl": 3809,
+          "end": 3811
         },
         "GL_LoadLibrary": {
           "doc": "Dynamically load an OpenGL library.\n\nThis should be done after initializing the video driver, but before\ncreating any OpenGL windows. If no OpenGL library is loaded, the default\nlibrary will be loaded upon creation of the first OpenGL window.\n\nIf you do this, you need to retrieve all of the GL functions used in your\nprogram from the dynamic library using SDL_GL_GetProcAddress().\n\n@param path the platform dependent OpenGL library name, or NULL to open the\n            default OpenGL library.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetProcAddress()\n@sa GL_UnloadLibrary()",
@@ -9276,9 +9276,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3794,
-          "decl": 3816,
-          "end": 3821
+          "begin": 3811,
+          "decl": 3833,
+          "end": 3838
         },
         "GL_GetProcAddress": {
           "doc": "Get an OpenGL function by name.\n\nIf the GL library is loaded at runtime with SDL_GL_LoadLibrary(), then all\nGL functions must be retrieved this way. Usually this is used to retrieve\nfunction pointers to OpenGL extensions.\n\nThere are some quirks to looking up OpenGL functions that require some\nextra care from the application. If you code carefully, you can handle\nthese quirks without any platform-specific code, though:\n\n- On Windows, function pointers are specific to the current GL context;\n  this means you need to have created a GL context and made it current\n  before calling SDL_GL_GetProcAddress(). If you recreate your context or\n  create a second context, you should assume that any existing function\n  pointers aren't valid to use with it. This is (currently) a\n  Windows-specific limitation, and in practice lots of drivers don't suffer\n  this limitation, but it is still the way the wgl API is documented to\n  work and you should expect crashes if you don't respect it. Store a copy\n  of the function pointers that comes and goes with context lifespan.\n- On X11, function pointers returned by this function are valid for any\n  context, and can even be looked up before a context is created at all.\n  This means that, for at least some common OpenGL implementations, if you\n  look up a function that doesn't exist, you'll get a non-NULL result that\n  is _NOT_ safe to call. You must always make sure the function is actually\n  available for a given GL context before calling it, by checking for the\n  existence of the appropriate extension with SDL_GL_ExtensionSupported(),\n  or verifying that the version of OpenGL you're using offers the function\n  as core functionality.\n- Some OpenGL drivers, on all platforms, *will* return NULL if a function\n  isn't supported, but you can't count on this behavior. Check for\n  extensions you use, and if you get a NULL anyway, act as if that\n  extension wasn't available. This is probably a bug in the driver, but you\n  can code defensively for this scenario anyhow.\n- Just because you're on Linux/Unix, don't assume you'll be using X11.\n  Next-gen display servers are waiting to replace it, and may or may not\n  make the same promises about function pointers.\n- OpenGL function pointers must be declared `APIENTRY` as in the example\n  code. This will ensure the proper calling convention is followed on\n  platforms where this matters (Win32) thereby avoiding stack corruption.\n\n@param proc the name of an OpenGL function.\n@returns a pointer to the named OpenGL function. The returned pointer\n         should be cast to the appropriate function signature.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ExtensionSupported()\n@sa GL_LoadLibrary()\n@sa GL_UnloadLibrary()",
@@ -9291,9 +9291,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3821,
-          "decl": 3874,
-          "end": 3879
+          "begin": 3838,
+          "decl": 3891,
+          "end": 3896
         },
         "EGL_GetProcAddress": {
           "doc": "Get an EGL library function by name.\n\nIf an EGL library is loaded, this function allows applications to get entry\npoints for EGL functions. This is useful to provide to an EGL API and\nextension loader.\n\n@param proc the name of an EGL function.\n@returns a pointer to the named EGL function. The returned pointer should\n         be cast to the appropriate function signature.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EGL_GetCurrentDisplay()",
@@ -9306,9 +9306,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3879,
-          "decl": 3896,
-          "end": 3901
+          "begin": 3896,
+          "decl": 3913,
+          "end": 3918
         },
         "GL_UnloadLibrary": {
           "doc": "Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_LoadLibrary()",
@@ -9316,9 +9316,9 @@
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "begin": 3901,
-          "decl": 3910,
-          "end": 3912
+          "begin": 3918,
+          "decl": 3927,
+          "end": 3929
         },
         "GL_ExtensionSupported": {
           "doc": "Check if an OpenGL extension is supported for the current context.\n\nThis function operates on the current GL context; you must have created a\ncontext and it must be current before calling this function. Do not assume\nthat all contexts you create will have the same set of extensions\navailable, or that recreating an existing context will offer the same\nextensions again.\n\nWhile it's probably not a massive overhead, this function is not an O(1)\noperation. Check the extensions you care about after creating the GL\ncontext and save that information somewhere instead of calling the function\nevery time you need to know.\n\n@param extension the name of the extension to check.\n@returns true if the extension is supported, false otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -9331,9 +9331,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3912,
-          "decl": 3933,
-          "end": 3938
+          "begin": 3929,
+          "decl": 3950,
+          "end": 3955
         },
         "GL_ResetAttributes": {
           "doc": "Reset all previously set OpenGL context attributes to their default values.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetAttribute()\n@sa GL_SetAttribute()",
@@ -9341,9 +9341,9 @@
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "begin": 3938,
-          "decl": 3948,
-          "end": 3950
+          "begin": 3955,
+          "decl": 3965,
+          "end": 3967
         },
         "GL_SetAttribute": {
           "doc": "Set an OpenGL window attribute before window creation.\n\nThis function sets the OpenGL attribute `attr` to `value`. The requested\nattributes should be set before creating an OpenGL window. You should use\nSDL_GL_GetAttribute() to check the values after creating the OpenGL\ncontext, since the values obtained can differ from the requested ones.\n\n@param attr an SDL_GLAttr enum value specifying the OpenGL attribute to\n            set.\n@param value the desired value for the attribute.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetAttribute()\n@sa GL_ResetAttributes()",
@@ -9360,9 +9360,9 @@
               "type": "int"
             }
           ],
-          "begin": 3950,
-          "decl": 3971,
-          "end": 3976
+          "begin": 3967,
+          "decl": 3988,
+          "end": 3993
         },
         "GL_GetAttribute": {
           "doc": "Get the actual value for an attribute from the current context.\n\n@param attr an SDL_GLAttr enum value specifying the OpenGL attribute to\n            get.\n@param value a pointer filled in with the current value of `attr`.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ResetAttributes()\n@sa GL_SetAttribute()",
@@ -9379,9 +9379,9 @@
               "type": "int *"
             }
           ],
-          "begin": 3976,
-          "decl": 3992,
-          "end": 3997
+          "begin": 3993,
+          "decl": 4009,
+          "end": 4014
         },
         "GL_GetCurrentWindow": {
           "doc": "Get the currently active OpenGL window.\n\n@returns the currently active OpenGL window on success or NULL on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -9389,9 +9389,9 @@
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
-          "begin": 3997,
-          "decl": 4007,
-          "end": 4009
+          "begin": 4014,
+          "decl": 4024,
+          "end": 4026
         },
         "GL_GetCurrentContext": {
           "doc": "Get the currently active OpenGL context.\n\n@returns the currently active OpenGL context or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextBase.MakeCurrent()",
@@ -9399,9 +9399,9 @@
           "kind": "function",
           "type": "GLContextRef",
           "parameters": [],
-          "begin": 4009,
-          "decl": 4021,
-          "end": 4026
+          "begin": 4026,
+          "decl": 4038,
+          "end": 4043
         },
         "EGL_GetCurrentDisplay": {
           "doc": "Get the currently active EGL display.\n\n@returns the currently active EGL display or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -9409,9 +9409,9 @@
           "kind": "function",
           "type": "EGLDisplay",
           "parameters": [],
-          "begin": 4026,
-          "decl": 4036,
-          "end": 4041
+          "begin": 4043,
+          "decl": 4053,
+          "end": 4058
         },
         "EGL_GetCurrentConfig": {
           "doc": "Get the currently active EGL config.\n\n@returns the currently active EGL config or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -9419,9 +9419,9 @@
           "kind": "function",
           "type": "EGLConfig",
           "parameters": [],
-          "begin": 4041,
-          "decl": 4051,
-          "end": 4053
+          "begin": 4058,
+          "decl": 4068,
+          "end": 4070
         },
         "EGL_GetWindowSurface": {
           "doc": "Get the EGL surface associated with the window.\n\n@param window the window to query.\n@returns the EGLSurface pointer associated with the window, or NULL on\n         failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -9434,9 +9434,9 @@
               "type": "WindowRef"
             }
           ],
-          "begin": 4053,
-          "decl": 4064,
-          "end": 4069
+          "begin": 4070,
+          "decl": 4081,
+          "end": 4086
         },
         "EGL_SetAttributeCallbacks": {
           "doc": "Sets the callbacks for defining custom EGLAttrib arrays for EGL\ninitialization.\n\nCallbacks that aren't needed can be set to NULL.\n\nNOTE: These callback pointers will be reset after SDL_GL_ResetAttributes.\n\n@param platformAttribCallback callback for attributes to pass to\n                              eglGetPlatformDisplay. May be NULL.\n@param surfaceAttribCallback callback for attributes to pass to\n                             eglCreateSurface. May be NULL.\n@param contextAttribCallback callback for attributes to pass to\n                             eglCreateContext. May be NULL.\n@param userdata a pointer that is passed to the callbacks.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -9461,9 +9461,9 @@
               "type": "void *"
             }
           ],
-          "begin": 4069,
-          "decl": 4089,
-          "end": 4101
+          "begin": 4086,
+          "decl": 4106,
+          "end": 4118
         },
         "GL_SetSwapInterval": {
           "doc": "Set the swap interval for the current OpenGL context.\n\nSome systems allow specifying -1 for the interval, to enable adaptive\nvsync. Adaptive vsync works the same as vsync, but if you've already missed\nthe vertical retrace for a given frame, it swaps buffers immediately, which\nmight be less jarring for the user during occasional framerate drops. If an\napplication requests adaptive vsync and the system does not support it,\nthis function will fail and return false. In such a case, you should\nprobably retry the call with 1 for the interval.\n\nAdaptive vsync is implemented for some glX drivers with\nGLX_EXT_swap_control_tear, and for some Windows drivers with\nWGL_EXT_swap_control_tear.\n\nRead more on the Khronos wiki:\nhttps://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync\n\n@param interval 0 for immediate updates, 1 for updates synchronized with\n                the vertical retrace, -1 for adaptive vsync.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetSwapInterval()",
@@ -9476,9 +9476,9 @@
               "type": "int"
             }
           ],
-          "begin": 4101,
-          "decl": 4130,
-          "end": 4135
+          "begin": 4118,
+          "decl": 4147,
+          "end": 4152
         },
         "GL_GetSwapInterval": {
           "doc": "Get the swap interval for the current OpenGL context.\n\nIf the system can't determine the swap interval, or there isn't a valid\ncurrent context, this function will set *interval to 0 as a safe default.\n\n@param interval output interval value. 0 if there is no vertical retrace\n                synchronization, 1 if the buffer swap is synchronized with\n                the vertical retrace, and -1 if late swaps happen\n                immediately instead of waiting for the next retrace.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_SetSwapInterval()",
@@ -9491,9 +9491,9 @@
               "type": "int *"
             }
           ],
-          "begin": 4135,
-          "decl": 4154,
-          "end": 4159
+          "begin": 4152,
+          "decl": 4171,
+          "end": 4176
         },
         "GL_SwapWindow": {
           "doc": "Update a window with OpenGL rendering.\n\nThis is used with double-buffered OpenGL contexts, which are the default.\n\nOn macOS, make sure you bind 0 to the draw framebuffer before swapping the\nwindow, otherwise nothing will happen. If you aren't using\nglBindFramebuffer(), this is the default and you won't have to do anything\nextra.\n\n@param window the window to change.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -9506,9 +9506,9 @@
               "type": "WindowRef"
             }
           ],
-          "begin": 4159,
-          "decl": 4177,
-          "end": 4182
+          "begin": 4176,
+          "decl": 4194,
+          "end": 4199
         },
         "ObjectRef<SDL_GLContextState>::doFree": {
           "doc": "Delete an OpenGL context.\n\n@param resource the OpenGL context to be deleted.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext\n@sa GLContextBase",
@@ -9522,15 +9522,15 @@
             }
           ],
           "template": [],
-          "begin": 4182,
-          "decl": 4194,
-          "end": 4200
+          "begin": 4199,
+          "decl": 4211,
+          "end": 4217
         }
       },
       "docBegin": 18,
       "docEnd": 46,
       "entriesBegin": 46,
-      "entriesEnd": 4200,
+      "entriesEnd": 4217,
       "namespace": "SDL"
     },
     "SDL3pp_render.h": {
@@ -16214,23 +16214,23 @@
           "end": 75
         },
         "BLENDMODE_INVALID": {
-          "doc": "",
+          "doc": "INVALID",
           "name": "BLENDMODE_INVALID",
           "kind": "var",
           "type": "BlendMode",
           "constexpr": true,
-          "begin": 76,
-          "decl": 76,
-          "end": 78
+          "begin": 75,
+          "decl": 75,
+          "end": 77
         },
         "BlendOperation": {
           "doc": "@brief The blend operation used when combining source and destination pixel\ncomponents.",
           "name": "BlendOperation",
           "kind": "alias",
           "type": "SDL_BlendOperation",
-          "begin": 80,
-          "decl": 85,
-          "end": 87
+          "begin": 79,
+          "decl": 84,
+          "end": 86
         },
         "BLENDOPERATION_ADD": {
           "doc": "dst + src: supported by all renderers",
@@ -16238,9 +16238,9 @@
           "kind": "var",
           "type": "BlendOperation",
           "constexpr": true,
-          "begin": 87,
-          "decl": 90,
-          "end": 92
+          "begin": 86,
+          "decl": 89,
+          "end": 91
         },
         "BLENDOPERATION_SUBTRACT": {
           "doc": "src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan",
@@ -16248,9 +16248,9 @@
           "kind": "var",
           "type": "BlendOperation",
           "constexpr": true,
-          "begin": 92,
-          "decl": 95,
-          "end": 97
+          "begin": 91,
+          "decl": 94,
+          "end": 96
         },
         "BLENDOPERATION_REV_SUBTRACT": {
           "doc": "dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan",
@@ -16258,9 +16258,9 @@
           "kind": "var",
           "type": "BlendOperation",
           "constexpr": true,
-          "begin": 97,
-          "decl": 100,
-          "end": 103
+          "begin": 96,
+          "decl": 99,
+          "end": 102
         },
         "BLENDOPERATION_MINIMUM": {
           "doc": "min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan",
@@ -16268,9 +16268,9 @@
           "kind": "var",
           "type": "BlendOperation",
           "constexpr": true,
-          "begin": 103,
-          "decl": 106,
-          "end": 108
+          "begin": 102,
+          "decl": 105,
+          "end": 107
         },
         "BLENDOPERATION_MAXIMUM": {
           "doc": "max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan",
@@ -16278,18 +16278,18 @@
           "kind": "var",
           "type": "BlendOperation",
           "constexpr": true,
-          "begin": 108,
-          "decl": 111,
-          "end": 113
+          "begin": 107,
+          "decl": 110,
+          "end": 112
         },
         "BlendFactor": {
           "doc": "@brief The normalized factor used to multiply pixel components.\n\nThe blend factors are multiplied with the pixels from a drawing operation\n(src) and the pixels from the render target (dst) before the blend\noperation. The comma-separated factors listed above are always applied in\nthe component order red, green, blue, and alpha.",
           "name": "BlendFactor",
           "kind": "alias",
           "type": "SDL_BlendFactor",
-          "begin": 113,
-          "decl": 122,
-          "end": 124
+          "begin": 112,
+          "decl": 121,
+          "end": 123
         },
         "BLENDFACTOR_ZERO": {
           "doc": "0, 0, 0, 0",
@@ -16297,9 +16297,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 124,
-          "decl": 127,
-          "end": 129
+          "begin": 123,
+          "decl": 126,
+          "end": 128
         },
         "BLENDFACTOR_ONE": {
           "doc": "1, 1, 1, 1",
@@ -16307,9 +16307,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 129,
-          "decl": 132,
-          "end": 134
+          "begin": 128,
+          "decl": 131,
+          "end": 133
         },
         "BLENDFACTOR_SRC_COLOR": {
           "doc": "srcR, srcG, srcB, srcA",
@@ -16317,9 +16317,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 134,
-          "decl": 137,
-          "end": 139
+          "begin": 133,
+          "decl": 136,
+          "end": 138
         },
         "BLENDFACTOR_ONE_MINUS_SRC_COLOR": {
           "doc": "1-srcR, 1-srcG, 1-srcB, 1-srcA",
@@ -16327,9 +16327,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 139,
-          "decl": 142,
-          "end": 145
+          "begin": 138,
+          "decl": 141,
+          "end": 144
         },
         "BLENDFACTOR_SRC_ALPHA": {
           "doc": "srcA, srcA, srcA, srcA",
@@ -16337,9 +16337,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 145,
-          "decl": 148,
-          "end": 150
+          "begin": 144,
+          "decl": 147,
+          "end": 149
         },
         "BLENDFACTOR_ONE_MINUS_SRC_ALPHA": {
           "doc": "1-srcA, 1-srcA, 1-srcA, 1-srcA",
@@ -16347,9 +16347,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 150,
-          "decl": 153,
-          "end": 156
+          "begin": 149,
+          "decl": 152,
+          "end": 155
         },
         "BLENDFACTOR_DST_COLOR": {
           "doc": "dstR, dstG, dstB, dstA",
@@ -16357,9 +16357,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 156,
-          "decl": 159,
-          "end": 161
+          "begin": 155,
+          "decl": 158,
+          "end": 160
         },
         "BLENDFACTOR_ONE_MINUS_DST_COLOR": {
           "doc": "1-dstR, 1-dstG, 1-dstB, 1-dstA",
@@ -16367,9 +16367,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 161,
-          "decl": 164,
-          "end": 167
+          "begin": 160,
+          "decl": 163,
+          "end": 166
         },
         "BLENDFACTOR_DST_ALPHA": {
           "doc": "dstA, dstA, dstA, dstA",
@@ -16377,9 +16377,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 167,
-          "decl": 170,
-          "end": 172
+          "begin": 166,
+          "decl": 169,
+          "end": 171
         },
         "BLENDFACTOR_ONE_MINUS_DST_ALPHA": {
           "doc": "1-dstA, 1-dstA, 1-dstA, 1-dstA",
@@ -16387,9 +16387,9 @@
           "kind": "var",
           "type": "BlendFactor",
           "constexpr": true,
-          "begin": 172,
-          "decl": 175,
-          "end": 178
+          "begin": 171,
+          "decl": 174,
+          "end": 177
         },
         "ComposeCustomBlendMode": {
           "doc": "@brief Compose a custom blend mode for renderers.\n\nThe functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept\nthe SDL_BlendMode returned by this function if the renderer supports it.\n\nA blend mode controls how the pixels from a drawing operation (source) get\ncombined with the pixels from the render target (destination). First, the\ncomponents of the source and destination pixels get multiplied with their\nblend factors. Then, the blend operation takes the two products and\ncalculates the result that will get stored in the render target.\n\nExpressed in pseudocode, it would look like this:\n\n```c\ndstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);\ndstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);\n```\n\nWhere the functions `colorOperation(src, dst)` and `alphaOperation(src,\ndst)` can return one of the following:\n\n- `src + dst`\n- `src - dst`\n- `dst - src`\n- `min(src, dst)`\n- `max(src, dst)`\n\nThe red, green, and blue components are always multiplied with the first,\nsecond, and third components of the SDL_BlendFactor, respectively. The\nfourth component is not used.\n\nThe alpha component is always multiplied with the fourth component of the\nSDL_BlendFactor. The other components are not used in the alpha\ncalculation.\n\nSupport for these blend modes varies for each renderer. To check if a\nspecific SDL_BlendMode is supported, create a renderer and pass it to\neither SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will\nreturn with an error if the blend mode is not supported.\n\nThis list describes the support of custom blend modes for each renderer.\nAll renderers support the four blend modes listed in the SDL_BlendMode\nenumeration.\n\n- **direct3d**: Supports all operations with all factors. However, some\n  factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and\n  `SDL_BLENDOPERATION_MAXIMUM`.\n- **direct3d11**: Same as Direct3D 9.\n- **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all\n  factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.\n- **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,\n  `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`\n  operations with all factors.\n- **psp**: No custom blend mode support.\n- **software**: No custom blend mode support.\n\nSome renderers do not provide an alpha component for the default render\ntarget. The `SDL_BLENDFACTOR_DST_ALPHA` and\n`SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this\ncase.\n\n@param srcColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the source pixels.\n@param dstColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the destination pixels.\n@param colorOperation the SDL_BlendOperation used to combine the red,\n                      green, and blue components of the source and\n                      destination pixels.\n@param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the source pixels.\n@param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the destination pixels.\n@param alphaOperation the SDL_BlendOperation used to combine the alpha\n                      component of the source and destination pixels.\n@returns an SDL_BlendMode that represents the chosen factors and\n         operations.\n\n@threadsafety It is safe to call this function from any thread.",
@@ -16422,15 +16422,15 @@
               "type": "BlendOperation"
             }
           ],
-          "begin": 178,
-          "decl": 259,
-          "end": 273
+          "begin": 177,
+          "decl": 258,
+          "end": 272
         }
       },
       "docBegin": 8,
       "docEnd": 18,
       "entriesBegin": 18,
-      "entriesEnd": 275,
+      "entriesEnd": 274,
       "namespace": "SDL"
     },
     "SDL3pp_rect.h": {
@@ -24128,9 +24128,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 178,
-              "decl": 178,
-              "end": 180
+              "begin": 177,
+              "decl": 177,
+              "end": 179
             },
             "IsScancode": {
               "doc": "",
@@ -24140,9 +24140,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 181,
-              "decl": 181,
-              "end": 183
+              "begin": 180,
+              "decl": 180,
+              "end": 182
             },
             "GetScancode": {
               "doc": "",
@@ -24157,9 +24157,9 @@
               ],
               "immutable": true,
               "proto": true,
-              "begin": 183,
-              "decl": 183,
-              "end": 185
+              "begin": 182,
+              "decl": 182,
+              "end": 184
             },
             "GetName": {
               "doc": "",
@@ -24179,7 +24179,7 @@
           "end": 188
         },
         "KEYCODE_EXTENDED_MASK": {
-          "doc": "",
+          "doc": "EXTENDED_MASK",
           "name": "KEYCODE_EXTENDED_MASK",
           "kind": "var",
           "type": "Keycode",
@@ -24189,7 +24189,7 @@
           "end": 190
         },
         "KEYCODE_SCANCODE_MASK": {
-          "doc": "",
+          "doc": "SCANCODE_MASK",
           "name": "KEYCODE_SCANCODE_MASK",
           "kind": "var",
           "type": "Keycode",
@@ -24225,7 +24225,7 @@
           "end": 205
         },
         "KEYCODE_RETURN": {
-          "doc": "'@r'",
+          "doc": "'\\\\r'",
           "name": "KEYCODE_RETURN",
           "kind": "var",
           "type": "Keycode",
@@ -24235,7 +24235,7 @@
           "end": 207
         },
         "KEYCODE_ESCAPE": {
-          "doc": "'@x1B'",
+          "doc": "'\\\\x1B'",
           "name": "KEYCODE_ESCAPE",
           "kind": "var",
           "type": "Keycode",
@@ -24245,7 +24245,7 @@
           "end": 209
         },
         "KEYCODE_BACKSPACE": {
-          "doc": "'@b'",
+          "doc": "'\\\\b'",
           "name": "KEYCODE_BACKSPACE",
           "kind": "var",
           "type": "Keycode",
@@ -24255,7 +24255,7 @@
           "end": 211
         },
         "KEYCODE_TAB": {
-          "doc": "'@t'",
+          "doc": "'\\\\t'",
           "name": "KEYCODE_TAB",
           "kind": "var",
           "type": "Keycode",
@@ -24955,7 +24955,7 @@
           "end": 351
         },
         "KEYCODE_DELETE": {
-          "doc": "'@x7F'",
+          "doc": "'\\\\x7F'",
           "name": "KEYCODE_DELETE",
           "kind": "var",
           "type": "Keycode",
@@ -24965,7 +24965,7 @@
           "end": 353
         },
         "KEYCODE_PLUSMINUS": {
-          "doc": "'@xB1'",
+          "doc": "'\\\\xB1'",
           "name": "KEYCODE_PLUSMINUS",
           "kind": "var",
           "type": "Keycode",

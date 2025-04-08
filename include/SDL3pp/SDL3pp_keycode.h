@@ -173,21 +173,21 @@ public:
    */
   constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
 
-  // Get name
-
+  /// Has Extended flag.
   constexpr bool IsExtended() const { return m_keycode & SDLK_EXTENDED_MASK; }
 
-  /// Has Scancode flag
+  /// Has Scancode flag.
   constexpr bool IsScancode() const { return m_keycode & SDLK_SCANCODE_MASK; }
 
   Scancode GetScancode(Keymod* modstate) const;
 
+  // Get name.
   const char* GetName() const;
 };
 
-constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK;
+constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
 
-constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK;
+constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
 
 /**
  * Transform scancode to keycode
@@ -202,13 +202,13 @@ constexpr Keycode ScancodeToKeycode(Scancode x)
 
 constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
 
-constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '@r'
+constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
 
-constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '@x1B'
+constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
 
-constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '@b'
+constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
 
-constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '@t'
+constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
 
 constexpr Keycode KEYCODE_SPACE = SDLK_SPACE; ///< ' '
 
@@ -348,9 +348,9 @@ constexpr Keycode KEYCODE_RIGHTBRACE = SDLK_RIGHTBRACE; ///< '}'
 
 constexpr Keycode KEYCODE_TILDE = SDLK_TILDE; ///< '~'
 
-constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '@x7F'
+constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
 
-constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '@xB1'
+constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
 
 /**
  * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CAPSLOCK)
