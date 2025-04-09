@@ -297,6 +297,7 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
       });
     }
     if (targetEntry.entries) {
+      combineHints(targetEntry);
       const sourceBegin = getBegin(Object.values(sourceEntry.entries));
       const sourceEnd = getEnd(Object.values(sourceEntry.entries));
       changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  "));
@@ -343,13 +344,21 @@ function getEnd(entry) {
   return getEnd(entry[entry.length - 1]);
 }
 
+const filterOutAttributes = new Set([
+  "doc",
+  "entries",
+  "sourceName",
+  "value",
+  "hints"
+]);
+
 /**
  * 
  * @param {ApiEntry} sourceEntry 
  * @param {ApiEntry} targetEntry 
  */
 function checkEntryChanged(sourceEntry, targetEntry) {
-  const keys = Object.keys(targetEntry).filter(k => k !== "doc" && k !== "entries" && k !== "sourceName" && k !== "value");
+  const keys = Object.keys(targetEntry).filter(k => !filterOutAttributes.has(k));
   for (const key of keys) {
     if (checkValueChanged(sourceEntry[key], targetEntry[key])) return key;
   }
@@ -482,6 +491,14 @@ function generateDef(entry) {
  * @param {string}   prefix
  */
 function generateBody(entry, prefix) {
+  const hint = entry.hints;
+  if (hint?.delete) return " = delete;";
+  if (hint?.body) {
+    return `\n${prefix}{\n${prefix}  ${hint.body.replaceAll("\n", `\n${prefix}  `)}\n${prefix}}`;
+  }
+  if (hint?.init?.length) {
+    return `\n${prefix}  : ${hint.init.join(`\n${prefix}  , `)}\n${prefix}{}`;
+  }
   const sourceName = entry.sourceName === entry.name ? ("::" + entry.sourceName) : entry.sourceName;
   if (!sourceName) {
     if (/operator(==|<=>)/.test(entry.name)) return " = default;";
@@ -495,21 +512,28 @@ function generateBody(entry, prefix) {
     .join(", ");
   const returnStr = entry.type === "void" ? "" : "return ";
   if (!entry.type) {
-    return `\n${prefix}  : T(${sourceName}(${paramStr}))\n${prefix}{}`;
+    const superStr = hint?.super ?? "T";
+    return `\n${prefix}  : ${superStr}(${sourceName}(${paramStr}))\n${prefix}{}`;
   }
   if (!prefix || entry.static) {
-    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${paramStr});\n${prefix}}`;
+    const selfStr = (hint?.self && !hint?.static) ? hint.self + (paramStr.length ? ", " : "") : "";
+    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${selfStr}${paramStr});\n${prefix}}`;
   }
   if (paramStr) {
-    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(T::get(), ${paramStr});\n${prefix}}`;
+    const selfStr = hint?.self ?? "T::get()";
+    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${selfStr}, ${paramStr});\n${prefix}}`;
   }
+  let selfStr;
   if (looksLikeFreeFunction(sourceName)) {
     if (!returnStr) {
-      return `\n${prefix}{\n${prefix}  T::free();\n${prefix}}`;
+      const selfStr = hint?.self ?? "T::free()";
+      return `\n${prefix}{\n${prefix}  ${selfStr};\n${prefix}}`;
     }
-    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(T::release());\n${prefix}}`;
+    selfStr = hint?.self ?? "T::release()";
+  } else {
+    selfStr = hint?.self ?? "T::get()";
   }
-  return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(T::get());\n${prefix}}`;
+  return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${selfStr});\n${prefix}}`;
 }
 
 /**
@@ -548,13 +572,36 @@ function generateNS(entry) {
 /**
  * 
  * @param {ApiEntry} entry 
+ */
+function combineHints(entry) {
+  const hints = entry.hints;
+  const subEntries = entry.entries;
+  if (!hints || !subEntries) return;
+  for (const entry of Object.values(subEntries)) {
+    if (Array.isArray(entry)) {
+      entry.forEach(e => {
+        if (e.hints) e.hints = { ...hints, ...e.hints };
+        else e.hints = hints;
+      });
+    } else {
+      if (entry.hints) entry.hints = { ...hints, ...entry.hints };
+      else entry.hints = hints;
+    }
+  }
+}
+
+/**
+ * 
+ * @param {ApiEntry} entry 
  * @param {string} prefix 
  */
 function generateStruct(entry, prefix) {
   const signature = generateStructSignature(entry, prefix);
   const parent = entry.type ? ` : ${entry.type}` : "";
-  const subEntries = generateEntries(entry.entries ?? {}, prefix + "  ");
-  return `${signature}${parent}\n${prefix}{\n${subEntries}\n${prefix}};`;
+  const subEntries = entry.entries ?? {};
+  combineHints(entry);
+  const subEntriesStr = generateEntries(subEntries, prefix + "  ");
+  return `${signature}${parent}\n${prefix}{\n${subEntriesStr}\n${prefix}};`;
 }
 
 /**

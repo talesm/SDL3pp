@@ -82,5 +82,6 @@ var searchData=
   ['round_79',['round',['../group__CategoryStdinc.html#ga58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
   ['roundf_80',['roundf',['../group__CategoryStdinc.html#ga9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
   ['runapp_81',['RunApp',['../group__CategoryMain.html#ga1b98e9c138e52fc85ce439efec6205f1',1,'SDL']]],
-  ['runonmainthread_82',['runonmainthread',['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../group__CategoryInit.html#ga7d0f101553ddca55df18779d038c0dd4',1,'SDL::RunOnMainThread(MainThreadCB callback, bool wait_complete)']]]
+  ['runonmainthread_82',['runonmainthread',['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../group__CategoryInit.html#ga7d0f101553ddca55df18779d038c0dd4',1,'SDL::RunOnMainThread(MainThreadCB callback, bool wait_complete)']]],
+  ['rwlockbase_83',['RWLockBase',['../structSDL_1_1RWLockBase.html#a62b6a180c54c1992a6a73f289b7af2e7',1,'SDL::RWLockBase']]]
 ];

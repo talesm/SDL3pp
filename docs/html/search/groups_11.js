@@ -14,5 +14,6 @@ var searchData=
   ['support_11',['support',['../group__CategoriesCppSupport.html',1,'C++ Support'],['../group__CategoryKeyboard.html',1,'Keyboard Support'],['../group__CategoryTimer.html',1,'Timer Support'],['../group__CategorySDLTTF.html',1,'True type font support']]],
   ['surface_20creation_20and_20simple_20drawing_12',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
   ['swapping_13',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]],
-  ['system_20tray_14',['System Tray',['../group__CategoryTray.html',1,'']]]
+  ['synchronization_20primitives_14',['Thread Synchronization Primitives',['../group__CategoryMutex.html',1,'']]],
+  ['system_20tray_15',['System Tray',['../group__CategoryTray.html',1,'']]]
 ];

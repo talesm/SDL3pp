@@ -1,3 +1,4 @@
+const { type } = require("os");
 const { writeJSONSync } = require("./cppfier/src/utils");
 
 /**
@@ -47,6 +48,231 @@ const transform = {
             }
           ]
         }
+      }
+    },
+    "SDL_atomic.h": {
+      ignoreEntries: [
+        "SDL_SpinLock",
+        "SDL_TryLockSpinlock",
+        "SDL_LockSpinlock",
+        "SDL_UnlockSpinlock",
+      ],
+      includeAfter: {
+        "__begin": [
+          { name: "MemoryBarrierRelease" },
+          { name: "MemoryBarrierAcquire" },
+        ],
+        "SDL_AtomicU32": {
+          name: "AtomicPointer",
+          kind: "struct",
+          template: [{
+            type: "class",
+            name: "T"
+          }],
+          hints: {
+            self: "&m_value",
+          },
+          entries: {
+            "m_value": {
+              kind: "var",
+              type: "T *",
+            },
+            "AtomicPointer": [
+              {
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [{
+                  type: "T *",
+                  name: "value"
+                }],
+                hints: {
+                  init: ["m_value(value)"]
+                }
+              },
+              {
+                kind: "function",
+                type: "",
+                proto: true,
+                parameters: [{
+                  type: "const AtomicPointer &",
+                  name: "value"
+                }],
+                hints: {
+                  delete: true
+                }
+              }
+            ],
+            "operator=": {
+              kind: "function",
+              type: "AtomicPointer &",
+              proto: true,
+              parameters: [{
+                type: "const AtomicPointer &",
+                name: "value"
+              }],
+              hints: {
+                delete: true
+              }
+            },
+            "SDL_CompareAndSwapAtomicPointer": {
+              static: false,
+              parameters: [
+                { type: "T *", name: "oldval" },
+                { type: "T *", name: "newval" },
+              ]
+            },
+            "SDL_SetAtomicPointer": {
+              type: "T *",
+              static: false,
+              parameters: [
+                { type: "T *", name: "v" },
+              ]
+            },
+            "SDL_GetAtomicPointer": {
+              type: "T *",
+              static: false,
+              parameters: []
+            }
+          }
+        },
+      },
+      transform: {
+        "SDL_MemoryBarrierReleaseFunction": { name: "MemoryBarrierRelease" },
+        "SDL_MemoryBarrierAcquireFunction": { name: "MemoryBarrierAcquire" },
+        "SDL_AtomicInt": {
+          hints: {
+            self: "&m_value",
+          },
+          entries: {
+            "m_value": {
+              kind: "var",
+              type: "SDL_AtomicInt",
+            },
+            "AtomicInt": [
+              {
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [{
+                  type: "int",
+                  name: "value"
+                }],
+                hints: {
+                  init: ["m_value(value)"]
+                }
+              },
+              {
+                kind: "function",
+                type: "",
+                proto: true,
+                parameters: [{
+                  type: "const AtomicInt &",
+                  name: "value"
+                }],
+                hints: {
+                  delete: true
+                }
+              }
+            ],
+            "operator=": {
+              kind: "function",
+              type: "AtomicInt &",
+              proto: true,
+              parameters: [{
+                type: "const AtomicInt &",
+                name: "value"
+              }],
+              hints: {
+                delete: true
+              }
+            },
+            "operator SDL_AtomicInt *": {
+              kind: "function",
+              type: "",
+              parameters: [],
+              constexpr: true,
+              hints: {
+                body: "return &m_value;"
+              }
+            },
+            "SDL_CompareAndSwapAtomicInt": "function",
+            "SDL_SetAtomicInt": "function",
+            "SDL_GetAtomicInt": "function",
+            "SDL_AddAtomicInt": "function",
+            "SDL_AtomicIncRef": {
+              kind: "function",
+              type: "bool",
+              parameters: [],
+            },
+            "SDL_AtomicDecRef": {
+              kind: "function",
+              type: "bool",
+              parameters: [],
+            }
+          }
+        },
+        "SDL_AtomicU32": {
+          hints: {
+            self: "&m_value",
+          },
+          entries: {
+            "m_value": {
+              kind: "var",
+              type: "SDL_AtomicU32",
+            },
+            "AtomicU32": [
+              {
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [{
+                  type: "Uint32",
+                  name: "value"
+                }],
+                hints: {
+                  init: ["m_value(value)"]
+                }
+              },
+              {
+                kind: "function",
+                type: "",
+                proto: true,
+                parameters: [{
+                  type: "const AtomicU32 &",
+                  name: "value"
+                }],
+                hints: {
+                  delete: true
+                }
+              }
+            ],
+            "operator=": {
+              kind: "function",
+              type: "AtomicU32 &",
+              proto: true,
+              parameters: [{
+                type: "const AtomicU32 &",
+                name: "value"
+              }],
+              hints: {
+                delete: true
+              }
+            },
+            "operator SDL_AtomicU32 *": {
+              kind: "function",
+              type: "",
+              parameters: [],
+              constexpr: true,
+              hints: {
+                body: "return &m_value;"
+              }
+            },
+            "SDL_CompareAndSwapAtomicU32": "function",
+            "SDL_SetAtomicU32": "function",
+            "SDL_GetAtomicU32": "function",
+          }
+        },
       }
     },
     // TODO: Remove??
@@ -2164,6 +2390,147 @@ const transform = {
               }
             ],
             "SDL_ShowMessageBox": "function"
+          }
+        }
+      }
+    },
+    "SDL_mutex.h": {
+      ignoreEntries: [
+        "SDL_THREAD_ANNOTATION_ATTRIBUTE__",
+        "SDL_CAPABILITY",
+        "SDL_SCOPED_CAPABILITY",
+        "SDL_GUARDED_BY",
+        "SDL_PT_GUARDED_BY",
+        "SDL_ACQUIRED_BEFORE",
+        "SDL_ACQUIRED_AFTER",
+        "SDL_REQUIRES",
+        "SDL_REQUIRES_SHARED",
+        "SDL_ACQUIRE",
+        "SDL_ACQUIRE_SHARED",
+        "SDL_RELEASE",
+        "SDL_RELEASE_SHARED",
+        "SDL_RELEASE_GENERIC",
+        "SDL_TRY_ACQUIRE",
+        "SDL_TRY_ACQUIRE_SHARED",
+        "SDL_EXCLUDES",
+        "SDL_ASSERT_CAPABILITY",
+        "SDL_ASSERT_SHARED_CAPABILITY",
+        "SDL_RETURN_CAPABILITY",
+        "SDL_NO_THREAD_SAFETY_ANALYSIS",
+      ],
+      resources: {
+        "SDL_Mutex": {
+          entries: {
+            "SDL_CreateMutex": "ctor",
+            "SDL_LockMutex": {
+              parameters: [{
+                type: "SDL_Mutex *"
+              }]
+            },
+            "SDL_TryLockMutex": {
+              parameters: [{
+                type: "SDL_Mutex *"
+              }]
+            },
+            "SDL_UnlockMutex": {
+              parameters: [{
+                type: "SDL_Mutex *"
+              }]
+            },
+            "SDL_DestroyMutex": "function",
+          }
+        },
+        "SDL_RWLock": {
+          entries: {
+            "SDL_CreateRWLock": "ctor",
+            "SDL_LockRWLockForReading": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_LockRWLockForWriting": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_TryLockRWLockForReading": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_TryLockRWLockForWriting": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_UnlockRWLock": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_DestroyRWLock": "function",
+          }
+        },
+        "SDL_Semaphore": {
+          entries: {
+            "SDL_CreateSemaphore": "ctor",
+            "SDL_WaitSemaphore": "function",
+            "SDL_TryWaitSemaphore": "function",
+            "SDL_WaitSemaphoreTimeout": {
+              parameters: [
+                {},
+                {
+                  type: "std::chrono::milliseconds",
+                  name: "timeout"
+                },
+              ]
+            },
+            "SDL_SignalSemaphore": "function",
+            "SDL_GetSemaphoreValue": "immutable",
+            "SDL_DestroySemaphore": "function",
+          }
+        },
+        "SDL_Condition": {
+          entries: {
+            "SDL_CreateCondition": "ctor",
+            "SDL_SignalCondition": "function",
+            "SDL_BroadcastCondition": "function",
+            "SDL_WaitCondition": "function",
+            "SDL_WaitConditionTimeout": {
+              parameters: [
+                {},
+                {},
+                {
+                  type: "std::chrono::milliseconds",
+                  name: "timeout"
+                },
+              ]
+            },
+            "SDL_DestroyCondition": "function",
+          }
+        },
+      },
+      enumerations: {
+        "SDL_InitStatus": {
+          prefix: "INIT_STATUS_",
+        },
+      },
+      wrappers: {
+        "SDL_InitState": {
+          invalidState: false,
+          genCtor: false,
+          genMembers: false,
+          entries: {
+            "InitState": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [],
+              hints: { init: ["SDL_InitState{0}"] }
+            },
+            "SDL_ShouldInit": "function",
+            "SDL_ShouldQuit": "function",
+            "SDL_SetInitialized": "function",
           }
         }
       }

@@ -19615,6 +19615,912 @@
         }
       }
     },
+    "SDL_mutex.h": {
+      "name": "SDL_mutex.h",
+      "doc": "# CategoryMutex\n\nSDL offers several thread synchronization primitives. This document can't\ncover the complicated topic of thread safety, but reading up on what each\nof these primitives are, why they are useful, and how to correctly use them\nis vital to writing correct and safe multithreaded programs.\n\n- Mutexes: SDL_CreateMutex()\n- Read/Write locks: SDL_CreateRWLock()\n- Semaphores: SDL_CreateSemaphore()\n- Condition variables: SDL_CreateCondition()\n\nSDL also offers a datatype, SDL_InitState, which can be used to make sure\nonly one thread initializes/deinitializes some resource that several\nthreads might try to use for the first time simultaneously.",
+      "entries": {
+        "SDL_THREAD_ANNOTATION_ATTRIBUTE__": {
+          "doc": "Enable thread safety attributes, only with clang.\n\nThe attributes can be safely erased when compiling with other compilers.\n\nTo enable analysis, set these environment variables before running cmake:\n\n```bash\nexport CC=clang\nexport CFLAGS=\"-DSDL_THREAD_SAFETY_ANALYSIS -Wthread-safety\"\n```",
+          "name": "SDL_THREAD_ANNOTATION_ATTRIBUTE__",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "__attribute__((x))"
+        },
+        "SDL_CAPABILITY": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_CAPABILITY",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(capability(x))"
+        },
+        "SDL_SCOPED_CAPABILITY": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_SCOPED_CAPABILITY",
+          "kind": "def",
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(scoped_lockable)"
+        },
+        "SDL_GUARDED_BY": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_GUARDED_BY",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(guarded_by(x))"
+        },
+        "SDL_PT_GUARDED_BY": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PT_GUARDED_BY",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(pt_guarded_by(x))"
+        },
+        "SDL_ACQUIRED_BEFORE": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ACQUIRED_BEFORE",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquired_before(x))"
+        },
+        "SDL_ACQUIRED_AFTER": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ACQUIRED_AFTER",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquired_after(x))"
+        },
+        "SDL_REQUIRES": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_REQUIRES",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(requires_capability(x))"
+        },
+        "SDL_REQUIRES_SHARED": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_REQUIRES_SHARED",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(requires_shared_capability(x))"
+        },
+        "SDL_ACQUIRE": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ACQUIRE",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquire_capability(x))"
+        },
+        "SDL_ACQUIRE_SHARED": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ACQUIRE_SHARED",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquire_shared_capability(x))"
+        },
+        "SDL_RELEASE": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_RELEASE",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_capability(x))"
+        },
+        "SDL_RELEASE_SHARED": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_RELEASE_SHARED",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_shared_capability(x))"
+        },
+        "SDL_RELEASE_GENERIC": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_RELEASE_GENERIC",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_generic_capability(x))"
+        },
+        "SDL_TRY_ACQUIRE": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_TRY_ACQUIRE",
+          "kind": "def",
+          "parameters": [
+            "x",
+            "y"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_capability(x, y))"
+        },
+        "SDL_TRY_ACQUIRE_SHARED": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_TRY_ACQUIRE_SHARED",
+          "kind": "def",
+          "parameters": [
+            "x",
+            "y"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_shared_capability(x, y))"
+        },
+        "SDL_EXCLUDES": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_EXCLUDES",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(locks_excluded(x))"
+        },
+        "SDL_ASSERT_CAPABILITY": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ASSERT_CAPABILITY",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(assert_capability(x))"
+        },
+        "SDL_ASSERT_SHARED_CAPABILITY": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ASSERT_SHARED_CAPABILITY",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(assert_shared_capability(x))"
+        },
+        "SDL_RETURN_CAPABILITY": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_RETURN_CAPABILITY",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(lock_returned(x))"
+        },
+        "SDL_NO_THREAD_SAFETY_ANALYSIS": {
+          "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_NO_THREAD_SAFETY_ANALYSIS",
+          "kind": "def",
+          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(no_thread_safety_analysis)"
+        },
+        "SDL_Mutex": {
+          "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_Mutex",
+          "kind": "alias",
+          "type": "struct SDL_Mutex"
+        },
+        "SDL_CreateMutex": {
+          "doc": "Create a new mutex.\n\nAll newly-created mutexes begin in the _unlocked_ state.\n\nCalls to SDL_LockMutex() will not return while the mutex is locked by\nanother thread. See SDL_TryLockMutex() to attempt to lock without blocking.\n\nSDL mutexes are reentrant.\n\n\\returns the initialized and unlocked mutex or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_DestroyMutex\n\\sa SDL_LockMutex\n\\sa SDL_TryLockMutex\n\\sa SDL_UnlockMutex",
+          "name": "SDL_CreateMutex",
+          "kind": "function",
+          "type": "SDL_Mutex *",
+          "parameters": []
+        },
+        "SDL_LockMutex": {
+          "doc": "Lock the mutex.\n\nThis will block until the mutex is available, which is to say it is in the\nunlocked state and the OS has chosen the caller as the next thread to lock\nit. Of all threads waiting to lock the mutex, only one may do so at a time.\n\nIt is legal for the owning thread to lock an already-locked mutex. It must\nunlock it the same number of times before it is actually made available for\nother threads in the system (this is known as a \"recursive mutex\").\n\nThis function does not fail; if mutex is NULL, it will return immediately\nhaving locked nothing. If the mutex is valid, this function will always\nblock until it can lock the mutex, and return with it locked.\n\n\\param mutex the mutex to lock.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_TryLockMutex\n\\sa SDL_UnlockMutex",
+          "name": "SDL_LockMutex",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "SDL_ACQUIRE(mutex",
+              "type": "SDL_Mutex *mutex)"
+            }
+          ]
+        },
+        "SDL_TryLockMutex": {
+          "doc": "Try to lock a mutex without blocking.\n\nThis works just like SDL_LockMutex(), but if the mutex is not available,\nthis function returns false immediately.\n\nThis technique is useful if you need exclusive access to a resource but\ndon't want to wait for it, and will return to it to try again later.\n\nThis function returns true if passed a NULL mutex.\n\n\\param mutex the mutex to try to lock.\n\\returns true on success, false if the mutex would block.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockMutex\n\\sa SDL_UnlockMutex",
+          "name": "SDL_TryLockMutex",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "SDL_TRY_ACQUIRE(",
+              "type": "SDL_Mutex *mutex)"
+            }
+          ]
+        },
+        "SDL_UnlockMutex": {
+          "doc": "Unlock the mutex.\n\nIt is legal for the owning thread to lock an already-locked mutex. It must\nunlock it the same number of times before it is actually made available for\nother threads in the system (this is known as a \"recursive mutex\").\n\nIt is illegal to unlock a mutex that has not been locked by the current\nthread, and doing so results in undefined behavior.\n\n\\param mutex the mutex to unlock.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockMutex\n\\sa SDL_TryLockMutex",
+          "name": "SDL_UnlockMutex",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "SDL_RELEASE(mutex",
+              "type": "SDL_Mutex *mutex)"
+            }
+          ]
+        },
+        "SDL_DestroyMutex": {
+          "doc": "Destroy a mutex created with SDL_CreateMutex().\n\nThis function must be called on any mutex that is no longer needed. Failure\nto destroy a mutex will result in a system memory or resource leak. While\nit is safe to destroy a mutex that is _unlocked_, it is not safe to attempt\nto destroy a locked mutex, and may result in undefined behavior depending\non the platform.\n\n\\param mutex the mutex to destroy.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateMutex",
+          "name": "SDL_DestroyMutex",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "mutex",
+              "type": "SDL_Mutex *"
+            }
+          ]
+        },
+        "SDL_RWLock": {
+          "doc": "A mutex that allows read-only threads to run in parallel.\n\nA rwlock is roughly the same concept as SDL_Mutex, but allows threads that\nrequest read-only access to all hold the lock at the same time. If a thread\nrequests write access, it will block until all read-only threads have\nreleased the lock, and no one else can hold the thread (for reading or\nwriting) at the same time as the writing thread.\n\nThis can be more efficient in cases where several threads need to access\ndata frequently, but changes to that data are rare.\n\nThere are other rules that apply to rwlocks that don't apply to mutexes,\nabout how threads are scheduled and when they can be recursively locked.\nThese are documented in the other rwlock functions.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_RWLock",
+          "kind": "alias",
+          "type": "struct SDL_RWLock"
+        },
+        "SDL_CreateRWLock": {
+          "doc": "Create a new read/write lock.\n\nA read/write lock is useful for situations where you have multiple threads\ntrying to access a resource that is rarely updated. All threads requesting\na read-only lock will be allowed to run in parallel; if a thread requests a\nwrite lock, it will be provided exclusive access. This makes it safe for\nmultiple threads to use a resource at the same time if they promise not to\nchange it, and when it has to be changed, the rwlock will serve as a\ngateway to make sure those changes can be made safely.\n\nIn the right situation, a rwlock can be more efficient than a mutex, which\nonly lets a single thread proceed at a time, even if it won't be modifying\nthe data.\n\nAll newly-created read/write locks begin in the _unlocked_ state.\n\nCalls to SDL_LockRWLockForReading() and SDL_LockRWLockForWriting will not\nreturn while the rwlock is locked _for writing_ by another thread. See\nSDL_TryLockRWLockForReading() and SDL_TryLockRWLockForWriting() to attempt\nto lock without blocking.\n\nSDL read/write locks are only recursive for read-only locks! They are not\nguaranteed to be fair, or provide access in a FIFO manner! They are not\nguaranteed to favor writers. You may not lock a rwlock for both read-only\nand write access at the same time from the same thread (so you can't\npromote your read-only lock to a write lock without unlocking first).\n\n\\returns the initialized and unlocked read/write lock or NULL on failure;\n         call SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_DestroyRWLock\n\\sa SDL_LockRWLockForReading\n\\sa SDL_LockRWLockForWriting\n\\sa SDL_TryLockRWLockForReading\n\\sa SDL_TryLockRWLockForWriting\n\\sa SDL_UnlockRWLock",
+          "name": "SDL_CreateRWLock",
+          "kind": "function",
+          "type": "SDL_RWLock *",
+          "parameters": []
+        },
+        "SDL_LockRWLockForReading": {
+          "doc": "Lock the read/write lock for _read only_ operations.\n\nThis will block until the rwlock is available, which is to say it is not\nlocked for writing by any other thread. Of all threads waiting to lock the\nrwlock, all may do so at the same time as long as they are requesting\nread-only access; if a thread wants to lock for writing, only one may do so\nat a time, and no other threads, read-only or not, may hold the lock at the\nsame time.\n\nIt is legal for the owning thread to lock an already-locked rwlock for\nreading. It must unlock it the same number of times before it is actually\nmade available for other threads in the system (this is known as a\n\"recursive rwlock\").\n\nNote that locking for writing is not recursive (this is only available to\nread-only locks).\n\nIt is illegal to request a read-only lock from a thread that already holds\nthe write lock. Doing so results in undefined behavior. Unlock the write\nlock before requesting a read-only lock. (But, of course, if you have the\nwrite lock, you don't need further locks to read in any case.)\n\nThis function does not fail; if rwlock is NULL, it will return immediately\nhaving locked nothing. If the rwlock is valid, this function will always\nblock until it can lock the mutex, and return with it locked.\n\n\\param rwlock the read/write lock to lock.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockRWLockForWriting\n\\sa SDL_TryLockRWLockForReading\n\\sa SDL_UnlockRWLock",
+          "name": "SDL_LockRWLockForReading",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "SDL_ACQUIRE_SHARED(rwlock",
+              "type": "SDL_RWLock *rwlock)"
+            }
+          ]
+        },
+        "SDL_LockRWLockForWriting": {
+          "doc": "Lock the read/write lock for _write_ operations.\n\nThis will block until the rwlock is available, which is to say it is not\nlocked for reading or writing by any other thread. Only one thread may hold\nthe lock when it requests write access; all other threads, whether they\nalso want to write or only want read-only access, must wait until the\nwriter thread has released the lock.\n\nIt is illegal for the owning thread to lock an already-locked rwlock for\nwriting (read-only may be locked recursively, writing can not). Doing so\nresults in undefined behavior.\n\nIt is illegal to request a write lock from a thread that already holds a\nread-only lock. Doing so results in undefined behavior. Unlock the\nread-only lock before requesting a write lock.\n\nThis function does not fail; if rwlock is NULL, it will return immediately\nhaving locked nothing. If the rwlock is valid, this function will always\nblock until it can lock the mutex, and return with it locked.\n\n\\param rwlock the read/write lock to lock.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockRWLockForReading\n\\sa SDL_TryLockRWLockForWriting\n\\sa SDL_UnlockRWLock",
+          "name": "SDL_LockRWLockForWriting",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "SDL_ACQUIRE(rwlock",
+              "type": "SDL_RWLock *rwlock)"
+            }
+          ]
+        },
+        "SDL_TryLockRWLockForReading": {
+          "doc": "Try to lock a read/write lock _for reading_ without blocking.\n\nThis works just like SDL_LockRWLockForReading(), but if the rwlock is not\navailable, then this function returns false immediately.\n\nThis technique is useful if you need access to a resource but don't want to\nwait for it, and will return to it to try again later.\n\nTrying to lock for read-only access can succeed if other threads are\nholding read-only locks, as this won't prevent access.\n\nThis function returns true if passed a NULL rwlock.\n\n\\param rwlock the rwlock to try to lock.\n\\returns true on success, false if the lock would block.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockRWLockForReading\n\\sa SDL_TryLockRWLockForWriting\n\\sa SDL_UnlockRWLock",
+          "name": "SDL_TryLockRWLockForReading",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "SDL_TRY_ACQUIRE_SHARED(",
+              "type": "SDL_RWLock *rwlock)"
+            }
+          ]
+        },
+        "SDL_TryLockRWLockForWriting": {
+          "doc": "Try to lock a read/write lock _for writing_ without blocking.\n\nThis works just like SDL_LockRWLockForWriting(), but if the rwlock is not\navailable, then this function returns false immediately.\n\nThis technique is useful if you need exclusive access to a resource but\ndon't want to wait for it, and will return to it to try again later.\n\nIt is illegal for the owning thread to lock an already-locked rwlock for\nwriting (read-only may be locked recursively, writing can not). Doing so\nresults in undefined behavior.\n\nIt is illegal to request a write lock from a thread that already holds a\nread-only lock. Doing so results in undefined behavior. Unlock the\nread-only lock before requesting a write lock.\n\nThis function returns true if passed a NULL rwlock.\n\n\\param rwlock the rwlock to try to lock.\n\\returns true on success, false if the lock would block.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockRWLockForWriting\n\\sa SDL_TryLockRWLockForReading\n\\sa SDL_UnlockRWLock",
+          "name": "SDL_TryLockRWLockForWriting",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "SDL_TRY_ACQUIRE(",
+              "type": "SDL_RWLock *rwlock)"
+            }
+          ]
+        },
+        "SDL_UnlockRWLock": {
+          "doc": "Unlock the read/write lock.\n\nUse this function to unlock the rwlock, whether it was locked for read-only\nor write operations.\n\nIt is legal for the owning thread to lock an already-locked read-only lock.\nIt must unlock it the same number of times before it is actually made\navailable for other threads in the system (this is known as a \"recursive\nrwlock\").\n\nIt is illegal to unlock a rwlock that has not been locked by the current\nthread, and doing so results in undefined behavior.\n\n\\param rwlock the rwlock to unlock.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockRWLockForReading\n\\sa SDL_LockRWLockForWriting\n\\sa SDL_TryLockRWLockForReading\n\\sa SDL_TryLockRWLockForWriting",
+          "name": "SDL_UnlockRWLock",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "SDL_RELEASE_GENERIC(rwlock",
+              "type": "SDL_RWLock *rwlock)"
+            }
+          ]
+        },
+        "SDL_DestroyRWLock": {
+          "doc": "Destroy a read/write lock created with SDL_CreateRWLock().\n\nThis function must be called on any read/write lock that is no longer\nneeded. Failure to destroy a rwlock will result in a system memory or\nresource leak. While it is safe to destroy a rwlock that is _unlocked_, it\nis not safe to attempt to destroy a locked rwlock, and may result in\nundefined behavior depending on the platform.\n\n\\param rwlock the rwlock to destroy.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateRWLock",
+          "name": "SDL_DestroyRWLock",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "rwlock",
+              "type": "SDL_RWLock *"
+            }
+          ]
+        },
+        "SDL_Semaphore": {
+          "doc": "A means to manage access to a resource, by count, between threads.\n\nSemaphores (specifically, \"counting semaphores\"), let X number of threads\nrequest access at the same time, each thread granted access decrementing a\ncounter. When the counter reaches zero, future requests block until a prior\nthread releases their request, incrementing the counter again.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Semaphore_(programming)\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_Semaphore",
+          "kind": "alias",
+          "type": "struct SDL_Semaphore"
+        },
+        "SDL_CreateSemaphore": {
+          "doc": "Create a semaphore.\n\nThis function creates a new semaphore and initializes it with the value\n`initial_value`. Each wait operation on the semaphore will atomically\ndecrement the semaphore value and potentially block if the semaphore value\nis 0. Each post operation will atomically increment the semaphore value and\nwake waiting threads and allow them to retry the wait operation.\n\n\\param initial_value the starting value of the semaphore.\n\\returns a new semaphore or NULL on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_DestroySemaphore\n\\sa SDL_SignalSemaphore\n\\sa SDL_TryWaitSemaphore\n\\sa SDL_GetSemaphoreValue\n\\sa SDL_WaitSemaphore\n\\sa SDL_WaitSemaphoreTimeout",
+          "name": "SDL_CreateSemaphore",
+          "kind": "function",
+          "type": "SDL_Semaphore *",
+          "parameters": [
+            {
+              "name": "initial_value",
+              "type": "Uint32"
+            }
+          ]
+        },
+        "SDL_DestroySemaphore": {
+          "doc": "Destroy a semaphore.\n\nIt is not safe to destroy a semaphore if there are threads currently\nwaiting on it.\n\n\\param sem the semaphore to destroy.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateSemaphore",
+          "name": "SDL_DestroySemaphore",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "sem",
+              "type": "SDL_Semaphore *"
+            }
+          ]
+        },
+        "SDL_WaitSemaphore": {
+          "doc": "Wait until a semaphore has a positive value and then decrements it.\n\nThis function suspends the calling thread until the semaphore pointed to by\n`sem` has a positive value, and then atomically decrement the semaphore\nvalue.\n\nThis function is the equivalent of calling SDL_WaitSemaphoreTimeout() with\na time length of -1.\n\n\\param sem the semaphore wait on.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SignalSemaphore\n\\sa SDL_TryWaitSemaphore\n\\sa SDL_WaitSemaphoreTimeout",
+          "name": "SDL_WaitSemaphore",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "sem",
+              "type": "SDL_Semaphore *"
+            }
+          ]
+        },
+        "SDL_TryWaitSemaphore": {
+          "doc": "See if a semaphore has a positive value and decrement it if it does.\n\nThis function checks to see if the semaphore pointed to by `sem` has a\npositive value and atomically decrements the semaphore value if it does. If\nthe semaphore doesn't have a positive value, the function immediately\nreturns false.\n\n\\param sem the semaphore to wait on.\n\\returns true if the wait succeeds, false if the wait would block.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SignalSemaphore\n\\sa SDL_WaitSemaphore\n\\sa SDL_WaitSemaphoreTimeout",
+          "name": "SDL_TryWaitSemaphore",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "sem",
+              "type": "SDL_Semaphore *"
+            }
+          ]
+        },
+        "SDL_WaitSemaphoreTimeout": {
+          "doc": "Wait until a semaphore has a positive value and then decrements it.\n\nThis function suspends the calling thread until either the semaphore\npointed to by `sem` has a positive value or the specified time has elapsed.\nIf the call is successful it will atomically decrement the semaphore value.\n\n\\param sem the semaphore to wait on.\n\\param timeoutMS the length of the timeout, in milliseconds, or -1 to wait\n                 indefinitely.\n\\returns true if the wait succeeds or false if the wait times out.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SignalSemaphore\n\\sa SDL_TryWaitSemaphore\n\\sa SDL_WaitSemaphore",
+          "name": "SDL_WaitSemaphoreTimeout",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "sem",
+              "type": "SDL_Semaphore *"
+            },
+            {
+              "name": "timeoutMS",
+              "type": "Sint32"
+            }
+          ]
+        },
+        "SDL_SignalSemaphore": {
+          "doc": "Atomically increment a semaphore's value and wake waiting threads.\n\n\\param sem the semaphore to increment.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_TryWaitSemaphore\n\\sa SDL_WaitSemaphore\n\\sa SDL_WaitSemaphoreTimeout",
+          "name": "SDL_SignalSemaphore",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "sem",
+              "type": "SDL_Semaphore *"
+            }
+          ]
+        },
+        "SDL_GetSemaphoreValue": {
+          "doc": "Get the current value of a semaphore.\n\n\\param sem the semaphore to query.\n\\returns the current value of the semaphore.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetSemaphoreValue",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "sem",
+              "type": "SDL_Semaphore *"
+            }
+          ]
+        },
+        "SDL_Condition": {
+          "doc": "A means to block multiple threads until a condition is satisfied.\n\nCondition variables, paired with an SDL_Mutex, let an app halt multiple\nthreads until a condition has occurred, at which time the app can release\none or all waiting threads.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Condition_variable\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_Condition",
+          "kind": "alias",
+          "type": "struct SDL_Condition"
+        },
+        "SDL_CreateCondition": {
+          "doc": "Create a condition variable.\n\n\\returns a new condition variable or NULL on failure; call SDL_GetError()\n         for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_BroadcastCondition\n\\sa SDL_SignalCondition\n\\sa SDL_WaitCondition\n\\sa SDL_WaitConditionTimeout\n\\sa SDL_DestroyCondition",
+          "name": "SDL_CreateCondition",
+          "kind": "function",
+          "type": "SDL_Condition *",
+          "parameters": []
+        },
+        "SDL_DestroyCondition": {
+          "doc": "Destroy a condition variable.\n\n\\param cond the condition variable to destroy.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateCondition",
+          "name": "SDL_DestroyCondition",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "cond",
+              "type": "SDL_Condition *"
+            }
+          ]
+        },
+        "SDL_SignalCondition": {
+          "doc": "Restart one of the threads that are waiting on the condition variable.\n\n\\param cond the condition variable to signal.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_BroadcastCondition\n\\sa SDL_WaitCondition\n\\sa SDL_WaitConditionTimeout",
+          "name": "SDL_SignalCondition",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "cond",
+              "type": "SDL_Condition *"
+            }
+          ]
+        },
+        "SDL_BroadcastCondition": {
+          "doc": "Restart all threads that are waiting on the condition variable.\n\n\\param cond the condition variable to signal.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SignalCondition\n\\sa SDL_WaitCondition\n\\sa SDL_WaitConditionTimeout",
+          "name": "SDL_BroadcastCondition",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "cond",
+              "type": "SDL_Condition *"
+            }
+          ]
+        },
+        "SDL_WaitCondition": {
+          "doc": "Wait until a condition variable is signaled.\n\nThis function unlocks the specified `mutex` and waits for another thread to\ncall SDL_SignalCondition() or SDL_BroadcastCondition() on the condition\nvariable `cond`. Once the condition variable is signaled, the mutex is\nre-locked and the function returns.\n\nThe mutex must be locked before calling this function. Locking the mutex\nrecursively (more than once) is not supported and leads to undefined\nbehavior.\n\nThis function is the equivalent of calling SDL_WaitConditionTimeout() with\na time length of -1.\n\n\\param cond the condition variable to wait on.\n\\param mutex the mutex used to coordinate thread access.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_BroadcastCondition\n\\sa SDL_SignalCondition\n\\sa SDL_WaitConditionTimeout",
+          "name": "SDL_WaitCondition",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "cond",
+              "type": "SDL_Condition *"
+            },
+            {
+              "name": "mutex",
+              "type": "SDL_Mutex *"
+            }
+          ]
+        },
+        "SDL_WaitConditionTimeout": {
+          "doc": "Wait until a condition variable is signaled or a certain time has passed.\n\nThis function unlocks the specified `mutex` and waits for another thread to\ncall SDL_SignalCondition() or SDL_BroadcastCondition() on the condition\nvariable `cond`, or for the specified time to elapse. Once the condition\nvariable is signaled or the time elapsed, the mutex is re-locked and the\nfunction returns.\n\nThe mutex must be locked before calling this function. Locking the mutex\nrecursively (more than once) is not supported and leads to undefined\nbehavior.\n\n\\param cond the condition variable to wait on.\n\\param mutex the mutex used to coordinate thread access.\n\\param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait\n                 indefinitely.\n\\returns true if the condition variable is signaled, false if the condition\n         is not signaled in the allotted time.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_BroadcastCondition\n\\sa SDL_SignalCondition\n\\sa SDL_WaitCondition",
+          "name": "SDL_WaitConditionTimeout",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "cond",
+              "type": "SDL_Condition *"
+            },
+            {
+              "name": "mutex",
+              "type": "SDL_Mutex *"
+            },
+            {
+              "name": "timeoutMS",
+              "type": "Sint32"
+            }
+          ]
+        },
+        "SDL_InitStatus": {
+          "doc": "The current status of an SDL_InitState structure.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_InitStatus",
+          "kind": "enum",
+          "entries": {
+            "SDL_INIT_STATUS_UNINITIALIZED": {
+              "doc": "",
+              "name": "SDL_INIT_STATUS_UNINITIALIZED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_INIT_STATUS_INITIALIZING": {
+              "doc": "",
+              "name": "SDL_INIT_STATUS_INITIALIZING",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_INIT_STATUS_INITIALIZED": {
+              "doc": "",
+              "name": "SDL_INIT_STATUS_INITIALIZED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_INIT_STATUS_UNINITIALIZING": {
+              "doc": "",
+              "name": "SDL_INIT_STATUS_UNINITIALIZING",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_InitState": {
+          "doc": "A structure used for thread-safe initialization and shutdown.\n\nHere is an example of using this:\n\n```c\n   static SDL_AtomicInitState init;\n\n   bool InitSystem(void)\n   {\n       if (!SDL_ShouldInit(&init)) {\n           // The system is initialized\n           return true;\n       }\n\n       // At this point, you should not leave this function without calling SDL_SetInitialized()\n\n       bool initialized = DoInitTasks();\n       SDL_SetInitialized(&init, initialized);\n       return initialized;\n   }\n\n   bool UseSubsystem(void)\n   {\n       if (SDL_ShouldInit(&init)) {\n           // Error, the subsystem isn't initialized\n           SDL_SetInitialized(&init, false);\n           return false;\n       }\n\n       // Do work using the initialized subsystem\n\n       return true;\n   }\n\n   void QuitSystem(void)\n   {\n       if (!SDL_ShouldQuit(&init)) {\n           // The system is not initialized\n           return;\n       }\n\n       // At this point, you should not leave this function without calling SDL_SetInitialized()\n\n       DoQuitTasks();\n       SDL_SetInitialized(&init, false);\n   }\n```\n\nNote that this doesn't protect any resources created during initialization,\nor guarantee that nobody is using those resources during cleanup. You\nshould use other mechanisms to protect those, if that's a concern for your\ncode.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_InitState",
+          "kind": "struct",
+          "entries": {
+            "status": {
+              "doc": "",
+              "name": "status",
+              "kind": "var",
+              "type": "SDL_AtomicInt"
+            },
+            "thread": {
+              "doc": "",
+              "name": "thread",
+              "kind": "var",
+              "type": "SDL_ThreadID"
+            },
+            "reserved": {
+              "doc": "",
+              "name": "reserved",
+              "kind": "var",
+              "type": "void *"
+            }
+          }
+        },
+        "SDL_ShouldInit": {
+          "doc": "Return whether initialization should be done.\n\nThis function checks the passed in state and if initialization should be\ndone, sets the status to `SDL_INIT_STATUS_INITIALIZING` and returns true.\nIf another thread is already modifying this state, it will wait until\nthat's done before returning.\n\nIf this function returns true, the calling code must call\nSDL_SetInitialized() to complete the initialization.\n\n\\param state the initialization state to check.\n\\returns true if initialization needs to be done, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetInitialized\n\\sa SDL_ShouldQuit",
+          "name": "SDL_ShouldInit",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "state",
+              "type": "SDL_InitState *"
+            }
+          ]
+        },
+        "SDL_ShouldQuit": {
+          "doc": "Return whether cleanup should be done.\n\nThis function checks the passed in state and if cleanup should be done,\nsets the status to `SDL_INIT_STATUS_UNINITIALIZING` and returns true.\n\nIf this function returns true, the calling code must call\nSDL_SetInitialized() to complete the cleanup.\n\n\\param state the initialization state to check.\n\\returns true if cleanup needs to be done, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetInitialized\n\\sa SDL_ShouldInit",
+          "name": "SDL_ShouldQuit",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "state",
+              "type": "SDL_InitState *"
+            }
+          ]
+        },
+        "SDL_SetInitialized": {
+          "doc": "Finish an initialization state transition.\n\nThis function sets the status of the passed in state to\n`SDL_INIT_STATUS_INITIALIZED` or `SDL_INIT_STATUS_UNINITIALIZED` and allows\nany threads waiting for the status to proceed.\n\n\\param state the initialization state to check.\n\\param initialized the new initialization state.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ShouldInit\n\\sa SDL_ShouldQuit",
+          "name": "SDL_SetInitialized",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "state",
+              "type": "SDL_InitState *"
+            },
+            {
+              "name": "initialized",
+              "type": "bool"
+            }
+          ]
+        }
+      }
+    },
+    "SDL_atomic.h": {
+      "name": "SDL_atomic.h",
+      "doc": "# CategoryAtomic\n\nAtomic operations.\n\nIMPORTANT: If you are not an expert in concurrent lockless programming, you\nshould not be using any functions in this file. You should be protecting\nyour data structures with full mutexes instead.\n\n***Seriously, here be dragons!***\n\nYou can find out a little more about lockless programming and the subtle\nissues that can arise here:\nhttps://learn.microsoft.com/en-us/windows/win32/dxtecharts/lockless-programming\n\nThere's also lots of good information here:\n\n- https://www.1024cores.net/home/lock-free-algorithms\n- https://preshing.com/\n\nThese operations may or may not actually be implemented using processor\nspecific atomic operations. When possible they are implemented as true\nprocessor specific atomic operations. When that is not possible the are\nimplemented using locks that *do* use the available atomic operations.\n\nAll of the atomic operations that modify memory are full memory barriers.",
+      "entries": {
+        "SDL_SpinLock": {
+          "doc": "An atomic spinlock.\n\nThe atomic locks are efficient spinlocks using CPU instructions, but are\nvulnerable to starvation and can spin forever if a thread holding a lock\nhas been terminated. For this reason you should minimize the code executed\ninside an atomic lock and never do expensive things like API or system\ncalls while holding them.\n\nThey are also vulnerable to starvation if the thread holding the lock is\nlower priority than other threads and doesn't get scheduled. In general you\nshould use mutexes instead, since they have better performance and\ncontention behavior.\n\nThe atomic locks are not safe to lock recursively.\n\nPorting Note: The spin lock functions and type are required and can not be\nemulated because they are used in the atomic emulation code.",
+          "name": "SDL_SpinLock",
+          "kind": "alias",
+          "type": "int"
+        },
+        "SDL_TryLockSpinlock": {
+          "doc": "Try to lock a spin lock by setting it to a non-zero value.\n\n***Please note that spinlocks are dangerous if you don't know what you're\ndoing. Please be careful using any sort of spinlock!***\n\n\\param lock a pointer to a lock variable.\n\\returns true if the lock succeeded, false if the lock is already held.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockSpinlock\n\\sa SDL_UnlockSpinlock",
+          "name": "SDL_TryLockSpinlock",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "lock",
+              "type": "SDL_SpinLock *"
+            }
+          ]
+        },
+        "SDL_LockSpinlock": {
+          "doc": "Lock a spin lock by setting it to a non-zero value.\n\n***Please note that spinlocks are dangerous if you don't know what you're\ndoing. Please be careful using any sort of spinlock!***\n\n\\param lock a pointer to a lock variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_TryLockSpinlock\n\\sa SDL_UnlockSpinlock",
+          "name": "SDL_LockSpinlock",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "lock",
+              "type": "SDL_SpinLock *"
+            }
+          ]
+        },
+        "SDL_UnlockSpinlock": {
+          "doc": "Unlock a spin lock by setting it to 0.\n\nAlways returns immediately.\n\n***Please note that spinlocks are dangerous if you don't know what you're\ndoing. Please be careful using any sort of spinlock!***\n\n\\param lock a pointer to a lock variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockSpinlock\n\\sa SDL_TryLockSpinlock",
+          "name": "SDL_UnlockSpinlock",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "lock",
+              "type": "SDL_SpinLock *"
+            }
+          ]
+        },
+        "SDL_CompilerBarrier": {
+          "doc": "Mark a compiler barrier.\n\nA compiler barrier prevents the compiler from reordering reads and writes\nto globally visible variables across the call.\n\nThis macro only prevents the compiler from reordering reads and writes, it\ndoes not prevent the CPU from reordering reads and writes. However, all of\nthe atomic operations that modify memory are full memory barriers.\n\n\\threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_CompilerBarrier",
+          "kind": "def",
+          "parameters": [],
+          "value": "DoCompilerSpecificReadWriteBarrier()"
+        },
+        "SDL_MemoryBarrierReleaseFunction": {
+          "doc": "Insert a memory release barrier (function version).\n\nPlease refer to SDL_MemoryBarrierRelease for details. This is a function\nversion, which might be useful if you need to use this functionality from a\nscripting language, etc. Also, some of the macro versions call this\nfunction behind the scenes, where more heavy lifting can happen inside of\nSDL. Generally, though, an app written in C/C++/etc should use the macro\nversion, as it will be more efficient.\n\n\\threadsafety Obviously this function is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_MemoryBarrierRelease",
+          "name": "SDL_MemoryBarrierReleaseFunction",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        },
+        "SDL_MemoryBarrierAcquireFunction": {
+          "doc": "Insert a memory acquire barrier (function version).\n\nPlease refer to SDL_MemoryBarrierRelease for details. This is a function\nversion, which might be useful if you need to use this functionality from a\nscripting language, etc. Also, some of the macro versions call this\nfunction behind the scenes, where more heavy lifting can happen inside of\nSDL. Generally, though, an app written in C/C++/etc should use the macro\nversion, as it will be more efficient.\n\n\\threadsafety Obviously this function is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_MemoryBarrierAcquire",
+          "name": "SDL_MemoryBarrierAcquireFunction",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        },
+        "SDL_MemoryBarrierRelease": {
+          "doc": "Insert a memory release barrier (macro version).\n\nMemory barriers are designed to prevent reads and writes from being\nreordered by the compiler and being seen out of order on multi-core CPUs.\n\nA typical pattern would be for thread A to write some data and a flag, and\nfor thread B to read the flag and get the data. In this case you would\ninsert a release barrier between writing the data and the flag,\nguaranteeing that the data write completes no later than the flag is\nwritten, and you would insert an acquire barrier between reading the flag\nand reading the data, to ensure that all the reads associated with the flag\nhave completed.\n\nIn this pattern you should always see a release barrier paired with an\nacquire barrier and you should gate the data reads/writes with a single\nflag variable.\n\nFor more information on these semantics, take a look at the blog post:\nhttp://preshing.com/20120913/acquire-and-release-semantics\n\nThis is the macro version of this functionality; if possible, SDL will use\ncompiler intrinsics or inline assembly, but some platforms might need to\ncall the function version of this, SDL_MemoryBarrierReleaseFunction to do\nthe heavy lifting. Apps that can use the macro should favor it over the\nfunction.\n\n\\threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_MemoryBarrierAcquire\n\\sa SDL_MemoryBarrierReleaseFunction",
+          "name": "SDL_MemoryBarrierRelease",
+          "kind": "def",
+          "parameters": [],
+          "value": "SDL_MemoryBarrierReleaseFunction()"
+        },
+        "SDL_MemoryBarrierAcquire": {
+          "doc": "Insert a memory acquire barrier (macro version).\n\nPlease see SDL_MemoryBarrierRelease for the details on what memory barriers\nare and when to use them.\n\nThis is the macro version of this functionality; if possible, SDL will use\ncompiler intrinsics or inline assembly, but some platforms might need to\ncall the function version of this, SDL_MemoryBarrierAcquireFunction, to do\nthe heavy lifting. Apps that can use the macro should favor it over the\nfunction.\n\n\\threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_MemoryBarrierRelease\n\\sa SDL_MemoryBarrierAcquireFunction",
+          "name": "SDL_MemoryBarrierAcquire",
+          "kind": "def",
+          "parameters": [],
+          "value": "SDL_MemoryBarrierAcquireFunction()"
+        },
+        "SDL_CPUPauseInstruction": {
+          "doc": "A macro to insert a CPU-specific \"pause\" instruction into the program.\n\nThis can be useful in busy-wait loops, as it serves as a hint to the CPU as\nto the program's intent; some CPUs can use this to do more efficient\nprocessing. On some platforms, this doesn't do anything, so using this\nmacro might just be a harmless no-op.\n\nNote that if you are busy-waiting, there are often more-efficient\napproaches with other synchronization primitives: mutexes, semaphores,\ncondition variables, etc.\n\n\\threadsafety This macro is safe to use from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_CPUPauseInstruction",
+          "kind": "def",
+          "parameters": [],
+          "value": "DoACPUPauseInACompilerAndArchitectureSpecificWay"
+        },
+        "SDL_AtomicInt": {
+          "doc": "A type representing an atomic integer value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nSDL_SetAtomicInt all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with SDL_GetAtomicInt, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicInt\n\\sa SDL_GetAtomicInt\n\\sa SDL_SetAtomicInt\n\\sa SDL_AddAtomicInt",
+          "name": "SDL_AtomicInt",
+          "kind": "struct",
+          "entries": {
+            "value": {
+              "doc": "A type representing an atomic integer value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nSDL_SetAtomicInt all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with SDL_GetAtomicInt, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicInt\n\\sa SDL_GetAtomicInt\n\\sa SDL_SetAtomicInt\n\\sa SDL_AddAtomicInt",
+              "name": "value",
+              "kind": "var",
+              "type": "int"
+            }
+          }
+        },
+        "SDL_CompareAndSwapAtomicInt": {
+          "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicInt variable to be modified.\n\\param oldval the old value.\n\\param newval the new value.\n\\returns true if the atomic variable was set, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAtomicInt\n\\sa SDL_SetAtomicInt",
+          "name": "SDL_CompareAndSwapAtomicInt",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "SDL_AtomicInt *"
+            },
+            {
+              "name": "oldval",
+              "type": "int"
+            },
+            {
+              "name": "newval",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_SetAtomicInt": {
+          "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicInt variable to be modified.\n\\param v the desired value.\n\\returns the previous value of the atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAtomicInt",
+          "name": "SDL_SetAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "SDL_AtomicInt *"
+            },
+            {
+              "name": "v",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_GetAtomicInt": {
+          "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicInt variable.\n\\returns the current value of an atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetAtomicInt",
+          "name": "SDL_GetAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "SDL_AtomicInt *"
+            }
+          ]
+        },
+        "SDL_AddAtomicInt": {
+          "doc": "Add to an atomic variable.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicInt variable to be modified.\n\\param v the desired value to add.\n\\returns the previous value of the atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AtomicDecRef\n\\sa SDL_AtomicIncRef",
+          "name": "SDL_AddAtomicInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "SDL_AtomicInt *"
+            },
+            {
+              "name": "v",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_AtomicIncRef": {
+          "doc": "Increment an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n\\param a a pointer to an SDL_AtomicInt to increment.\n\\returns the previous value of the atomic variable.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_AtomicDecRef",
+          "name": "SDL_AtomicIncRef",
+          "kind": "def",
+          "parameters": [
+            "a"
+          ],
+          "value": "SDL_AddAtomicInt(a, 1)"
+        },
+        "SDL_AtomicDecRef": {
+          "doc": "Decrement an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n\\param a a pointer to an SDL_AtomicInt to decrement.\n\\returns true if the variable reached zero after decrementing, false\n         otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_AtomicIncRef",
+          "name": "SDL_AtomicDecRef",
+          "kind": "def",
+          "parameters": [
+            "a"
+          ],
+          "value": "(SDL_AddAtomicInt(a, -1) == 1)"
+        },
+        "SDL_AtomicU32": {
+          "doc": "A type representing an atomic unsigned 32-bit value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nSDL_SetAtomicU32 all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with SDL_GetAtomicU32, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicU32\n\\sa SDL_GetAtomicU32\n\\sa SDL_SetAtomicU32",
+          "name": "SDL_AtomicU32",
+          "kind": "struct",
+          "entries": {
+            "value": {
+              "doc": "A type representing an atomic unsigned 32-bit value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nSDL_SetAtomicU32 all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with SDL_GetAtomicU32, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicU32\n\\sa SDL_GetAtomicU32\n\\sa SDL_SetAtomicU32",
+              "name": "value",
+              "kind": "var",
+              "type": "Uint32"
+            }
+          }
+        },
+        "SDL_CompareAndSwapAtomicU32": {
+          "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicU32 variable to be modified.\n\\param oldval the old value.\n\\param newval the new value.\n\\returns true if the atomic variable was set, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAtomicU32\n\\sa SDL_SetAtomicU32",
+          "name": "SDL_CompareAndSwapAtomicU32",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "SDL_AtomicU32 *"
+            },
+            {
+              "name": "oldval",
+              "type": "Uint32"
+            },
+            {
+              "name": "newval",
+              "type": "Uint32"
+            }
+          ]
+        },
+        "SDL_SetAtomicU32": {
+          "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicU32 variable to be modified.\n\\param v the desired value.\n\\returns the previous value of the atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAtomicU32",
+          "name": "SDL_SetAtomicU32",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "SDL_AtomicU32 *"
+            },
+            {
+              "name": "v",
+              "type": "Uint32"
+            }
+          ]
+        },
+        "SDL_GetAtomicU32": {
+          "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicU32 variable.\n\\returns the current value of an atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetAtomicU32",
+          "name": "SDL_GetAtomicU32",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "SDL_AtomicU32 *"
+            }
+          ]
+        },
+        "SDL_CompareAndSwapAtomicPointer": {
+          "doc": "Set a pointer to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to a pointer.\n\\param oldval the old pointer value.\n\\param newval the new pointer value.\n\\returns true if the pointer was set, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicInt\n\\sa SDL_GetAtomicPointer\n\\sa SDL_SetAtomicPointer",
+          "name": "SDL_CompareAndSwapAtomicPointer",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "void **"
+            },
+            {
+              "name": "oldval",
+              "type": "void *"
+            },
+            {
+              "name": "newval",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_SetAtomicPointer": {
+          "doc": "Set a pointer to a value atomically.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to a pointer.\n\\param v the desired pointer value.\n\\returns the previous value of the pointer.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicPointer\n\\sa SDL_GetAtomicPointer",
+          "name": "SDL_SetAtomicPointer",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "void **"
+            },
+            {
+              "name": "v",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_GetAtomicPointer": {
+          "doc": "Get the value of a pointer atomically.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to a pointer.\n\\returns the current value of a pointer.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicPointer\n\\sa SDL_SetAtomicPointer",
+          "name": "SDL_GetAtomicPointer",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "void **"
+            }
+          ]
+        }
+      }
+    },
     "SDL_timer.h": {
       "name": "SDL_timer.h",
       "doc": "# CategoryTimer\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](CategoryTime).\n\nThis category covers measuring time elapsed (SDL_GetTicks(),\nSDL_GetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing\na callback function after a certain amount of time has elasped\n(SDL_AddTimer(), etc).\n\nThere are also useful macros to convert between time units, like\nSDL_SECONDS_TO_NS() and such.",

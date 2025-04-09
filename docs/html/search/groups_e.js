@@ -6,5 +6,6 @@ var searchData=
   ['pointer_20wrapper_20to_20sdl_3a_3afree_3',['Pointer wrapper to SDL::free()',['../group__CategoryOwnPtr.html',1,'']]],
   ['points_4',['Application entry points',['../group__CategoryMain.html',1,'']]],
   ['power_20management_20status_5',['Power Management Status',['../group__CategoryPower.html',1,'']]],
-  ['properties_6',['Object Properties',['../group__CategoryProperties.html',1,'']]]
+  ['primitives_6',['Thread Synchronization Primitives',['../group__CategoryMutex.html',1,'']]],
+  ['properties_7',['Object Properties',['../group__CategoryProperties.html',1,'']]]
 ];

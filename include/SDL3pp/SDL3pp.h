@@ -12,7 +12,7 @@
 #include <SDL3/SDL.h>
 #include "SDL3pp_assert.h"
 // #include "SDL3pp_asyncio.h"
-// #include "SDL3pp_atomic.h"
+#include "SDL3pp_atomic.h"
 // #include "SDL3pp_audio.h"
 #include "SDL3pp_bits.h"
 #include "SDL3pp_blendmode.h"
@@ -43,7 +43,7 @@
 // #include "SDL3pp_metal.h"
 #include "SDL3pp_misc.h"
 // #include "SDL3pp_mouse.h"
-// #include "SDL3pp_mutex.h"
+#include "SDL3pp_mutex.h"
 // #include "SDL3pp_pen.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_platform.h"

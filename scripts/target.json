@@ -4903,7 +4903,12 @@
                   "default": "{}"
                 }
               ],
-              "doc": "Wraps Display.\n\n@param displayID the value to be wrapped"
+              "doc": "Wraps Display.\n\n@param displayID the value to be wrapped",
+              "hints": {
+                "init": [
+                  "m_displayID(displayID)"
+                ]
+              }
             },
             "operator==": {
               "kind": "function",
@@ -5098,6 +5103,9 @@
               "sourceName": "SDL_GetDisplayForRect",
               "static": true
             }
+          },
+          "hints": {
+            "self": "m_displayID"
           }
         },
         "WindowID": {
@@ -12568,6 +12576,10 @@
           "name": "Color",
           "kind": "struct",
           "sourceName": "SDL_Color",
+          "hints": {
+            "self": "this",
+            "super": "SDL_Color"
+          },
           "type": "SDL_Color",
           "entries": {
             "Color": [
@@ -12583,7 +12595,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps Color.\n\n@param color the value to be wrapped"
+                "doc": "Wraps Color.\n\n@param color the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_Color(color)"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -12608,7 +12625,12 @@
                     "name": "a"
                   }
                 ],
-                "doc": "Constructs from its fields.\n\n@param r the value for r.\n@param g the value for g.\n@param b the value for b.\n@param a the value for a."
+                "doc": "Constructs from its fields.\n\n@param r the value for r.\n@param g the value for g.\n@param b the value for b.\n@param a the value for a.",
+                "hints": {
+                  "init": [
+                    "SDL_Color{r, g, b, a}"
+                  ]
+                }
               }
             ],
             "operator<=>": {
@@ -12632,7 +12654,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the r.\n\n@returns current r value."
+              "doc": "Get the r.\n\n@returns current r value.",
+              "hints": {
+                "body": "return r;"
+              }
             },
             "SetR": {
               "kind": "function",
@@ -12645,7 +12670,10 @@
                   "name": "newR"
                 }
               ],
-              "doc": "Set the r.\n\n@param newR the new r value.\n@returns Reference to self."
+              "doc": "Set the r.\n\n@param newR the new r value.\n@returns Reference to self.",
+              "hints": {
+                "body": "r = newR;\nreturn *this;"
+              }
             },
             "GetG": {
               "kind": "function",
@@ -12654,7 +12682,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the g.\n\n@returns current g value."
+              "doc": "Get the g.\n\n@returns current g value.",
+              "hints": {
+                "body": "return g;"
+              }
             },
             "SetG": {
               "kind": "function",
@@ -12667,7 +12698,10 @@
                   "name": "newG"
                 }
               ],
-              "doc": "Set the g.\n\n@param newG the new g value.\n@returns Reference to self."
+              "doc": "Set the g.\n\n@param newG the new g value.\n@returns Reference to self.",
+              "hints": {
+                "body": "g = newG;\nreturn *this;"
+              }
             },
             "GetB": {
               "kind": "function",
@@ -12676,7 +12710,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the b.\n\n@returns current b value."
+              "doc": "Get the b.\n\n@returns current b value.",
+              "hints": {
+                "body": "return b;"
+              }
             },
             "SetB": {
               "kind": "function",
@@ -12689,7 +12726,10 @@
                   "name": "newB"
                 }
               ],
-              "doc": "Set the b.\n\n@param newB the new b value.\n@returns Reference to self."
+              "doc": "Set the b.\n\n@param newB the new b value.\n@returns Reference to self.",
+              "hints": {
+                "body": "b = newB;\nreturn *this;"
+              }
             },
             "GetA": {
               "kind": "function",
@@ -12698,7 +12738,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the a.\n\n@returns current a value."
+              "doc": "Get the a.\n\n@returns current a value.",
+              "hints": {
+                "body": "return a;"
+              }
             },
             "SetA": {
               "kind": "function",
@@ -12711,7 +12754,10 @@
                   "name": "newA"
                 }
               ],
-              "doc": "Set the a.\n\n@param newA the new a value.\n@returns Reference to self."
+              "doc": "Set the a.\n\n@param newA the new a value.\n@returns Reference to self.",
+              "hints": {
+                "body": "a = newA;\nreturn *this;"
+              }
             }
           }
         },
@@ -12720,6 +12766,10 @@
           "name": "FColor",
           "kind": "struct",
           "sourceName": "SDL_FColor",
+          "hints": {
+            "self": "this",
+            "super": "SDL_FColor"
+          },
           "type": "SDL_FColor",
           "entries": {
             "FColor": [
@@ -12735,7 +12785,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps FColor.\n\n@param color the value to be wrapped"
+                "doc": "Wraps FColor.\n\n@param color the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_FColor(color)"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -12760,7 +12815,12 @@
                     "name": "a"
                   }
                 ],
-                "doc": "Constructs from its fields.\n\n@param r the value for r.\n@param g the value for g.\n@param b the value for b.\n@param a the value for a."
+                "doc": "Constructs from its fields.\n\n@param r the value for r.\n@param g the value for g.\n@param b the value for b.\n@param a the value for a.",
+                "hints": {
+                  "init": [
+                    "SDL_FColor{r, g, b, a}"
+                  ]
+                }
               }
             ],
             "operator<=>": {
@@ -12784,7 +12844,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the r.\n\n@returns current r value."
+              "doc": "Get the r.\n\n@returns current r value.",
+              "hints": {
+                "body": "return r;"
+              }
             },
             "SetR": {
               "kind": "function",
@@ -12797,7 +12860,10 @@
                   "name": "newR"
                 }
               ],
-              "doc": "Set the r.\n\n@param newR the new r value.\n@returns Reference to self."
+              "doc": "Set the r.\n\n@param newR the new r value.\n@returns Reference to self.",
+              "hints": {
+                "body": "r = newR;\nreturn *this;"
+              }
             },
             "GetG": {
               "kind": "function",
@@ -12806,7 +12872,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the g.\n\n@returns current g value."
+              "doc": "Get the g.\n\n@returns current g value.",
+              "hints": {
+                "body": "return g;"
+              }
             },
             "SetG": {
               "kind": "function",
@@ -12819,7 +12888,10 @@
                   "name": "newG"
                 }
               ],
-              "doc": "Set the g.\n\n@param newG the new g value.\n@returns Reference to self."
+              "doc": "Set the g.\n\n@param newG the new g value.\n@returns Reference to self.",
+              "hints": {
+                "body": "g = newG;\nreturn *this;"
+              }
             },
             "GetB": {
               "kind": "function",
@@ -12828,7 +12900,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the b.\n\n@returns current b value."
+              "doc": "Get the b.\n\n@returns current b value.",
+              "hints": {
+                "body": "return b;"
+              }
             },
             "SetB": {
               "kind": "function",
@@ -12841,7 +12916,10 @@
                   "name": "newB"
                 }
               ],
-              "doc": "Set the b.\n\n@param newB the new b value.\n@returns Reference to self."
+              "doc": "Set the b.\n\n@param newB the new b value.\n@returns Reference to self.",
+              "hints": {
+                "body": "b = newB;\nreturn *this;"
+              }
             },
             "GetA": {
               "kind": "function",
@@ -12850,7 +12928,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the a.\n\n@returns current a value."
+              "doc": "Get the a.\n\n@returns current a value.",
+              "hints": {
+                "body": "return a;"
+              }
             },
             "SetA": {
               "kind": "function",
@@ -12863,7 +12944,10 @@
                   "name": "newA"
                 }
               ],
-              "doc": "Set the a.\n\n@param newA the new a value.\n@returns Reference to self."
+              "doc": "Set the a.\n\n@param newA the new a value.\n@returns Reference to self.",
+              "hints": {
+                "body": "a = newA;\nreturn *this;"
+              }
             }
           }
         },
@@ -13407,7 +13491,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps Point.\n\n@param p the value to be wrapped"
+                "doc": "Wraps Point.\n\n@param p the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_Point(p)"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -13424,7 +13513,12 @@
                     "name": "y"
                   }
                 ],
-                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y."
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.",
+                "hints": {
+                  "init": [
+                    "SDL_Point{x, y}"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -13472,7 +13566,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the x.\n\n@returns current x value."
+              "doc": "Get the x.\n\n@returns current x value.",
+              "hints": {
+                "body": "return x;"
+              }
             },
             "SetX": {
               "kind": "function",
@@ -13485,7 +13582,10 @@
                   "name": "newX"
                 }
               ],
-              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self."
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self.",
+              "hints": {
+                "body": "x = newX;\nreturn *this;"
+              }
             },
             "GetY": {
               "kind": "function",
@@ -13494,7 +13594,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the y.\n\n@returns current y value."
+              "doc": "Get the y.\n\n@returns current y value.",
+              "hints": {
+                "body": "return y;"
+              }
             },
             "SetY": {
               "kind": "function",
@@ -13507,7 +13610,10 @@
                   "name": "newY"
                 }
               ],
-              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self."
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self.",
+              "hints": {
+                "body": "y = newY;\nreturn *this;"
+              }
             },
             "IsInRect": {
               "doc": "Determine whether a point resides inside a rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)\nas \"inside\" and (0,1) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -13524,6 +13630,10 @@
               "constexpr": true,
               "immutable": true
             }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_Point"
           },
           "type": "SDL_Point"
         },
@@ -13546,7 +13656,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps FPoint.\n\n@param p the value to be wrapped"
+                "doc": "Wraps FPoint.\n\n@param p the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_FPoint(p)"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -13563,7 +13678,12 @@
                     "name": "y"
                   }
                 ],
-                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y."
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.",
+                "hints": {
+                  "init": [
+                    "SDL_FPoint{x, y}"
+                  ]
+                }
               }
             ],
             "operator<=>": {
@@ -13597,7 +13717,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the x.\n\n@returns current x value."
+              "doc": "Get the x.\n\n@returns current x value.",
+              "hints": {
+                "body": "return x;"
+              }
             },
             "SetX": {
               "kind": "function",
@@ -13610,7 +13733,10 @@
                   "name": "newX"
                 }
               ],
-              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self."
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self.",
+              "hints": {
+                "body": "x = newX;\nreturn *this;"
+              }
             },
             "GetY": {
               "kind": "function",
@@ -13619,7 +13745,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the y.\n\n@returns current y value."
+              "doc": "Get the y.\n\n@returns current y value.",
+              "hints": {
+                "body": "return y;"
+              }
             },
             "SetY": {
               "kind": "function",
@@ -13632,7 +13761,10 @@
                   "name": "newY"
                 }
               ],
-              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self."
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self.",
+              "hints": {
+                "body": "y = newY;\nreturn *this;"
+              }
             },
             "IsInRect": {
               "doc": "Determine whether a point resides inside a floating point rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point\n(0,0) and (0,1) as \"inside\" and (0,2) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -13649,6 +13781,10 @@
               "constexpr": true,
               "immutable": true
             }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_FPoint"
           },
           "type": "SDL_FPoint"
         },
@@ -13671,7 +13807,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps Rect.\n\n@param r the value to be wrapped"
+                "doc": "Wraps Rect.\n\n@param r the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_Rect(r)"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -13696,7 +13837,12 @@
                     "name": "h"
                   }
                 ],
-                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.\n@param w the value for w.\n@param h the value for h."
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.\n@param w the value for w.\n@param h the value for h.",
+                "hints": {
+                  "init": [
+                    "SDL_Rect{x, y, w, h}"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -13745,7 +13891,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the x.\n\n@returns current x value."
+              "doc": "Get the x.\n\n@returns current x value.",
+              "hints": {
+                "body": "return x;"
+              }
             },
             "SetX": {
               "kind": "function",
@@ -13758,7 +13907,10 @@
                   "name": "newX"
                 }
               ],
-              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self."
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self.",
+              "hints": {
+                "body": "x = newX;\nreturn *this;"
+              }
             },
             "GetY": {
               "kind": "function",
@@ -13767,7 +13919,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the y.\n\n@returns current y value."
+              "doc": "Get the y.\n\n@returns current y value.",
+              "hints": {
+                "body": "return y;"
+              }
             },
             "SetY": {
               "kind": "function",
@@ -13780,7 +13935,10 @@
                   "name": "newY"
                 }
               ],
-              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self."
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self.",
+              "hints": {
+                "body": "y = newY;\nreturn *this;"
+              }
             },
             "GetW": {
               "kind": "function",
@@ -13789,7 +13947,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the w.\n\n@returns current w value."
+              "doc": "Get the w.\n\n@returns current w value.",
+              "hints": {
+                "body": "return w;"
+              }
             },
             "SetW": {
               "kind": "function",
@@ -13802,7 +13963,10 @@
                   "name": "newW"
                 }
               ],
-              "doc": "Set the w.\n\n@param newW the new w value.\n@returns Reference to self."
+              "doc": "Set the w.\n\n@param newW the new w value.\n@returns Reference to self.",
+              "hints": {
+                "body": "w = newW;\nreturn *this;"
+              }
             },
             "GetH": {
               "kind": "function",
@@ -13811,7 +13975,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the h.\n\n@returns current h value."
+              "doc": "Get the h.\n\n@returns current h value.",
+              "hints": {
+                "body": "return h;"
+              }
             },
             "SetH": {
               "kind": "function",
@@ -13824,7 +13991,10 @@
                   "name": "newH"
                 }
               ],
-              "doc": "Set the h.\n\n@param newH the new h value.\n@returns Reference to self."
+              "doc": "Set the h.\n\n@param newH the new h value.\n@returns Reference to self.",
+              "hints": {
+                "body": "h = newH;\nreturn *this;"
+              }
             },
             "GetEnclosingPoints": {
               "doc": "Calculate a minimal rectangle enclosing a set of points.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of Point structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an Rect used for clipping or nullptr to enclose all points.\n@param result an Rect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
@@ -14130,6 +14300,10 @@
               "immutable": true
             }
           },
+          "hints": {
+            "self": "this",
+            "super": "SDL_Rect"
+          },
           "type": "SDL_Rect"
         },
         "FRect": {
@@ -14151,7 +14325,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps FRect.\n\n@param r the value to be wrapped"
+                "doc": "Wraps FRect.\n\n@param r the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_FRect(r)"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -14176,7 +14355,12 @@
                     "name": "h"
                   }
                 ],
-                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.\n@param w the value for w.\n@param h the value for h."
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.\n@param w the value for w.\n@param h the value for h.",
+                "hints": {
+                  "init": [
+                    "SDL_FRect{x, y, w, h}"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -14225,7 +14409,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the x.\n\n@returns current x value."
+              "doc": "Get the x.\n\n@returns current x value.",
+              "hints": {
+                "body": "return x;"
+              }
             },
             "SetX": {
               "kind": "function",
@@ -14238,7 +14425,10 @@
                   "name": "newX"
                 }
               ],
-              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self."
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self.",
+              "hints": {
+                "body": "x = newX;\nreturn *this;"
+              }
             },
             "GetY": {
               "kind": "function",
@@ -14247,7 +14437,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the y.\n\n@returns current y value."
+              "doc": "Get the y.\n\n@returns current y value.",
+              "hints": {
+                "body": "return y;"
+              }
             },
             "SetY": {
               "kind": "function",
@@ -14260,7 +14453,10 @@
                   "name": "newY"
                 }
               ],
-              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self."
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self.",
+              "hints": {
+                "body": "y = newY;\nreturn *this;"
+              }
             },
             "GetW": {
               "kind": "function",
@@ -14269,7 +14465,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the w.\n\n@returns current w value."
+              "doc": "Get the w.\n\n@returns current w value.",
+              "hints": {
+                "body": "return w;"
+              }
             },
             "SetW": {
               "kind": "function",
@@ -14282,7 +14481,10 @@
                   "name": "newW"
                 }
               ],
-              "doc": "Set the w.\n\n@param newW the new w value.\n@returns Reference to self."
+              "doc": "Set the w.\n\n@param newW the new w value.\n@returns Reference to self.",
+              "hints": {
+                "body": "w = newW;\nreturn *this;"
+              }
             },
             "GetH": {
               "kind": "function",
@@ -14291,7 +14493,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the h.\n\n@returns current h value."
+              "doc": "Get the h.\n\n@returns current h value.",
+              "hints": {
+                "body": "return h;"
+              }
             },
             "SetH": {
               "kind": "function",
@@ -14304,7 +14509,10 @@
                   "name": "newH"
                 }
               ],
-              "doc": "Set the h.\n\n@param newH the new h value.\n@returns Reference to self."
+              "doc": "Set the h.\n\n@param newH the new h value.\n@returns Reference to self.",
+              "hints": {
+                "body": "h = newH;\nreturn *this;"
+              }
             },
             "GetEnclosingPoints": {
               "doc": "Calculate a minimal rectangle enclosing a set of points with float\nprecision.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of FPoint structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an FRect used for clipping or nullptr to enclose all points.\n@param result an FRect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
@@ -14612,6 +14820,10 @@
               "sourceName": "SDL_GetRectUnionFloat",
               "immutable": true
             }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_FRect"
           },
           "type": "SDL_FRect"
         }
@@ -18293,7 +18505,10 @@
                 "type": "bool"
               }
             ],
-            "sourceName": "SDL_GetKeyFromScancode"
+            "sourceName": "SDL_GetKeyFromScancode",
+            "hints": {
+              "self": "m_keycode"
+            }
           },
           {
             "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@post key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetName\n@sa Scancode::Scancode",
@@ -18306,7 +18521,10 @@
                 "type": "StringParam"
               }
             ],
-            "sourceName": "SDL_GetKeyFromName"
+            "sourceName": "SDL_GetKeyFromName",
+            "hints": {
+              "self": "m_keycode"
+            }
           }
         ],
         "Keycode::GetScancode": {
@@ -18321,7 +18539,10 @@
             }
           ],
           "sourceName": "SDL_GetScancodeFromKey",
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_keycode"
+          }
         },
         "Scancode::SetName": {
           "doc": "Set a human-readable name for a scancode.\n\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode::GetName",
@@ -18334,7 +18555,10 @@
               "type": "StringParam"
             }
           ],
-          "sourceName": "SDL_SetScancodeName"
+          "sourceName": "SDL_SetScancodeName",
+          "hints": {
+            "self": "m_scancode"
+          }
         },
         "Scancode::GetName": {
           "doc": "Get a human-readable name for a scancode.\n\n**Warning**: The returned name is by design not stable across platforms,\ne.g. the name for `SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left\nWindows\" under Microsoft Windows, and some scancodes like\n`SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even\nscancodes that share names, e.g. `SCANCODE_RETURN` and\n`SCANCODE_RETURN2` (both called \"Return\"). This function is therefore\nunsuitable for creating a stable cross-platform two-way mapping between\nstrings and scancodes.\n\n@returns a pointer to the name for the scancode. If the scancode doesn't\n         have a name this function returns an empty string (\"\").\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetScancode\n@sa Scancode::Scancode\n@sa Scancode::SetName",
@@ -18343,7 +18567,10 @@
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetScancodeName",
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_scancode"
+          }
         },
         "Scancode::Scancode": {
           "doc": "Get a scancode from a human-readable name.\n\n@param name the human-readable scancode name.\n@post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't\n         recognized; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetScancode\n@sa Scancode::GetName",
@@ -18356,7 +18583,10 @@
               "type": "StringParam"
             }
           ],
-          "sourceName": "SDL_GetScancodeFromName"
+          "sourceName": "SDL_GetScancodeFromName",
+          "hints": {
+            "self": "m_scancode"
+          }
         },
         "Keycode::GetName": {
           "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::Keycode\n@sa Keycode::GetScancode",
@@ -18365,7 +18595,10 @@
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetKeyName",
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_keycode"
+          }
         },
         "WindowBase::StartTextInput": [
           {
@@ -18883,7 +19116,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps Keycode.\n\n@param keycode the value to be wrapped"
+                "doc": "Wraps Keycode.\n\n@param keycode the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "m_keycode(keycode)"
+                  ]
+                }
               },
               {
                 "doc": "",
@@ -18998,6 +19236,9 @@
               "immutable": true,
               "proto": true
             }
+          },
+          "hints": {
+            "self": "m_keycode"
           }
         },
         "KEYCODE_EXTENDED_MASK": {
@@ -21353,6 +21594,9 @@
           "name": "Scancode",
           "kind": "struct",
           "sourceName": "SDL_Scancode",
+          "hints": {
+            "self": "m_scancode"
+          },
           "type": "",
           "entries": {
             "m_scancode": {
@@ -21374,7 +21618,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped"
+                "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "m_scancode(scancode)"
+                  ]
+                }
               },
               {
                 "doc": "",
@@ -23809,6 +24058,1009 @@
         }
       }
     },
+    "SDL3pp_mutex.h": {
+      "name": "SDL3pp_mutex.h",
+      "doc": "@defgroup CategoryMutex Category Mutex\n\nSDL offers several thread synchronization primitives. This document can't\ncover the complicated topic of thread safety, but reading up on what each\nof these primitives are, why they are useful, and how to correctly use them\nis vital to writing correct and safe multithreaded programs.\n\n- Mutexes: MutexBase.MutexBase()\n- Read/Write locks: RWLockBase.RWLockBase()\n- Semaphores: SemaphoreBase.SemaphoreBase()\n- Condition variables: ConditionBase.ConditionBase()\n\nSDL also offers a datatype, InitState, which can be used to make sure\nonly one thread initializes/deinitializes some resource that several\nthreads might try to use for the first time simultaneously.",
+      "entries": {
+        "MutexBase-forward": {
+          "name": "MutexBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Mutex *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "MutexRef": {
+          "name": "MutexRef",
+          "kind": "alias",
+          "type": "MutexBase<ObjectRef<SDL_Mutex>>",
+          "doc": "Handle to a non owned mutex\n\n@cat resource\n\n@sa MutexBase\n@sa Mutex"
+        },
+        "Mutex": {
+          "name": "Mutex",
+          "kind": "alias",
+          "type": "MutexBase<ObjectUnique<SDL_Mutex>>",
+          "doc": "Handle to an owned mutex\n\n@cat resource\n\n@sa MutexBase\n@sa MutexRef"
+        },
+        "RWLockBase-forward": {
+          "name": "RWLockBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_RWLock *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "RWLockRef": {
+          "name": "RWLockRef",
+          "kind": "alias",
+          "type": "RWLockBase<ObjectRef<SDL_RWLock>>",
+          "doc": "Handle to a non owned rWLock\n\n@cat resource\n\n@sa RWLockBase\n@sa RWLock"
+        },
+        "RWLock": {
+          "name": "RWLock",
+          "kind": "alias",
+          "type": "RWLockBase<ObjectUnique<SDL_RWLock>>",
+          "doc": "Handle to an owned rWLock\n\n@cat resource\n\n@sa RWLockBase\n@sa RWLockRef"
+        },
+        "SemaphoreBase-forward": {
+          "name": "SemaphoreBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Semaphore *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "SemaphoreRef": {
+          "name": "SemaphoreRef",
+          "kind": "alias",
+          "type": "SemaphoreBase<ObjectRef<SDL_Semaphore>>",
+          "doc": "Handle to a non owned semaphore\n\n@cat resource\n\n@sa SemaphoreBase\n@sa Semaphore"
+        },
+        "Semaphore": {
+          "name": "Semaphore",
+          "kind": "alias",
+          "type": "SemaphoreBase<ObjectUnique<SDL_Semaphore>>",
+          "doc": "Handle to an owned semaphore\n\n@cat resource\n\n@sa SemaphoreBase\n@sa SemaphoreRef"
+        },
+        "ConditionBase-forward": {
+          "name": "ConditionBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Condition *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "ConditionRef": {
+          "name": "ConditionRef",
+          "kind": "alias",
+          "type": "ConditionBase<ObjectRef<SDL_Condition>>",
+          "doc": "Handle to a non owned condition\n\n@cat resource\n\n@sa ConditionBase\n@sa Condition"
+        },
+        "Condition": {
+          "name": "Condition",
+          "kind": "alias",
+          "type": "ConditionBase<ObjectUnique<SDL_Condition>>",
+          "doc": "Handle to an owned condition\n\n@cat resource\n\n@sa ConditionBase\n@sa ConditionRef"
+        },
+        "MutexBase": {
+          "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MutexBase",
+          "kind": "struct",
+          "type": "T",
+          "sourceName": "SDL_Mutex",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Mutex *>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "MutexBase": {
+              "doc": "Create a new mutex.\n\nAll newly-created mutexes begin in the _unlocked_ state.\n\nCalls to MutexBase.Lock() will not return while the mutex is locked by\nanother thread. See MutexBase.TryLock() to attempt to lock without blocking.\n\nSDL mutexes are reentrant.\n\n@post the initialized and unlocked mutex or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexBase.Destroy\n@sa MutexBase.Lock\n@sa MutexBase.TryLock\n@sa MutexBase.Unlock",
+              "name": "MutexBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "sourceName": "SDL_CreateMutex"
+            },
+            "Lock": {
+              "doc": "Lock the mutex.\n\nThis will block until the mutex is available, which is to say it is in the\nunlocked state and the OS has chosen the caller as the next thread to lock\nit. Of all threads waiting to lock the mutex, only one may do so at a time.\n\nIt is legal for the owning thread to lock an already-locked mutex. It must\nunlock it the same number of times before it is actually made available for\nother threads in the system (this is known as a \"recursive mutex\").\n\nThis function does not fail; if mutex is nullptr, it will return immediately\nhaving locked nothing. If the mutex is valid, this function will always\nblock until it can lock the mutex, and return with it locked.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexBase.TryLock\n@sa MutexBase.Unlock",
+              "name": "Lock",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_LockMutex"
+            },
+            "TryLock": {
+              "doc": "Try to lock a mutex without blocking.\n\nThis works just like MutexBase.Lock(), but if the mutex is not available,\nthis function returns false immediately.\n\nThis technique is useful if you need exclusive access to a resource but\ndon't want to wait for it, and will return to it to try again later.\n\nThis function returns true if passed a nullptr mutex.\n\n@returns true on success, false if the mutex would block.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexBase.Lock\n@sa MutexBase.Unlock",
+              "name": "TryLock",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_TryLockMutex"
+            },
+            "Unlock": {
+              "doc": "Unlock the mutex.\n\nIt is legal for the owning thread to lock an already-locked mutex. It must\nunlock it the same number of times before it is actually made available for\nother threads in the system (this is known as a \"recursive mutex\").\n\nIt is illegal to unlock a mutex that has not been locked by the current\nthread, and doing so results in undefined behavior.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexBase.Lock\n@sa MutexBase.TryLock",
+              "name": "Unlock",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_UnlockMutex"
+            },
+            "Destroy": {
+              "doc": "Destroy a mutex created with MutexBase.MutexBase().\n\nThis function must be called on any mutex that is no longer needed. Failure\nto destroy a mutex will result in a system memory or resource leak. While\nit is safe to destroy a mutex that is _unlocked_, it is not safe to attempt\nto destroy a locked mutex, and may result in undefined behavior depending\non the platform.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexBase.MutexBase",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyMutex"
+            }
+          }
+        },
+        "ObjectRef<SDL_Mutex>::doFree": {
+          "name": "ObjectRef<SDL_Mutex>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for mutex resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Mutex *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "SDL_DestroyMutex"
+        },
+        "RWLockBase": {
+          "doc": "A mutex that allows read-only threads to run in parallel.\n\nA rwlock is roughly the same concept as MutexBase, but allows threads that\nrequest read-only access to all hold the lock at the same time. If a thread\nrequests write access, it will block until all read-only threads have\nreleased the lock, and no one else can hold the thread (for reading or\nwriting) at the same time as the writing thread.\n\nThis can be more efficient in cases where several threads need to access\ndata frequently, but changes to that data are rare.\n\nThere are other rules that apply to rwlocks that don't apply to mutexes,\nabout how threads are scheduled and when they can be recursively locked.\nThese are documented in the other rwlock functions.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "RWLockBase",
+          "kind": "struct",
+          "type": "T",
+          "sourceName": "SDL_RWLock",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_RWLock *>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "RWLockBase": {
+              "doc": "Create a new read/write lock.\n\nA read/write lock is useful for situations where you have multiple threads\ntrying to access a resource that is rarely updated. All threads requesting\na read-only lock will be allowed to run in parallel; if a thread requests a\nwrite lock, it will be provided exclusive access. This makes it safe for\nmultiple threads to use a resource at the same time if they promise not to\nchange it, and when it has to be changed, the rwlock will serve as a\ngateway to make sure those changes can be made safely.\n\nIn the right situation, a rwlock can be more efficient than a mutex, which\nonly lets a single thread proceed at a time, even if it won't be modifying\nthe data.\n\nAll newly-created read/write locks begin in the _unlocked_ state.\n\nCalls to RWLockBase.LockForReading() and RWLockBase.LockForWriting will not\nreturn while the rwlock is locked _for writing_ by another thread. See\nRWLockBase.TryLockForReading() and RWLockBase.TryLockForWriting() to attempt\nto lock without blocking.\n\nSDL read/write locks are only recursive for read-only locks! They are not\nguaranteed to be fair, or provide access in a FIFO manner! They are not\nguaranteed to favor writers. You may not lock a rwlock for both read-only\nand write access at the same time from the same thread (so you can't\npromote your read-only lock to a write lock without unlocking first).\n\n@post the initialized and unlocked read/write lock or nullptr on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.Destroy\n@sa RWLockBase.LockForReading\n@sa RWLockBase.LockForWriting\n@sa RWLockBase.TryLockForReading\n@sa RWLockBase.TryLockForWriting\n@sa RWLockBase.Unlock",
+              "name": "RWLockBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "sourceName": "SDL_CreateRWLock"
+            },
+            "LockForReading": {
+              "doc": "Lock the read/write lock for _read only_ operations.\n\nThis will block until the rwlock is available, which is to say it is not\nlocked for writing by any other thread. Of all threads waiting to lock the\nrwlock, all may do so at the same time as long as they are requesting\nread-only access; if a thread wants to lock for writing, only one may do so\nat a time, and no other threads, read-only or not, may hold the lock at the\nsame time.\n\nIt is legal for the owning thread to lock an already-locked rwlock for\nreading. It must unlock it the same number of times before it is actually\nmade available for other threads in the system (this is known as a\n\"recursive rwlock\").\n\nNote that locking for writing is not recursive (this is only available to\nread-only locks).\n\nIt is illegal to request a read-only lock from a thread that already holds\nthe write lock. Doing so results in undefined behavior. Unlock the write\nlock before requesting a read-only lock. (But, of course, if you have the\nwrite lock, you don't need further locks to read in any case.)\n\nThis function does not fail; if rwlock is nullptr, it will return immediately\nhaving locked nothing. If the rwlock is valid, this function will always\nblock until it can lock the mutex, and return with it locked.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.LockForWriting\n@sa RWLockBase.TryLockForReading\n@sa RWLockBase.Unlock",
+              "name": "LockForReading",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_LockRWLockForReading"
+            },
+            "LockForWriting": {
+              "doc": "Lock the read/write lock for _write_ operations.\n\nThis will block until the rwlock is available, which is to say it is not\nlocked for reading or writing by any other thread. Only one thread may hold\nthe lock when it requests write access; all other threads, whether they\nalso want to write or only want read-only access, must wait until the\nwriter thread has released the lock.\n\nIt is illegal for the owning thread to lock an already-locked rwlock for\nwriting (read-only may be locked recursively, writing can not). Doing so\nresults in undefined behavior.\n\nIt is illegal to request a write lock from a thread that already holds a\nread-only lock. Doing so results in undefined behavior. Unlock the\nread-only lock before requesting a write lock.\n\nThis function does not fail; if rwlock is nullptr, it will return immediately\nhaving locked nothing. If the rwlock is valid, this function will always\nblock until it can lock the mutex, and return with it locked.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.LockForReading\n@sa RWLockBase.TryLockForWriting\n@sa RWLockBase.Unlock",
+              "name": "LockForWriting",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_LockRWLockForWriting"
+            },
+            "TryLockForReading": {
+              "doc": "Try to lock a read/write lock _for reading_ without blocking.\n\nThis works just like RWLockBase.LockForReading(), but if the rwlock is not\navailable, then this function returns false immediately.\n\nThis technique is useful if you need access to a resource but don't want to\nwait for it, and will return to it to try again later.\n\nTrying to lock for read-only access can succeed if other threads are\nholding read-only locks, as this won't prevent access.\n\nThis function returns true if passed a nullptr rwlock.\n\n@returns true on success, false if the lock would block.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.LockForReading\n@sa RWLockBase.TryLockForWriting\n@sa RWLockBase.Unlock",
+              "name": "TryLockForReading",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_TryLockRWLockForReading"
+            },
+            "TryLockForWriting": {
+              "doc": "Try to lock a read/write lock _for writing_ without blocking.\n\nThis works just like RWLockBase.LockForWriting(), but if the rwlock is not\navailable, then this function returns false immediately.\n\nThis technique is useful if you need exclusive access to a resource but\ndon't want to wait for it, and will return to it to try again later.\n\nIt is illegal for the owning thread to lock an already-locked rwlock for\nwriting (read-only may be locked recursively, writing can not). Doing so\nresults in undefined behavior.\n\nIt is illegal to request a write lock from a thread that already holds a\nread-only lock. Doing so results in undefined behavior. Unlock the\nread-only lock before requesting a write lock.\n\nThis function returns true if passed a nullptr rwlock.\n\n@returns true on success, false if the lock would block.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.LockForWriting\n@sa RWLockBase.TryLockForReading\n@sa RWLockBase.Unlock",
+              "name": "TryLockForWriting",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_TryLockRWLockForWriting"
+            },
+            "Unlock": {
+              "doc": "Unlock the read/write lock.\n\nUse this function to unlock the rwlock, whether it was locked for read-only\nor write operations.\n\nIt is legal for the owning thread to lock an already-locked read-only lock.\nIt must unlock it the same number of times before it is actually made\navailable for other threads in the system (this is known as a \"recursive\nrwlock\").\n\nIt is illegal to unlock a rwlock that has not been locked by the current\nthread, and doing so results in undefined behavior.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.LockForReading\n@sa RWLockBase.LockForWriting\n@sa RWLockBase.TryLockForReading\n@sa RWLockBase.TryLockForWriting",
+              "name": "Unlock",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_UnlockRWLock"
+            },
+            "Destroy": {
+              "doc": "Destroy a read/write lock created with RWLockBase.RWLockBase().\n\nThis function must be called on any read/write lock that is no longer\nneeded. Failure to destroy a rwlock will result in a system memory or\nresource leak. While it is safe to destroy a rwlock that is _unlocked_, it\nis not safe to attempt to destroy a locked rwlock, and may result in\nundefined behavior depending on the platform.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.RWLockBase",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyRWLock"
+            }
+          }
+        },
+        "ObjectRef<SDL_RWLock>::doFree": {
+          "name": "ObjectRef<SDL_RWLock>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for rWLock resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_RWLock *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "SDL_DestroyRWLock"
+        },
+        "SemaphoreBase": {
+          "doc": "A means to manage access to a resource, by count, between threads.\n\nSemaphores (specifically, \"counting semaphores\"), let X number of threads\nrequest access at the same time, each thread granted access decrementing a\ncounter. When the counter reaches zero, future requests block until a prior\nthread releases their request, incrementing the counter again.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Semaphore_(programming)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "SemaphoreBase",
+          "kind": "struct",
+          "type": "T",
+          "sourceName": "SDL_Semaphore",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Semaphore *>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "SemaphoreBase": {
+              "doc": "Create a semaphore.\n\nThis function creates a new semaphore and initializes it with the value\n`initial_value`. Each wait operation on the semaphore will atomically\ndecrement the semaphore value and potentially block if the semaphore value\nis 0. Each post operation will atomically increment the semaphore value and\nwake waiting threads and allow them to retry the wait operation.\n\n@param initial_value the starting value of the semaphore.\n@post a new semaphore or nullptr on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.Destroy\n@sa SemaphoreBase.Signal\n@sa SemaphoreBase.TryWait\n@sa SemaphoreBase.GetValue\n@sa SemaphoreBase.Wait\n@sa SemaphoreBase.WaitTimeout",
+              "name": "SemaphoreBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "initial_value",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "SDL_CreateSemaphore"
+            },
+            "Wait": {
+              "doc": "Wait until a semaphore has a positive value and then decrements it.\n\nThis function suspends the calling thread until the semaphore pointed to by\n`sem` has a positive value, and then atomically decrement the semaphore\nvalue.\n\nThis function is the equivalent of calling SemaphoreBase.WaitTimeout() with\na time length of -1.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.Signal\n@sa SemaphoreBase.TryWait\n@sa SemaphoreBase.WaitTimeout",
+              "name": "Wait",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_WaitSemaphore"
+            },
+            "TryWait": {
+              "doc": "See if a semaphore has a positive value and decrement it if it does.\n\nThis function checks to see if the semaphore pointed to by `sem` has a\npositive value and atomically decrements the semaphore value if it does. If\nthe semaphore doesn't have a positive value, the function immediately\nreturns false.\n\n@returns true if the wait succeeds, false if the wait would block.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.Signal\n@sa SemaphoreBase.Wait\n@sa SemaphoreBase.WaitTimeout",
+              "name": "TryWait",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_TryWaitSemaphore"
+            },
+            "WaitTimeout": {
+              "doc": "Wait until a semaphore has a positive value and then decrements it.\n\nThis function suspends the calling thread until either the semaphore\npointed to by `sem` has a positive value or the specified time has elapsed.\nIf the call is successful it will atomically decrement the semaphore value.\n\n@param timeoutMS the length of the timeout, in milliseconds, or -1 to wait\n                 indefinitely.\n@returns true if the wait succeeds or false if the wait times out.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.Signal\n@sa SemaphoreBase.TryWait\n@sa SemaphoreBase.Wait",
+              "name": "WaitTimeout",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "timeout",
+                  "type": "std::chrono::milliseconds"
+                }
+              ],
+              "sourceName": "SDL_WaitSemaphoreTimeout"
+            },
+            "Signal": {
+              "doc": "Atomically increment a semaphore's value and wake waiting threads.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.TryWait\n@sa SemaphoreBase.Wait\n@sa SemaphoreBase.WaitTimeout",
+              "name": "Signal",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_SignalSemaphore"
+            },
+            "GetValue": {
+              "doc": "Get the current value of a semaphore.\n\n@returns the current value of the semaphore.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetValue",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [],
+              "sourceName": "SDL_GetSemaphoreValue",
+              "immutable": true
+            },
+            "Destroy": {
+              "doc": "Destroy a semaphore.\n\nIt is not safe to destroy a semaphore if there are threads currently\nwaiting on it.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.SemaphoreBase",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroySemaphore"
+            }
+          }
+        },
+        "ObjectRef<SDL_Semaphore>::doFree": {
+          "name": "ObjectRef<SDL_Semaphore>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for semaphore resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Semaphore *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "SDL_DestroySemaphore"
+        },
+        "ConditionBase": {
+          "doc": "A means to block multiple threads until a condition is satisfied.\n\nCondition variables, paired with an MutexBase, let an app halt multiple\nthreads until a condition has occurred, at which time the app can release\none or all waiting threads.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Condition_variable\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "ConditionBase",
+          "kind": "struct",
+          "type": "T",
+          "sourceName": "SDL_Condition",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Condition *>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "ConditionBase": {
+              "doc": "Create a condition variable.\n\n@post a new condition variable or nullptr on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.Broadcast\n@sa ConditionBase.Signal\n@sa ConditionBase.Wait\n@sa ConditionBase.WaitTimeout\n@sa ConditionBase.Destroy",
+              "name": "ConditionBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "sourceName": "SDL_CreateCondition"
+            },
+            "Signal": {
+              "doc": "Restart one of the threads that are waiting on the condition variable.\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.Broadcast\n@sa ConditionBase.Wait\n@sa ConditionBase.WaitTimeout",
+              "name": "Signal",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_SignalCondition"
+            },
+            "Broadcast": {
+              "doc": "Restart all threads that are waiting on the condition variable.\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.Signal\n@sa ConditionBase.Wait\n@sa ConditionBase.WaitTimeout",
+              "name": "Broadcast",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_BroadcastCondition"
+            },
+            "Wait": {
+              "doc": "Wait until a condition variable is signaled.\n\nThis function unlocks the specified `mutex` and waits for another thread to\ncall ConditionBase.Signal() or ConditionBase.Broadcast() on the condition\nvariable `cond`. Once the condition variable is signaled, the mutex is\nre-locked and the function returns.\n\nThe mutex must be locked before calling this function. Locking the mutex\nrecursively (more than once) is not supported and leads to undefined\nbehavior.\n\nThis function is the equivalent of calling ConditionBase.WaitTimeout() with\na time length of -1.\n\n@param mutex the mutex used to coordinate thread access.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.Broadcast\n@sa ConditionBase.Signal\n@sa ConditionBase.WaitTimeout",
+              "name": "Wait",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "mutex",
+                  "type": "MutexRef"
+                }
+              ],
+              "sourceName": "SDL_WaitCondition"
+            },
+            "WaitTimeout": {
+              "doc": "Wait until a condition variable is signaled or a certain time has passed.\n\nThis function unlocks the specified `mutex` and waits for another thread to\ncall ConditionBase.Signal() or ConditionBase.Broadcast() on the condition\nvariable `cond`, or for the specified time to elapse. Once the condition\nvariable is signaled or the time elapsed, the mutex is re-locked and the\nfunction returns.\n\nThe mutex must be locked before calling this function. Locking the mutex\nrecursively (more than once) is not supported and leads to undefined\nbehavior.\n\n@param mutex the mutex used to coordinate thread access.\n@param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait\n                 indefinitely.\n@returns true if the condition variable is signaled, false if the condition\n         is not signaled in the allotted time.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.Broadcast\n@sa ConditionBase.Signal\n@sa ConditionBase.Wait",
+              "name": "WaitTimeout",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "mutex",
+                  "type": "MutexRef"
+                },
+                {
+                  "name": "timeout",
+                  "type": "std::chrono::milliseconds"
+                }
+              ],
+              "sourceName": "SDL_WaitConditionTimeout"
+            },
+            "Destroy": {
+              "doc": "Destroy a condition variable.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.ConditionBase",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyCondition"
+            }
+          }
+        },
+        "ObjectRef<SDL_Condition>::doFree": {
+          "name": "ObjectRef<SDL_Condition>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for condition resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Condition *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "SDL_DestroyCondition"
+        },
+        "InitStatus": {
+          "doc": "The current status of an InitState structure.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "InitStatus",
+          "kind": "alias",
+          "sourceName": "SDL_InitStatus",
+          "type": "SDL_InitStatus"
+        },
+        "INIT_STATUS_UNINITIALIZED": {
+          "kind": "var",
+          "name": "INIT_STATUS_UNINITIALIZED",
+          "constexpr": true,
+          "type": "InitStatus",
+          "doc": "INIT_STATUS_UNINITIALIZED",
+          "sourceName": "SDL_INIT_STATUS_UNINITIALIZED"
+        },
+        "INIT_STATUS_INITIALIZING": {
+          "kind": "var",
+          "name": "INIT_STATUS_INITIALIZING",
+          "constexpr": true,
+          "type": "InitStatus",
+          "doc": "INIT_STATUS_INITIALIZING",
+          "sourceName": "SDL_INIT_STATUS_INITIALIZING"
+        },
+        "INIT_STATUS_INITIALIZED": {
+          "kind": "var",
+          "name": "INIT_STATUS_INITIALIZED",
+          "constexpr": true,
+          "type": "InitStatus",
+          "doc": "INIT_STATUS_INITIALIZED",
+          "sourceName": "SDL_INIT_STATUS_INITIALIZED"
+        },
+        "INIT_STATUS_UNINITIALIZING": {
+          "kind": "var",
+          "name": "INIT_STATUS_UNINITIALIZING",
+          "constexpr": true,
+          "type": "InitStatus",
+          "doc": "INIT_STATUS_UNINITIALIZING",
+          "sourceName": "SDL_INIT_STATUS_UNINITIALIZING"
+        },
+        "InitState": {
+          "doc": "A structure used for thread-safe initialization and shutdown.\n\nHere is an example of using this:\n\n```c\n   static SDL_AtomicInitState init;\n\n   bool InitSystem(void)\n   {\n       if (!InitState.ShouldInit(&init)) {\n           // The system is initialized\n           return true;\n       }\n\n       // At this point, you should not leave this function without calling InitState.SetInitialized()\n\n       bool initialized = DoInitTasks();\n       InitState.SetInitialized(&init, initialized);\n       return initialized;\n   }\n\n   bool UseSubsystem(void)\n   {\n       if (InitState.ShouldInit(&init)) {\n           // Error, the subsystem isn't initialized\n           InitState.SetInitialized(&init, false);\n           return false;\n       }\n\n       // Do work using the initialized subsystem\n\n       return true;\n   }\n\n   void QuitSystem(void)\n   {\n       if (!InitState.ShouldQuit(&init)) {\n           // The system is not initialized\n           return;\n       }\n\n       // At this point, you should not leave this function without calling InitState.SetInitialized()\n\n       DoQuitTasks();\n       InitState.SetInitialized(&init, false);\n   }\n```\n\nNote that this doesn't protect any resources created during initialization,\nor guarantee that nobody is using those resources during cleanup. You\nshould use other mechanisms to protect those, if that's a concern for your\ncode.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "InitState",
+          "kind": "struct",
+          "sourceName": "SDL_InitState",
+          "entries": {
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const InitState &",
+                  "name": "other"
+                }
+              ],
+              "doc": "Default comparison operator"
+            },
+            "InitState": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "init": [
+                  "SDL_InitState{0}"
+                ]
+              },
+              "name": "InitState",
+              "doc": ""
+            },
+            "ShouldInit": {
+              "doc": "Return whether initialization should be done.\n\nThis function checks the passed in state and if initialization should be\ndone, sets the status to `INIT_STATUS_INITIALIZING` and returns true.\nIf another thread is already modifying this state, it will wait until\nthat's done before returning.\n\nIf this function returns true, the calling code must call\nInitState.SetInitialized() to complete the initialization.\n\n@returns true if initialization needs to be done, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa InitState.SetInitialized\n@sa InitState.ShouldQuit",
+              "name": "ShouldInit",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_ShouldInit"
+            },
+            "ShouldQuit": {
+              "doc": "Return whether cleanup should be done.\n\nThis function checks the passed in state and if cleanup should be done,\nsets the status to `INIT_STATUS_UNINITIALIZING` and returns true.\n\nIf this function returns true, the calling code must call\nInitState.SetInitialized() to complete the cleanup.\n\n@returns true if cleanup needs to be done, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa InitState.SetInitialized\n@sa InitState.ShouldInit",
+              "name": "ShouldQuit",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_ShouldQuit"
+            },
+            "SetInitialized": {
+              "doc": "Finish an initialization state transition.\n\nThis function sets the status of the passed in state to\n`INIT_STATUS_INITIALIZED` or `INIT_STATUS_UNINITIALIZED` and allows\nany threads waiting for the status to proceed.\n\n@param initialized the new initialization state.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa InitState.ShouldInit\n@sa InitState.ShouldQuit",
+              "name": "SetInitialized",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "initialized",
+                  "type": "bool"
+                }
+              ],
+              "sourceName": "SDL_SetInitialized"
+            }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_InitState"
+          },
+          "type": "SDL_InitState"
+        }
+      }
+    },
+    "SDL3pp_atomic.h": {
+      "name": "SDL3pp_atomic.h",
+      "doc": "@defgroup CategoryAtomic Category Atomic\n\nAtomic operations.\n\nIMPORTANT: If you are not an expert in concurrent lockless programming, you\nshould not be using any functions in this file. You should be protecting\nyour data structures with full mutexes instead.\n\n***Seriously, here be dragons!***\n\nYou can find out a little more about lockless programming and the subtle\nissues that can arise here:\nhttps://learn.microsoft.com/en-us/windows/win32/dxtecharts/lockless-programming\n\nThere's also lots of good information here:\n\n- https://www.1024cores.net/home/lock-free-algorithms\n- https://preshing.com/\n\nThese operations may or may not actually be implemented using processor\nspecific atomic operations. When possible they are implemented as true\nprocessor specific atomic operations. When that is not possible the are\nimplemented using locks that *do* use the available atomic operations.\n\nAll of the atomic operations that modify memory are full memory barriers.",
+      "entries": {
+        "MemoryBarrierRelease": {
+          "doc": "Insert a memory release barrier (function version).\n\nPlease refer to SDL_MemoryBarrierRelease for details. This is a function\nversion, which might be useful if you need to use this functionality from a\nscripting language, etc. Also, some of the macro versions call this\nfunction behind the scenes, where more heavy lifting can happen inside of\nSDL. Generally, though, an app written in C/C++/etc should use the macro\nversion, as it will be more efficient.\n\n@threadsafety Obviously this function is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MemoryBarrierRelease",
+          "name": "MemoryBarrierRelease",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_MemoryBarrierReleaseFunction"
+        },
+        "MemoryBarrierAcquire": {
+          "doc": "Insert a memory acquire barrier (function version).\n\nPlease refer to SDL_MemoryBarrierRelease for details. This is a function\nversion, which might be useful if you need to use this functionality from a\nscripting language, etc. Also, some of the macro versions call this\nfunction behind the scenes, where more heavy lifting can happen inside of\nSDL. Generally, though, an app written in C/C++/etc should use the macro\nversion, as it will be more efficient.\n\n@threadsafety Obviously this function is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MemoryBarrierAcquire",
+          "name": "MemoryBarrierAcquire",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_MemoryBarrierAcquireFunction"
+        },
+        "SDL_CompilerBarrier": {
+          "doc": "Mark a compiler barrier.\n\nA compiler barrier prevents the compiler from reordering reads and writes\nto globally visible variables across the call.\n\nThis macro only prevents the compiler from reordering reads and writes, it\ndoes not prevent the CPU from reordering reads and writes. However, all of\nthe atomic operations that modify memory are full memory barriers.\n\n@threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_CompilerBarrier",
+          "kind": "def",
+          "parameters": [],
+          "value": "DoCompilerSpecificReadWriteBarrier()",
+          "sourceName": "SDL_CompilerBarrier"
+        },
+        "SDL_MemoryBarrierRelease": {
+          "doc": "Insert a memory release barrier (macro version).\n\nMemory barriers are designed to prevent reads and writes from being\nreordered by the compiler and being seen out of order on multi-core CPUs.\n\nA typical pattern would be for thread A to write some data and a flag, and\nfor thread B to read the flag and get the data. In this case you would\ninsert a release barrier between writing the data and the flag,\nguaranteeing that the data write completes no later than the flag is\nwritten, and you would insert an acquire barrier between reading the flag\nand reading the data, to ensure that all the reads associated with the flag\nhave completed.\n\nIn this pattern you should always see a release barrier paired with an\nacquire barrier and you should gate the data reads/writes with a single\nflag variable.\n\nFor more information on these semantics, take a look at the blog post:\nhttp://preshing.com/20120913/acquire-and-release-semantics\n\nThis is the macro version of this functionality; if possible, SDL will use\ncompiler intrinsics or inline assembly, but some platforms might need to\ncall the function version of this, MemoryBarrierRelease to do\nthe heavy lifting. Apps that can use the macro should favor it over the\nfunction.\n\n@threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_MemoryBarrierAcquire\n@sa MemoryBarrierRelease",
+          "name": "SDL_MemoryBarrierRelease",
+          "kind": "def",
+          "parameters": [],
+          "value": "SDL_MemoryBarrierReleaseFunction()",
+          "sourceName": "SDL_MemoryBarrierRelease"
+        },
+        "SDL_MemoryBarrierAcquire": {
+          "doc": "Insert a memory acquire barrier (macro version).\n\nPlease see SDL_MemoryBarrierRelease for the details on what memory barriers\nare and when to use them.\n\nThis is the macro version of this functionality; if possible, SDL will use\ncompiler intrinsics or inline assembly, but some platforms might need to\ncall the function version of this, MemoryBarrierAcquire, to do\nthe heavy lifting. Apps that can use the macro should favor it over the\nfunction.\n\n@threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_MemoryBarrierRelease\n@sa MemoryBarrierAcquire",
+          "name": "SDL_MemoryBarrierAcquire",
+          "kind": "def",
+          "parameters": [],
+          "value": "SDL_MemoryBarrierAcquireFunction()",
+          "sourceName": "SDL_MemoryBarrierAcquire"
+        },
+        "SDL_CPUPauseInstruction": {
+          "doc": "A macro to insert a CPU-specific \"pause\" instruction into the program.\n\nThis can be useful in busy-wait loops, as it serves as a hint to the CPU as\nto the program's intent; some CPUs can use this to do more efficient\nprocessing. On some platforms, this doesn't do anything, so using this\nmacro might just be a harmless no-op.\n\nNote that if you are busy-waiting, there are often more-efficient\napproaches with other synchronization primitives: mutexes, semaphores,\ncondition variables, etc.\n\n@threadsafety This macro is safe to use from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_CPUPauseInstruction",
+          "kind": "def",
+          "parameters": [],
+          "value": "DoACPUPauseInACompilerAndArchitectureSpecificWay",
+          "sourceName": "SDL_CPUPauseInstruction"
+        },
+        "AtomicInt": {
+          "doc": "A type representing an atomic integer value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nAtomicInt.Set all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with AtomicInt.Get, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AtomicInt.CompareAndSwap\n@sa AtomicInt.Get\n@sa AtomicInt.Set\n@sa AtomicInt.Add",
+          "name": "AtomicInt",
+          "kind": "struct",
+          "sourceName": "SDL_AtomicInt",
+          "hints": {
+            "self": "&m_value"
+          },
+          "entries": {
+            "m_value": {
+              "kind": "var",
+              "type": "SDL_AtomicInt",
+              "name": "m_value",
+              "doc": ""
+            },
+            "AtomicInt": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_value(value)"
+                  ]
+                },
+                "name": "AtomicInt",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const AtomicInt &",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AtomicInt",
+                "doc": ""
+              }
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "AtomicInt &",
+              "proto": true,
+              "parameters": [
+                {
+                  "type": "const AtomicInt &",
+                  "name": "value"
+                }
+              ],
+              "hints": {
+                "delete": true
+              },
+              "name": "operator=",
+              "doc": ""
+            },
+            "operator SDL_AtomicInt *": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "constexpr": true,
+              "hints": {
+                "body": "return &m_value;"
+              },
+              "name": "operator SDL_AtomicInt *",
+              "doc": ""
+            },
+            "CompareAndSwap": {
+              "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param oldval the old value.\n@param newval the new value.\n@returns true if the atomic variable was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Get\n@sa AtomicInt.Set",
+              "name": "CompareAndSwap",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "oldval",
+                  "type": "int"
+                },
+                {
+                  "name": "newval",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_CompareAndSwapAtomicInt"
+            },
+            "Set": {
+              "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param v the desired value.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Get",
+              "name": "Set",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "v",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_SetAtomicInt"
+            },
+            "Get": {
+              "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@returns the current value of an atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.Set",
+              "name": "Get",
+              "kind": "function",
+              "type": "int",
+              "parameters": [],
+              "sourceName": "SDL_GetAtomicInt"
+            },
+            "Add": {
+              "doc": "Add to an atomic variable.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param v the desired value to add.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicDecRef\n@sa AtomicInt.AtomicIncRef",
+              "name": "Add",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "v",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_AddAtomicInt"
+            },
+            "AtomicIncRef": {
+              "doc": "Increment an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n@param a a pointer to an AtomicInt to increment.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicDecRef",
+              "name": "AtomicIncRef",
+              "kind": "function",
+              "parameters": [],
+              "value": "SDL_AddAtomicInt(a, 1)",
+              "sourceName": "SDL_AtomicIncRef",
+              "type": "bool"
+            },
+            "AtomicDecRef": {
+              "doc": "Decrement an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n@param a a pointer to an AtomicInt to decrement.\n@returns true if the variable reached zero after decrementing, false\n         otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa AtomicInt.AtomicIncRef",
+              "name": "AtomicDecRef",
+              "kind": "function",
+              "parameters": [],
+              "value": "(SDL_AddAtomicInt(a, -1) == 1)",
+              "sourceName": "SDL_AtomicDecRef",
+              "type": "bool"
+            }
+          }
+        },
+        "AtomicU32": {
+          "doc": "A type representing an atomic unsigned 32-bit value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nAtomicU32.Set all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with AtomicU32.Get, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AtomicU32.CompareAndSwap\n@sa AtomicU32.Get\n@sa AtomicU32.Set",
+          "name": "AtomicU32",
+          "kind": "struct",
+          "sourceName": "SDL_AtomicU32",
+          "hints": {
+            "self": "&m_value"
+          },
+          "entries": {
+            "m_value": {
+              "kind": "var",
+              "type": "SDL_AtomicU32",
+              "name": "m_value",
+              "doc": ""
+            },
+            "AtomicU32": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "Uint32",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_value(value)"
+                  ]
+                },
+                "name": "AtomicU32",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const AtomicU32 &",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AtomicU32",
+                "doc": ""
+              }
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "AtomicU32 &",
+              "proto": true,
+              "parameters": [
+                {
+                  "type": "const AtomicU32 &",
+                  "name": "value"
+                }
+              ],
+              "hints": {
+                "delete": true
+              },
+              "name": "operator=",
+              "doc": ""
+            },
+            "operator SDL_AtomicU32 *": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "constexpr": true,
+              "hints": {
+                "body": "return &m_value;"
+              },
+              "name": "operator SDL_AtomicU32 *",
+              "doc": ""
+            },
+            "CompareAndSwap": {
+              "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param oldval the old value.\n@param newval the new value.\n@returns true if the atomic variable was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Get\n@sa AtomicU32.Set",
+              "name": "CompareAndSwap",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "oldval",
+                  "type": "Uint32"
+                },
+                {
+                  "name": "newval",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "SDL_CompareAndSwapAtomicU32"
+            },
+            "Set": {
+              "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param v the desired value.\n@returns the previous value of the atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Get",
+              "name": "Set",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [
+                {
+                  "name": "v",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "SDL_SetAtomicU32"
+            },
+            "Get": {
+              "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@returns the current value of an atomic variable.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicU32.Set",
+              "name": "Get",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [],
+              "sourceName": "SDL_GetAtomicU32"
+            }
+          }
+        },
+        "AtomicPointer": {
+          "name": "AtomicPointer",
+          "kind": "struct",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "hints": {
+            "self": "&m_value"
+          },
+          "entries": {
+            "m_value": {
+              "kind": "var",
+              "type": "T *",
+              "name": "m_value",
+              "doc": ""
+            },
+            "AtomicPointer": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "T *",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_value(value)"
+                  ]
+                },
+                "name": "AtomicPointer",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const AtomicPointer &",
+                    "name": "value"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AtomicPointer",
+                "doc": ""
+              }
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "AtomicPointer &",
+              "proto": true,
+              "parameters": [
+                {
+                  "type": "const AtomicPointer &",
+                  "name": "value"
+                }
+              ],
+              "hints": {
+                "delete": true
+              },
+              "name": "operator=",
+              "doc": ""
+            },
+            "CompareAndSwap": {
+              "doc": "Set a pointer to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to a pointer.\n@param oldval the old pointer value.\n@param newval the new pointer value.\n@returns true if the pointer was set, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicInt.CompareAndSwap\n@sa AtomicPointer.Get\n@sa AtomicPointer.Set",
+              "name": "CompareAndSwap",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "oldval",
+                  "type": "T *"
+                },
+                {
+                  "name": "newval",
+                  "type": "T *"
+                }
+              ],
+              "sourceName": "SDL_CompareAndSwapAtomicPointer",
+              "static": false
+            },
+            "Set": {
+              "doc": "Set a pointer to a value atomically.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to a pointer.\n@param v the desired pointer value.\n@returns the previous value of the pointer.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicPointer.CompareAndSwap\n@sa AtomicPointer.Get",
+              "name": "Set",
+              "kind": "function",
+              "type": "T *",
+              "parameters": [
+                {
+                  "name": "v",
+                  "type": "T *"
+                }
+              ],
+              "sourceName": "SDL_SetAtomicPointer",
+              "static": false
+            },
+            "Get": {
+              "doc": "Get the value of a pointer atomically.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n@param a a pointer to a pointer.\n@returns the current value of a pointer.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AtomicPointer.CompareAndSwap\n@sa AtomicPointer.Set",
+              "name": "Get",
+              "kind": "function",
+              "type": "T *",
+              "parameters": [],
+              "sourceName": "SDL_GetAtomicPointer",
+              "static": false
+            }
+          },
+          "doc": ""
+        }
+      }
+    },
     "SDL3pp_timer.h": {
       "name": "SDL3pp_timer.h",
       "doc": "@defgroup CategoryTimer Category Timer\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](CategoryTime).\n\nThis category covers measuring time elapsed (SDL_GetTicks(),\nGetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing\na callback function after a certain amount of time has elasped\n(AddTimer(), etc).\n\nThere are also useful macros to convert between time units, like\nTime::FromPosix() and such.",
@@ -23826,7 +25078,10 @@
           "value": "(((Uint64)(S)) * SDL_NS_PER_SECOND)",
           "sourceName": "SDL_SECONDS_TO_NS",
           "type": "Time",
-          "constexpr": true
+          "constexpr": true,
+          "hints": {
+            "static": true
+          }
         },
         "Time::ToPosix": {
           "doc": "Convert nanoseconds to seconds.\n\nThis performs a division, so the results can be dramatically different if\n`NS` is an integer or floating point value.\n\n@param NS the number of nanoseconds to convert.\n@returns NS, expressed in seconds.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -24013,7 +25268,12 @@
                     "default": "{}"
                   }
                 ],
-                "doc": "Wraps DateTime.\n\n@param dateTime the value to be wrapped"
+                "doc": "Wraps DateTime.\n\n@param dateTime the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "SDL_DateTime(dateTime)"
+                  ]
+                }
               },
               {
                 "kind": "function",
@@ -24058,7 +25318,12 @@
                     "name": "utc_offset"
                   }
                 ],
-                "doc": "Constructs from its fields.\n\n@param year the value for year.\n@param month the value for month.\n@param day the value for day.\n@param hour the value for hour.\n@param minute the value for minute.\n@param second the value for second.\n@param nanosecond the value for nanosecond.\n@param day_of_week the value for day_of_week.\n@param utc_offset the value for utc_offset."
+                "doc": "Constructs from its fields.\n\n@param year the value for year.\n@param month the value for month.\n@param day the value for day.\n@param hour the value for hour.\n@param minute the value for minute.\n@param second the value for second.\n@param nanosecond the value for nanosecond.\n@param day_of_week the value for day_of_week.\n@param utc_offset the value for utc_offset.",
+                "hints": {
+                  "init": [
+                    "SDL_DateTime{year, month, day, hour, minute, second, nanosecond, day_of_week, utc_offset}"
+                  ]
+                }
               },
               {
                 "doc": "Converts an Time in nanoseconds since the epoch to a calendar time in\nthe DateTime format.\n\n@param ticks the Time to be converted.\n@param dt the resulting DateTime.\n@param localTime the resulting DateTime will be expressed in local time\n                 if true, otherwise it will be in Universal Coordinated\n                 Time (UTC).\n@post true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
@@ -24110,7 +25375,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the year.\n\n@returns current year value."
+              "doc": "Get the year.\n\n@returns current year value.",
+              "hints": {
+                "body": "return year;"
+              }
             },
             "SetYear": {
               "kind": "function",
@@ -24123,7 +25391,10 @@
                   "name": "newYear"
                 }
               ],
-              "doc": "Set the year.\n\n@param newYear the new year value.\n@returns Reference to self."
+              "doc": "Set the year.\n\n@param newYear the new year value.\n@returns Reference to self.",
+              "hints": {
+                "body": "year = newYear;\nreturn *this;"
+              }
             },
             "GetMonth": {
               "kind": "function",
@@ -24132,7 +25403,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the month.\n\n@returns current month value."
+              "doc": "Get the month.\n\n@returns current month value.",
+              "hints": {
+                "body": "return month;"
+              }
             },
             "SetMonth": {
               "kind": "function",
@@ -24145,7 +25419,10 @@
                   "name": "newMonth"
                 }
               ],
-              "doc": "Set the month.\n\n@param newMonth the new month value.\n@returns Reference to self."
+              "doc": "Set the month.\n\n@param newMonth the new month value.\n@returns Reference to self.",
+              "hints": {
+                "body": "month = newMonth;\nreturn *this;"
+              }
             },
             "GetDay": {
               "kind": "function",
@@ -24154,7 +25431,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the day.\n\n@returns current day value."
+              "doc": "Get the day.\n\n@returns current day value.",
+              "hints": {
+                "body": "return day;"
+              }
             },
             "SetDay": {
               "kind": "function",
@@ -24167,7 +25447,10 @@
                   "name": "newDay"
                 }
               ],
-              "doc": "Set the day.\n\n@param newDay the new day value.\n@returns Reference to self."
+              "doc": "Set the day.\n\n@param newDay the new day value.\n@returns Reference to self.",
+              "hints": {
+                "body": "day = newDay;\nreturn *this;"
+              }
             },
             "GetHour": {
               "kind": "function",
@@ -24176,7 +25459,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the hour.\n\n@returns current hour value."
+              "doc": "Get the hour.\n\n@returns current hour value.",
+              "hints": {
+                "body": "return hour;"
+              }
             },
             "SetHour": {
               "kind": "function",
@@ -24189,7 +25475,10 @@
                   "name": "newHour"
                 }
               ],
-              "doc": "Set the hour.\n\n@param newHour the new hour value.\n@returns Reference to self."
+              "doc": "Set the hour.\n\n@param newHour the new hour value.\n@returns Reference to self.",
+              "hints": {
+                "body": "hour = newHour;\nreturn *this;"
+              }
             },
             "GetMinute": {
               "kind": "function",
@@ -24198,7 +25487,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the minute.\n\n@returns current minute value."
+              "doc": "Get the minute.\n\n@returns current minute value.",
+              "hints": {
+                "body": "return minute;"
+              }
             },
             "SetMinute": {
               "kind": "function",
@@ -24211,7 +25503,10 @@
                   "name": "newMinute"
                 }
               ],
-              "doc": "Set the minute.\n\n@param newMinute the new minute value.\n@returns Reference to self."
+              "doc": "Set the minute.\n\n@param newMinute the new minute value.\n@returns Reference to self.",
+              "hints": {
+                "body": "minute = newMinute;\nreturn *this;"
+              }
             },
             "GetSecond": {
               "kind": "function",
@@ -24220,7 +25515,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the second.\n\n@returns current second value."
+              "doc": "Get the second.\n\n@returns current second value.",
+              "hints": {
+                "body": "return second;"
+              }
             },
             "SetSecond": {
               "kind": "function",
@@ -24233,7 +25531,10 @@
                   "name": "newSecond"
                 }
               ],
-              "doc": "Set the second.\n\n@param newSecond the new second value.\n@returns Reference to self."
+              "doc": "Set the second.\n\n@param newSecond the new second value.\n@returns Reference to self.",
+              "hints": {
+                "body": "second = newSecond;\nreturn *this;"
+              }
             },
             "GetNanosecond": {
               "kind": "function",
@@ -24242,7 +25543,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the nanosecond.\n\n@returns current nanosecond value."
+              "doc": "Get the nanosecond.\n\n@returns current nanosecond value.",
+              "hints": {
+                "body": "return nanosecond;"
+              }
             },
             "SetNanosecond": {
               "kind": "function",
@@ -24255,7 +25559,10 @@
                   "name": "newNanosecond"
                 }
               ],
-              "doc": "Set the nanosecond.\n\n@param newNanosecond the new nanosecond value.\n@returns Reference to self."
+              "doc": "Set the nanosecond.\n\n@param newNanosecond the new nanosecond value.\n@returns Reference to self.",
+              "hints": {
+                "body": "nanosecond = newNanosecond;\nreturn *this;"
+              }
             },
             "GetDay_of_week": {
               "kind": "function",
@@ -24264,7 +25571,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the day_of_week.\n\n@returns current day_of_week value."
+              "doc": "Get the day_of_week.\n\n@returns current day_of_week value.",
+              "hints": {
+                "body": "return day_of_week;"
+              }
             },
             "SetDay_of_week": {
               "kind": "function",
@@ -24277,7 +25587,10 @@
                   "name": "newDay_of_week"
                 }
               ],
-              "doc": "Set the day_of_week.\n\n@param newDay_of_week the new day_of_week value.\n@returns Reference to self."
+              "doc": "Set the day_of_week.\n\n@param newDay_of_week the new day_of_week value.\n@returns Reference to self.",
+              "hints": {
+                "body": "day_of_week = newDay_of_week;\nreturn *this;"
+              }
             },
             "GetUtc_offset": {
               "kind": "function",
@@ -24286,7 +25599,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Get the utc_offset.\n\n@returns current utc_offset value."
+              "doc": "Get the utc_offset.\n\n@returns current utc_offset value.",
+              "hints": {
+                "body": "return utc_offset;"
+              }
             },
             "SetUtc_offset": {
               "kind": "function",
@@ -24299,7 +25615,10 @@
                   "name": "newUtc_offset"
                 }
               ],
-              "doc": "Set the utc_offset.\n\n@param newUtc_offset the new utc_offset value.\n@returns Reference to self."
+              "doc": "Set the utc_offset.\n\n@param newUtc_offset the new utc_offset value.\n@returns Reference to self.",
+              "hints": {
+                "body": "utc_offset = newUtc_offset;\nreturn *this;"
+              }
             },
             "operator Time": {
               "doc": "Converts a calendar time to an Time in nanoseconds since the epoch.\n\nThis function ignores the day_of_week member of the DateTime struct, so\nit may remain unset.\n\n@param dt the source DateTime.\n@param ticks the resulting Time.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
@@ -24310,6 +25629,10 @@
               "sourceName": "SDL_DateTimeToTime",
               "immutable": true
             }
+          },
+          "hints": {
+            "self": "this",
+            "super": "SDL_DateTime"
           },
           "type": "SDL_DateTime"
         },
@@ -24425,7 +25748,10 @@
               "type": "Uint32"
             }
           ],
-          "sourceName": "SDL_TimeFromWindows"
+          "sourceName": "SDL_TimeFromWindows",
+          "hints": {
+            "static": true
+          }
         },
         "GetDaysInMonth": {
           "doc": "Get the number of days in a month for a given year.\n\n@param year the year.\n@param month the month [1-12].\n@returns the number of days in the requested month or -1 on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
@@ -27072,6 +28398,9 @@
           "kind": "struct",
           "type": "",
           "sourceName": "SDL_TrayMenu",
+          "hints": {
+            "self": "m_trayMenu"
+          },
           "entries": {
             "m_trayMenu": {
               "kind": "var",
@@ -27091,7 +28420,12 @@
                   "default": "{}"
                 }
               ],
-              "doc": "Wraps TrayMenu.\n\n@param trayMenu the value to be wrapped"
+              "doc": "Wraps TrayMenu.\n\n@param trayMenu the value to be wrapped",
+              "hints": {
+                "init": [
+                  "m_trayMenu(trayMenu)"
+                ]
+              }
             },
             "operator==": {
               "kind": "function",
@@ -27400,7 +28734,10 @@
           "kind": "function",
           "type": "RefArray<TrayEntry>",
           "parameters": [],
-          "sourceName": "SDL_GetTrayEntries"
+          "sourceName": "SDL_GetTrayEntries",
+          "hints": {
+            "self": "m_trayMenu"
+          }
         },
         "TrayMenu::InsertEntry": {
           "name": "TrayMenu::InsertEntry",
@@ -27420,7 +28757,10 @@
               "type": "TrayEntryFlags"
             }
           ],
-          "sourceName": "SDL_InsertTrayEntryAt"
+          "sourceName": "SDL_InsertTrayEntryAt",
+          "hints": {
+            "self": "m_trayMenu"
+          }
         },
         "TrayMenu::AppendEntry": {
           "name": "TrayMenu::AppendEntry",
@@ -27435,7 +28775,10 @@
               "type": "TrayEntryFlags",
               "name": "flags"
             }
-          ]
+          ],
+          "hints": {
+            "self": "m_trayMenu"
+          }
         },
         "TrayMenu::GetParentEntry": {
           "name": "TrayMenu::GetParentEntry",
@@ -27443,7 +28786,10 @@
           "type": "TrayEntryRef",
           "parameters": [],
           "sourceName": "SDL_GetTrayMenuParentEntry",
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_trayMenu"
+          }
         },
         "TrayMenu::GetParentTray": {
           "name": "TrayMenu::GetParentTray",
@@ -27451,7 +28797,10 @@
           "type": "TrayRef",
           "parameters": [],
           "sourceName": "SDL_GetTrayMenuParentTray",
-          "immutable": true
+          "immutable": true,
+          "hints": {
+            "self": "m_trayMenu"
+          }
         }
       }
     },

@@ -2,7 +2,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint } from "./types"
  */
 
 /**
@@ -276,6 +276,33 @@ function expandNamespaces(sourceEntries, transform, context) {
   }
 }
 
+/**
+ * 
+ * @param {ApiEntryBase|ApiEntryBase[]} entry 
+ * @param {EntryHint}                   hints 
+ */
+function addHints(entry, hints) {
+  if (Array.isArray(entry)) return entry.forEach(e => addHints(e, { ...hints }));
+  if (entry.hints) {
+    combineObject(entry.hints, hints);
+  } else {
+    entry.hints = hints;
+  }
+}
+
+/**
+ * 
+ * @param {ApiEntryBase|ApiEntryBase[]} entry 
+ * @param {EntryHint}                   hints 
+ */
+function combineHints(entry, hints) {
+  if (Array.isArray(entry)) return entry.forEach(e => combineHints(e, hints));
+  if (entry.hints) {
+    entry.hints = { ...hints, ...entry.hints };
+  } else {
+    entry.hints = { ...hints };
+  }
+}
 
 /**
  * 
@@ -297,10 +324,21 @@ function expandWrappers(sourceEntries, transform, context) {
       includeAfter(targetType, transform, wrapper.includeAfter);
     }
     const isStruct = sourceEntry.kind === "struct" && !wrapper.type;
+
     const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
     const constexpr = wrapper.constexpr !== false;
     const param = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
     const attribute = "m_" + param;
+
+    if (isStruct) {
+      addHints(wrapper, {
+        self: "this",
+      });
+    } else {
+      addHints(wrapper, {
+        self: attribute,
+      });
+    }
 
     /** @type {ApiEntries} */
     const entries = {};
@@ -311,7 +349,7 @@ function expandWrappers(sourceEntries, transform, context) {
       type: type,
     });
 
-    insertEntry(entries, {
+    if (wrapper.genCtor !== false) insertEntry(entries, {
       kind: "function",
       name: targetType,
       type: "",
@@ -321,7 +359,10 @@ function expandWrappers(sourceEntries, transform, context) {
         name: param,
         default: wrapper.defaultValue ?? "{}"
       }],
-      doc: `Wraps ${sourceType}.\n\n@param ${param} the value to be wrapped`
+      doc: `Wraps ${sourceType}.\n\n@param ${param} the value to be wrapped`,
+      hints: {
+        init: [`${isStruct ? sourceType : attribute}(${param})`]
+      }
     });
     if (wrapper.ordered) {
       insertEntry(entries, {
@@ -381,46 +422,53 @@ function expandWrappers(sourceEntries, transform, context) {
 
     if (isStruct) {
       wrapper.type = sourceType;
-      /** @type {ApiParameter[]} */
-      const parameters = [];
-      for (const attrib of Object.values(sourceEntry.entries)) {
-        if (Array.isArray(attrib) || attrib.kind !== "var") continue;
-        const name = attrib.name;
-        const type = attrib.type;
-        parameters.push({ type, name });
-        const capName = name[0].toUpperCase() + name.slice(1);
-        insertEntry(entries, [{
-          kind: "function",
-          name: `Get${capName}`,
-          type,
-          constexpr,
-          immutable: true,
-          parameters: [],
-          doc: `Get the ${name}.\n\n@returns current ${name} value.`
-        }, {
-          kind: "function",
-          name: `Set${capName}`,
-          type: `${targetType} &`,
-          constexpr,
-          parameters: [{
+      wrapper.hints.super = sourceType;
+
+      if (wrapper.genMembers !== false) {
+        /** @type {ApiParameter[]} */
+        const parameters = [];
+        for (const attrib of Object.values(sourceEntry.entries)) {
+          if (Array.isArray(attrib) || attrib.kind !== "var") continue;
+          const name = attrib.name;
+          const type = attrib.type;
+          parameters.push({ type, name });
+          const capName = name[0].toUpperCase() + name.slice(1);
+          insertEntry(entries, [{
+            kind: "function",
+            name: `Get${capName}`,
             type,
-            name: `new${capName}`
-          }],
-          doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`
-        }]);
-        context.addParamType(type, type);
-        context.addParamType(`${type} *`, `${type} *`);
-        context.addParamType(`const ${type}`, `const ${type}`);
-        context.addParamType(`const ${type} *`, `const ${type} &`);
+            constexpr,
+            immutable: true,
+            parameters: [],
+            doc: `Get the ${name}.\n\n@returns current ${name} value.`,
+            hints: { body: `return ${name};` },
+          }, {
+            kind: "function",
+            name: `Set${capName}`,
+            type: `${targetType} &`,
+            constexpr,
+            parameters: [{
+              type,
+              name: `new${capName}`
+            }],
+            doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`,
+            hints: { body: `${name} = new${capName};\nreturn *this;` },
+          }]);
+          context.addParamType(type, type);
+          context.addParamType(`${type} *`, `${type} *`);
+          context.addParamType(`const ${type}`, `const ${type}`);
+          context.addParamType(`const ${type} *`, `const ${type} &`);
+        }
+        insertEntry(entries, {
+          kind: "function",
+          name: targetType,
+          type: "",
+          constexpr,
+          parameters,
+          doc: `Constructs from its fields.\n\n` + parameters.map(p => `@param ${p.name} the value for ${p.name}.`).join("\n"),
+          hints: { init: [`${sourceType}{${parameters.map(p => p.name).join(", ")}}`] },
+        });
       }
-      insertEntry(entries, {
-        kind: "function",
-        name: targetType,
-        type: "",
-        constexpr,
-        parameters,
-        doc: `Constructs from its fields.\n\n` + parameters.map(p => `@param ${p.name} the value for ${p.name}.`).join("\n")
-      });
     } else {
       wrapper.type = "";
     }
@@ -441,6 +489,8 @@ function expandWrappers(sourceEntries, transform, context) {
     delete wrapper.includeAfter;
     delete wrapper.nullable;
     delete wrapper.ordered;
+    delete wrapper.genCtor;
+    delete wrapper.genMembers;
   }
 }
 
@@ -721,9 +771,9 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
 
 /**
  * 
- * @param {ApiEntryTransform} targetEntry 
+ * @param {ApiEntryTransform} targetEntry the entry we are inserting from
  * @param {ApiContext}        context 
- * @param {ApiFileTransform}     transform 
+ * @param {ApiFileTransform}  transform 
  * @param {ApiEntries}        targetEntries
  */
 function transformSubEntries(targetEntry, context, transform, targetEntries) {
@@ -732,8 +782,19 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
   const type = targetEntry.name;
   const defPrefix = transform.definitionPrefix;
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
+    if (Array.isArray(entry)) {
+      insertEntry(entries, /** @type {ApiEntry[]}*/(entry), key);
+      continue;
+    }
     const nameCandidate = transformName(key, context);
-    if (Array.isArray(entry) || nameCandidate === key) {
+    if (key == nameCandidate) {
+      if (typeof entry === "string") {
+        insertEntry(entries,/** @type {ApiEntry} */({
+          kind: entry,
+          name: key,
+        }));
+        continue;
+      }
       insertEntry(entries, /** @type {ApiEntry}*/(entry), key);
       continue;
     }
@@ -790,6 +851,11 @@ function transformHierarchy(targetEntries, context) {
         });
         e.name = makeMemberName(key, obj.template);;
         e.template = obj.template;
+        if (obj.hints) combineHints(e, obj.hints);
+        if (e.static) {
+          if (!e.hints) e.hints = { static: true };
+          else e.hints.static = true;
+        }
         delete e.static;
         if (isSameFile) delete e.doc;
       });
@@ -801,6 +867,11 @@ function transformHierarchy(targetEntries, context) {
       });
       entry.name = makeMemberName(key, obj.template);
       entry.template = obj.template;
+      if (obj.hints) combineHints(entry, obj.hints);
+      if (entry.static) {
+        if (!entry.hints) entry.hints = { static: true };
+        else entry.hints.static = true;
+      }
       delete entry.static;
       if (isSameFile) delete entry.doc;
     }

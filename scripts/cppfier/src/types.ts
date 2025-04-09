@@ -17,7 +17,7 @@ export interface ApiFile {
 
 export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns";
 
-interface ApiEntryBase {
+export interface ApiEntryBase {
   name?: string;
   kind?: ApiEntryKind;
   doc?: string;
@@ -32,6 +32,16 @@ interface ApiEntryBase {
   static?: boolean;
   since?: VersionTag;
   explicit?: boolean;
+  hints?: EntryHint;
+}
+
+export interface EntryHint {
+  init?: string[];
+  delete?: boolean;
+  body?: string;
+  self?: string;
+  super?: string;
+  static?: boolean;
 }
 
 export interface VersionTag {
@@ -167,6 +177,12 @@ export interface ApiWrapper extends ApiEntryTransform {
 
   /** Defaults to true if alias to pointer, false otherwise */
   nullable?: boolean
+
+  /** Defaults to true */
+  genCtor?: boolean
+
+  /** Defaults to true, relevant only to struct */
+  genMembers?: boolean
 
   /** 
    * Defaults to true if alias to anything but `void *`, false otherwise.

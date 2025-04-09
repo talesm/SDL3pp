@@ -13,5 +13,6 @@ var searchData=
   ['and_20window_20management_10',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
   ['application_20entry_20points_11',['Application entry points',['../group__CategoryMain.html',1,'']]],
   ['assertions_12',['Assertions',['../group__CategoryAssert.html',1,'']]],
-  ['async_20callback_20helpers_13',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]]
+  ['async_20callback_20helpers_13',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
+  ['atomic_20operations_14',['Atomic Operations',['../group__CategoryAtomic.html',1,'']]]
 ];

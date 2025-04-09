@@ -43,9 +43,10 @@ var searchData=
   ['blitunchecked_40',['BlitUnchecked',['../structSDL_1_1SurfaceBase.html#a7cc2f9636c7f7a27e8ab781dfb6a2e1a',1,'SDL::SurfaceBase']]],
   ['blituncheckedscaled_41',['BlitUncheckedScaled',['../structSDL_1_1SurfaceBase.html#a179d7007783477815fd684f5ea6ef301',1,'SDL::SurfaceBase']]],
   ['boxes_42',['Message Boxes',['../group__CategoryMessagebox.html',1,'']]],
-  ['bsearch_43',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
-  ['bsearch_5fr_44',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
-  ['building_45',['Building',['../index.html#building',1,'']]],
-  ['by_20category_46',['API by Category',['../ApiByCategory.html',1,'']]],
-  ['byte_20order_20and_20byte_20swapping_47',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
+  ['broadcast_43',['Broadcast',['../structSDL_1_1ConditionBase.html#a28d1570f369e776a00cef4b1e2e2a9f9',1,'SDL::ConditionBase']]],
+  ['bsearch_44',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
+  ['bsearch_5fr_45',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
+  ['building_46',['Building',['../index.html#building',1,'']]],
+  ['by_20category_47',['API by Category',['../ApiByCategory.html',1,'']]],
+  ['byte_20order_20and_20byte_20swapping_48',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
 ];

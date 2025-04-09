@@ -19,5 +19,9 @@ var searchData=
   ['traymenu_16',['TrayMenu',['../classSDL_1_1TrayMenu.html#a235b24928e50708dd08011690f67dfee',1,'SDL::TrayMenu']]],
   ['trunc_17',['trunc',['../group__CategoryStdinc.html#gaeb64b2b465e001720dce40bacec1b937',1,'SDL']]],
   ['truncf_18',['truncf',['../group__CategoryStdinc.html#gae6b046a5844394a19061a8544376ffac',1,'SDL']]],
-  ['ttf_5fversion_19',['TTF_Version',['../group__CategorySDLTTF.html#ga5154c3cde8d6a4944a18dfd88e145c01',1,'SDL']]]
+  ['trylock_19',['TryLock',['../structSDL_1_1MutexBase.html#aae2f97db9087673ffc7d475d4ef3a713',1,'SDL::MutexBase']]],
+  ['trylockforreading_20',['TryLockForReading',['../structSDL_1_1RWLockBase.html#abe9469aa3e8fbf9f60af364c4ff71a6b',1,'SDL::RWLockBase']]],
+  ['trylockforwriting_21',['TryLockForWriting',['../structSDL_1_1RWLockBase.html#a28a009f6e56301e8206705adfd417e87',1,'SDL::RWLockBase']]],
+  ['trywait_22',['TryWait',['../structSDL_1_1SemaphoreBase.html#af46581bf87004d87bf5e416a67c4278e',1,'SDL::SemaphoreBase']]],
+  ['ttf_5fversion_23',['TTF_Version',['../group__CategorySDLTTF.html#ga5154c3cde8d6a4944a18dfd88e145c01',1,'SDL']]]
 ];

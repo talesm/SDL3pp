@@ -9,6 +9,7 @@ var searchData=
   ['blittiledwithscale_6',['BlitTiledWithScale',['../structSDL_1_1SurfaceBase.html#afb9f1b4da9aa119c2ce85c1131998a60',1,'SDL::SurfaceBase']]],
   ['blitunchecked_7',['BlitUnchecked',['../structSDL_1_1SurfaceBase.html#a7cc2f9636c7f7a27e8ab781dfb6a2e1a',1,'SDL::SurfaceBase']]],
   ['blituncheckedscaled_8',['BlitUncheckedScaled',['../structSDL_1_1SurfaceBase.html#a179d7007783477815fd684f5ea6ef301',1,'SDL::SurfaceBase']]],
-  ['bsearch_9',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
-  ['bsearch_5fr_10',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]]
+  ['broadcast_9',['Broadcast',['../structSDL_1_1ConditionBase.html#a28d1570f369e776a00cef4b1e2e2a9f9',1,'SDL::ConditionBase']]],
+  ['bsearch_10',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
+  ['bsearch_5fr_11',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]]
 ];

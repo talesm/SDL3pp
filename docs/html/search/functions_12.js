@@ -4,7 +4,7 @@ var searchData=
   ['uitoa_1',['uitoa',['../group__CategoryStdinc.html#ga6ca0851c2d9980695748c979e2d15608',1,'SDL']]],
   ['ultoa_2',['ultoa',['../group__CategoryStdinc.html#ga2450290efea2bebff1f164a6c4a04d38',1,'SDL']]],
   ['unload_3',['Unload',['../structSDL_1_1SharedObjectBase.html#af28c5be6ad47ea4586e930b0f4c442ba',1,'SDL::SharedObjectBase']]],
-  ['unlock_4',['unlock',['../classSDL_1_1PropertiesLock.html#a7facb4cd33b4fa7ed49a93c22f247d19',1,'SDL::PropertiesLock::Unlock()'],['../classSDL_1_1TextureLock.html#a64d4299d0b3b140db84ad04e380d6044',1,'SDL::TextureLock::Unlock()'],['../classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807',1,'SDL::SurfaceLock::Unlock()']]],
+  ['unlock_4',['unlock',['../structSDL_1_1MutexBase.html#afcd25b03e4cdf233184a55b265a2bbe5',1,'SDL::MutexBase::Unlock()'],['../structSDL_1_1RWLockBase.html#afe5343914a08a1b33d29f0393f48a56d',1,'SDL::RWLockBase::Unlock()'],['../classSDL_1_1PropertiesLock.html#a7facb4cd33b4fa7ed49a93c22f247d19',1,'SDL::PropertiesLock::Unlock()'],['../classSDL_1_1TextureLock.html#a64d4299d0b3b140db84ad04e380d6044',1,'SDL::TextureLock::Unlock()'],['../classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807',1,'SDL::SurfaceLock::Unlock()']]],
   ['unsetenv_5funsafe_5',['unsetenv_unsafe',['../group__CategoryStdinc.html#ga7dc726179e2ae431d7db8164099e333a',1,'SDL']]],
   ['unsetvariable_6',['UnsetVariable',['../structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f',1,'SDL::EnvironmentBase']]],
   ['update_7',['update',['../structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf',1,'SDL::TextureBase::Update()'],['../structSDL_1_1TextBase.html#a09db66ae36dcba3caf2190568c39c504',1,'SDL::TextBase::Update()']]],

@@ -6658,6 +6658,513 @@ inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
 /// @}
 
 /**
+ *
+ * @defgroup CategoryAtomic Atomic Operations
+ *
+ * Atomic operations.
+ *
+ * IMPORTANT: If you are not an expert in concurrent lockless programming, you
+ * should not be using any functions in this file. You should be protecting
+ * your data structures with full mutexes instead.
+ *
+ * ***Seriously, here be dragons!***
+ *
+ * You can find out a little more about lockless programming and the subtle
+ * issues that can arise here:
+ * https://learn.microsoft.com/en-us/windows/win32/dxtecharts/lockless-programming
+ *
+ * There's also lots of good information here:
+ *
+ * - https://www.1024cores.net/home/lock-free-algorithms
+ * - https://preshing.com/
+ *
+ * These operations may or may not actually be implemented using processor
+ * specific atomic operations. When possible they are implemented as true
+ * processor specific atomic operations. When that is not possible the are
+ * implemented using locks that *do* use the available atomic operations.
+ *
+ * All of the atomic operations that modify memory are full memory barriers.
+ *
+ * @{
+ */
+
+/**
+ * Insert a memory release barrier (function version).
+ *
+ * Please refer to SDL_MemoryBarrierRelease for details. This is a function
+ * version, which might be useful if you need to use this functionality from a
+ * scripting language, etc. Also, some of the macro versions call this
+ * function behind the scenes, where more heavy lifting can happen inside of
+ * SDL. Generally, though, an app written in C/C++/etc should use the macro
+ * version, as it will be more efficient.
+ *
+ * @threadsafety Obviously this function is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_MemoryBarrierRelease
+ */
+inline void MemoryBarrierRelease() { SDL_MemoryBarrierReleaseFunction(); }
+
+/**
+ * Insert a memory acquire barrier (function version).
+ *
+ * Please refer to SDL_MemoryBarrierRelease for details. This is a function
+ * version, which might be useful if you need to use this functionality from a
+ * scripting language, etc. Also, some of the macro versions call this
+ * function behind the scenes, where more heavy lifting can happen inside of
+ * SDL. Generally, though, an app written in C/C++/etc should use the macro
+ * version, as it will be more efficient.
+ *
+ * @threadsafety Obviously this function is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_MemoryBarrierAcquire
+ */
+inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
+
+#ifdef SDL3PP_DOC
+
+/**
+ * Mark a compiler barrier.
+ *
+ * A compiler barrier prevents the compiler from reordering reads and writes
+ * to globally visible variables across the call.
+ *
+ * This macro only prevents the compiler from reordering reads and writes, it
+ * does not prevent the CPU from reordering reads and writes. However, all of
+ * the atomic operations that modify memory are full memory barriers.
+ *
+ * @threadsafety Obviously this macro is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_CompilerBarrier() DoCompilerSpecificReadWriteBarrier()
+
+/**
+ * Insert a memory release barrier (macro version).
+ *
+ * Memory barriers are designed to prevent reads and writes from being
+ * reordered by the compiler and being seen out of order on multi-core CPUs.
+ *
+ * A typical pattern would be for thread A to write some data and a flag, and
+ * for thread B to read the flag and get the data. In this case you would
+ * insert a release barrier between writing the data and the flag,
+ * guaranteeing that the data write completes no later than the flag is
+ * written, and you would insert an acquire barrier between reading the flag
+ * and reading the data, to ensure that all the reads associated with the flag
+ * have completed.
+ *
+ * In this pattern you should always see a release barrier paired with an
+ * acquire barrier and you should gate the data reads/writes with a single
+ * flag variable.
+ *
+ * For more information on these semantics, take a look at the blog post:
+ * http://preshing.com/20120913/acquire-and-release-semantics
+ *
+ * This is the macro version of this functionality; if possible, SDL will use
+ * compiler intrinsics or inline assembly, but some platforms might need to
+ * call the function version of this, MemoryBarrierRelease to do
+ * the heavy lifting. Apps that can use the macro should favor it over the
+ * function.
+ *
+ * @threadsafety Obviously this macro is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_MemoryBarrierAcquire
+ * @sa MemoryBarrierRelease
+ */
+#define SDL_MemoryBarrierRelease() SDL_MemoryBarrierReleaseFunction()
+
+/**
+ * Insert a memory acquire barrier (macro version).
+ *
+ * Please see SDL_MemoryBarrierRelease for the details on what memory barriers
+ * are and when to use them.
+ *
+ * This is the macro version of this functionality; if possible, SDL will use
+ * compiler intrinsics or inline assembly, but some platforms might need to
+ * call the function version of this, MemoryBarrierAcquire, to do
+ * the heavy lifting. Apps that can use the macro should favor it over the
+ * function.
+ *
+ * @threadsafety Obviously this macro is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_MemoryBarrierRelease
+ * @sa MemoryBarrierAcquire
+ */
+#define SDL_MemoryBarrierAcquire() SDL_MemoryBarrierAcquireFunction()
+
+/**
+ * A macro to insert a CPU-specific "pause" instruction into the program.
+ *
+ * This can be useful in busy-wait loops, as it serves as a hint to the CPU as
+ * to the program's intent; some CPUs can use this to do more efficient
+ * processing. On some platforms, this doesn't do anything, so using this
+ * macro might just be a harmless no-op.
+ *
+ * Note that if you are busy-waiting, there are often more-efficient
+ * approaches with other synchronization primitives: mutexes, semaphores,
+ * condition variables, etc.
+ *
+ * @threadsafety This macro is safe to use from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_CPUPauseInstruction()                                              \
+  DoACPUPauseInACompilerAndArchitectureSpecificWay
+
+#endif
+
+/**
+ * A type representing an atomic integer value.
+ *
+ * This can be used to manage a value that is synchronized across multiple
+ * CPUs without a race condition; when an app sets a value with
+ * AtomicInt.Set all other threads, regardless of the CPU it is running on,
+ * will see that value when retrieved with AtomicInt.Get, regardless of CPU
+ * caches, etc.
+ *
+ * This is also useful for atomic compare-and-swap operations: a thread can
+ * change the value as long as its current value matches expectations. When
+ * done in a loop, one can guarantee data consistency across threads without a
+ * lock (but the usual warnings apply: if you don't know what you're doing, or
+ * you don't do it carefully, you can confidently cause any number of
+ * disasters with this, so in most cases, you _should_ use a mutex instead of
+ * this!).
+ *
+ * This is a struct so people don't accidentally use numeric operations on it
+ * directly. You have to use SDL atomic functions.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa AtomicInt.CompareAndSwap
+ * @sa AtomicInt.Get
+ * @sa AtomicInt.Set
+ * @sa AtomicInt.Add
+ */
+class AtomicInt
+{
+  SDL_AtomicInt m_value;
+
+public:
+  /// Constructor
+  constexpr AtomicInt(int value = 0)
+    : m_value(value)
+  {
+  }
+
+  AtomicInt(const AtomicInt& value) = delete;
+
+  AtomicInt& operator=(const AtomicInt& value) = delete;
+
+  /// Convert to underlying type
+  constexpr operator SDL_AtomicInt*() { return &m_value; }
+
+  /**
+   * Set an atomic variable to a new value if it is currently an old value.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param oldval the old value.
+   * @param newval the new value.
+   * @returns true if the atomic variable was set, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicInt.Get
+   * @sa AtomicInt.Set
+   */
+  bool CompareAndSwap(int oldval, int newval)
+  {
+    return SDL_CompareAndSwapAtomicInt(&m_value, oldval, newval);
+  }
+
+  /**
+   * Set an atomic variable to a value.
+   *
+   * This function also acts as a full memory barrier.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param v the desired value.
+   * @returns the previous value of the atomic variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicInt.Get
+   */
+  int Set(int v) { return SDL_SetAtomicInt(&m_value, v); }
+
+  /**
+   * Get the value of an atomic variable.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @returns the current value of an atomic variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicInt.Set
+   */
+  int Get() { return SDL_GetAtomicInt(&m_value); }
+
+  /**
+   * Add to an atomic variable.
+   *
+   * This function also acts as a full memory barrier.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param v the desired value to add.
+   * @returns the previous value of the atomic variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicInt.AtomicDecRef
+   * @sa AtomicInt.AtomicIncRef
+   */
+  int Add(int v) { return SDL_AddAtomicInt(&m_value, v); }
+
+  /**
+   * Increment an atomic variable used as a reference count.
+   *
+   * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+   *
+   * @returns the previous value of the atomic variable.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   *
+   * @sa AtomicInt.AtomicDecRef
+   */
+  bool AtomicIncRef() { return SDL_AtomicIncRef(&m_value); }
+
+  /**
+   * Decrement an atomic variable used as a reference count.
+   *
+   * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+   *
+   * @returns true if the variable reached zero after decrementing, false
+   *          otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   *
+   * @sa AtomicInt.AtomicIncRef
+   */
+  bool AtomicDecRef() { return SDL_AtomicDecRef(&m_value); }
+};
+
+/**
+ * A type representing an atomic unsigned 32-bit value.
+ *
+ * This can be used to manage a value that is synchronized across multiple
+ * CPUs without a race condition; when an app sets a value with
+ * AtomicU32.Set all other threads, regardless of the CPU it is running on,
+ * will see that value when retrieved with AtomicU32.Get, regardless of CPU
+ * caches, etc.
+ *
+ * This is also useful for atomic compare-and-swap operations: a thread can
+ * change the value as long as its current value matches expectations. When
+ * done in a loop, one can guarantee data consistency across threads without a
+ * lock (but the usual warnings apply: if you don't know what you're doing, or
+ * you don't do it carefully, you can confidently cause any number of
+ * disasters with this, so in most cases, you _should_ use a mutex instead of
+ * this!).
+ *
+ * This is a struct so people don't accidentally use numeric operations on it
+ * directly. You have to use SDL atomic functions.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa AtomicU32.CompareAndSwap
+ * @sa AtomicU32.Get
+ * @sa AtomicU32.Set
+ */
+class AtomicU32
+{
+  SDL_AtomicU32 m_value;
+
+public:
+  /// Constructor
+  constexpr AtomicU32(Uint32 value = 0)
+    : m_value(value)
+  {
+  }
+
+  AtomicU32(const AtomicU32& value) = delete;
+
+  AtomicU32& operator=(const AtomicU32& value) = delete;
+
+  /// Convert to underlying type
+  constexpr operator SDL_AtomicU32*() { return &m_value; }
+
+  /**
+   * Set an atomic variable to a new value if it is currently an old value.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param oldval the old value.
+   * @param newval the new value.
+   * @returns true if the atomic variable was set, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicU32.Get
+   * @sa AtomicU32.Set
+   */
+  bool CompareAndSwap(Uint32 oldval, Uint32 newval)
+  {
+    return SDL_CompareAndSwapAtomicU32(&m_value, oldval, newval);
+  }
+
+  /**
+   * Set an atomic variable to a value.
+   *
+   * This function also acts as a full memory barrier.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param v the desired value.
+   * @returns the previous value of the atomic variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicU32.Get
+   */
+  Uint32 Set(Uint32 v) { return SDL_SetAtomicU32(&m_value, v); }
+
+  /**
+   * Get the value of an atomic variable.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @returns the current value of an atomic variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicU32.Set
+   */
+  Uint32 Get() { return SDL_GetAtomicU32(&m_value); }
+};
+
+/// Type representing an atomic pointer
+template<class T>
+class AtomicPointer
+{
+  T* m_value;
+
+public:
+  /// Constructor
+  constexpr AtomicPointer(T* value = nullptr)
+    : m_value(value)
+  {
+  }
+
+  AtomicPointer(const AtomicPointer& value) = delete;
+
+  AtomicPointer& operator=(const AtomicPointer& value) = delete;
+
+  /**
+   * Set a pointer to a new value if it is currently an old value.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param oldval the old pointer value.
+   * @param newval the new pointer value.
+   * @returns true if the pointer was set, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicInt.CompareAndSwap
+   * @sa AtomicPointer.Get
+   * @sa AtomicPointer.Set
+   */
+  bool CompareAndSwap(T* oldval, T* newval)
+  {
+    return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
+  }
+
+  /**
+   * Set a pointer to a value atomically.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param v the desired pointer value.
+   * @returns the previous value of the pointer.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicPointer.CompareAndSwap
+   * @sa AtomicPointer.Get
+   */
+  T* Set(T* v) { return SDL_SetAtomicPointer(&m_value, v); }
+
+  /**
+   * Get the value of a pointer atomically.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @returns the current value of a pointer.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AtomicPointer.CompareAndSwap
+   * @sa AtomicPointer.Set
+   */
+  T* Get() { return SDL_GetAtomicPointer(&m_value); }
+};
+
+/// @}
+
+/**
  * @defgroup CategoryBits Bit Manipulation
  *
  * Functions for fiddling with bits and bitmasks.
@@ -27147,6 +27654,952 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
  * @sa ThreadBase.GetID
  */
 inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
+
+/// @}
+
+/**
+ *
+ * @defgroup CategoryMutex Thread Synchronization Primitives
+ *
+ * SDL offers several thread synchronization primitives. This document can't
+ * cover the complicated topic of thread safety, but reading up on what each
+ * of these primitives are, why they are useful, and how to correctly use them
+ * is vital to writing correct and safe multithreaded programs.
+ *
+ * - Mutexes: MutexBase.MutexBase()
+ * - Read/Write locks: RWLockBase.RWLockBase()
+ * - Semaphores: SemaphoreBase.SemaphoreBase()
+ * - Condition variables: ConditionBase.ConditionBase()
+ *
+ * SDL also offers a datatype, InitState, which can be used to make sure
+ * only one thread initializes/deinitializes some resource that several
+ * threads might try to use for the first time simultaneously.
+ *
+ * @{
+ */
+
+// Forward decl
+template<ObjectBox<SDL_Mutex*> T>
+struct MutexBase;
+
+/**
+ * Handle to a non owned mutex
+ *
+ * @cat resource
+ *
+ * @sa MutexBase
+ * @sa Mutex
+ */
+using MutexRef = MutexBase<ObjectRef<SDL_Mutex>>;
+
+/**
+ * Handle to an owned mutex
+ *
+ * @cat resource
+ *
+ * @sa MutexBase
+ * @sa MutexRef
+ */
+using Mutex = MutexBase<ObjectUnique<SDL_Mutex>>;
+
+// Forward decl
+template<ObjectBox<SDL_RWLock*> T>
+struct RWLockBase;
+
+/**
+ * Handle to a non owned rWLock
+ *
+ * @cat resource
+ *
+ * @sa RWLockBase
+ * @sa RWLock
+ */
+using RWLockRef = RWLockBase<ObjectRef<SDL_RWLock>>;
+
+/**
+ * Handle to an owned rWLock
+ *
+ * @cat resource
+ *
+ * @sa RWLockBase
+ * @sa RWLockRef
+ */
+using RWLock = RWLockBase<ObjectUnique<SDL_RWLock>>;
+
+// Forward decl
+template<ObjectBox<SDL_Semaphore*> T>
+struct SemaphoreBase;
+
+/**
+ * Handle to a non owned semaphore
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreBase
+ * @sa Semaphore
+ */
+using SemaphoreRef = SemaphoreBase<ObjectRef<SDL_Semaphore>>;
+
+/**
+ * Handle to an owned semaphore
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreBase
+ * @sa SemaphoreRef
+ */
+using Semaphore = SemaphoreBase<ObjectUnique<SDL_Semaphore>>;
+
+// Forward decl
+template<ObjectBox<SDL_Condition*> T>
+struct ConditionBase;
+
+/**
+ * Handle to a non owned condition
+ *
+ * @cat resource
+ *
+ * @sa ConditionBase
+ * @sa Condition
+ */
+using ConditionRef = ConditionBase<ObjectRef<SDL_Condition>>;
+
+/**
+ * Handle to an owned condition
+ *
+ * @cat resource
+ *
+ * @sa ConditionBase
+ * @sa ConditionRef
+ */
+using Condition = ConditionBase<ObjectUnique<SDL_Condition>>;
+
+/**
+ * A means to serialize access to a resource between threads.
+ *
+ * Mutexes (short for "mutual exclusion") are a synchronization primitive that
+ * allows exactly one thread to proceed at a time.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Mutex
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+template<ObjectBox<SDL_Mutex*> T>
+struct MutexBase : T
+{
+  using T::T;
+
+  /**
+   * Create a new mutex.
+   *
+   * All newly-created mutexes begin in the _unlocked_ state.
+   *
+   * Calls to MutexBase.Lock() will not return while the mutex is locked by
+   * another thread. See MutexBase.TryLock() to attempt to lock without
+   * blocking.
+   *
+   * SDL mutexes are reentrant.
+   *
+   * @post the initialized and unlocked mutex or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.Destroy
+   * @sa MutexBase.Lock
+   * @sa MutexBase.TryLock
+   * @sa MutexBase.Unlock
+   */
+  MutexBase()
+    : T(SDL_CreateMutex())
+  {
+  }
+
+  /**
+   * Lock the mutex.
+   *
+   * This will block until the mutex is available, which is to say it is in the
+   * unlocked state and the OS has chosen the caller as the next thread to lock
+   * it. Of all threads waiting to lock the mutex, only one may do so at a time.
+   *
+   * It is legal for the owning thread to lock an already-locked mutex. It must
+   * unlock it the same number of times before it is actually made available for
+   * other threads in the system (this is known as a "recursive mutex").
+   *
+   * This function does not fail; if mutex is nullptr, it will return
+   * immediately having locked nothing. If the mutex is valid, this function
+   * will always block until it can lock the mutex, and return with it locked.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.TryLock
+   * @sa MutexBase.Unlock
+   */
+  void Lock() { SDL_LockMutex(T::get()); }
+
+  /**
+   * Try to lock a mutex without blocking.
+   *
+   * This works just like MutexBase.Lock(), but if the mutex is not available,
+   * this function returns false immediately.
+   *
+   * This technique is useful if you need exclusive access to a resource but
+   * don't want to wait for it, and will return to it to try again later.
+   *
+   * This function returns true if passed a nullptr mutex.
+   *
+   * @returns true on success, false if the mutex would block.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.Lock
+   * @sa MutexBase.Unlock
+   */
+  bool TryLock() { return SDL_TryLockMutex(T::get()); }
+
+  /**
+   * Unlock the mutex.
+   *
+   * It is legal for the owning thread to lock an already-locked mutex. It must
+   * unlock it the same number of times before it is actually made available for
+   * other threads in the system (this is known as a "recursive mutex").
+   *
+   * It is illegal to unlock a mutex that has not been locked by the current
+   * thread, and doing so results in undefined behavior.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.Lock
+   * @sa MutexBase.TryLock
+   */
+  void Unlock() { SDL_UnlockMutex(T::get()); }
+
+  /**
+   * Destroy a mutex created with MutexBase.MutexBase().
+   *
+   * This function must be called on any mutex that is no longer needed. Failure
+   * to destroy a mutex will result in a system memory or resource leak. While
+   * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
+   * to destroy a locked mutex, and may result in undefined behavior depending
+   * on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.MutexBase
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Callback for mutex resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Mutex>::doFree(SDL_Mutex* resource)
+{
+  SDL_DestroyMutex(resource);
+}
+
+/**
+ * A mutex that allows read-only threads to run in parallel.
+ *
+ * A rwlock is roughly the same concept as MutexBase, but allows threads that
+ * request read-only access to all hold the lock at the same time. If a thread
+ * requests write access, it will block until all read-only threads have
+ * released the lock, and no one else can hold the thread (for reading or
+ * writing) at the same time as the writing thread.
+ *
+ * This can be more efficient in cases where several threads need to access
+ * data frequently, but changes to that data are rare.
+ *
+ * There are other rules that apply to rwlocks that don't apply to mutexes,
+ * about how threads are scheduled and when they can be recursively locked.
+ * These are documented in the other rwlock functions.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+template<ObjectBox<SDL_RWLock*> T>
+struct RWLockBase : T
+{
+  using T::T;
+
+  /**
+   * Create a new read/write lock.
+   *
+   * A read/write lock is useful for situations where you have multiple threads
+   * trying to access a resource that is rarely updated. All threads requesting
+   * a read-only lock will be allowed to run in parallel; if a thread requests a
+   * write lock, it will be provided exclusive access. This makes it safe for
+   * multiple threads to use a resource at the same time if they promise not to
+   * change it, and when it has to be changed, the rwlock will serve as a
+   * gateway to make sure those changes can be made safely.
+   *
+   * In the right situation, a rwlock can be more efficient than a mutex, which
+   * only lets a single thread proceed at a time, even if it won't be modifying
+   * the data.
+   *
+   * All newly-created read/write locks begin in the _unlocked_ state.
+   *
+   * Calls to RWLockBase.LockForReading() and RWLockBase.LockForWriting will not
+   * return while the rwlock is locked _for writing_ by another thread. See
+   * RWLockBase.TryLockForReading() and RWLockBase.TryLockForWriting() to
+   * attempt to lock without blocking.
+   *
+   * SDL read/write locks are only recursive for read-only locks! They are not
+   * guaranteed to be fair, or provide access in a FIFO manner! They are not
+   * guaranteed to favor writers. You may not lock a rwlock for both read-only
+   * and write access at the same time from the same thread (so you can't
+   * promote your read-only lock to a write lock without unlocking first).
+   *
+   * @post the initialized and unlocked read/write lock or nullptr on failure;
+   *          call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.Destroy
+   * @sa RWLockBase.LockForReading
+   * @sa RWLockBase.LockForWriting
+   * @sa RWLockBase.TryLockForReading
+   * @sa RWLockBase.TryLockForWriting
+   * @sa RWLockBase.Unlock
+   */
+  RWLockBase()
+    : T(SDL_CreateRWLock())
+  {
+  }
+
+  /**
+   * Lock the read/write lock for _read only_ operations.
+   *
+   * This will block until the rwlock is available, which is to say it is not
+   * locked for writing by any other thread. Of all threads waiting to lock the
+   * rwlock, all may do so at the same time as long as they are requesting
+   * read-only access; if a thread wants to lock for writing, only one may do so
+   * at a time, and no other threads, read-only or not, may hold the lock at the
+   * same time.
+   *
+   * It is legal for the owning thread to lock an already-locked rwlock for
+   * reading. It must unlock it the same number of times before it is actually
+   * made available for other threads in the system (this is known as a
+   * "recursive rwlock").
+   *
+   * Note that locking for writing is not recursive (this is only available to
+   * read-only locks).
+   *
+   * It is illegal to request a read-only lock from a thread that already holds
+   * the write lock. Doing so results in undefined behavior. Unlock the write
+   * lock before requesting a read-only lock. (But, of course, if you have the
+   * write lock, you don't need further locks to read in any case.)
+   *
+   * This function does not fail; if rwlock is nullptr, it will return
+   * immediately having locked nothing. If the rwlock is valid, this function
+   * will always block until it can lock the mutex, and return with it locked.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForWriting
+   * @sa RWLockBase.TryLockForReading
+   * @sa RWLockBase.Unlock
+   */
+  void LockForReading() { SDL_LockRWLockForReading(T::get()); }
+
+  /**
+   * Lock the read/write lock for _write_ operations.
+   *
+   * This will block until the rwlock is available, which is to say it is not
+   * locked for reading or writing by any other thread. Only one thread may hold
+   * the lock when it requests write access; all other threads, whether they
+   * also want to write or only want read-only access, must wait until the
+   * writer thread has released the lock.
+   *
+   * It is illegal for the owning thread to lock an already-locked rwlock for
+   * writing (read-only may be locked recursively, writing can not). Doing so
+   * results in undefined behavior.
+   *
+   * It is illegal to request a write lock from a thread that already holds a
+   * read-only lock. Doing so results in undefined behavior. Unlock the
+   * read-only lock before requesting a write lock.
+   *
+   * This function does not fail; if rwlock is nullptr, it will return
+   * immediately having locked nothing. If the rwlock is valid, this function
+   * will always block until it can lock the mutex, and return with it locked.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForReading
+   * @sa RWLockBase.TryLockForWriting
+   * @sa RWLockBase.Unlock
+   */
+  void LockForWriting() { SDL_LockRWLockForWriting(T::get()); }
+
+  /**
+   * Try to lock a read/write lock _for reading_ without blocking.
+   *
+   * This works just like RWLockBase.LockForReading(), but if the rwlock is not
+   * available, then this function returns false immediately.
+   *
+   * This technique is useful if you need access to a resource but don't want to
+   * wait for it, and will return to it to try again later.
+   *
+   * Trying to lock for read-only access can succeed if other threads are
+   * holding read-only locks, as this won't prevent access.
+   *
+   * This function returns true if passed a nullptr rwlock.
+   *
+   * @returns true on success, false if the lock would block.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForReading
+   * @sa RWLockBase.TryLockForWriting
+   * @sa RWLockBase.Unlock
+   */
+  bool TryLockForReading() { return SDL_TryLockRWLockForReading(T::get()); }
+
+  /**
+   * Try to lock a read/write lock _for writing_ without blocking.
+   *
+   * This works just like RWLockBase.LockForWriting(), but if the rwlock is not
+   * available, then this function returns false immediately.
+   *
+   * This technique is useful if you need exclusive access to a resource but
+   * don't want to wait for it, and will return to it to try again later.
+   *
+   * It is illegal for the owning thread to lock an already-locked rwlock for
+   * writing (read-only may be locked recursively, writing can not). Doing so
+   * results in undefined behavior.
+   *
+   * It is illegal to request a write lock from a thread that already holds a
+   * read-only lock. Doing so results in undefined behavior. Unlock the
+   * read-only lock before requesting a write lock.
+   *
+   * This function returns true if passed a nullptr rwlock.
+   *
+   * @returns true on success, false if the lock would block.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForWriting
+   * @sa RWLockBase.TryLockForReading
+   * @sa RWLockBase.Unlock
+   */
+  bool TryLockForWriting() { return SDL_TryLockRWLockForWriting(T::get()); }
+
+  /**
+   * Unlock the read/write lock.
+   *
+   * Use this function to unlock the rwlock, whether it was locked for read-only
+   * or write operations.
+   *
+   * It is legal for the owning thread to lock an already-locked read-only lock.
+   * It must unlock it the same number of times before it is actually made
+   * available for other threads in the system (this is known as a "recursive
+   * rwlock").
+   *
+   * It is illegal to unlock a rwlock that has not been locked by the current
+   * thread, and doing so results in undefined behavior.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForReading
+   * @sa RWLockBase.LockForWriting
+   * @sa RWLockBase.TryLockForReading
+   * @sa RWLockBase.TryLockForWriting
+   */
+  void Unlock() { SDL_UnlockRWLock(T::get()); }
+
+  /**
+   * Destroy a read/write lock created with RWLockBase.RWLockBase().
+   *
+   * This function must be called on any read/write lock that is no longer
+   * needed. Failure to destroy a rwlock will result in a system memory or
+   * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
+   * is not safe to attempt to destroy a locked rwlock, and may result in
+   * undefined behavior depending on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.RWLockBase
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Callback for rWLock resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_RWLock>::doFree(SDL_RWLock* resource)
+{
+  SDL_DestroyRWLock(resource);
+}
+
+/**
+ * A means to manage access to a resource, by count, between threads.
+ *
+ * Semaphores (specifically, "counting semaphores"), let X number of threads
+ * request access at the same time, each thread granted access decrementing a
+ * counter. When the counter reaches zero, future requests block until a prior
+ * thread releases their request, incrementing the counter again.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Semaphore_(programming)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+template<ObjectBox<SDL_Semaphore*> T>
+struct SemaphoreBase : T
+{
+  using T::T;
+
+  /**
+   * Create a semaphore.
+   *
+   * This function creates a new semaphore and initializes it with the value
+   * `initial_value`. Each wait operation on the semaphore will atomically
+   * decrement the semaphore value and potentially block if the semaphore value
+   * is 0. Each post operation will atomically increment the semaphore value and
+   * wake waiting threads and allow them to retry the wait operation.
+   *
+   * @param initial_value the starting value of the semaphore.
+   * @post a new semaphore or nullptr on failure; call GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.Destroy
+   * @sa SemaphoreBase.Signal
+   * @sa SemaphoreBase.TryWait
+   * @sa SemaphoreBase.GetValue
+   * @sa SemaphoreBase.Wait
+   * @sa SemaphoreBase.WaitTimeout
+   */
+  SemaphoreBase(Uint32 initial_value)
+    : T(SDL_CreateSemaphore(initial_value))
+  {
+  }
+
+  /**
+   * Wait until a semaphore has a positive value and then decrements it.
+   *
+   * This function suspends the calling thread until the semaphore pointed to by
+   * `sem` has a positive value, and then atomically decrement the semaphore
+   * value.
+   *
+   * This function is the equivalent of calling SemaphoreBase.WaitTimeout() with
+   * a time length of -1.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.Signal
+   * @sa SemaphoreBase.TryWait
+   * @sa SemaphoreBase.WaitTimeout
+   */
+  void Wait() { SDL_WaitSemaphore(T::get()); }
+
+  /**
+   * See if a semaphore has a positive value and decrement it if it does.
+   *
+   * This function checks to see if the semaphore pointed to by `sem` has a
+   * positive value and atomically decrements the semaphore value if it does. If
+   * the semaphore doesn't have a positive value, the function immediately
+   * returns false.
+   *
+   * @returns true if the wait succeeds, false if the wait would block.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.Signal
+   * @sa SemaphoreBase.Wait
+   * @sa SemaphoreBase.WaitTimeout
+   */
+  bool TryWait() { return SDL_TryWaitSemaphore(T::get()); }
+
+  /**
+   * Wait until a semaphore has a positive value and then decrements it.
+   *
+   * This function suspends the calling thread until either the semaphore
+   * pointed to by `sem` has a positive value or the specified time has elapsed.
+   * If the call is successful it will atomically decrement the semaphore value.
+   *
+   * @param timeout the length of the timeout, in milliseconds, or -1 to wait
+   *                  indefinitely.
+   * @returns true if the wait succeeds or false if the wait times out.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.Signal
+   * @sa SemaphoreBase.TryWait
+   * @sa SemaphoreBase.Wait
+   */
+  bool WaitTimeout(std::chrono::milliseconds timeout)
+  {
+    return SDL_WaitSemaphoreTimeout(T::get(), timeout.count());
+  }
+
+  /**
+   * Atomically increment a semaphore's value and wake waiting threads.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.TryWait
+   * @sa SemaphoreBase.Wait
+   * @sa SemaphoreBase.WaitTimeout
+   */
+  void Signal() { SDL_SignalSemaphore(T::get()); }
+
+  /**
+   * Get the current value of a semaphore.
+   *
+   * @returns the current value of the semaphore.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint32 GetValue() const { return SDL_GetSemaphoreValue(T::get()); }
+
+  /**
+   * Destroy a semaphore.
+   *
+   * It is not safe to destroy a semaphore if there are threads currently
+   * waiting on it.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.SemaphoreBase
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Callback for semaphore resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Semaphore>::doFree(SDL_Semaphore* resource)
+{
+  SDL_DestroySemaphore(resource);
+}
+
+/**
+ * A means to block multiple threads until a condition is satisfied.
+ *
+ * Condition variables, paired with an MutexBase, let an app halt multiple
+ * threads until a condition has occurred, at which time the app can release
+ * one or all waiting threads.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Condition_variable
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+template<ObjectBox<SDL_Condition*> T>
+struct ConditionBase : T
+{
+  using T::T;
+
+  /**
+   * Create a condition variable.
+   *
+   * @post a new condition variable or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Broadcast
+   * @sa ConditionBase.Signal
+   * @sa ConditionBase.Wait
+   * @sa ConditionBase.WaitTimeout
+   * @sa ConditionBase.Destroy
+   */
+  ConditionBase()
+    : T(SDL_CreateCondition())
+  {
+  }
+
+  /**
+   * Restart one of the threads that are waiting on the condition variable.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Broadcast
+   * @sa ConditionBase.Wait
+   * @sa ConditionBase.WaitTimeout
+   */
+  void Signal() { SDL_SignalCondition(T::get()); }
+
+  /**
+   * Restart all threads that are waiting on the condition variable.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Signal
+   * @sa ConditionBase.Wait
+   * @sa ConditionBase.WaitTimeout
+   */
+  void Broadcast() { SDL_BroadcastCondition(T::get()); }
+
+  /**
+   * Wait until a condition variable is signaled.
+   *
+   * This function unlocks the specified `mutex` and waits for another thread to
+   * call ConditionBase.Signal() or ConditionBase.Broadcast() on the condition
+   * variable `cond`. Once the condition variable is signaled, the mutex is
+   * re-locked and the function returns.
+   *
+   * The mutex must be locked before calling this function. Locking the mutex
+   * recursively (more than once) is not supported and leads to undefined
+   * behavior.
+   *
+   * This function is the equivalent of calling ConditionBase.WaitTimeout() with
+   * a time length of -1.
+   *
+   * @param mutex the mutex used to coordinate thread access.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Broadcast
+   * @sa ConditionBase.Signal
+   * @sa ConditionBase.WaitTimeout
+   */
+  void Wait(MutexRef mutex) { SDL_WaitCondition(T::get(), mutex.get()); }
+
+  /**
+   * Wait until a condition variable is signaled or a certain time has passed.
+   *
+   * This function unlocks the specified `mutex` and waits for another thread to
+   * call ConditionBase.Signal() or ConditionBase.Broadcast() on the condition
+   * variable `cond`, or for the specified time to elapse. Once the condition
+   * variable is signaled or the time elapsed, the mutex is re-locked and the
+   * function returns.
+   *
+   * The mutex must be locked before calling this function. Locking the mutex
+   * recursively (more than once) is not supported and leads to undefined
+   * behavior.
+   *
+   * @param mutex the mutex used to coordinate thread access.
+   * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
+   *                  indefinitely.
+   * @returns true if the condition variable is signaled, false if the condition
+   *          is not signaled in the allotted time.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Broadcast
+   * @sa ConditionBase.Signal
+   * @sa ConditionBase.Wait
+   */
+  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout)
+  {
+    return SDL_WaitConditionTimeout(T::get(), mutex.get(), timeout.count());
+  }
+
+  /**
+   * Destroy a condition variable.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.ConditionBase
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Callback for condition resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Condition>::doFree(SDL_Condition* resource)
+{
+  SDL_DestroyCondition(resource);
+}
+
+/**
+ * The current status of an InitState structure.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using InitStatus = SDL_InitStatus;
+
+constexpr InitStatus INIT_STATUS_UNINITIALIZED =
+  SDL_INIT_STATUS_UNINITIALIZED; ///< UNINITIALIZED
+
+constexpr InitStatus INIT_STATUS_INITIALIZING =
+  SDL_INIT_STATUS_INITIALIZING; ///< INITIALIZING
+
+constexpr InitStatus INIT_STATUS_INITIALIZED =
+  SDL_INIT_STATUS_INITIALIZED; ///< INITIALIZED
+
+constexpr InitStatus INIT_STATUS_UNINITIALIZING =
+  SDL_INIT_STATUS_UNINITIALIZING; ///< UNINITIALIZING
+
+/**
+ * A structure used for thread-safe initialization and shutdown.
+ *
+ * Here is an example of using this:
+ *
+ * ```cpp
+ *    static SDL::InitState init;
+ *
+ *    bool InitSystem(void)
+ *    {
+ *        if (!InitState.ShouldInit(&init)) {
+ *            // The system is initialized
+ *            return true;
+ *        }
+ *
+ *        // At this point, you should not leave this function without calling
+ * InitState.SetInitialized()
+ *
+ *        bool initialized = DoInitTasks();
+ *        InitState.SetInitialized(&init, initialized);
+ *        return initialized;
+ *    }
+ *
+ *    bool UseSubsystem(void)
+ *    {
+ *        if (InitState.ShouldInit(&init)) {
+ *            // Error, the subsystem isn't initialized
+ *            InitState.SetInitialized(&init, false);
+ *            return false;
+ *        }
+ *
+ *        // Do work using the initialized subsystem
+ *
+ *        return true;
+ *    }
+ *
+ *    void QuitSystem(void)
+ *    {
+ *        if (!InitState.ShouldQuit(&init)) {
+ *            // The system is not initialized
+ *            return;
+ *        }
+ *
+ *        // At this point, you should not leave this function without calling
+ * InitState.SetInitialized()
+ *
+ *        DoQuitTasks();
+ *        InitState.SetInitialized(&init, false);
+ *    }
+ * ```
+ *
+ * Note that this doesn't protect any resources created during initialization,
+ * or guarantee that nobody is using those resources during cleanup. You
+ * should use other mechanisms to protect those, if that's a concern for your
+ * code.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+struct InitState : SDL_InitState
+{
+  /**
+   * Default comparison operator
+   */
+  constexpr bool operator==(const InitState& other) const
+  {
+    return this == &other;
+  }
+
+  /**
+   * Constructor
+   */
+  constexpr InitState()
+    : SDL_InitState{0}
+  {
+  }
+
+  /**
+   * Return whether initialization should be done.
+   *
+   * This function checks the passed in state and if initialization should be
+   * done, sets the status to `INIT_STATUS_INITIALIZING` and returns true.
+   * If another thread is already modifying this state, it will wait until
+   * that's done before returning.
+   *
+   * If this function returns true, the calling code must call
+   * InitState.SetInitialized() to complete the initialization.
+   *
+   * @returns true if initialization needs to be done, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa InitState.SetInitialized
+   * @sa InitState.ShouldQuit
+   */
+  bool ShouldInit() { return SDL_ShouldInit(this); }
+
+  /**
+   * Return whether cleanup should be done.
+   *
+   * This function checks the passed in state and if cleanup should be done,
+   * sets the status to `INIT_STATUS_UNINITIALIZING` and returns true.
+   *
+   * If this function returns true, the calling code must call
+   * InitState.SetInitialized() to complete the cleanup.
+   *
+   * @returns true if cleanup needs to be done, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa InitState.SetInitialized
+   * @sa InitState.ShouldInit
+   */
+  bool ShouldQuit() { return SDL_ShouldQuit(this); }
+
+  /**
+   * Finish an initialization state transition.
+   *
+   * This function sets the status of the passed in state to
+   * `INIT_STATUS_INITIALIZED` or `INIT_STATUS_UNINITIALIZED` and allows
+   * any threads waiting for the status to proceed.
+   *
+   * @param initialized the new initialization state.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa InitState.ShouldInit
+   * @sa InitState.ShouldQuit
+   */
+  void SetInitialized(bool initialized)
+  {
+    SDL_SetInitialized(this, initialized);
+  }
+};
 
 /// @}
 
