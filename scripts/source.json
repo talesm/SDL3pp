@@ -19328,6 +19328,293 @@
         }
       }
     },
+    "SDL_thread.h": {
+      "name": "SDL_thread.h",
+      "doc": "# CategoryThread\n\nSDL offers cross-platform thread management functions. These are mostly\nconcerned with starting threads, setting their priority, and dealing with\ntheir termination.\n\nIn addition, there is support for Thread Local Storage (data that is unique\nto each thread, but accessed from a single key).\n\nOn platforms without thread support (such as Emscripten when built without\npthreads), these functions still exist, but things like SDL_CreateThread()\nwill report failure without doing anything.\n\nIf you're going to work with threads, you almost certainly need to have a\ngood understanding of [CategoryMutex](CategoryMutex) as well.",
+      "entries": {
+        "SDL_Thread": {
+          "doc": "The SDL thread object.\n\nThese are opaque data.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_CreateThread\n\\sa SDL_WaitThread",
+          "name": "SDL_Thread",
+          "kind": "alias",
+          "type": "struct SDL_Thread"
+        },
+        "SDL_ThreadID": {
+          "doc": "A unique numeric ID that identifies a thread.\n\nThese are different from SDL_Thread objects, which are generally what an\napplication will operate on, but having a way to uniquely identify a thread\ncan be useful at times.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_GetThreadID\n\\sa SDL_GetCurrentThreadID",
+          "name": "SDL_ThreadID",
+          "kind": "alias",
+          "type": "Uint64"
+        },
+        "SDL_TLSID": {
+          "doc": "Thread local storage ID.\n\n0 is the invalid ID. An app can create these and then set data for these\nIDs that is unique to each thread.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_GetTLS\n\\sa SDL_SetTLS",
+          "name": "SDL_TLSID",
+          "kind": "alias"
+        },
+        "SDL_ThreadPriority": {
+          "doc": "The SDL thread priority.\n\nSDL will make system changes as necessary in order to apply the thread\npriority. Code which attempts to control thread state related to priority\nshould be aware that calling SDL_SetCurrentThreadPriority may alter such\nstate. SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of\nthis behavior.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_ThreadPriority",
+          "kind": "enum",
+          "entries": {
+            "SDL_THREAD_PRIORITY_LOW": {
+              "doc": "",
+              "name": "SDL_THREAD_PRIORITY_LOW",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_THREAD_PRIORITY_NORMAL": {
+              "doc": "",
+              "name": "SDL_THREAD_PRIORITY_NORMAL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_THREAD_PRIORITY_HIGH": {
+              "doc": "",
+              "name": "SDL_THREAD_PRIORITY_HIGH",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_THREAD_PRIORITY_TIME_CRITICAL": {
+              "doc": "",
+              "name": "SDL_THREAD_PRIORITY_TIME_CRITICAL",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_ThreadState": {
+          "doc": "The SDL thread state.\n\nThe current state of a thread can be checked by calling SDL_GetThreadState.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_GetThreadState",
+          "name": "SDL_ThreadState",
+          "kind": "enum",
+          "entries": {
+            "SDL_THREAD_UNKNOWN": {
+              "doc": "The thread is not valid.",
+              "name": "SDL_THREAD_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_THREAD_ALIVE": {
+              "doc": "The thread is currently running.",
+              "name": "SDL_THREAD_ALIVE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_THREAD_DETACHED": {
+              "doc": "The thread is detached and can't be waited on.",
+              "name": "SDL_THREAD_DETACHED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_THREAD_COMPLETE": {
+              "doc": "The thread has finished and should be cleaned up with SDL_WaitThread()",
+              "name": "SDL_THREAD_COMPLETE",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_ThreadFunction": {
+          "doc": "The function passed to SDL_CreateThread() as the new thread's entry point.\n\n\\param data what was passed as `data` to SDL_CreateThread().\n\\returns a value that can be reported through SDL_WaitThread().\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_ThreadFunction",
+          "kind": "callback",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_CreateThread": {
+          "doc": "Create a new thread with a default stack size.\n\nThis is a convenience function, equivalent to calling\nSDL_CreateThreadWithProperties with the following properties set:\n\n- `SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER`: `fn`\n- `SDL_PROP_THREAD_CREATE_NAME_STRING`: `name`\n- `SDL_PROP_THREAD_CREATE_USERDATA_POINTER`: `data`\n\nNote that this \"function\" is actually a macro that calls an internal\nfunction with two extra parameters not listed here; they are hidden through\npreprocessor macros and are needed to support various C runtimes at the\npoint of the function call. Language bindings that aren't using the C\nheaders will need to deal with this.\n\nUsually, apps should just call this function the same way on every platform\nand let the macros hide the details.\n\n\\param fn the SDL_ThreadFunction function to call in the new thread.\n\\param name the name of the thread.\n\\param data a pointer that is passed to `fn`.\n\\returns an opaque pointer to the new thread object on success, NULL if the\n         new thread could not be created; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateThreadWithProperties\n\\sa SDL_WaitThread",
+          "name": "SDL_CreateThread",
+          "kind": "function",
+          "type": "SDL_Thread *",
+          "parameters": [
+            {
+              "name": "fn",
+              "type": "SDL_ThreadFunction"
+            },
+            {
+              "name": "name",
+              "type": "const char *"
+            },
+            {
+              "name": "data",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_CreateThreadWithProperties": {
+          "doc": "Create a new thread with with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER`: an SDL_ThreadFunction\n  value that will be called at the start of the new thread's life.\n  Required.\n- `SDL_PROP_THREAD_CREATE_NAME_STRING`: the name of the new thread, which\n  might be available to debuggers. Optional, defaults to NULL.\n- `SDL_PROP_THREAD_CREATE_USERDATA_POINTER`: an arbitrary app-defined\n  pointer, which is passed to the entry function on the new thread, as its\n  only parameter. Optional, defaults to NULL.\n- `SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new\n  thread's stack. Optional, defaults to 0 (system-defined default).\n\nSDL makes an attempt to report `SDL_PROP_THREAD_CREATE_NAME_STRING` to the\nsystem, so that debuggers can display it. Not all platforms support this.\n\nThread naming is a little complicated: Most systems have very small limits\nfor the string length (Haiku has 32 bytes, Linux currently has 16, Visual\nC++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to\nsee what happens with your system's debugger. The name should be UTF-8 (but\nusing the naming limits of C identifiers is a better bet). There are no\nrequirements for thread naming conventions, so long as the string is\nnull-terminated UTF-8, but these guidelines are helpful in choosing a name:\n\nhttps://stackoverflow.com/questions/149932/naming-conventions-for-threads\n\nIf a system imposes requirements, SDL will try to munge the string for it\n(truncate, etc), but the original string contents will be available from\nSDL_GetThreadName().\n\nThe size (in bytes) of the new stack can be specified with\n`SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER`. Zero means \"use the system\ndefault\" which might be wildly different between platforms. x86 Linux\ngenerally defaults to eight megabytes, an embedded device might be a few\nkilobytes instead. You generally need to specify a stack that is a multiple\nof the system's page size (in many cases, this is 4 kilobytes, but check\nyour system documentation).\n\nNote that this \"function\" is actually a macro that calls an internal\nfunction with two extra parameters not listed here; they are hidden through\npreprocessor macros and are needed to support various C runtimes at the\npoint of the function call. Language bindings that aren't using the C\nheaders will need to deal with this.\n\nThe actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so\nthere is no symbol clash, but trying to load an SDL shared library and look\nfor \"SDL_CreateThreadWithProperties\" will fail.\n\nUsually, apps should just call this function the same way on every platform\nand let the macros hide the details.\n\n\\param props the properties to use.\n\\returns an opaque pointer to the new thread object on success, NULL if the\n         new thread could not be created; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateThread\n\\sa SDL_WaitThread",
+          "name": "SDL_CreateThreadWithProperties",
+          "kind": "function",
+          "type": "SDL_Thread *",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "SDL_PropertiesID"
+            }
+          ]
+        },
+        "SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER",
+          "kind": "def",
+          "value": "\"SDL.thread.create.entry_function\""
+        },
+        "SDL_PROP_THREAD_CREATE_NAME_STRING": {
+          "doc": "",
+          "name": "SDL_PROP_THREAD_CREATE_NAME_STRING",
+          "kind": "def",
+          "value": "\"SDL.thread.create.name\""
+        },
+        "SDL_PROP_THREAD_CREATE_USERDATA_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_THREAD_CREATE_USERDATA_POINTER",
+          "kind": "def",
+          "value": "\"SDL.thread.create.userdata\""
+        },
+        "SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER": {
+          "doc": "",
+          "name": "SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER",
+          "kind": "def",
+          "value": "\"SDL.thread.create.stacksize\""
+        },
+        "SDL_GetThreadName": {
+          "doc": "Get the thread name as it was specified in SDL_CreateThread().\n\n\\param thread the thread to query.\n\\returns a pointer to a UTF-8 string that names the specified thread, or\n         NULL if it doesn't have a name.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetThreadName",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "thread",
+              "type": "SDL_Thread *"
+            }
+          ]
+        },
+        "SDL_GetCurrentThreadID": {
+          "doc": "Get the thread identifier for the current thread.\n\nThis thread identifier is as reported by the underlying operating system.\nIf SDL is running on a platform that does not support threads the return\nvalue will always be zero.\n\nThis function also returns a valid thread ID when called from the main\nthread.\n\n\\returns the ID of the current thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetThreadID",
+          "name": "SDL_GetCurrentThreadID",
+          "kind": "function",
+          "type": "SDL_ThreadID",
+          "parameters": []
+        },
+        "SDL_GetThreadID": {
+          "doc": "Get the thread identifier for the specified thread.\n\nThis thread identifier is as reported by the underlying operating system.\nIf SDL is running on a platform that does not support threads the return\nvalue will always be zero.\n\n\\param thread the thread to query.\n\\returns the ID of the specified thread, or the ID of the current thread if\n         `thread` is NULL.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCurrentThreadID",
+          "name": "SDL_GetThreadID",
+          "kind": "function",
+          "type": "SDL_ThreadID",
+          "parameters": [
+            {
+              "name": "thread",
+              "type": "SDL_Thread *"
+            }
+          ]
+        },
+        "SDL_SetCurrentThreadPriority": {
+          "doc": "Set the priority for the current thread.\n\nNote that some platforms will not let you alter the priority (or at least,\npromote the thread to a higher priority) at all, and some require you to be\nan administrator account. Be prepared for this to fail.\n\n\\param priority the SDL_ThreadPriority to set.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_SetCurrentThreadPriority",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "priority",
+              "type": "SDL_ThreadPriority"
+            }
+          ]
+        },
+        "SDL_WaitThread": {
+          "doc": "Wait for a thread to finish.\n\nThreads that haven't been detached will remain until this function cleans\nthem up. Not doing so is a resource leak.\n\nOnce a thread has been cleaned up through this function, the SDL_Thread\nthat references it becomes invalid and should not be referenced again. As\nsuch, only one thread may call SDL_WaitThread() on another.\n\nThe return code from the thread function is placed in the area pointed to\nby `status`, if `status` is not NULL.\n\nYou may not wait on a thread that has been used in a call to\nSDL_DetachThread(). Use either that function or this one, but not both, or\nbehavior is undefined.\n\nIt is safe to pass a NULL thread to this function; it is a no-op.\n\nNote that the thread pointer is freed by this function and is not valid\nafterward.\n\n\\param thread the SDL_Thread pointer that was returned from the\n              SDL_CreateThread() call that started this thread.\n\\param status a pointer filled in with the value returned from the thread\n              function by its 'return', or -1 if the thread has been\n              detached or isn't valid, may be NULL.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateThread\n\\sa SDL_DetachThread",
+          "name": "SDL_WaitThread",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "thread",
+              "type": "SDL_Thread *"
+            },
+            {
+              "name": "status",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_GetThreadState": {
+          "doc": "Get the current state of a thread.\n\n\\param thread the thread to query.\n\\returns the current state of a thread, or SDL_THREAD_UNKNOWN if the thread\n         isn't valid.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ThreadState",
+          "name": "SDL_GetThreadState",
+          "kind": "function",
+          "type": "SDL_ThreadState",
+          "parameters": [
+            {
+              "name": "thread",
+              "type": "SDL_Thread *"
+            }
+          ]
+        },
+        "SDL_DetachThread": {
+          "doc": "Let a thread clean up on exit without intervention.\n\nA thread may be \"detached\" to signify that it should not remain until\nanother thread has called SDL_WaitThread() on it. Detaching a thread is\nuseful for long-running threads that nothing needs to synchronize with or\nfurther manage. When a detached thread is done, it simply goes away.\n\nThere is no way to recover the return code of a detached thread. If you\nneed this, don't detach the thread and instead use SDL_WaitThread().\n\nOnce a thread is detached, you should usually assume the SDL_Thread isn't\nsafe to reference again, as it will become invalid immediately upon the\ndetached thread's exit, instead of remaining until someone has called\nSDL_WaitThread() to finally clean it up. As such, don't detach the same\nthread more than once.\n\nIf a thread has already exited when passed to SDL_DetachThread(), it will\nstop waiting for a call to SDL_WaitThread() and clean up immediately. It is\nnot safe to detach a thread that might be used with SDL_WaitThread().\n\nYou may not call SDL_WaitThread() on a thread that has been detached. Use\neither that function or this one, but not both, or behavior is undefined.\n\nIt is safe to pass NULL to this function; it is a no-op.\n\n\\param thread the SDL_Thread pointer that was returned from the\n              SDL_CreateThread() call that started this thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateThread\n\\sa SDL_WaitThread",
+          "name": "SDL_DetachThread",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "thread",
+              "type": "SDL_Thread *"
+            }
+          ]
+        },
+        "SDL_GetTLS": {
+          "doc": "Get the current thread's value associated with a thread local storage ID.\n\n\\param id a pointer to the thread local storage ID, may not be NULL.\n\\returns the value associated with the ID for the current thread or NULL if\n         no value has been set; call SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetTLS",
+          "name": "SDL_GetTLS",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "SDL_TLSID *"
+            }
+          ]
+        },
+        "SDL_TLSDestructorCallback": {
+          "doc": "The callback used to cleanup data passed to SDL_SetTLS.\n\nThis is called when a thread exits, to allow an app to free any resources.\n\n\\param value a pointer previously handed to SDL_SetTLS.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetTLS",
+          "name": "SDL_TLSDestructorCallback",
+          "kind": "callback",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_SetTLS": {
+          "doc": "Set the current thread's value associated with a thread local storage ID.\n\nIf the thread local storage ID is not initialized (the value is 0), a new\nID will be created in a thread-safe way, so all calls using a pointer to\nthe same ID will refer to the same local storage.\n\nNote that replacing a value from a previous call to this function on the\nsame thread does _not_ call the previous value's destructor!\n\n`destructor` can be NULL; it is assumed that `value` does not need to be\ncleaned up if so.\n\n\\param id a pointer to the thread local storage ID, may not be NULL.\n\\param value the value to associate with the ID for the current thread.\n\\param destructor a function called when the thread exits, to free the\n                  value, may be NULL.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetTLS",
+          "name": "SDL_SetTLS",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "SDL_TLSID *"
+            },
+            {
+              "name": "value",
+              "type": "const void *"
+            },
+            {
+              "name": "destructor",
+              "type": "SDL_TLSDestructorCallback"
+            }
+          ]
+        },
+        "SDL_CleanupTLS": {
+          "doc": "Cleanup all TLS data for this thread.\n\nIf you are creating your threads outside of SDL and then calling SDL\nfunctions, you should call this function before your thread exits, to\nproperly clean up SDL memory.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_CleanupTLS",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        }
+      }
+    },
     "SDL_timer.h": {
       "name": "SDL_timer.h",
       "doc": "# CategoryTimer\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](CategoryTime).\n\nThis category covers measuring time elapsed (SDL_GetTicks(),\nSDL_GetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing\na callback function after a certain amount of time has elasped\n(SDL_AddTimer(), etc).\n\nThere are also useful macros to convert between time units, like\nSDL_SECONDS_TO_NS() and such.",

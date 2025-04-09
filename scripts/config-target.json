@@ -18,6 +18,7 @@
     "SDL3pp_keyboard.h",
     "SDL3pp_keycode.h",
     "SDL3pp_scancode.h",
+    "SDL3pp_thread.h",
     "SDL3pp_timer.h",
     "SDL3pp_time.h",
     "SDL3pp_iostream.h",

@@ -1,49 +1,51 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,613,44,638"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,637,44,662"/>
 <area shape="rect" id="Node000001" href="$structSDL_1_1PropertiesBase.html" title=" " alt="" coords="92,5,332,75"/>
-<area shape="poly" id="edge11_Node000000_Node000001" title=" " alt="" coords="23,599,24,490,32,337,41,259,52,187,69,127,90,85,102,73,105,77,94,88,74,129,58,188,46,259,38,337,30,490,28,599"/>
+<area shape="poly" id="edge11_Node000000_Node000001" title=" " alt="" coords="23,623,24,508,31,349,39,267,51,192,68,129,90,85,101,73,105,77,94,88,73,131,56,193,45,268,37,349,29,509,28,623"/>
 <area shape="rect" id="Node000002" href="$structSDL_1_1SurfaceBase.html" title=" " alt="" coords="115,99,309,139"/>
-<area shape="poly" id="edge12_Node000000_Node000002" title=" " alt="" coords="23,599,25,501,34,366,42,298,54,236,70,185,90,149,114,131,117,135,94,152,75,187,59,237,48,299,40,367,31,501,29,599"/>
+<area shape="poly" id="edge12_Node000000_Node000002" title=" " alt="" coords="23,623,25,520,33,379,41,307,53,241,69,187,90,149,114,131,117,135,94,152,74,189,58,242,46,307,38,379,30,520,28,623"/>
 <area shape="rect" id="Node000003" href="$structSDL_1_1TextBase.html" title=" " alt="" coords="115,163,309,203"/>
-<area shape="poly" id="edge13_Node000000_Node000003" title=" " alt="" coords="24,599,28,513,38,397,58,287,72,243,90,213,113,195,116,200,94,216,77,245,63,288,44,398,33,513,29,599"/>
+<area shape="poly" id="edge13_Node000000_Node000003" title=" " alt="" coords="24,623,27,531,37,409,45,348,56,291,71,245,90,213,114,195,117,199,94,216,76,247,62,293,50,349,42,410,32,532,29,623"/>
 <area shape="rect" id="Node000004" href="$structSDL_1_1TextureBase.html" title=" " alt="" coords="116,227,308,267"/>
-<area shape="poly" id="edge14_Node000000_Node000004" title=" " alt="" coords="25,599,31,525,43,429,62,338,75,302,90,277,114,259,117,264,94,280,79,304,67,339,48,430,36,525,30,599"/>
+<area shape="poly" id="edge14_Node000000_Node000004" title=" " alt="" coords="24,622,30,544,41,441,60,342,74,304,90,277,114,259,117,263,94,280,78,306,65,344,46,441,35,544,30,623"/>
 <area shape="rect" id="Node000005" href="$structSDL_1_1AnimationBase.html" title="Animated image support." alt="" coords="116,291,308,317"/>
-<area shape="poly" id="edge15_Node000000_Node000005" title=" " alt="" coords="26,599,33,534,45,453,64,376,76,347,90,326,114,310,117,315,94,330,81,349,69,378,50,454,38,535,31,599"/>
+<area shape="poly" id="edge15_Node000000_Node000005" title=" " alt="" coords="25,623,31,553,44,465,63,381,75,349,90,326,114,310,117,314,94,330,80,351,68,383,49,466,37,554,30,623"/>
 <area shape="rect" id="Node000006" href="$structSDL_1_1EnvironmentBase.html" title="A thread&#45;safe set of environment variables." alt="" coords="108,341,316,366"/>
-<area shape="poly" id="edge16_Node000000_Node000006" title=" " alt="" coords="27,598,49,477,67,416,78,392,90,375,106,364,109,368,94,379,83,395,72,418,54,478,32,599"/>
+<area shape="poly" id="edge16_Node000000_Node000006" title=" " alt="" coords="26,623,47,489,66,421,77,394,90,375,106,364,109,368,94,379,82,396,71,422,52,490,31,623"/>
 <area shape="rect" id="Node000007" href="$structSDL_1_1FontBase.html" title="The internal structure containing font information." alt="" coords="135,390,289,415"/>
-<area shape="poly" id="edge17_Node000000_Node000007" title=" " alt="" coords="24,598,28,559,39,512,59,465,73,443,90,425,111,411,134,403,136,408,113,416,94,429,77,447,63,468,44,514,34,560,29,599"/>
+<area shape="poly" id="edge17_Node000000_Node000007" title=" " alt="" coords="23,622,26,579,35,526,56,471,71,446,90,425,111,411,134,403,136,408,113,416,94,429,75,450,60,474,41,527,31,580,28,623"/>
 <area shape="rect" id="Node000008" href="$structSDL_1_1GLContextBase.html" title="An opaque handle to an OpenGL context." alt="" coords="115,439,309,465"/>
-<area shape="poly" id="edge18_Node000000_Node000008" title=" " alt="" coords="27,599,35,569,47,536,65,502,90,474,114,460,116,465,94,478,69,505,51,538,40,571,33,600"/>
+<area shape="poly" id="edge18_Node000000_Node000008" title=" " alt="" coords="26,623,31,589,43,548,62,508,90,474,114,460,117,464,94,478,66,511,48,550,37,590,31,624"/>
 <area shape="rect" id="Node000009" href="$structSDL_1_1IConvBase.html" title="An opaque handle representing string encoding conversion state." alt="" coords="131,489,293,514"/>
-<area shape="poly" id="edge19_Node000000_Node000009" title=" " alt="" coords="34,598,56,559,71,539,91,523,130,506,132,511,93,528,75,543,60,562,38,601"/>
+<area shape="poly" id="edge19_Node000000_Node000009" title=" " alt="" coords="30,623,51,572,68,545,90,523,109,512,130,505,131,510,111,517,94,527,72,549,56,574,35,625"/>
 <area shape="rect" id="Node000010" href="$structSDL_1_1IOStreamBase.html" title="The read/write operation structure." alt="" coords="119,538,305,563"/>
-<area shape="poly" id="edge20_Node000000_Node000010" title=" " alt="" coords="47,601,68,586,91,572,123,561,125,566,93,577,71,590,51,606"/>
+<area shape="poly" id="edge20_Node000000_Node000010" title=" " alt="" coords="39,624,61,596,91,572,117,561,119,566,93,577,65,600,43,627"/>
 <area shape="rect" id="Node000011" href="$structSDL_1_1PaletteBase.html" title="A set of indexed colors representing a palette." alt="" coords="127,587,297,613"/>
-<area shape="poly" id="edge21_Node000000_Node000011" title=" " alt="" coords="57,618,126,609,127,614,58,624"/>
+<area shape="poly" id="edge21_Node000000_Node000011" title=" " alt="" coords="56,634,91,621,137,610,139,615,93,627,58,639"/>
 <area shape="rect" id="Node000012" href="$structSDL_1_1PropertiesBase.html" title="Wrap properties id." alt="" coords="117,637,307,662"/>
-<area shape="poly" id="edge22_Node000000_Node000012" title=" " alt="" coords="58,627,117,634,116,640,57,632"/>
+<area shape="poly" id="edge22_Node000000_Node000012" title=" " alt="" coords="58,647,116,647,116,652,58,652"/>
 <area shape="rect" id="Node000013" href="$structSDL_1_1PtrBase.html" title="Base class for SDL memory allocated pointer wrap." alt="" coords="141,686,283,711"/>
-<area shape="poly" id="edge23_Node000000_Node000013" title=" " alt="" coords="52,645,93,671,141,686,139,691,91,676,49,649"/>
+<area shape="poly" id="edge23_Node000000_Node000013" title=" " alt="" coords="58,659,93,671,144,683,142,689,91,676,56,664"/>
 <area shape="rect" id="Node000015" href="$structSDL_1_1RendererBase.html" title="A structure representing rendering state." alt="" coords="120,735,304,761"/>
-<area shape="poly" id="edge25_Node000000_Node000015" title=" " alt="" coords="39,649,61,687,76,705,93,720,121,734,118,739,91,725,72,709,56,690,34,652"/>
+<area shape="poly" id="edge25_Node000000_Node000015" title=" " alt="" coords="44,672,66,698,93,720,122,733,120,738,91,725,62,702,40,676"/>
 <area shape="rect" id="Node000016" href="$structSDL_1_1SharedObjectBase.html" title="An opaque datatype that represents a loaded shared object." alt="" coords="106,785,318,810"/>
-<area shape="poly" id="edge26_Node000000_Node000016" title=" " alt="" coords="33,651,40,680,52,712,70,744,94,770,114,782,111,787,90,774,65,747,47,714,35,681,28,652"/>
+<area shape="poly" id="edge26_Node000000_Node000016" title=" " alt="" coords="35,674,56,724,73,749,94,770,115,782,113,787,90,774,68,752,51,726,30,676"/>
 <area shape="rect" id="Node000017" href="$structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting." alt="" coords="125,834,299,859"/>
-<area shape="poly" id="edge27_Node000000_Node000017" title=" " alt="" coords="30,652,34,690,45,735,64,781,77,801,94,819,109,830,126,837,123,842,106,834,90,823,73,805,59,783,39,737,29,690,24,652"/>
+<area shape="poly" id="edge27_Node000000_Node000017" title=" " alt="" coords="31,675,37,708,48,748,66,787,94,819,125,837,123,841,90,823,62,789,43,749,32,709,26,676"/>
 <area shape="rect" id="Node000018" href="$structSDL_1_1TextBase.html" title="Text." alt="" coords="136,883,288,909"/>
-<area shape="poly" id="edge28_Node000000_Node000018" title=" " alt="" coords="27,652,29,699,38,758,58,818,74,845,94,869,113,882,137,890,135,895,111,887,90,873,69,848,53,820,32,759,24,699,22,652"/>
+<area shape="poly" id="edge28_Node000000_Node000018" title=" " alt="" coords="28,676,31,718,41,771,61,824,75,848,94,869,114,882,137,890,135,895,111,887,90,873,71,851,56,826,36,772,26,719,23,676"/>
 <area shape="rect" id="Node000019" href="$structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects." alt="" coords="114,933,310,958"/>
-<area shape="poly" id="edge29_Node000000_Node000019" title=" " alt="" coords="31,651,38,715,51,796,69,870,81,899,94,918,115,933,112,937,90,922,76,902,64,872,46,797,33,716,26,652"/>
+<area shape="poly" id="edge29_Node000000_Node000019" title=" " alt="" coords="31,675,53,807,71,875,82,901,94,918,115,933,112,937,90,922,77,904,66,877,47,808,26,676"/>
 <area shape="rect" id="Node000020" href="$structSDL_1_1TextureBase.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="125,982,299,1007"/>
-<area shape="poly" id="edge30_Node000000_Node000020" title=" " alt="" coords="30,651,36,725,47,820,66,910,79,944,94,968,109,979,126,987,124,992,106,983,90,971,74,947,61,911,42,821,30,726,25,652"/>
-<area shape="rect" id="Node000021" href="$structSDL_1_1TrayBase.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="136,1031,288,1057"/>
-<area shape="poly" id="edge31_Node000000_Node000021" title=" " alt="" coords="29,652,34,735,44,845,63,950,77,990,94,1017,113,1031,136,1039,135,1044,111,1036,90,1020,72,992,58,951,39,846,28,736,24,652"/>
-<area shape="rect" id="Node000022" href="$structSDL_1_1TrayEntryBase.html" title="An opaque handle representing an entry on a system tray object." alt="" coords="119,1081,305,1106"/>
-<area shape="poly" id="edge32_Node000000_Node000022" title=" " alt="" coords="29,651,31,744,41,869,49,932,60,989,75,1035,94,1066,120,1083,117,1088,90,1070,70,1037,55,990,44,933,35,869,26,744,23,652"/>
-<area shape="rect" id="Node000023" href="$structSDL_1_1WindowBase.html" title="Represents a handle to a window." alt="" coords="123,1130,301,1155"/>
-<area shape="poly" id="edge33_Node000000_Node000023" title=" " alt="" coords="28,652,30,754,38,893,46,964,57,1028,73,1080,94,1116,108,1127,124,1135,122,1139,105,1131,90,1119,68,1083,52,1029,40,965,32,894,24,754,23,652"/>
+<area shape="poly" id="edge30_Node000000_Node000020" title=" " alt="" coords="30,675,37,744,49,832,68,915,80,946,94,968,109,979,126,986,124,991,106,983,90,971,75,949,63,916,44,833,32,745,25,676"/>
+<area shape="rect" id="Node000021" href="$structSDL_1_1ThreadBase.html" title="The SDL thread object." alt="" coords="127,1031,297,1057"/>
+<area shape="poly" id="edge31_Node000000_Node000021" title=" " alt="" coords="30,676,35,755,46,857,65,954,78,992,94,1017,109,1029,127,1037,125,1041,107,1033,90,1020,73,994,60,956,40,858,29,755,24,676"/>
+<area shape="rect" id="Node000022" href="$structSDL_1_1TrayBase.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="136,1081,288,1106"/>
+<area shape="poly" id="edge32_Node000000_Node000022" title=" " alt="" coords="29,676,32,764,42,881,51,940,62,994,76,1037,94,1066,113,1080,137,1089,135,1094,111,1085,90,1070,71,1039,57,995,45,941,37,882,27,764,24,676"/>
+<area shape="rect" id="Node000023" href="$structSDL_1_1TrayEntryBase.html" title="An opaque handle representing an entry on a system tray object." alt="" coords="119,1130,305,1155"/>
+<area shape="poly" id="edge33_Node000000_Node000023" title=" " alt="" coords="29,676,31,773,39,906,47,972,59,1033,74,1082,94,1116,120,1133,117,1137,90,1119,69,1085,54,1034,42,973,34,906,25,773,23,676"/>
+<area shape="rect" id="Node000024" href="$structSDL_1_1WindowBase.html" title="Represents a handle to a window." alt="" coords="123,1179,301,1205"/>
+<area shape="poly" id="edge34_Node000000_Node000024" title=" " alt="" coords="28,676,29,783,36,930,44,1004,56,1072,72,1128,94,1165,108,1176,124,1184,122,1189,105,1181,90,1168,68,1130,51,1074,39,1005,31,930,23,783,23,676"/>
 <area shape="rect" id="Node000014" href="$classSDL_1_1ArrayBase.html" title="Base class for SDL memory allocated array wrap." alt="" coords="380,686,540,711"/>
 <area shape="poly" id="edge24_Node000013_Node000014" title=" " alt="" coords="297,696,380,696,380,701,297,701"/>
 </map>

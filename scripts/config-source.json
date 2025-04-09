@@ -18,6 +18,7 @@
     "SDL_keyboard.h",
     "SDL_keycode.h",
     "SDL_scancode.h",
+    "SDL_thread.h",
     "SDL_timer.h",
     "SDL_time.h",
     "SDL_iostream.h",

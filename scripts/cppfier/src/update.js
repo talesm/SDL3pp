@@ -1,5 +1,6 @@
 const { parseContent } = require("./parse.js");
 const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require("./utils.js");
+const { existsSync } = require("fs");
 
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters } from "./types"
@@ -22,8 +23,12 @@ function updateApi(config) {
   const files = Object.keys(api.files);
   let totalChanges = 0;
   for (const name of files) {
-    system.log(`Checking ${name}`);
     const filename = baseDir + name;
+    if (!existsSync(filename)) {
+      system.warn(`File not found: ${name}`);
+      continue;
+    }
+    system.log(`Checking ${name}`);
     const content = readLinesSync(filename);
     const targetFile = api.files[name];
 

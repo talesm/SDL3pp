@@ -61,7 +61,15 @@ HIDAPI                   | SDL3pp_hidapi.h
 
 ## Threads
 
-@todo Plan and implement Threads. Not priority as C++ stdlib already has similar facilities.
+This is provided for compatibility and completeness, we advise you to use std's
+thread facilities.
+
+Category                 | Header
+------------------------ | --------------------
+@ref CategoryThread   	 | SDL_thread.h
+Thread Synchronization Primitives |	SDL_mutex.h
+Atomic Operations        | SDL_atomic.h
+
 
 ## Time
 
@@ -158,6 +166,16 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryKeycode
 @addtogroup CategoryScancode
 @}
+
+@defgroup CategoriesThreads Threads
+
+This is provided for compatibility and completeness, we advise you to use std's
+thread facilities.
+
+@{
+@addtogroup CategoryThread
+@}
+
 
 @defgroup CategoriesTime Time
 @{

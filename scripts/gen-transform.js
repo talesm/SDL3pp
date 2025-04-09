@@ -5366,6 +5366,59 @@ const transform = {
         }
       }
     },
+    "SDL_thread.h": {
+      includeAfter: {
+        "__begin": [
+          { name: "ThreadID" },
+          { name: "TLSID" },
+          { name: "ThreadFunction" },
+          {
+            name: "ThreadCB",
+            kind: "alias",
+            type: "std::function<int()>"
+          },
+          { name: "TLSDestructorCallback" },
+        ]
+      },
+      namespacesMap: {
+        "SDL_PROP_THREAD_": "prop::thread"
+      },
+      enumerations: {
+        "SDL_ThreadPriority": {
+          prefix: "SDL_THREAD_PRIORITY_",
+          includeAfter: "__begin"
+        },
+        "SDL_ThreadState": {
+          prefix: "SDL_THREAD_",
+          includeAfter: "__begin"
+        }
+      },
+      resources: {
+        "SDL_Thread": {
+          entries: {
+            "ThreadBase": {
+              kind: "function",
+              type: "",
+              parameters: [
+                { type: "ThreadCB", name: "fn" },
+                { type: "StringParam", name: "name" },
+              ]
+            },
+            "SDL_CreateThread": "ctor",
+            "SDL_CreateThreadWithProperties": "ctor",
+            "SDL_GetThreadName": "immutable",
+            "SDL_GetThreadID": "immutable",
+            "SDL_SetCurrentThreadPriority": "function",
+            "SDL_WaitThread": "function",
+            "SDL_GetThreadState": "immutable",
+            "SDL_DetachThread": "function",
+            "SDL_GetTLS": "immutable",
+            "SDL_SetTLS": "function",
+            "SDL_CleanupTLS": "function",
+          }
+        }
+      },
+    },
     "SDL_time.h": {
       wrappers: {
         "SDL_DateTime": {
