@@ -93,9 +93,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gab321ed96bc6b128e8cced2d7fc9c67ea" id="r_gab321ed96bc6b128e8cced2d7fc9c67ea"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gab321ed96bc6b128e8cced2d7fc9c67ea">SDL::ThreadID</a> = SDL_ThreadID</td></tr>
 <tr class="memdesc:gab321ed96bc6b128e8cced2d7fc9c67ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">A unique numeric ID that identifies a thread.  <br /></td></tr>
 <tr class="separator:gab321ed96bc6b128e8cced2d7fc9c67ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaedfb56b3ce288b33baacd26dec542bb4" id="r_gaedfb56b3ce288b33baacd26dec542bb4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gaedfb56b3ce288b33baacd26dec542bb4">SDL::TLSID</a> = SDL_TLSID</td></tr>
-<tr class="memdesc:gaedfb56b3ce288b33baacd26dec542bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread local storage ID.  <br /></td></tr>
-<tr class="separator:gaedfb56b3ce288b33baacd26dec542bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81de0ba54c6c2f2147b1a0b9ff7521ac" id="r_ga81de0ba54c6c2f2147b1a0b9ff7521ac"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac">SDL::TLSID</a> = <a class="el" href="classSDL_1_1AtomicInt.html">AtomicInt</a></td></tr>
+<tr class="memdesc:ga81de0ba54c6c2f2147b1a0b9ff7521ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread local storage ID.  <br /></td></tr>
+<tr class="separator:ga81de0ba54c6c2f2147b1a0b9ff7521ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadba78156436b2ebd2964937c09368291" id="r_gadba78156436b2ebd2964937c09368291"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gadba78156436b2ebd2964937c09368291">SDL::ThreadFunction</a> = SDL_ThreadFunction</td></tr>
 <tr class="memdesc:gadba78156436b2ebd2964937c09368291"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function passed to <a class="el" href="structSDL_1_1ThreadBase.html#a3f7937aa5e357be9e5a7032c6629917d" title="Create a new thread with a default stack size.">ThreadBase.ThreadBase()</a> as the new thread's entry point.  <br /></td></tr>
 <tr class="separator:gadba78156436b2ebd2964937c09368291"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -103,7 +103,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ga770353c17c77d7b8d9be568b8c0d5e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function passed to <a class="el" href="structSDL_1_1ThreadBase.html#a3f7937aa5e357be9e5a7032c6629917d" title="Create a new thread with a default stack size.">ThreadBase.ThreadBase()</a> as the new thread's entry point.  <br /></td></tr>
 <tr class="separator:ga770353c17c77d7b8d9be568b8c0d5e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga40949cd90f28bc3e1326cd3fbf727345" id="r_ga40949cd90f28bc3e1326cd3fbf727345"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga40949cd90f28bc3e1326cd3fbf727345">SDL::TLSDestructorCallback</a> = SDL_TLSDestructorCallback</td></tr>
-<tr class="memdesc:ga40949cd90f28bc3e1326cd3fbf727345"><td class="mdescLeft">&#160;</td><td class="mdescRight">The callback used to cleanup data passed to <a class="el" href="structSDL_1_1ThreadBase.html#a79e3e1959e45ef4a16b487213f66cca5" title="Set the current thread&#39;s value associated with a thread local storage ID.">ThreadBase.SetTLS</a>.  <br /></td></tr>
+<tr class="memdesc:ga40949cd90f28bc3e1326cd3fbf727345"><td class="mdescLeft">&#160;</td><td class="mdescRight">The callback used to cleanup data passed to ThreadBase.SetTLS.  <br /></td></tr>
 <tr class="separator:ga40949cd90f28bc3e1326cd3fbf727345"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7a2e6e8f473f48c20740e04f0eed9f46" id="r_ga7a2e6e8f473f48c20740e04f0eed9f46"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga7a2e6e8f473f48c20740e04f0eed9f46">SDL::ThreadRef</a> = <a class="el" href="structSDL_1_1ThreadBase.html">ThreadBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_Thread &gt; &gt;</td></tr>
 <tr class="memdesc:ga7a2e6e8f473f48c20740e04f0eed9f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned thread.  <br /></td></tr>
@@ -123,6 +123,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga84839cc3dfbbd4ffb4f61d9c82be09a4" id="r_ga84839cc3dfbbd4ffb4f61d9c82be09a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryThread.html#gab321ed96bc6b128e8cced2d7fc9c67ea">ThreadID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga84839cc3dfbbd4ffb4f61d9c82be09a4">SDL::GetCurrentThreadID</a> ()</td></tr>
 <tr class="memdesc:ga84839cc3dfbbd4ffb4f61d9c82be09a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the thread identifier for the current thread.  <br /></td></tr>
 <tr class="separator:ga84839cc3dfbbd4ffb4f61d9c82be09a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae36f83eb444120b6b0aa0952f5d1085c" id="r_gae36f83eb444120b6b0aa0952f5d1085c"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gae36f83eb444120b6b0aa0952f5d1085c">SDL::GetTLS</a> (<a class="el" href="group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac">TLSID</a> *id)</td></tr>
+<tr class="memdesc:gae36f83eb444120b6b0aa0952f5d1085c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current thread's value associated with a thread local storage ID.  <br /></td></tr>
+<tr class="separator:gae36f83eb444120b6b0aa0952f5d1085c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf7ed30cefcc325a418672d462fbcc147" id="r_gaf7ed30cefcc325a418672d462fbcc147"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#gaf7ed30cefcc325a418672d462fbcc147">SDL::SetTLS</a> (<a class="el" href="group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac">TLSID</a> *id, const void *value, <a class="el" href="group__CategoryThread.html#ga40949cd90f28bc3e1326cd3fbf727345">TLSDestructorCallback</a> destructor)</td></tr>
+<tr class="memdesc:gaf7ed30cefcc325a418672d462fbcc147"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current thread's value associated with a thread local storage ID.  <br /></td></tr>
+<tr class="separator:gaf7ed30cefcc325a418672d462fbcc147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga07dd9ea8320cfeffd521c29d2d0cc6c4" id="r_ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryThread.html#ga07dd9ea8320cfeffd521c29d2d0cc6c4">SDL::CleanupTLS</a> ()</td></tr>
+<tr class="memdesc:ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup all TLS data for this thread.  <br /></td></tr>
+<tr class="separator:ga07dd9ea8320cfeffd521c29d2d0cc6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -300,35 +309,63 @@ constexpr <a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98
 <p>This is called when a thread exits, to allow an app to free any resources.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>a pointer previously handed to <a class="el" href="structSDL_1_1ThreadBase.html#a79e3e1959e45ef4a16b487213f66cca5" title="Set the current thread&#39;s value associated with a thread local storage ID.">ThreadBase.SetTLS</a>.</td></tr>
+    <tr><td class="paramname">value</td><td>a pointer previously handed to ThreadBase.SetTLS.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadBase.html#a79e3e1959e45ef4a16b487213f66cca5" title="Set the current thread&#39;s value associated with a thread local storage ID.">ThreadBase.SetTLS</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>ThreadBase.SetTLS </dd></dl>
 
 </div>
 </div>
-<a id="gaedfb56b3ce288b33baacd26dec542bb4" name="gaedfb56b3ce288b33baacd26dec542bb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaedfb56b3ce288b33baacd26dec542bb4">&#9670;&#160;</a></span>TLSID</h2>
+<a id="ga81de0ba54c6c2f2147b1a0b9ff7521ac" name="ga81de0ba54c6c2f2147b1a0b9ff7521ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga81de0ba54c6c2f2147b1a0b9ff7521ac">&#9670;&#160;</a></span>TLSID</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryThread.html#gaedfb56b3ce288b33baacd26dec542bb4">SDL::TLSID</a> = typedef SDL_TLSID</td>
+          <td class="memname">using <a class="el" href="group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac">SDL::TLSID</a> = typedef <a class="el" href="classSDL_1_1AtomicInt.html">AtomicInt</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>0 is the invalid ID. An app can create these and then set data for these IDs that is unique to each thread.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadBase.html#a637d08963b626e580f1ee1945fde0f3c" title="Get the current thread&#39;s value associated with a thread local storage ID.">ThreadBase.GetTLS</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>ThreadBase.GetTLS </dd>
 <dd>
-<a class="el" href="structSDL_1_1ThreadBase.html#a79e3e1959e45ef4a16b487213f66cca5" title="Set the current thread&#39;s value associated with a thread local storage ID.">ThreadBase.SetTLS</a> </dd></dl>
+ThreadBase.SetTLS </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga07dd9ea8320cfeffd521c29d2d0cc6c4" name="ga07dd9ea8320cfeffd521c29d2d0cc6c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga07dd9ea8320cfeffd521c29d2d0cc6c4">&#9670;&#160;</a></span>CleanupTLS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::CleanupTLS </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If you are creating your threads outside of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> and then calling <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> functions, you should call this function before your thread exits, to properly clean up <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> memory.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
 <a id="ga84839cc3dfbbd4ffb4f61d9c82be09a4" name="ga84839cc3dfbbd4ffb4f61d9c82be09a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga84839cc3dfbbd4ffb4f61d9c82be09a4">&#9670;&#160;</a></span>GetCurrentThreadID()</h2>
 
@@ -356,6 +393,99 @@ constexpr <a class="el" href="group__CategoryThread.html#ga6f7a148f3f241be0fcf98
 <dl class="section return"><dt>Returns</dt><dd>the ID of the current thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadBase.html#a18a230dc606e57d779f9805f13297b55" title="Get the thread identifier for the specified thread.">ThreadBase.GetID</a> </dd></dl>
+
+</div>
+</div>
+<a id="gae36f83eb444120b6b0aa0952f5d1085c" name="gae36f83eb444120b6b0aa0952f5d1085c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae36f83eb444120b6b0aa0952f5d1085c">&#9670;&#160;</a></span>GetTLS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * SDL::GetTLS </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac">TLSID</a> *&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>a pointer to the thread local storage ID, may not be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the value associated with the ID for the current thread or nullptr if no value has been set; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryThread.html#gaf7ed30cefcc325a418672d462fbcc147" title="Set the current thread&#39;s value associated with a thread local storage ID.">SetTLS</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf7ed30cefcc325a418672d462fbcc147" name="gaf7ed30cefcc325a418672d462fbcc147"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf7ed30cefcc325a418672d462fbcc147">&#9670;&#160;</a></span>SetTLS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::SetTLS </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac">TLSID</a> *&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryThread.html#ga40949cd90f28bc3e1326cd3fbf727345">TLSDestructorCallback</a>&#160;</td>
+          <td class="paramname"><em>destructor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If the thread local storage ID is not initialized (the value is 0), a new ID will be created in a thread-safe way, so all calls using a pointer to the same ID will refer to the same local storage.</p>
+<p>Note that replacing a value from a previous call to this function on the same thread does <em>not</em> call the previous value's destructor!</p>
+<p><code>destructor</code> can be nullptr; it is assumed that <code>value</code> does not need to be cleaned up if so.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>a pointer to the thread local storage ID, may not be nullptr. </td></tr>
+    <tr><td class="paramname">value</td><td>the value to associate with the ID for the current thread. </td></tr>
+    <tr><td class="paramname">destructor</td><td>a function called when the thread exits, to free the value, may be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryThread.html#gae36f83eb444120b6b0aa0952f5d1085c" title="Get the current thread&#39;s value associated with a thread local storage ID.">GetTLS</a> </dd></dl>
 
 </div>
 </div>

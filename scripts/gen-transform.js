@@ -5779,12 +5779,14 @@ const transform = {
             "SDL_WaitThread": "function",
             "SDL_GetThreadState": "immutable",
             "SDL_DetachThread": "function",
-            "SDL_GetTLS": "immutable",
-            "SDL_SetTLS": "function",
-            "SDL_CleanupTLS": "function",
           }
         }
       },
+      transform: {
+        "SDL_TLSID": {
+          type: "AtomicInt"
+        }
+      }
     },
     "SDL_time.h": {
       wrappers: {

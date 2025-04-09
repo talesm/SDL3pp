@@ -23705,11 +23705,11 @@
           "sourceName": "SDL_ThreadID"
         },
         "TLSID": {
-          "doc": "Thread local storage ID.\n\n0 is the invalid ID. An app can create these and then set data for these\nIDs that is unique to each thread.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa ThreadBase.GetTLS\n@sa ThreadBase.SetTLS",
+          "doc": "Thread local storage ID.\n\n0 is the invalid ID. An app can create these and then set data for these\nIDs that is unique to each thread.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa GetTLS\n@sa SetTLS",
           "name": "TLSID",
           "kind": "alias",
           "sourceName": "SDL_TLSID",
-          "type": "SDL_TLSID"
+          "type": "AtomicInt"
         },
         "ThreadFunction": {
           "doc": "The function passed to ThreadBase.ThreadBase() as the new thread's entry point.\n\n@param data what was passed as `data` to ThreadBase.ThreadBase().\n@returns a value that can be reported through ThreadBase.Wait().\n\n@since This datatype is available since SDL 3.2.0.",
@@ -23725,7 +23725,7 @@
           "doc": ""
         },
         "TLSDestructorCallback": {
-          "doc": "The callback used to cleanup data passed to ThreadBase.SetTLS.\n\nThis is called when a thread exits, to allow an app to free any resources.\n\n@param value a pointer previously handed to ThreadBase.SetTLS.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa ThreadBase.SetTLS",
+          "doc": "The callback used to cleanup data passed to SetTLS.\n\nThis is called when a thread exits, to allow an app to free any resources.\n\n@param value a pointer previously handed to SetTLS.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetTLS",
           "name": "TLSDestructorCallback",
           "kind": "alias",
           "type": "SDL_TLSDestructorCallback",
@@ -23957,51 +23957,6 @@
               "type": "void",
               "parameters": [],
               "sourceName": "SDL_DetachThread"
-            },
-            "GetTLS": {
-              "doc": "Get the current thread's value associated with a thread local storage ID.\n\n@param id a pointer to the thread local storage ID, may not be nullptr.\n@returns the value associated with the ID for the current thread or nullptr if\n         no value has been set; call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ThreadBase.SetTLS",
-              "name": "GetTLS",
-              "kind": "function",
-              "type": "void *",
-              "parameters": [
-                {
-                  "name": "id",
-                  "type": "TLSID *"
-                }
-              ],
-              "sourceName": "SDL_GetTLS",
-              "immutable": true,
-              "static": false
-            },
-            "SetTLS": {
-              "doc": "Set the current thread's value associated with a thread local storage ID.\n\nIf the thread local storage ID is not initialized (the value is 0), a new\nID will be created in a thread-safe way, so all calls using a pointer to\nthe same ID will refer to the same local storage.\n\nNote that replacing a value from a previous call to this function on the\nsame thread does _not_ call the previous value's destructor!\n\n`destructor` can be nullptr; it is assumed that `value` does not need to be\ncleaned up if so.\n\n@param id a pointer to the thread local storage ID, may not be nullptr.\n@param value the value to associate with the ID for the current thread.\n@param destructor a function called when the thread exits, to free the\n                  value, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ThreadBase.GetTLS",
-              "name": "SetTLS",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "id",
-                  "type": "TLSID *"
-                },
-                {
-                  "name": "value",
-                  "type": "const void *"
-                },
-                {
-                  "name": "destructor",
-                  "type": "TLSDestructorCallback"
-                }
-              ],
-              "sourceName": "SDL_SetTLS",
-              "static": true
-            },
-            "CleanupTLS": {
-              "doc": "Cleanup all TLS data for this thread.\n\nIf you are creating your threads outside of SDL and then calling SDL\nfunctions, you should call this function before your thread exits, to\nproperly clean up SDL memory.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "CleanupTLS",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_CleanupTLS"
             }
           }
         },
@@ -24055,6 +24010,48 @@
           "type": "ThreadID",
           "parameters": [],
           "sourceName": "SDL_GetCurrentThreadID"
+        },
+        "GetTLS": {
+          "doc": "Get the current thread's value associated with a thread local storage ID.\n\n@param id a pointer to the thread local storage ID, may not be nullptr.\n@returns the value associated with the ID for the current thread or nullptr if\n         no value has been set; call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTLS",
+          "name": "GetTLS",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "TLSID *"
+            }
+          ],
+          "sourceName": "SDL_GetTLS"
+        },
+        "SetTLS": {
+          "doc": "Set the current thread's value associated with a thread local storage ID.\n\nIf the thread local storage ID is not initialized (the value is 0), a new\nID will be created in a thread-safe way, so all calls using a pointer to\nthe same ID will refer to the same local storage.\n\nNote that replacing a value from a previous call to this function on the\nsame thread does _not_ call the previous value's destructor!\n\n`destructor` can be nullptr; it is assumed that `value` does not need to be\ncleaned up if so.\n\n@param id a pointer to the thread local storage ID, may not be nullptr.\n@param value the value to associate with the ID for the current thread.\n@param destructor a function called when the thread exits, to free the\n                  value, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetTLS",
+          "name": "SetTLS",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "TLSID *"
+            },
+            {
+              "name": "value",
+              "type": "const void *"
+            },
+            {
+              "name": "destructor",
+              "type": "TLSDestructorCallback"
+            }
+          ],
+          "sourceName": "SDL_SetTLS"
+        },
+        "CleanupTLS": {
+          "doc": "Cleanup all TLS data for this thread.\n\nIf you are creating your threads outside of SDL and then calling SDL\nfunctions, you should call this function before your thread exits, to\nproperly clean up SDL memory.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "CleanupTLS",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_CleanupTLS"
         }
       }
     },
