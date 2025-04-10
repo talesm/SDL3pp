@@ -16,7 +16,7 @@ class Resource
   T m_resource;
 
 public:
-  /// Constructs from value
+  /// Constructs the underlying resource.
   constexpr Resource(T resource = {})
     : m_resource(std::move(resource))
   {
@@ -42,11 +42,11 @@ public:
   /// Return contained resource;
   constexpr T get() const { return m_resource; }
 
-  /// Return contained resource and empties this
-  constexpr T release()
+  /// Return contained resource and empties or replace value
+  constexpr T release(T newResource = {})
   {
     T result = std::move(m_resource);
-    m_resource = {};
+    m_resource = newResource;
     return result;
   }
 };

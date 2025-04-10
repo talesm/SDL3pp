@@ -6789,16 +6789,17 @@ const transform = {
           "name": "SDL3PP_ENABLE_IMAGE"
         }
       },
-      resources: {
+      resourcesX: {
         "IMG_Animation": {
-          "returnType": "unique",
-          "entries": {
+          returnType: "unique",
+          free: "IMG_FreeAnimation",
+          entries: {
             "IMG_LoadAnimation": "ctor",
             "IMG_LoadAnimation_IO": {
-              "name": "AnimationBase",
-              "type": "",
-              "static": false,
-              "parameters": [
+              name: "AnimationBase",
+              type: "",
+              static: false,
+              parameters: [
                 {
                   "name": "src",
                   "type": "ObjectBox<SDL_IOStream> auto &&"
@@ -6806,10 +6807,10 @@ const transform = {
               ]
             },
             "IMG_LoadAnimationTyped_IO": {
-              "name": "AnimationBase",
-              "type": "",
-              "static": false,
-              "parameters": [
+              name: "AnimationBase",
+              type: "",
+              static: false,
+              parameters: [
                 {
                   "name": "src",
                   "type": "ObjectBox<SDL_IOStream> auto &&"
@@ -6821,34 +6822,34 @@ const transform = {
               ]
             },
             "GetWidth": {
-              "kind": "function",
-              "immutable": true,
-              "type": "int",
-              "parameters": []
+              kind: "function",
+              immutable: true,
+              type: "int",
+              parameters: []
             },
             "GetHeight": {
-              "kind": "function",
-              "immutable": true,
-              "type": "int",
-              "parameters": []
+              kind: "function",
+              immutable: true,
+              type: "int",
+              parameters: []
             },
             "GetSize": {
-              "kind": "function",
-              "immutable": true,
-              "type": "Point",
-              "parameters": []
+              kind: "function",
+              immutable: true,
+              type: "Point",
+              parameters: []
             },
             "GetCount": {
-              "kind": "function",
-              "immutable": true,
-              "type": "int",
-              "parameters": []
+              kind: "function",
+              immutable: true,
+              type: "int",
+              parameters: []
             },
             "GetFrame": {
-              "kind": "function",
-              "type": "SurfaceRef",
-              "immutable": true,
-              "parameters": [
+              kind: "function",
+              type: "SurfaceRef",
+              immutable: true,
+              parameters: [
                 {
                   "type": "int",
                   "name": "index"
@@ -6856,17 +6857,16 @@ const transform = {
               ]
             },
             "GetDelay": {
-              "kind": "function",
-              "type": "int",
-              "immutable": true,
-              "parameters": [
+              kind: "function",
+              type: "int",
+              immutable: true,
+              parameters: [
                 {
                   "type": "int",
                   "name": "index"
                 }
               ]
-            },
-            "IMG_FreeAnimation": "function"
+            }
           }
         }
       },

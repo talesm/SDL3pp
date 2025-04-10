@@ -32521,25 +32521,17 @@
         "AnimationBase-forward": {
           "name": "AnimationBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<IMG_Animation *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "AnimationRef": {
+        "AnimationRef-forward": {
           "name": "AnimationRef",
-          "kind": "alias",
-          "type": "AnimationBase<ObjectRef<IMG_Animation>>",
-          "doc": "Handle to a non owned animation\n\n@cat resource\n\n@sa AnimationBase\n@sa Animation"
+          "kind": "forward",
+          "doc": ""
         },
-        "Animation": {
+        "Animation-forward": {
           "name": "Animation",
-          "kind": "alias",
-          "type": "AnimationBase<ObjectUnique<IMG_Animation>>",
-          "doc": "Handle to an owned animation\n\n@cat resource\n\n@sa AnimationBase\n@sa AnimationRef"
+          "kind": "forward",
+          "doc": ""
         },
         "SDL_IMAGE_MAJOR_VERSION": {
           "doc": "Printable format: \"%d.%d.%d\", MAJOR, MINOR, MICRO",
@@ -33331,26 +33323,20 @@
           }
         ],
         "AnimationBase": {
-          "doc": "Animated image support\n\nCurrently only animated GIFs and WEBP images are supported.",
+          "doc": "Animated image support\n\nCurrently only animated GIFs and WEBP images are supported.\n\n@cat resource\n\n@sa Animation\n@sa AnimationRef",
           "name": "AnimationBase",
           "kind": "struct",
           "sourceName": "IMG_Animation",
-          "type": "T",
-          "template": [
-            {
-              "type": "ObjectBox<IMG_Animation *>",
-              "name": "T"
-            }
-          ],
+          "type": "Resource<IMG_Animation *>",
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "AnimationBase": [
               {
-                "doc": "Load an animation from a file.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationBase.Free().\n\n@param file path on the filesystem containing an animated image.\n@post a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.Free",
+                "doc": "Load an animation from a file.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationRef.reset().\n\n@param file path on the filesystem containing an animated image.\n@post a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationRef.reset",
                 "name": "AnimationBase",
                 "kind": "function",
                 "type": "",
@@ -33363,7 +33349,7 @@
                 "sourceName": "IMG_LoadAnimation"
               },
               {
-                "doc": "Load an animation from an IOStreamBase.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationBase.Free().\n\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@post a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.Free",
+                "doc": "Load an animation from an IOStreamBase.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationRef.reset().\n\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@post a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationRef.reset",
                 "name": "AnimationBase",
                 "kind": "function",
                 "type": "",
@@ -33377,7 +33363,7 @@
                 "static": false
               },
               {
-                "doc": "Load an animation from an SDL datasource\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationBase.Free().\n\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"GIF\", etc).\n@post a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.Free",
+                "doc": "Load an animation from an SDL datasource\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationRef.reset().\n\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"GIF\", etc).\n@post a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationRef.reset",
                 "name": "AnimationBase",
                 "kind": "function",
                 "type": "",
@@ -33452,33 +33438,204 @@
               ],
               "name": "GetDelay",
               "doc": ""
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "AnimationRef": {
+          "name": "AnimationRef",
+          "kind": "struct",
+          "type": "AnimationBase",
+          "doc": "Handle to a non owned animation\n\n@cat resource\n\n@sa AnimationBase\n@sa Animation",
+          "entries": {
+            "AnimationBase::AnimationBase": {
+              "kind": "alias",
+              "name": "AnimationBase::AnimationBase",
+              "doc": ""
             },
-            "Free": {
-              "doc": "Dispose of an AnimationBase and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase",
-              "name": "Free",
+            "AnimationRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const AnimationRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "AnimationBase(other.get())"
+                  ]
+                },
+                "name": "AnimationRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "AnimationRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "AnimationBase(other.release())"
+                  ]
+                },
+                "name": "AnimationRef"
+              }
+            ],
+            "~AnimationRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~AnimationRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AnimationRef &",
+              "parameters": [
+                {
+                  "type": "AnimationRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "doc": "Dispose of an AnimationBase and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim AnimationBase to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase",
+              "name": "reset",
               "kind": "function",
               "type": "void",
-              "parameters": [],
-              "sourceName": "IMG_FreeAnimation"
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "IMG_Animation *",
+                  "default": "{}"
+                }
+              ],
+              "sourceName": "IMG_FreeAnimation",
+              "static": false,
+              "hints": {
+                "body": "IMG_FreeAnimation(release(newResource))"
+              }
             }
           }
         },
-        "ObjectRef<IMG_Animation>::doFree": {
-          "name": "ObjectRef<IMG_Animation>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for animation resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "IMG_Animation *",
-              "name": "resource"
+        "Animation": {
+          "name": "Animation",
+          "kind": "struct",
+          "type": "AnimationRef",
+          "doc": "Handle to an owned animation\n\n@cat resource\n\n@sa AnimationBase\n@sa AnimationRef",
+          "entries": {
+            "AnimationRef::AnimationRef": {
+              "kind": "alias",
+              "name": "AnimationRef::AnimationRef",
+              "doc": ""
+            },
+            "Animation": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "IMG_Animation *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "AnimationRef(resource)"
+                  ]
+                },
+                "name": "Animation"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Animation &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Animation",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Animation &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Animation"
+              }
+            ],
+            "~Animation": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Animation"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Animation &",
+              "parameters": [
+                {
+                  "type": "Animation",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "IMG_FreeAnimation"
+          }
         },
         "LoadGIFAnimation": {
-          "doc": "Load a GIF animation directly.\n\nIf you know you definitely have a GIF image, you can call this function,\nwhich will skip SDL_image's file format detection routines. Generally it's\nbetter to use the abstract interfaces; also, there is only an IOStreamBase\ninterface available here.\n\n@param src an IOStreamBase that data will be read from.\n@returns a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.Free",
+          "doc": "Load a GIF animation directly.\n\nIf you know you definitely have a GIF image, you can call this function,\nwhich will skip SDL_image's file format detection routines. Generally it's\nbetter to use the abstract interfaces; also, there is only an IOStreamBase\ninterface available here.\n\n@param src an IOStreamBase that data will be read from.\n@returns a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationRef.reset",
           "name": "LoadGIFAnimation",
           "kind": "function",
           "type": "Animation",
@@ -33491,7 +33648,7 @@
           "sourceName": "IMG_LoadGIFAnimation_IO"
         },
         "LoadWEBPAnimation": {
-          "doc": "Load a WEBP animation directly.\n\nIf you know you definitely have a WEBP image, you can call this function,\nwhich will skip SDL_image's file format detection routines. Generally it's\nbetter to use the abstract interfaces; also, there is only an IOStreamBase\ninterface available here.\n\n@param src an IOStreamBase that data will be read from.\n@returns a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.Free",
+          "doc": "Load a WEBP animation directly.\n\nIf you know you definitely have a WEBP image, you can call this function,\nwhich will skip SDL_image's file format detection routines. Generally it's\nbetter to use the abstract interfaces; also, there is only an IOStreamBase\ninterface available here.\n\n@param src an IOStreamBase that data will be read from.\n@returns a new AnimationBase, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationRef.reset",
           "name": "LoadWEBPAnimation",
           "kind": "function",
           "type": "Animation",

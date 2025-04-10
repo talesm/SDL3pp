@@ -38,6 +38,7 @@ export interface ApiEntryBase {
 export interface EntryHint {
   init?: string[];
   delete?: boolean;
+  default?: boolean;
   body?: string;
   self?: string;
   super?: string;
@@ -95,6 +96,7 @@ export interface ApiFileTransform {
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
+  resourcesX?: Dict<ApiResource>;
   enumerations?: Dict<ApiEnumeration>;
   wrappers?: Dict<ApiWrapper>;
   namespacesMap?: StringMap;

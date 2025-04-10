@@ -118,10 +118,18 @@ class ApiContext {
     this.types = {};
   }
 
+  /**
+   * @param {string} originalType 
+   * @param {string} targetType 
+   */
   addParamType(originalType, targetType) {
     if (!this.paramTypeMap[originalType]) this.paramTypeMap[originalType] = targetType;
   }
 
+  /**
+   * @param {string} originalType 
+   * @param {string} targetType 
+   */
   addReturnType(originalType, targetType) {
     if (!this.returnTypeMap[originalType]) this.returnTypeMap[originalType] = targetType;
   }
@@ -497,15 +505,210 @@ function expandWrappers(sourceEntries, transform, context) {
 /**
  * 
  * @param {ApiEntries}        sourceEntries
- * @param {ApiFileTransform}  transform 
+ * @param {ApiFileTransform}  file 
  * @param {ApiContext}        context 
  */
-function expandResources(sourceEntries, transform, context) {
-  const resources = transform.resources;
-  if (!resources) return;
+function expandResources(sourceEntries, file, context) {
+  // TODO try to auto detect sourceEntries
+
   /** @type {ApiEntry[]} */
   const referenceAliases = [];
-  for (const [sourceName, resourceEntry] of Object.entries(resources)) {
+  for (const [sourceName, resourceEntry] of Object.entries(file.resourcesX ?? {})) {
+    const uniqueName = resourceEntry.uniqueName || transformName(sourceName, context);
+    const name = resourceEntry.name || (uniqueName + "Base");
+    const refName = resourceEntry.refName || (uniqueName + "Ref");
+    const type = resourceEntry.type ?? sourceName;
+    const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
+    const isStruct = sourceEntry.kind === "struct";
+    const pointerType = resourceEntry.pointerType ?? (isStruct ? `${type} *` : type);
+    const constPointerType = `const ${pointerType}`;
+    referenceAliases.push(
+      { name, kind: "forward" },
+      { name: refName, kind: "forward" },
+      { name: uniqueName, kind: "forward" },
+    );
+    context.addParamType(pointerType, `${name} &`);
+    context.addParamType(constPointerType, `const ${name} &`);
+
+    switch (resourceEntry.returnType) {
+      case "none": break;
+      case "unique":
+        context.addReturnType(pointerType, uniqueName);
+        context.addReturnType(constPointerType, uniqueName);
+        break;
+      default:
+        context.addReturnType(pointerType, refName);
+        context.addReturnType(constPointerType, refName);
+        break;
+    }
+    const subEntries = resourceEntry.entries || {};
+    const resourceType = `Resource<${pointerType}>`;
+    const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
+
+    /** @type {ApiEntryTransform} */
+    const entry = {
+      name,
+      kind: "struct",
+      type: resourceType,
+      doc: transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource\n\n@sa ${uniqueName}\n@sa ${refName}`,
+      entries: {
+        "Resource::Resource": "alias",
+        ...subEntries
+      },
+      hints: {
+        self: "get()"
+      }
+    };
+    file.transform[sourceName] = entry;
+    if (resourceEntry.includeAfter) {
+      includeAfter(name, file, resourceEntry.includeAfter);
+    }
+    const freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free]) ?? scanFreeFunctionX(sourceEntries, uniqueName, pointerType);
+    const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
+    includeAfter([{
+      name: refName,
+      kind: "struct",
+      type: name,
+      doc: `Handle to a non owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${uniqueName}`,
+      entries: {
+        [`${name}::${name}`]: "alias",
+        [refName]: [{
+          kind: "function",
+          type: "",
+          constexpr: true,
+          parameters: [{
+            type: `const ${refName} &`,
+            name: "other"
+          }],
+          doc: "Copy constructor.",
+          hints: {
+            init: [`${name}(other.get())`],
+          }
+        }, {
+          kind: "function",
+          type: "",
+          constexpr: true,
+          parameters: [{
+            type: `${refName} &&`,
+            name: "other"
+          }],
+          doc: "Move constructor.",
+          hints: {
+            init: [`${name}(other.release())`],
+          }
+        }],
+        ["~" + refName]: {
+          kind: "function",
+          type: "",
+          parameters: [],
+          proto: true,
+          constexpr: true,
+          doc: "Default constructor",
+          hints: {
+            default: true
+          }
+        },
+        "operator=": {
+          kind: "function",
+          type: refName + " &",
+          parameters: [{
+            type: refName,
+            name: "other"
+          }],
+          doc: "Assignment operator.",
+          hints: {
+            body: `release(other.release());\nreturn *this;`,
+          }
+        },
+        [freeFunction?.name ?? "reset"]: {
+          kind: "function",
+          name: "reset",
+          type: freeFunction?.type ?? "void",
+          static: false,
+          parameters: [{
+            name: "newResource",
+            type: pointerType,
+            default: "{}"
+          }],
+          doc: freeFunction?.doc ? transformDoc(freeFunction.doc, context) : `frees up ${sourceName}.`,
+          hints: {
+            body: freeFunction ? (freeFunction.type !== "void" ? "return " : "") + `${freeFunction.name}(release(newResource));` : "",
+          }
+        }
+      }
+    }, {
+      name: uniqueName,
+      kind: "struct",
+      type: refName,
+      doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${refName}`,
+      entries: {
+        [`${refName}::${refName}`]: "alias",
+        [uniqueName]: [{
+          kind: "function",
+          type: "",
+          constexpr: true,
+          explicit: true,
+          parameters: [{
+            type: pointerType,
+            name: "resource",
+            default: "{}"
+          }],
+          doc: "Constructs from the underlying resource.",
+          hints: {
+            init: [`${refName}(resource)`],
+          }
+        }, {
+          kind: "function",
+          type: "",
+          constexpr: true,
+          proto: true,
+          parameters: [{
+            type: `const ${uniqueName} &`,
+            name: "other"
+          }],
+          hints: {
+            delete: true,
+          }
+        }, {
+          kind: "function",
+          type: "",
+          constexpr: true,
+          proto: true,
+          parameters: [{
+            type: `${uniqueName} &&`,
+            name: "other"
+          }],
+          doc: "Move constructor.",
+          hints: {
+            default: true,
+          }
+        }],
+        ["~" + uniqueName]: {
+          kind: "function",
+          type: "",
+          parameters: [],
+          doc: "Frees up resource when object goes out of scope.",
+          hints: {
+            body: "reset();"
+          }
+        },
+        "operator=": {
+          kind: "function",
+          type: uniqueName + " &",
+          parameters: [{
+            type: uniqueName,
+            name: "other"
+          }],
+          doc: "Assignment operator.",
+          hints: {
+            body: `reset(other.release());\nreturn *this;`,
+          }
+        }
+      }
+    }], file, includeAfterKey);
+  }
+
+  for (const [sourceName, resourceEntry] of Object.entries(file.resources ?? {})) {
     const uniqueName = resourceEntry.uniqueName || transformName(sourceName, context);
     const name = resourceEntry.name || (uniqueName + "Base");
     const refName = resourceEntry.refName || (uniqueName + "Ref");
@@ -542,7 +745,7 @@ function expandResources(sourceEntries, transform, context) {
         ],
         sourceName: freeFunction
       };
-      prependIncludeAfter(freeEntry, transform, sourceName);
+      prependIncludeAfter(freeEntry, file, sourceName);
     }
     if (resourceEntry.prependAliases !== false) {
       referenceAliases.push({ name, kind: "forward", template, },
@@ -599,9 +802,9 @@ function expandResources(sourceEntries, transform, context) {
       }
     };
     // TODO if (resourceEntry.insertAfter) {...}
-    transform.transform[sourceName] = entry;
+    file.transform[sourceName] = entry;
   }
-  includeAfter(referenceAliases, transform, "__begin");
+  includeAfter(referenceAliases, file, "__begin");
 }
 
 /**
@@ -741,6 +944,30 @@ function scanFreeFunction(entries) {
   for (const sourceName of Object.keys(entries)) {
     if (looksLikeFreeFunction(sourceName)) return sourceName;
   }
+}
+
+/**
+ * 
+ * @param {ApiEntries}  entries 
+ * @param {string}      uniqueType 
+ * @param {string}      pointerType
+ */
+function scanFreeFunctionX(entries, uniqueType, pointerType) {
+  /** @type {ApiEntry[]} */
+  const candidates = [];
+  for (const sourceName of Object.keys(entries)) {
+    if (looksLikeFreeFunction(sourceName)) {
+      const sourceEntry = entries[sourceName];
+      if (Array.isArray(sourceEntry) || sourceEntry?.parameters?.length !== 1) {
+        continue;
+      }
+      const firstParameter = sourceEntry.parameters[0];
+      if (sourceEntry.name.endsWith(uniqueType) || (typeof firstParameter !== 'string' && firstParameter.type === pointerType)) {
+        candidates.push(sourceEntry);
+      }
+    }
+  }
+  if (candidates.length === 1) return candidates[0];
 }
 
 /**

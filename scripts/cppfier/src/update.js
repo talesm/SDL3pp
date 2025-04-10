@@ -493,6 +493,7 @@ function generateDef(entry) {
 function generateBody(entry, prefix) {
   const hint = entry.hints;
   if (hint?.delete) return " = delete;";
+  if (hint?.default) return " = default;";
   if (hint?.body) {
     return `\n${prefix}{\n${prefix}  ${hint.body.replaceAll("\n", `\n${prefix}  `)}\n${prefix}}`;
   }

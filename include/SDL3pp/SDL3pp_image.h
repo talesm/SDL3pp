@@ -28,30 +28,13 @@ namespace SDL {
  */
 
 // Forward decl
-template<ObjectBox<IMG_Animation*> T>
 struct AnimationBase;
 
-/**
- * Handle to a non owned animation
- *
- * @cat resource
- *
- * @sa resource
- * @sa AnimationBase
- * @sa Animation
- */
-using AnimationRef = AnimationBase<ObjectRef<IMG_Animation>>;
+// Forward decl
+struct AnimationRef;
 
-/**
- * Handle to an owned animation
- *
- * @cat resource
- *
- * @sa resource
- * @sa AnimationBase
- * @sa AnimationRef
- */
-using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
+// Forward decl
+struct Animation;
 
 #ifdef SDL3PP_DOC
 
@@ -98,22 +81,22 @@ inline int IMG_Version() { return ::IMG_Version(); }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An SDL_Surface is a buffer of pixels in memory accessible by the CPU. Use
+ * An SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use
  * this if you plan to hand the data to something else or manipulate it
  * further in code.
  *
- * There are no guarantees about what format the new SDL_Surface data will be;
+ * There are no guarantees about what format the new SurfaceBase data will be;
  * in many cases, SDL_image will attempt to supply a surface that exactly
  * matches the provided image, but in others it might have to convert (either
  * because the image is in a format that SDL doesn't directly support or
  * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an SDL_Surface for
- * its specifics, and use SDL_ConvertSurface to then migrate to any supported
+ * formats and SDL_image had to pick one). You can inspect an SurfaceBase for
+ * its specifics, and use SurfaceBase.Convert to then migrate to any supported
  * format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: SurfaceBase::SetColorKey(image, SDL_RLEACCEL,
+ * by calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,
  * image->format->colorkey);
  *
  * Even though this function accepts a file type, SDL_image may still try
@@ -123,20 +106,31 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * on its ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with SDL_IOStream: `IMG_Load("filename.jpg")` will call this function and
+ * with IOStreamBase: `LoadSurface("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
+ * There is also LoadSurface(), which is equivalent to this function except
+ * that it will rely on SDL_image to determine what type of data it is
+ * loading, much like passing a nullptr for type.
+ *
  * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
+ * load images directly into an TextureBase for use by the GPU without using a
  * software surface: call LoadTexture() instead.
  *
- * @param src an SDL_IOStream that data will be read from.
+ * When done with the returned surface, the app should dispose of it with a
+ * call to SurfaceBase.Destroy().
+ *
+ * @param src an IOStreamBase that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadSurface
+ * @sa LoadSurface
+ * @sa SurfaceBase.Destroy
  */
 inline Surface LoadSurface(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
 {
@@ -146,7 +140,7 @@ inline Surface LoadSurface(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
 /**
  * Load an image from a filesystem path into a software surface.
  *
- * An SDL_Surface is a buffer of pixels in memory accessible by the CPU. Use
+ * An SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use
  * this if you plan to hand the data to something else or manipulate it
  * further in code.
  *
@@ -1978,10 +1972,9 @@ inline bool SaveJPG(SurfaceRef surface,
  * @sa Animation
  * @sa AnimationRef
  */
-template<ObjectBox<IMG_Animation*> T>
-struct AnimationBase : T
+struct AnimationBase : Resource<IMG_Animation*>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * Load an animation from a file.
@@ -1991,25 +1984,25 @@ struct AnimationBase : T
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa FreeAnimation()
+   * @sa AnimationRef.reset
    */
   AnimationBase(StringParam file)
-    : T(IMG_LoadAnimation(file))
+    : Resource(IMG_LoadAnimation(file))
   {
   }
 
   /**
-   * Load an animation from an SDL_IOStream.
+   * Load an animation from an IOStreamBase.
    *
-   * @param src an SDL_IOStream that data will be read from.
+   * @param src an IOStreamBase that data will be read from.
    * @post a new Animation, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa FreeAnimation()
+   * @sa AnimationRef.reset
    */
   AnimationBase(ObjectBox<SDL_IOStream> auto&& src)
-    : T(IMG_LoadAnimation_IO(src.get(), false))
+    : Resource(IMG_LoadAnimation_IO(src.get(), false))
   {
   }
 
@@ -2028,22 +2021,22 @@ struct AnimationBase : T
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa FreeAnimation()
+   * @sa AnimationRef.reset
    */
   AnimationBase(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
-    : T(IMG_LoadAnimationTyped_IO(src.get(), false, type))
+    : Resource(IMG_LoadAnimationTyped_IO(src.get(), false, type))
   {
   }
 
   /**
    * Get the width in pixels.
    */
-  int GetWidth() const { return T::get()->w; }
+  int GetWidth() const { return get()->w; }
 
   /**
    * Get the height in pixels.
    */
-  int GetHeight() const { return T::get()->h; }
+  int GetHeight() const { return get()->h; }
 
   /**
    * Get the size in pixels.
@@ -2053,60 +2046,134 @@ struct AnimationBase : T
   /**
    * Return the number of frames.
    */
-  int GetCount() const { return T::get()->count; }
+  int GetCount() const { return get()->count; }
 
   /**
    * Return the frame image under given index.
    *
    * @param index the index to get frame, within [0, GetCount() - 1]
    */
-  SurfaceRef GetFrame(int index) const { return T::get()->frames[index]; }
+  SurfaceRef GetFrame(int index) const { return get()->frames[index]; }
 
   /**
    * Return the frame delay under given index.
    *
    * @param index the index to get frame, within [0, GetCount() - 1]
    */
-  int GetDelay(int index) const { return T::get()->delays[index]; }
-
-  /**
-   * Dispose of an IMG_Animation and free its resources.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa AnimationBase::AnimationBase()
-   */
-  void Free() { return T::free(); }
+  int GetDelay(int index) const { return get()->delays[index]; }
 };
 
 /**
- * Callback for animation resource cleanup
+ * Handle to a non owned animation
  *
- * @private
+ * @cat resource
+ *
+ * @sa AnimationBase
+ * @sa Animation
  */
-template<>
-inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation* resource)
+struct AnimationRef : AnimationBase
 {
-  return IMG_FreeAnimation(resource);
-}
+  using AnimationBase::AnimationBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr AnimationRef(const AnimationRef& other)
+    : AnimationBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr AnimationRef(AnimationRef&& other)
+    : AnimationBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~AnimationRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  AnimationRef& operator=(AnimationRef other)
+  {
+    release(other.release());
+    return *this;
+  }
+
+  /**
+   * Dispose of an AnimationBase and free its resources.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa AnimationBase.AnimationBase
+   * @sa AnimationBase.AnimationBase
+   * @sa AnimationBase.AnimationBase
+   */
+  void reset(IMG_Animation* newResource = {})
+  {
+    IMG_FreeAnimation(release(newResource));
+  }
+};
+
+/**
+ * Handle to an owned animation
+ *
+ * @cat resource
+ *
+ * @sa AnimationBase
+ * @sa AnimationRef
+ */
+struct Animation : AnimationRef
+{
+  using AnimationRef::AnimationRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit Animation(IMG_Animation* resource = {}) {}
+
+  constexpr Animation(const Animation& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr Animation(Animation&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~Animation() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  Animation& operator=(Animation other)
+  {
+    AnimationRef::operator=(other.release());
+    return *this;
+  }
+};
 
 /**
  * Load a GIF animation directly.
  *
  * If you know you definitely have a GIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream that data will be read from.
- * @returns a new IMG_Animation, or nullptr on error.
+ * @param src an IOStreamBase that data will be read from.
+ * @returns a new AnimationBase, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAnimation
- * @sa LoadAnimation()
- * @sa LoadAnimationTyped()
- * @sa FreeAnimation
+ * @sa AnimationBase.AnimationBase
+ * @sa AnimationRef.reset
  */
 inline Animation LoadGIFAnimation(ObjectBox<SDL_IOStream> auto&& src)
 {
@@ -2118,15 +2185,15 @@ inline Animation LoadGIFAnimation(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a WEBP image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream that data will be read from.
- * @returns a new IMG_Animation, or nullptr on error.
+ * @param src an IOStreamBase that data will be read from.
+ * @returns a new AnimationBase, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation
+ * @sa AnimationBase.AnimationBase
  */
 inline Animation LoadWEBPAnimation(ObjectBox<SDL_IOStream> auto&& src)
 {
