@@ -382,7 +382,7 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * This function will enable text input (EVENT_TEXT_INPUT and
  * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowBase::StopTextInput().
+ * function paired with WindowBase.StopTextInput().
  *
  * Text input events are not received by default.
  *
@@ -392,7 +392,7 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that
+ * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
  *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
  * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
  *   that describes how text should be capitalized, defaults to
@@ -420,15 +420,15 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::SetTextInputArea
- * @sa WindowBase::StartTextInput
- * @sa WindowBase::StopTextInput
- * @sa WindowBase::IsTextInputActive
+ * @sa WindowBase.SetTextInputArea
+ * @sa WindowBase.StartTextInput
+ * @sa WindowBase.StopTextInput
+ * @sa WindowBase.IsTextInputActive
  */
 template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::StartTextInput(PropertiesRef props)
+inline bool WindowBase<T>::StartTextInput(PropertiesBase& props)
 {
-  return SDL_StartTextInputWithProperties(T::get(), props);
+  return SDL_StartTextInputWithProperties(T::get(), props.get());
 }
 
 /**

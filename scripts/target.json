@@ -2619,31 +2619,8 @@
     },
     "SDL3pp_properties.h": {
       "name": "SDL3pp_properties.h",
-      "doc": "@defgroup CategoryProperties Category Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (PropertiesBase). A property\ngroup can be created with the CreateProperties function and destroyed\nwith the PropertiesBase.Destroy function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- PropertiesBase.SetPointer and PropertiesBase.GetPointer operate on `void*`\n  pointer types.\n- PropertiesBase.SetString and PropertiesBase.GetString operate on string types.\n- PropertiesBase.SetNumber and PropertiesBase.GetNumber operate on signed 64-bit\n  integer types.\n- PropertiesBase.SetFloat and PropertiesBase.GetFloat operate on floating point\n  types.\n- PropertiesBase.SetBoolean and PropertiesBase.GetBoolean operate on boolean\n  types.\n\nProperties can be removed from a group by using PropertiesBase.Clear.",
+      "doc": "@defgroup CategoryProperties Category Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (PropertiesBase). A property\ngroup can be created with the CreateProperties function and destroyed\nwith the PropertiesRef.reset function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- PropertiesBase.SetPointer and PropertiesBase.GetPointer operate on `void*`\n  pointer types.\n- PropertiesBase.SetString and PropertiesBase.GetString operate on string types.\n- PropertiesBase.SetNumber and PropertiesBase.GetNumber operate on signed 64-bit\n  integer types.\n- PropertiesBase.SetFloat and PropertiesBase.GetFloat operate on floating point\n  types.\n- PropertiesBase.SetBoolean and PropertiesBase.GetBoolean operate on boolean\n  types.\n\nProperties can be removed from a group by using PropertiesBase.Clear.",
       "entries": {
-        "PropertiesBase-forward": {
-          "name": "PropertiesBase",
-          "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>",
-              "name": "T"
-            }
-          ],
-          "doc": ""
-        },
-        "PropertiesRef": {
-          "name": "PropertiesRef",
-          "kind": "alias",
-          "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>",
-          "doc": "Handle to a non owned properties\n\n@cat resource\n\n@sa PropertiesBase\n@sa Properties"
-        },
-        "Properties": {
-          "name": "Properties",
-          "kind": "alias",
-          "type": "PropertiesBase<ObjectUnique<SDL_PropertiesID, ObjectDeleter<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>>>",
-          "doc": "Handle to an owned properties\n\n@cat resource\n\n@sa PropertiesBase\n@sa PropertiesRef"
-        },
         "PropertyType": {
           "doc": "SDL property type\n\n@since This enum is available since SDL 3.2.0.",
           "name": "PropertyType",
@@ -2677,6 +2654,21 @@
         },
         "PropertiesLock-forward": {
           "name": "PropertiesLock",
+          "kind": "forward",
+          "doc": ""
+        },
+        "PropertiesBase-forward": {
+          "name": "PropertiesBase",
+          "kind": "forward",
+          "doc": ""
+        },
+        "PropertiesRef-forward": {
+          "name": "PropertiesRef",
+          "kind": "forward",
+          "doc": ""
+        },
+        "Properties-forward": {
+          "name": "Properties",
           "kind": "forward",
           "doc": ""
         },
@@ -2729,21 +2721,15 @@
           "sourceName": "SDL_PROPERTY_TYPE_BOOLEAN"
         },
         "PropertiesBase": {
-          "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.",
+          "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Properties\n@sa PropertiesRef",
           "name": "PropertiesBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_PropertiesID>",
           "sourceName": "SDL_PropertiesID",
-          "template": [
-            {
-              "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "CopyPropertiesTo": {
@@ -2754,7 +2740,7 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "PropertiesRef"
+                  "type": "PropertiesBase &"
                 }
               ],
               "sourceName": "SDL_CopyProperties",
@@ -3084,30 +3070,201 @@
                 "sourceName": "SDL_EnumerateProperties",
                 "immutable": true
               }
+            ]
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "PropertiesRef": {
+          "name": "PropertiesRef",
+          "kind": "struct",
+          "type": "PropertiesBase",
+          "doc": "Handle to a non owned properties\n\n@cat resource\n\n@sa PropertiesBase\n@sa Properties",
+          "entries": {
+            "PropertiesBase::PropertiesBase": {
+              "kind": "alias",
+              "name": "PropertiesBase::PropertiesBase",
+              "doc": ""
+            },
+            "PropertiesRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const PropertiesRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "PropertiesBase(other.get())"
+                  ]
+                },
+                "name": "PropertiesRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "PropertiesRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "PropertiesBase(other.release())"
+                  ]
+                },
+                "name": "PropertiesRef"
+              }
             ],
-            "Destroy": {
-              "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreateProperties",
-              "name": "Destroy",
+            "~PropertiesRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroyProperties"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~PropertiesRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "PropertiesRef &",
+              "parameters": [
+                {
+                  "type": "PropertiesRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_PropertiesID",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n@param props the properties to destroy.\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreateProperties",
+              "hints": {
+                "body": "SDL_DestroyProperties(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree": {
-          "name": "ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for properties resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "FancyPointer<SDL_PropertiesID>",
-              "name": "resource"
+        "Properties": {
+          "name": "Properties",
+          "kind": "struct",
+          "type": "PropertiesRef",
+          "doc": "Handle to an owned properties\n\n@cat resource\n\n@sa PropertiesBase\n@sa PropertiesRef",
+          "entries": {
+            "PropertiesRef::PropertiesRef": {
+              "kind": "alias",
+              "name": "PropertiesRef::PropertiesRef",
+              "doc": ""
+            },
+            "Properties": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_PropertiesID",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "PropertiesRef(resource)"
+                  ]
+                },
+                "name": "Properties"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Properties &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Properties",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Properties &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Properties"
+              }
+            ],
+            "~Properties": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Properties"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Properties &",
+              "parameters": [
+                {
+                  "type": "Properties",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroyProperties"
+          }
         },
         "PropertiesLock": {
           "name": "PropertiesLock",
@@ -3213,7 +3370,7 @@
           "sourceName": "SDL_GetGlobalProperties"
         },
         "CreateProperties": {
-          "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesBase.Destroy",
+          "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesRef.reset",
           "name": "CreateProperties",
           "kind": "function",
           "type": "Properties",
@@ -5238,7 +5395,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef"
+                    "type": "PropertiesBase &"
                   }
                 ],
                 "sourceName": "SDL_CreateWindowWithProperties"
@@ -6061,7 +6218,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef"
+                    "type": "PropertiesBase &"
                   }
                 ],
                 "sourceName": "SDL_StartTextInputWithProperties",
@@ -7834,7 +7991,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef"
+                    "type": "PropertiesBase &"
                   }
                 ],
                 "sourceName": "SDL_CreateRendererWithProperties"
@@ -8935,7 +9092,7 @@
                   },
                   {
                     "name": "props",
-                    "type": "PropertiesRef"
+                    "type": "PropertiesBase &"
                   }
                 ],
                 "sourceName": "SDL_CreateTextureWithProperties"
@@ -15489,7 +15646,7 @@
                   },
                   {
                     "name": "props",
-                    "type": "PropertiesRef"
+                    "type": "PropertiesBase &"
                   }
                 ],
                 "sourceName": "SDL_ConvertSurfaceAndColorspace",
@@ -16732,7 +16889,7 @@
               },
               {
                 "name": "props",
-                "type": "PropertiesRef"
+                "type": "PropertiesBase &"
               }
             ],
             "sourceName": "SDL_ConvertSurfaceAndColorspace",
@@ -16808,7 +16965,7 @@
             },
             {
               "name": "src_properties",
-              "type": "PropertiesRef"
+              "type": "PropertiesBase &"
             },
             {
               "name": "src",
@@ -16828,7 +16985,7 @@
             },
             {
               "name": "dst_properties",
-              "type": "PropertiesRef"
+              "type": "PropertiesBase &"
             },
             {
               "name": "dst",
@@ -18884,7 +19041,7 @@
             "parameters": [
               {
                 "name": "props",
-                "type": "PropertiesRef"
+                "type": "PropertiesBase &"
               }
             ],
             "sourceName": "SDL_StartTextInputWithProperties",
@@ -24157,7 +24314,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef"
+                    "type": "PropertiesBase &"
                   }
                 ],
                 "sourceName": "SDL_CreateThreadWithProperties"
@@ -28480,7 +28637,7 @@
               },
               {
                 "name": "props",
-                "type": "PropertiesRef"
+                "type": "PropertiesBase &"
               }
             ],
             "sourceName": "SDL_ShowFileDialogWithProperties"
@@ -34663,7 +34820,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef"
+                    "type": "PropertiesBase &"
                   }
                 ],
                 "sourceName": "TTF_OpenFontWithProperties"
@@ -36754,7 +36911,7 @@
           "parameters": [
             {
               "name": "props",
-              "type": "PropertiesRef"
+              "type": "PropertiesBase &"
             }
           ],
           "sourceName": "TTF_CreateRendererTextEngineWithProperties"
@@ -36805,7 +36962,7 @@
           "parameters": [
             {
               "name": "props",
-              "type": "PropertiesRef"
+              "type": "PropertiesBase &"
             }
           ],
           "sourceName": "TTF_CreateGPUTextEngineWithProperties"

@@ -893,7 +893,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
   Surface Convert(PixelFormat format,
                   PaletteRef palette,
                   Colorspace colorspace,
-                  PropertiesRef props) const;
+                  PropertiesBase& props) const;
 
   /**
    * Premultiply the alpha in a surface.
@@ -2095,10 +2095,10 @@ inline Surface SurfaceBase::Convert(PixelFormat format) const
 inline Surface SurfaceBase::Convert(PixelFormat format,
                                     PaletteRef palette,
                                     Colorspace colorspace,
-                                    PropertiesRef props) const
+                                    PropertiesBase& props) const
 {
   return Surface{SDL_ConvertSurfaceAndColorspace(
-    get(), format, palette.get(), colorspace, props)};
+    get(), format, palette.get(), colorspace, props.get())};
 }
 
 /**
@@ -2171,12 +2171,12 @@ inline bool ConvertPixelsAndColorspace(int width,
                                        int height,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
-                                       PropertiesRef src_properties,
+                                       PropertiesBase& src_properties,
                                        const void* src,
                                        int src_pitch,
                                        PixelFormat dst_format,
                                        Colorspace dst_colorspace,
-                                       PropertiesRef dst_properties,
+                                       PropertiesBase& dst_properties,
                                        void* dst,
                                        int dst_pitch)
 {
@@ -2184,12 +2184,12 @@ inline bool ConvertPixelsAndColorspace(int width,
                                         height,
                                         src_format,
                                         src_colorspace,
-                                        src_properties,
+                                        src_properties.get(),
                                         src,
                                         src_pitch,
                                         dst_format,
                                         dst_colorspace,
-                                        dst_properties,
+                                        dst_properties.get(),
                                         dst,
                                         dst_pitch);
 }

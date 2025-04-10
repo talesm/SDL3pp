@@ -527,7 +527,7 @@ function expandResources(sourceEntries, file, context) {
       { name: refName, kind: "forward" },
       { name: uniqueName, kind: "forward" },
     );
-    context.paramTypeMap[pointerType] = `${name} &`;
+    context.addParamType(pointerType, `${name} &`);
     context.addParamType(constPointerType, `const ${name} &`);
 
     switch (resourceEntry.returnType) {

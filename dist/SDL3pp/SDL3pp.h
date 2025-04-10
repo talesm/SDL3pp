@@ -20231,37 +20231,6 @@ inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
  * @{
  */
 
-// Forward decl
-template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
-struct PropertiesBase;
-
-/**
- * Handle to a non owned properties
- *
- * To create a new property group use CreateProperties()
- *
- * @cat resource
- *
- * @sa resource
- * @sa PropertiesBase
- * @sa Properties
- * @sa CreateProperties()
- */
-using PropertiesRef =
-  PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
-
-/**
- * Handle to an owned properties
- *
- * @cat resource
- *
- * @sa PropertiesBase
- * @sa PropertiesRef
- */
-using Properties = PropertiesBase<ObjectUnique<
-  SDL_PropertiesID,
-  ObjectDeleter<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>>>;
-
 /**
  * SDL property type
  *
@@ -20283,7 +20252,7 @@ using PropertyType = SDL_PropertyType;
  * This callback is set per-property. Different properties in the same group
  * can have different cleanup callbacks.
  *
- * This callback will be called _during_ SetPointerWithCleanup() if
+ * This callback will be called _during_ PropertiesBase.SetPointerWithCleanup if
  * the function fails for any reason.
  *
  * @param userdata an app-defined pointer passed to the callback.
@@ -20294,14 +20263,14 @@ using PropertyType = SDL_PropertyType;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa PropertiesBase.SetPointerWithCleanup()
+ * @sa PropertiesBase.SetPointerWithCleanup
  */
 using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 
 /**
  * A callback used to free resources when a property is deleted.
  *
- * @sa PropertiesRef.CleanupPropertyCallback
+ * @sa CleanupPropertyCallback
  * @sa PropertiesBase.SetPointerWithCleanup()
  * @sa result-callback
  *
@@ -20318,21 +20287,24 @@ using CleanupPropertyCB = std::function<void(void*)>;
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * This callback is called from PropertiesBase.Enumerate(), and is called once
  * per property in the set.
  *
  * @param userdata an app-defined pointer passed to the callback.
- * @param props the SDL_PropertiesID that is being enumerated.
+ * @param props the PropertiesBase that is being enumerated.
  * @param name the next property name in the enumeration.
  *
- * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
+ * @threadsafety PropertiesBase.Enumerate holds a lock on `props` during this
  *               callback.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa PropertiesBase::Enumerate()
+ * @sa PropertiesBase.Enumerate
  */
 using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+
+// Forward decl
+struct PropertiesRef;
 
 /**
  * A callback used to enumerate all the properties in a group of properties.
@@ -20353,6 +20325,12 @@ using EnumeratePropertiesCB =
 
 // Forward decl
 struct PropertiesLock;
+
+// Forward decl
+struct PropertiesBase;
+
+// Forward decl
+struct Properties;
 
 constexpr PropertyType PROPERTY_TYPE_INVALID =
   SDL_PROPERTY_TYPE_INVALID; ///< INVALID
@@ -20402,22 +20380,20 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @cat resource
  *
- * @sa resource
  * @sa CreateProperties()
  * @sa Properties
  * @sa PropertiesRef
  */
-template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
-struct PropertiesBase : T
+struct PropertiesBase : Resource<SDL_PropertiesID>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * Copy a group of properties.
    *
    * Copy all the properties from one group of properties to another, with the
    * exception of properties requiring cleanup (set using
-   * SetPointerWithCleanup()), which will not be copied. Any
+   * PropertiesBase.SetPointerWithCleanup()), which will not be copied. Any
    * property that already exists on `dst` will be overwritten.
    *
    * @param dst the destination properties.
@@ -20428,9 +20404,9 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool CopyPropertiesTo(PropertiesRef dst) const
+  bool CopyPropertiesTo(PropertiesBase& dst) const
   {
-    return SDL_CopyProperties(T::get(), dst.get());
+    return SDL_CopyProperties(get(), dst.get());
   }
 
   /**
@@ -20446,13 +20422,13 @@ struct PropertiesBase : T
    * thread.
    *
    * @returns PropertiesLock on success or false on failure; call GetError() for
-   * more information.
+   *          more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesLock.UnlockProperties()
+   * @sa PropertiesLock.Unlock
    */
   PropertiesLock Lock() &;
 
@@ -20486,7 +20462,6 @@ struct PropertiesBase : T
                              CleanupPropertyCB cleanup)
   {
     using Wrapper = CallbackWrapper<CleanupPropertyCB>;
-
     return SetPointerWithCleanup(std::move(name),
                                  value,
                                  &Wrapper::CallOnce,
@@ -20501,40 +20476,16 @@ struct PropertiesBase : T
    * reason.
    *
    * For simply setting basic data types, like numbers, bools, or strings, use
-   * SetNumber(), SetBoolean(), or SetString()
-   * instead, as those functions will handle cleanup on your behalf. This
-   * function is only for more complex, custom data.
+   * PropertiesBase.SetNumber, PropertiesBase.SetBoolean, or
+   * PropertiesBase.SetString instead, as those functions will handle cleanup on
+   * your behalf. This function is only for more complex, custom data.
    *
    * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
-   * @param cleanup the function to call when this property is deleted, or NULL
-   *                if no cleanup is necessary.
+   * @param value the new value of the property, or nullptr to delete the
+   *              property.
+   * @param cleanup the function to call when this property is deleted, or
+   *                nullptr if no cleanup is necessary.
    * @param userdata a pointer that is passed to the cleanup function.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesRef.GetPointer
-   * @sa PropertiesRef.SetPointer
-   * @sa PropertiesRef.CleanupCallback
-   */
-  bool SetPointerWithCleanup(StringParam name,
-                             void* value,
-                             CleanupPropertyCallback cleanup,
-                             void* userdata)
-  {
-    return SDL_SetPointerPropertyWithCleanup(
-      T::get(), name, value, cleanup, userdata);
-  }
-
-  /**
-   * Set a pointer property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -20542,17 +20493,43 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetPointer()
-   * @sa Has()
-   * @sa SetBoolean()
-   * @sa SetFloat()
-   * @sa SetNumber()
-   * @sa SetPointerWithCleanup()
-   * @sa SetString()
+   * @sa PropertiesBase.GetPointer
+   * @sa PropertiesBase.SetPointer
+   * @sa CleanupPropertyCallback
+   */
+  bool SetPointerWithCleanup(StringParam name,
+                             void* value,
+                             CleanupPropertyCallback cleanup,
+                             void* userdata)
+  {
+    return SDL_SetPointerPropertyWithCleanup(
+      get(), name, value, cleanup, userdata);
+  }
+
+  /**
+   * Set a pointer property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or nullptr to delete the
+   *              property.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetPointer
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetBoolean
+   * @sa PropertiesBase.SetFloat
+   * @sa PropertiesBase.SetNumber
+   * @sa PropertiesBase.SetPointerWithCleanup
+   * @sa PropertiesBase.SetString
    */
   bool SetPointer(StringParam name, void* value)
   {
-    return SDL_SetPointerProperty(T::get(), name, value);
+    return SDL_SetPointerProperty(get(), name, value);
   }
 
   /**
@@ -20562,7 +20539,8 @@ struct PropertiesBase : T
    * preserve the data after this call completes.
    *
    * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
+   * @param value the new value of the property, or nullptr to delete the
+   *              property.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -20570,11 +20548,11 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetString()
+   * @sa PropertiesBase.GetString
    */
   bool SetString(StringParam name, StringParam value)
   {
-    return SDL_SetStringProperty(T::get(), name, value);
+    return SDL_SetStringProperty(get(), name, value);
   }
 
   /**
@@ -20589,11 +20567,11 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetNumber()
+   * @sa PropertiesBase.GetNumber
    */
   bool SetNumber(StringParam name, Sint64 value)
   {
-    return SDL_SetNumberProperty(T::get(), name, value);
+    return SDL_SetNumberProperty(get(), name, value);
   }
 
   /**
@@ -20608,11 +20586,11 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetFloat()
+   * @sa PropertiesBase.GetFloat
    */
   bool SetFloat(StringParam name, float value)
   {
-    return SDL_SetFloatProperty(T::get(), name, value);
+    return SDL_SetFloatProperty(get(), name, value);
   }
 
   /**
@@ -20627,11 +20605,11 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetBoolean()
+   * @sa PropertiesBase.GetBoolean
    */
   bool SetBoolean(StringParam name, bool value)
   {
-    return SDL_SetBooleanProperty(T::get(), name, value);
+    return SDL_SetBooleanProperty(get(), name, value);
   }
 
   /**
@@ -20644,26 +20622,26 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetType()
+   * @sa PropertiesBase.GetType
    */
-  bool Has(StringParam name) const { return SDL_HasProperty(T::get(), name); }
+  bool Has(StringParam name) const { return SDL_HasProperty(get(), name); }
 
   /**
    * Get the type of a property.
    *
    * @param name the name of the property to query.
-   * @returns the type of the property, or SDL_PROPERTY_TYPE_INVALID if it is
+   * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is
    *          not set.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Has()
+   * @sa PropertiesBase.Has
    */
   PropertyType GetType(StringParam name) const
   {
-    return SDL_GetPropertyType(T::get(), name);
+    return SDL_GetPropertyType(get(), name);
   }
 
   /**
@@ -20684,24 +20662,24 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread, although
    *               the data returned is not protected and could potentially be
-   *               freed if you call SetProperty() or
-   *               ClearProperty() on these properties from another thread.
-   *               If you need to avoid this, use SDL_LockProperties() and
-   *               SDL_UnlockProperties().
+   *               freed if you call PropertiesBase.SetPointer() or
+   *               PropertiesBase.Clear() on these properties from another
+   *               thread. If you need to avoid this, use PropertiesBase.Lock()
+   *               and PropertiesLock.Unlock().
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetBoolean()
-   * @sa GetFloat()
-   * @sa GetNumber()
-   * @sa GetType()
-   * @sa GetString()
-   * @sa Has()
-   * @sa SetPointer()
+   * @sa PropertiesBase.GetBoolean
+   * @sa PropertiesBase.GetFloat
+   * @sa PropertiesBase.GetNumber
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.GetString
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetPointer
    */
   void* GetPointer(StringParam name, void* default_value) const
   {
-    return SDL_GetPointerProperty(T::get(), name, default_value);
+    return SDL_GetPointerProperty(get(), name, default_value);
   }
 
   /**
@@ -20722,27 +20700,27 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread, although
    *               the data returned is not protected and could potentially be
-   *               freed if you call SetString() or
-   *               ClearProperty() on these properties from another thread.
-   *               If you need to avoid this, use SDL_LockProperties() and
-   *               SDL_UnlockProperties().
+   *               freed if you call PropertiesBase.SetString() or
+   *               PropertiesBase.Clear() on these properties from another
+   *               thread. If you need to avoid this, use PropertiesBase.Lock()
+   *               and PropertiesLock.Unlock().
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesRef.GetType()
-   * @sa PropertiesRef.Has()
-   * @sa PropertiesRef.SetString()
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetString
    */
   const char* GetString(StringParam name, StringParam default_value) const
   {
-    return SDL_GetStringProperty(T::get(), name, default_value);
+    return SDL_GetStringProperty(get(), name, default_value);
   }
 
   /**
    * Get a number property from a group of properties.
    *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a number property.
+   * You can use PropertiesBase.GetType() to query whether the property exists
+   * and is a number property.
    *
    * By convention, the names of properties that SDL exposes on objects will
    * start with "SDL.", and properties that SDL uses internally will start with
@@ -20758,20 +20736,20 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetType()
-   * @sa Has()
-   * @sa SetNumber()
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetNumber
    */
   Sint64 GetNumber(StringParam name, Sint64 default_value) const
   {
-    return SDL_GetNumberProperty(T::get(), name, default_value);
+    return SDL_GetNumberProperty(get(), name, default_value);
   }
 
   /**
    * Get a floating point property from a group of properties.
    *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a floating point property.
+   * You can use PropertiesBase.GetType() to query whether the property exists
+   * and is a floating point property.
    *
    * By convention, the names of properties that SDL exposes on objects will
    * start with "SDL.", and properties that SDL uses internally will start with
@@ -20787,20 +20765,20 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetType()
-   * @sa Has()
-   * @sa SetFloat()
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetFloat
    */
   float GetFloat(StringParam name, float default_value) const
   {
-    return SDL_GetFloatProperty(T::get(), name, default_value);
+    return SDL_GetFloatProperty(get(), name, default_value);
   }
 
   /**
    * Get a boolean property from a group of properties.
    *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a boolean property.
+   * You can use PropertiesBase.GetType() to query whether the property exists
+   * and is a boolean property.
    *
    * By convention, the names of properties that SDL exposes on objects will
    * start with "SDL.", and properties that SDL uses internally will start with
@@ -20816,13 +20794,13 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetType()
-   * @sa Has()
-   * @sa SetBoolean()
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetBoolean
    */
   bool GetBoolean(StringParam name, bool default_value) const
   {
-    return SDL_GetBooleanProperty(T::get(), name, default_value);
+    return SDL_GetBooleanProperty(get(), name, default_value);
   }
 
   /**
@@ -20836,7 +20814,7 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
+  bool Clear(StringParam name) { return SDL_ClearProperty(get(), name); }
 
   /**
    * Enumerate the properties contained in a group of properties.
@@ -20870,15 +20848,7 @@ struct PropertiesBase : T
    *
    * @sa immediate-callback
    */
-  bool Enumerate(EnumeratePropertiesCB callback) const
-  {
-    return Enumerate(
-      [](void* userdata, SDL_PropertiesID props, const char* name) {
-        auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
-        f({props}, name);
-      },
-      &callback);
-  }
+  bool Enumerate(EnumeratePropertiesCB callback) const;
 
   /**
    * Enumerate the properties contained in a group of properties.
@@ -20897,7 +20867,57 @@ struct PropertiesBase : T
    */
   bool Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
   {
-    return SDL_EnumerateProperties(T::get(), callback, userdata);
+    return SDL_EnumerateProperties(get(), callback, userdata);
+  }
+
+  /**
+   * Returns the number of properties this has
+   *
+   * This uses Enumerate() internally, so might not be so fast
+   */
+  Uint64 GetCount() const;
+};
+
+/**
+ * Handle to a non owned properties
+ *
+ * @cat resource
+ *
+ * @sa PropertiesBase
+ * @sa Properties
+ */
+struct PropertiesRef : PropertiesBase
+{
+  using PropertiesBase::PropertiesBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr PropertiesRef(const PropertiesRef& other)
+    : PropertiesBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr PropertiesRef(PropertiesRef&& other)
+    : PropertiesBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~PropertiesRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  PropertiesRef& operator=(PropertiesRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -20906,42 +20926,61 @@ struct PropertiesBase : T
    * All properties are deleted and their cleanup functions will be called, if
    * any.
    *
-   * @post This object becomes empty after the call.
-   *
    * @threadsafety This function should not be called while these properties are
    *               locked or other threads might be setting or getting values
    *               from these properties.
    *
    * @since This function is available since SDL 3.2.0.
-   */
-  void Destroy() { T::free(); }
-
-  /**
-   * Returns the number of properties this has
    *
-   * This uses Enumerate() internally, so might not be so fast
+   * @sa CreateProperties
    */
-  Uint64 GetCount() const
+  void reset(SDL_PropertiesID newResource = {})
   {
-    Uint64 count = 0;
-    if (Enumerate([&](SDL_PropertiesID, const char*) { count++; })) {
-      return count;
-    }
-    return 0;
+    SDL_DestroyProperties(release(newResource));
   }
 };
 
 /**
- * Callback for properties resource cleanup
+ * Handle to an owned properties
  *
- * @private
+ * @cat resource
+ *
+ * @sa PropertiesBase
+ * @sa PropertiesRef
  */
-template<>
-inline void ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree(
-  FancyPointer<SDL_PropertiesID> resource)
+struct Properties : PropertiesRef
 {
-  return SDL_DestroyProperties(resource);
-}
+  using PropertiesRef::PropertiesRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit Properties(SDL_PropertiesID resource = {})
+    : PropertiesRef(resource)
+  {
+  }
+
+  constexpr Properties(const Properties& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr Properties(Properties&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~Properties() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  Properties& operator=(Properties other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
 
 /**
  * Wrap the lock state for PropertiesBase
@@ -20961,10 +21000,7 @@ class PropertiesLock
 
 public:
   /// Default ctor
-  PropertiesLock()
-    : properties(nullptr)
-  {
-  }
+  constexpr PropertiesLock() = default;
 
   PropertiesLock(const PropertiesLock& other) = delete;
 
@@ -20998,11 +21034,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.Lock()
+   * @sa PropertiesBase.Lock
    */
   void Unlock() { return SDL_UnlockProperties(properties.release()); }
 
-  template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
   friend class PropertiesBase;
 };
 
@@ -21011,11 +21046,10 @@ public:
  *
  * @returns a valid property ID on success or 0 on failure; call
  *          GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetGlobalProperties()
-{
-  return FancyPointer{SDL_GetGlobalProperties()};
-}
+inline PropertiesRef GetGlobalProperties() { return SDL_GetGlobalProperties(); }
 
 /**
  * Create a group of properties.
@@ -21023,7 +21057,7 @@ inline PropertiesRef GetGlobalProperties()
  * All properties are automatically destroyed when Quit() is called.
  *
  * @returns a valid Properties for a new group of properties, or false on
- * failure; call GetError() for more information.
+ *          failure; call GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -21039,11 +21073,27 @@ inline Properties CreateProperties()
 #pragma region impl
 /// @}
 
-template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
-PropertiesLock PropertiesBase<T>::Lock() &
+inline bool PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
 {
-  if (SDL_LockProperties(T::get())) return {*this};
-  return {nullptr};
+  return Enumerate(
+    [](void* userdata, SDL_PropertiesID props, const char* name) {
+      auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
+      f(props, name);
+    },
+    &callback);
+}
+
+inline Uint64 PropertiesBase::GetCount() const
+{
+  Uint64 count = 0;
+  if (Enumerate([&](auto, const char*) { count++; })) { return count; }
+  return 0;
+}
+
+inline PropertiesLock PropertiesBase::Lock() &
+{
+  if (SDL_LockProperties(get())) return PropertiesLock{get()};
+  return {};
 }
 
 #pragma endregion impl
@@ -25530,7 +25580,7 @@ struct ThreadBase : T
    * @sa ThreadBase.ThreadBase
    * @sa ThreadBase.Wait
    */
-  ThreadBase(PropertiesRef props)
+  ThreadBase(PropertiesBase& props)
     : T(SDL_CreateThreadWithProperties(props.get()))
   {
   }
@@ -27574,7 +27624,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
   Surface Convert(PixelFormat format,
                   PaletteRef palette,
                   Colorspace colorspace,
-                  PropertiesRef props) const;
+                  PropertiesBase& props) const;
 
   /**
    * Premultiply the alpha in a surface.
@@ -28776,10 +28826,10 @@ inline Surface SurfaceBase::Convert(PixelFormat format) const
 inline Surface SurfaceBase::Convert(PixelFormat format,
                                     PaletteRef palette,
                                     Colorspace colorspace,
-                                    PropertiesRef props) const
+                                    PropertiesBase& props) const
 {
   return Surface{SDL_ConvertSurfaceAndColorspace(
-    get(), format, palette.get(), colorspace, props)};
+    get(), format, palette.get(), colorspace, props.get())};
 }
 
 /**
@@ -28852,12 +28902,12 @@ inline bool ConvertPixelsAndColorspace(int width,
                                        int height,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
-                                       PropertiesRef src_properties,
+                                       PropertiesBase& src_properties,
                                        const void* src,
                                        int src_pitch,
                                        PixelFormat dst_format,
                                        Colorspace dst_colorspace,
-                                       PropertiesRef dst_properties,
+                                       PropertiesBase& dst_properties,
                                        void* dst,
                                        int dst_pitch)
 {
@@ -28865,12 +28915,12 @@ inline bool ConvertPixelsAndColorspace(int width,
                                         height,
                                         src_format,
                                         src_colorspace,
-                                        src_properties,
+                                        src_properties.get(),
                                         src,
                                         src_pitch,
                                         dst_format,
                                         dst_colorspace,
-                                        dst_properties,
+                                        dst_properties.get(),
                                         dst,
                                         dst_pitch);
 }
@@ -30718,118 +30768,120 @@ struct WindowBase : T
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
+   * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
    *   be always on top
-   * - `SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN`: true if the window has no
+   * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no
    *   window decoration
-   * - `SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
+   * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
    *   window will be used with an externally managed graphics context.
-   * - `SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN`: true if the window should
+   * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should
    *   accept keyboard input (defaults true)
-   * - `SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN`: true if the window should
+   * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should
    *   start in fullscreen mode at desktop resolution
-   * - `SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER`: the height of the window
-   * - `SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN`: true if the window should start
+   * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
+   * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
    *   hidden
-   * - `SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window
+   * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window
    *   uses a high pixel density buffer if possible
-   * - `SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN`: true if the window should
+   * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should
    *   start maximized
-   * - `SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN`: true if the window is a popup menu
-   * - `SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN`: true if the window will be used
+   * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
+   * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used
    *   with Metal rendering
-   * - `SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN`: true if the window should
+   * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should
    *   start minimized
-   * - `SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN`: true if the window is modal to
+   * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to
    *   its parent
-   * - `SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
+   * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
    *   with grabbed mouse focus
-   * - `SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN`: true if the window will be used
+   * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
    *   with OpenGL rendering
-   * - `SDL_PROP_WINDOW_CREATE_PARENT_POINTER`: an SDL_Window that will be the
+   * - `prop::Window.CREATE_PARENT_POINTER`: an WindowBase that will be the
    *   parent of this window, required for windows with the "tooltip", "menu",
    *   and "modal" properties
-   * - `SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+   * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
    *   resizable
-   * - `SDL_PROP_WINDOW_CREATE_TITLE_STRING`: the title of the window, in UTF-8
+   * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
    *   encoding
-   * - `SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+   * - `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
    *   transparent in the areas with alpha of 0
-   * - `SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
-   * - `SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+   * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
+   * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
    *   window, not showing in the task bar and window list
-   * - `SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN`: true if the window will be used
+   * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used
    *   with Vulkan rendering
-   * - `SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER`: the width of the window
-   * - `SDL_PROP_WINDOW_CREATE_X_NUMBER`: the x position of the window, or
+   * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
+   * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
    *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
    *   relative to the parent for windows with the "tooltip" or "menu" property
    *   set.
-   * - `SDL_PROP_WINDOW_CREATE_Y_NUMBER`: the y position of the window, or
+   * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
    *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
    *   relative to the parent for windows with the "tooltip" or "menu" property
    *   set.
    *
    * These are additional supported properties on macOS:
    *
-   * - `SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER`: the
+   * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the
    *   `(__unsafe_unretained)` NSWindow associated with the window, if you want
    *   to wrap an existing window.
-   * - `SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
+   * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
    *   NSView associated with the window, defaults to `[window contentView]`
    *
    * These are additional supported properties on Wayland:
    *
-   * - `SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if
+   * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if
    *   the application wants to use the Wayland surface for a custom role and
    *   does not want it attached to an XDG toplevel window. See
    *   [README/wayland](README/wayland) for more information on using custom
    *   surfaces.
-   * - `SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+   * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
    *   application wants an associated `wl_egl_window` object to be created and
    *   attached to the window, even if the window does not have the OpenGL
-   *   property or `SDL_WINDOW_OPENGL` flag set.
-   * - `SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
+   *   property or `WINDOW_OPENGL` flag set.
+   * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
    *   associated with the window, if you want to wrap an existing window. See
    *   [README/wayland](README/wayland) for more information.
    *
    * These are additional supported properties on Windows:
    *
-   * - `SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+   * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
    *   window, if you want to wrap an existing window.
-   * - `SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,
+   * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,
    *   another window to share pixel format with, useful for OpenGL windows
    *
    * These are additional supported properties with X11:
    *
-   * - `SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER`: the X11 Window associated
+   * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated
    *   with the window, if you want to wrap an existing window.
    *
    * The window is implicitly shown if the "hidden" property is not set.
    *
    * Windows with the "tooltip" and "menu" properties are popup windows and have
-   * the behaviors and guidelines outlined in SDL_CreatePopupWindow().
+   * the behaviors and guidelines outlined in WindowBase.WindowBase().
    *
-   * If this window is being created to be used with an SDL_Renderer, you should
+   * If this window is being created to be used with an RendererBase, you should
    * not add a graphics API specific property
-   * (`SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
+   * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
    * internally when it chooses a renderer. However, SDL might need to recreate
    * your window at that point, which may cause the window to appear briefly,
    * and then flicker as it is recreated. The correct approach to this is to
-   * create the window with the `SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN` property
+   * create the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property
    * set to true, then create the renderer, then show the window with
-   * SDL_ShowWindow().
+   * WindowBase.Show().
    *
    * @param props the properties to use.
+   * @post the window that was created or nullptr on failure; call
+   *       GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesRef
+   * @sa CreateProperties
    * @sa Properties
    */
-  WindowBase(PropertiesRef props)
+  WindowBase(PropertiesBase& props)
     : T(SDL_CreateWindowWithProperties(props.get()))
   {
   }
@@ -32514,7 +32566,7 @@ struct WindowBase : T
 
   bool StartTextInput();
 
-  bool StartTextInput(PropertiesRef props);
+  bool StartTextInput(PropertiesBase& props);
 
   bool IsTextInputActive() const;
 
@@ -34370,23 +34422,23 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_FILE_DIALOG_FILTERS_POINTER`: a pointer to a list of
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
  *   DialogFileFilter structs, which will be used as filters for
  *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
  *   If non-nullptr, the array of filters must remain valid at least until the
  *   callback is invoked.
- * - `SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER`: the number of filters in the
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
  *   array of filters, if it exists.
- * - `SDL_PROP_FILE_DIALOG_WINDOW_POINTER`: the window that the dialog should
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
  *   be modal for.
- * - `SDL_PROP_FILE_DIALOG_LOCATION_STRING`: the default folder or file to
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
  *   start the dialog at.
- * - `SDL_PROP_FILE_DIALOG_MANY_BOOLEAN`: true to allow the user to select
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
  *   more than one entry.
- * - `SDL_PROP_FILE_DIALOG_TITLE_STRING`: the title for the dialog.
- * - `SDL_PROP_FILE_DIALOG_ACCEPT_STRING`: the label that the accept button
+ * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
  *   should have.
- * - `SDL_PROP_FILE_DIALOG_CANCEL_STRING`: the label that the cancel button
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
  *   should have.
  *
  * Note that each platform may or may not support any of the properties.
@@ -34415,9 +34467,9 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCallback callback,
                                          void* userdata,
-                                         PropertiesRef props)
+                                         PropertiesBase& props)
 {
-  SDL_ShowFileDialogWithProperties(type, callback, userdata, props);
+  SDL_ShowFileDialogWithProperties(type, callback, userdata, props.get());
 }
 
 /**
@@ -36881,7 +36933,7 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * This function will enable text input (EVENT_TEXT_INPUT and
  * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowBase::StopTextInput().
+ * function paired with WindowBase.StopTextInput().
  *
  * Text input events are not received by default.
  *
@@ -36891,7 +36943,7 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that
+ * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
  *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
  * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
  *   that describes how text should be capitalized, defaults to
@@ -36919,15 +36971,15 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::SetTextInputArea
- * @sa WindowBase::StartTextInput
- * @sa WindowBase::StopTextInput
- * @sa WindowBase::IsTextInputActive
+ * @sa WindowBase.SetTextInputArea
+ * @sa WindowBase.StartTextInput
+ * @sa WindowBase.StopTextInput
+ * @sa WindowBase.IsTextInputActive
  */
 template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::StartTextInput(PropertiesRef props)
+inline bool WindowBase<T>::StartTextInput(PropertiesBase& props)
 {
-  return SDL_StartTextInputWithProperties(T::get(), props);
+  return SDL_StartTextInputWithProperties(T::get(), props.get());
 }
 
 /**
@@ -37801,51 +37853,53 @@ struct RendererBase : T
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_RENDERER_CREATE_NAME_STRING`: the name of the rendering driver
+   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver
    *   to use, if a specific one is desired
-   * - `SDL_PROP_RENDERER_CREATE_WINDOW_POINTER`: the window where rendering is
+   * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
    *   displayed, required if this isn't a software renderer using a surface
-   * - `SDL_PROP_RENDERER_CREATE_SURFACE_POINTER`: the surface where rendering
+   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering
    *   is displayed, if you want a software renderer without a window
-   * - `SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER`: an SDL_Colorspace
+   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace
    *   value describing the colorspace for output to the display, defaults to
-   *   SDL_COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
-   *   support SDL_COLORSPACE_SRGB_LINEAR, which is a linear color space and
-   *   supports HDR output. If you select SDL_COLORSPACE_SRGB_LINEAR, drawing
+   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
+   *   support COLORSPACE_SRGB_LINEAR, which is a linear color space and
+   *   supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing
    *   still uses the sRGB colorspace, but values can go beyond 1.0 and float
    *   (linear) format textures can be used for HDR content.
-   * - `SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
+   * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
    *   present synchronized with the refresh rate. This property can take any
-   *   value that is supported by SDL_SetRenderVSync() for the renderer.
+   *   value that is supported by RendererBase.SetVSync() for the renderer.
    *
    * With the vulkan renderer:
    *
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
+   * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
    *   with the renderer, optional.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
+   * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
    *   with the renderer, optional.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
+   * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
    *   VkPhysicalDevice to use with the renderer, optional.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
+   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
    *   with the renderer, optional.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for rendering.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for presentation.
    *
    * It renderer creation fails for any reason this object is falsy; call
    * GetError() for more information.
    *
    * @param props the properties to use.
+   * @post a valid rendering context or nullptr if there was an error; call
+   *       GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties
-   * @sa GetName()
+   * @sa CreateProperties
+   * @sa RendererBase.GetName
    */
-  RendererBase(PropertiesRef props)
+  RendererBase(PropertiesBase& props)
     : T(SDL_CreateRendererWithProperties(props.get()))
   {
   }
@@ -39573,113 +39627,113 @@ struct TextureBase : T
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER`: an SDL_Colorspace value
-   *   describing the texture colorspace, defaults to SDL_COLORSPACE_SRGB_LINEAR
-   *   for floating point textures, SDL_COLORSPACE_HDR10 for 10-bit textures,
-   *   SDL_COLORSPACE_SRGB for other RGB textures and SDL_COLORSPACE_JPEG for
+   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
+   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
+   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
+   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
    *   YUV textures.
-   * - `SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER`: one of the enumerated values in
-   *   SDL_PixelFormat, defaults to the best RGBA format for the renderer
-   * - `SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER`: one of the enumerated values in
-   *   SDL_TextureAccess, defaults to SDL_TEXTUREACCESS_STATIC
-   * - `SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER`: the width of the texture in
+   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   *   PixelFormat, defaults to the best RGBA format for the renderer
+   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
+   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
    *   pixels, required
-   * - `SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER`: the height of the texture in
+   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
    *   pixels, required
-   * - `SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
+   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
    *   point textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
+   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
    *   point textures, this defines the maximum dynamic range used by the
    *   content, in terms of the SDR white point. This would be equivalent to
-   *   maxCLL / SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
+   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
    *   If this is defined, any values outside the range supported by the display
    *   will be scaled into the available HDR headroom, otherwise they are
    *   clipped.
    *
    * With the direct3d11 renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the direct3d12 renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the metal renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
    *   associated with the texture, if you want to create a texture from an
    *   existing pixel buffer.
    *
    * With the opengl renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the opengles2 renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the vulkan renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
    *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
    *   you want to wrap an existing texture.
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @post the created texture is convertible to true on success or false on
-   * failure; call GetError() for more information.
+   * @post the created texture or nullptr on failure; call GetError() for
+   *       more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateProperties
-   * @sa SDL_CreateTexture
-   * @sa SDL_CreateTextureFromSurface
-   * @sa SDL_DestroyTexture
+   * @sa CreateProperties
+   * @sa TextureBase.TextureBase
+   * @sa TextureBase.TextureBase
+   * @sa TextureBase.Destroy
    * @sa SDL_GetTextureSize
-   * @sa SDL_UpdateTexture
+   * @sa TextureBase.Update
    */
-  TextureBase(RendererRef renderer, PropertiesRef props)
-    : T(SDL_CreateTextureWithProperties(renderer.get(), props))
+  TextureBase(RendererRef renderer, PropertiesBase& props)
+    : T(SDL_CreateTextureWithProperties(renderer.get(), props.get()))
   {
   }
 
@@ -43856,13 +43910,13 @@ struct FontBase : T
    *
    * These are the supported properties:
    *
-   * - `TTF_PROP_FONT_CREATE_FILENAME_STRING`: the font file to open, if an
+   * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
    *   IOStreamBase isn't being used. This is required if
    *   `prop::Font.CREATE_IOSTREAM_POINTER` and
    *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamBase containing the
    *   font to be opened. This should not be closed until the font is closed.
-   *   This is required if `TTF_PROP_FONT_CREATE_FILENAME_STRING` and
+   *   This is required if `prop::Font.CREATE_FILENAME_STRING` and
    *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
    *   for the beginning of the font, defaults to 0.
@@ -43894,8 +43948,8 @@ struct FontBase : T
    *
    * @sa FontBase.Close
    */
-  FontBase(PropertiesRef props)
-    : T(TTF_OpenFontWithProperties(props))
+  FontBase(PropertiesBase& props)
+    : T(TTF_OpenFontWithProperties(props.get()))
   {
   }
 
@@ -46675,13 +46729,13 @@ inline TextEngine CreateRendererTextEngine(RendererRef renderer)
  *
  * These are the supported properties:
  *
- * - `TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER`: the renderer to use for
+ * - `prop::RendererTextEngine.RENDERER`: the renderer to use for
  *   creating textures and drawing text
  * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the
  *   texture atlas
  *
  * @param props the properties to use.
- * @returns a TextEngine object or nullptr on failure; call GetError()
+ * @returns a TextEngineBase object or nullptr on failure; call GetError()
  *          for more information.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -46693,7 +46747,7 @@ inline TextEngine CreateRendererTextEngine(RendererRef renderer)
  * @sa Text
  * @sa TextBase.DrawRenderer
  */
-inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef props)
+inline TextEngine CreateRendererTextEngineWithProperties(PropertiesBase& props)
 {
   return TextEngine{
     TextEngineWrapper{TTF_CreateRendererTextEngineWithProperties(props.get()),
@@ -46738,13 +46792,13 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  *
  * These are the supported properties:
  *
- * - `TTF_PROP_GPU_TEXT_ENGINE_DEVICE`: the SDL_GPUDevice to use for creating
+ * - `prop::GpuTextEngine.DEVICE`: the SDL_GPUDevice to use for creating
  *   textures and drawing text.
  * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
  *   atlas
  *
  * @param props the properties to use.
- * @returns a TextEngine object or nullptr on failure; call GetError()
+ * @returns a TextEngineBase object or nullptr on failure; call GetError()
  *          for more information.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -46756,7 +46810,7 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  * @sa Text
  * @sa TextBase.GetGPUDrawData
  */
-inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
+inline TextEngine CreateGPUTextEngineWithProperties(PropertiesBase& props)
 {
   return TextEngine{
     TextEngineWrapper{TTF_CreateGPUTextEngineWithProperties(props.get()),

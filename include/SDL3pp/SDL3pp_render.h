@@ -234,51 +234,53 @@ struct RendererBase : T
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_RENDERER_CREATE_NAME_STRING`: the name of the rendering driver
+   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver
    *   to use, if a specific one is desired
-   * - `SDL_PROP_RENDERER_CREATE_WINDOW_POINTER`: the window where rendering is
+   * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
    *   displayed, required if this isn't a software renderer using a surface
-   * - `SDL_PROP_RENDERER_CREATE_SURFACE_POINTER`: the surface where rendering
+   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering
    *   is displayed, if you want a software renderer without a window
-   * - `SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER`: an SDL_Colorspace
+   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace
    *   value describing the colorspace for output to the display, defaults to
-   *   SDL_COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
-   *   support SDL_COLORSPACE_SRGB_LINEAR, which is a linear color space and
-   *   supports HDR output. If you select SDL_COLORSPACE_SRGB_LINEAR, drawing
+   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
+   *   support COLORSPACE_SRGB_LINEAR, which is a linear color space and
+   *   supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing
    *   still uses the sRGB colorspace, but values can go beyond 1.0 and float
    *   (linear) format textures can be used for HDR content.
-   * - `SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
+   * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
    *   present synchronized with the refresh rate. This property can take any
-   *   value that is supported by SDL_SetRenderVSync() for the renderer.
+   *   value that is supported by RendererBase.SetVSync() for the renderer.
    *
    * With the vulkan renderer:
    *
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
+   * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
    *   with the renderer, optional.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
+   * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
    *   with the renderer, optional.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
+   * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
    *   VkPhysicalDevice to use with the renderer, optional.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
+   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
    *   with the renderer, optional.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for rendering.
-   * - `SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for presentation.
    *
    * It renderer creation fails for any reason this object is falsy; call
    * GetError() for more information.
    *
    * @param props the properties to use.
+   * @post a valid rendering context or nullptr if there was an error; call
+   *       GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties
-   * @sa GetName()
+   * @sa CreateProperties
+   * @sa RendererBase.GetName
    */
-  RendererBase(PropertiesRef props)
+  RendererBase(PropertiesBase& props)
     : T(SDL_CreateRendererWithProperties(props.get()))
   {
   }
@@ -2006,113 +2008,113 @@ struct TextureBase : T
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER`: an SDL_Colorspace value
-   *   describing the texture colorspace, defaults to SDL_COLORSPACE_SRGB_LINEAR
-   *   for floating point textures, SDL_COLORSPACE_HDR10 for 10-bit textures,
-   *   SDL_COLORSPACE_SRGB for other RGB textures and SDL_COLORSPACE_JPEG for
+   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
+   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
+   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
+   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
    *   YUV textures.
-   * - `SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER`: one of the enumerated values in
-   *   SDL_PixelFormat, defaults to the best RGBA format for the renderer
-   * - `SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER`: one of the enumerated values in
-   *   SDL_TextureAccess, defaults to SDL_TEXTUREACCESS_STATIC
-   * - `SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER`: the width of the texture in
+   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   *   PixelFormat, defaults to the best RGBA format for the renderer
+   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
+   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
    *   pixels, required
-   * - `SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER`: the height of the texture in
+   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
    *   pixels, required
-   * - `SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
+   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
    *   point textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
+   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
    *   point textures, this defines the maximum dynamic range used by the
    *   content, in terms of the SDR white point. This would be equivalent to
-   *   maxCLL / SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
+   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
    *   If this is defined, any values outside the range supported by the display
    *   will be scaled into the available HDR headroom, otherwise they are
    *   clipped.
    *
    * With the direct3d11 renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the direct3d12 renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the metal renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
    *   associated with the texture, if you want to create a texture from an
    *   existing pixel buffer.
    *
    * With the opengl renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the opengles2 renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the vulkan renderer:
    *
-   * - `SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
    *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
    *   you want to wrap an existing texture.
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @post the created texture is convertible to true on success or false on
-   * failure; call GetError() for more information.
+   * @post the created texture or nullptr on failure; call GetError() for
+   *       more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateProperties
-   * @sa SDL_CreateTexture
-   * @sa SDL_CreateTextureFromSurface
-   * @sa SDL_DestroyTexture
+   * @sa CreateProperties
+   * @sa TextureBase.TextureBase
+   * @sa TextureBase.TextureBase
+   * @sa TextureBase.Destroy
    * @sa SDL_GetTextureSize
-   * @sa SDL_UpdateTexture
+   * @sa TextureBase.Update
    */
-  TextureBase(RendererRef renderer, PropertiesRef props)
-    : T(SDL_CreateTextureWithProperties(renderer.get(), props))
+  TextureBase(RendererRef renderer, PropertiesBase& props)
+    : T(SDL_CreateTextureWithProperties(renderer.get(), props.get()))
   {
   }
 

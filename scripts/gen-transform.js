@@ -2517,32 +2517,15 @@ const transform = {
     "SDL_properties.h": {
       includeAfter: {
         "__begin": [
-          {
-            "name": "PropertiesBase",
-            "kind": "forward"
-          },
-          {
-            "name": "PropertiesRef",
-            "kind": "alias"
-          },
-          {
-            "name": "Properties",
-            "kind": "alias"
-          },
-          {
-            "name": "PropertyType",
-          },
-          {
-            "name": "CleanupPropertyCallback",
-          },
+          { "name": "PropertyType" },
+          { "name": "CleanupPropertyCallback" },
           {
             "name": "CleanupPropertyCB",
             "doc": "@sa PropertiesRef.CleanupCallback",
             "kind": "alias"
           },
-          {
-            "name": "EnumeratePropertiesCallback",
-          },
+          { "name": "EnumeratePropertiesCallback" },
+          { "name": "PropertiesRef" },
           {
             "name": "EnumeratePropertiesCB",
             "doc": "@sa PropertiesRef.EnumerateCallback",
@@ -2636,11 +2619,10 @@ const transform = {
           prefix: "SDL_PROPERTY_TYPE_"
         }
       },
-      resources: {
+      resourcesX: {
         "SDL_PropertiesID": {
-          "uniqueName": "Properties",
-          "pointerType": "FancyPointer<SDL_PropertiesID>",
-          "entries": {
+          uniqueName: "Properties",
+          entries: {
             "SDL_CopyProperties": {
               "kind": "function",
               "name": "CopyPropertiesTo",
@@ -2766,14 +2748,13 @@ const transform = {
               "kind": "function",
               "name": "Enumerate",
               "immutable": true
-            },
-            "SDL_DestroyProperties": "function"
+            }
           }
         }
       },
       transform: {
         "SDL_CreateProperties": {
-          "type": "Properties"
+          type: "Properties"
         }
       }
     },

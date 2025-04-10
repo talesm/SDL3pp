@@ -301,7 +301,7 @@ struct ThreadBase : T
    * @sa ThreadBase.ThreadBase
    * @sa ThreadBase.Wait
    */
-  ThreadBase(PropertiesRef props)
+  ThreadBase(PropertiesBase& props)
     : T(SDL_CreateThreadWithProperties(props.get()))
   {
   }

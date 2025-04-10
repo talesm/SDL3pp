@@ -576,13 +576,13 @@ struct FontBase : T
    *
    * These are the supported properties:
    *
-   * - `TTF_PROP_FONT_CREATE_FILENAME_STRING`: the font file to open, if an
+   * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
    *   IOStreamBase isn't being used. This is required if
    *   `prop::Font.CREATE_IOSTREAM_POINTER` and
    *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamBase containing the
    *   font to be opened. This should not be closed until the font is closed.
-   *   This is required if `TTF_PROP_FONT_CREATE_FILENAME_STRING` and
+   *   This is required if `prop::Font.CREATE_FILENAME_STRING` and
    *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
    *   for the beginning of the font, defaults to 0.
@@ -614,8 +614,8 @@ struct FontBase : T
    *
    * @sa FontBase.Close
    */
-  FontBase(PropertiesRef props)
-    : T(TTF_OpenFontWithProperties(props))
+  FontBase(PropertiesBase& props)
+    : T(TTF_OpenFontWithProperties(props.get()))
   {
   }
 
@@ -3395,13 +3395,13 @@ inline TextEngine CreateRendererTextEngine(RendererRef renderer)
  *
  * These are the supported properties:
  *
- * - `TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER`: the renderer to use for
+ * - `prop::RendererTextEngine.RENDERER`: the renderer to use for
  *   creating textures and drawing text
  * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the
  *   texture atlas
  *
  * @param props the properties to use.
- * @returns a TextEngine object or nullptr on failure; call GetError()
+ * @returns a TextEngineBase object or nullptr on failure; call GetError()
  *          for more information.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -3413,7 +3413,7 @@ inline TextEngine CreateRendererTextEngine(RendererRef renderer)
  * @sa Text
  * @sa TextBase.DrawRenderer
  */
-inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef props)
+inline TextEngine CreateRendererTextEngineWithProperties(PropertiesBase& props)
 {
   return TextEngine{
     TextEngineWrapper{TTF_CreateRendererTextEngineWithProperties(props.get()),
@@ -3458,13 +3458,13 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  *
  * These are the supported properties:
  *
- * - `TTF_PROP_GPU_TEXT_ENGINE_DEVICE`: the SDL_GPUDevice to use for creating
+ * - `prop::GpuTextEngine.DEVICE`: the SDL_GPUDevice to use for creating
  *   textures and drawing text.
  * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
  *   atlas
  *
  * @param props the properties to use.
- * @returns a TextEngine object or nullptr on failure; call GetError()
+ * @returns a TextEngineBase object or nullptr on failure; call GetError()
  *          for more information.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -3476,7 +3476,7 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  * @sa Text
  * @sa TextBase.GetGPUDrawData
  */
-inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
+inline TextEngine CreateGPUTextEngineWithProperties(PropertiesBase& props)
 {
   return TextEngine{
     TextEngineWrapper{TTF_CreateGPUTextEngineWithProperties(props.get()),
