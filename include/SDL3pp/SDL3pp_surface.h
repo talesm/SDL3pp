@@ -5,6 +5,7 @@
 #include <SDL3/SDL_version.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
+#include "SDL3pp_iostream.h"
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_ownPtr.h"
@@ -150,13 +151,28 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * LoadBMP(StringParam).
    *
    * @param file a path on the filesystem to load an image from.
-   * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call GetError() for more information.
+   * @post the new SurfaceBase structure that is created or nullptr on failure;
+   *       call GetError() for more information.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
    */
   SurfaceBase(StringParam file);
+
+  /**
+   * Load an image from a IOStreamBase into a software surface.
+   *
+   * If available, this uses LoadSurface(IOStreamBase&), otherwise it uses
+   * LoadBMP(IOStreamBase&).
+   *
+   * @param src an IOStreamBase to load an image from.
+   * @post the new SurfaceBase structure that is created or nullptr on failure;
+   *       call GetError() for more information.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
+  SurfaceBase(IOStreamBase& src);
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -179,25 +195,27 @@ struct SurfaceBase : Resource<SDL_Surface*>
   }
 
   /**
-   * Allocate a new surface with a specific pixel format and existing
-   * pixel data.
+   * Allocate a new surface with a specific pixel format and existing pixel
+   * data.
    *
    * No copy is made of the pixel data. Pixel data is not managed automatically;
    * you must free the surface before you free the pixel data.
    *
    * Pitch is the offset in bytes from one row of pixels to the next, e.g.
-   * `width*4` for `SDL_PIXELFORMAT_RGBA8888`.
+   * `width*4` for `PIXELFORMAT_RGBA8888`.
    *
-   * You may pass NULL for pixels and 0 for pitch to create a surface that you
-   * will fill in with valid values later.
+   * You may pass nullptr for pixels and 0 for pitch to create a surface that
+   * you will fill in with valid values later.
    *
    * @param width the width of the surface.
    * @param height the height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
-   * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call GetError() for more information.
+   * @post the new SurfaceBase structure that is created or nullptr on failure;
+   *       call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1987,9 +2005,9 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *
  * @sa SaveBMP
  */
-inline Surface LoadBMP(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadBMP(IOStreamBase& src)
 {
-  return Surface{SDL_LoadBMP_IO(src, false)};
+  return Surface{SDL_LoadBMP_IO(src.get(), false)};
 }
 
 /**
@@ -2027,9 +2045,9 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @sa LoadBMP
  */
-inline bool SaveBMP(SurfaceBase& surface, ObjectBox<SDL_IOStream> auto&& dst)
+inline bool SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
 {
-  return SDL_SaveBMP_IO(surface.get(), dst, false);
+  return SDL_SaveBMP_IO(surface.get(), dst.get(), false);
 }
 
 /**

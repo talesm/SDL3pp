@@ -21,7 +21,6 @@ const transform = {
   },
   paramTypeMap: {
     "const char *": "StringParam",
-    "SDL_IOStream *": "ObjectBox<SDL_IOStream> auto &&",
     "const SDL_Point *": "const SDL_Point &",
     "const SDL_FPoint *": "const SDL_FPoint &",
     "const SDL_Rect *": "const SDL_Rect &",
@@ -1124,33 +1123,12 @@ const transform = {
       }
     },
     "SDL_iostream.h": {
-      ignoreEntries: [],
       includeAfter: {
         "__begin": [
           {
-            "name": "IOStreamBase",
-            "kind": "forward",
-            "template": [
-              {
-                "name": "T",
-                "type": "ObjectBox<SDL_IOStream *>"
-              }
-            ]
-          },
-          {
-            "name": "IOStreamRef",
-            "kind": "alias",
-            "type": "IOStreamBase<ObjectRef<SDL_IOStream>>"
-          },
-          {
-            "name": "IOStream",
-            "kind": "alias",
-            "type": "IOStreamBase<ObjectUnique<SDL_IOStream>>"
-          },
-          {
-            "name": "IOFromDynamicMem_CtorTag",
-            "kind": "struct",
-            "doc": "@cat constructor-tag"
+            name: "IOFromDynamicMem_CtorTag",
+            kind: "struct",
+            doc: "@cat constructor-tag"
           }
         ],
         "SDL_OpenIO": {
@@ -1171,7 +1149,6 @@ const transform = {
             }
           ]
         },
-        "SDL_IOFromConstMem": [],
         "SDL_SaveFile": [
           {
             "kind": "function",
@@ -1211,9 +1188,8 @@ const transform = {
           }
         ]
       },
-      resources: {
+      resourcesX: {
         "SDL_IOStream": {
-          paramType: "none",
           entries: {
             "SDL_IOFromFile": "ctor",
             "SDL_IOFromMem": "ctor",
@@ -1389,9 +1365,6 @@ const transform = {
             "SDL_WriteS64LE": "function",
             "SDL_WriteU64BE": "function",
             "SDL_WriteS64BE": "function",
-            "SDL_CloseIO": {
-              "name": "Close"
-            }
           }
         }
       },
@@ -1404,6 +1377,12 @@ const transform = {
           "parameters": [
             {}
           ]
+        },
+        "SDL_CloseIO": {
+          name: "IOStreamRef.Close",
+          static: false,
+          parameters: [],
+          hints: { body: "return reset();" }
         }
       }
     },
@@ -4999,7 +4978,7 @@ const transform = {
       resourcesX: {
         "SDL_Surface": {
           entries: {
-            "SurfaceBase": {
+            "SurfaceBase": [{
               kind: "function",
               type: "",
               proto: true,
@@ -5007,7 +4986,15 @@ const transform = {
                 type: "StringParam",
                 name: "file"
               }],
-            },
+            }, {
+              kind: "function",
+              type: "",
+              proto: true,
+              parameters: [{
+                type: "IOStreamBase &",
+                name: "src"
+              }],
+            }],
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
             "SDL_GetSurfaceProperties": "immutable",
@@ -5708,7 +5695,7 @@ const transform = {
           type: "Surface",
           parameters: [
             {
-              type: "ObjectBox<SDL_IOStream> auto &&"
+              type: "IOStreamBase &"
             }
           ]
         },
@@ -5720,7 +5707,7 @@ const transform = {
           parameters: [
             {},
             {
-              type: "ObjectBox<SDL_IOStream> auto &&"
+              type: "IOStreamBase &"
             }
           ]
         }
@@ -6795,7 +6782,7 @@ const transform = {
               parameters: [
                 {
                   "name": "src",
-                  "type": "ObjectBox<SDL_IOStream> auto &&"
+                  "type": "IOStreamBase &"
                 }
               ]
             },
@@ -6806,7 +6793,7 @@ const transform = {
               parameters: [
                 {
                   "name": "src",
-                  "type": "ObjectBox<SDL_IOStream> auto &&"
+                  "type": "IOStreamBase &"
                 },
                 {
                   "name": "type",
@@ -6873,7 +6860,7 @@ const transform = {
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             },
             {
               "name": "type",
@@ -6891,7 +6878,7 @@ const transform = {
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ]
         },
@@ -6908,7 +6895,7 @@ const transform = {
             },
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ]
         },
@@ -6922,7 +6909,7 @@ const transform = {
             },
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             },
             {
               "name": "type",
@@ -7023,7 +7010,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             },
             {
               "name": "quality",
@@ -7040,7 +7027,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ]
         },
@@ -7053,7 +7040,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             },
             {
               "name": "quality",
@@ -7079,7 +7066,14 @@ const transform = {
         "TTF_Font": {
           entries: {
             "TTF_OpenFont": "ctor",
-            "TTF_OpenFontIO": "ctor",
+            "TTF_OpenFontIO": {
+              name: "FontBase",
+              type: "",
+              parameters: [{}, {
+                type: "float",
+                name: "ptsize"
+              }]
+            },
             "TTF_OpenFontWithProperties": "ctor",
             "TTF_CopyFont": {
               "immutable": true,

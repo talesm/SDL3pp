@@ -519,7 +519,7 @@ function expandResources(sourceEntries, file, context) {
     const refName = resourceEntry.refName || (uniqueName + "Ref");
     const type = resourceEntry.type ?? sourceName;
     const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
-    const isStruct = sourceEntry.kind === "struct";
+    const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
     const pointerType = resourceEntry.pointerType ?? (isStruct ? `${type} *` : type);
     const constPointerType = `const ${pointerType}`;
     referenceAliases.push(
@@ -527,7 +527,7 @@ function expandResources(sourceEntries, file, context) {
       { name: refName, kind: "forward" },
       { name: uniqueName, kind: "forward" },
     );
-    context.addParamType(pointerType, `${name} &`);
+    context.paramTypeMap[pointerType] = `${name} &`;
     context.addParamType(constPointerType, `const ${name} &`);
 
     switch (resourceEntry.returnType) {
@@ -564,6 +564,10 @@ function expandResources(sourceEntries, file, context) {
 
     const freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free]) ?? scanFreeFunctionX(sourceEntries, uniqueName, pointerType);
     const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
+    if (freeFunction && !file.transform[freeFunction.name]) {
+      context.nameMap[freeFunction.name] = refName + ".reset";
+      context.blacklist.add(freeFunction.name);
+    }
 
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [
@@ -622,7 +626,7 @@ function expandResources(sourceEntries, file, context) {
               body: `release(other.release());\nreturn *this;`,
             }
           },
-          [freeFunction?.name ?? "reset"]: {
+          "reset": {
             kind: "function",
             name: "reset",
             type: freeFunction?.type ?? "void",
@@ -1302,6 +1306,7 @@ function transformParameters(parameters, context) {
   return parameters.map(parameter => {
     if (typeof parameter == "string") return parameter;
     let { name, type, default: defaultValue } = parameter;
+    // if (type === "SDL_IOStream *") console.log(type, context.paramTypeMap[type]);
     type = transformType(type, context.paramTypeMap);
     return { name, type, default: defaultValue };
   });

@@ -118,9 +118,6 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * load images directly into an TextureBase for use by the GPU without using a
  * software surface: call LoadTexture() instead.
  *
- * When done with the returned surface, the app should dispose of it with a
- * call to SurfaceBase.Destroy().
- *
  * @param src an IOStreamBase that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
@@ -130,11 +127,10 @@ inline int IMG_Version() { return ::IMG_Version(); }
  *
  * @sa LoadSurface
  * @sa LoadSurface
- * @sa SurfaceBase.Destroy
  */
-inline Surface LoadSurface(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
+inline Surface LoadSurface(IOStreamBase& src, StringParam type)
 {
-  return Surface{IMG_LoadTyped_IO(src, false, type)};
+  return Surface{IMG_LoadTyped_IO(src.get(), false, type)};
 }
 
 /**
@@ -176,45 +172,49 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An SDL_Surface is a buffer of pixels in memory accessible by the CPU. Use
+ * An SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use
  * this if you plan to hand the data to something else or manipulate it
  * further in code.
  *
- * There are no guarantees about what format the new SDL_Surface data will be;
+ * There are no guarantees about what format the new SurfaceBase data will be;
  * in many cases, SDL_image will attempt to supply a surface that exactly
  * matches the provided image, but in others it might have to convert (either
  * because the image is in a format that SDL doesn't directly support or
  * because it's compressed data that could reasonably uncompress to various
  * formats and SDL_image had to pick one). You can inspect an SurfaceBase for
- * its specifics, and use SurfaceBase::Convert() to then migrate to any
- * supported format.
+ * its specifics, and use SurfaceBase.Convert to then migrate to any supported
+ * format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: SurfaceBase::SetColorKey(image, SDL_RLEACCEL,
+ * by calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,
  * image->format->colorkey);
  *
  * There is a separate function to read files from disk without having to deal
- * with SDL_IOStream: `Load("filename.jpg")` will call this function and
+ * with IOStreamBase: `LoadSurface("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also IMG_LoadTyped_IO(), which is equivalent to this function
+ * There is also LoadSurface(), which is equivalent to this function
  * except a file extension (like "BMP", "JPG", etc) can be specified, in case
  * SDL_image cannot autodetect the file format.
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
+ * load images directly into an TextureBase for use by the GPU without using a
  * software surface: call LoadTexture() instead.
  *
- * @param src an IOStream that data will be read from.
+ * @param src an IOStreamBase that data will be read from.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadSurface
+ * @sa LoadSurface
+ * @sa SurfaceRef.reset
  */
-inline Surface LoadSurface(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadSurface(IOStreamBase& src)
 {
-  return Surface{IMG_Load_IO(src, false)};
+  return Surface{IMG_Load_IO(src.get(), false)};
 }
 
 /**
@@ -248,47 +248,53 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * A Texture represents an image in GPU memory, usable by SDL's 2D Render
+ * An TextureBase represents an image in GPU memory, usable by SDL's 2D Render
  * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after loading it.
+ * SurfaceBase if you don't need to manipulate the image directly after
+ * loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
+ * TextureBase in the most format that most reasonably represents the image
  * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
  * RGBA).
  *
  * There is a separate function to read files from disk without having to deal
- * with SDL_IOStream: `LoadTexture(renderer, "filename.jpg")` will call
+ * with IOStreamBase: `LoadTexture(renderer, "filename.jpg")` will call
  * this function and manage those details for you, determining the file type
  * from the filename's extension.
  *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Load(SDL_IOStream*,bool) instead.
+ * There is also LoadTexture(), which is equivalent to this
+ * function except a file extension (like "BMP", "JPG", etc) can be specified,
+ * in case SDL_image cannot autodetect the file format.
  *
- * @param renderer the SDL_Renderer to use to create the GPU texture.
- * @param src an SDL_IOStream that data will be read from.
+ * If you would rather decode an image to an SurfaceBase (a buffer of pixels
+ * in CPU memory), call LoadSurface() instead.
+ *
+ * @param renderer the RendererBase to use to create the GPU texture.
+ * @param src an IOStreamBase that data will be read from.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Texture LoadTexture(RendererRef renderer,
-                           ObjectBox<SDL_IOStream> auto&& src)
+inline Texture LoadTexture(RendererRef renderer, IOStreamBase& src)
 {
-  return Texture{IMG_LoadTexture_IO(renderer.get(), src, false)};
+  return Texture{IMG_LoadTexture_IO(renderer.get(), src.get(), false)};
 }
 
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * A Texture represents an image in GPU memory, usable by SDL's 2D Render API.
- * This can be significantly more efficient than using a CPU-bound Surface if
- * you don't need to manipulate the image directly after loading it.
+ * An TextureBase represents an image in GPU memory, usable by SDL's 2D Render
+ * API. This can be significantly more efficient than using a CPU-bound
+ * SurfaceBase if you don't need to manipulate the image directly after
+ * loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image data
- * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
+ * TextureBase in the most format that most reasonably represents the image
+ * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
+ * RGBA).
  *
  * Even though this function accepts a file type, SDL_image may still try
  * other decoders that are capable of detecting file type from the contents of
@@ -297,15 +303,19 @@ inline Texture LoadTexture(RendererRef renderer,
  * on its ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with SDL_IOStream: `IMG_LoadTexture("filename.jpg")` will call this
+ * with IOStreamBase: `LoadTexture("filename.jpg")` will call this
  * function and manage those details for you, determining the file type from
  * the filename's extension.
  *
- * If you would rather decode an image to an SDL_Surface (a buffer of pixels
- * in CPU memory), call Load(SDL_IOStream*,bool,StringParam) instead.
+ * There is also LoadTexture(), which is equivalent to this function
+ * except that it will rely on SDL_image to determine what type of data it is
+ * loading, much like passing a nullptr for type.
  *
- * @param renderer the SDL_Renderer to use to create the GPU texture.
- * @param src an SDL_IOStream that data will be read from.
+ * If you would rather decode an image to an SurfaceBase (a buffer of pixels
+ * in CPU memory), call LoadSurface() instead.
+ *
+ * @param renderer the RendererBase to use to create the GPU texture.
+ * @param src an IOStreamBase that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new texture, or nullptr on error.
@@ -313,17 +323,18 @@ inline Texture LoadTexture(RendererRef renderer,
  * @since This function is available since SDL_image 3.0.0.
  */
 inline Texture LoadTexture(RendererRef renderer,
-                           ObjectBox<SDL_IOStream> auto&& src,
+                           IOStreamBase& src,
                            StringParam type)
 {
-  return Texture{IMG_LoadTextureTyped_IO(renderer.get(), src, false, type)};
+  return Texture{
+    IMG_LoadTextureTyped_IO(renderer.get(), src.get(), false, type)};
 }
 
 /**
- * Detect AVIF image data on a readable/seekable SDL_IOStream.
+ * Detect AVIF image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -337,7 +348,7 @@ inline Texture LoadTexture(RendererRef renderer,
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is AVIF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -361,16 +372,13 @@ inline Texture LoadTexture(RendererRef renderer,
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isAVIF(ObjectBox<SDL_IOStream> auto&& src)
-{
-  return IMG_isAVIF(src);
-}
+inline bool isAVIF(IOStreamBase& src) { return IMG_isAVIF(src.get()); }
 
 /**
- * Detect ICO image data on a readable/seekable SDL_IOStream.
+ * Detect ICO image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -384,7 +392,7 @@ inline bool isAVIF(ObjectBox<SDL_IOStream> auto&& src)
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is ICO data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -407,13 +415,13 @@ inline bool isAVIF(ObjectBox<SDL_IOStream> auto&& src)
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isICO(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isICO(src); }
+inline bool isICO(IOStreamBase& src) { return IMG_isICO(src.get()); }
 
 /**
- * Detect CUR image data on a readable/seekable SDL_IOStream.
+ * Detect CUR image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -427,7 +435,7 @@ inline bool isICO(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isICO(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is CUR data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -450,13 +458,13 @@ inline bool isICO(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isICO(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isCUR(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isCUR(src); }
+inline bool isCUR(IOStreamBase& src) { return IMG_isCUR(src.get()); }
 
 /**
- * Detect BMP image data on a readable/seekable SDL_IOStream.
+ * Detect BMP image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -470,7 +478,7 @@ inline bool isCUR(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isCUR(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is BMP data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -493,13 +501,13 @@ inline bool isCUR(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isCUR(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isBMP(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isBMP(src); }
+inline bool isBMP(IOStreamBase& src) { return IMG_isBMP(src.get()); }
 
 /**
- * Detect GIF image data on a readable/seekable SDL_IOStream.
+ * Detect GIF image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -513,7 +521,7 @@ inline bool isBMP(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isBMP(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is GIF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -536,13 +544,13 @@ inline bool isBMP(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isBMP(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isGIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isGIF(src); }
+inline bool isGIF(IOStreamBase& src) { return IMG_isGIF(src.get()); }
 
 /**
- * Detect JPG image data on a readable/seekable SDL_IOStream.
+ * Detect JPG image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -556,7 +564,7 @@ inline bool isGIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isGIF(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is JPG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -579,13 +587,13 @@ inline bool isGIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isGIF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJPG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJPG(src); }
+inline bool isJPG(IOStreamBase& src) { return IMG_isJPG(src.get()); }
 
 /**
- * Detect JXL image data on a readable/seekable SDL_IOStream.
+ * Detect JXL image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -599,7 +607,7 @@ inline bool isJPG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJPG(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is JXL data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -622,13 +630,13 @@ inline bool isJPG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJPG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJXL(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJXL(src); }
+inline bool isJXL(IOStreamBase& src) { return IMG_isJXL(src.get()); }
 
 /**
- * Detect LBM image data on a readable/seekable SDL_IOStream.
+ * Detect LBM image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -642,7 +650,7 @@ inline bool isJXL(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJXL(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is LBM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -665,13 +673,13 @@ inline bool isJXL(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJXL(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isLBM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isLBM(src); }
+inline bool isLBM(IOStreamBase& src) { return IMG_isLBM(src.get()); }
 
 /**
- * Detect PCX image data on a readable/seekable SDL_IOStream.
+ * Detect PCX image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -685,7 +693,7 @@ inline bool isLBM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isLBM(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is PCX data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -708,13 +716,13 @@ inline bool isLBM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isLBM(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPCX(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPCX(src); }
+inline bool isPCX(IOStreamBase& src) { return IMG_isPCX(src.get()); }
 
 /**
- * Detect PNG image data on a readable/seekable SDL_IOStream.
+ * Detect PNG image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -728,7 +736,7 @@ inline bool isPCX(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPCX(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is PNG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -751,13 +759,13 @@ inline bool isPCX(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPCX(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNG(src); }
+inline bool isPNG(IOStreamBase& src) { return IMG_isPNG(src.get()); }
 
 /**
- * Detect PNM image data on a readable/seekable SDL_IOStream.
+ * Detect PNM image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -771,7 +779,7 @@ inline bool isPNG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNG(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is PNM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -794,13 +802,13 @@ inline bool isPNG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNM(src); }
+inline bool isPNM(IOStreamBase& src) { return IMG_isPNM(src.get()); }
 
 /**
- * Detect SVG image data on a readable/seekable SDL_IOStream.
+ * Detect SVG image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -814,7 +822,7 @@ inline bool isPNM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNM(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is SVG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -837,13 +845,13 @@ inline bool isPNM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNM(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isSVG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isSVG(src); }
+inline bool isSVG(IOStreamBase& src) { return IMG_isSVG(src.get()); }
 
 /**
- * Detect QOI image data on a readable/seekable SDL_IOStream.
+ * Detect QOI image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -857,7 +865,7 @@ inline bool isSVG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isSVG(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is QOI data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -880,13 +888,13 @@ inline bool isSVG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isSVG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isQOI(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isQOI(src); }
+inline bool isQOI(IOStreamBase& src) { return IMG_isQOI(src.get()); }
 
 /**
- * Detect TIFF image data on a readable/seekable SDL_IOStream.
+ * Detect TIFF image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -900,7 +908,7 @@ inline bool isQOI(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isQOI(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is TIFF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -923,13 +931,13 @@ inline bool isQOI(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isQOI(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isTIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isTIF(src); }
+inline bool isTIF(IOStreamBase& src) { return IMG_isTIF(src.get()); }
 
 /**
- * Detect XCF image data on a readable/seekable SDL_IOStream.
+ * Detect XCF image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -943,7 +951,7 @@ inline bool isTIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isTIF(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is XCF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -966,13 +974,13 @@ inline bool isTIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isTIF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXCF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXCF(src); }
+inline bool isXCF(IOStreamBase& src) { return IMG_isXCF(src.get()); }
 
 /**
- * Detect XPM image data on a readable/seekable SDL_IOStream.
+ * Detect XPM image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -986,7 +994,7 @@ inline bool isXCF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXCF(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is XPM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -1009,13 +1017,13 @@ inline bool isXCF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXCF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXPM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXPM(src); }
+inline bool isXPM(IOStreamBase& src) { return IMG_isXPM(src.get()); }
 
 /**
- * Detect XV image data on a readable/seekable SDL_IOStream.
+ * Detect XV image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -1029,7 +1037,7 @@ inline bool isXPM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXPM(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is XV data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -1052,13 +1060,13 @@ inline bool isXPM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXPM(src); }
  * @sa isXPM
  * @sa isWEBP
  */
-inline bool isXV(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXV(src); }
+inline bool isXV(IOStreamBase& src) { return IMG_isXV(src.get()); }
 
 /**
- * Detect WEBP image data on a readable/seekable SDL_IOStream.
+ * Detect WEBP image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -1072,7 +1080,7 @@ inline bool isXV(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXV(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is WEBP data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -1095,46 +1103,43 @@ inline bool isXV(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXV(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isWEBP(ObjectBox<SDL_IOStream> auto&& src)
-{
-  return IMG_isWEBP(src);
-}
+inline bool isWEBP(IOStreamBase& src) { return IMG_isWEBP(src.get()); }
 
 /**
  * Load a AVIF image directly.
  *
  * If you know you definitely have a AVIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadAVIF(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadAVIF(IOStreamBase& src)
 {
-  return Surface{IMG_LoadAVIF_IO(src)};
+  return Surface{IMG_LoadAVIF_IO(src.get())};
 }
 
 /**
@@ -1142,36 +1147,36 @@ inline Surface LoadAVIF(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a ICO image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadICO(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadICO(IOStreamBase& src)
 {
-  return Surface{IMG_LoadICO_IO(src)};
+  return Surface{IMG_LoadICO_IO(src.get())};
 }
 
 /**
@@ -1179,36 +1184,36 @@ inline Surface LoadICO(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a CUR image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadCUR(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadCUR(IOStreamBase& src)
 {
-  return Surface{IMG_LoadCUR_IO(src)};
+  return Surface{IMG_LoadCUR_IO(src.get())};
 }
 
 /**
@@ -1216,36 +1221,36 @@ inline Surface LoadCUR(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a GIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadGIF(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadGIF(IOStreamBase& src)
 {
-  return Surface{IMG_LoadGIF_IO(src)};
+  return Surface{IMG_LoadGIF_IO(src.get())};
 }
 
 /**
@@ -1253,36 +1258,36 @@ inline Surface LoadGIF(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a JPG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadJPG(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadJPG(IOStreamBase& src)
 {
-  return Surface{IMG_LoadJPG_IO(src)};
+  return Surface{IMG_LoadJPG_IO(src.get())};
 }
 
 /**
@@ -1290,36 +1295,36 @@ inline Surface LoadJPG(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a JXL image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadJXL(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadJXL(IOStreamBase& src)
 {
-  return Surface{IMG_LoadJXL_IO(src)};
+  return Surface{IMG_LoadJXL_IO(src.get())};
 }
 
 /**
@@ -1327,36 +1332,36 @@ inline Surface LoadJXL(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a LBM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadLBM(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadLBM(IOStreamBase& src)
 {
-  return Surface{IMG_LoadLBM_IO(src)};
+  return Surface{IMG_LoadLBM_IO(src.get())};
 }
 
 /**
@@ -1364,36 +1369,36 @@ inline Surface LoadLBM(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a PCX image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadPCX(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadPCX(IOStreamBase& src)
 {
-  return Surface{IMG_LoadPCX_IO(src)};
+  return Surface{IMG_LoadPCX_IO(src.get())};
 }
 
 /**
@@ -1401,36 +1406,36 @@ inline Surface LoadPCX(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a PNG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadPNG(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadPNG(IOStreamBase& src)
 {
-  return Surface{IMG_LoadPNG_IO(src)};
+  return Surface{IMG_LoadPNG_IO(src.get())};
 }
 
 /**
@@ -1438,36 +1443,36 @@ inline Surface LoadPNG(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a PNM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadPNM(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadPNM(IOStreamBase& src)
 {
-  return Surface{IMG_LoadPNM_IO(src)};
+  return Surface{IMG_LoadPNM_IO(src.get())};
 }
 
 /**
@@ -1475,36 +1480,36 @@ inline Surface LoadPNM(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a SVG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadSVG(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadSVG(IOStreamBase& src)
 {
-  return Surface{IMG_LoadSVG_IO(src)};
+  return Surface{IMG_LoadSVG_IO(src.get())};
 }
 
 /**
@@ -1512,36 +1517,36 @@ inline Surface LoadSVG(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a QOI image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadQOI(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadQOI(IOStreamBase& src)
 {
-  return Surface{IMG_LoadQOI_IO(src)};
+  return Surface{IMG_LoadQOI_IO(src.get())};
 }
 
 /**
@@ -1549,36 +1554,36 @@ inline Surface LoadQOI(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a TGA image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadTGA(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadTGA(IOStreamBase& src)
 {
-  return Surface{IMG_LoadTGA_IO(src)};
+  return Surface{IMG_LoadTGA_IO(src.get())};
 }
 
 /**
@@ -1586,36 +1591,36 @@ inline Surface LoadTGA(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a TIFF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadTIF(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadTIF(IOStreamBase& src)
 {
-  return Surface{IMG_LoadTIF_IO(src)};
+  return Surface{IMG_LoadTIF_IO(src.get())};
 }
 
 /**
@@ -1623,36 +1628,36 @@ inline Surface LoadTIF(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a XCF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadXCF(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadXCF(IOStreamBase& src)
 {
-  return Surface{IMG_LoadXCF_IO(src)};
+  return Surface{IMG_LoadXCF_IO(src.get())};
 }
 
 /**
@@ -1660,36 +1665,36 @@ inline Surface LoadXCF(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a XPM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadXPM(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadXPM(IOStreamBase& src)
 {
-  return Surface{IMG_LoadXPM_IO(src)};
+  return Surface{IMG_LoadXPM_IO(src.get())};
 }
 
 /**
@@ -1697,36 +1702,36 @@ inline Surface LoadXPM(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a XV image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadWEBP
  */
-inline Surface LoadXV(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadXV(IOStreamBase& src)
 {
-  return Surface{IMG_LoadXV_IO(src)};
+  return Surface{IMG_LoadXV_IO(src.get())};
 }
 
 /**
@@ -1734,36 +1739,36 @@ inline Surface LoadXV(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a WEBP image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
  */
-inline Surface LoadWEBP(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadWEBP(IOStreamBase& src)
 {
-  return Surface{IMG_LoadWEBP_IO(src)};
+  return Surface{IMG_LoadWEBP_IO(src.get())};
 }
 
 /**
@@ -1776,20 +1781,18 @@ inline Surface LoadWEBP(ObjectBox<SDL_IOStream> auto&& src)
  * preserve aspect ratio.
  *
  * When done with the returned surface, the app should dispose of it with a
- * call to SDL_DestroySurface().
+ * call to SurfaceRef.reset().
  *
- * @param src an SDL_IOStream to load SVG data from.
+ * @param src an IOStreamBase to load SVG data from.
  * @param width desired width of the generated surface, in pixels.
  * @param height desired height of the generated surface, in pixels.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface LoadSizedSVG(ObjectBox<SDL_IOStream> auto&& src,
-                            int width,
-                            int height)
+inline Surface LoadSizedSVG(IOStreamBase& src, int width, int height)
 {
-  return Surface{IMG_LoadSizedSVG_IO(src, width, height)};
+  return Surface{IMG_LoadSizedSVG_IO(src.get(), width, height)};
 }
 
 /**
@@ -1856,24 +1859,22 @@ inline bool SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
 }
 
 /**
- * Save an SurfaceBase into AVIF image data, via an SDL_IOStream.
+ * Save an SurfaceBase into AVIF image data, via an IOStreamBase.
  *
- * If you just want to save to a filename, you can use IMG_SaveAVIF() instead.
+ * If you just want to save to a filename, you can use SaveAVIF() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the SDL_IOStream to save the image data to.
+ * @param dst the IOStreamBase to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline bool SaveAVIF(SurfaceRef surface,
-                     ObjectBox<SDL_IOStream> auto&& dst,
-                     int quality)
+inline bool SaveAVIF(SurfaceRef surface, IOStreamBase& dst, int quality)
 {
-  return IMG_SaveAVIF_IO(surface.get(), dst, false, quality);
+  return IMG_SaveAVIF_IO(surface.get(), dst.get(), false, quality);
 }
 
 /**
@@ -1896,22 +1897,22 @@ inline bool SavePNG(SurfaceBase& surface, StringParam file)
 }
 
 /**
- * Save an SDL_Surface into PNG image data, via an SDL_IOStream.
+ * Save an SurfaceBase into PNG image data, via an IOStreamBase.
  *
- * If you just want to save to a filename, you can use IMG_SavePNG() instead.
+ * If you just want to save to a filename, you can use SavePNG() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the SDL_IOStream to save the image data to.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @param dst the IOStreamBase to save the image data to.
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SavePNG
  */
-inline bool SavePNG(SurfaceRef surface, ObjectBox<SDL_IOStream> auto&& dst)
+inline bool SavePNG(SurfaceRef surface, IOStreamBase& dst)
 {
-  return IMG_SavePNG_IO(surface.get(), dst, false);
+  return IMG_SavePNG_IO(surface.get(), dst.get(), false);
 }
 
 /**
@@ -1934,26 +1935,24 @@ inline bool SaveJPG(SurfaceBase& surface, StringParam file, int quality)
 }
 
 /**
- * Save an SDL_Surface into JPEG image data, via an SDL_IOStream.
+ * Save an SurfaceBase into JPEG image data, via an IOStreamBase.
  *
- * If you just want to save to a filename, you can use IMG_SaveJPG() instead.
+ * If you just want to save to a filename, you can use SaveJPG() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the SDL_IOStream to save the image data to.
+ * @param dst the IOStreamBase to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SaveJPG
  */
-inline bool SaveJPG(SurfaceRef surface,
-                    ObjectBox<SDL_IOStream> auto&& dst,
-                    int quality)
+inline bool SaveJPG(SurfaceRef surface, IOStreamBase& dst, int quality)
 {
-  return IMG_SaveJPG_IO(surface.get(), dst, false, quality);
+  return IMG_SaveJPG_IO(surface.get(), dst.get(), false, quality);
 }
 
 /**
@@ -1989,13 +1988,13 @@ struct AnimationBase : Resource<IMG_Animation*>
    * Load an animation from an IOStreamBase.
    *
    * @param src an IOStreamBase that data will be read from.
-   * @post a new Animation, or nullptr on error.
+   * @post a new AnimationBase, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa AnimationRef.reset
    */
-  AnimationBase(ObjectBox<SDL_IOStream> auto&& src)
+  AnimationBase(IOStreamBase& src)
     : Resource(IMG_LoadAnimation_IO(src.get(), false))
   {
   }
@@ -2011,13 +2010,13 @@ struct AnimationBase : Resource<IMG_Animation*>
    *
    * @param src an SDL_IOStream that data will be read from.
    * @param type a filename extension that represent this data ("GIF", etc).
-   * @post a new IMG_Animation, or nullptr on error.
+   * @post a new AnimationBase, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa AnimationRef.reset
    */
-  AnimationBase(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
+  AnimationBase(IOStreamBase& src, StringParam type)
     : Resource(IMG_LoadAnimationTyped_IO(src.get(), false, type))
   {
   }
@@ -2169,7 +2168,7 @@ struct Animation : AnimationRef
  * @sa AnimationBase.AnimationBase
  * @sa AnimationRef.reset
  */
-inline Animation LoadGIFAnimation(ObjectBox<SDL_IOStream> auto&& src)
+inline Animation LoadGIFAnimation(IOStreamBase& src)
 {
   return Animation{IMG_LoadGIFAnimation_IO(src.get())};
 }
@@ -2189,7 +2188,7 @@ inline Animation LoadGIFAnimation(ObjectBox<SDL_IOStream> auto&& src)
  *
  * @sa AnimationBase.AnimationBase
  */
-inline Animation LoadWEBPAnimation(ObjectBox<SDL_IOStream> auto&& src)
+inline Animation LoadWEBPAnimation(IOStreamBase& src)
 {
   return Animation{IMG_LoadWEBPAnimation_IO(src.get())};
 }
@@ -2199,7 +2198,12 @@ inline Animation LoadWEBPAnimation(ObjectBox<SDL_IOStream> auto&& src)
 /// @}
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(LoadSurface(std::move(file)).release())
+  : Resource(IMG_Load(file))
+{
+}
+
+inline SurfaceBase::SurfaceBase(IOStreamBase& src)
+  : Resource(IMG_Load_IO(src.get(), false))
 {
 }
 
@@ -2218,7 +2222,12 @@ TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
 namespace SDL {
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(LoadBMP(std::move(file)).release())
+  : Resource(SDL_LoadBMP(file))
+{
+}
+
+inline SurfaceBase::SurfaceBase(IOStreamBase& src)
+  : Resource(SDL_LoadBMP_IO(src.get(), false))
 {
 }
 

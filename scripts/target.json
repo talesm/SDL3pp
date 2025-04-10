@@ -14985,6 +14985,19 @@
                 "doc": ""
               },
               {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "IOStreamBase &",
+                    "name": "src"
+                  }
+                ],
+                "name": "SurfaceBase",
+                "doc": ""
+              },
+              {
                 "doc": "Allocate a new surface with a specific pixel format.\n\nThe pixels of the new surface are initialized to zero.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@post the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceRef.reset",
                 "name": "SurfaceBase",
                 "kind": "function",
@@ -16298,10 +16311,10 @@
               "name": "operator="
             },
             "reset": {
-              "doc": "Free a surface.\n\nIt is safe to pass nullptr to this function.\n\n@param surface the SurfaceBase to free.\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceBase.SurfaceBase",
-              "name": "reset",
               "kind": "function",
+              "name": "reset",
               "type": "void",
+              "static": false,
               "parameters": [
                 {
                   "name": "newResource",
@@ -16309,8 +16322,7 @@
                   "default": "{}"
                 }
               ],
-              "sourceName": "SDL_DestroySurface",
-              "static": false,
+              "doc": "Free a surface.\n\nIt is safe to pass nullptr to this function.\n\n@param surface the SurfaceBase to free.\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceBase.SurfaceBase",
               "hints": {
                 "body": "SDL_DestroySurface(release(newResource));"
               }
@@ -16584,14 +16596,14 @@
         },
         "LoadBMP": [
           {
-            "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with SurfaceRef.reset(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStreamBase.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new SurfaceBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.reset\n@sa LoadBMP\n@sa SaveBMP",
+            "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with SurfaceRef.reset(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new SurfaceBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.reset\n@sa LoadBMP\n@sa SaveBMP",
             "name": "LoadBMP",
             "kind": "function",
             "type": "Surface",
             "parameters": [
               {
                 "name": "src",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               }
             ],
             "sourceName": "SDL_LoadBMP_IO"
@@ -16612,7 +16624,7 @@
         ],
         "SaveBMP": [
           {
-            "doc": "Save a surface to a seekable SDL data stream in BMP format.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param surface the SurfaceBase structure containing the image to be saved.\n@param dst a data stream to save to.\n@param closeio if true, calls IOStreamBase.Close() on `dst` before returning, even\n               in the case of an error.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadBMP\n@sa SaveBMP",
+            "doc": "Save a surface to a seekable SDL data stream in BMP format.\n\nSurfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the\nBMP directly. Other RGB formats with 8-bit or higher get converted to a\n24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit\nsurface before they are saved. YUV and paletted 1-bit and 4-bit formats are\nnot supported.\n\n@param surface the SurfaceBase structure containing the image to be saved.\n@param dst a data stream to save to.\n@param closeio if true, calls IOStreamRef.Close() on `dst` before returning, even\n               in the case of an error.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadBMP\n@sa SaveBMP",
             "name": "SaveBMP",
             "kind": "function",
             "type": "bool",
@@ -16623,7 +16635,7 @@
               },
               {
                 "name": "dst",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               }
             ],
             "sourceName": "SDL_SaveBMP_IO"
@@ -26064,34 +26076,26 @@
       "name": "SDL3pp_iostream.h",
       "doc": "@defgroup CategoryIOStream Category IOStream\n\nSDL provides an abstract interface for reading and writing data streams. It\noffers implementations for files, memory, etc, and the app can provide\ntheir own implementations, too.\n\nIOStreamBase is not related to the standard C++ iostream class, other than\nboth are abstract interfaces to read/write data.",
       "entries": {
-        "IOStreamBase-forward": {
-          "name": "IOStreamBase",
-          "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_IOStream *>",
-              "name": "T"
-            }
-          ],
-          "doc": ""
-        },
-        "IOStreamRef": {
-          "name": "IOStreamRef",
-          "kind": "alias",
-          "type": "IOStreamBase<ObjectRef<SDL_IOStream>>",
-          "doc": "Handle to a non owned iOStream\n\n@cat resource\n\n@sa IOStreamBase\n@sa IOStream"
-        },
-        "IOStream": {
-          "name": "IOStream",
-          "kind": "alias",
-          "type": "IOStreamBase<ObjectUnique<SDL_IOStream>>",
-          "doc": "Handle to an owned iOStream\n\n@cat resource\n\n@sa IOStreamBase\n@sa IOStreamRef"
-        },
         "IOFromDynamicMem_CtorTag": {
           "name": "IOFromDynamicMem_CtorTag",
           "kind": "struct",
           "doc": "@cat constructor-tag",
           "entries": {}
+        },
+        "IOStreamBase-forward": {
+          "name": "IOStreamBase",
+          "kind": "forward",
+          "doc": ""
+        },
+        "IOStreamRef-forward": {
+          "name": "IOStreamRef",
+          "kind": "forward",
+          "doc": ""
+        },
+        "IOStream-forward": {
+          "name": "IOStream",
+          "kind": "forward",
+          "doc": ""
         },
         "IOStatus": {
           "doc": "IOStreamBase status, set by a read or write operation.\n\n@since This enum is available since SDL 3.2.0.",
@@ -26187,26 +26191,20 @@
           "type": "SDL_IOStreamInterface"
         },
         "IOStreamBase": {
-          "doc": "The read/write operation structure.\n\nThis operates as an opaque handle. There are several APIs to create various\ntypes of I/O streams, or an app can supply an IOStreamInterface to\nIOStreamBase.IOStreamBase() to provide their own stream implementation behind this\nstruct's abstract interface.\n\n@since This struct is available since SDL 3.2.0.",
+          "doc": "The read/write operation structure.\n\nThis operates as an opaque handle. There are several APIs to create various\ntypes of I/O streams, or an app can supply an IOStreamInterface to\nIOStreamBase.IOStreamBase() to provide their own stream implementation behind this\nstruct's abstract interface.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa IOStream\n@sa IOStreamRef",
           "name": "IOStreamBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_IOStream *>",
           "sourceName": "SDL_IOStream",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_IOStream *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "IOStreamBase": [
               {
-                "doc": "Use this function to create a new IOStreamBase structure for reading from\nand/or writing to a named file.\n\nThe `mode` string is treated roughly the same as in a call to the C\nlibrary's fopen(), even if SDL doesn't happen to use fopen() behind the\nscenes.\n\nAvailable `mode` strings:\n\n- \"r\": Open a file for reading. The file must exist.\n- \"w\": Create an empty file for writing. If a file with the same name\n  already exists its content is erased and the file is treated as a new\n  empty file.\n- \"a\": Append to a file. Writing operations append data at the end of the\n  file. The file is created if it does not exist.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n- \"a+\": Open a file for reading and appending. All writing operations are\n  performed at the end of the file, protecting the previous content to be\n  overwritten. You can reposition (fseek, rewind) the internal pointer to\n  anywhere in the file for reading, but writing operations will move it\n  back to the end of file. The file is created if it does not exist.\n\n**NOTE**: In order to open a file as a binary file, a \"b\" character has to\nbe included in the `mode` string. This additional \"b\" character can either\nbe appended at the end of the string (thus making the following compound\nmodes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the\nletter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\").\nAdditional characters may follow the sequence, although they should have no\neffect. For example, \"t\" is sometimes appended to make explicit the file is\na text file.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nIn Android, IOStreamBase.IOStreamBase() can be used to open content:// URIs. As a\nfallback, IOStreamBase.IOStreamBase() will transparently open a matching filename in\nthe app's `assets`.\n\nClosing the IOStreamBase will close SDL's internal file handle.\n\nThe following properties may be set at creation time by SDL:\n\n- `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast\n  to a win32 `HANDLE`, that this IOStreamBase is using to access the\n  filesystem. If the program isn't running on Windows, or SDL used some\n  other method to access the filesystem, this property will not be set.\n- `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a\n  stdio `FILE *`, that this IOStreamBase is using to access the filesystem.\n  If SDL used some other method to access the filesystem, this property\n  will not be set. PLEASE NOTE that if SDL is using a different C runtime\n  than your app, trying to use this pointer will almost certainly result in\n  a crash! This is mostly a problem on Windows; make sure you build SDL and\n  your app with the same compiler and settings to avoid it.\n- `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this\n  IOStreamBase is using to access the filesystem.\n- `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast\n  to an Android NDK `AAsset *`, that this IOStreamBase is using to access\n  the filesystem. If SDL used some other method to access the filesystem,\n  this property will not be set.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@post a pointer to the IOStreamBase structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.Close\n@sa IOStreamBase.Flush\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
+                "doc": "Use this function to create a new IOStreamBase structure for reading from\nand/or writing to a named file.\n\nThe `mode` string is treated roughly the same as in a call to the C\nlibrary's fopen(), even if SDL doesn't happen to use fopen() behind the\nscenes.\n\nAvailable `mode` strings:\n\n- \"r\": Open a file for reading. The file must exist.\n- \"w\": Create an empty file for writing. If a file with the same name\n  already exists its content is erased and the file is treated as a new\n  empty file.\n- \"a\": Append to a file. Writing operations append data at the end of the\n  file. The file is created if it does not exist.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n- \"a+\": Open a file for reading and appending. All writing operations are\n  performed at the end of the file, protecting the previous content to be\n  overwritten. You can reposition (fseek, rewind) the internal pointer to\n  anywhere in the file for reading, but writing operations will move it\n  back to the end of file. The file is created if it does not exist.\n\n**NOTE**: In order to open a file as a binary file, a \"b\" character has to\nbe included in the `mode` string. This additional \"b\" character can either\nbe appended at the end of the string (thus making the following compound\nmodes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the\nletter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\").\nAdditional characters may follow the sequence, although they should have no\neffect. For example, \"t\" is sometimes appended to make explicit the file is\na text file.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nIn Android, IOStreamBase.IOStreamBase() can be used to open content:// URIs. As a\nfallback, IOStreamBase.IOStreamBase() will transparently open a matching filename in\nthe app's `assets`.\n\nClosing the IOStreamBase will close SDL's internal file handle.\n\nThe following properties may be set at creation time by SDL:\n\n- `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast\n  to a win32 `HANDLE`, that this IOStreamBase is using to access the\n  filesystem. If the program isn't running on Windows, or SDL used some\n  other method to access the filesystem, this property will not be set.\n- `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a\n  stdio `FILE *`, that this IOStreamBase is using to access the filesystem.\n  If SDL used some other method to access the filesystem, this property\n  will not be set. PLEASE NOTE that if SDL is using a different C runtime\n  than your app, trying to use this pointer will almost certainly result in\n  a crash! This is mostly a problem on Windows; make sure you build SDL and\n  your app with the same compiler and settings to avoid it.\n- `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this\n  IOStreamBase is using to access the filesystem.\n- `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast\n  to an Android NDK `AAsset *`, that this IOStreamBase is using to access\n  the filesystem. If SDL used some other method to access the filesystem,\n  this property will not be set.\n\n@param file a UTF-8 string representing the filename to open.\n@param mode an ASCII string representing the mode to be used for opening\n            the file.\n@post a pointer to the IOStreamBase structure that is created or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa IOStreamBase.Flush\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
                 "name": "IOStreamBase",
                 "kind": "function",
                 "type": "",
@@ -26223,7 +26221,7 @@
                 "sourceName": "SDL_IOFromFile"
               },
               {
-                "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStreamBase.\n\nThis function sets up an IOStreamBase struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStreamBase; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStreamBase never writes to the memory\nbuffer, you should use IOStreamBase.IOStreamBase() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStreamBase stream.\n@param size the buffer size, in bytes.\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamBase.Close\n@sa IOStreamBase.Flush\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
+                "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStreamBase.\n\nThis function sets up an IOStreamBase struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStreamBase; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStreamBase never writes to the memory\nbuffer, you should use IOStreamBase.IOStreamBase() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStreamBase stream.\n@param size the buffer size, in bytes.\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamRef.Close\n@sa IOStreamBase.Flush\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
                 "name": "IOStreamBase",
                 "kind": "function",
                 "type": "",
@@ -26240,7 +26238,7 @@
                 "sourceName": "SDL_IOFromMem"
               },
               {
-                "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStreamBase.\n\nThis function sets up an IOStreamBase struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStreamBase stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStreamBase; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOStreamBase.IOStreamBase()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStreamBase stream.\n@param size the buffer size, in bytes.\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamBase.Close\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell",
+                "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStreamBase.\n\nThis function sets up an IOStreamBase struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStreamBase stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStreamBase; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOStreamBase.IOStreamBase()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStreamBase stream.\n@param size the buffer size, in bytes.\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamRef.Close\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell",
                 "name": "IOStreamBase",
                 "kind": "function",
                 "type": "",
@@ -26257,7 +26255,7 @@
                 "sourceName": "SDL_IOFromConstMem"
               },
               {
-                "doc": "Use this function to create an IOStreamBase that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStreamBase.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.Close\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
+                "doc": "Use this function to create an IOStreamBase that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStreamRef.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
                 "name": "IOStreamBase",
                 "kind": "function",
                 "type": "",
@@ -26268,7 +26266,7 @@
                 "static": false
               },
               {
-                "doc": "Create a custom IOStreamBase.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStreamBase implementation. If you just need an IOStreamBase to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStreamBase.IOStreamBase() or IOStreamBase.IOStreamBase(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStreamBase, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@post a pointer to the allocated memory on success or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamBase.IOStreamBase",
+                "doc": "Create a custom IOStreamBase.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStreamBase implementation. If you just need an IOStreamBase to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStreamBase.IOStreamBase() or IOStreamBase.IOStreamBase(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStreamBase, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@post a pointer to the allocated memory on success or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamBase.IOStreamBase",
                 "name": "IOStreamBase",
                 "kind": "function",
                 "type": "",
@@ -26495,7 +26493,7 @@
               "sourceName": "SDL_FlushIO"
             },
             "LoadFile": {
-              "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param src the IOStreamBase to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStreamBase.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStreamBase.SaveFile",
+              "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param src the IOStreamBase to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStreamBase.SaveFile",
               "name": "LoadFile",
               "kind": "function",
               "type": "OwnArray<std::byte>",
@@ -26535,7 +26533,7 @@
                 "doc": ""
               },
               {
-                "doc": "Save all the data into an SDL data stream.\n\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStreamBase.Close() on `src` before returning, even\n               in the case of an error.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStreamBase.LoadFile",
+                "doc": "Save all the data into an SDL data stream.\n\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStreamBase.LoadFile",
                 "name": "SaveFile",
                 "kind": "function",
                 "type": "bool",
@@ -26915,30 +26913,213 @@
                 }
               ],
               "sourceName": "SDL_WriteS64BE"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "IOStreamRef": {
+          "name": "IOStreamRef",
+          "kind": "struct",
+          "type": "IOStreamBase",
+          "doc": "Handle to a non owned iOStream\n\n@cat resource\n\n@sa IOStreamBase\n@sa IOStream",
+          "entries": {
+            "IOStreamBase::IOStreamBase": {
+              "kind": "alias",
+              "name": "IOStreamBase::IOStreamBase",
+              "doc": ""
+            },
+            "IOStreamRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const IOStreamRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "IOStreamBase(other.get())"
+                  ]
+                },
+                "name": "IOStreamRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "IOStreamRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "IOStreamBase(other.release())"
+                  ]
+                },
+                "name": "IOStreamRef"
+              }
+            ],
+            "~IOStreamRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~IOStreamRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "IOStreamRef &",
+              "parameters": [
+                {
+                  "type": "IOStreamRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "bool",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_IOStream *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Close and free an allocated IOStreamBase structure.\n\nIOStreamRef.Close() closes and cleans up the IOStreamBase stream. It releases any\nresources used by the stream and frees the IOStreamBase itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStreamBase is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStreamBase.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context IOStreamBase structure to close.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase",
+              "hints": {
+                "body": "return SDL_CloseIO(release(newResource));"
+              }
             },
             "Close": {
-              "doc": "Close and free an allocated IOStreamBase structure.\n\nIOStreamBase.Close() closes and cleans up the IOStreamBase stream. It releases any\nresources used by the stream and frees the IOStreamBase itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStreamBase is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStreamBase.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase",
+              "doc": "Close and free an allocated IOStreamBase structure.\n\nIOStreamRef.Close() closes and cleans up the IOStreamBase stream. It releases any\nresources used by the stream and frees the IOStreamBase itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the IOStreamBase is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call IOStreamBase.Flush() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context IOStreamBase structure to close.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase",
               "name": "Close",
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "sourceName": "SDL_CloseIO"
+              "sourceName": "SDL_CloseIO",
+              "static": false,
+              "hints": {
+                "body": "return reset();"
+              }
             }
           }
         },
-        "ObjectRef<SDL_IOStream>::doFree": {
-          "name": "ObjectRef<SDL_IOStream>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for iOStream resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_IOStream *",
-              "name": "resource"
+        "IOStream": {
+          "name": "IOStream",
+          "kind": "struct",
+          "type": "IOStreamRef",
+          "doc": "Handle to an owned iOStream\n\n@cat resource\n\n@sa IOStreamBase\n@sa IOStreamRef",
+          "entries": {
+            "IOStreamRef::IOStreamRef": {
+              "kind": "alias",
+              "name": "IOStreamRef::IOStreamRef",
+              "doc": ""
+            },
+            "IOStream": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_IOStream *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "IOStreamRef(resource)"
+                  ]
+                },
+                "name": "IOStream"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const IOStream &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "IOStream",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "IOStream &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "IOStream"
+              }
+            ],
+            "~IOStream": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~IOStream"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "IOStream &",
+              "parameters": [
+                {
+                  "type": "IOStream",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_CloseIO"
+          }
         },
         "prop::IOStream": {
           "kind": "ns",
@@ -32839,7 +33020,7 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               },
               {
                 "name": "type",
@@ -32869,7 +33050,7 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               }
             ],
             "sourceName": "IMG_Load_IO"
@@ -32905,7 +33086,7 @@
               },
               {
                 "name": "src",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               }
             ],
             "sourceName": "IMG_LoadTexture_IO"
@@ -32922,7 +33103,7 @@
               },
               {
                 "name": "src",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               },
               {
                 "name": "type",
@@ -32940,7 +33121,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isAVIF"
@@ -32953,7 +33134,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isICO"
@@ -32966,7 +33147,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isCUR"
@@ -32979,7 +33160,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isBMP"
@@ -32992,7 +33173,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isGIF"
@@ -33005,7 +33186,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isJPG"
@@ -33018,7 +33199,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isJXL"
@@ -33031,7 +33212,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isLBM"
@@ -33044,7 +33225,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isPCX"
@@ -33057,7 +33238,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isPNG"
@@ -33070,7 +33251,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isPNM"
@@ -33083,7 +33264,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isSVG"
@@ -33096,7 +33277,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isQOI"
@@ -33109,7 +33290,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isTIF"
@@ -33122,7 +33303,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isXCF"
@@ -33135,7 +33316,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isXPM"
@@ -33148,7 +33329,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isXV"
@@ -33161,7 +33342,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_isWEBP"
@@ -33174,7 +33355,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadAVIF_IO"
@@ -33187,7 +33368,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadICO_IO"
@@ -33200,7 +33381,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadCUR_IO"
@@ -33213,7 +33394,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadGIF_IO"
@@ -33226,7 +33407,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadJPG_IO"
@@ -33239,7 +33420,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadJXL_IO"
@@ -33252,7 +33433,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadLBM_IO"
@@ -33265,7 +33446,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadPCX_IO"
@@ -33278,7 +33459,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadPNG_IO"
@@ -33291,7 +33472,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadPNM_IO"
@@ -33304,7 +33485,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadSVG_IO"
@@ -33317,7 +33498,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadQOI_IO"
@@ -33330,7 +33511,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadTGA_IO"
@@ -33343,7 +33524,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadTIF_IO"
@@ -33356,7 +33537,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadXCF_IO"
@@ -33369,7 +33550,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadXPM_IO"
@@ -33382,7 +33563,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadXV_IO"
@@ -33395,7 +33576,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadWEBP_IO"
@@ -33408,7 +33589,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             },
             {
               "name": "width",
@@ -33481,7 +33662,7 @@
               },
               {
                 "name": "dst",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               },
               {
                 "name": "quality",
@@ -33521,7 +33702,7 @@
               },
               {
                 "name": "dst",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               }
             ],
             "sourceName": "IMG_SavePNG_IO"
@@ -33561,7 +33742,7 @@
               },
               {
                 "name": "dst",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
+                "type": "IOStreamBase &"
               },
               {
                 "name": "quality",
@@ -33605,7 +33786,7 @@
                 "parameters": [
                   {
                     "name": "src",
-                    "type": "ObjectBox<SDL_IOStream> auto &&"
+                    "type": "IOStreamBase &"
                   }
                 ],
                 "sourceName": "IMG_LoadAnimation_IO",
@@ -33619,7 +33800,7 @@
                 "parameters": [
                   {
                     "name": "src",
-                    "type": "ObjectBox<SDL_IOStream> auto &&"
+                    "type": "IOStreamBase &"
                   },
                   {
                     "name": "type",
@@ -33771,10 +33952,10 @@
               "name": "operator="
             },
             "reset": {
-              "doc": "Dispose of an AnimationBase and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim AnimationBase to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase",
-              "name": "reset",
               "kind": "function",
+              "name": "reset",
               "type": "void",
+              "static": false,
               "parameters": [
                 {
                   "name": "newResource",
@@ -33782,8 +33963,7 @@
                   "default": "{}"
                 }
               ],
-              "sourceName": "IMG_FreeAnimation",
-              "static": false,
+              "doc": "Dispose of an AnimationBase and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim AnimationBase to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase\n@sa AnimationBase.AnimationBase",
               "hints": {
                 "body": "IMG_FreeAnimation(release(newResource));"
               }
@@ -33892,7 +34072,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadGIFAnimation_IO"
@@ -33905,7 +34085,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
+              "type": "IOStreamBase &"
             }
           ],
           "sourceName": "IMG_LoadWEBPAnimation_IO"
@@ -34466,11 +34646,7 @@
                 "parameters": [
                   {
                     "name": "src",
-                    "type": "ObjectBox<SDL_IOStream> auto &&"
-                  },
-                  {
-                    "name": "closeio",
-                    "type": "bool"
+                    "type": "IOStreamBase &"
                   },
                   {
                     "name": "ptsize",

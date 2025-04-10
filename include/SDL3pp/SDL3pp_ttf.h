@@ -555,12 +555,7 @@ struct FontBase : T
    * size becomes the index of choosing which size. If the value is too high,
    * the last indexed size will be the default.
    *
-   * If `closeio` is true, `src` will be automatically closed once the font is
-   * closed. Otherwise you should close `src` yourself after closing the font.
-   *
    * @param src an IOStreamBase to provide a font file's data.
-   * @param closeio true to close `src` when the font is closed, false to leave
-   *                it open.
    * @param ptsize point size to use for the newly-opened font.
    * @post a valid FontBase, or nullptr on failure; call GetError() for more
    *       information.
@@ -571,8 +566,8 @@ struct FontBase : T
    *
    * @sa FontBase.Close
    */
-  FontBase(ObjectBox<SDL_IOStream> auto&& src, bool closeio, float ptsize)
-    : T(TTF_OpenFontIO(src, closeio, ptsize))
+  FontBase(IOStreamBase& src, float ptsize)
+    : T(TTF_OpenFontIO(src.get(), false, ptsize))
   {
   }
 

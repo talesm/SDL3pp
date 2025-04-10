@@ -23680,32 +23680,6 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
  * @{
  */
 
-// Forward decl
-template<ObjectBox<SDL_IOStream*> T>
-struct IOStreamBase;
-
-/**
- * Handle to a non owned stream
- *
- * @cat resource
- *
- * @sa resource
- * @sa IOStreamBase
- * @sa IOStream
- */
-using IOStreamRef = IOStreamBase<ObjectRef<SDL_IOStream>>;
-
-/**
- * Handle to an owned stream
- *
- * @cat resource
- *
- * @sa resource
- * @sa IOStreamBase
- * @sa IOStreamRef
- */
-using IOStream = IOStreamBase<ObjectUnique<SDL_IOStream>>;
-
 /**
  * @cat constructor-tag
  */
@@ -23713,45 +23687,41 @@ constexpr struct IOFromDynamicMem_CtorTag
 {
 } IOFromDynamicMem;
 
+// Forward decl
+struct IOStreamBase;
+
+// Forward decl
+struct IOStreamRef;
+
+// Forward decl
+struct IOStream;
+
 /**
- * SDL_IOStream status, set by a read or write operation.
+ * IOStreamBase status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
  */
 using IOStatus = SDL_IOStatus;
 
-/**
- * Everything is ready (no errors and not EOF).
- */
-constexpr IOStatus IO_STATUS_READY = SDL_IO_STATUS_READY;
+constexpr IOStatus IO_STATUS_READY =
+  SDL_IO_STATUS_READY; ///< Everything is ready (no errors and not EOF).
+
+constexpr IOStatus IO_STATUS_ERROR =
+  SDL_IO_STATUS_ERROR; ///< Read or write I/O error.
+
+constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file.
+
+constexpr IOStatus IO_STATUS_NOT_READY =
+  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready.
+
+constexpr IOStatus IO_STATUS_READONLY =
+  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer.
+
+constexpr IOStatus IO_STATUS_WRITEONLY =
+  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
 
 /**
- * Read or write I/O error
- */
-constexpr IOStatus IO_STATUS_ERROR = SDL_IO_STATUS_ERROR;
-
-/**
- * End of file
- */
-constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF;
-
-/**
- * Non blocking I/O, not ready
- */
-constexpr IOStatus IO_STATUS_NOT_READY = SDL_IO_STATUS_NOT_READY;
-
-/**
- * Tried to write a read-only buffer
- */
-constexpr IOStatus IO_STATUS_READONLY = SDL_IO_STATUS_READONLY;
-
-/**
- * Tried to read a write-only buffer
- */
-constexpr IOStatus IO_STATUS_WRITEONLY = SDL_IO_STATUS_WRITEONLY;
-
-/**
- * Possible `whence` values for SDL_IOStream seeking.
+ * Possible `whence` values for IOStreamBase seeking.
  *
  * These map to the same "whence" concept that `fseek` or `lseek` use in the
  * standard C runtime.
@@ -23760,28 +23730,22 @@ constexpr IOStatus IO_STATUS_WRITEONLY = SDL_IO_STATUS_WRITEONLY;
  */
 using IOWhence = SDL_IOWhence;
 
-/**
- * Seek from the beginning of data
- */
-constexpr IOWhence IO_SEEK_SET = SDL_IO_SEEK_SET;
+constexpr IOWhence IO_SEEK_SET =
+  SDL_IO_SEEK_SET; ///< Seek from the beginning of data.
+
+constexpr IOWhence IO_SEEK_CUR =
+  SDL_IO_SEEK_CUR; ///< Seek relative to current read point.
+
+constexpr IOWhence IO_SEEK_END =
+  SDL_IO_SEEK_END; ///< Seek relative to the end of data.
 
 /**
- * Seek relative to current read point
- */
-constexpr IOWhence IO_SEEK_CUR = SDL_IO_SEEK_CUR;
-
-/**
- * Seek relative to the end of data
- */
-constexpr IOWhence IO_SEEK_END = SDL_IO_SEEK_END;
-
-/**
- * The function pointers that drive an SDL_IOStream.
+ * The function pointers that drive an IOStreamBase.
  *
- * Applications can provide this struct to SDL_OpenIO() to create their own
- * implementation of SDL_IOStream. This is not necessarily required, as SDL
- * already offers several common types of I/O streams, via functions like
- * SDL_IOFromFile() and SDL_IOFromMem().
+ * Applications can provide this struct to IOStreamBase.IOStreamBase() to create
+ * their own implementation of IOStreamBase. This is not necessarily required,
+ * as SDL already offers several common types of I/O streams, via
+ * IOStreamBase.IOStreamBase().
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
  *
@@ -23795,18 +23759,20 @@ using IOStreamInterface = SDL_IOStreamInterface;
  * The read/write operation structure.
  *
  * This operates as an opaque handle. There are several APIs to create various
- * types of I/O streams, or an app can supply an SDL_IOStreamInterface to
- * SDL_OpenIO() to provide their own stream implementation behind this
- * struct's abstract interface.
+ * types of I/O streams, or an app can supply an IOStreamInterface to
+ * IOStreamBase.IOStreamBase() to provide their own stream implementation behind
+ * this struct's abstract interface.
  *
  * @since This struct is available since SDL 3.2.0.
  *
  * @cat resource
+ *
+ * @sa IOStream
+ * @sa IOStreamRef
  */
-template<ObjectBox<SDL_IOStream*> T>
-struct IOStreamBase : T
+struct IOStreamBase : Resource<SDL_IOStream*>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * Use this function to create a new SDL_IOStream structure for reading from
@@ -23847,29 +23813,29 @@ struct IOStreamBase : T
    * This function supports Unicode filenames, but they must be encoded in UTF-8
    * format, regardless of the underlying operating system.
    *
-   * In Android, SDL_IOFromFile() can be used to open content:// URIs. As a
-   * fallback, SDL_IOFromFile() will transparently open a matching filename in
-   * the app's `assets`.
+   * In Android, IOStreamBase.IOStreamBase() can be used to open content://
+   * URIs. As a fallback, IOStreamBase.IOStreamBase() will transparently open a
+   * matching filename in the app's `assets`.
    *
-   * Closing the SDL_IOStream will close SDL's internal file handle.
+   * Closing the IOStreamBase will close SDL's internal file handle.
    *
    * The following properties may be set at creation time by SDL:
    *
-   * - `SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this SDL_IOStream is using to access the
+   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
+   *   to a win32 `HANDLE`, that this IOStreamBase is using to access the
    *   filesystem. If the program isn't running on Windows, or SDL used some
    *   other method to access the filesystem, this property will not be set.
-   * - `SDL_PROP_IOSTREAM_STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this SDL_IOStream is using to access the filesystem.
+   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   *   stdio `FILE *`, that this IOStreamBase is using to access the filesystem.
    *   If SDL used some other method to access the filesystem, this property
    *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
    *   than your app, trying to use this pointer will almost certainly result in
    *   a crash! This is mostly a problem on Windows; make sure you build SDL and
    *   your app with the same compiler and settings to avoid it.
-   * - `SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   SDL_IOStream is using to access the filesystem.
-   * - `SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this SDL_IOStream is using to access
+   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   *   IOStreamBase is using to access the filesystem.
+   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
+   *   to an Android NDK `AAsset *`, that this IOStreamBase is using to access
    *   the filesystem. If SDL used some other method to access the filesystem,
    *   this property will not be set.
    *
@@ -23877,142 +23843,142 @@ struct IOStreamBase : T
    * @param mode an ASCII string representing the mode to be used for opening
    *             the file.
    * @post the object is convertible to true if valid or false on failure; call
-   * GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CloseIO
-   * @sa SDL_FlushIO
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_TellIO
-   * @sa SDL_WriteIO
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   * @sa IOStreamBase.Write
    */
   IOStreamBase(StringParam file, StringParam mode)
-    : T(SDL_IOFromFile(file, mode))
+    : Resource(SDL_IOFromFile(file, mode))
   {
   }
 
   /**
    * Use this function to prepare a read-write memory buffer for use with
-   * SDL_IOStream.
+   * IOStreamBase.
    *
-   * This function sets up an SDL_IOStream struct based on a memory area of a
+   * This function sets up an IOStreamBase struct based on a memory area of a
    * certain size, for both read and write access.
    *
-   * This memory buffer is not copied by the SDL_IOStream; the pointer you
+   * This memory buffer is not copied by the IOStreamBase; the pointer you
    * provide must remain valid until you close the stream. Closing the stream
    * will not free the original buffer.
    *
-   * If you need to make sure the SDL_IOStream never writes to the memory
-   * buffer, you should use SDL_IOFromConstMem() with a read-only buffer of
-   * memory instead.
+   * If you need to make sure the IOStreamBase never writes to the memory
+   * buffer, you should use IOStreamBase.IOStreamBase() with a read-only buffer
+   * of memory instead.
    *
    * The following properties will be set at creation time by SDL:
    *
-   * - `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that
+   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
    *   was passed to this function.
-   * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
    *
-   * @param mem a pointer to a buffer to feed an SDL_IOStream stream.
+   * @param mem a pointer to a buffer to feed an IOStreamBase stream.
    * @param size the buffer size, in bytes.
    * @post the object is convertible to true if valid or false on failure; call
-   * GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_IOFromConstMem
-   * @sa SDL_CloseIO
-   * @sa SDL_FlushIO
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_TellIO
-   * @sa SDL_WriteIO
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   * @sa IOStreamBase.Write
    */
   IOStreamBase(void* mem, size_t size)
-    : T(SDL_IOFromMem(mem, size))
+    : Resource(SDL_IOFromMem(mem, size))
   {
   }
 
   /**
    * Use this function to prepare a read-only memory buffer for use with
-   * SDL_IOStream.
+   * IOStreamBase.
    *
-   * This function sets up an SDL_IOStream struct based on a memory area of a
+   * This function sets up an IOStreamBase struct based on a memory area of a
    * certain size. It assumes the memory area is not writable.
    *
-   * Attempting to write to this SDL_IOStream stream will report an error
+   * Attempting to write to this IOStreamBase stream will report an error
    * without writing to the memory buffer.
    *
-   * This memory buffer is not copied by the SDL_IOStream; the pointer you
+   * This memory buffer is not copied by the IOStreamBase; the pointer you
    * provide must remain valid until you close the stream. Closing the stream
    * will not free the original buffer.
    *
-   * If you need to write to a memory buffer, you should use SDL_IOFromMem()
-   * with a writable buffer of memory instead.
+   * If you need to write to a memory buffer, you should use
+   * IOStreamBase.IOStreamBase() with a writable buffer of memory instead.
    *
    * The following properties will be set at creation time by SDL:
    *
-   * - `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that
+   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
    *   was passed to this function.
-   * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
    *
-   * @param mem a pointer to a read-only buffer to feed an SDL_IOStream stream.
+   * @param mem a pointer to a read-only buffer to feed an IOStreamBase stream.
    * @param size the buffer size, in bytes.
    * @post the object is convertible to true if valid or false on failure; call
-   * GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_IOFromMem
-   * @sa SDL_CloseIO
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_TellIO
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
    */
   IOStreamBase(const void* mem, size_t size)
-    : T(SDL_IOFromConstMem(mem, size))
+    : Resource(SDL_IOFromConstMem(mem, size))
   {
   }
 
   /**
-   * Use this function to create an SDL_IOStream that is backed by dynamically
+   * Use this function to create an IOStreamBase that is backed by dynamically
    * allocated memory.
    *
    * This supports the following properties to provide access to the memory and
    * control over allocations:
    *
-   * - `SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER`: a pointer to the internal
-   *   memory of the stream. This can be set to NULL to transfer ownership of
+   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
+   *   memory of the stream. This can be set to nullptr to transfer ownership of
    *   the memory to the application, which should free the memory with
-   *   SDL_free(). If this is done, the next operation on the stream must be
-   *   Close().
-   * - `SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   *   free(). If this is done, the next operation on the stream must be
+   *   IOStreamRef.Close().
+   * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
-   * @post the object is convertible to true if valid or false on failure; call
-   * GetError() for more information.
+   * @post a pointer to a new IOStreamBase structure or nullptr on failure; call
+   *          GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CloseIO
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_TellIO
-   * @sa SDL_WriteIO
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   * @sa IOStreamBase.Write
    */
   IOStreamBase(IOFromDynamicMem_CtorTag)
-    : T(SDL_IOFromDynamicMem())
+    : Resource(SDL_IOFromDynamicMem())
   {
   }
 
@@ -24038,17 +24004,27 @@ struct IOStreamBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.Close
+   * @sa IOStreamRef.Close
    * @sa SDL_INIT_INTERFACE
    * @sa IOStreamBase.IOStreamBase
    * @sa IOStreamBase.IOStreamBase
    * @sa IOStreamBase.IOStreamBase
    */
   IOStreamBase(const IOStreamInterface& iface, void* userdata)
-    : T(SDL_OpenIO(&iface, userdata))
+    : Resource(SDL_OpenIO(&iface, userdata))
   {
   }
 
+  /**
+   * Use this function to prepare a memory buffer for use with IOStreamBase.
+   *
+   * @tparam U
+   * @param mem the span of memory to use as buffer. If const we get read-only,
+   * otherwise we get a read-write buffer.
+   *
+   * @post the object is convertible to true if valid or false on failure; call
+   *       GetError() for more information.
+   */
   template<class U>
   IOStreamBase(std::span<U> mem)
     : IOStreamBase(mem.data(), mem.size_bytes())
@@ -24056,86 +24032,89 @@ struct IOStreamBase : T
   }
 
   /**
-   * Get the properties associated with an SDL_IOStream.
+   * Get the properties associated with an IOStreamBase.
    *
    * @returns a valid property ID on success or 0 on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const { return SDL_GetIOProperties(T::get()); }
+  PropertiesRef GetProperties() const
+  {
+    return PropertiesRef{SDL_GetIOProperties(get())};
+  }
 
   /**
-   * Query the stream status of an SDL_IOStream.
+   * Query the stream status of an IOStreamBase.
    *
    * This information can be useful to decide if a short read or write was due
    * to an error, an EOF, or a non-blocking operation that isn't yet ready to
    * complete.
    *
-   * An SDL_IOStream's status is only expected to change after a SDL_ReadIO or
-   * SDL_WriteIO call; don't expect it to change if you just call this query
-   * function in a tight loop.
+   * An IOStreamBase's status is only expected to change after a
+   * IOStreamBase.Read or IOStreamBase.Write call; don't expect it to change if
+   * you just call this query function in a tight loop.
    *
-   * @returns an SDL_IOStatus enum with the current state.
+   * @returns an IOStatus enum with the current state.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  IOStatus GetStatus() const { return SDL_GetIOStatus(T::get()); }
+  IOStatus GetStatus() const { return SDL_GetIOStatus(get()); }
 
   /**
-   * Use this function to get the size of the data stream in an SDL_IOStream.
+   * Use this function to get the size of the data stream in an IOStreamBase.
    *
-   * @returns the size of the data stream in the SDL_IOStream on success or a
-   *          negative error code on failure; call SDL_GetError() for more
+   * @returns the size of the data stream in the IOStreamBase on success or a
+   *          negative error code on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint64 GetSize() const { return SDL_GetIOSize(T::get()); }
+  Sint64 GetSize() const { return SDL_GetIOSize(get()); }
 
   /**
-   * Seek within an SDL_IOStream data stream.
+   * Seek within an IOStreamBase data stream.
    *
    * This function seeks to byte `offset`, relative to `whence`.
    *
    * `whence` may be any of the following values:
    *
-   * - `SDL_IO_SEEK_SET`: seek from the beginning of data
-   * - `SDL_IO_SEEK_CUR`: seek relative to current read point
-   * - `SDL_IO_SEEK_END`: seek relative to the end of data
+   * - `IO_SEEK_SET`: seek from the beginning of data
+   * - `IO_SEEK_CUR`: seek relative to current read point
+   * - `IO_SEEK_END`: seek relative to the end of data
    *
    * If this stream can not seek, it will return -1.
    *
    * @param offset an offset in bytes, relative to `whence` location; can be
    *               negative.
-   * @param whence any of `SDL_IO_SEEK_SET`, `SDL_IO_SEEK_CUR`,
-   *               `SDL_IO_SEEK_END`.
+   * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,
+   *               `IO_SEEK_END`.
    * @returns the final offset in the data stream after the seek or -1 on
-   *          failure; call SDL_GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_TellIO
+   * @sa IOStreamBase.Tell
    */
   Sint64 Seek(Sint64 offset, IOWhence whence)
   {
-    return SDL_SeekIO(T::get(), offset, whence);
+    return SDL_SeekIO(get(), offset, whence);
   }
 
   /**
-   * Determine the current read/write offset in an SDL_IOStream data stream.
+   * Determine the current read/write offset in an IOStreamBase data stream.
    *
-   * SDL_TellIO is actually a wrapper function that calls the SDL_IOStream's
-   * `seek` method, with an offset of 0 bytes from `SDL_IO_SEEK_CUR`, to
-   * simplify application development.
+   * This is actually a wrapper function that calls the IOStreamBase's `seek`
+   * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
+   * application development.
    *
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
@@ -24144,9 +24123,9 @@ struct IOStreamBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SeekIO
+   * @sa IOStreamBase.Seek
    */
-  Sint64 Tell() const { return SDL_TellIO(T::get()); }
+  Sint64 Tell() const { return SDL_TellIO(get()); }
 
   /**
    * Read from a data source.
@@ -24155,37 +24134,26 @@ struct IOStreamBase : T
    * pointed at by `ptr`. This function may read less bytes than requested.
    *
    * This function will return zero when the data stream is completely read, and
-   * SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If zero is returned and
-   * the stream is not at EOF, SDL_GetIOStatus() will return a different error
-   * value and SDL_GetError() will offer a human-readable message.
+   * IOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and
+   * the stream is not at EOF, IOStreamBase.GetStatus() will return a different
+   * error value and GetError() will offer a human-readable message.
    *
    * @param ptr a pointer to a buffer to read data into.
    * @param size the number of bytes to read from the data source.
    * @returns the number of bytes read, or 0 on end of file or other failure;
-   *          call SDL_GetError() for more information.
+   *          call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_WriteIO
-   * @sa SDL_GetIOStatus
+   * @sa IOStreamBase.Write
+   * @sa IOStreamBase.GetStatus
    */
-  size_t Read(void* ptr, size_t size)
-  {
-    return SDL_ReadIO(T::get(), ptr, size);
-  }
-
-  template<class U>
-  size_t Write(std::span<U> data)
-  {
-    return Write(data.data(), data.size_bytes());
-  }
-
-  size_t Write(std::string_view str) { return Write(str.data(), str.size()); }
+  size_t Read(void* ptr, size_t size) { return SDL_ReadIO(get(), ptr, size); }
 
   /**
-   * Write to an SDL_IOStream data stream.
+   * Write to an IOStreamBase data stream.
    *
    * This function writes exactly `size` bytes from the area pointed at by `ptr`
    * to the stream. If this fails for any reason, it'll return less than `size`
@@ -24194,28 +24162,92 @@ struct IOStreamBase : T
    * On error, this function still attempts to write as much as possible, so it
    * might return a positive value less than the requested write size.
    *
-   * The caller can use SDL_GetIOStatus() to determine if the problem is
+   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
+   * recoverable, such as a non-blocking write that can simply be retried later,
+   * or a fatal error.
+   *
+   * @param data the bytes to write to
+   * @returns the number of bytes written, which will be less than `size` on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.printf
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.GetStatus
+   */
+  template<class U>
+  size_t Write(std::span<U> data)
+  {
+    return Write(data.data(), data.size_bytes());
+  }
+
+  /**
+   * Write to an IOStreamBase data stream.
+   *
+   * This function writes exactly `size` bytes from the area pointed at by `ptr`
+   * to the stream. If this fails for any reason, it'll return less than `size`
+   * to demonstrate how far the write progressed. On success, it returns `size`.
+   *
+   * On error, this function still attempts to write as much as possible, so it
+   * might return a positive value less than the requested write size.
+   *
+   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
+   * recoverable, such as a non-blocking write that can simply be retried later,
+   * or a fatal error.
+   *
+   * @param str the bytes to write to
+   * @returns the number of bytes written, which will be less than `size` on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.printf
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.GetStatus
+   */
+  size_t Write(std::string_view str) { return Write(str.data(), str.size()); }
+
+  /**
+   * Write to an IOStreamBase data stream.
+   *
+   * This function writes exactly `size` bytes from the area pointed at by `ptr`
+   * to the stream. If this fails for any reason, it'll return less than `size`
+   * to demonstrate how far the write progressed. On success, it returns `size`.
+   *
+   * On error, this function still attempts to write as much as possible, so it
+   * might return a positive value less than the requested write size.
+   *
+   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
    * recoverable, such as a non-blocking write that can simply be retried later,
    * or a fatal error.
    *
    * @param ptr a pointer to a buffer containing data to write.
    * @param size the number of bytes to write.
    * @returns the number of bytes written, which will be less than `size` on
-   *          failure; call SDL_GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_IOprintf
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_FlushIO
-   * @sa SDL_GetIOStatus
+   * @sa IOStreamBase.printf
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.GetStatus
    */
   size_t Write(const void* ptr, size_t size)
   {
-    return SDL_WriteIO(T::get(), ptr, size);
+    return SDL_WriteIO(get(), ptr, size);
   }
 
   /**
@@ -24237,7 +24269,7 @@ struct IOStreamBase : T
   }
 
   /**
-   * Print to an SDL_IOStream data stream.
+   * Print to an IOStreamBase data stream.
    *
    * @warning this is not typesafe! Prefer using print() and println()
    *
@@ -24246,15 +24278,15 @@ struct IOStreamBase : T
    * @param fmt a printf() style format string.
    * @param ... additional parameters matching % tokens in the `fmt` string, if
    *            any.
-   * @returns the number of bytes written or 0 on failure; call SDL_GetError()
+   * @returns the number of bytes written or 0 on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_IOvprintf
-   * @sa SDL_WriteIO
+   * @sa IOStreamBase.vprintf
+   * @sa IOStreamBase.Write
    */
   size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
   {
@@ -24269,7 +24301,7 @@ struct IOStreamBase : T
   }
 
   /**
-   * Print to an SDL_IOStream data stream.
+   * Print to an IOStreamBase data stream.
    *
    * @warning this is not typesafe! Prefer using print() and println()
    *
@@ -24277,19 +24309,19 @@ struct IOStreamBase : T
    *
    * @param fmt a printf() style format string.
    * @param ap a variable argument list.
-   * @returns the number of bytes written or 0 on failure; call SDL_GetError()
+   * @returns the number of bytes written or 0 on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_IOprintf
-   * @sa SDL_WriteIO
+   * @sa IOStreamBase.printf
+   * @sa IOStreamBase.Write
    */
   size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap)
   {
-    return SDL_IOvprintf(T::get(), fmt, ap);
+    return SDL_IOvprintf(get(), fmt, ap);
   }
 
   /**
@@ -24299,17 +24331,17 @@ struct IOStreamBase : T
    * Normally this isn't necessary but if the stream is a pipe or socket it
    * guarantees that any pending data is sent.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_OpenIO
-   * @sa SDL_WriteIO
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamBase.Write
    */
-  bool Flush() { return SDL_FlushIO(T::get()); }
+  bool Flush() { return SDL_FlushIO(get()); }
 
   /**
    * Load all the data from an SDL data stream.
@@ -24318,29 +24350,60 @@ struct IOStreamBase : T
    * convenience. This extra byte is not included in the value reported via
    * `datasize`.
    *
-   * @returns the data or NULL on failure; call GetError() for more information.
+   * @returns the data or nullptr on failure; call GetError() for more
+   *          information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_LoadFile
-   * @sa SDL_SaveFile_IO
+   * @sa LoadFile
+   * @sa IOStreamBase.SaveFile
    */
   OwnArray<std::byte> LoadFile()
   {
     size_t datasize = 0;
     auto data =
-      static_cast<std::byte*>(SDL_LoadFile_IO(T::get(), &datasize, false));
+      static_cast<std::byte*>(SDL_LoadFile_IO(get(), &datasize, false));
     return OwnArray<std::byte>{data, datasize};
   }
 
+  /**
+   * Save all the data into an SDL data stream.
+   *
+   * @param data the data to be written. If datasize is 0, may be nullptr or a
+   *             invalid pointer.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SaveFile
+   * @sa IOStreamBase.LoadFile
+   */
   template<class U>
   bool SaveFile(std::span<U> data)
   {
     return SaveFile(data.data(), data.size_bytes());
   }
 
+  /**
+   * Save all the data into an SDL data stream.
+   *
+   * @param str the data to be written. If datasize is 0, may be nullptr or a
+   *            invalid pointer.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SaveFile
+   * @sa IOStreamBase.LoadFile
+   */
   bool SaveFile(std::string_view str)
   {
     return SaveFile(str.data(), str.size());
@@ -24349,351 +24412,352 @@ struct IOStreamBase : T
   /**
    * Save all the data into an SDL data stream.
    *
-   * @param data the data to be written. If datasize is 0, may be NULL or a
+   * @param data the data to be written. If datasize is 0, may be nullptr or a
    *             invalid pointer.
    * @param datasize the number of bytes to be written.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SaveFile
-   * @sa SDL_LoadFile_IO
+   * @sa SaveFile
+   * @sa IOStreamBase.LoadFile
    */
   bool SaveFile(const void* data, size_t datasize)
   {
-    return SDL_SaveFile_IO(T::get(), data, datasize);
+    return SDL_SaveFile_IO(get(), data, datasize, false);
   }
+
   /**
-   * Use this function to read a byte from an SDL_IOStream.
+   * Use this function to read a byte from an IOStreamBase.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on success or false on failure or EOF; call SDL_GetError()
+   * @returns true on success or false on failure or EOF; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU8(Uint8* value) { return SDL_ReadU8(T::get(), value); }
+  bool ReadU8(Uint8* value) { return SDL_ReadU8(get(), value); }
 
   /**
-   * Use this function to read a signed byte from an SDL_IOStream.
+   * Use this function to read a signed byte from an IOStreamBase.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS8(Sint8* value) { return SDL_ReadS8(T::get(), value); }
+  bool ReadS8(Sint8* value) { return SDL_ReadS8(get(), value); }
 
   /**
    * Use this function to read 16 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
+   * IOStreamBase and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU16LE(Uint16* value) { return SDL_ReadU16LE(T::get(), value); }
+  bool ReadU16LE(Uint16* value) { return SDL_ReadU16LE(get(), value); }
 
   /**
    * Use this function to read 16 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
+   * IOStreamBase and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS16LE(Sint16* value) { return SDL_ReadS16LE(T::get(), value); }
+  bool ReadS16LE(Sint16* value) { return SDL_ReadS16LE(get(), value); }
 
   /**
-   * Use this function to read 16 bits of big-endian data from an SDL_IOStream
+   * Use this function to read 16 bits of big-endian data from an IOStreamBase
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU16BE(Uint16* value) { return SDL_ReadU16BE(T::get(), value); }
+  bool ReadU16BE(Uint16* value) { return SDL_ReadU16BE(get(), value); }
 
   /**
-   * Use this function to read 16 bits of big-endian data from an SDL_IOStream
+   * Use this function to read 16 bits of big-endian data from an IOStreamBase
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS16BE(Sint16* value) { return SDL_ReadS16BE(T::get(), value); }
+  bool ReadS16BE(Sint16* value) { return SDL_ReadS16BE(get(), value); }
 
   /**
    * Use this function to read 32 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
+   * IOStreamBase and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU32LE(Uint32* value) { return SDL_ReadU32LE(T::get(), value); }
+  bool ReadU32LE(Uint32* value) { return SDL_ReadU32LE(get(), value); }
 
   /**
    * Use this function to read 32 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
+   * IOStreamBase and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS32LE(Sint32* value) { return SDL_ReadS32LE(T::get(), value); }
+  bool ReadS32LE(Sint32* value) { return SDL_ReadS32LE(get(), value); }
 
   /**
-   * Use this function to read 32 bits of big-endian data from an SDL_IOStream
+   * Use this function to read 32 bits of big-endian data from an IOStreamBase
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU32BE(Uint32* value) { return SDL_ReadU32BE(T::get(), value); }
+  bool ReadU32BE(Uint32* value) { return SDL_ReadU32BE(get(), value); }
 
   /**
-   * Use this function to read 32 bits of big-endian data from an SDL_IOStream
+   * Use this function to read 32 bits of big-endian data from an IOStreamBase
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS32BE(Sint32* value) { return SDL_ReadS32BE(T::get(), value); }
+  bool ReadS32BE(Sint32* value) { return SDL_ReadS32BE(get(), value); }
 
   /**
    * Use this function to read 64 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
+   * IOStreamBase and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU64LE(Uint64* value) { return SDL_ReadU64LE(T::get(), value); }
+  bool ReadU64LE(Uint64* value) { return SDL_ReadU64LE(get(), value); }
 
   /**
    * Use this function to read 64 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
+   * IOStreamBase and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS64LE(Sint64* value) { return SDL_ReadS64LE(T::get(), value); }
+  bool ReadS64LE(Sint64* value) { return SDL_ReadS64LE(get(), value); }
 
   /**
-   * Use this function to read 64 bits of big-endian data from an SDL_IOStream
+   * Use this function to read 64 bits of big-endian data from an IOStreamBase
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU64BE(Uint64* value) { return SDL_ReadU64BE(T::get(), value); }
+  bool ReadU64BE(Uint64* value) { return SDL_ReadU64BE(get(), value); }
 
   /**
-   * Use this function to read 64 bits of big-endian data from an SDL_IOStream
+   * Use this function to read 64 bits of big-endian data from an IOStreamBase
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
    *
    * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS64BE(Sint64* value) { return SDL_ReadS64BE(T::get(), value); }
+  bool ReadS64BE(Sint64* value) { return SDL_ReadS64BE(get(), value); }
 
   /**
-   * Use this function to write a byte to an SDL_IOStream.
+   * Use this function to write a byte to an IOStreamBase.
    *
    * @param value the byte value to write.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU8(Uint8 value) { return SDL_WriteU8(T::get(), value); }
+  bool WriteU8(Uint8 value) { return SDL_WriteU8(get(), value); }
 
   /**
-   * Use this function to write a signed byte to an SDL_IOStream.
+   * Use this function to write a signed byte to an IOStreamBase.
    *
    * @param value the byte value to write.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS8(Sint8 value) { return SDL_WriteS8(T::get(), value); }
+  bool WriteS8(Sint8 value) { return SDL_WriteS8(get(), value); }
 
   /**
-   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * Use this function to write 16 bits in native format to an IOStreamBase as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -24701,17 +24765,17 @@ struct IOStreamBase : T
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU16LE(Uint16 value) { return SDL_WriteU16LE(T::get(), value); }
+  bool WriteU16LE(Uint16 value) { return SDL_WriteU16LE(get(), value); }
 
   /**
-   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * Use this function to write 16 bits in native format to an IOStreamBase as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -24719,51 +24783,51 @@ struct IOStreamBase : T
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS16LE(Sint16 value) { return SDL_WriteS16LE(T::get(), value); }
+  bool WriteS16LE(Sint16 value) { return SDL_WriteS16LE(get(), value); }
 
   /**
-   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * Use this function to write 16 bits in native format to an IOStreamBase as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU16BE(Uint16 value) { return SDL_WriteU16BE(T::get(), value); }
+  bool WriteU16BE(Uint16 value) { return SDL_WriteU16BE(get(), value); }
 
   /**
-   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * Use this function to write 16 bits in native format to an IOStreamBase as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS16BE(Sint16 value) { return SDL_WriteS16BE(T::get(), value); }
+  bool WriteS16BE(Sint16 value) { return SDL_WriteS16BE(get(), value); }
 
   /**
-   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * Use this function to write 32 bits in native format to an IOStreamBase as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -24771,17 +24835,17 @@ struct IOStreamBase : T
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU32LE(Uint32 value) { return SDL_WriteU32LE(T::get(), value); }
+  bool WriteU32LE(Uint32 value) { return SDL_WriteU32LE(get(), value); }
 
   /**
-   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * Use this function to write 32 bits in native format to an IOStreamBase as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -24789,51 +24853,51 @@ struct IOStreamBase : T
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS32LE(Sint32 value) { return SDL_WriteS32LE(T::get(), value); }
+  bool WriteS32LE(Sint32 value) { return SDL_WriteS32LE(get(), value); }
 
   /**
-   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * Use this function to write 32 bits in native format to an IOStreamBase as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU32BE(Uint32 value) { return SDL_WriteU32BE(T::get(), value); }
+  bool WriteU32BE(Uint32 value) { return SDL_WriteU32BE(get(), value); }
 
   /**
-   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * Use this function to write 32 bits in native format to an IOStreamBase as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS32BE(Sint32 value) { return SDL_WriteS32BE(T::get(), value); }
+  bool WriteS32BE(Sint32 value) { return SDL_WriteS32BE(get(), value); }
 
   /**
-   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * Use this function to write 64 bits in native format to an IOStreamBase as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -24841,17 +24905,17 @@ struct IOStreamBase : T
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU64LE(Uint64 value) { return SDL_WriteU64LE(T::get(), value); }
+  bool WriteU64LE(Uint64 value) { return SDL_WriteU64LE(get(), value); }
 
   /**
-   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * Use this function to write 64 bits in native format to an IOStreamBase as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -24859,59 +24923,102 @@ struct IOStreamBase : T
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS64LE(Sint64 value) { return SDL_WriteS64LE(T::get(), value); }
+  bool WriteS64LE(Sint64 value) { return SDL_WriteS64LE(get(), value); }
 
   /**
-   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * Use this function to write 64 bits in native format to an IOStreamBase as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU64BE(Uint64 value) { return SDL_WriteU64BE(T::get(), value); }
+  bool WriteU64BE(Uint64 value) { return SDL_WriteU64BE(get(), value); }
 
   /**
-   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * Use this function to write 64 bits in native format to an IOStreamBase as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
+   * @returns true on successful write or false on failure; call GetError()
    *          for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS64BE(Sint64 value) { return SDL_WriteS64BE(T::get(), value); }
+  bool WriteS64BE(Sint64 value) { return SDL_WriteS64BE(get(), value); }
+};
+
+/**
+ * Handle to a non owned iOStream
+ *
+ * @cat resource
+ *
+ * @sa IOStreamBase
+ * @sa IOStream
+ */
+struct IOStreamRef : IOStreamBase
+{
+  using IOStreamBase::IOStreamBase;
 
   /**
-   * Close and free an allocated SDL_IOStream structure.
+   * Copy constructor.
+   */
+  constexpr IOStreamRef(const IOStreamRef& other)
+    : IOStreamBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr IOStreamRef(IOStreamRef&& other)
+    : IOStreamBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~IOStreamRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  IOStreamRef& operator=(IOStreamRef other)
+  {
+    release(other.release());
+    return *this;
+  }
+
+  /**
+   * Close and free an allocated IOStreamBase structure.
    *
-   * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
-   * resources used by the stream and frees the SDL_IOStream itself. This
-   * returns true on success, or false if the stream failed to flush to its
-   * output (e.g. to disk).
+   * IOStreamRef.Close() closes and cleans up the IOStreamBase stream. It
+   * releases any resources used by the stream and frees the IOStreamBase
+   * itself. This returns true on success, or false if the stream failed to
+   * flush to its output (e.g. to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the SDL_IOStream is still invalid once this function
+   * reports an error, but the IOStreamBase is still invalid once this function
    * returns.
    *
    * This call flushes any buffered writes to the operating system, but there
@@ -24919,56 +25026,98 @@ struct IOStreamBase : T
    * be in the OS's file cache, waiting to go to disk later. If it's absolutely
    * crucial that writes go to disk immediately, so they are definitely stored
    * even if the power fails before the file cache would have caught up, one
-   * should call SDL_FlushIO() before closing. Note that flushing takes time and
-   * makes the system and your app operate less efficiently, so do so sparingly.
+   * should call IOStreamBase.Flush() before closing. Note that flushing takes
+   * time and makes the system and your app operate less efficiently, so do so
+   * sparingly.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_OpenIO
+   * @sa IOStreamBase.IOStreamBase
    */
-  bool Close() { return SDL_CloseIO(T::release()); }
+  bool reset(SDL_IOStream* newResource = {})
+  {
+    return SDL_CloseIO(release(newResource));
+  }
+
+  /**
+   * Close and free an allocated IOStreamBase structure.
+   *
+   * IOStreamRef.Close() closes and cleans up the IOStreamBase stream. It
+   * releases any resources used by the stream and frees the IOStreamBase
+   * itself. This returns true on success, or false if the stream failed to
+   * flush to its output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the IOStreamBase is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call IOStreamBase.Flush() before closing. Note that flushing takes
+   * time and makes the system and your app operate less efficiently, so do so
+   * sparingly.
+   *
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.IOStreamBase
+   */
+  bool Close() { return reset(); }
 };
 
 /**
- * Close and free an allocated SDL_IOStream structure.
+ * Handle to an owned iOStream
  *
- * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
- * resources used by the stream and frees the SDL_IOStream itself. This
- * returns true on success, or false if the stream failed to flush to its
- * output (e.g. to disk).
+ * @cat resource
  *
- * Note that if this fails to flush the stream for any reason, this function
- * reports an error, but the SDL_IOStream is still invalid once this function
- * returns.
- *
- * This call flushes any buffered writes to the operating system, but there
- * are no guarantees that those writes have gone to physical media; they might
- * be in the OS's file cache, waiting to go to disk later. If it's absolutely
- * crucial that writes go to disk immediately, so they are definitely stored
- * even if the power fails before the file cache would have caught up, one
- * should call SDL_FlushIO() before closing. Note that flushing takes time and
- * makes the system and your app operate less efficiently, so do so sparingly.
- *
- * @param resource SDL_IOStream structure to close.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_OpenIO
+ * @sa IOStreamBase
+ * @sa IOStreamRef
  */
-template<>
-inline void ObjectRef<SDL_IOStream>::doFree(SDL_IOStream* resource)
+struct IOStream : IOStreamRef
 {
-  SDL_CloseIO(resource);
-}
+  using IOStreamRef::IOStreamRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit IOStream(SDL_IOStream* resource = {})
+    : IOStreamRef(resource)
+  {
+  }
+
+  constexpr IOStream(const IOStream& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr IOStream(IOStream&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~IOStream() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  IOStream& operator=(IOStream other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
 
 namespace prop::IOStream {
 
@@ -25002,18 +25151,16 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * convenience. This extra byte is not included in the value reported via
  * `datasize`.
  *
- * The data should be freed with SDL_free().
- *
  * @param file the path to read all available data from.
- * @returns the data or NULL on failure; call SDL_GetError() for more
+ * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_LoadFile_IO
- * @sa SDL_SaveFile
+ * @sa IOStreamBase.LoadFile
+ * @sa SaveFile
  */
 inline OwnArray<std::byte> LoadFile(StringParam file)
 {
@@ -25026,30 +25173,60 @@ inline OwnArray<std::byte> LoadFile(StringParam file)
  * Save all the data into a file path.
  *
  * @param file the path to write all available data into.
- * @param data the data to be written. If datasize is 0, may be NULL or a
+ * @param data the data to be written. If datasize is 0, may be nullptr or a
  *             invalid pointer.
  * @param datasize the number of bytes to be written.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SaveFile_IO
- * @sa SDL_LoadFile
+ * @sa IOStreamBase.SaveFile
+ * @sa LoadFile
  */
 inline bool SaveFile(StringParam file, const void* data, size_t datasize)
 {
   return SDL_SaveFile(file, data, datasize);
 }
 
+/**
+ * Save all the data into a file path.
+ *
+ * @param file the path to write all available data into.
+ * @param data the data to be written.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IOStreamBase.SaveFile
+ * @sa LoadFile
+ */
 template<class T>
 inline bool SaveFile(StringParam file, std::span<T> data)
 {
   return SaveFile(file, data.data(), data.size_bytes());
 }
 
+/**
+ * Save all the data into a file path.
+ *
+ * @param file the path to write all available data into.
+ * @param str the data to be written.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IOStreamBase.SaveFile
+ * @sa LoadFile
+ */
 inline bool SaveFile(StringParam file, std::string_view str)
 {
   return SaveFile(std::move(file), str.data(), str.size());
@@ -25059,6 +25236,1468 @@ inline bool SaveFile(StringParam file, std::string_view str)
 /// @}
 
 #pragma endregion impl
+
+/**
+ *
+ * @defgroup CategoryThread Thread Management
+ *
+ * Thread Management
+ *
+ * This is provided for compatibility and completeness, we advise you to use
+ * std's thread facilities.
+ *
+ * SDL offers cross-platform thread management functions. These are mostly
+ * concerned with starting threads, setting their priority, and dealing with
+ * their termination.
+ *
+ * In addition, there is support for Thread Local Storage (data that is unique
+ * to each thread, but accessed from a single key).
+ *
+ * On platforms without thread support (such as Emscripten when built without
+ * pthreads), these functions still exist, but things like
+ * ThreadBase.ThreadBase() will report failure without doing anything.
+ *
+ * If you're going to work with threads, you almost certainly need to have a
+ * good understanding of [CategoryMutex](CategoryMutex) as well.
+ *
+ * @{
+ */
+
+/**
+ * A unique numeric ID that identifies a thread.
+ *
+ * These are different from ThreadBase objects, which are generally what an
+ * application will operate on, but having a way to uniquely identify a thread
+ * can be useful at times.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadBase.GetID
+ * @sa GetCurrentThreadID
+ */
+using ThreadID = SDL_ThreadID;
+
+/**
+ * Thread local storage ID.
+ *
+ * 0 is the invalid ID. An app can create these and then set data for these
+ * IDs that is unique to each thread.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadBase.GetTLS
+ * @sa ThreadBase.SetTLS
+ */
+using TLSID = AtomicInt;
+
+/**
+ * The function passed to ThreadBase.ThreadBase() as the new thread's entry
+ * point.
+ *
+ * @param data what was passed as `data` to ThreadBase.ThreadBase().
+ * @returns a value that can be reported through ThreadBase.Wait().
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using ThreadFunction = SDL_ThreadFunction;
+
+/**
+ * The function passed to ThreadBase.ThreadBase() as the new thread's entry
+ * point.
+ *
+ * @returns a value that can be reported through ThreadBase.Wait().
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using ThreadCB = std::function<int()>;
+
+/**
+ * The callback used to cleanup data passed to ThreadBase.SetTLS.
+ *
+ * This is called when a thread exits, to allow an app to free any resources.
+ *
+ * @param value a pointer previously handed to ThreadBase.SetTLS.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadBase.SetTLS
+ */
+using TLSDestructorCallback = SDL_TLSDestructorCallback;
+
+// Forward decl
+template<ObjectBox<SDL_Thread*> T>
+struct ThreadBase;
+
+/**
+ * Handle to a non owned thread
+ *
+ * @cat resource
+ *
+ * @sa ThreadBase
+ * @sa Thread
+ */
+using ThreadRef = ThreadBase<ObjectRef<SDL_Thread>>;
+
+/**
+ * Handle to an owned thread
+ *
+ * @cat resource
+ *
+ * @sa ThreadBase
+ * @sa ThreadRef
+ */
+using Thread = ThreadBase<ObjectUnique<SDL_Thread>>;
+
+/**
+ * The SDL thread priority.
+ *
+ * SDL will make system changes as necessary in order to apply the thread
+ * priority. Code which attempts to control thread state related to priority
+ * should be aware that calling ThreadBase.SetCurrentPriority may alter such
+ * state. SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of
+ * this behavior.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ThreadPriority = SDL_ThreadPriority;
+
+constexpr ThreadPriority THREAD_PRIORITY_LOW = SDL_THREAD_PRIORITY_LOW; ///< LOW
+
+constexpr ThreadPriority THREAD_PRIORITY_NORMAL =
+  SDL_THREAD_PRIORITY_NORMAL; ///< NORMAL
+
+constexpr ThreadPriority THREAD_PRIORITY_HIGH =
+  SDL_THREAD_PRIORITY_HIGH; ///< HIGH
+
+constexpr ThreadPriority THREAD_PRIORITY_TIME_CRITICAL =
+  SDL_THREAD_PRIORITY_TIME_CRITICAL; ///< TIME_CRITICAL
+
+/**
+ * The SDL thread state.
+ *
+ * The current state of a thread can be checked by calling ThreadBase.GetState.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa ThreadBase.GetState
+ */
+using ThreadState = SDL_ThreadState;
+
+constexpr ThreadState THREAD_UNKNOWN =
+  SDL_THREAD_UNKNOWN; ///< The thread is not valid.
+
+constexpr ThreadState THREAD_ALIVE =
+  SDL_THREAD_ALIVE; ///< The thread is currently running.
+
+constexpr ThreadState THREAD_DETACHED =
+  SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on.
+
+/**
+ * The thread has finished and should be cleaned up with ThreadBase.Wait()
+ */
+constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
+
+/**
+ * The SDL thread object.
+ *
+ * These are opaque data.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadBase.ThreadBase
+ * @sa ThreadBase.Wait
+ */
+template<ObjectBox<SDL_Thread*> T>
+struct ThreadBase : T
+{
+  using T::T;
+
+  /**
+   * Create a new thread with a default stack size.
+   *
+   * @param fn the ThreadFunction function to call in the new thread.
+   * @param name the name of the thread.
+   * @post an opaque pointer to the new thread object on success, nullptr if the
+   *       new thread could not be created; call GetError() for more
+   *       information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadBase.ThreadBase
+   * @sa ThreadBase.Wait
+   */
+  ThreadBase(ThreadCB fn, StringParam name)
+    : T(SDL_CreateThread(
+        [](void* handler) {
+          return CallbackWrapper<ThreadCB>::CallOnce(handler);
+        },
+        std::move(name),
+        CallbackWrapper<ThreadCB>::Wrap(std::move(fn))))
+  {
+  }
+
+  /**
+   * Create a new thread with a default stack size.
+   *
+   * This is a convenience function, equivalent to calling
+   * ThreadBase.ThreadBase with the following properties set:
+   *
+   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop::thread.CREATE_NAME_STRING`: `name`
+   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+   *
+   * Usually, apps should just call this function the same way on every platform
+   * and let the macros hide the details.
+   *
+   * @param fn the ThreadFunction function to call in the new thread.
+   * @param name the name of the thread.
+   * @param data a pointer that is passed to `fn`.
+   * @post an opaque pointer to the new thread object on success, nullptr if the
+   *       new thread could not be created; call GetError() for more
+   *       information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadBase.ThreadBase
+   * @sa ThreadBase.Wait
+   */
+  ThreadBase(ThreadFunction fn, StringParam name, void* data)
+    : T(SDL_CreateThread(fn, name, data))
+  {
+  }
+
+  /**
+   * Create a new thread with with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction
+   *   value that will be called at the start of the new thread's life.
+   *   Required.
+   * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which
+   *   might be available to debuggers. Optional, defaults to nullptr.
+   * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined
+   *   pointer, which is passed to the entry function on the new thread, as its
+   *   only parameter. Optional, defaults to nullptr.
+   * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
+   *   thread's stack. Optional, defaults to 0 (system-defined default).
+   *
+   * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
+   * system, so that debuggers can display it. Not all platforms support this.
+   *
+   * Thread naming is a little complicated: Most systems have very small limits
+   * for the string length (Haiku has 32 bytes, Linux currently has 16, Visual
+   * C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to
+   * see what happens with your system's debugger. The name should be UTF-8 (but
+   * using the naming limits of C identifiers is a better bet). There are no
+   * requirements for thread naming conventions, so long as the string is
+   * null-terminated UTF-8, but these guidelines are helpful in choosing a name:
+   *
+   * https://stackoverflow.com/questions/149932/naming-conventions-for-threads
+   *
+   * If a system imposes requirements, SDL will try to munge the string for it
+   * (truncate, etc), but the original string contents will be available from
+   * ThreadBase.GetName().
+   *
+   * The size (in bytes) of the new stack can be specified with
+   * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system
+   * default" which might be wildly different between platforms. x86 Linux
+   * generally defaults to eight megabytes, an embedded device might be a few
+   * kilobytes instead. You generally need to specify a stack that is a multiple
+   * of the system's page size (in many cases, this is 4 kilobytes, but check
+   * your system documentation).
+   *
+   * Note that this "function" is actually a macro that calls an internal
+   * function with two extra parameters not listed here; they are hidden through
+   * preprocessor macros and are needed to support various C runtimes at the
+   * point of the function call. Language bindings that aren't using the C
+   * headers will need to deal with this.
+   *
+   * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
+   * there is no symbol clash, but trying to load an SDL shared library and look
+   * for "ThreadBase.ThreadBase" will fail.
+   *
+   * Usually, apps should just call this function the same way on every platform
+   * and let the macros hide the details.
+   *
+   * @param props the properties to use.
+   * @post an opaque pointer to the new thread object on success, nullptr if the
+   *          new thread could not be created; call GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadBase.ThreadBase
+   * @sa ThreadBase.Wait
+   */
+  ThreadBase(PropertiesRef props)
+    : T(SDL_CreateThreadWithProperties(props.get()))
+  {
+  }
+
+  /**
+   * Get the thread name as it was specified in ThreadBase.ThreadBase().
+   *
+   * @returns a pointer to a UTF-8 string that names the specified thread, or
+   *          nullptr if it doesn't have a name.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  const char* GetName() const { return SDL_GetThreadName(T::get()); }
+
+  /**
+   * Get the thread identifier for the specified thread.
+   *
+   * This thread identifier is as reported by the underlying operating system.
+   * If SDL is running on a platform that does not support threads the return
+   * value will always be zero.
+   *
+   * @returns the ID of the specified thread, or the ID of the current thread if
+   *          `thread` is nullptr.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCurrentThreadID
+   */
+  ThreadID GetID() const { return SDL_GetThreadID(T::get()); }
+
+  /**
+   * Set the priority for the current thread.
+   *
+   * Note that some platforms will not let you alter the priority (or at least,
+   * promote the thread to a higher priority) at all, and some require you to be
+   * an administrator account. Be prepared for this to fail.
+   *
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool SetCurrentPriority() { return SDL_SetCurrentThreadPriority(T::get()); }
+
+  /**
+   * Wait for a thread to finish.
+   *
+   * Threads that haven't been detached will remain until this function cleans
+   * them up. Not doing so is a resource leak.
+   *
+   * Once a thread has been cleaned up through this function, the ThreadBase
+   * that references it becomes invalid and should not be referenced again. As
+   * such, only one thread may call ThreadBase.Wait() on another.
+   *
+   * The return code from the thread function is placed in the area pointed to
+   * by `status`, if `status` is not nullptr.
+   *
+   * You may not wait on a thread that has been used in a call to
+   * ThreadBase.Detach(). Use either that function or this one, but not both, or
+   * behavior is undefined.
+   *
+   * It is safe to pass a nullptr thread to this function; it is a no-op.
+   *
+   * Note that the thread pointer is freed by this function and is not valid
+   * afterward.
+   *
+   *               ThreadBase.ThreadBase() call that started this thread.
+   * @param status a pointer filled in with the value returned from the thread
+   *               function by its 'return', or -1 if the thread has been
+   *               detached or isn't valid, may be nullptr.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadBase.ThreadBase
+   * @sa ThreadBase.Detach
+   */
+  void Wait(int* status) { SDL_WaitThread(T::get(), status); }
+
+  /**
+   * Get the current state of a thread.
+   *
+   * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
+   *          isn't valid.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadState
+   */
+  ThreadState GetState() const { return SDL_GetThreadState(T::get()); }
+
+  /**
+   * Let a thread clean up on exit without intervention.
+   *
+   * A thread may be "detached" to signify that it should not remain until
+   * another thread has called ThreadBase.Wait() on it. Detaching a thread is
+   * useful for long-running threads that nothing needs to synchronize with or
+   * further manage. When a detached thread is done, it simply goes away.
+   *
+   * There is no way to recover the return code of a detached thread. If you
+   * need this, don't detach the thread and instead use ThreadBase.Wait().
+   *
+   * Once a thread is detached, you should usually assume the ThreadBase isn't
+   * safe to reference again, as it will become invalid immediately upon the
+   * detached thread's exit, instead of remaining until someone has called
+   * ThreadBase.Wait() to finally clean it up. As such, don't detach the same
+   * thread more than once.
+   *
+   * If a thread has already exited when passed to ThreadBase.Detach(), it will
+   * stop waiting for a call to ThreadBase.Wait() and clean up immediately. It
+   * is not safe to detach a thread that might be used with ThreadBase.Wait().
+   *
+   * You may not call ThreadBase.Wait() on a thread that has been detached. Use
+   * either that function or this one, but not both, or behavior is undefined.
+   *
+   * It is safe to pass nullptr to this function; it is a no-op.
+   *
+   *               ThreadBase.ThreadBase() call that started this thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadBase.ThreadBase
+   * @sa ThreadBase.Wait
+   */
+  void Detach() { SDL_DetachThread(T::get()); }
+};
+
+namespace prop::thread {
+
+constexpr auto CREATE_ENTRY_FUNCTION_POINTER =
+  SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER;
+
+constexpr auto CREATE_NAME_STRING = SDL_PROP_THREAD_CREATE_NAME_STRING;
+
+constexpr auto CREATE_USERDATA_POINTER =
+  SDL_PROP_THREAD_CREATE_USERDATA_POINTER;
+
+constexpr auto CREATE_STACKSIZE_NUMBER =
+  SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER;
+
+} // namespace prop::thread
+
+/**
+ * Get the thread identifier for the current thread.
+ *
+ * This thread identifier is as reported by the underlying operating system.
+ * If SDL is running on a platform that does not support threads the return
+ * value will always be zero.
+ *
+ * This function also returns a valid thread ID when called from the main
+ * thread.
+ *
+ * @returns the ID of the current thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ThreadBase.GetID
+ */
+inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
+
+/**
+ * Get the current thread's value associated with a thread local storage ID.
+ *
+ * @param id a pointer to the thread local storage ID, may not be nullptr.
+ * @returns the value associated with the ID for the current thread or nullptr
+ * if no value has been set; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetTLS
+ */
+inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
+
+/**
+ * Set the current thread's value associated with a thread local storage ID.
+ *
+ * If the thread local storage ID is not initialized (the value is 0), a new
+ * ID will be created in a thread-safe way, so all calls using a pointer to
+ * the same ID will refer to the same local storage.
+ *
+ * Note that replacing a value from a previous call to this function on the
+ * same thread does _not_ call the previous value's destructor!
+ *
+ * `destructor` can be nullptr; it is assumed that `value` does not need to be
+ * cleaned up if so.
+ *
+ * @param id a pointer to the thread local storage ID, may not be nullptr.
+ * @param value the value to associate with the ID for the current thread.
+ * @param destructor a function called when the thread exits, to free the
+ *                   value, may be nullptr.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetTLS
+ */
+inline bool SetTLS(TLSID* id,
+                   const void* value,
+                   TLSDestructorCallback destructor)
+{
+  return SDL_SetTLS(*id, value, destructor);
+}
+
+/**
+ * Cleanup all TLS data for this thread.
+ *
+ * If you are creating your threads outside of SDL and then calling SDL
+ * functions, you should call this function before your thread exits, to
+ * properly clean up SDL memory.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void CleanupTLS() { SDL_CleanupTLS(); }
+
+/// @}
+
+/**
+ *
+ * @defgroup CategoryMutex Thread Synchronization Primitives
+ *
+ * SDL offers several thread synchronization primitives. This document can't
+ * cover the complicated topic of thread safety, but reading up on what each
+ * of these primitives are, why they are useful, and how to correctly use them
+ * is vital to writing correct and safe multithreaded programs.
+ *
+ * - Mutexes: MutexBase.MutexBase()
+ * - Read/Write locks: RWLockBase.RWLockBase()
+ * - Semaphores: SemaphoreBase.SemaphoreBase()
+ * - Condition variables: ConditionBase.ConditionBase()
+ *
+ * SDL also offers a datatype, InitState, which can be used to make sure
+ * only one thread initializes/deinitializes some resource that several
+ * threads might try to use for the first time simultaneously.
+ *
+ * @{
+ */
+
+// Forward decl
+template<ObjectBox<SDL_Mutex*> T>
+struct MutexBase;
+
+/**
+ * Handle to a non owned mutex
+ *
+ * @cat resource
+ *
+ * @sa MutexBase
+ * @sa Mutex
+ */
+using MutexRef = MutexBase<ObjectRef<SDL_Mutex>>;
+
+/**
+ * Handle to an owned mutex
+ *
+ * @cat resource
+ *
+ * @sa MutexBase
+ * @sa MutexRef
+ */
+using Mutex = MutexBase<ObjectUnique<SDL_Mutex>>;
+
+// Forward decl
+template<ObjectBox<SDL_RWLock*> T>
+struct RWLockBase;
+
+/**
+ * Handle to a non owned rWLock
+ *
+ * @cat resource
+ *
+ * @sa RWLockBase
+ * @sa RWLock
+ */
+using RWLockRef = RWLockBase<ObjectRef<SDL_RWLock>>;
+
+/**
+ * Handle to an owned rWLock
+ *
+ * @cat resource
+ *
+ * @sa RWLockBase
+ * @sa RWLockRef
+ */
+using RWLock = RWLockBase<ObjectUnique<SDL_RWLock>>;
+
+// Forward decl
+template<ObjectBox<SDL_Semaphore*> T>
+struct SemaphoreBase;
+
+/**
+ * Handle to a non owned semaphore
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreBase
+ * @sa Semaphore
+ */
+using SemaphoreRef = SemaphoreBase<ObjectRef<SDL_Semaphore>>;
+
+/**
+ * Handle to an owned semaphore
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreBase
+ * @sa SemaphoreRef
+ */
+using Semaphore = SemaphoreBase<ObjectUnique<SDL_Semaphore>>;
+
+// Forward decl
+template<ObjectBox<SDL_Condition*> T>
+struct ConditionBase;
+
+/**
+ * Handle to a non owned condition
+ *
+ * @cat resource
+ *
+ * @sa ConditionBase
+ * @sa Condition
+ */
+using ConditionRef = ConditionBase<ObjectRef<SDL_Condition>>;
+
+/**
+ * Handle to an owned condition
+ *
+ * @cat resource
+ *
+ * @sa ConditionBase
+ * @sa ConditionRef
+ */
+using Condition = ConditionBase<ObjectUnique<SDL_Condition>>;
+
+/**
+ * A means to serialize access to a resource between threads.
+ *
+ * Mutexes (short for "mutual exclusion") are a synchronization primitive that
+ * allows exactly one thread to proceed at a time.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Mutex
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+template<ObjectBox<SDL_Mutex*> T>
+struct MutexBase : T
+{
+  using T::T;
+
+  /**
+   * Create a new mutex.
+   *
+   * All newly-created mutexes begin in the _unlocked_ state.
+   *
+   * Calls to MutexBase.Lock() will not return while the mutex is locked by
+   * another thread. See MutexBase.TryLock() to attempt to lock without
+   * blocking.
+   *
+   * SDL mutexes are reentrant.
+   *
+   * @post the initialized and unlocked mutex or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.Destroy
+   * @sa MutexBase.Lock
+   * @sa MutexBase.TryLock
+   * @sa MutexBase.Unlock
+   */
+  MutexBase()
+    : T(SDL_CreateMutex())
+  {
+  }
+
+  /**
+   * Lock the mutex.
+   *
+   * This will block until the mutex is available, which is to say it is in the
+   * unlocked state and the OS has chosen the caller as the next thread to lock
+   * it. Of all threads waiting to lock the mutex, only one may do so at a time.
+   *
+   * It is legal for the owning thread to lock an already-locked mutex. It must
+   * unlock it the same number of times before it is actually made available for
+   * other threads in the system (this is known as a "recursive mutex").
+   *
+   * This function does not fail; if mutex is nullptr, it will return
+   * immediately having locked nothing. If the mutex is valid, this function
+   * will always block until it can lock the mutex, and return with it locked.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.TryLock
+   * @sa MutexBase.Unlock
+   */
+  void Lock() { SDL_LockMutex(T::get()); }
+
+  /**
+   * Try to lock a mutex without blocking.
+   *
+   * This works just like MutexBase.Lock(), but if the mutex is not available,
+   * this function returns false immediately.
+   *
+   * This technique is useful if you need exclusive access to a resource but
+   * don't want to wait for it, and will return to it to try again later.
+   *
+   * This function returns true if passed a nullptr mutex.
+   *
+   * @returns true on success, false if the mutex would block.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.Lock
+   * @sa MutexBase.Unlock
+   */
+  bool TryLock() { return SDL_TryLockMutex(T::get()); }
+
+  /**
+   * Unlock the mutex.
+   *
+   * It is legal for the owning thread to lock an already-locked mutex. It must
+   * unlock it the same number of times before it is actually made available for
+   * other threads in the system (this is known as a "recursive mutex").
+   *
+   * It is illegal to unlock a mutex that has not been locked by the current
+   * thread, and doing so results in undefined behavior.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.Lock
+   * @sa MutexBase.TryLock
+   */
+  void Unlock() { SDL_UnlockMutex(T::get()); }
+
+  /**
+   * Destroy a mutex created with MutexBase.MutexBase().
+   *
+   * This function must be called on any mutex that is no longer needed. Failure
+   * to destroy a mutex will result in a system memory or resource leak. While
+   * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
+   * to destroy a locked mutex, and may result in undefined behavior depending
+   * on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexBase.MutexBase
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Callback for mutex resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Mutex>::doFree(SDL_Mutex* resource)
+{
+  SDL_DestroyMutex(resource);
+}
+
+/**
+ * A mutex that allows read-only threads to run in parallel.
+ *
+ * A rwlock is roughly the same concept as MutexBase, but allows threads that
+ * request read-only access to all hold the lock at the same time. If a thread
+ * requests write access, it will block until all read-only threads have
+ * released the lock, and no one else can hold the thread (for reading or
+ * writing) at the same time as the writing thread.
+ *
+ * This can be more efficient in cases where several threads need to access
+ * data frequently, but changes to that data are rare.
+ *
+ * There are other rules that apply to rwlocks that don't apply to mutexes,
+ * about how threads are scheduled and when they can be recursively locked.
+ * These are documented in the other rwlock functions.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+template<ObjectBox<SDL_RWLock*> T>
+struct RWLockBase : T
+{
+  using T::T;
+
+  /**
+   * Create a new read/write lock.
+   *
+   * A read/write lock is useful for situations where you have multiple threads
+   * trying to access a resource that is rarely updated. All threads requesting
+   * a read-only lock will be allowed to run in parallel; if a thread requests a
+   * write lock, it will be provided exclusive access. This makes it safe for
+   * multiple threads to use a resource at the same time if they promise not to
+   * change it, and when it has to be changed, the rwlock will serve as a
+   * gateway to make sure those changes can be made safely.
+   *
+   * In the right situation, a rwlock can be more efficient than a mutex, which
+   * only lets a single thread proceed at a time, even if it won't be modifying
+   * the data.
+   *
+   * All newly-created read/write locks begin in the _unlocked_ state.
+   *
+   * Calls to RWLockBase.LockForReading() and RWLockBase.LockForWriting will not
+   * return while the rwlock is locked _for writing_ by another thread. See
+   * RWLockBase.TryLockForReading() and RWLockBase.TryLockForWriting() to
+   * attempt to lock without blocking.
+   *
+   * SDL read/write locks are only recursive for read-only locks! They are not
+   * guaranteed to be fair, or provide access in a FIFO manner! They are not
+   * guaranteed to favor writers. You may not lock a rwlock for both read-only
+   * and write access at the same time from the same thread (so you can't
+   * promote your read-only lock to a write lock without unlocking first).
+   *
+   * @post the initialized and unlocked read/write lock or nullptr on failure;
+   *          call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.Destroy
+   * @sa RWLockBase.LockForReading
+   * @sa RWLockBase.LockForWriting
+   * @sa RWLockBase.TryLockForReading
+   * @sa RWLockBase.TryLockForWriting
+   * @sa RWLockBase.Unlock
+   */
+  RWLockBase()
+    : T(SDL_CreateRWLock())
+  {
+  }
+
+  /**
+   * Lock the read/write lock for _read only_ operations.
+   *
+   * This will block until the rwlock is available, which is to say it is not
+   * locked for writing by any other thread. Of all threads waiting to lock the
+   * rwlock, all may do so at the same time as long as they are requesting
+   * read-only access; if a thread wants to lock for writing, only one may do so
+   * at a time, and no other threads, read-only or not, may hold the lock at the
+   * same time.
+   *
+   * It is legal for the owning thread to lock an already-locked rwlock for
+   * reading. It must unlock it the same number of times before it is actually
+   * made available for other threads in the system (this is known as a
+   * "recursive rwlock").
+   *
+   * Note that locking for writing is not recursive (this is only available to
+   * read-only locks).
+   *
+   * It is illegal to request a read-only lock from a thread that already holds
+   * the write lock. Doing so results in undefined behavior. Unlock the write
+   * lock before requesting a read-only lock. (But, of course, if you have the
+   * write lock, you don't need further locks to read in any case.)
+   *
+   * This function does not fail; if rwlock is nullptr, it will return
+   * immediately having locked nothing. If the rwlock is valid, this function
+   * will always block until it can lock the mutex, and return with it locked.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForWriting
+   * @sa RWLockBase.TryLockForReading
+   * @sa RWLockBase.Unlock
+   */
+  void LockForReading() { SDL_LockRWLockForReading(T::get()); }
+
+  /**
+   * Lock the read/write lock for _write_ operations.
+   *
+   * This will block until the rwlock is available, which is to say it is not
+   * locked for reading or writing by any other thread. Only one thread may hold
+   * the lock when it requests write access; all other threads, whether they
+   * also want to write or only want read-only access, must wait until the
+   * writer thread has released the lock.
+   *
+   * It is illegal for the owning thread to lock an already-locked rwlock for
+   * writing (read-only may be locked recursively, writing can not). Doing so
+   * results in undefined behavior.
+   *
+   * It is illegal to request a write lock from a thread that already holds a
+   * read-only lock. Doing so results in undefined behavior. Unlock the
+   * read-only lock before requesting a write lock.
+   *
+   * This function does not fail; if rwlock is nullptr, it will return
+   * immediately having locked nothing. If the rwlock is valid, this function
+   * will always block until it can lock the mutex, and return with it locked.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForReading
+   * @sa RWLockBase.TryLockForWriting
+   * @sa RWLockBase.Unlock
+   */
+  void LockForWriting() { SDL_LockRWLockForWriting(T::get()); }
+
+  /**
+   * Try to lock a read/write lock _for reading_ without blocking.
+   *
+   * This works just like RWLockBase.LockForReading(), but if the rwlock is not
+   * available, then this function returns false immediately.
+   *
+   * This technique is useful if you need access to a resource but don't want to
+   * wait for it, and will return to it to try again later.
+   *
+   * Trying to lock for read-only access can succeed if other threads are
+   * holding read-only locks, as this won't prevent access.
+   *
+   * This function returns true if passed a nullptr rwlock.
+   *
+   * @returns true on success, false if the lock would block.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForReading
+   * @sa RWLockBase.TryLockForWriting
+   * @sa RWLockBase.Unlock
+   */
+  bool TryLockForReading() { return SDL_TryLockRWLockForReading(T::get()); }
+
+  /**
+   * Try to lock a read/write lock _for writing_ without blocking.
+   *
+   * This works just like RWLockBase.LockForWriting(), but if the rwlock is not
+   * available, then this function returns false immediately.
+   *
+   * This technique is useful if you need exclusive access to a resource but
+   * don't want to wait for it, and will return to it to try again later.
+   *
+   * It is illegal for the owning thread to lock an already-locked rwlock for
+   * writing (read-only may be locked recursively, writing can not). Doing so
+   * results in undefined behavior.
+   *
+   * It is illegal to request a write lock from a thread that already holds a
+   * read-only lock. Doing so results in undefined behavior. Unlock the
+   * read-only lock before requesting a write lock.
+   *
+   * This function returns true if passed a nullptr rwlock.
+   *
+   * @returns true on success, false if the lock would block.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForWriting
+   * @sa RWLockBase.TryLockForReading
+   * @sa RWLockBase.Unlock
+   */
+  bool TryLockForWriting() { return SDL_TryLockRWLockForWriting(T::get()); }
+
+  /**
+   * Unlock the read/write lock.
+   *
+   * Use this function to unlock the rwlock, whether it was locked for read-only
+   * or write operations.
+   *
+   * It is legal for the owning thread to lock an already-locked read-only lock.
+   * It must unlock it the same number of times before it is actually made
+   * available for other threads in the system (this is known as a "recursive
+   * rwlock").
+   *
+   * It is illegal to unlock a rwlock that has not been locked by the current
+   * thread, and doing so results in undefined behavior.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.LockForReading
+   * @sa RWLockBase.LockForWriting
+   * @sa RWLockBase.TryLockForReading
+   * @sa RWLockBase.TryLockForWriting
+   */
+  void Unlock() { SDL_UnlockRWLock(T::get()); }
+
+  /**
+   * Destroy a read/write lock created with RWLockBase.RWLockBase().
+   *
+   * This function must be called on any read/write lock that is no longer
+   * needed. Failure to destroy a rwlock will result in a system memory or
+   * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
+   * is not safe to attempt to destroy a locked rwlock, and may result in
+   * undefined behavior depending on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockBase.RWLockBase
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Callback for rWLock resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_RWLock>::doFree(SDL_RWLock* resource)
+{
+  SDL_DestroyRWLock(resource);
+}
+
+/**
+ * A means to manage access to a resource, by count, between threads.
+ *
+ * Semaphores (specifically, "counting semaphores"), let X number of threads
+ * request access at the same time, each thread granted access decrementing a
+ * counter. When the counter reaches zero, future requests block until a prior
+ * thread releases their request, incrementing the counter again.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Semaphore_(programming)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+template<ObjectBox<SDL_Semaphore*> T>
+struct SemaphoreBase : T
+{
+  using T::T;
+
+  /**
+   * Create a semaphore.
+   *
+   * This function creates a new semaphore and initializes it with the value
+   * `initial_value`. Each wait operation on the semaphore will atomically
+   * decrement the semaphore value and potentially block if the semaphore value
+   * is 0. Each post operation will atomically increment the semaphore value and
+   * wake waiting threads and allow them to retry the wait operation.
+   *
+   * @param initial_value the starting value of the semaphore.
+   * @post a new semaphore or nullptr on failure; call GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.Destroy
+   * @sa SemaphoreBase.Signal
+   * @sa SemaphoreBase.TryWait
+   * @sa SemaphoreBase.GetValue
+   * @sa SemaphoreBase.Wait
+   * @sa SemaphoreBase.WaitTimeout
+   */
+  SemaphoreBase(Uint32 initial_value)
+    : T(SDL_CreateSemaphore(initial_value))
+  {
+  }
+
+  /**
+   * Wait until a semaphore has a positive value and then decrements it.
+   *
+   * This function suspends the calling thread until the semaphore pointed to by
+   * `sem` has a positive value, and then atomically decrement the semaphore
+   * value.
+   *
+   * This function is the equivalent of calling SemaphoreBase.WaitTimeout() with
+   * a time length of -1.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.Signal
+   * @sa SemaphoreBase.TryWait
+   * @sa SemaphoreBase.WaitTimeout
+   */
+  void Wait() { SDL_WaitSemaphore(T::get()); }
+
+  /**
+   * See if a semaphore has a positive value and decrement it if it does.
+   *
+   * This function checks to see if the semaphore pointed to by `sem` has a
+   * positive value and atomically decrements the semaphore value if it does. If
+   * the semaphore doesn't have a positive value, the function immediately
+   * returns false.
+   *
+   * @returns true if the wait succeeds, false if the wait would block.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.Signal
+   * @sa SemaphoreBase.Wait
+   * @sa SemaphoreBase.WaitTimeout
+   */
+  bool TryWait() { return SDL_TryWaitSemaphore(T::get()); }
+
+  /**
+   * Wait until a semaphore has a positive value and then decrements it.
+   *
+   * This function suspends the calling thread until either the semaphore
+   * pointed to by `sem` has a positive value or the specified time has elapsed.
+   * If the call is successful it will atomically decrement the semaphore value.
+   *
+   * @param timeout the length of the timeout, in milliseconds, or -1 to wait
+   *                  indefinitely.
+   * @returns true if the wait succeeds or false if the wait times out.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.Signal
+   * @sa SemaphoreBase.TryWait
+   * @sa SemaphoreBase.Wait
+   */
+  bool WaitTimeout(std::chrono::milliseconds timeout)
+  {
+    return SDL_WaitSemaphoreTimeout(T::get(), timeout.count());
+  }
+
+  /**
+   * Atomically increment a semaphore's value and wake waiting threads.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.TryWait
+   * @sa SemaphoreBase.Wait
+   * @sa SemaphoreBase.WaitTimeout
+   */
+  void Signal() { SDL_SignalSemaphore(T::get()); }
+
+  /**
+   * Get the current value of a semaphore.
+   *
+   * @returns the current value of the semaphore.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint32 GetValue() const { return SDL_GetSemaphoreValue(T::get()); }
+
+  /**
+   * Destroy a semaphore.
+   *
+   * It is not safe to destroy a semaphore if there are threads currently
+   * waiting on it.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreBase.SemaphoreBase
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Callback for semaphore resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Semaphore>::doFree(SDL_Semaphore* resource)
+{
+  SDL_DestroySemaphore(resource);
+}
+
+/**
+ * A means to block multiple threads until a condition is satisfied.
+ *
+ * Condition variables, paired with an MutexBase, let an app halt multiple
+ * threads until a condition has occurred, at which time the app can release
+ * one or all waiting threads.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Condition_variable
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+template<ObjectBox<SDL_Condition*> T>
+struct ConditionBase : T
+{
+  using T::T;
+
+  /**
+   * Create a condition variable.
+   *
+   * @post a new condition variable or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Broadcast
+   * @sa ConditionBase.Signal
+   * @sa ConditionBase.Wait
+   * @sa ConditionBase.WaitTimeout
+   * @sa ConditionBase.Destroy
+   */
+  ConditionBase()
+    : T(SDL_CreateCondition())
+  {
+  }
+
+  /**
+   * Restart one of the threads that are waiting on the condition variable.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Broadcast
+   * @sa ConditionBase.Wait
+   * @sa ConditionBase.WaitTimeout
+   */
+  void Signal() { SDL_SignalCondition(T::get()); }
+
+  /**
+   * Restart all threads that are waiting on the condition variable.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Signal
+   * @sa ConditionBase.Wait
+   * @sa ConditionBase.WaitTimeout
+   */
+  void Broadcast() { SDL_BroadcastCondition(T::get()); }
+
+  /**
+   * Wait until a condition variable is signaled.
+   *
+   * This function unlocks the specified `mutex` and waits for another thread to
+   * call ConditionBase.Signal() or ConditionBase.Broadcast() on the condition
+   * variable `cond`. Once the condition variable is signaled, the mutex is
+   * re-locked and the function returns.
+   *
+   * The mutex must be locked before calling this function. Locking the mutex
+   * recursively (more than once) is not supported and leads to undefined
+   * behavior.
+   *
+   * This function is the equivalent of calling ConditionBase.WaitTimeout() with
+   * a time length of -1.
+   *
+   * @param mutex the mutex used to coordinate thread access.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Broadcast
+   * @sa ConditionBase.Signal
+   * @sa ConditionBase.WaitTimeout
+   */
+  void Wait(MutexRef mutex) { SDL_WaitCondition(T::get(), mutex.get()); }
+
+  /**
+   * Wait until a condition variable is signaled or a certain time has passed.
+   *
+   * This function unlocks the specified `mutex` and waits for another thread to
+   * call ConditionBase.Signal() or ConditionBase.Broadcast() on the condition
+   * variable `cond`, or for the specified time to elapse. Once the condition
+   * variable is signaled or the time elapsed, the mutex is re-locked and the
+   * function returns.
+   *
+   * The mutex must be locked before calling this function. Locking the mutex
+   * recursively (more than once) is not supported and leads to undefined
+   * behavior.
+   *
+   * @param mutex the mutex used to coordinate thread access.
+   * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
+   *                  indefinitely.
+   * @returns true if the condition variable is signaled, false if the condition
+   *          is not signaled in the allotted time.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.Broadcast
+   * @sa ConditionBase.Signal
+   * @sa ConditionBase.Wait
+   */
+  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout)
+  {
+    return SDL_WaitConditionTimeout(T::get(), mutex.get(), timeout.count());
+  }
+
+  /**
+   * Destroy a condition variable.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionBase.ConditionBase
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Callback for condition resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Condition>::doFree(SDL_Condition* resource)
+{
+  SDL_DestroyCondition(resource);
+}
+
+/**
+ * The current status of an InitState structure.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using InitStatus = SDL_InitStatus;
+
+constexpr InitStatus INIT_STATUS_UNINITIALIZED =
+  SDL_INIT_STATUS_UNINITIALIZED; ///< UNINITIALIZED
+
+constexpr InitStatus INIT_STATUS_INITIALIZING =
+  SDL_INIT_STATUS_INITIALIZING; ///< INITIALIZING
+
+constexpr InitStatus INIT_STATUS_INITIALIZED =
+  SDL_INIT_STATUS_INITIALIZED; ///< INITIALIZED
+
+constexpr InitStatus INIT_STATUS_UNINITIALIZING =
+  SDL_INIT_STATUS_UNINITIALIZING; ///< UNINITIALIZING
+
+/**
+ * A structure used for thread-safe initialization and shutdown.
+ *
+ * Here is an example of using this:
+ *
+ * ```cpp
+ *    static SDL::InitState init;
+ *
+ *    bool InitSystem(void)
+ *    {
+ *        if (!InitState.ShouldInit(&init)) {
+ *            // The system is initialized
+ *            return true;
+ *        }
+ *
+ *        // At this point, you should not leave this function without calling
+ * InitState.SetInitialized()
+ *
+ *        bool initialized = DoInitTasks();
+ *        InitState.SetInitialized(&init, initialized);
+ *        return initialized;
+ *    }
+ *
+ *    bool UseSubsystem(void)
+ *    {
+ *        if (InitState.ShouldInit(&init)) {
+ *            // Error, the subsystem isn't initialized
+ *            InitState.SetInitialized(&init, false);
+ *            return false;
+ *        }
+ *
+ *        // Do work using the initialized subsystem
+ *
+ *        return true;
+ *    }
+ *
+ *    void QuitSystem(void)
+ *    {
+ *        if (!InitState.ShouldQuit(&init)) {
+ *            // The system is not initialized
+ *            return;
+ *        }
+ *
+ *        // At this point, you should not leave this function without calling
+ * InitState.SetInitialized()
+ *
+ *        DoQuitTasks();
+ *        InitState.SetInitialized(&init, false);
+ *    }
+ * ```
+ *
+ * Note that this doesn't protect any resources created during initialization,
+ * or guarantee that nobody is using those resources during cleanup. You
+ * should use other mechanisms to protect those, if that's a concern for your
+ * code.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+struct InitState : SDL_InitState
+{
+  /**
+   * Default comparison operator
+   */
+  constexpr bool operator==(const InitState& other) const
+  {
+    return this == &other;
+  }
+
+  /**
+   * Constructor
+   */
+  constexpr InitState()
+    : SDL_InitState{0}
+  {
+  }
+
+  /**
+   * Return whether initialization should be done.
+   *
+   * This function checks the passed in state and if initialization should be
+   * done, sets the status to `INIT_STATUS_INITIALIZING` and returns true.
+   * If another thread is already modifying this state, it will wait until
+   * that's done before returning.
+   *
+   * If this function returns true, the calling code must call
+   * InitState.SetInitialized() to complete the initialization.
+   *
+   * @returns true if initialization needs to be done, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa InitState.SetInitialized
+   * @sa InitState.ShouldQuit
+   */
+  bool ShouldInit() { return SDL_ShouldInit(this); }
+
+  /**
+   * Return whether cleanup should be done.
+   *
+   * This function checks the passed in state and if cleanup should be done,
+   * sets the status to `INIT_STATUS_UNINITIALIZING` and returns true.
+   *
+   * If this function returns true, the calling code must call
+   * InitState.SetInitialized() to complete the cleanup.
+   *
+   * @returns true if cleanup needs to be done, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa InitState.SetInitialized
+   * @sa InitState.ShouldInit
+   */
+  bool ShouldQuit() { return SDL_ShouldQuit(this); }
+
+  /**
+   * Finish an initialization state transition.
+   *
+   * This function sets the status of the passed in state to
+   * `INIT_STATUS_INITIALIZED` or `INIT_STATUS_UNINITIALIZED` and allows
+   * any threads waiting for the status to proceed.
+   *
+   * @param initialized the new initialization state.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa InitState.ShouldInit
+   * @sa InitState.ShouldQuit
+   */
+  void SetInitialized(bool initialized)
+  {
+    SDL_SetInitialized(this, initialized);
+  }
+};
+
+/// @}
 
 /**
  * @defgroup CategorySurface Surface Creation and Simple Drawing
@@ -25193,13 +26832,28 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * LoadBMP(StringParam).
    *
    * @param file a path on the filesystem to load an image from.
-   * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call GetError() for more information.
+   * @post the new SurfaceBase structure that is created or nullptr on failure;
+   *       call GetError() for more information.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
    */
   SurfaceBase(StringParam file);
+
+  /**
+   * Load an image from a IOStreamBase into a software surface.
+   *
+   * If available, this uses LoadSurface(IOStreamBase&), otherwise it uses
+   * LoadBMP(IOStreamBase&).
+   *
+   * @param src an IOStreamBase to load an image from.
+   * @post the new SurfaceBase structure that is created or nullptr on failure;
+   *       call GetError() for more information.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
+  SurfaceBase(IOStreamBase& src);
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -25222,25 +26876,27 @@ struct SurfaceBase : Resource<SDL_Surface*>
   }
 
   /**
-   * Allocate a new surface with a specific pixel format and existing
-   * pixel data.
+   * Allocate a new surface with a specific pixel format and existing pixel
+   * data.
    *
    * No copy is made of the pixel data. Pixel data is not managed automatically;
    * you must free the surface before you free the pixel data.
    *
    * Pitch is the offset in bytes from one row of pixels to the next, e.g.
-   * `width*4` for `SDL_PIXELFORMAT_RGBA8888`.
+   * `width*4` for `PIXELFORMAT_RGBA8888`.
    *
-   * You may pass NULL for pixels and 0 for pitch to create a surface that you
-   * will fill in with valid values later.
+   * You may pass nullptr for pixels and 0 for pitch to create a surface that
+   * you will fill in with valid values later.
    *
    * @param width the width of the surface.
    * @param height the height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
-   * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call GetError() for more information.
+   * @post the new SurfaceBase structure that is created or nullptr on failure;
+   *       call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -27030,9 +28686,9 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *
  * @sa SaveBMP
  */
-inline Surface LoadBMP(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadBMP(IOStreamBase& src)
 {
-  return Surface{SDL_LoadBMP_IO(src, false)};
+  return Surface{SDL_LoadBMP_IO(src.get(), false)};
 }
 
 /**
@@ -27070,9 +28726,9 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @sa LoadBMP
  */
-inline bool SaveBMP(SurfaceBase& surface, ObjectBox<SDL_IOStream> auto&& dst)
+inline bool SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
 {
-  return SDL_SaveBMP_IO(surface.get(), dst, false);
+  return SDL_SaveBMP_IO(surface.get(), dst.get(), false);
 }
 
 /**
@@ -27271,1468 +28927,6 @@ inline bool PremultiplyAlpha(int width,
 inline SurfaceLock SurfaceBase::Lock() & { return SurfaceLock{get()}; }
 
 #pragma endregion impl
-
-/**
- *
- * @defgroup CategoryThread Thread Management
- *
- * Thread Management
- *
- * This is provided for compatibility and completeness, we advise you to use
- * std's thread facilities.
- *
- * SDL offers cross-platform thread management functions. These are mostly
- * concerned with starting threads, setting their priority, and dealing with
- * their termination.
- *
- * In addition, there is support for Thread Local Storage (data that is unique
- * to each thread, but accessed from a single key).
- *
- * On platforms without thread support (such as Emscripten when built without
- * pthreads), these functions still exist, but things like
- * ThreadBase.ThreadBase() will report failure without doing anything.
- *
- * If you're going to work with threads, you almost certainly need to have a
- * good understanding of [CategoryMutex](CategoryMutex) as well.
- *
- * @{
- */
-
-/**
- * A unique numeric ID that identifies a thread.
- *
- * These are different from ThreadBase objects, which are generally what an
- * application will operate on, but having a way to uniquely identify a thread
- * can be useful at times.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa ThreadBase.GetID
- * @sa GetCurrentThreadID
- */
-using ThreadID = SDL_ThreadID;
-
-/**
- * Thread local storage ID.
- *
- * 0 is the invalid ID. An app can create these and then set data for these
- * IDs that is unique to each thread.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa ThreadBase.GetTLS
- * @sa ThreadBase.SetTLS
- */
-using TLSID = AtomicInt;
-
-/**
- * The function passed to ThreadBase.ThreadBase() as the new thread's entry
- * point.
- *
- * @param data what was passed as `data` to ThreadBase.ThreadBase().
- * @returns a value that can be reported through ThreadBase.Wait().
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using ThreadFunction = SDL_ThreadFunction;
-
-/**
- * The function passed to ThreadBase.ThreadBase() as the new thread's entry
- * point.
- *
- * @returns a value that can be reported through ThreadBase.Wait().
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using ThreadCB = std::function<int()>;
-
-/**
- * The callback used to cleanup data passed to ThreadBase.SetTLS.
- *
- * This is called when a thread exits, to allow an app to free any resources.
- *
- * @param value a pointer previously handed to ThreadBase.SetTLS.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa ThreadBase.SetTLS
- */
-using TLSDestructorCallback = SDL_TLSDestructorCallback;
-
-// Forward decl
-template<ObjectBox<SDL_Thread*> T>
-struct ThreadBase;
-
-/**
- * Handle to a non owned thread
- *
- * @cat resource
- *
- * @sa ThreadBase
- * @sa Thread
- */
-using ThreadRef = ThreadBase<ObjectRef<SDL_Thread>>;
-
-/**
- * Handle to an owned thread
- *
- * @cat resource
- *
- * @sa ThreadBase
- * @sa ThreadRef
- */
-using Thread = ThreadBase<ObjectUnique<SDL_Thread>>;
-
-/**
- * The SDL thread priority.
- *
- * SDL will make system changes as necessary in order to apply the thread
- * priority. Code which attempts to control thread state related to priority
- * should be aware that calling ThreadBase.SetCurrentPriority may alter such
- * state. SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of
- * this behavior.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ThreadPriority = SDL_ThreadPriority;
-
-constexpr ThreadPriority THREAD_PRIORITY_LOW = SDL_THREAD_PRIORITY_LOW; ///< LOW
-
-constexpr ThreadPriority THREAD_PRIORITY_NORMAL =
-  SDL_THREAD_PRIORITY_NORMAL; ///< NORMAL
-
-constexpr ThreadPriority THREAD_PRIORITY_HIGH =
-  SDL_THREAD_PRIORITY_HIGH; ///< HIGH
-
-constexpr ThreadPriority THREAD_PRIORITY_TIME_CRITICAL =
-  SDL_THREAD_PRIORITY_TIME_CRITICAL; ///< TIME_CRITICAL
-
-/**
- * The SDL thread state.
- *
- * The current state of a thread can be checked by calling ThreadBase.GetState.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa ThreadBase.GetState
- */
-using ThreadState = SDL_ThreadState;
-
-constexpr ThreadState THREAD_UNKNOWN =
-  SDL_THREAD_UNKNOWN; ///< The thread is not valid.
-
-constexpr ThreadState THREAD_ALIVE =
-  SDL_THREAD_ALIVE; ///< The thread is currently running.
-
-constexpr ThreadState THREAD_DETACHED =
-  SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on.
-
-/**
- * The thread has finished and should be cleaned up with ThreadBase.Wait()
- */
-constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
-
-/**
- * The SDL thread object.
- *
- * These are opaque data.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa ThreadBase.ThreadBase
- * @sa ThreadBase.Wait
- */
-template<ObjectBox<SDL_Thread*> T>
-struct ThreadBase : T
-{
-  using T::T;
-
-  /**
-   * Create a new thread with a default stack size.
-   *
-   * @param fn the ThreadFunction function to call in the new thread.
-   * @param name the name of the thread.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *       new thread could not be created; call GetError() for more
-   *       information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
-   */
-  ThreadBase(ThreadCB fn, StringParam name)
-    : T(SDL_CreateThread(
-        [](void* handler) {
-          return CallbackWrapper<ThreadCB>::CallOnce(handler);
-        },
-        std::move(name),
-        CallbackWrapper<ThreadCB>::Wrap(std::move(fn))))
-  {
-  }
-
-  /**
-   * Create a new thread with a default stack size.
-   *
-   * This is a convenience function, equivalent to calling
-   * ThreadBase.ThreadBase with the following properties set:
-   *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
-   * - `prop::thread.CREATE_NAME_STRING`: `name`
-   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
-   *
-   * Usually, apps should just call this function the same way on every platform
-   * and let the macros hide the details.
-   *
-   * @param fn the ThreadFunction function to call in the new thread.
-   * @param name the name of the thread.
-   * @param data a pointer that is passed to `fn`.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *       new thread could not be created; call GetError() for more
-   *       information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
-   */
-  ThreadBase(ThreadFunction fn, StringParam name, void* data)
-    : T(SDL_CreateThread(fn, name, data))
-  {
-  }
-
-  /**
-   * Create a new thread with with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction
-   *   value that will be called at the start of the new thread's life.
-   *   Required.
-   * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which
-   *   might be available to debuggers. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined
-   *   pointer, which is passed to the entry function on the new thread, as its
-   *   only parameter. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
-   *   thread's stack. Optional, defaults to 0 (system-defined default).
-   *
-   * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
-   * system, so that debuggers can display it. Not all platforms support this.
-   *
-   * Thread naming is a little complicated: Most systems have very small limits
-   * for the string length (Haiku has 32 bytes, Linux currently has 16, Visual
-   * C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to
-   * see what happens with your system's debugger. The name should be UTF-8 (but
-   * using the naming limits of C identifiers is a better bet). There are no
-   * requirements for thread naming conventions, so long as the string is
-   * null-terminated UTF-8, but these guidelines are helpful in choosing a name:
-   *
-   * https://stackoverflow.com/questions/149932/naming-conventions-for-threads
-   *
-   * If a system imposes requirements, SDL will try to munge the string for it
-   * (truncate, etc), but the original string contents will be available from
-   * ThreadBase.GetName().
-   *
-   * The size (in bytes) of the new stack can be specified with
-   * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system
-   * default" which might be wildly different between platforms. x86 Linux
-   * generally defaults to eight megabytes, an embedded device might be a few
-   * kilobytes instead. You generally need to specify a stack that is a multiple
-   * of the system's page size (in many cases, this is 4 kilobytes, but check
-   * your system documentation).
-   *
-   * Note that this "function" is actually a macro that calls an internal
-   * function with two extra parameters not listed here; they are hidden through
-   * preprocessor macros and are needed to support various C runtimes at the
-   * point of the function call. Language bindings that aren't using the C
-   * headers will need to deal with this.
-   *
-   * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
-   * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "ThreadBase.ThreadBase" will fail.
-   *
-   * Usually, apps should just call this function the same way on every platform
-   * and let the macros hide the details.
-   *
-   * @param props the properties to use.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *          new thread could not be created; call GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
-   */
-  ThreadBase(PropertiesRef props)
-    : T(SDL_CreateThreadWithProperties(props.get()))
-  {
-  }
-
-  /**
-   * Get the thread name as it was specified in ThreadBase.ThreadBase().
-   *
-   * @returns a pointer to a UTF-8 string that names the specified thread, or
-   *          nullptr if it doesn't have a name.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  const char* GetName() const { return SDL_GetThreadName(T::get()); }
-
-  /**
-   * Get the thread identifier for the specified thread.
-   *
-   * This thread identifier is as reported by the underlying operating system.
-   * If SDL is running on a platform that does not support threads the return
-   * value will always be zero.
-   *
-   * @returns the ID of the specified thread, or the ID of the current thread if
-   *          `thread` is nullptr.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCurrentThreadID
-   */
-  ThreadID GetID() const { return SDL_GetThreadID(T::get()); }
-
-  /**
-   * Set the priority for the current thread.
-   *
-   * Note that some platforms will not let you alter the priority (or at least,
-   * promote the thread to a higher priority) at all, and some require you to be
-   * an administrator account. Be prepared for this to fail.
-   *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool SetCurrentPriority() { return SDL_SetCurrentThreadPriority(T::get()); }
-
-  /**
-   * Wait for a thread to finish.
-   *
-   * Threads that haven't been detached will remain until this function cleans
-   * them up. Not doing so is a resource leak.
-   *
-   * Once a thread has been cleaned up through this function, the ThreadBase
-   * that references it becomes invalid and should not be referenced again. As
-   * such, only one thread may call ThreadBase.Wait() on another.
-   *
-   * The return code from the thread function is placed in the area pointed to
-   * by `status`, if `status` is not nullptr.
-   *
-   * You may not wait on a thread that has been used in a call to
-   * ThreadBase.Detach(). Use either that function or this one, but not both, or
-   * behavior is undefined.
-   *
-   * It is safe to pass a nullptr thread to this function; it is a no-op.
-   *
-   * Note that the thread pointer is freed by this function and is not valid
-   * afterward.
-   *
-   *               ThreadBase.ThreadBase() call that started this thread.
-   * @param status a pointer filled in with the value returned from the thread
-   *               function by its 'return', or -1 if the thread has been
-   *               detached or isn't valid, may be nullptr.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Detach
-   */
-  void Wait(int* status) { SDL_WaitThread(T::get(), status); }
-
-  /**
-   * Get the current state of a thread.
-   *
-   * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
-   *          isn't valid.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadState
-   */
-  ThreadState GetState() const { return SDL_GetThreadState(T::get()); }
-
-  /**
-   * Let a thread clean up on exit without intervention.
-   *
-   * A thread may be "detached" to signify that it should not remain until
-   * another thread has called ThreadBase.Wait() on it. Detaching a thread is
-   * useful for long-running threads that nothing needs to synchronize with or
-   * further manage. When a detached thread is done, it simply goes away.
-   *
-   * There is no way to recover the return code of a detached thread. If you
-   * need this, don't detach the thread and instead use ThreadBase.Wait().
-   *
-   * Once a thread is detached, you should usually assume the ThreadBase isn't
-   * safe to reference again, as it will become invalid immediately upon the
-   * detached thread's exit, instead of remaining until someone has called
-   * ThreadBase.Wait() to finally clean it up. As such, don't detach the same
-   * thread more than once.
-   *
-   * If a thread has already exited when passed to ThreadBase.Detach(), it will
-   * stop waiting for a call to ThreadBase.Wait() and clean up immediately. It
-   * is not safe to detach a thread that might be used with ThreadBase.Wait().
-   *
-   * You may not call ThreadBase.Wait() on a thread that has been detached. Use
-   * either that function or this one, but not both, or behavior is undefined.
-   *
-   * It is safe to pass nullptr to this function; it is a no-op.
-   *
-   *               ThreadBase.ThreadBase() call that started this thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
-   */
-  void Detach() { SDL_DetachThread(T::get()); }
-};
-
-namespace prop::thread {
-
-constexpr auto CREATE_ENTRY_FUNCTION_POINTER =
-  SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER;
-
-constexpr auto CREATE_NAME_STRING = SDL_PROP_THREAD_CREATE_NAME_STRING;
-
-constexpr auto CREATE_USERDATA_POINTER =
-  SDL_PROP_THREAD_CREATE_USERDATA_POINTER;
-
-constexpr auto CREATE_STACKSIZE_NUMBER =
-  SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER;
-
-} // namespace prop::thread
-
-/**
- * Get the thread identifier for the current thread.
- *
- * This thread identifier is as reported by the underlying operating system.
- * If SDL is running on a platform that does not support threads the return
- * value will always be zero.
- *
- * This function also returns a valid thread ID when called from the main
- * thread.
- *
- * @returns the ID of the current thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa ThreadBase.GetID
- */
-inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
-
-/**
- * Get the current thread's value associated with a thread local storage ID.
- *
- * @param id a pointer to the thread local storage ID, may not be nullptr.
- * @returns the value associated with the ID for the current thread or nullptr
- * if no value has been set; call GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetTLS
- */
-inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
-
-/**
- * Set the current thread's value associated with a thread local storage ID.
- *
- * If the thread local storage ID is not initialized (the value is 0), a new
- * ID will be created in a thread-safe way, so all calls using a pointer to
- * the same ID will refer to the same local storage.
- *
- * Note that replacing a value from a previous call to this function on the
- * same thread does _not_ call the previous value's destructor!
- *
- * `destructor` can be nullptr; it is assumed that `value` does not need to be
- * cleaned up if so.
- *
- * @param id a pointer to the thread local storage ID, may not be nullptr.
- * @param value the value to associate with the ID for the current thread.
- * @param destructor a function called when the thread exits, to free the
- *                   value, may be nullptr.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetTLS
- */
-inline bool SetTLS(TLSID* id,
-                   const void* value,
-                   TLSDestructorCallback destructor)
-{
-  return SDL_SetTLS(*id, value, destructor);
-}
-
-/**
- * Cleanup all TLS data for this thread.
- *
- * If you are creating your threads outside of SDL and then calling SDL
- * functions, you should call this function before your thread exits, to
- * properly clean up SDL memory.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline void CleanupTLS() { SDL_CleanupTLS(); }
-
-/// @}
-
-/**
- *
- * @defgroup CategoryMutex Thread Synchronization Primitives
- *
- * SDL offers several thread synchronization primitives. This document can't
- * cover the complicated topic of thread safety, but reading up on what each
- * of these primitives are, why they are useful, and how to correctly use them
- * is vital to writing correct and safe multithreaded programs.
- *
- * - Mutexes: MutexBase.MutexBase()
- * - Read/Write locks: RWLockBase.RWLockBase()
- * - Semaphores: SemaphoreBase.SemaphoreBase()
- * - Condition variables: ConditionBase.ConditionBase()
- *
- * SDL also offers a datatype, InitState, which can be used to make sure
- * only one thread initializes/deinitializes some resource that several
- * threads might try to use for the first time simultaneously.
- *
- * @{
- */
-
-// Forward decl
-template<ObjectBox<SDL_Mutex*> T>
-struct MutexBase;
-
-/**
- * Handle to a non owned mutex
- *
- * @cat resource
- *
- * @sa MutexBase
- * @sa Mutex
- */
-using MutexRef = MutexBase<ObjectRef<SDL_Mutex>>;
-
-/**
- * Handle to an owned mutex
- *
- * @cat resource
- *
- * @sa MutexBase
- * @sa MutexRef
- */
-using Mutex = MutexBase<ObjectUnique<SDL_Mutex>>;
-
-// Forward decl
-template<ObjectBox<SDL_RWLock*> T>
-struct RWLockBase;
-
-/**
- * Handle to a non owned rWLock
- *
- * @cat resource
- *
- * @sa RWLockBase
- * @sa RWLock
- */
-using RWLockRef = RWLockBase<ObjectRef<SDL_RWLock>>;
-
-/**
- * Handle to an owned rWLock
- *
- * @cat resource
- *
- * @sa RWLockBase
- * @sa RWLockRef
- */
-using RWLock = RWLockBase<ObjectUnique<SDL_RWLock>>;
-
-// Forward decl
-template<ObjectBox<SDL_Semaphore*> T>
-struct SemaphoreBase;
-
-/**
- * Handle to a non owned semaphore
- *
- * @cat resource
- *
- * @sa SemaphoreBase
- * @sa Semaphore
- */
-using SemaphoreRef = SemaphoreBase<ObjectRef<SDL_Semaphore>>;
-
-/**
- * Handle to an owned semaphore
- *
- * @cat resource
- *
- * @sa SemaphoreBase
- * @sa SemaphoreRef
- */
-using Semaphore = SemaphoreBase<ObjectUnique<SDL_Semaphore>>;
-
-// Forward decl
-template<ObjectBox<SDL_Condition*> T>
-struct ConditionBase;
-
-/**
- * Handle to a non owned condition
- *
- * @cat resource
- *
- * @sa ConditionBase
- * @sa Condition
- */
-using ConditionRef = ConditionBase<ObjectRef<SDL_Condition>>;
-
-/**
- * Handle to an owned condition
- *
- * @cat resource
- *
- * @sa ConditionBase
- * @sa ConditionRef
- */
-using Condition = ConditionBase<ObjectUnique<SDL_Condition>>;
-
-/**
- * A means to serialize access to a resource between threads.
- *
- * Mutexes (short for "mutual exclusion") are a synchronization primitive that
- * allows exactly one thread to proceed at a time.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Mutex
- *
- * @since This struct is available since SDL 3.2.0.
- */
-template<ObjectBox<SDL_Mutex*> T>
-struct MutexBase : T
-{
-  using T::T;
-
-  /**
-   * Create a new mutex.
-   *
-   * All newly-created mutexes begin in the _unlocked_ state.
-   *
-   * Calls to MutexBase.Lock() will not return while the mutex is locked by
-   * another thread. See MutexBase.TryLock() to attempt to lock without
-   * blocking.
-   *
-   * SDL mutexes are reentrant.
-   *
-   * @post the initialized and unlocked mutex or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MutexBase.Destroy
-   * @sa MutexBase.Lock
-   * @sa MutexBase.TryLock
-   * @sa MutexBase.Unlock
-   */
-  MutexBase()
-    : T(SDL_CreateMutex())
-  {
-  }
-
-  /**
-   * Lock the mutex.
-   *
-   * This will block until the mutex is available, which is to say it is in the
-   * unlocked state and the OS has chosen the caller as the next thread to lock
-   * it. Of all threads waiting to lock the mutex, only one may do so at a time.
-   *
-   * It is legal for the owning thread to lock an already-locked mutex. It must
-   * unlock it the same number of times before it is actually made available for
-   * other threads in the system (this is known as a "recursive mutex").
-   *
-   * This function does not fail; if mutex is nullptr, it will return
-   * immediately having locked nothing. If the mutex is valid, this function
-   * will always block until it can lock the mutex, and return with it locked.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MutexBase.TryLock
-   * @sa MutexBase.Unlock
-   */
-  void Lock() { SDL_LockMutex(T::get()); }
-
-  /**
-   * Try to lock a mutex without blocking.
-   *
-   * This works just like MutexBase.Lock(), but if the mutex is not available,
-   * this function returns false immediately.
-   *
-   * This technique is useful if you need exclusive access to a resource but
-   * don't want to wait for it, and will return to it to try again later.
-   *
-   * This function returns true if passed a nullptr mutex.
-   *
-   * @returns true on success, false if the mutex would block.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MutexBase.Lock
-   * @sa MutexBase.Unlock
-   */
-  bool TryLock() { return SDL_TryLockMutex(T::get()); }
-
-  /**
-   * Unlock the mutex.
-   *
-   * It is legal for the owning thread to lock an already-locked mutex. It must
-   * unlock it the same number of times before it is actually made available for
-   * other threads in the system (this is known as a "recursive mutex").
-   *
-   * It is illegal to unlock a mutex that has not been locked by the current
-   * thread, and doing so results in undefined behavior.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MutexBase.Lock
-   * @sa MutexBase.TryLock
-   */
-  void Unlock() { SDL_UnlockMutex(T::get()); }
-
-  /**
-   * Destroy a mutex created with MutexBase.MutexBase().
-   *
-   * This function must be called on any mutex that is no longer needed. Failure
-   * to destroy a mutex will result in a system memory or resource leak. While
-   * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
-   * to destroy a locked mutex, and may result in undefined behavior depending
-   * on the platform.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MutexBase.MutexBase
-   */
-  void Destroy() { T::free(); }
-};
-
-/**
- * Callback for mutex resource cleanup
- *
- * @private
- */
-template<>
-inline void ObjectRef<SDL_Mutex>::doFree(SDL_Mutex* resource)
-{
-  SDL_DestroyMutex(resource);
-}
-
-/**
- * A mutex that allows read-only threads to run in parallel.
- *
- * A rwlock is roughly the same concept as MutexBase, but allows threads that
- * request read-only access to all hold the lock at the same time. If a thread
- * requests write access, it will block until all read-only threads have
- * released the lock, and no one else can hold the thread (for reading or
- * writing) at the same time as the writing thread.
- *
- * This can be more efficient in cases where several threads need to access
- * data frequently, but changes to that data are rare.
- *
- * There are other rules that apply to rwlocks that don't apply to mutexes,
- * about how threads are scheduled and when they can be recursively locked.
- * These are documented in the other rwlock functions.
- *
- * @since This struct is available since SDL 3.2.0.
- */
-template<ObjectBox<SDL_RWLock*> T>
-struct RWLockBase : T
-{
-  using T::T;
-
-  /**
-   * Create a new read/write lock.
-   *
-   * A read/write lock is useful for situations where you have multiple threads
-   * trying to access a resource that is rarely updated. All threads requesting
-   * a read-only lock will be allowed to run in parallel; if a thread requests a
-   * write lock, it will be provided exclusive access. This makes it safe for
-   * multiple threads to use a resource at the same time if they promise not to
-   * change it, and when it has to be changed, the rwlock will serve as a
-   * gateway to make sure those changes can be made safely.
-   *
-   * In the right situation, a rwlock can be more efficient than a mutex, which
-   * only lets a single thread proceed at a time, even if it won't be modifying
-   * the data.
-   *
-   * All newly-created read/write locks begin in the _unlocked_ state.
-   *
-   * Calls to RWLockBase.LockForReading() and RWLockBase.LockForWriting will not
-   * return while the rwlock is locked _for writing_ by another thread. See
-   * RWLockBase.TryLockForReading() and RWLockBase.TryLockForWriting() to
-   * attempt to lock without blocking.
-   *
-   * SDL read/write locks are only recursive for read-only locks! They are not
-   * guaranteed to be fair, or provide access in a FIFO manner! They are not
-   * guaranteed to favor writers. You may not lock a rwlock for both read-only
-   * and write access at the same time from the same thread (so you can't
-   * promote your read-only lock to a write lock without unlocking first).
-   *
-   * @post the initialized and unlocked read/write lock or nullptr on failure;
-   *          call GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockBase.Destroy
-   * @sa RWLockBase.LockForReading
-   * @sa RWLockBase.LockForWriting
-   * @sa RWLockBase.TryLockForReading
-   * @sa RWLockBase.TryLockForWriting
-   * @sa RWLockBase.Unlock
-   */
-  RWLockBase()
-    : T(SDL_CreateRWLock())
-  {
-  }
-
-  /**
-   * Lock the read/write lock for _read only_ operations.
-   *
-   * This will block until the rwlock is available, which is to say it is not
-   * locked for writing by any other thread. Of all threads waiting to lock the
-   * rwlock, all may do so at the same time as long as they are requesting
-   * read-only access; if a thread wants to lock for writing, only one may do so
-   * at a time, and no other threads, read-only or not, may hold the lock at the
-   * same time.
-   *
-   * It is legal for the owning thread to lock an already-locked rwlock for
-   * reading. It must unlock it the same number of times before it is actually
-   * made available for other threads in the system (this is known as a
-   * "recursive rwlock").
-   *
-   * Note that locking for writing is not recursive (this is only available to
-   * read-only locks).
-   *
-   * It is illegal to request a read-only lock from a thread that already holds
-   * the write lock. Doing so results in undefined behavior. Unlock the write
-   * lock before requesting a read-only lock. (But, of course, if you have the
-   * write lock, you don't need further locks to read in any case.)
-   *
-   * This function does not fail; if rwlock is nullptr, it will return
-   * immediately having locked nothing. If the rwlock is valid, this function
-   * will always block until it can lock the mutex, and return with it locked.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockBase.LockForWriting
-   * @sa RWLockBase.TryLockForReading
-   * @sa RWLockBase.Unlock
-   */
-  void LockForReading() { SDL_LockRWLockForReading(T::get()); }
-
-  /**
-   * Lock the read/write lock for _write_ operations.
-   *
-   * This will block until the rwlock is available, which is to say it is not
-   * locked for reading or writing by any other thread. Only one thread may hold
-   * the lock when it requests write access; all other threads, whether they
-   * also want to write or only want read-only access, must wait until the
-   * writer thread has released the lock.
-   *
-   * It is illegal for the owning thread to lock an already-locked rwlock for
-   * writing (read-only may be locked recursively, writing can not). Doing so
-   * results in undefined behavior.
-   *
-   * It is illegal to request a write lock from a thread that already holds a
-   * read-only lock. Doing so results in undefined behavior. Unlock the
-   * read-only lock before requesting a write lock.
-   *
-   * This function does not fail; if rwlock is nullptr, it will return
-   * immediately having locked nothing. If the rwlock is valid, this function
-   * will always block until it can lock the mutex, and return with it locked.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockBase.LockForReading
-   * @sa RWLockBase.TryLockForWriting
-   * @sa RWLockBase.Unlock
-   */
-  void LockForWriting() { SDL_LockRWLockForWriting(T::get()); }
-
-  /**
-   * Try to lock a read/write lock _for reading_ without blocking.
-   *
-   * This works just like RWLockBase.LockForReading(), but if the rwlock is not
-   * available, then this function returns false immediately.
-   *
-   * This technique is useful if you need access to a resource but don't want to
-   * wait for it, and will return to it to try again later.
-   *
-   * Trying to lock for read-only access can succeed if other threads are
-   * holding read-only locks, as this won't prevent access.
-   *
-   * This function returns true if passed a nullptr rwlock.
-   *
-   * @returns true on success, false if the lock would block.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockBase.LockForReading
-   * @sa RWLockBase.TryLockForWriting
-   * @sa RWLockBase.Unlock
-   */
-  bool TryLockForReading() { return SDL_TryLockRWLockForReading(T::get()); }
-
-  /**
-   * Try to lock a read/write lock _for writing_ without blocking.
-   *
-   * This works just like RWLockBase.LockForWriting(), but if the rwlock is not
-   * available, then this function returns false immediately.
-   *
-   * This technique is useful if you need exclusive access to a resource but
-   * don't want to wait for it, and will return to it to try again later.
-   *
-   * It is illegal for the owning thread to lock an already-locked rwlock for
-   * writing (read-only may be locked recursively, writing can not). Doing so
-   * results in undefined behavior.
-   *
-   * It is illegal to request a write lock from a thread that already holds a
-   * read-only lock. Doing so results in undefined behavior. Unlock the
-   * read-only lock before requesting a write lock.
-   *
-   * This function returns true if passed a nullptr rwlock.
-   *
-   * @returns true on success, false if the lock would block.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockBase.LockForWriting
-   * @sa RWLockBase.TryLockForReading
-   * @sa RWLockBase.Unlock
-   */
-  bool TryLockForWriting() { return SDL_TryLockRWLockForWriting(T::get()); }
-
-  /**
-   * Unlock the read/write lock.
-   *
-   * Use this function to unlock the rwlock, whether it was locked for read-only
-   * or write operations.
-   *
-   * It is legal for the owning thread to lock an already-locked read-only lock.
-   * It must unlock it the same number of times before it is actually made
-   * available for other threads in the system (this is known as a "recursive
-   * rwlock").
-   *
-   * It is illegal to unlock a rwlock that has not been locked by the current
-   * thread, and doing so results in undefined behavior.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockBase.LockForReading
-   * @sa RWLockBase.LockForWriting
-   * @sa RWLockBase.TryLockForReading
-   * @sa RWLockBase.TryLockForWriting
-   */
-  void Unlock() { SDL_UnlockRWLock(T::get()); }
-
-  /**
-   * Destroy a read/write lock created with RWLockBase.RWLockBase().
-   *
-   * This function must be called on any read/write lock that is no longer
-   * needed. Failure to destroy a rwlock will result in a system memory or
-   * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
-   * is not safe to attempt to destroy a locked rwlock, and may result in
-   * undefined behavior depending on the platform.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockBase.RWLockBase
-   */
-  void Destroy() { T::free(); }
-};
-
-/**
- * Callback for rWLock resource cleanup
- *
- * @private
- */
-template<>
-inline void ObjectRef<SDL_RWLock>::doFree(SDL_RWLock* resource)
-{
-  SDL_DestroyRWLock(resource);
-}
-
-/**
- * A means to manage access to a resource, by count, between threads.
- *
- * Semaphores (specifically, "counting semaphores"), let X number of threads
- * request access at the same time, each thread granted access decrementing a
- * counter. When the counter reaches zero, future requests block until a prior
- * thread releases their request, incrementing the counter again.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Semaphore_(programming)
- *
- * @since This struct is available since SDL 3.2.0.
- */
-template<ObjectBox<SDL_Semaphore*> T>
-struct SemaphoreBase : T
-{
-  using T::T;
-
-  /**
-   * Create a semaphore.
-   *
-   * This function creates a new semaphore and initializes it with the value
-   * `initial_value`. Each wait operation on the semaphore will atomically
-   * decrement the semaphore value and potentially block if the semaphore value
-   * is 0. Each post operation will atomically increment the semaphore value and
-   * wake waiting threads and allow them to retry the wait operation.
-   *
-   * @param initial_value the starting value of the semaphore.
-   * @post a new semaphore or nullptr on failure; call GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreBase.Destroy
-   * @sa SemaphoreBase.Signal
-   * @sa SemaphoreBase.TryWait
-   * @sa SemaphoreBase.GetValue
-   * @sa SemaphoreBase.Wait
-   * @sa SemaphoreBase.WaitTimeout
-   */
-  SemaphoreBase(Uint32 initial_value)
-    : T(SDL_CreateSemaphore(initial_value))
-  {
-  }
-
-  /**
-   * Wait until a semaphore has a positive value and then decrements it.
-   *
-   * This function suspends the calling thread until the semaphore pointed to by
-   * `sem` has a positive value, and then atomically decrement the semaphore
-   * value.
-   *
-   * This function is the equivalent of calling SemaphoreBase.WaitTimeout() with
-   * a time length of -1.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreBase.Signal
-   * @sa SemaphoreBase.TryWait
-   * @sa SemaphoreBase.WaitTimeout
-   */
-  void Wait() { SDL_WaitSemaphore(T::get()); }
-
-  /**
-   * See if a semaphore has a positive value and decrement it if it does.
-   *
-   * This function checks to see if the semaphore pointed to by `sem` has a
-   * positive value and atomically decrements the semaphore value if it does. If
-   * the semaphore doesn't have a positive value, the function immediately
-   * returns false.
-   *
-   * @returns true if the wait succeeds, false if the wait would block.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreBase.Signal
-   * @sa SemaphoreBase.Wait
-   * @sa SemaphoreBase.WaitTimeout
-   */
-  bool TryWait() { return SDL_TryWaitSemaphore(T::get()); }
-
-  /**
-   * Wait until a semaphore has a positive value and then decrements it.
-   *
-   * This function suspends the calling thread until either the semaphore
-   * pointed to by `sem` has a positive value or the specified time has elapsed.
-   * If the call is successful it will atomically decrement the semaphore value.
-   *
-   * @param timeout the length of the timeout, in milliseconds, or -1 to wait
-   *                  indefinitely.
-   * @returns true if the wait succeeds or false if the wait times out.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreBase.Signal
-   * @sa SemaphoreBase.TryWait
-   * @sa SemaphoreBase.Wait
-   */
-  bool WaitTimeout(std::chrono::milliseconds timeout)
-  {
-    return SDL_WaitSemaphoreTimeout(T::get(), timeout.count());
-  }
-
-  /**
-   * Atomically increment a semaphore's value and wake waiting threads.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreBase.TryWait
-   * @sa SemaphoreBase.Wait
-   * @sa SemaphoreBase.WaitTimeout
-   */
-  void Signal() { SDL_SignalSemaphore(T::get()); }
-
-  /**
-   * Get the current value of a semaphore.
-   *
-   * @returns the current value of the semaphore.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  Uint32 GetValue() const { return SDL_GetSemaphoreValue(T::get()); }
-
-  /**
-   * Destroy a semaphore.
-   *
-   * It is not safe to destroy a semaphore if there are threads currently
-   * waiting on it.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreBase.SemaphoreBase
-   */
-  void Destroy() { T::free(); }
-};
-
-/**
- * Callback for semaphore resource cleanup
- *
- * @private
- */
-template<>
-inline void ObjectRef<SDL_Semaphore>::doFree(SDL_Semaphore* resource)
-{
-  SDL_DestroySemaphore(resource);
-}
-
-/**
- * A means to block multiple threads until a condition is satisfied.
- *
- * Condition variables, paired with an MutexBase, let an app halt multiple
- * threads until a condition has occurred, at which time the app can release
- * one or all waiting threads.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Condition_variable
- *
- * @since This struct is available since SDL 3.2.0.
- */
-template<ObjectBox<SDL_Condition*> T>
-struct ConditionBase : T
-{
-  using T::T;
-
-  /**
-   * Create a condition variable.
-   *
-   * @post a new condition variable or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionBase.Broadcast
-   * @sa ConditionBase.Signal
-   * @sa ConditionBase.Wait
-   * @sa ConditionBase.WaitTimeout
-   * @sa ConditionBase.Destroy
-   */
-  ConditionBase()
-    : T(SDL_CreateCondition())
-  {
-  }
-
-  /**
-   * Restart one of the threads that are waiting on the condition variable.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionBase.Broadcast
-   * @sa ConditionBase.Wait
-   * @sa ConditionBase.WaitTimeout
-   */
-  void Signal() { SDL_SignalCondition(T::get()); }
-
-  /**
-   * Restart all threads that are waiting on the condition variable.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionBase.Signal
-   * @sa ConditionBase.Wait
-   * @sa ConditionBase.WaitTimeout
-   */
-  void Broadcast() { SDL_BroadcastCondition(T::get()); }
-
-  /**
-   * Wait until a condition variable is signaled.
-   *
-   * This function unlocks the specified `mutex` and waits for another thread to
-   * call ConditionBase.Signal() or ConditionBase.Broadcast() on the condition
-   * variable `cond`. Once the condition variable is signaled, the mutex is
-   * re-locked and the function returns.
-   *
-   * The mutex must be locked before calling this function. Locking the mutex
-   * recursively (more than once) is not supported and leads to undefined
-   * behavior.
-   *
-   * This function is the equivalent of calling ConditionBase.WaitTimeout() with
-   * a time length of -1.
-   *
-   * @param mutex the mutex used to coordinate thread access.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionBase.Broadcast
-   * @sa ConditionBase.Signal
-   * @sa ConditionBase.WaitTimeout
-   */
-  void Wait(MutexRef mutex) { SDL_WaitCondition(T::get(), mutex.get()); }
-
-  /**
-   * Wait until a condition variable is signaled or a certain time has passed.
-   *
-   * This function unlocks the specified `mutex` and waits for another thread to
-   * call ConditionBase.Signal() or ConditionBase.Broadcast() on the condition
-   * variable `cond`, or for the specified time to elapse. Once the condition
-   * variable is signaled or the time elapsed, the mutex is re-locked and the
-   * function returns.
-   *
-   * The mutex must be locked before calling this function. Locking the mutex
-   * recursively (more than once) is not supported and leads to undefined
-   * behavior.
-   *
-   * @param mutex the mutex used to coordinate thread access.
-   * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
-   *                  indefinitely.
-   * @returns true if the condition variable is signaled, false if the condition
-   *          is not signaled in the allotted time.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionBase.Broadcast
-   * @sa ConditionBase.Signal
-   * @sa ConditionBase.Wait
-   */
-  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout)
-  {
-    return SDL_WaitConditionTimeout(T::get(), mutex.get(), timeout.count());
-  }
-
-  /**
-   * Destroy a condition variable.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionBase.ConditionBase
-   */
-  void Destroy() { T::free(); }
-};
-
-/**
- * Callback for condition resource cleanup
- *
- * @private
- */
-template<>
-inline void ObjectRef<SDL_Condition>::doFree(SDL_Condition* resource)
-{
-  SDL_DestroyCondition(resource);
-}
-
-/**
- * The current status of an InitState structure.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using InitStatus = SDL_InitStatus;
-
-constexpr InitStatus INIT_STATUS_UNINITIALIZED =
-  SDL_INIT_STATUS_UNINITIALIZED; ///< UNINITIALIZED
-
-constexpr InitStatus INIT_STATUS_INITIALIZING =
-  SDL_INIT_STATUS_INITIALIZING; ///< INITIALIZING
-
-constexpr InitStatus INIT_STATUS_INITIALIZED =
-  SDL_INIT_STATUS_INITIALIZED; ///< INITIALIZED
-
-constexpr InitStatus INIT_STATUS_UNINITIALIZING =
-  SDL_INIT_STATUS_UNINITIALIZING; ///< UNINITIALIZING
-
-/**
- * A structure used for thread-safe initialization and shutdown.
- *
- * Here is an example of using this:
- *
- * ```cpp
- *    static SDL::InitState init;
- *
- *    bool InitSystem(void)
- *    {
- *        if (!InitState.ShouldInit(&init)) {
- *            // The system is initialized
- *            return true;
- *        }
- *
- *        // At this point, you should not leave this function without calling
- * InitState.SetInitialized()
- *
- *        bool initialized = DoInitTasks();
- *        InitState.SetInitialized(&init, initialized);
- *        return initialized;
- *    }
- *
- *    bool UseSubsystem(void)
- *    {
- *        if (InitState.ShouldInit(&init)) {
- *            // Error, the subsystem isn't initialized
- *            InitState.SetInitialized(&init, false);
- *            return false;
- *        }
- *
- *        // Do work using the initialized subsystem
- *
- *        return true;
- *    }
- *
- *    void QuitSystem(void)
- *    {
- *        if (!InitState.ShouldQuit(&init)) {
- *            // The system is not initialized
- *            return;
- *        }
- *
- *        // At this point, you should not leave this function without calling
- * InitState.SetInitialized()
- *
- *        DoQuitTasks();
- *        InitState.SetInitialized(&init, false);
- *    }
- * ```
- *
- * Note that this doesn't protect any resources created during initialization,
- * or guarantee that nobody is using those resources during cleanup. You
- * should use other mechanisms to protect those, if that's a concern for your
- * code.
- *
- * @since This struct is available since SDL 3.2.0.
- */
-struct InitState : SDL_InitState
-{
-  /**
-   * Default comparison operator
-   */
-  constexpr bool operator==(const InitState& other) const
-  {
-    return this == &other;
-  }
-
-  /**
-   * Constructor
-   */
-  constexpr InitState()
-    : SDL_InitState{0}
-  {
-  }
-
-  /**
-   * Return whether initialization should be done.
-   *
-   * This function checks the passed in state and if initialization should be
-   * done, sets the status to `INIT_STATUS_INITIALIZING` and returns true.
-   * If another thread is already modifying this state, it will wait until
-   * that's done before returning.
-   *
-   * If this function returns true, the calling code must call
-   * InitState.SetInitialized() to complete the initialization.
-   *
-   * @returns true if initialization needs to be done, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa InitState.SetInitialized
-   * @sa InitState.ShouldQuit
-   */
-  bool ShouldInit() { return SDL_ShouldInit(this); }
-
-  /**
-   * Return whether cleanup should be done.
-   *
-   * This function checks the passed in state and if cleanup should be done,
-   * sets the status to `INIT_STATUS_UNINITIALIZING` and returns true.
-   *
-   * If this function returns true, the calling code must call
-   * InitState.SetInitialized() to complete the cleanup.
-   *
-   * @returns true if cleanup needs to be done, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa InitState.SetInitialized
-   * @sa InitState.ShouldInit
-   */
-  bool ShouldQuit() { return SDL_ShouldQuit(this); }
-
-  /**
-   * Finish an initialization state transition.
-   *
-   * This function sets the status of the passed in state to
-   * `INIT_STATUS_INITIALIZED` or `INIT_STATUS_UNINITIALIZED` and allows
-   * any threads waiting for the status to proceed.
-   *
-   * @param initialized the new initialization state.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa InitState.ShouldInit
-   * @sa InitState.ShouldQuit
-   */
-  void SetInitialized(bool initialized)
-  {
-    SDL_SetInitialized(this, initialized);
-  }
-};
-
-/// @}
 
 /**
  *
@@ -40972,9 +41166,6 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * load images directly into an TextureBase for use by the GPU without using a
  * software surface: call LoadTexture() instead.
  *
- * When done with the returned surface, the app should dispose of it with a
- * call to SurfaceBase.Destroy().
- *
  * @param src an IOStreamBase that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
@@ -40984,11 +41175,10 @@ inline int IMG_Version() { return ::IMG_Version(); }
  *
  * @sa LoadSurface
  * @sa LoadSurface
- * @sa SurfaceBase.Destroy
  */
-inline Surface LoadSurface(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
+inline Surface LoadSurface(IOStreamBase& src, StringParam type)
 {
-  return Surface{IMG_LoadTyped_IO(src, false, type)};
+  return Surface{IMG_LoadTyped_IO(src.get(), false, type)};
 }
 
 /**
@@ -41030,45 +41220,49 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An SDL_Surface is a buffer of pixels in memory accessible by the CPU. Use
+ * An SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use
  * this if you plan to hand the data to something else or manipulate it
  * further in code.
  *
- * There are no guarantees about what format the new SDL_Surface data will be;
+ * There are no guarantees about what format the new SurfaceBase data will be;
  * in many cases, SDL_image will attempt to supply a surface that exactly
  * matches the provided image, but in others it might have to convert (either
  * because the image is in a format that SDL doesn't directly support or
  * because it's compressed data that could reasonably uncompress to various
  * formats and SDL_image had to pick one). You can inspect an SurfaceBase for
- * its specifics, and use SurfaceBase::Convert() to then migrate to any
- * supported format.
+ * its specifics, and use SurfaceBase.Convert to then migrate to any supported
+ * format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: SurfaceBase::SetColorKey(image, SDL_RLEACCEL,
+ * by calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,
  * image->format->colorkey);
  *
  * There is a separate function to read files from disk without having to deal
- * with SDL_IOStream: `Load("filename.jpg")` will call this function and
+ * with IOStreamBase: `LoadSurface("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also IMG_LoadTyped_IO(), which is equivalent to this function
+ * There is also LoadSurface(), which is equivalent to this function
  * except a file extension (like "BMP", "JPG", etc) can be specified, in case
  * SDL_image cannot autodetect the file format.
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
+ * load images directly into an TextureBase for use by the GPU without using a
  * software surface: call LoadTexture() instead.
  *
- * @param src an IOStream that data will be read from.
+ * @param src an IOStreamBase that data will be read from.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadSurface
+ * @sa LoadSurface
+ * @sa SurfaceRef.reset
  */
-inline Surface LoadSurface(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadSurface(IOStreamBase& src)
 {
-  return Surface{IMG_Load_IO(src, false)};
+  return Surface{IMG_Load_IO(src.get(), false)};
 }
 
 /**
@@ -41102,47 +41296,53 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * A Texture represents an image in GPU memory, usable by SDL's 2D Render
+ * An TextureBase represents an image in GPU memory, usable by SDL's 2D Render
  * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after loading it.
+ * SurfaceBase if you don't need to manipulate the image directly after
+ * loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
+ * TextureBase in the most format that most reasonably represents the image
  * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
  * RGBA).
  *
  * There is a separate function to read files from disk without having to deal
- * with SDL_IOStream: `LoadTexture(renderer, "filename.jpg")` will call
+ * with IOStreamBase: `LoadTexture(renderer, "filename.jpg")` will call
  * this function and manage those details for you, determining the file type
  * from the filename's extension.
  *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Load(SDL_IOStream*,bool) instead.
+ * There is also LoadTexture(), which is equivalent to this
+ * function except a file extension (like "BMP", "JPG", etc) can be specified,
+ * in case SDL_image cannot autodetect the file format.
  *
- * @param renderer the SDL_Renderer to use to create the GPU texture.
- * @param src an SDL_IOStream that data will be read from.
+ * If you would rather decode an image to an SurfaceBase (a buffer of pixels
+ * in CPU memory), call LoadSurface() instead.
+ *
+ * @param renderer the RendererBase to use to create the GPU texture.
+ * @param src an IOStreamBase that data will be read from.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Texture LoadTexture(RendererRef renderer,
-                           ObjectBox<SDL_IOStream> auto&& src)
+inline Texture LoadTexture(RendererRef renderer, IOStreamBase& src)
 {
-  return Texture{IMG_LoadTexture_IO(renderer.get(), src, false)};
+  return Texture{IMG_LoadTexture_IO(renderer.get(), src.get(), false)};
 }
 
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * A Texture represents an image in GPU memory, usable by SDL's 2D Render API.
- * This can be significantly more efficient than using a CPU-bound Surface if
- * you don't need to manipulate the image directly after loading it.
+ * An TextureBase represents an image in GPU memory, usable by SDL's 2D Render
+ * API. This can be significantly more efficient than using a CPU-bound
+ * SurfaceBase if you don't need to manipulate the image directly after
+ * loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image data
- * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
+ * TextureBase in the most format that most reasonably represents the image
+ * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
+ * RGBA).
  *
  * Even though this function accepts a file type, SDL_image may still try
  * other decoders that are capable of detecting file type from the contents of
@@ -41151,15 +41351,19 @@ inline Texture LoadTexture(RendererRef renderer,
  * on its ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with SDL_IOStream: `IMG_LoadTexture("filename.jpg")` will call this
+ * with IOStreamBase: `LoadTexture("filename.jpg")` will call this
  * function and manage those details for you, determining the file type from
  * the filename's extension.
  *
- * If you would rather decode an image to an SDL_Surface (a buffer of pixels
- * in CPU memory), call Load(SDL_IOStream*,bool,StringParam) instead.
+ * There is also LoadTexture(), which is equivalent to this function
+ * except that it will rely on SDL_image to determine what type of data it is
+ * loading, much like passing a nullptr for type.
  *
- * @param renderer the SDL_Renderer to use to create the GPU texture.
- * @param src an SDL_IOStream that data will be read from.
+ * If you would rather decode an image to an SurfaceBase (a buffer of pixels
+ * in CPU memory), call LoadSurface() instead.
+ *
+ * @param renderer the RendererBase to use to create the GPU texture.
+ * @param src an IOStreamBase that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new texture, or nullptr on error.
@@ -41167,17 +41371,18 @@ inline Texture LoadTexture(RendererRef renderer,
  * @since This function is available since SDL_image 3.0.0.
  */
 inline Texture LoadTexture(RendererRef renderer,
-                           ObjectBox<SDL_IOStream> auto&& src,
+                           IOStreamBase& src,
                            StringParam type)
 {
-  return Texture{IMG_LoadTextureTyped_IO(renderer.get(), src, false, type)};
+  return Texture{
+    IMG_LoadTextureTyped_IO(renderer.get(), src.get(), false, type)};
 }
 
 /**
- * Detect AVIF image data on a readable/seekable SDL_IOStream.
+ * Detect AVIF image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41191,7 +41396,7 @@ inline Texture LoadTexture(RendererRef renderer,
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is AVIF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41215,16 +41420,13 @@ inline Texture LoadTexture(RendererRef renderer,
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isAVIF(ObjectBox<SDL_IOStream> auto&& src)
-{
-  return IMG_isAVIF(src);
-}
+inline bool isAVIF(IOStreamBase& src) { return IMG_isAVIF(src.get()); }
 
 /**
- * Detect ICO image data on a readable/seekable SDL_IOStream.
+ * Detect ICO image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41238,7 +41440,7 @@ inline bool isAVIF(ObjectBox<SDL_IOStream> auto&& src)
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is ICO data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41261,13 +41463,13 @@ inline bool isAVIF(ObjectBox<SDL_IOStream> auto&& src)
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isICO(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isICO(src); }
+inline bool isICO(IOStreamBase& src) { return IMG_isICO(src.get()); }
 
 /**
- * Detect CUR image data on a readable/seekable SDL_IOStream.
+ * Detect CUR image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41281,7 +41483,7 @@ inline bool isICO(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isICO(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is CUR data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41304,13 +41506,13 @@ inline bool isICO(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isICO(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isCUR(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isCUR(src); }
+inline bool isCUR(IOStreamBase& src) { return IMG_isCUR(src.get()); }
 
 /**
- * Detect BMP image data on a readable/seekable SDL_IOStream.
+ * Detect BMP image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41324,7 +41526,7 @@ inline bool isCUR(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isCUR(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is BMP data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41347,13 +41549,13 @@ inline bool isCUR(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isCUR(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isBMP(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isBMP(src); }
+inline bool isBMP(IOStreamBase& src) { return IMG_isBMP(src.get()); }
 
 /**
- * Detect GIF image data on a readable/seekable SDL_IOStream.
+ * Detect GIF image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41367,7 +41569,7 @@ inline bool isBMP(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isBMP(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is GIF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41390,13 +41592,13 @@ inline bool isBMP(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isBMP(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isGIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isGIF(src); }
+inline bool isGIF(IOStreamBase& src) { return IMG_isGIF(src.get()); }
 
 /**
- * Detect JPG image data on a readable/seekable SDL_IOStream.
+ * Detect JPG image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41410,7 +41612,7 @@ inline bool isGIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isGIF(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is JPG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41433,13 +41635,13 @@ inline bool isGIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isGIF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJPG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJPG(src); }
+inline bool isJPG(IOStreamBase& src) { return IMG_isJPG(src.get()); }
 
 /**
- * Detect JXL image data on a readable/seekable SDL_IOStream.
+ * Detect JXL image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41453,7 +41655,7 @@ inline bool isJPG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJPG(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is JXL data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41476,13 +41678,13 @@ inline bool isJPG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJPG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJXL(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJXL(src); }
+inline bool isJXL(IOStreamBase& src) { return IMG_isJXL(src.get()); }
 
 /**
- * Detect LBM image data on a readable/seekable SDL_IOStream.
+ * Detect LBM image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41496,7 +41698,7 @@ inline bool isJXL(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJXL(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is LBM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41519,13 +41721,13 @@ inline bool isJXL(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJXL(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isLBM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isLBM(src); }
+inline bool isLBM(IOStreamBase& src) { return IMG_isLBM(src.get()); }
 
 /**
- * Detect PCX image data on a readable/seekable SDL_IOStream.
+ * Detect PCX image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41539,7 +41741,7 @@ inline bool isLBM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isLBM(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is PCX data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41562,13 +41764,13 @@ inline bool isLBM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isLBM(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPCX(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPCX(src); }
+inline bool isPCX(IOStreamBase& src) { return IMG_isPCX(src.get()); }
 
 /**
- * Detect PNG image data on a readable/seekable SDL_IOStream.
+ * Detect PNG image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41582,7 +41784,7 @@ inline bool isPCX(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPCX(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is PNG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41605,13 +41807,13 @@ inline bool isPCX(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPCX(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNG(src); }
+inline bool isPNG(IOStreamBase& src) { return IMG_isPNG(src.get()); }
 
 /**
- * Detect PNM image data on a readable/seekable SDL_IOStream.
+ * Detect PNM image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41625,7 +41827,7 @@ inline bool isPNG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNG(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is PNM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41648,13 +41850,13 @@ inline bool isPNG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNM(src); }
+inline bool isPNM(IOStreamBase& src) { return IMG_isPNM(src.get()); }
 
 /**
- * Detect SVG image data on a readable/seekable SDL_IOStream.
+ * Detect SVG image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41668,7 +41870,7 @@ inline bool isPNM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNM(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is SVG data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41691,13 +41893,13 @@ inline bool isPNM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNM(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isSVG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isSVG(src); }
+inline bool isSVG(IOStreamBase& src) { return IMG_isSVG(src.get()); }
 
 /**
- * Detect QOI image data on a readable/seekable SDL_IOStream.
+ * Detect QOI image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41711,7 +41913,7 @@ inline bool isSVG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isSVG(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is QOI data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41734,13 +41936,13 @@ inline bool isSVG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isSVG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isQOI(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isQOI(src); }
+inline bool isQOI(IOStreamBase& src) { return IMG_isQOI(src.get()); }
 
 /**
- * Detect TIFF image data on a readable/seekable SDL_IOStream.
+ * Detect TIFF image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41754,7 +41956,7 @@ inline bool isQOI(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isQOI(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is TIFF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41777,13 +41979,13 @@ inline bool isQOI(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isQOI(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isTIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isTIF(src); }
+inline bool isTIF(IOStreamBase& src) { return IMG_isTIF(src.get()); }
 
 /**
- * Detect XCF image data on a readable/seekable SDL_IOStream.
+ * Detect XCF image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41797,7 +41999,7 @@ inline bool isTIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isTIF(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is XCF data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41820,13 +42022,13 @@ inline bool isTIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isTIF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXCF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXCF(src); }
+inline bool isXCF(IOStreamBase& src) { return IMG_isXCF(src.get()); }
 
 /**
- * Detect XPM image data on a readable/seekable SDL_IOStream.
+ * Detect XPM image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41840,7 +42042,7 @@ inline bool isXCF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXCF(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is XPM data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41863,13 +42065,13 @@ inline bool isXCF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXCF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXPM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXPM(src); }
+inline bool isXPM(IOStreamBase& src) { return IMG_isXPM(src.get()); }
 
 /**
- * Detect XV image data on a readable/seekable SDL_IOStream.
+ * Detect XV image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41883,7 +42085,7 @@ inline bool isXPM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXPM(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is XV data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41906,13 +42108,13 @@ inline bool isXPM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXPM(src); }
  * @sa isXPM
  * @sa isWEBP
  */
-inline bool isXV(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXV(src); }
+inline bool isXV(IOStreamBase& src) { return IMG_isXV(src.get()); }
 
 /**
- * Detect WEBP image data on a readable/seekable SDL_IOStream.
+ * Detect WEBP image data on a readable/seekable IOStreamBase.
  *
  * This function attempts to determine if a file is a given filetype, reading
- * the least amount possible from the SDL_IOStream (usually a few bytes).
+ * the least amount possible from the IOStreamBase (usually a few bytes).
  *
  * There is no distinction made between "not the filetype in question" and
  * basic i/o errors.
@@ -41926,7 +42128,7 @@ inline bool isXV(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXV(src); }
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
  *
- * @param src a seekable/readable SDL_IOStream to provide image data.
+ * @param src a seekable/readable IOStreamBase to provide image data.
  * @returns non-zero if this is WEBP data, zero otherwise.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -41949,46 +42151,43 @@ inline bool isXV(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXV(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isWEBP(ObjectBox<SDL_IOStream> auto&& src)
-{
-  return IMG_isWEBP(src);
-}
+inline bool isWEBP(IOStreamBase& src) { return IMG_isWEBP(src.get()); }
 
 /**
  * Load a AVIF image directly.
  *
  * If you know you definitely have a AVIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadAVIF(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadAVIF(IOStreamBase& src)
 {
-  return Surface{IMG_LoadAVIF_IO(src)};
+  return Surface{IMG_LoadAVIF_IO(src.get())};
 }
 
 /**
@@ -41996,36 +42195,36 @@ inline Surface LoadAVIF(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a ICO image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadICO(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadICO(IOStreamBase& src)
 {
-  return Surface{IMG_LoadICO_IO(src)};
+  return Surface{IMG_LoadICO_IO(src.get())};
 }
 
 /**
@@ -42033,36 +42232,36 @@ inline Surface LoadICO(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a CUR image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadCUR(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadCUR(IOStreamBase& src)
 {
-  return Surface{IMG_LoadCUR_IO(src)};
+  return Surface{IMG_LoadCUR_IO(src.get())};
 }
 
 /**
@@ -42070,36 +42269,36 @@ inline Surface LoadCUR(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a GIF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadGIF(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadGIF(IOStreamBase& src)
 {
-  return Surface{IMG_LoadGIF_IO(src)};
+  return Surface{IMG_LoadGIF_IO(src.get())};
 }
 
 /**
@@ -42107,36 +42306,36 @@ inline Surface LoadGIF(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a JPG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadJPG(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadJPG(IOStreamBase& src)
 {
-  return Surface{IMG_LoadJPG_IO(src)};
+  return Surface{IMG_LoadJPG_IO(src.get())};
 }
 
 /**
@@ -42144,36 +42343,36 @@ inline Surface LoadJPG(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a JXL image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadJXL(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadJXL(IOStreamBase& src)
 {
-  return Surface{IMG_LoadJXL_IO(src)};
+  return Surface{IMG_LoadJXL_IO(src.get())};
 }
 
 /**
@@ -42181,36 +42380,36 @@ inline Surface LoadJXL(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a LBM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadLBM(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadLBM(IOStreamBase& src)
 {
-  return Surface{IMG_LoadLBM_IO(src)};
+  return Surface{IMG_LoadLBM_IO(src.get())};
 }
 
 /**
@@ -42218,36 +42417,36 @@ inline Surface LoadLBM(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a PCX image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadPCX(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadPCX(IOStreamBase& src)
 {
-  return Surface{IMG_LoadPCX_IO(src)};
+  return Surface{IMG_LoadPCX_IO(src.get())};
 }
 
 /**
@@ -42255,36 +42454,36 @@ inline Surface LoadPCX(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a PNG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadPNG(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadPNG(IOStreamBase& src)
 {
-  return Surface{IMG_LoadPNG_IO(src)};
+  return Surface{IMG_LoadPNG_IO(src.get())};
 }
 
 /**
@@ -42292,36 +42491,36 @@ inline Surface LoadPNG(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a PNM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadPNM(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadPNM(IOStreamBase& src)
 {
-  return Surface{IMG_LoadPNM_IO(src)};
+  return Surface{IMG_LoadPNM_IO(src.get())};
 }
 
 /**
@@ -42329,36 +42528,36 @@ inline Surface LoadPNM(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a SVG image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadSVG(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadSVG(IOStreamBase& src)
 {
-  return Surface{IMG_LoadSVG_IO(src)};
+  return Surface{IMG_LoadSVG_IO(src.get())};
 }
 
 /**
@@ -42366,36 +42565,36 @@ inline Surface LoadSVG(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a QOI image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadQOI(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadQOI(IOStreamBase& src)
 {
-  return Surface{IMG_LoadQOI_IO(src)};
+  return Surface{IMG_LoadQOI_IO(src.get())};
 }
 
 /**
@@ -42403,36 +42602,36 @@ inline Surface LoadQOI(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a TGA image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadTGA(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadTGA(IOStreamBase& src)
 {
-  return Surface{IMG_LoadTGA_IO(src)};
+  return Surface{IMG_LoadTGA_IO(src.get())};
 }
 
 /**
@@ -42440,36 +42639,36 @@ inline Surface LoadTGA(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a TIFF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadTIF(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadTIF(IOStreamBase& src)
 {
-  return Surface{IMG_LoadTIF_IO(src)};
+  return Surface{IMG_LoadTIF_IO(src.get())};
 }
 
 /**
@@ -42477,36 +42676,36 @@ inline Surface LoadTIF(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a XCF image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadXCF(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadXCF(IOStreamBase& src)
 {
-  return Surface{IMG_LoadXCF_IO(src)};
+  return Surface{IMG_LoadXCF_IO(src.get())};
 }
 
 /**
@@ -42514,36 +42713,36 @@ inline Surface LoadXCF(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a XPM image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXV()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXV
+ * @sa LoadWEBP
  */
-inline Surface LoadXPM(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadXPM(IOStreamBase& src)
 {
-  return Surface{IMG_LoadXPM_IO(src)};
+  return Surface{IMG_LoadXPM_IO(src.get())};
 }
 
 /**
@@ -42551,36 +42750,36 @@ inline Surface LoadXPM(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a XV image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadWEBP()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadWEBP
  */
-inline Surface LoadXV(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadXV(IOStreamBase& src)
 {
-  return Surface{IMG_LoadXV_IO(src)};
+  return Surface{IMG_LoadXV_IO(src.get())};
 }
 
 /**
@@ -42588,36 +42787,36 @@ inline Surface LoadXV(ObjectBox<SDL_IOStream> auto&& src)
  *
  * If you know you definitely have a WEBP image, you can call this function,
  * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
+ * better to use the abstract interfaces; also, there is only an IOStreamBase
  * interface available here.
  *
- * @param src an SDL_IOStream to load image data from.
+ * @param src an IOStreamBase to load image data from.
  * @returns SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadBMP()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadBMP
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
  */
-inline Surface LoadWEBP(ObjectBox<SDL_IOStream> auto&& src)
+inline Surface LoadWEBP(IOStreamBase& src)
 {
-  return Surface{IMG_LoadWEBP_IO(src)};
+  return Surface{IMG_LoadWEBP_IO(src.get())};
 }
 
 /**
@@ -42630,20 +42829,18 @@ inline Surface LoadWEBP(ObjectBox<SDL_IOStream> auto&& src)
  * preserve aspect ratio.
  *
  * When done with the returned surface, the app should dispose of it with a
- * call to SDL_DestroySurface().
+ * call to SurfaceRef.reset().
  *
- * @param src an SDL_IOStream to load SVG data from.
+ * @param src an IOStreamBase to load SVG data from.
  * @param width desired width of the generated surface, in pixels.
  * @param height desired height of the generated surface, in pixels.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface LoadSizedSVG(ObjectBox<SDL_IOStream> auto&& src,
-                            int width,
-                            int height)
+inline Surface LoadSizedSVG(IOStreamBase& src, int width, int height)
 {
-  return Surface{IMG_LoadSizedSVG_IO(src, width, height)};
+  return Surface{IMG_LoadSizedSVG_IO(src.get(), width, height)};
 }
 
 /**
@@ -42710,24 +42907,22 @@ inline bool SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
 }
 
 /**
- * Save an SurfaceBase into AVIF image data, via an SDL_IOStream.
+ * Save an SurfaceBase into AVIF image data, via an IOStreamBase.
  *
- * If you just want to save to a filename, you can use IMG_SaveAVIF() instead.
+ * If you just want to save to a filename, you can use SaveAVIF() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the SDL_IOStream to save the image data to.
+ * @param dst the IOStreamBase to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline bool SaveAVIF(SurfaceRef surface,
-                     ObjectBox<SDL_IOStream> auto&& dst,
-                     int quality)
+inline bool SaveAVIF(SurfaceRef surface, IOStreamBase& dst, int quality)
 {
-  return IMG_SaveAVIF_IO(surface.get(), dst, false, quality);
+  return IMG_SaveAVIF_IO(surface.get(), dst.get(), false, quality);
 }
 
 /**
@@ -42750,22 +42945,22 @@ inline bool SavePNG(SurfaceBase& surface, StringParam file)
 }
 
 /**
- * Save an SDL_Surface into PNG image data, via an SDL_IOStream.
+ * Save an SurfaceBase into PNG image data, via an IOStreamBase.
  *
- * If you just want to save to a filename, you can use IMG_SavePNG() instead.
+ * If you just want to save to a filename, you can use SavePNG() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the SDL_IOStream to save the image data to.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @param dst the IOStreamBase to save the image data to.
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SavePNG
  */
-inline bool SavePNG(SurfaceRef surface, ObjectBox<SDL_IOStream> auto&& dst)
+inline bool SavePNG(SurfaceRef surface, IOStreamBase& dst)
 {
-  return IMG_SavePNG_IO(surface.get(), dst, false);
+  return IMG_SavePNG_IO(surface.get(), dst.get(), false);
 }
 
 /**
@@ -42788,26 +42983,24 @@ inline bool SaveJPG(SurfaceBase& surface, StringParam file, int quality)
 }
 
 /**
- * Save an SDL_Surface into JPEG image data, via an SDL_IOStream.
+ * Save an SurfaceBase into JPEG image data, via an IOStreamBase.
  *
- * If you just want to save to a filename, you can use IMG_SaveJPG() instead.
+ * If you just want to save to a filename, you can use SaveJPG() instead.
  *
  * @param surface the SDL surface to save.
- * @param dst the SDL_IOStream to save the image data to.
+ * @param dst the IOStreamBase to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SaveJPG
  */
-inline bool SaveJPG(SurfaceRef surface,
-                    ObjectBox<SDL_IOStream> auto&& dst,
-                    int quality)
+inline bool SaveJPG(SurfaceRef surface, IOStreamBase& dst, int quality)
 {
-  return IMG_SaveJPG_IO(surface.get(), dst, false, quality);
+  return IMG_SaveJPG_IO(surface.get(), dst.get(), false, quality);
 }
 
 /**
@@ -42843,13 +43036,13 @@ struct AnimationBase : Resource<IMG_Animation*>
    * Load an animation from an IOStreamBase.
    *
    * @param src an IOStreamBase that data will be read from.
-   * @post a new Animation, or nullptr on error.
+   * @post a new AnimationBase, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa AnimationRef.reset
    */
-  AnimationBase(ObjectBox<SDL_IOStream> auto&& src)
+  AnimationBase(IOStreamBase& src)
     : Resource(IMG_LoadAnimation_IO(src.get(), false))
   {
   }
@@ -42865,13 +43058,13 @@ struct AnimationBase : Resource<IMG_Animation*>
    *
    * @param src an SDL_IOStream that data will be read from.
    * @param type a filename extension that represent this data ("GIF", etc).
-   * @post a new IMG_Animation, or nullptr on error.
+   * @post a new AnimationBase, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa AnimationRef.reset
    */
-  AnimationBase(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
+  AnimationBase(IOStreamBase& src, StringParam type)
     : Resource(IMG_LoadAnimationTyped_IO(src.get(), false, type))
   {
   }
@@ -43023,7 +43216,7 @@ struct Animation : AnimationRef
  * @sa AnimationBase.AnimationBase
  * @sa AnimationRef.reset
  */
-inline Animation LoadGIFAnimation(ObjectBox<SDL_IOStream> auto&& src)
+inline Animation LoadGIFAnimation(IOStreamBase& src)
 {
   return Animation{IMG_LoadGIFAnimation_IO(src.get())};
 }
@@ -43043,7 +43236,7 @@ inline Animation LoadGIFAnimation(ObjectBox<SDL_IOStream> auto&& src)
  *
  * @sa AnimationBase.AnimationBase
  */
-inline Animation LoadWEBPAnimation(ObjectBox<SDL_IOStream> auto&& src)
+inline Animation LoadWEBPAnimation(IOStreamBase& src)
 {
   return Animation{IMG_LoadWEBPAnimation_IO(src.get())};
 }
@@ -43053,7 +43246,12 @@ inline Animation LoadWEBPAnimation(ObjectBox<SDL_IOStream> auto&& src)
 /// @}
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(LoadSurface(std::move(file)).release())
+  : Resource(IMG_Load(file))
+{
+}
+
+inline SurfaceBase::SurfaceBase(IOStreamBase& src)
+  : Resource(IMG_Load_IO(src.get(), false))
 {
 }
 
@@ -43072,7 +43270,12 @@ TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
 namespace SDL {
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(LoadBMP(std::move(file)).release())
+  : Resource(SDL_LoadBMP(file))
+{
+}
+
+inline SurfaceBase::SurfaceBase(IOStreamBase& src)
+  : Resource(SDL_LoadBMP_IO(src.get(), false))
 {
 }
 
@@ -43632,12 +43835,7 @@ struct FontBase : T
    * size becomes the index of choosing which size. If the value is too high,
    * the last indexed size will be the default.
    *
-   * If `closeio` is true, `src` will be automatically closed once the font is
-   * closed. Otherwise you should close `src` yourself after closing the font.
-   *
    * @param src an IOStreamBase to provide a font file's data.
-   * @param closeio true to close `src` when the font is closed, false to leave
-   *                it open.
    * @param ptsize point size to use for the newly-opened font.
    * @post a valid FontBase, or nullptr on failure; call GetError() for more
    *       information.
@@ -43648,8 +43846,8 @@ struct FontBase : T
    *
    * @sa FontBase.Close
    */
-  FontBase(ObjectBox<SDL_IOStream> auto&& src, bool closeio, float ptsize)
-    : T(TTF_OpenFontIO(src, closeio, ptsize))
+  FontBase(IOStreamBase& src, float ptsize)
+    : T(TTF_OpenFontIO(src.get(), false, ptsize))
   {
   }
 
