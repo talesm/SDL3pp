@@ -7,6 +7,7 @@
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_ownPtr.h"
+#include "SDL3pp_resource.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_stringParam.h"
 
