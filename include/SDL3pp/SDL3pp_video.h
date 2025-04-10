@@ -1543,7 +1543,7 @@ struct WindowBase : T
    * appropriate size and be used instead, if available. Otherwise, the closest
    * smaller image will be upscaled and be used instead.
    *
-   * @param icon an SDL_Surface structure containing the icon for the window.
+   * @param icon an SurfaceBase structure containing the icon for the window.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -1551,7 +1551,10 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetIcon(SurfaceRef icon) { return SDL_SetWindowIcon(T::get(), icon); }
+  bool SetIcon(SurfaceBase& icon)
+  {
+    return SDL_SetWindowIcon(T::get(), icon.get());
+  }
 
   /**
    * @brief Request the window's position and size to be set.
@@ -2818,15 +2821,15 @@ struct WindowBase : T
    * the alpha channel of the window to match the shape alpha channel to get
    * consistent cross-platform results.
    *
-   * The shape is copied inside this function, so you can free it afterwards.
-   * If your shape surface changes, you should call SDL_SetWindowShape() again
-   * to update the window. This is an expensive operation, so should be done
+   * The shape is copied inside this function, so you can free it afterwards. If
+   * your shape surface changes, you should call WindowBase.SetShape() again to
+   * update the window. This is an expensive operation, so should be done
    * sparingly.
    *
-   * The window must have been created with the SDL_WINDOW_TRANSPARENT flag.
+   * The window must have been created with the WINDOW_TRANSPARENT flag.
    *
-   * @param shape the surface representing the shape of the window, or NULL to
-   *              remove any current shape.
+   * @param shape the surface representing the shape of the window, or nullptr
+   *              to remove any current shape.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -2834,9 +2837,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetShape(SurfaceRef shape)
+  bool SetShape(SurfaceBase& shape)
   {
-    return SDL_SetWindowShape(T::get(), shape);
+    return SDL_SetWindowShape(T::get(), shape.get());
   }
 
   /**

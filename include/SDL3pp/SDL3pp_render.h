@@ -286,23 +286,26 @@ struct RendererBase : T
   /**
    * Create a 2D software rendering context for a surface.
    *
-   * Two other API which can be used to create Renderer:
-   * RendererBase(WindowRef) and SDL_CreateWindowAndRenderer(WindowRef,
-   * StringParam). These can _also_ create a software renderer, but they are
-   * intended to be used with an Window as the final destination and not an
-   * Surface.
+   * Two other API which can be used to create RendererBase:
+   * RendererBase.RendererBase() and CreateWindowAndRenderer(). These can _also_
+   * create a software renderer, but they are intended to be used with an
+   * WindowBase as the final destination and not an SurfaceBase.
    *
    * It renderer creation fails for any reason this object is falsy; call
    * GetError() for more information.
    *
    * @param surface the SDL_Surface structure representing the surface where
    *                rendering is done.
+   * @post a valid rendering context or nullptr if there was an error; call
+   *       GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RendererBase.Destroy
    */
-  RendererBase(SurfaceRef surface)
+  RendererBase(SurfaceBase& surface)
     : T(SDL_CreateSoftwareRenderer(surface.get()))
   {
   }
@@ -1974,27 +1977,26 @@ struct TextureBase : T
    *
    * The surface is not modified or freed by this function.
    *
-   * The SDL_TextureAccess hint for the created texture is
-   * `SDL_TEXTUREACCESS_STATIC`.
+   * The TextureAccess hint for the created texture is TEXTUREACCESS_STATIC`.
    *
    * The pixel format of the created texture may be different from the pixel
    * format of the surface, and can be queried using the
-   * SDL_PROP_TEXTURE_FORMAT_NUMBER property.
+   * prop::Texture.FORMAT_NUMBER property.
    *
    * @param renderer the rendering context.
-   * @param surface the SDL_Surface structure containing pixel data used to fill
+   * @param surface the SurfaceBase structure containing pixel data used to fill
    *                the texture.
-   * @post the created texture is convertible to true on success or false on
-   * failure; call GetError() for more information.
+   * @post the created texture or nullptr on failure; call GetError() for
+   *       more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetSize()
-   * @sa Update()
+   * @sa TextureBase.TextureBase
+   * @sa TextureBase.Destroy
    */
-  TextureBase(RendererRef renderer, SurfaceRef surface)
+  TextureBase(RendererRef renderer, SurfaceBase& surface)
     : T(SDL_CreateTextureFromSurface(renderer.get(), surface.get()))
   {
   }

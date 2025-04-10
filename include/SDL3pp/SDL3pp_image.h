@@ -1837,7 +1837,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
 }
 
 /**
- * Save an SDL_Surface into a AVIF image file.
+ * Save an SurfaceBase into a AVIF image file.
  *
  * If the file already exists, it will be overwritten.
  *
@@ -1845,20 +1845,18 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  * @param file path on the filesystem to write new file to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
- *
- * @sa SaveAVIF_IO
  */
-inline bool SaveAVIF(SurfaceRef surface, StringParam file, int quality)
+inline bool SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
 {
   return IMG_SaveAVIF(surface.get(), file, quality);
 }
 
 /**
- * Save an SDL_Surface into AVIF image data, via an SDL_IOStream.
+ * Save an SurfaceBase into AVIF image data, via an SDL_IOStream.
  *
  * If you just want to save to a filename, you can use IMG_SaveAVIF() instead.
  *
@@ -1870,8 +1868,6 @@ inline bool SaveAVIF(SurfaceRef surface, StringParam file, int quality)
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
- *
- * @sa SaveAVIF
  */
 inline bool SaveAVIF(SurfaceRef surface,
                      ObjectBox<SDL_IOStream> auto&& dst,
@@ -1881,20 +1877,20 @@ inline bool SaveAVIF(SurfaceRef surface,
 }
 
 /**
- * Save an SDL_Surface into a PNG image file.
+ * Save an SurfaceBase into a PNG image file.
  *
  * If the file already exists, it will be overwritten.
  *
  * @param surface the SDL surface to save.
  * @param file path on the filesystem to write new file to.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SavePNG_IO
+ * @sa SavePNG
  */
-inline bool SavePNG(SurfaceRef surface, StringParam file)
+inline bool SavePNG(SurfaceBase& surface, StringParam file)
 {
   return IMG_SavePNG(surface.get(), file);
 }
@@ -1919,7 +1915,7 @@ inline bool SavePNG(SurfaceRef surface, ObjectBox<SDL_IOStream> auto&& dst)
 }
 
 /**
- * Save an SDL_Surface into a JPEG image file.
+ * Save an SurfaceBase into a JPEG image file.
  *
  * If the file already exists, it will be overwritten.
  *
@@ -1927,14 +1923,12 @@ inline bool SavePNG(SurfaceRef surface, ObjectBox<SDL_IOStream> auto&& dst)
  * @param file path on the filesystem to write new file to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_image 3.0.0.
- *
- * @sa SaveJPG_IO
  */
-inline bool SaveJPG(SurfaceRef surface, StringParam file, int quality)
+inline bool SaveJPG(SurfaceBase& surface, StringParam file, int quality)
 {
   return IMG_SaveJPG(surface.get(), file, quality);
 }
@@ -2204,9 +2198,8 @@ inline Animation LoadWEBPAnimation(ObjectBox<SDL_IOStream> auto&& src)
 
 /// @}
 
-template<ObjectBox<SDL_Surface*> T>
-SurfaceBase<T>::SurfaceBase(StringParam file)
-  : T(LoadSurface(std::move(file)))
+inline SurfaceBase::SurfaceBase(StringParam file)
+  : Resource(LoadSurface(std::move(file)).release())
 {
 }
 
@@ -2224,9 +2217,8 @@ TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
 
 namespace SDL {
 
-template<ObjectBox<SDL_Surface*> T>
-SurfaceBase<T>::SurfaceBase(StringParam file)
-  : T(LoadBMP(std::move(file)))
+inline SurfaceBase::SurfaceBase(StringParam file)
+  : Resource(LoadBMP(std::move(file)).release())
 {
 }
 

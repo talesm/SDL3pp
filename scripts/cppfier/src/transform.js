@@ -219,7 +219,7 @@ function transformEntries(sourceEntries, file, context) {
           if (!targetDelta.name) targetDelta.name = targetName;
           combineObject(targetEntry, targetDelta);
         } else targetEntry.name = targetName;
-        context.nameMap[sourceName] = targetEntry.name;
+        context.nameMap[sourceName] = targetEntry.name?.replaceAll('::', '.');
         return targetEntry;
       }));
     } else {
@@ -237,7 +237,7 @@ function transformEntries(sourceEntries, file, context) {
         }
         context.nameMap[sourceName] = targetEntry.name;
       } else if (!context.nameMap[sourceName]) {
-        context.nameMap[sourceName] = targetEntry.name;
+        context.nameMap[sourceName] = targetEntry.name?.replaceAll('::', '.');
       }
       insertEntryAndCheck(targetEntries, targetEntry, context, file, targetName);
     }
@@ -556,156 +556,193 @@ function expandResources(sourceEntries, file, context) {
         ...subEntries
       },
       hints: {
-        self: "get()"
+        self: "get()",
+        super: "Resource"
       }
     };
     file.transform[sourceName] = entry;
-    if (resourceEntry.includeAfter) {
-      includeAfter(name, file, resourceEntry.includeAfter);
-    }
+
     const freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free]) ?? scanFreeFunctionX(sourceEntries, uniqueName, pointerType);
     const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
-    includeAfter([{
-      name: refName,
-      kind: "struct",
-      type: name,
-      doc: `Handle to a non owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${uniqueName}`,
-      entries: {
-        [`${name}::${name}`]: "alias",
-        [refName]: [{
-          kind: "function",
-          type: "",
-          constexpr: true,
-          parameters: [{
-            type: `const ${refName} &`,
-            name: "other"
+
+    /** @type {ApiEntryTransform[]} */
+    const derivedEntries = [
+      {
+        name: refName,
+        kind: "struct",
+        type: name,
+        doc: `Handle to a non owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${uniqueName}`,
+        entries: {
+          [`${name}::${name}`]: "alias",
+          [refName]: [{
+            kind: "function",
+            type: "",
+            constexpr: true,
+            parameters: [{
+              type: `const ${refName} &`,
+              name: "other"
+            }],
+            doc: "Copy constructor.",
+            hints: {
+              init: [`${name}(other.get())`],
+            }
+          }, {
+            kind: "function",
+            type: "",
+            constexpr: true,
+            parameters: [{
+              type: `${refName} &&`,
+              name: "other"
+            }],
+            doc: "Move constructor.",
+            hints: {
+              init: [`${name}(other.release())`],
+            }
           }],
-          doc: "Copy constructor.",
-          hints: {
-            init: [`${name}(other.get())`],
+          ["~" + refName]: {
+            kind: "function",
+            type: "",
+            parameters: [],
+            proto: true,
+            constexpr: true,
+            doc: "Default constructor",
+            hints: {
+              default: true
+            }
+          },
+          "operator=": {
+            kind: "function",
+            type: refName + " &",
+            parameters: [{
+              type: refName,
+              name: "other"
+            }],
+            doc: "Assignment operator.",
+            hints: {
+              body: `release(other.release());\nreturn *this;`,
+            }
+          },
+          [freeFunction?.name ?? "reset"]: {
+            kind: "function",
+            name: "reset",
+            type: freeFunction?.type ?? "void",
+            static: false,
+            parameters: [{
+              name: "newResource",
+              type: pointerType,
+              default: "{}"
+            }],
+            doc: freeFunction?.doc ? transformDoc(freeFunction.doc, context) : `frees up ${sourceName}.`,
+            hints: {
+              body: freeFunction ? (freeFunction.type !== "void" ? "return " : "") + `${freeFunction.name}(release(newResource));` : "",
+            }
           }
-        }, {
-          kind: "function",
-          type: "",
-          constexpr: true,
-          parameters: [{
-            type: `${refName} &&`,
-            name: "other"
+        }
+      }, {
+        name: uniqueName,
+        kind: "struct",
+        type: refName,
+        doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${refName}`,
+        entries: {
+          [`${refName}::${refName}`]: "alias",
+          [uniqueName]: [{
+            kind: "function",
+            type: "",
+            constexpr: true,
+            explicit: true,
+            parameters: [{
+              type: pointerType,
+              name: "resource",
+              default: "{}"
+            }],
+            doc: "Constructs from the underlying resource.",
+            hints: {
+              init: [`${refName}(resource)`],
+            }
+          }, {
+            kind: "function",
+            type: "",
+            constexpr: true,
+            proto: true,
+            parameters: [{
+              type: `const ${uniqueName} &`,
+              name: "other"
+            }],
+            hints: {
+              delete: true,
+            }
+          }, {
+            kind: "function",
+            type: "",
+            constexpr: true,
+            proto: true,
+            parameters: [{
+              type: `${uniqueName} &&`,
+              name: "other"
+            }],
+            doc: "Move constructor.",
+            hints: {
+              default: true,
+            }
           }],
-          doc: "Move constructor.",
-          hints: {
-            init: [`${name}(other.release())`],
-          }
-        }],
-        ["~" + refName]: {
-          kind: "function",
-          type: "",
-          parameters: [],
-          proto: true,
-          constexpr: true,
-          doc: "Default constructor",
-          hints: {
-            default: true
-          }
-        },
-        "operator=": {
-          kind: "function",
-          type: refName + " &",
-          parameters: [{
-            type: refName,
-            name: "other"
-          }],
-          doc: "Assignment operator.",
-          hints: {
-            body: `release(other.release());\nreturn *this;`,
-          }
-        },
-        [freeFunction?.name ?? "reset"]: {
-          kind: "function",
-          name: "reset",
-          type: freeFunction?.type ?? "void",
-          static: false,
-          parameters: [{
-            name: "newResource",
-            type: pointerType,
-            default: "{}"
-          }],
-          doc: freeFunction?.doc ? transformDoc(freeFunction.doc, context) : `frees up ${sourceName}.`,
-          hints: {
-            body: freeFunction ? (freeFunction.type !== "void" ? "return " : "") + `${freeFunction.name}(release(newResource));` : "",
+          ["~" + uniqueName]: {
+            kind: "function",
+            type: "",
+            parameters: [],
+            doc: "Frees up resource when object goes out of scope.",
+            hints: {
+              body: "reset();"
+            }
+          },
+          "operator=": {
+            kind: "function",
+            type: uniqueName + " &",
+            parameters: [{
+              type: uniqueName,
+              name: "other"
+            }],
+            doc: "Assignment operator.",
+            hints: {
+              body: `reset(other.release());\nreturn *this;`,
+            }
           }
         }
       }
-    }, {
-      name: uniqueName,
-      kind: "struct",
-      type: refName,
-      doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${refName}`,
-      entries: {
-        [`${refName}::${refName}`]: "alias",
-        [uniqueName]: [{
-          kind: "function",
-          type: "",
-          constexpr: true,
-          explicit: true,
-          parameters: [{
-            type: pointerType,
-            name: "resource",
-            default: "{}"
-          }],
-          doc: "Constructs from the underlying resource.",
-          hints: {
-            init: [`${refName}(resource)`],
+    ];
+
+    if (resourceEntry.includeAfter) {
+      includeAfter(name, file, resourceEntry.includeAfter);
+      includeAfter(derivedEntries, file, resourceEntry.includeAfter);
+    } else {
+      prependIncludeAfter(derivedEntries, file, includeAfterKey);
+    }
+    const derivedNames = new Set([refName, uniqueName]);
+    let pointToIncludeFunc = includeAfterKey;
+    for (const [subName, subEntry] of Object.entries(subEntries)) {
+      if (Array.isArray(subEntry)) {
+        subEntry.forEach(e => {
+          if (derivedNames.has(e.type)) {
+            includeAfter(e, file, pointToIncludeFunc);
           }
-        }, {
-          kind: "function",
-          type: "",
-          constexpr: true,
-          proto: true,
-          parameters: [{
-            type: `const ${uniqueName} &`,
-            name: "other"
-          }],
-          hints: {
-            delete: true,
-          }
-        }, {
-          kind: "function",
-          type: "",
-          constexpr: true,
-          proto: true,
-          parameters: [{
-            type: `${uniqueName} &&`,
-            name: "other"
-          }],
-          doc: "Move constructor.",
-          hints: {
-            default: true,
-          }
-        }],
-        ["~" + uniqueName]: {
-          kind: "function",
-          type: "",
-          parameters: [],
-          doc: "Frees up resource when object goes out of scope.",
-          hints: {
-            body: "reset();"
-          }
-        },
-        "operator=": {
-          kind: "function",
-          type: uniqueName + " &",
-          parameters: [{
-            type: uniqueName,
-            name: "other"
-          }],
-          doc: "Assignment operator.",
-          hints: {
-            body: `reset(other.release());\nreturn *this;`,
-          }
+        });
+      } else if (typeof subEntry === "string") {
+        if (!context.prefixToRemove.test(subName)) continue;
+        pointToIncludeFunc = subName;
+        if (subEntry === "ctor") continue;
+        const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
+        if (sourceEntry.kind === "function" && sourceEntry.type === pointerType) {
+          if (subEntry === "immutable") entry.entries[subName] = { proto: true, immutable: true };
+          else entry.entries[subName] = { proto: true };
+        }
+      } else {
+        if (context.prefixToRemove.test(subName)) pointToIncludeFunc = subName;
+        const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
+        if (subEntry.kind !== "function" && sourceEntry.kind !== "function") continue;
+        if ((sourceEntry?.type === pointerType && subEntry.type == null) || derivedNames.has(subEntry.type)) {
+          subEntry.proto = true;
         }
       }
-    }], file, includeAfterKey);
+    }
   }
 
   for (const [sourceName, resourceEntry] of Object.entries(file.resources ?? {})) {
@@ -907,7 +944,7 @@ function includeAfter(entryOrName, transform, includeAfterKey) {
 
 /**
  * Prepend to includeAfter field
- * @param {string|ApiEntry|ApiEntry[]}  entryOrName 
+ * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
  * @param {ApiFileTransform}            transform 
  * @param {string}                      includeAfterKey 
  */
@@ -1041,7 +1078,12 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
     } else if (!entries[nameChange.name]) {
       insertEntry(entries, { name: nameChange.name, kind: "def" });
     }
-    nameChange.name = `${type}.${nameChange.name}`;
+    if (typeof entry !== "string" && entry.proto) {
+      nameChange.name = `${type}::${nameChange.name}`;
+      delete nameChange.proto;
+    } else {
+      nameChange.name = `${type}.${nameChange.name}`;
+    }
     transform.transform[key] = nameChange;
   }
   return entries;

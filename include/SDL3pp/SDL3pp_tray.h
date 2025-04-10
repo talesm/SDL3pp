@@ -123,18 +123,18 @@ struct TrayBase : T
    * @param icon a surface to be used as icon. May be nullptr.
    * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
    *                UTF-8 encoding. Not supported on all platforms. May be
-   * nullptr.
+   *                nullptr.
    * @post The newly created system tray icon.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayBase::CreateMenu
-   * @sa TrayBase::GetMenu
+   * @sa TrayBase.CreateMenu
+   * @sa TrayBase.GetMenu
    * @sa TrayBase.Destroy
    */
-  TrayBase(SurfaceRef icon, StringParam tooltip)
+  TrayBase(SurfaceBase& icon, StringParam tooltip)
     : T(SDL_CreateTray(icon.get(), tooltip))
   {
   }
@@ -151,7 +151,7 @@ struct TrayBase : T
    *
    * @sa TrayBase.TrayBase
    */
-  void SetIcon(SurfaceRef icon) { SDL_SetTrayIcon(T::get(), icon.get()); }
+  void SetIcon(SurfaceBase& icon) { SDL_SetTrayIcon(T::get(), icon.get()); }
 
   /**
    * Updates the system tray icon's tooltip.

@@ -1028,7 +1028,7 @@
           "sourceName": "SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT"
         },
         "SDL_HINT_ENABLE_SCREEN_KEYBOARD": {
-          "doc": "A variable that controls whether the on-screen keyboard should be shown\nwhen text input is active.\n\nThe variable can be set to the following values:\n\n- \"auto\": The on-screen keyboard will be shown if there is no physical\n  keyboard attached. (default)\n- \"0\": Do not show the on-screen keyboard.\n- \"1\": Show the on-screen keyboard, if available.\n\nThis hint must be set before WindowBase::StartTextInput() is called\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable that controls whether the on-screen keyboard should be shown\nwhen text input is active.\n\nThe variable can be set to the following values:\n\n- \"auto\": The on-screen keyboard will be shown if there is no physical\n  keyboard attached. (default)\n- \"0\": Do not show the on-screen keyboard.\n- \"1\": Show the on-screen keyboard, if available.\n\nThis hint must be set before WindowBase.StartTextInput() is called\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_ENABLE_SCREEN_KEYBOARD",
           "kind": "def",
           "value": "\"SDL_ENABLE_SCREEN_KEYBOARD\"",
@@ -1105,35 +1105,35 @@
           "sourceName": "SDL_HINT_GAMECONTROLLER_SENSOR_FUSION"
         },
         "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT": {
-          "doc": "This variable sets the default text of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the default text of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase.StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_DEFAULT_TEXT\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT"
         },
         "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION": {
-          "doc": "This variable sets the description of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the description of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase.StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_DESCRIPTION\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION"
         },
         "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH": {
-          "doc": "This variable sets the maximum input length of the TextInput window on GDK\nplatforms.\n\nThe value must be a stringified integer, for example \"10\" to allow for up\nto 10 characters of text input.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the maximum input length of the TextInput window on GDK\nplatforms.\n\nThe value must be a stringified integer, for example \"10\" to allow for up\nto 10 characters of text input.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase.StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_MAX_LENGTH\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH"
         },
         "SDL_HINT_GDK_TEXTINPUT_SCOPE": {
-          "doc": "This variable sets the input scope of the TextInput window on GDK\nplatforms.\n\nSet this hint to change the XGameUiTextEntryInputScope value that will be\npassed to the window creation function. The value must be a stringified\ninteger, for example \"0\" for XGameUiTextEntryInputScope::Default.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the input scope of the TextInput window on GDK\nplatforms.\n\nSet this hint to change the XGameUiTextEntryInputScope value that will be\npassed to the window creation function. The value must be a stringified\ninteger, for example \"0\" for XGameUiTextEntryInputScope::Default.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase.StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_SCOPE",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_SCOPE\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_SCOPE"
         },
         "SDL_HINT_GDK_TEXTINPUT_TITLE": {
-          "doc": "This variable sets the title of the TextInput window on GDK platforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the title of the TextInput window on GDK platforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase.StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_TITLE",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_TITLE\"",
@@ -1629,7 +1629,7 @@
           }
         },
         "SDL_HINT_KEYCODE_OPTIONS": {
-          "doc": "A variable that controls keycode representation in keyboard events.\n\nThis variable is a comma separated set of options for translating keycodes\nin events:\n\n- \"none\": Keycode options are cleared, this overrides other options.\n- \"hide_numpad\": The numpad keysyms will be translated into their\n  non-numpad versions based on the current NumLock state. For example,\n  SDLK_KP_4 would become SDLK_4 if KMOD_NUM is set in the event\n  modifiers, and SDLK_LEFT if it is unset.\n- \"french_numbers\": The number row on French keyboards is inverted, so\n  pressing the 1 key would yield the keycode SDLK_1, or '1', instead of\n  SDLK_AMPERSAND, or '&'\n- \"latin_letters\": For keyboards using non-Latin letters, such as Russian\n  or Thai, the letter keys generate keycodes as though it had an en_US\n  layout. e.g. pressing the key associated with SCANCODE_A on a Russian\n  keyboard would yield 'a' instead of a Cyrillic letter.\n\nThe default value for this hint is \"french_numbers,latin_letters\"\n\nSome platforms like Emscripten only provide modified keycodes and the\noptions are not used.\n\nThese options do not affect the return value of Keycode::Keycode() or\nKeycode::GetScancode(), they just apply to the keycode included in key\nevents.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable that controls keycode representation in keyboard events.\n\nThis variable is a comma separated set of options for translating keycodes\nin events:\n\n- \"none\": Keycode options are cleared, this overrides other options.\n- \"hide_numpad\": The numpad keysyms will be translated into their\n  non-numpad versions based on the current NumLock state. For example,\n  SDLK_KP_4 would become SDLK_4 if KMOD_NUM is set in the event\n  modifiers, and SDLK_LEFT if it is unset.\n- \"french_numbers\": The number row on French keyboards is inverted, so\n  pressing the 1 key would yield the keycode SDLK_1, or '1', instead of\n  SDLK_AMPERSAND, or '&'\n- \"latin_letters\": For keyboards using non-Latin letters, such as Russian\n  or Thai, the letter keys generate keycodes as though it had an en_US\n  layout. e.g. pressing the key associated with SCANCODE_A on a Russian\n  keyboard would yield 'a' instead of a Cyrillic letter.\n\nThe default value for this hint is \"french_numbers,latin_letters\"\n\nSome platforms like Emscripten only provide modified keycodes and the\noptions are not used.\n\nThese options do not affect the return value of Keycode.Keycode() or\nKeycode.GetScancode(), they just apply to the keycode included in key\nevents.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_KEYCODE_OPTIONS",
           "kind": "def",
           "value": "\"SDL_KEYCODE_OPTIONS\"",
@@ -1678,7 +1678,7 @@
           "sourceName": "SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH"
         },
         "SDL_HINT_MAC_OPTION_AS_ALT": {
-          "doc": "A variable controlling whether the Option key on macOS should be remapped\nto act as the Alt key.\n\nThe variable can be set to the following values:\n\n- \"none\": The Option key is not remapped to Alt. (default)\n- \"only_left\": Only the left Option key is remapped to Alt.\n- \"only_right\": Only the right Option key is remapped to Alt.\n- \"both\": Both Option keys are remapped to Alt.\n\nThis will prevent the triggering of key compositions that rely on the\nOption key, but will still send the Alt modifier for keyboard events. In\nthe case that both Alt and Option are pressed, the Option key will be\nignored. This is particularly useful for applications like terminal\nemulators and graphical user interfaces (GUIs) that rely on Alt key\nfunctionality for shortcuts or navigation. This does not apply to\nKeycode::Keycode and only has an effect if IME is enabled.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable controlling whether the Option key on macOS should be remapped\nto act as the Alt key.\n\nThe variable can be set to the following values:\n\n- \"none\": The Option key is not remapped to Alt. (default)\n- \"only_left\": Only the left Option key is remapped to Alt.\n- \"only_right\": Only the right Option key is remapped to Alt.\n- \"both\": Both Option keys are remapped to Alt.\n\nThis will prevent the triggering of key compositions that rely on the\nOption key, but will still send the Alt modifier for keyboard events. In\nthe case that both Alt and Option are pressed, the Option key will be\nignored. This is particularly useful for applications like terminal\nemulators and graphical user interfaces (GUIs) that rely on Alt key\nfunctionality for shortcuts or navigation. This does not apply to\nKeycode.Keycode and only has an effect if IME is enabled.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_MAC_OPTION_AS_ALT",
           "kind": "def",
           "value": "\"SDL_MAC_OPTION_AS_ALT\"",
@@ -5382,7 +5382,7 @@
               "parameters": [
                 {
                   "name": "icon",
-                  "type": "SurfaceRef"
+                  "type": "SurfaceBase &"
                 }
               ],
               "sourceName": "SDL_SetWindowIcon"
@@ -6017,7 +6017,7 @@
               "parameters": [
                 {
                   "name": "shape",
-                  "type": "SurfaceRef"
+                  "type": "SurfaceBase &"
                 }
               ],
               "sourceName": "SDL_SetWindowShape"
@@ -7847,7 +7847,7 @@
                 "parameters": [
                   {
                     "name": "surface",
-                    "type": "SurfaceRef"
+                    "type": "SurfaceBase &"
                   }
                 ],
                 "sourceName": "SDL_CreateSoftwareRenderer"
@@ -8723,7 +8723,7 @@
               "sourceName": "SDL_RenderGeometryRaw"
             },
             "RenderReadPixels": {
-              "doc": "Read pixels from the current rendering target.\n\nThe returned surface contains pixels inside the desired area clipped to the\ncurrent viewport, and should be freed with SurfaceBase.Destroy().\n\nNote that this returns the actual pixels on the screen, so if you are using\nlogical presentation you should use RendererBase.GetLogicalPresentationRect()\nto get the area containing your content.\n\n**WARNING**: This is a very slow operation, and should not be used\nfrequently. If you're using this on the main rendering target, it should be\ncalled after rendering and before RendererBase.Present().\n\n@param renderer the rendering context.\n@param rect an Rect structure representing the area to read, which will\n            be clipped to the current viewport, or nullptr for the entire\n            viewport.\n@returns a new SurfaceBase on success or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Read pixels from the current rendering target.\n\nThe returned surface contains pixels inside the desired area clipped to the\ncurrent viewport, and should be freed with SurfaceRef.reset().\n\nNote that this returns the actual pixels on the screen, so if you are using\nlogical presentation you should use RendererBase.GetLogicalPresentationRect()\nto get the area containing your content.\n\n**WARNING**: This is a very slow operation, and should not be used\nfrequently. If you're using this on the main rendering target, it should be\ncalled after rendering and before RendererBase.Present().\n\n@param renderer the rendering context.\n@param rect an Rect structure representing the area to read, which will\n            be clipped to the current viewport, or nullptr for the entire\n            viewport.\n@returns a new SurfaceBase on success or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "RenderReadPixels",
               "kind": "function",
               "type": "Surface",
@@ -8918,7 +8918,7 @@
                   },
                   {
                     "name": "surface",
-                    "type": "SurfaceRef"
+                    "type": "SurfaceBase &"
                   }
                 ],
                 "sourceName": "SDL_CreateTextureFromSurface"
@@ -14841,25 +14841,17 @@
         "SurfaceBase-forward": {
           "name": "SurfaceBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Surface *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "SurfaceRef": {
+        "SurfaceRef-forward": {
           "name": "SurfaceRef",
-          "kind": "alias",
-          "type": "SurfaceBase<ObjectRef<SDL_Surface>>",
-          "doc": "Handle to a non owned surface\n\n@cat resource\n\n@sa SurfaceBase\n@sa Surface"
+          "kind": "forward",
+          "doc": ""
         },
-        "Surface": {
+        "Surface-forward": {
           "name": "Surface",
-          "kind": "alias",
-          "type": "SurfaceBase<ObjectUnique<SDL_Surface>>",
-          "doc": "Handle to an owned surface\n\n@cat resource\n\n@sa SurfaceBase\n@sa SurfaceRef"
+          "kind": "forward",
+          "doc": ""
         },
         "SurfaceFlags": {
           "doc": "The flags on an SurfaceBase.\n\nThese are generally considered read-only.\n\n@since This datatype is available since SDL 3.2.0.",
@@ -14967,27 +14959,22 @@
           "sourceName": "SDL_FLIP_VERTICAL"
         },
         "SurfaceBase": {
-          "doc": "A collection of pixels used in software blitting.\n\nPixels are arranged in memory in rows, with the top row first. Each row\noccupies an amount of memory given by the pitch (sometimes known as the row\nstride in non-SDL APIs).\n\nWithin each row, pixels are arranged from left to right until the width is\nreached. Each pixel occupies a number of bits appropriate for its format,\nwith most formats representing each pixel as one or more whole bytes (in\nsome indexed formats, instead multiple pixels are packed into each byte),\nand a byte order given by the format. After encoding all pixels, any\nremaining bytes to reach the pitch are used as padding to reach a desired\nalignment, and have undefined contents.\n\nWhen a surface holds YUV format data, the planes are assumed to be\ncontiguous without padding between them, e.g. a 32x32 surface in NV12\nformat with a pitch of 32 would consist of 32x32 bytes of Y plane followed\nby 32x16 bytes of UV plane.\n\nWhen a surface holds MJPG format data, pixels points at the compressed JPEG\nimage and pitch is the length of that data.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceBase.Destroy",
+          "doc": "A collection of pixels used in software blitting.\n\nPixels are arranged in memory in rows, with the top row first. Each row\noccupies an amount of memory given by the pitch (sometimes known as the row\nstride in non-SDL APIs).\n\nWithin each row, pixels are arranged from left to right until the width is\nreached. Each pixel occupies a number of bits appropriate for its format,\nwith most formats representing each pixel as one or more whole bytes (in\nsome indexed formats, instead multiple pixels are packed into each byte),\nand a byte order given by the format. After encoding all pixels, any\nremaining bytes to reach the pitch are used as padding to reach a desired\nalignment, and have undefined contents.\n\nWhen a surface holds YUV format data, the planes are assumed to be\ncontiguous without padding between them, e.g. a 32x32 surface in NV12\nformat with a pitch of 32 would consist of 32x32 bytes of Y plane followed\nby 32x16 bytes of UV plane.\n\nWhen a surface holds MJPG format data, pixels points at the compressed JPEG\nimage and pitch is the length of that data.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceRef.reset\n\n@cat resource\n\n@sa Surface\n@sa SurfaceRef",
           "name": "SurfaceBase",
           "kind": "struct",
           "sourceName": "SDL_Surface",
-          "type": "T",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Surface *>",
-              "name": "T"
-            }
-          ],
+          "type": "Resource<SDL_Surface *>",
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "SurfaceBase": [
               {
                 "kind": "function",
                 "type": "",
+                "proto": true,
                 "parameters": [
                   {
                     "type": "StringParam",
@@ -14998,7 +14985,7 @@
                 "doc": ""
               },
               {
-                "doc": "Allocate a new surface with a specific pixel format.\n\nThe pixels of the new surface are initialized to zero.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@post the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceBase.Destroy",
+                "doc": "Allocate a new surface with a specific pixel format.\n\nThe pixels of the new surface are initialized to zero.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@post the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceRef.reset",
                 "name": "SurfaceBase",
                 "kind": "function",
                 "type": "",
@@ -15019,7 +15006,7 @@
                 "sourceName": "SDL_CreateSurface"
               },
               {
-                "doc": "Allocate a new surface with a specific pixel format and existing pixel\ndata.\n\nNo copy is made of the pixel data. Pixel data is not managed automatically;\nyou must free the surface before you free the pixel data.\n\nPitch is the offset in bytes from one row of pixels to the next, e.g.\n`width*4` for `PIXELFORMAT_RGBA8888`.\n\nYou may pass nullptr for pixels and 0 for pitch to create a surface that you\nwill fill in with valid values later.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@param pixels a pointer to existing pixel data.\n@param pitch the number of bytes between each row, including padding.\n@post the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceBase.Destroy",
+                "doc": "Allocate a new surface with a specific pixel format and existing pixel\ndata.\n\nNo copy is made of the pixel data. Pixel data is not managed automatically;\nyou must free the surface before you free the pixel data.\n\nPitch is the offset in bytes from one row of pixels to the next, e.g.\n`width*4` for `PIXELFORMAT_RGBA8888`.\n\nYou may pass nullptr for pixels and 0 for pitch to create a surface that you\nwill fill in with valid values later.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@param pixels a pointer to existing pixel data.\n@param pitch the number of bytes between each row, including padding.\n@post the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceRef.reset",
                 "name": "SurfaceBase",
                 "kind": "function",
                 "type": "",
@@ -15110,14 +15097,14 @@
               "immutable": true
             },
             "AddAlternateImage": {
-              "doc": "Add an alternate version of a surface.\n\nThis function adds an alternate version of this surface, usually used for\ncontent with high DPI representations like cursors or icons. The size,\nformat, and content do not need to match the original surface, and these\nalternate versions will not be updated when the original surface changes.\n\nThis function adds a reference to the alternate version, so you should call\nSurfaceBase.Destroy() on the image after this call.\n\n@param image a pointer to an alternate SurfaceBase to associate with this\n             surface.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.RemoveAlternateImages\n@sa SurfaceBase.GetImages\n@sa SurfaceBase.HasAlternateImages",
+              "doc": "Add an alternate version of a surface.\n\nThis function adds an alternate version of this surface, usually used for\ncontent with high DPI representations like cursors or icons. The size,\nformat, and content do not need to match the original surface, and these\nalternate versions will not be updated when the original surface changes.\n\nThis function adds a reference to the alternate version, so you should call\nSurfaceRef.reset() on the image after this call.\n\n@param image a pointer to an alternate SurfaceBase to associate with this\n             surface.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.RemoveAlternateImages\n@sa SurfaceBase.GetImages\n@sa SurfaceBase.HasAlternateImages",
               "name": "AddAlternateImage",
               "kind": "function",
               "type": "bool",
               "parameters": [
                 {
                   "name": "image",
-                  "type": "SurfaceRef"
+                  "type": "SurfaceBase &"
                 }
               ],
               "sourceName": "SDL_AddSurfaceAlternateImage"
@@ -15135,7 +15122,7 @@
               "doc": "Get an array including all versions of a surface.\n\nThis returns all versions of a surface, with the surface being queried as\nthe first element in the returned array.\n\nFreeing the array of surfaces does not affect the surfaces in the array.\nThey are still referenced by the surface being queried and will be cleaned\nup normally.\n\n@param surface the SurfaceBase structure to query.\n@param count a pointer filled in with the number of surface pointers\n             returned, may be nullptr.\n@returns a nullptr terminated array of SurfaceBase pointers or nullptr on\n         failure; call GetError() for more information. This should be\n         freed with free() when it is no longer needed.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.AddAlternateImage\n@sa SurfaceBase.RemoveAlternateImages\n@sa SurfaceBase.HasAlternateImages",
               "name": "GetImages",
               "kind": "function",
-              "type": "OwnArray<SurfaceRef *>",
+              "type": "OwnArray<SurfaceRef>",
               "parameters": [],
               "sourceName": "SDL_GetSurfaceImages",
               "immutable": true
@@ -15327,7 +15314,7 @@
               "sourceName": "SDL_SetSurfaceAlphaMod"
             },
             "GetAlphaMod": {
-              "doc": "Get the additional alpha value used in blit operations.\n\n@param surface the SurfaceBase structure to query.\n@param alpha a pointer filled in with the current alpha value.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.GetColorMod\n@sa SurfaceBase.SetAlphaMod",
+              "doc": "Get the additional alpha value used in blit operations.\n\n@param alpha a pointer filled in with the current alpha value.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.GetColorMod\n@sa SurfaceBase.SetAlphaMod",
               "name": "GetAlphaMod",
               "kind": "function",
               "type": "std::optional<Uint8>",
@@ -15369,10 +15356,10 @@
               "sourceName": "SDL_SetSurfaceBlendMode"
             },
             "GetBlendMode": {
-              "doc": "Get the blend mode used for blit operations.\n\n@param surface the SurfaceBase structure to query.\n@param blendMode a pointer filled in with the current BlendMode.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SetBlendMode",
+              "doc": "Get the blend mode used for blit operations.\n\n@param blendMode a pointer filled in with the current BlendMode.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SetBlendMode",
               "name": "GetBlendMode",
               "kind": "function",
-              "type": "std::optional<BlendMode>",
+              "type": "BlendMode",
               "parameters": [],
               "sourceName": "SDL_GetSurfaceBlendMode",
               "immutable": true
@@ -15399,10 +15386,10 @@
               "doc": ""
             },
             "GetClipRect": {
-              "doc": "Get the clipping rectangle for a surface.\n\nWhen `surface` is the destination of a blit, only the area within the clip\nrectangle is drawn into.\n\n@param surface the SurfaceBase structure representing the surface to be\n               clipped.\n@param rect an Rect structure filled in with the clipping rectangle for\n            the surface.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SetClipRect",
+              "doc": "Get the clipping rectangle for a surface.\n\nWhen `surface` is the destination of a blit, only the area within the clip\nrectangle is drawn into.\n\n               clipped.\n@param rect an Rect structure filled in with the clipping rectangle for\n            the surface.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SetClipRect",
               "name": "GetClipRect",
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": [],
               "sourceName": "SDL_GetSurfaceClipRect",
               "immutable": true
@@ -15421,16 +15408,17 @@
               "sourceName": "SDL_FlipSurface"
             },
             "Duplicate": {
-              "doc": "Creates a new surface identical to the existing surface.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\nThe returned surface should be freed with SurfaceBase.Destroy().\n\n@returns a copy of the surface or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Destroy",
+              "doc": "Creates a new surface identical to the existing surface.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\nThe returned surface should be freed with SurfaceRef.reset().\n\n@returns a copy of the surface or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.reset",
               "name": "Duplicate",
               "kind": "function",
               "type": "Surface",
               "parameters": [],
               "sourceName": "SDL_DuplicateSurface",
-              "immutable": true
+              "immutable": true,
+              "proto": true
             },
             "Scale": {
-              "doc": "Creates a new surface identical to the existing surface, scaled to the\ndesired size.\n\nThe returned surface should be freed with SurfaceBase.Destroy().\n\n@param width the width of the new surface.\n@param height the height of the new surface.\n@param scaleMode the ScaleMode to be used.\n@returns a copy of the surface or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Destroy",
+              "doc": "Creates a new surface identical to the existing surface, scaled to the\ndesired size.\n\nThe returned surface should be freed with SurfaceRef.reset().\n\n@param width the width of the new surface.\n@param height the height of the new surface.\n@param scaleMode the ScaleMode to be used.\n@returns a copy of the surface or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.reset",
               "name": "Scale",
               "kind": "function",
               "type": "Surface",
@@ -15449,11 +15437,12 @@
                 }
               ],
               "sourceName": "SDL_ScaleSurface",
-              "immutable": true
+              "immutable": true,
+              "proto": true
             },
             "Convert": [
               {
-                "doc": "Copy an existing surface to a new surface of the specified format.\n\nThis function is used to optimize images for faster *repeat* blitting. This\nis accomplished by converting the original and storing the result as a new\nsurface. The new, optimized surface can then be used as the source for\nfuture blits, making them faster.\n\nIf you are converting to an indexed surface and want to map colors to a\npalette, you can use SurfaceBase.Convert() instead.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\n@param format the new pixel format.\n@returns the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Convert\n@sa SurfaceBase.Destroy",
+                "doc": "Copy an existing surface to a new surface of the specified format.\n\nThis function is used to optimize images for faster *repeat* blitting. This\nis accomplished by converting the original and storing the result as a new\nsurface. The new, optimized surface can then be used as the source for\nfuture blits, making them faster.\n\nIf you are converting to an indexed surface and want to map colors to a\npalette, you can use SurfaceBase.Convert() instead.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\n@param format the new pixel format.\n@returns the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Convert\n@sa SurfaceRef.reset",
                 "name": "Convert",
                 "kind": "function",
                 "type": "Surface",
@@ -15464,10 +15453,11 @@
                   }
                 ],
                 "sourceName": "SDL_ConvertSurface",
-                "immutable": true
+                "immutable": true,
+                "proto": true
               },
               {
-                "doc": "Copy an existing surface to a new surface of the specified format and\ncolorspace.\n\nThis function converts an existing surface to a new format and colorspace\nand returns the new surface. This will perform any pixel format and\ncolorspace conversion needed.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\n@param format the new pixel format.\n@param palette an optional palette to use for indexed formats, may be nullptr.\n@param colorspace the new colorspace.\n@param props an PropertiesBase with additional color properties, or 0.\n@returns the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Convert\n@sa SurfaceBase.Destroy",
+                "doc": "Copy an existing surface to a new surface of the specified format and\ncolorspace.\n\nThis function converts an existing surface to a new format and colorspace\nand returns the new surface. This will perform any pixel format and\ncolorspace conversion needed.\n\nIf the original surface has alternate images, the new surface will have a\nreference to them as well.\n\n@param format the new pixel format.\n@param palette an optional palette to use for indexed formats, may be nullptr.\n@param colorspace the new colorspace.\n@param props an PropertiesBase with additional color properties, or 0.\n@returns the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Convert\n@sa SurfaceRef.reset",
                 "name": "Convert",
                 "kind": "function",
                 "type": "Surface",
@@ -15490,7 +15480,8 @@
                   }
                 ],
                 "sourceName": "SDL_ConvertSurfaceAndColorspace",
-                "immutable": true
+                "immutable": true,
+                "proto": true
               }
             ],
             "PremultiplyAlpha": {
@@ -15507,7 +15498,7 @@
               "sourceName": "SDL_PremultiplySurfaceAlpha"
             },
             "Clear": {
-              "doc": "Clear a surface with a specific color, with floating point precision.\n\nThis function handles all surface formats, and ignores any clip rectangle.\n\nIf the surface is YUV, the color is assumed to be in the sRGB colorspace,\notherwise the color is assumed to be in the colorspace of the suface.\n\n@param surface the SurfaceBase to clear.\n@param r the red component of the pixel, normally in the range 0-1.\n@param g the green component of the pixel, normally in the range 0-1.\n@param b the blue component of the pixel, normally in the range 0-1.\n@param a the alpha component of the pixel, normally in the range 0-1.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Clear a surface with a specific color, with floating point precision.\n\nThis function handles all surface formats, and ignores any clip rectangle.\n\nIf the surface is YUV, the color is assumed to be in the sRGB colorspace,\notherwise the color is assumed to be in the colorspace of the suface.\n\n@param r the red component of the pixel, normally in the range 0-1.\n@param g the green component of the pixel, normally in the range 0-1.\n@param b the blue component of the pixel, normally in the range 0-1.\n@param a the alpha component of the pixel, normally in the range 0-1.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
               "name": "Clear",
               "kind": "function",
               "type": "bool",
@@ -15620,9 +15611,10 @@
               {
                 "kind": "function",
                 "name": "Blit",
+                "type": "bool",
                 "parameters": [
                   {
-                    "type": "SurfaceRef",
+                    "type": "const SurfaceBase &",
                     "name": "src"
                   },
                   {
@@ -15644,7 +15636,7 @@
                 "parameters": [
                   {
                     "name": "src",
-                    "type": "SurfaceRef"
+                    "type": "const SurfaceBase &"
                   },
                   {
                     "name": "srcrect",
@@ -15666,7 +15658,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "SurfaceRef"
+                  "type": "const SurfaceBase &"
                 },
                 {
                   "name": "srcrect",
@@ -15687,7 +15679,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "SurfaceRef"
+                  "type": "const SurfaceBase &"
                 },
                 {
                   "name": "srcrect",
@@ -15712,7 +15704,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "SurfaceRef"
+                  "type": "const SurfaceBase &"
                 },
                 {
                   "name": "srcrect",
@@ -15737,7 +15729,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "SurfaceRef"
+                  "type": "const SurfaceBase &"
                 },
                 {
                   "name": "srcrect",
@@ -15768,7 +15760,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "SurfaceRef"
+                  "type": "const SurfaceBase &"
                 },
                 {
                   "name": "srcrect",
@@ -15789,7 +15781,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "SurfaceRef"
+                  "type": "const SurfaceBase &"
                 },
                 {
                   "name": "srcrect",
@@ -15816,7 +15808,7 @@
               "type": "bool",
               "parameters": [
                 {
-                  "type": "SurfaceRef",
+                  "type": "const SurfaceBase &",
                   "name": "src"
                 },
                 {
@@ -15854,7 +15846,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "SurfaceRef"
+                  "type": "const SurfaceBase &"
                 },
                 {
                   "name": "srcrect",
@@ -16222,30 +16214,202 @@
               "parameters": [],
               "name": "GetFormat",
               "doc": ""
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "SurfaceRef": {
+          "name": "SurfaceRef",
+          "kind": "struct",
+          "type": "SurfaceBase",
+          "doc": "Handle to a non owned surface\n\n@cat resource\n\n@sa SurfaceBase\n@sa Surface",
+          "entries": {
+            "SurfaceBase::SurfaceBase": {
+              "kind": "alias",
+              "name": "SurfaceBase::SurfaceBase",
+              "doc": ""
             },
-            "Destroy": {
-              "doc": "Free a surface.\n\nIt is safe to pass nullptr to this function.\n\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceBase.SurfaceBase",
-              "name": "Destroy",
+            "SurfaceRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SurfaceRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "SurfaceBase(other.get())"
+                  ]
+                },
+                "name": "SurfaceRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SurfaceRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "SurfaceBase(other.release())"
+                  ]
+                },
+                "name": "SurfaceRef"
+              }
+            ],
+            "~SurfaceRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~SurfaceRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "SurfaceRef &",
+              "parameters": [
+                {
+                  "type": "SurfaceRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "doc": "Free a surface.\n\nIt is safe to pass nullptr to this function.\n\n@param surface the SurfaceBase to free.\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceBase.SurfaceBase",
+              "name": "reset",
               "kind": "function",
               "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroySurface"
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Surface *",
+                  "default": "{}"
+                }
+              ],
+              "sourceName": "SDL_DestroySurface",
+              "static": false,
+              "hints": {
+                "body": "SDL_DestroySurface(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_Surface>::doFree": {
-          "name": "ObjectRef<SDL_Surface>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for surface resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Surface *",
-              "name": "resource"
+        "Surface": {
+          "name": "Surface",
+          "kind": "struct",
+          "type": "SurfaceRef",
+          "doc": "Handle to an owned surface\n\n@cat resource\n\n@sa SurfaceBase\n@sa SurfaceRef",
+          "entries": {
+            "SurfaceRef::SurfaceRef": {
+              "kind": "alias",
+              "name": "SurfaceRef::SurfaceRef",
+              "doc": ""
+            },
+            "Surface": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Surface *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "SurfaceRef(resource)"
+                  ]
+                },
+                "name": "Surface"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Surface &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Surface",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Surface &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Surface"
+              }
+            ],
+            "~Surface": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Surface"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Surface &",
+              "parameters": [
+                {
+                  "type": "Surface",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroySurface"
+          }
         },
         "SurfaceLock": {
           "name": "SurfaceLock",
@@ -16420,7 +16584,7 @@
         },
         "LoadBMP": [
           {
-            "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with SurfaceBase.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStreamBase.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new SurfaceBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Destroy\n@sa LoadBMP\n@sa SaveBMP",
+            "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with SurfaceRef.reset(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls IOStreamBase.Close() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new SurfaceBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.reset\n@sa LoadBMP\n@sa SaveBMP",
             "name": "LoadBMP",
             "kind": "function",
             "type": "Surface",
@@ -16433,7 +16597,7 @@
             "sourceName": "SDL_LoadBMP_IO"
           },
           {
-            "doc": "Load a BMP image from a file.\n\nThe new surface should be freed with SurfaceBase.Destroy(). Not doing so\nwill result in a memory leak.\n\n@param file the BMP file to load.\n@returns a pointer to a new SurfaceBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.Destroy\n@sa LoadBMP\n@sa SaveBMP",
+            "doc": "Load a BMP image from a file.\n\nThe new surface should be freed with SurfaceRef.reset(). Not doing so\nwill result in a memory leak.\n\n@param file the BMP file to load.\n@returns a pointer to a new SurfaceBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceRef.reset\n@sa LoadBMP\n@sa SaveBMP",
             "name": "LoadBMP",
             "kind": "function",
             "type": "Surface",
@@ -16455,7 +16619,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef"
+                "type": "SurfaceBase &"
               },
               {
                 "name": "dst",
@@ -16472,7 +16636,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef"
+                "type": "SurfaceBase &"
               },
               {
                 "name": "file",
@@ -16480,6 +16644,91 @@
               }
             ],
             "sourceName": "SDL_SaveBMP"
+          }
+        ],
+        "SurfaceBase::Duplicate": {
+          "name": "SurfaceBase::Duplicate",
+          "kind": "function",
+          "type": "Surface",
+          "parameters": [],
+          "sourceName": "SDL_DuplicateSurface",
+          "immutable": true,
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "SurfaceBase::Scale": {
+          "name": "SurfaceBase::Scale",
+          "kind": "function",
+          "type": "Surface",
+          "parameters": [
+            {
+              "name": "width",
+              "type": "int"
+            },
+            {
+              "name": "height",
+              "type": "int"
+            },
+            {
+              "name": "scaleMode",
+              "type": "ScaleMode"
+            }
+          ],
+          "sourceName": "SDL_ScaleSurface",
+          "immutable": true,
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "SurfaceBase::Convert": [
+          {
+            "name": "SurfaceBase::Convert",
+            "kind": "function",
+            "type": "Surface",
+            "parameters": [
+              {
+                "name": "format",
+                "type": "PixelFormat"
+              }
+            ],
+            "sourceName": "SDL_ConvertSurface",
+            "immutable": true,
+            "hints": {
+              "self": "get()",
+              "super": "Resource"
+            }
+          },
+          {
+            "name": "SurfaceBase::Convert",
+            "kind": "function",
+            "type": "Surface",
+            "parameters": [
+              {
+                "name": "format",
+                "type": "PixelFormat"
+              },
+              {
+                "name": "palette",
+                "type": "PaletteRef"
+              },
+              {
+                "name": "colorspace",
+                "type": "Colorspace"
+              },
+              {
+                "name": "props",
+                "type": "PropertiesRef"
+              }
+            ],
+            "sourceName": "SDL_ConvertSurfaceAndColorspace",
+            "immutable": true,
+            "hints": {
+              "self": "get()",
+              "super": "Resource"
+            }
           }
         ],
         "ConvertPixels": {
@@ -17611,7 +17860,7 @@
           "type": "SDL_KeyboardDeviceEvent"
         },
         "KeyboardEvent": {
-          "doc": "Keyboard button event structure (event.key.*)\n\nThe `key` is the base Keycode generated by pressing the `scancode`\nusing the current keyboard layout, applying any options specified in\nSDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the\nevent scancode and modifiers directly from the keyboard layout, bypassing\nSDL_HINT_KEYCODE_OPTIONS, by calling Keycode::Keycode().\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa SDL_HINT_KEYCODE_OPTIONS",
+          "doc": "Keyboard button event structure (event.key.*)\n\nThe `key` is the base Keycode generated by pressing the `scancode`\nusing the current keyboard layout, applying any options specified in\nSDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the\nevent scancode and modifiers directly from the keyboard layout, bypassing\nSDL_HINT_KEYCODE_OPTIONS, by calling Keycode.Keycode().\n\n@since This struct is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa SDL_HINT_KEYCODE_OPTIONS",
           "name": "KeyboardEvent",
           "kind": "alias",
           "sourceName": "SDL_KeyboardEvent",
@@ -17632,7 +17881,7 @@
           "type": "SDL_TextEditingCandidatesEvent"
         },
         "TextInputEvent": {
-          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nWindowBase::StartTextInput(). Text input is disabled by default!\n\n@since This struct is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput",
+          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nWindowBase.StartTextInput(). Text input is disabled by default!\n\n@since This struct is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput",
           "name": "TextInputEvent",
           "kind": "alias",
           "sourceName": "SDL_TextInputEvent",
@@ -18487,7 +18736,7 @@
         },
         "Keycode::Keycode": [
           {
-            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@post the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetName\n@sa Keycode::GetScancode",
+            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@post the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.GetName\n@sa Keycode.GetScancode",
             "name": "Keycode::Keycode",
             "kind": "function",
             "type": "",
@@ -18511,7 +18760,7 @@
             }
           },
           {
-            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@post key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetName\n@sa Scancode::Scancode",
+            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@post key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.GetName\n@sa Scancode.Scancode",
             "name": "Keycode::Keycode",
             "kind": "function",
             "type": "",
@@ -18528,7 +18777,7 @@
           }
         ],
         "Keycode::GetScancode": {
-          "doc": "Get the scancode corresponding to the given key code according to the\ncurrent keyboard layout.\n\nNote that there may be multiple scancode+modifier states that can generate\nthis keycode, this will just return the first one found.\n\n@param modstate a pointer to the modifier state that would be used when the\n                scancode generates this key, may be nullptr.\n@returns the Scancode that corresponds to the given Keycode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Scancode::GetName",
+          "doc": "Get the scancode corresponding to the given key code according to the\ncurrent keyboard layout.\n\nNote that there may be multiple scancode+modifier states that can generate\nthis keycode, this will just return the first one found.\n\n@param modstate a pointer to the modifier state that would be used when the\n                scancode generates this key, may be nullptr.\n@returns the Scancode that corresponds to the given Keycode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Scancode.GetName",
           "name": "Keycode::GetScancode",
           "kind": "function",
           "type": "Scancode",
@@ -18545,7 +18794,7 @@
           }
         },
         "Scancode::SetName": {
-          "doc": "Set a human-readable name for a scancode.\n\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode::GetName",
+          "doc": "Set a human-readable name for a scancode.\n\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode.GetName",
           "name": "Scancode::SetName",
           "kind": "function",
           "type": "bool",
@@ -18561,7 +18810,7 @@
           }
         },
         "Scancode::GetName": {
-          "doc": "Get a human-readable name for a scancode.\n\n**Warning**: The returned name is by design not stable across platforms,\ne.g. the name for `SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left\nWindows\" under Microsoft Windows, and some scancodes like\n`SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even\nscancodes that share names, e.g. `SCANCODE_RETURN` and\n`SCANCODE_RETURN2` (both called \"Return\"). This function is therefore\nunsuitable for creating a stable cross-platform two-way mapping between\nstrings and scancodes.\n\n@returns a pointer to the name for the scancode. If the scancode doesn't\n         have a name this function returns an empty string (\"\").\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetScancode\n@sa Scancode::Scancode\n@sa Scancode::SetName",
+          "doc": "Get a human-readable name for a scancode.\n\n**Warning**: The returned name is by design not stable across platforms,\ne.g. the name for `SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left\nWindows\" under Microsoft Windows, and some scancodes like\n`SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even\nscancodes that share names, e.g. `SCANCODE_RETURN` and\n`SCANCODE_RETURN2` (both called \"Return\"). This function is therefore\nunsuitable for creating a stable cross-platform two-way mapping between\nstrings and scancodes.\n\n@returns a pointer to the name for the scancode. If the scancode doesn't\n         have a name this function returns an empty string (\"\").\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.GetScancode\n@sa Scancode.Scancode\n@sa Scancode.SetName",
           "name": "Scancode::GetName",
           "kind": "function",
           "type": "const char *",
@@ -18573,7 +18822,7 @@
           }
         },
         "Scancode::Scancode": {
-          "doc": "Get a scancode from a human-readable name.\n\n@param name the human-readable scancode name.\n@post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't\n         recognized; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetScancode\n@sa Scancode::GetName",
+          "doc": "Get a scancode from a human-readable name.\n\n@param name the human-readable scancode name.\n@post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't\n         recognized; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.GetScancode\n@sa Scancode.GetName",
           "name": "Scancode::Scancode",
           "kind": "function",
           "type": "",
@@ -18589,7 +18838,7 @@
           }
         },
         "Keycode::GetName": {
-          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::Keycode\n@sa Keycode::GetScancode",
+          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode.Keycode\n@sa Keycode.Keycode\n@sa Keycode.GetScancode",
           "name": "Keycode::GetName",
           "kind": "function",
           "type": "const char *",
@@ -18602,7 +18851,7 @@
         },
         "WindowBase::StartTextInput": [
           {
-            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput\n@sa WindowBase::IsTextInputActive",
+            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase.StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput\n@sa WindowBase.IsTextInputActive",
             "name": "WindowBase<T>::StartTextInput",
             "kind": "function",
             "type": "bool",
@@ -18616,7 +18865,7 @@
             ]
           },
           {
-            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `prop::TextInput.TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput\n@sa WindowBase::IsTextInputActive",
+            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase.StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `prop::TextInput.TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput\n@sa WindowBase.IsTextInputActive",
             "name": "WindowBase<T>::StartTextInput",
             "kind": "function",
             "type": "bool",
@@ -18636,7 +18885,7 @@
           }
         ],
         "TextInputType": {
-          "doc": "Text input type.\n\nThese are the valid values for prop::TextInput.TYPE_NUMBER. Not every\nvalue is valid on every platform, but where a value isn't supported, a\nreasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
+          "doc": "Text input type.\n\nThese are the valid values for prop::TextInput.TYPE_NUMBER. Not every\nvalue is valid on every platform, but where a value isn't supported, a\nreasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput",
           "name": "TextInputType",
           "kind": "alias",
           "sourceName": "SDL_TextInputType",
@@ -18715,7 +18964,7 @@
           "sourceName": "SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE"
         },
         "Capitalization": {
-          "doc": "Auto capitalization type.\n\nThese are the valid values for prop::TextInput.CAPITALIZATION_NUMBER.\nNot every value is valid on every platform, but where a value isn't\nsupported, a reasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
+          "doc": "Auto capitalization type.\n\nThese are the valid values for prop::TextInput.CAPITALIZATION_NUMBER.\nNot every value is valid on every platform, but where a value isn't\nsupported, a reasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput",
           "name": "Capitalization",
           "kind": "alias",
           "sourceName": "SDL_Capitalization",
@@ -18806,7 +19055,7 @@
           "doc": ""
         },
         "WindowBase::IsTextInputActive": {
-          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
+          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput",
           "name": "WindowBase<T>::IsTextInputActive",
           "kind": "function",
           "type": "bool",
@@ -18821,7 +19070,7 @@
           ]
         },
         "WindowBase::StopTextInput": {
-          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase::StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
+          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase.StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput",
           "name": "WindowBase<T>::StopTextInput",
           "kind": "function",
           "type": "bool",
@@ -18835,7 +19084,7 @@
           ]
         },
         "WindowBase::ClearComposition": {
-          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput",
+          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput",
           "name": "WindowBase<T>::ClearComposition",
           "kind": "function",
           "type": "bool",
@@ -18849,7 +19098,7 @@
           ]
         },
         "WindowBase::SetTextInputArea": {
-          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::GetTextInputArea\n@sa WindowBase::StartTextInput",
+          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetTextInputArea\n@sa WindowBase.StartTextInput",
           "name": "WindowBase<T>::SetTextInputArea",
           "kind": "function",
           "type": "bool",
@@ -18872,7 +19121,7 @@
           ]
         },
         "WindowBase::GetTextInputArea": {
-          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase::SetTextInputArea().\n\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea",
+          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase.SetTextInputArea().\n\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea",
           "name": "WindowBase<T>::GetTextInputArea",
           "kind": "function",
           "type": "bool",
@@ -18895,7 +19144,7 @@
           ]
         },
         "HasScreenKeyboardSupport": {
-          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput\n@sa ScreenKeyboardShown",
+          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput\n@sa ScreenKeyboardShown",
           "name": "HasScreenKeyboardSupport",
           "kind": "function",
           "type": "bool",
@@ -25060,7 +25309,7 @@
     },
     "SDL3pp_timer.h": {
       "name": "SDL3pp_timer.h",
-      "doc": "@defgroup CategoryTimer Category Timer\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](CategoryTime).\n\nThis category covers measuring time elapsed (SDL_GetTicks(),\nGetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing\na callback function after a certain amount of time has elasped\n(AddTimer(), etc).\n\nThere are also useful macros to convert between time units, like\nTime::FromPosix() and such.",
+      "doc": "@defgroup CategoryTimer Category Timer\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](CategoryTime).\n\nThis category covers measuring time elapsed (SDL_GetTicks(),\nGetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing\na callback function after a certain amount of time has elasped\n(AddTimer(), etc).\n\nThere are also useful macros to convert between time units, like\nTime.FromPosix() and such.",
       "entries": {
         "Time::FromPosix": {
           "doc": "Convert seconds to nanoseconds.\n\nThis only converts whole numbers, not fractional seconds.\n\n@param S the number of seconds to convert.\n@returns S, expressed in nanoseconds.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -28213,7 +28462,7 @@
           "doc": "Handle to an owned trayEntry\n\n@cat resource\n\n@sa TrayEntryBase\n@sa TrayEntryRef"
         },
         "TrayEntryFlags": {
-          "doc": "Flags that control the creation of system tray entries.\n\nSome of these flags are required; exactly one of them must be specified at\nthe time a tray entry is created. Other flags are optional; zero or more of\nthose can be OR'ed together with the required flag.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa TrayMenu::InsertEntry",
+          "doc": "Flags that control the creation of system tray entries.\n\nSome of these flags are required; exactly one of them must be specified at\nthe time a tray entry is created. Other flags are optional; zero or more of\nthose can be OR'ed together with the required flag.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa TrayMenu.InsertEntry",
           "name": "TrayEntryFlags",
           "kind": "alias",
           "type": "Uint32",
@@ -28283,14 +28532,14 @@
               "doc": ""
             },
             "TrayBase": {
-              "doc": "Create an icon to be placed in the operating system's tray, or equivalent.\n\nMany platforms advise not using a system tray unless persistence is a\nnecessary feature. Avoid needlessly creating a tray icon, as the user may\nfeel like it clutters their interface.\n\nUsing tray icons require the video subsystem.\n\n@param icon a surface to be used as icon. May be nullptr.\n@param tooltip a tooltip to be displayed when the mouse hovers the icon in\n               UTF-8 encoding. Not supported on all platforms. May be nullptr.\n@post The newly created system tray icon.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase::CreateMenu\n@sa TrayBase::GetMenu\n@sa TrayBase.Destroy",
+              "doc": "Create an icon to be placed in the operating system's tray, or equivalent.\n\nMany platforms advise not using a system tray unless persistence is a\nnecessary feature. Avoid needlessly creating a tray icon, as the user may\nfeel like it clutters their interface.\n\nUsing tray icons require the video subsystem.\n\n@param icon a surface to be used as icon. May be nullptr.\n@param tooltip a tooltip to be displayed when the mouse hovers the icon in\n               UTF-8 encoding. Not supported on all platforms. May be nullptr.\n@post The newly created system tray icon.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.CreateMenu\n@sa TrayBase.GetMenu\n@sa TrayBase.Destroy",
               "name": "TrayBase",
               "kind": "function",
               "type": "",
               "parameters": [
                 {
                   "name": "icon",
-                  "type": "SurfaceRef"
+                  "type": "SurfaceBase &"
                 },
                 {
                   "name": "tooltip",
@@ -28307,7 +28556,7 @@
               "parameters": [
                 {
                   "name": "icon",
-                  "type": "SurfaceRef"
+                  "type": "SurfaceBase &"
                 }
               ],
               "sourceName": "SDL_SetTrayIcon"
@@ -28342,7 +28591,7 @@
               "sourceName": "SDL_DestroyTray"
             },
             "CreateMenu": {
-              "doc": "Create a menu for a system tray.\n\nThis should be called at most once per tray icon.\n\nThis function does the same thing as TrayEntryBase.CreateSubmenu(), except that\nit takes a TrayBase instead of a TrayEntryBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.TrayBase\n@sa TrayBase::GetMenu\n@sa TrayMenu::GetParentTray",
+              "doc": "Create a menu for a system tray.\n\nThis should be called at most once per tray icon.\n\nThis function does the same thing as TrayEntryBase.CreateSubmenu(), except that\nit takes a TrayBase instead of a TrayEntryBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.TrayBase\n@sa TrayBase.GetMenu\n@sa TrayMenu.GetParentTray",
               "name": "CreateMenu",
               "kind": "function",
               "type": "TrayMenu",
@@ -28351,7 +28600,7 @@
               "proto": true
             },
             "GetMenu": {
-              "doc": "Gets a previously created tray menu.\n\nYou should have called TrayBase::CreateMenu() on the tray object. This\nfunction allows you to fetch it again later.\n\nThis function does the same thing as TrayEntryBase.GetSubmenu(), except that it\ntakes a TrayBase instead of a TrayEntryBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.TrayBase\n@sa TrayBase::CreateMenu",
+              "doc": "Gets a previously created tray menu.\n\nYou should have called TrayBase.CreateMenu() on the tray object. This\nfunction allows you to fetch it again later.\n\nThis function does the same thing as TrayEntryBase.GetSubmenu(), except that it\ntakes a TrayBase instead of a TrayEntryBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.TrayBase\n@sa TrayBase.CreateMenu",
               "name": "GetMenu",
               "kind": "function",
               "type": "TrayMenu",
@@ -28458,7 +28707,7 @@
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
             },
             "GetEntries": {
-              "doc": "Returns a list of entries in the menu, in order.\n\n@param count An optional pointer to obtain the number of entries in the\n             menu.\n@returns a nullptr-terminated list of entries within the given menu. The\n         pointer becomes invalid when any function that inserts or deletes\n         entries in the menu is called.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryBase.Remove\n@sa TrayMenu::InsertEntry",
+              "doc": "Returns a list of entries in the menu, in order.\n\n@param count An optional pointer to obtain the number of entries in the\n             menu.\n@returns a nullptr-terminated list of entries within the given menu. The\n         pointer becomes invalid when any function that inserts or deletes\n         entries in the menu is called.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryBase.Remove\n@sa TrayMenu.InsertEntry",
               "name": "GetEntries",
               "kind": "function",
               "type": "std::span<TrayEntry>",
@@ -28467,7 +28716,7 @@
               "proto": true
             },
             "InsertEntry": {
-              "doc": "Insert a tray entry at a given position.\n\nIf label is nullptr, the entry will be a separator. Many functions won't work\nfor an entry that is a separator.\n\nAn entry does not need to be destroyed; it will be destroyed with the tray.\n\n@param pos the desired position for the new entry. Entries at or following\n           this place will be moved. If pos is -1, the entry is appended.\n@param label the text to be displayed on the entry, in UTF-8 encoding, or\n             nullptr for a separator.\n@param flags a combination of flags, some of which are mandatory.\n@returns the newly created entry, or nullptr if pos is out of bounds.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryFlags\n@sa TrayMenu::GetEntries\n@sa TrayEntryBase.Remove\n@sa TrayEntryBase.GetParent",
+              "doc": "Insert a tray entry at a given position.\n\nIf label is nullptr, the entry will be a separator. Many functions won't work\nfor an entry that is a separator.\n\nAn entry does not need to be destroyed; it will be destroyed with the tray.\n\n@param pos the desired position for the new entry. Entries at or following\n           this place will be moved. If pos is -1, the entry is appended.\n@param label the text to be displayed on the entry, in UTF-8 encoding, or\n             nullptr for a separator.\n@param flags a combination of flags, some of which are mandatory.\n@returns the newly created entry, or nullptr if pos is out of bounds.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryFlags\n@sa TrayMenu.GetEntries\n@sa TrayEntryBase.Remove\n@sa TrayEntryBase.GetParent",
               "name": "InsertEntry",
               "kind": "function",
               "type": "TrayEntry",
@@ -28507,7 +28756,7 @@
               "proto": true
             },
             "GetParentEntry": {
-              "doc": "Gets the entry for which the menu is a submenu, if the current menu is a\nsubmenu.\n\nEither this function or TrayMenu::GetParentTray() will return non-nullptr\nfor any given menu.\n\n@returns the parent entry, or nullptr if this menu is not a submenu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryBase.CreateSubmenu\n@sa TrayMenu::GetParentTray",
+              "doc": "Gets the entry for which the menu is a submenu, if the current menu is a\nsubmenu.\n\nEither this function or TrayMenu.GetParentTray() will return non-nullptr\nfor any given menu.\n\n@returns the parent entry, or nullptr if this menu is not a submenu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryBase.CreateSubmenu\n@sa TrayMenu.GetParentTray",
               "name": "GetParentEntry",
               "kind": "function",
               "type": "TrayEntryRef",
@@ -28517,7 +28766,7 @@
               "proto": true
             },
             "GetParentTray": {
-              "doc": "Gets the tray for which this menu is the first-level menu, if the current\nmenu isn't a submenu.\n\nEither this function or TrayMenu::GetParentEntry() will return non-nullptr\nfor any given menu.\n\n@returns the parent tray, or nullptr if this menu is a submenu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase::CreateMenu\n@sa TrayMenu::GetParentEntry",
+              "doc": "Gets the tray for which this menu is the first-level menu, if the current\nmenu isn't a submenu.\n\nEither this function or TrayMenu.GetParentEntry() will return non-nullptr\nfor any given menu.\n\n@returns the parent tray, or nullptr if this menu is a submenu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.CreateMenu\n@sa TrayMenu.GetParentEntry",
               "name": "GetParentTray",
               "kind": "function",
               "type": "TrayRef",
@@ -28547,7 +28796,7 @@
               "doc": ""
             },
             "CreateSubmenu": {
-              "doc": "Create a submenu for a system tray entry.\n\nThis should be called at most once per tray entry.\n\nThis function does the same thing as TrayBase::CreateMenu, except that it\ntakes a TrayEntryBase instead of a TrayBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::InsertEntry\n@sa TrayEntryBase.GetSubmenu\n@sa TrayMenu::GetParentEntry",
+              "doc": "Create a submenu for a system tray entry.\n\nThis should be called at most once per tray entry.\n\nThis function does the same thing as TrayBase.CreateMenu, except that it\ntakes a TrayEntryBase instead of a TrayBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.InsertEntry\n@sa TrayEntryBase.GetSubmenu\n@sa TrayMenu.GetParentEntry",
               "name": "CreateSubmenu",
               "kind": "function",
               "type": "TrayMenu",
@@ -28555,7 +28804,7 @@
               "sourceName": "SDL_CreateTraySubmenu"
             },
             "GetSubmenu": {
-              "doc": "Gets a previously created tray entry submenu.\n\nYou should have called TrayEntryBase.CreateSubmenu() on the entry object. This\nfunction allows you to fetch it again later.\n\nThis function does the same thing as TrayBase::GetMenu(), except that it\ntakes a TrayEntryBase instead of a TrayBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::InsertEntry\n@sa TrayEntryBase.CreateSubmenu",
+              "doc": "Gets a previously created tray entry submenu.\n\nYou should have called TrayEntryBase.CreateSubmenu() on the entry object. This\nfunction allows you to fetch it again later.\n\nThis function does the same thing as TrayBase.GetMenu(), except that it\ntakes a TrayEntryBase instead of a TrayBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.InsertEntry\n@sa TrayEntryBase.CreateSubmenu",
               "name": "GetSubmenu",
               "kind": "function",
               "type": "TrayMenu",
@@ -28563,7 +28812,7 @@
               "sourceName": "SDL_GetTraySubmenu"
             },
             "SetLabel": {
-              "doc": "Sets the label of an entry.\n\nAn entry cannot change between a separator and an ordinary entry; that is,\nit is not possible to set a non-nullptr label on an entry that has a nullptr\nlabel (separators), or to set a nullptr label to an entry that has a non-nullptr\nlabel. The function will silently fail if that happens.\n\n@param label the new label for the entry in UTF-8 encoding.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::GetEntries\n@sa TrayMenu::InsertEntry\n@sa TrayEntryBase.GetLabel",
+              "doc": "Sets the label of an entry.\n\nAn entry cannot change between a separator and an ordinary entry; that is,\nit is not possible to set a non-nullptr label on an entry that has a nullptr\nlabel (separators), or to set a nullptr label to an entry that has a non-nullptr\nlabel. The function will silently fail if that happens.\n\n@param label the new label for the entry in UTF-8 encoding.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry\n@sa TrayEntryBase.GetLabel",
               "name": "SetLabel",
               "kind": "function",
               "type": "void",
@@ -28576,7 +28825,7 @@
               "sourceName": "SDL_SetTrayEntryLabel"
             },
             "GetLabel": {
-              "doc": "Gets the label of an entry.\n\nIf the returned value is nullptr, the entry is a separator.\n\n@returns the label of the entry in UTF-8 encoding.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::GetEntries\n@sa TrayMenu::InsertEntry\n@sa TrayEntryBase.SetLabel",
+              "doc": "Gets the label of an entry.\n\nIf the returned value is nullptr, the entry is a separator.\n\n@returns the label of the entry in UTF-8 encoding.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry\n@sa TrayEntryBase.SetLabel",
               "name": "GetLabel",
               "kind": "function",
               "type": "const char *",
@@ -28585,7 +28834,7 @@
               "immutable": true
             },
             "SetChecked": {
-              "doc": "Sets whether or not an entry is checked.\n\nThe entry must have been created with the TRAYENTRY_CHECKBOX flag.\n\n@param checked true if the entry should be checked; false otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::GetEntries\n@sa TrayMenu::InsertEntry\n@sa TrayEntryBase.GetChecked",
+              "doc": "Sets whether or not an entry is checked.\n\nThe entry must have been created with the TRAYENTRY_CHECKBOX flag.\n\n@param checked true if the entry should be checked; false otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry\n@sa TrayEntryBase.GetChecked",
               "name": "SetChecked",
               "kind": "function",
               "type": "void",
@@ -28598,7 +28847,7 @@
               "sourceName": "SDL_SetTrayEntryChecked"
             },
             "GetChecked": {
-              "doc": "Gets whether or not an entry is checked.\n\nThe entry must have been created with the TRAYENTRY_CHECKBOX flag.\n\n@returns true if the entry is checked; false otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::GetEntries\n@sa TrayMenu::InsertEntry\n@sa TrayEntryBase.SetChecked",
+              "doc": "Gets whether or not an entry is checked.\n\nThe entry must have been created with the TRAYENTRY_CHECKBOX flag.\n\n@returns true if the entry is checked; false otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry\n@sa TrayEntryBase.SetChecked",
               "name": "GetChecked",
               "kind": "function",
               "type": "bool",
@@ -28607,7 +28856,7 @@
               "immutable": true
             },
             "SetEnabled": {
-              "doc": "Sets whether or not an entry is enabled.\n\n@param enabled true if the entry should be enabled; false otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::GetEntries\n@sa TrayMenu::InsertEntry\n@sa TrayEntryBase.GetEnabled",
+              "doc": "Sets whether or not an entry is enabled.\n\n@param enabled true if the entry should be enabled; false otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry\n@sa TrayEntryBase.GetEnabled",
               "name": "SetEnabled",
               "kind": "function",
               "type": "void",
@@ -28620,7 +28869,7 @@
               "sourceName": "SDL_SetTrayEntryEnabled"
             },
             "GetEnabled": {
-              "doc": "Gets whether or not an entry is enabled.\n\n@returns true if the entry is enabled; false otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::GetEntries\n@sa TrayMenu::InsertEntry\n@sa TrayEntryBase.SetEnabled",
+              "doc": "Gets whether or not an entry is enabled.\n\n@returns true if the entry is enabled; false otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry\n@sa TrayEntryBase.SetEnabled",
               "name": "GetEnabled",
               "kind": "function",
               "type": "bool",
@@ -28642,7 +28891,7 @@
                 "doc": ""
               },
               {
-                "doc": "Sets a callback to be invoked when the entry is selected.\n\n@param callback a callback to be invoked when the entry is selected.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::GetEntries\n@sa TrayMenu::InsertEntry",
+                "doc": "Sets a callback to be invoked when the entry is selected.\n\n@param callback a callback to be invoked when the entry is selected.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry",
                 "name": "SetCallback",
                 "kind": "function",
                 "type": "void",
@@ -28668,7 +28917,7 @@
               "sourceName": "SDL_ClickTrayEntry"
             },
             "GetParent": {
-              "doc": "Gets the menu containing a certain tray entry.\n\n@returns the parent menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::InsertEntry",
+              "doc": "Gets the menu containing a certain tray entry.\n\n@returns the parent menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.InsertEntry",
               "name": "GetParent",
               "kind": "function",
               "type": "TrayMenu",
@@ -28676,7 +28925,7 @@
               "sourceName": "SDL_GetTrayEntryParent"
             },
             "Remove": {
-              "doc": "Removes a tray entry.\n\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu::GetEntries\n@sa TrayMenu::InsertEntry",
+              "doc": "Removes a tray entry.\n\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry",
               "name": "Remove",
               "kind": "function",
               "type": "void",
@@ -29113,7 +29362,7 @@
           "constexpr": true
         },
         "Time": {
-          "doc": "SDL times are signed, 64-bit integers representing nanoseconds since the\nUnix epoch (Jan 1, 1970).\n\nThey can be converted between POSIX time_t values with Time::ToPosix()\nand Time::FromPosix(), and between Windows FILETIME values with\nTime::ToWindows() and Time::FromWindows().\n\n@since This macro is available since SDL 3.2.0.\n\n@sa MAX_SINT64\n@sa MIN_SINT64",
+          "doc": "SDL times are signed, 64-bit integers representing nanoseconds since the\nUnix epoch (Jan 1, 1970).\n\nThey can be converted between POSIX time_t values with Time.ToPosix()\nand Time.FromPosix(), and between Windows FILETIME values with\nTime.ToWindows() and Time.FromWindows().\n\n@since This macro is available since SDL 3.2.0.\n\n@sa MAX_SINT64\n@sa MIN_SINT64",
           "name": "Time",
           "kind": "struct",
           "type": "",
@@ -32583,7 +32832,7 @@
         },
         "LoadSurface": [
           {
-            "doc": "Load an image from an SDL data source into a software surface.\n\nAn SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SurfaceBase data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SurfaceBase for\nits specifics, and use SurfaceBase.Convert to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamBase: `LoadSurface(\"filename.jpg\")` will call this function and\nmanage those details for you, determining the file type from the filename's\nextension.\n\nThere is also LoadSurface(), which is equivalent to this function except\nthat it will rely on SDL_image to determine what type of data it is\nloading, much like passing a nullptr for type.\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an TextureBase for use by the GPU without using a\nsoftware surface: call LoadTexture() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceBase.Destroy().\n\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"BMP\", \"GIF\",\n            \"PNG\", etc).\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadSurface\n@sa LoadSurface\n@sa SurfaceBase.Destroy",
+            "doc": "Load an image from an SDL data source into a software surface.\n\nAn SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SurfaceBase data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SurfaceBase for\nits specifics, and use SurfaceBase.Convert to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamBase: `LoadSurface(\"filename.jpg\")` will call this function and\nmanage those details for you, determining the file type from the filename's\nextension.\n\nThere is also LoadSurface(), which is equivalent to this function except\nthat it will rely on SDL_image to determine what type of data it is\nloading, much like passing a nullptr for type.\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an TextureBase for use by the GPU without using a\nsoftware surface: call LoadTexture() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceRef.reset().\n\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"BMP\", \"GIF\",\n            \"PNG\", etc).\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadSurface\n@sa LoadSurface\n@sa SurfaceRef.reset",
             "name": "LoadSurface",
             "kind": "function",
             "type": "Surface",
@@ -32600,7 +32849,7 @@
             "sourceName": "IMG_LoadTyped_IO"
           },
           {
-            "doc": "Load an image from a filesystem path into a software surface.\n\nAn SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SurfaceBase data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SurfaceBase for\nits specifics, and use SurfaceBase.Convert to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nThere is a separate function to read files from an IOStreamBase, if you\nneed an i/o abstraction to provide data from anywhere instead of a simple\nfilesystem read; that function is LoadSurface().\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an TextureBase for use by the GPU without using a\nsoftware surface: call LoadTexture() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to\n[SurfaceBase.Destroy](https://wiki.libsdl.org/SDL3/SurfaceBase.Destroy)\n().\n\n@param file a path on the filesystem to load an image from.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadSurface\n@sa LoadSurface\n@sa SurfaceBase.Destroy",
+            "doc": "Load an image from a filesystem path into a software surface.\n\nAn SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SurfaceBase data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SurfaceBase for\nits specifics, and use SurfaceBase.Convert to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nThere is a separate function to read files from an IOStreamBase, if you\nneed an i/o abstraction to provide data from anywhere instead of a simple\nfilesystem read; that function is LoadSurface().\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an TextureBase for use by the GPU without using a\nsoftware surface: call LoadTexture() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to\n[SurfaceRef.reset](https://wiki.libsdl.org/SDL3/SurfaceRef.reset)\n().\n\n@param file a path on the filesystem to load an image from.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadSurface\n@sa LoadSurface\n@sa SurfaceRef.reset",
             "name": "LoadSurface",
             "kind": "function",
             "type": "Surface",
@@ -32613,7 +32862,7 @@
             "sourceName": "IMG_Load"
           },
           {
-            "doc": "Load an image from an SDL data source into a software surface.\n\nAn SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SurfaceBase data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SurfaceBase for\nits specifics, and use SurfaceBase.Convert to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamBase: `LoadSurface(\"filename.jpg\")` will call this function and\nmanage those details for you, determining the file type from the filename's\nextension.\n\nThere is also LoadSurface(), which is equivalent to this function\nexcept a file extension (like \"BMP\", \"JPG\", etc) can be specified, in case\nSDL_image cannot autodetect the file format.\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an TextureBase for use by the GPU without using a\nsoftware surface: call LoadTexture() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceBase.Destroy().\n\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadSurface\n@sa LoadSurface\n@sa SurfaceBase.Destroy",
+            "doc": "Load an image from an SDL data source into a software surface.\n\nAn SurfaceBase is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SurfaceBase data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SurfaceBase for\nits specifics, and use SurfaceBase.Convert to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SurfaceBase.SetColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamBase: `LoadSurface(\"filename.jpg\")` will call this function and\nmanage those details for you, determining the file type from the filename's\nextension.\n\nThere is also LoadSurface(), which is equivalent to this function\nexcept a file extension (like \"BMP\", \"JPG\", etc) can be specified, in case\nSDL_image cannot autodetect the file format.\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an TextureBase for use by the GPU without using a\nsoftware surface: call LoadTexture() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceRef.reset().\n\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadSurface\n@sa LoadSurface\n@sa SurfaceRef.reset",
             "name": "LoadSurface",
             "kind": "function",
             "type": "Surface",
@@ -33152,7 +33401,7 @@
           "sourceName": "IMG_LoadWEBP_IO"
         },
         "LoadSizedSVG": {
-          "doc": "Load an SVG image, scaled to a specific size.\n\nSince SVG files are resolution-independent, you specify the size you would\nlike the output image to be and it will be generated at those dimensions.\n\nEither width or height may be 0 and the image will be auto-sized to\npreserve aspect ratio.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceBase.Destroy().\n\n@param src an IOStreamBase to load SVG data from.\n@param width desired width of the generated surface, in pixels.\n@param height desired height of the generated surface, in pixels.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.",
+          "doc": "Load an SVG image, scaled to a specific size.\n\nSince SVG files are resolution-independent, you specify the size you would\nlike the output image to be and it will be generated at those dimensions.\n\nEither width or height may be 0 and the image will be auto-sized to\npreserve aspect ratio.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceRef.reset().\n\n@param src an IOStreamBase to load SVG data from.\n@param width desired width of the generated surface, in pixels.\n@param height desired height of the generated surface, in pixels.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.",
           "name": "LoadSizedSVG",
           "kind": "function",
           "type": "Surface",
@@ -33173,7 +33422,7 @@
           "sourceName": "IMG_LoadSizedSVG_IO"
         },
         "ReadXPMFromArray": {
-          "doc": "Load an XPM image from a memory array.\n\nThe returned surface will be an 8bpp indexed surface, if possible,\notherwise it will be 32bpp. If you always want 32-bit data, use\nReadXPMFromArrayToRGB888() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceBase.Destroy().\n\n@param xpm a null-terminated array of strings that comprise XPM data.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa ReadXPMFromArrayToRGB888",
+          "doc": "Load an XPM image from a memory array.\n\nThe returned surface will be an 8bpp indexed surface, if possible,\notherwise it will be 32bpp. If you always want 32-bit data, use\nReadXPMFromArrayToRGB888() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceRef.reset().\n\n@param xpm a null-terminated array of strings that comprise XPM data.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa ReadXPMFromArrayToRGB888",
           "name": "ReadXPMFromArray",
           "kind": "function",
           "type": "Surface",
@@ -33186,7 +33435,7 @@
           "sourceName": "IMG_ReadXPMFromArray"
         },
         "ReadXPMFromArrayToRGB888": {
-          "doc": "Load an XPM image from a memory array.\n\nThe returned surface will always be a 32-bit RGB surface. If you want 8-bit\nindexed colors (and the XPM data allows it), use ReadXPMFromArray()\ninstead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceBase.Destroy().\n\n@param xpm a null-terminated array of strings that comprise XPM data.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa ReadXPMFromArray",
+          "doc": "Load an XPM image from a memory array.\n\nThe returned surface will always be a 32-bit RGB surface. If you want 8-bit\nindexed colors (and the XPM data allows it), use ReadXPMFromArray()\ninstead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SurfaceRef.reset().\n\n@param xpm a null-terminated array of strings that comprise XPM data.\n@returns a new SDL surface, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa ReadXPMFromArray",
           "name": "ReadXPMFromArrayToRGB888",
           "kind": "function",
           "type": "Surface",
@@ -33207,7 +33456,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef"
+                "type": "SurfaceBase &"
               },
               {
                 "name": "file",
@@ -33251,7 +33500,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef"
+                "type": "SurfaceBase &"
               },
               {
                 "name": "file",
@@ -33287,7 +33536,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef"
+                "type": "SurfaceBase &"
               },
               {
                 "name": "file",
@@ -33441,7 +33690,8 @@
             }
           },
           "hints": {
-            "self": "get()"
+            "self": "get()",
+            "super": "Resource"
           }
         },
         "AnimationRef": {
@@ -33535,7 +33785,7 @@
               "sourceName": "IMG_FreeAnimation",
               "static": false,
               "hints": {
-                "body": "IMG_FreeAnimation(release(newResource))"
+                "body": "IMG_FreeAnimation(release(newResource));"
               }
             }
           }

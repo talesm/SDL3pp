@@ -49,6 +49,12 @@ public:
     m_resource = newResource;
     return result;
   }
+
+  /// Access to fields
+  constexpr const T operator->() const { return get(); }
+
+  /// Access to fields
+  constexpr T operator->() { return get(); }
 };
 
 } // namespace SDL
