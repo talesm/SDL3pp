@@ -333,7 +333,7 @@ public:
    * @sa TrayEntryBase.Remove
    * @sa TrayMenu::InsertEntry
    */
-  RefArray<TrayEntry> GetEntries();
+  std::span<TrayEntry> GetEntries();
 
   /**
    * Insert a tray entry at a given position.
@@ -700,12 +700,12 @@ inline TrayMenu TrayBase<T>::GetMenu() const
   return SDL_GetTrayMenu(T::get());
 }
 
-inline RefArray<TrayEntry> TrayMenu::GetEntries()
+inline std::span<TrayEntry> TrayMenu::GetEntries()
 {
   int count;
   auto entries = SDL_GetTrayEntries(m_trayMenu, &count);
-  return RefArray<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
-                             size_t(count)};
+  return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
+                              size_t(count)};
 }
 
 inline TrayEntry TrayMenu::InsertEntry(int pos,

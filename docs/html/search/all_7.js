@@ -68,7 +68,7 @@ var searchData=
   ['getenabled_65',['GetEnabled',['../structSDL_1_1TrayEntryBase.html#aa64bcbe22c1411373b96434d9df6f07b',1,'SDL::TrayEntryBase']]],
   ['getenclosingpoints_66',['getenclosingpoints',['../structSDL_1_1FRect.html#a649351ae73eb3bba1fea415c5c0a0d4f',1,'SDL::FRect::GetEnclosingPoints()'],['../structSDL_1_1Rect.html#a8b25e7a96facab6b5eca7d5f5b4d7d46',1,'SDL::Rect::GetEnclosingPoints()']]],
   ['getengine_67',['GetEngine',['../structSDL_1_1TextBase.html#aef7135cbc58dcf368f321306398e2aae',1,'SDL::TextBase']]],
-  ['getentries_68',['GetEntries',['../group__CategoryTray.html#ga74a55b169bec018aab65ffd28a433f78',1,'SDL::TrayMenu']]],
+  ['getentries_68',['GetEntries',['../group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c',1,'SDL::TrayMenu']]],
   ['getenv_69',['getenv',['../group__CategoryStdinc.html#ga97502b219bb63f4be0f31868fecc9120',1,'SDL']]],
   ['getenv_5funsafe_70',['getenv_unsafe',['../group__CategoryStdinc.html#ga8a55c001e123a53e424cbc460ec4b1b6',1,'SDL']]],
   ['getenvironment_71',['GetEnvironment',['../group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660',1,'SDL']]],

@@ -6060,7 +6060,7 @@ const transform = {
         },
         "SDL_GetTrayEntries": {
           name: "TrayMenu::GetEntries",
-          type: "RefArray<TrayEntry>",
+          type: "std::span<TrayEntry>",
           parameters: [{}],
         },
         "SDL_InsertTrayEntryAt": {

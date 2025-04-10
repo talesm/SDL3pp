@@ -126,9 +126,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga6884878c1d5ba07cb3b7c2d6133c3b88" id="r_ga6884878c1d5ba07cb3b7c2d6133c3b88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTray.html#ga6884878c1d5ba07cb3b7c2d6133c3b88">SDL::TrayBase&lt; T &gt;::GetMenu</a> () const</td></tr>
 <tr class="memdesc:ga6884878c1d5ba07cb3b7c2d6133c3b88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a previously created tray menu.  <br /></td></tr>
 <tr class="separator:ga6884878c1d5ba07cb3b7c2d6133c3b88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga74a55b169bec018aab65ffd28a433f78" id="r_ga74a55b169bec018aab65ffd28a433f78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryOwnPtr.html#ga32f8cdb48052c736f47b8b0dbef45595">RefArray</a>&lt; <a class="el" href="group__CategoryTray.html#ga39ae8614327fbf46c98b723008631f73">TrayEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTray.html#ga74a55b169bec018aab65ffd28a433f78">SDL::TrayMenu::GetEntries</a> ()</td></tr>
-<tr class="memdesc:ga74a55b169bec018aab65ffd28a433f78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of entries in the menu, in order.  <br /></td></tr>
-<tr class="separator:ga74a55b169bec018aab65ffd28a433f78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad9f14702ffdf88a66a867b06048e215c" id="r_gad9f14702ffdf88a66a867b06048e215c"><td class="memItemLeft" align="right" valign="top">std::span&lt; <a class="el" href="group__CategoryTray.html#ga39ae8614327fbf46c98b723008631f73">TrayEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c">SDL::TrayMenu::GetEntries</a> ()</td></tr>
+<tr class="memdesc:gad9f14702ffdf88a66a867b06048e215c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of entries in the menu, in order.  <br /></td></tr>
+<tr class="separator:gad9f14702ffdf88a66a867b06048e215c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga09aa60bfc8d5f2d7c1551184eded8dea" id="r_ga09aa60bfc8d5f2d7c1551184eded8dea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryTray.html#ga39ae8614327fbf46c98b723008631f73">TrayEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTray.html#ga09aa60bfc8d5f2d7c1551184eded8dea">SDL::TrayMenu::InsertEntry</a> (int pos, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> label, <a class="el" href="group__CategoryTray.html#gae3f0fe92d36aa87cc4f5f720c5064c4b">TrayEntryFlags</a> flags)</td></tr>
 <tr class="memdesc:ga09aa60bfc8d5f2d7c1551184eded8dea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a tray entry at a given position.  <br /></td></tr>
 <tr class="separator:ga09aa60bfc8d5f2d7c1551184eded8dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -347,7 +347,7 @@ Variables</h2></td></tr>
 <dd>
 <a class="el" href="group__CategoryTray.html#gae3f0fe92d36aa87cc4f5f720c5064c4b" title="Flags that control the creation of system tray entries.">TrayEntryFlags</a> </dd>
 <dd>
-<a class="el" href="group__CategoryTray.html#ga74a55b169bec018aab65ffd28a433f78" title="Returns a list of entries in the menu, in order.">TrayMenu::GetEntries</a> </dd>
+<a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu::GetEntries</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1TrayEntryBase.html#a0bcbdc7dec7d7aca79e8563a8c564e6d" title="Removes a tray entry.">TrayEntryBase.Remove</a> </dd>
 <dd>
@@ -393,8 +393,8 @@ template&lt;ObjectBox&lt; SDL_Tray * &gt; T&gt; </div>
 
 </div>
 </div>
-<a id="ga74a55b169bec018aab65ffd28a433f78" name="ga74a55b169bec018aab65ffd28a433f78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga74a55b169bec018aab65ffd28a433f78">&#9670;&#160;</a></span>GetEntries()</h2>
+<a id="gad9f14702ffdf88a66a867b06048e215c" name="gad9f14702ffdf88a66a867b06048e215c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad9f14702ffdf88a66a867b06048e215c">&#9670;&#160;</a></span>GetEntries()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -403,7 +403,7 @@ template&lt;ObjectBox&lt; SDL_Tray * &gt; T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryOwnPtr.html#ga32f8cdb48052c736f47b8b0dbef45595">RefArray</a>&lt; <a class="el" href="group__CategoryTray.html#ga39ae8614327fbf46c98b723008631f73">TrayEntry</a> &gt; SDL::TrayMenu::GetEntries </td>
+          <td class="memname">std::span&lt; <a class="el" href="group__CategoryTray.html#ga39ae8614327fbf46c98b723008631f73">TrayEntry</a> &gt; SDL::TrayMenu::GetEntries </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -580,7 +580,7 @@ template&lt;ObjectBox&lt; SDL_Tray * &gt; T&gt; </div>
 <dd>
 <a class="el" href="group__CategoryTray.html#gae3f0fe92d36aa87cc4f5f720c5064c4b" title="Flags that control the creation of system tray entries.">TrayEntryFlags</a> </dd>
 <dd>
-<a class="el" href="group__CategoryTray.html#ga74a55b169bec018aab65ffd28a433f78" title="Returns a list of entries in the menu, in order.">TrayMenu::GetEntries</a> </dd>
+<a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu::GetEntries</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1TrayEntryBase.html#a0bcbdc7dec7d7aca79e8563a8c564e6d" title="Removes a tray entry.">TrayEntryBase.Remove</a> </dd>
 <dd>
