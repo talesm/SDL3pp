@@ -518,6 +518,7 @@ function expandResources(sourceEntries, file, context) {
     const name = resourceEntry.name || (uniqueName + "Base");
     const refName = resourceEntry.refName || (uniqueName + "Ref");
     const optionalName = "Optional" + uniqueName;
+    const detachedName = "Detached" + uniqueName;
     const type = resourceEntry.type ?? sourceName;
     const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
     const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
@@ -529,12 +530,20 @@ function expandResources(sourceEntries, file, context) {
       { name: refName, kind: "forward" },
       { name: uniqueName, kind: "forward" }
     );
-    if (resourceEntry.prependAliases) {
+    if (resourceEntry.aliasOptional) {
       referenceAliases.push({
         name: optionalName,
         kind: "alias",
         type: `OptionalResource<${refName}, ${uniqueName}>`,
         doc: `A ${title} parameter that might own its value.\n\nThis is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned ${refName} or an owned ${uniqueName}`
+      });
+    }
+    if (resourceEntry.aliasDetached) {
+      referenceAliases.push({
+        name: detachedName,
+        kind: "alias",
+        type: `DetachedResource<${refName}, ${uniqueName}>`,
+        doc: `A ${title} result that will be owned only if assigned to a ${uniqueName}.\n\nThis is designed as resource types to cases where ownership might not be required.`
       });
     }
     context.addParamType(pointerType, `${name} &`);

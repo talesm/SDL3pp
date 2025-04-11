@@ -3442,8 +3442,7 @@ const transform = {
       },
       resourcesX: {
         "SDL_Renderer": {
-          "prependAliases": false,
-          "entries": {
+          entries: {
             "RendererBase": {
               "kind": "function",
               "type": "",
@@ -4064,7 +4063,7 @@ const transform = {
           }
         },
         "SDL_Texture": {
-          prependAliases: true,
+          aliasOptional: true,
           entries: {
             "TextureBase": [{
               kind: "function",
@@ -5949,35 +5948,25 @@ const transform = {
           kind: "alias",
           type: "std::function<void(TrayEntryRef)>"
         }],
-        "SDL_InsertTrayEntryAt": {
-          name: "TrayMenu::AppendEntry",
-          kind: "function",
-          type: "TrayEntry",
-          static: false,
-          parameters: [
-            {
-              type: "StringParam",
-              name: "label"
-            },
-            {
-              type: "TrayEntryFlags",
-              name: "flags"
-            },
-          ],
-        }
       },
-      resources: {
+      resourcesX: {
         "SDL_Tray": {
           entries: {
             "SDL_CreateTray": "ctor",
             "SDL_SetTrayIcon": "function",
             "SDL_SetTrayTooltip": "function",
-            "SDL_UpdateTrays": "function",
-            "SDL_DestroyTray": "function"
+            "SDL_CreateTrayMenu": {
+              proto: true,
+            },
+            "SDL_GetTrayMenu": {
+              proto: true,
+              immutable: true,
+            }
           }
         },
         "SDL_TrayEntry": {
           free: "SDL_RemoveTrayEntry",
+          aliasDetached: true,
           entries: {
             "SDL_CreateTraySubmenu": {
               name: "CreateSubmenu",
@@ -6009,6 +5998,7 @@ const transform = {
             "SetCallback": {
               kind: "function",
               type: "void",
+              proto: true,
               parameters: [{
                 type: "TrayCB",
                 name: "callback",
@@ -6022,43 +6012,61 @@ const transform = {
             },
             "SDL_GetTrayEntryParent": {
               name: "GetParent",
-            },
-            "SDL_RemoveTrayEntry": {
-              name: "Remove",
-            },
+            }
           }
         },
       },
       wrappers: {
-        "SDL_TrayMenu": {},
+        "SDL_TrayMenu": {
+          entries: {
+            "SDL_GetTrayEntries": {
+              name: "GetEntries",
+              type: "std::span<TrayEntry>",
+              proto: true,
+              parameters: [{}],
+            },
+            "SDL_InsertTrayEntryAt": {
+              name: "InsertEntry",
+              type: "DetachedTrayEntry",
+              proto: true,
+            },
+            "AppendEntry": {
+              kind: "function",
+              type: "DetachedTrayEntry",
+              static: false,
+              proto: true,
+              parameters: [
+                {
+                  type: "StringParam",
+                  name: "label"
+                },
+                {
+                  type: "TrayEntryFlags",
+                  name: "flags"
+                },
+              ],
+            },
+            "SDL_GetTrayMenuParentEntry": {
+              name: "GetParentEntry",
+              type: "TrayEntryRef",
+              immutable: true,
+              proto: true,
+            },
+            "SDL_GetTrayMenuParentTray": {
+              name: "GetParentTray",
+              type: "TrayRef",
+              immutable: true,
+              proto: true,
+            },
+          }
+        },
       },
       transform: {
-        "SDL_CreateTrayMenu": {
-          name: "TrayBase::CreateMenu",
+        "SDL_RemoveTrayEntry": {
+          name: "TrayEntryRef.Remove",
+          static: false,
+          parameters: [],
         },
-        "SDL_GetTrayMenu": {
-          name: "TrayBase::GetMenu",
-          immutable: true,
-        },
-        "SDL_GetTrayEntries": {
-          name: "TrayMenu::GetEntries",
-          type: "std::span<TrayEntry>",
-          parameters: [{}],
-        },
-        "SDL_InsertTrayEntryAt": {
-          name: "TrayMenu::InsertEntry",
-          type: "TrayEntry",
-        },
-        "SDL_GetTrayMenuParentEntry": {
-          name: "TrayMenu::GetParentEntry",
-          type: "TrayEntryRef",
-          immutable: true,
-        },
-        "SDL_GetTrayMenuParentTray": {
-          name: "TrayMenu::GetParentTray",
-          type: "TrayRef",
-          immutable: true,
-        }
       }
     },
     "SDL_video.h": {

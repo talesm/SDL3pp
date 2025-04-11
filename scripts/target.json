@@ -29385,48 +29385,38 @@
         "TrayBase-forward": {
           "name": "TrayBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Tray *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "TrayRef": {
+        "TrayRef-forward": {
           "name": "TrayRef",
-          "kind": "alias",
-          "type": "TrayBase<ObjectRef<SDL_Tray>>",
-          "doc": "Handle to a non owned tray\n\n@cat resource\n\n@sa TrayBase\n@sa Tray"
+          "kind": "forward",
+          "doc": ""
         },
-        "Tray": {
+        "Tray-forward": {
           "name": "Tray",
-          "kind": "alias",
-          "type": "TrayBase<ObjectUnique<SDL_Tray>>",
-          "doc": "Handle to an owned tray\n\n@cat resource\n\n@sa TrayBase\n@sa TrayRef"
+          "kind": "forward",
+          "doc": ""
         },
         "TrayEntryBase-forward": {
           "name": "TrayEntryBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_TrayEntry *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "TrayEntryRef": {
+        "TrayEntryRef-forward": {
           "name": "TrayEntryRef",
-          "kind": "alias",
-          "type": "TrayEntryBase<ObjectRef<SDL_TrayEntry>>",
-          "doc": "Handle to a non owned trayEntry\n\n@cat resource\n\n@sa TrayEntryBase\n@sa TrayEntry"
+          "kind": "forward",
+          "doc": ""
         },
-        "TrayEntry": {
+        "TrayEntry-forward": {
           "name": "TrayEntry",
+          "kind": "forward",
+          "doc": ""
+        },
+        "DetachedTrayEntry": {
+          "name": "DetachedTrayEntry",
           "kind": "alias",
-          "type": "TrayEntryBase<ObjectUnique<SDL_TrayEntry>>",
-          "doc": "Handle to an owned trayEntry\n\n@cat resource\n\n@sa TrayEntryBase\n@sa TrayEntryRef"
+          "type": "DetachedResource<TrayEntryRef, TrayEntry>",
+          "doc": "A trayEntry result that will be owned only if assigned to a TrayEntry.\n\nThis is designed as resource types to cases where ownership might not be required."
         },
         "TrayEntryFlags": {
           "doc": "Flags that control the creation of system tray entries.\n\nSome of these flags are required; exactly one of them must be specified at\nthe time a tray entry is created. Other flags are optional; zero or more of\nthose can be OR'ed together with the required flag.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa TrayMenu.InsertEntry",
@@ -29481,25 +29471,19 @@
           "type": "TrayEntryFlags"
         },
         "TrayBase": {
-          "doc": "An opaque handle representing a toplevel system tray object.\n\n@since This struct is available since SDL 3.2.0.",
+          "doc": "An opaque handle representing a toplevel system tray object.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Tray\n@sa TrayRef",
           "name": "TrayBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_Tray *>",
           "sourceName": "SDL_Tray",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Tray *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "TrayBase": {
-              "doc": "Create an icon to be placed in the operating system's tray, or equivalent.\n\nMany platforms advise not using a system tray unless persistence is a\nnecessary feature. Avoid needlessly creating a tray icon, as the user may\nfeel like it clutters their interface.\n\nUsing tray icons require the video subsystem.\n\n@param icon a surface to be used as icon. May be nullptr.\n@param tooltip a tooltip to be displayed when the mouse hovers the icon in\n               UTF-8 encoding. Not supported on all platforms. May be nullptr.\n@post The newly created system tray icon.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.CreateMenu\n@sa TrayBase.GetMenu\n@sa TrayBase.Destroy",
+              "doc": "Create an icon to be placed in the operating system's tray, or equivalent.\n\nMany platforms advise not using a system tray unless persistence is a\nnecessary feature. Avoid needlessly creating a tray icon, as the user may\nfeel like it clutters their interface.\n\nUsing tray icons require the video subsystem.\n\n@param icon a surface to be used as icon. May be nullptr.\n@param tooltip a tooltip to be displayed when the mouse hovers the icon in\n               UTF-8 encoding. Not supported on all platforms. May be nullptr.\n@post The newly created system tray icon.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.CreateMenu\n@sa TrayBase.GetMenu\n@sa TrayRef.reset",
               "name": "TrayBase",
               "kind": "function",
               "type": "",
@@ -29541,22 +29525,6 @@
               ],
               "sourceName": "SDL_SetTrayTooltip"
             },
-            "Updates": {
-              "doc": "Update the trays.\n\nThis is called automatically by the event loop and is only needed if you're\nusing trays but aren't handling SDL events.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "Updates",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_UpdateTrays"
-            },
-            "Destroy": {
-              "doc": "Destroys a tray object.\n\nThis also destroys all associated menus and entries.\n\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.TrayBase",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyTray"
-            },
             "CreateMenu": {
               "doc": "Create a menu for a system tray.\n\nThis should be called at most once per tray icon.\n\nThis function does the same thing as TrayEntryBase.CreateSubmenu(), except that\nit takes a TrayBase instead of a TrayEntryBase.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.TrayBase\n@sa TrayBase.GetMenu\n@sa TrayMenu.GetParentTray",
               "name": "CreateMenu",
@@ -29576,21 +29544,200 @@
               "immutable": true,
               "proto": true
             }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
           }
         },
-        "ObjectRef<SDL_Tray>::doFree": {
-          "name": "ObjectRef<SDL_Tray>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for tray resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Tray *",
-              "name": "resource"
+        "TrayRef": {
+          "name": "TrayRef",
+          "kind": "struct",
+          "type": "TrayBase",
+          "doc": "Handle to a non owned tray\n\n@cat resource\n\n@sa TrayBase\n@sa Tray",
+          "entries": {
+            "TrayBase::TrayBase": {
+              "kind": "alias",
+              "name": "TrayBase::TrayBase",
+              "doc": ""
+            },
+            "TrayRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const TrayRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "TrayBase(other.get())"
+                  ]
+                },
+                "name": "TrayRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "TrayRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "TrayBase(other.release())"
+                  ]
+                },
+                "name": "TrayRef"
+              }
+            ],
+            "~TrayRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~TrayRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "TrayRef &",
+              "parameters": [
+                {
+                  "type": "TrayRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Tray *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroys a tray object.\n\nThis also destroys all associated menus and entries.\n\n@param tray the tray icon to be destroyed.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayBase.TrayBase",
+              "hints": {
+                "body": "SDL_DestroyTray(release(newResource));"
+              }
             }
-          ],
-          "sourceName": "SDL_DestroyTray"
+          }
+        },
+        "Tray": {
+          "name": "Tray",
+          "kind": "struct",
+          "type": "TrayRef",
+          "doc": "Handle to an owned tray\n\n@cat resource\n\n@sa TrayBase\n@sa TrayRef",
+          "entries": {
+            "TrayRef::TrayRef": {
+              "kind": "alias",
+              "name": "TrayRef::TrayRef",
+              "doc": ""
+            },
+            "Tray": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Tray *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "TrayRef(resource)"
+                  ]
+                },
+                "name": "Tray"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Tray &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Tray",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Tray &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Tray"
+              }
+            ],
+            "~Tray": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Tray"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Tray &",
+              "parameters": [
+                {
+                  "type": "Tray",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            }
+          }
         },
         "TrayCallback": {
           "doc": "A callback that is invoked when a tray entry is selected.\n\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param entry the tray entry that was selected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa TrayEntryBase.SetCallback",
@@ -29611,9 +29758,6 @@
           "kind": "struct",
           "type": "",
           "sourceName": "SDL_TrayMenu",
-          "hints": {
-            "self": "m_trayMenu"
-          },
           "entries": {
             "m_trayMenu": {
               "kind": "var",
@@ -29674,7 +29818,7 @@
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
             },
             "GetEntries": {
-              "doc": "Returns a list of entries in the menu, in order.\n\n@param count An optional pointer to obtain the number of entries in the\n             menu.\n@returns a nullptr-terminated list of entries within the given menu. The\n         pointer becomes invalid when any function that inserts or deletes\n         entries in the menu is called.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryBase.Remove\n@sa TrayMenu.InsertEntry",
+              "doc": "Returns a list of entries in the menu, in order.\n\n@param count An optional pointer to obtain the number of entries in the\n             menu.\n@returns a nullptr-terminated list of entries within the given menu. The\n         pointer becomes invalid when any function that inserts or deletes\n         entries in the menu is called.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryRef.Remove\n@sa TrayMenu.InsertEntry",
               "name": "GetEntries",
               "kind": "function",
               "type": "std::span<TrayEntry>",
@@ -29683,10 +29827,10 @@
               "proto": true
             },
             "InsertEntry": {
-              "doc": "Insert a tray entry at a given position.\n\nIf label is nullptr, the entry will be a separator. Many functions won't work\nfor an entry that is a separator.\n\nAn entry does not need to be destroyed; it will be destroyed with the tray.\n\n@param pos the desired position for the new entry. Entries at or following\n           this place will be moved. If pos is -1, the entry is appended.\n@param label the text to be displayed on the entry, in UTF-8 encoding, or\n             nullptr for a separator.\n@param flags a combination of flags, some of which are mandatory.\n@returns the newly created entry, or nullptr if pos is out of bounds.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryFlags\n@sa TrayMenu.GetEntries\n@sa TrayEntryBase.Remove\n@sa TrayEntryBase.GetParent",
+              "doc": "Insert a tray entry at a given position.\n\nIf label is nullptr, the entry will be a separator. Many functions won't work\nfor an entry that is a separator.\n\nAn entry does not need to be destroyed; it will be destroyed with the tray.\n\n@param pos the desired position for the new entry. Entries at or following\n           this place will be moved. If pos is -1, the entry is appended.\n@param label the text to be displayed on the entry, in UTF-8 encoding, or\n             nullptr for a separator.\n@param flags a combination of flags, some of which are mandatory.\n@returns the newly created entry, or nullptr if pos is out of bounds.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryFlags\n@sa TrayMenu.GetEntries\n@sa TrayEntryRef.Remove\n@sa TrayEntryBase.GetParent",
               "name": "InsertEntry",
               "kind": "function",
-              "type": "TrayEntry",
+              "type": "DetachedTrayEntry",
               "parameters": [
                 {
                   "name": "pos",
@@ -29705,10 +29849,10 @@
               "proto": true
             },
             "AppendEntry": {
-              "name": "AppendEntry",
               "kind": "function",
-              "type": "TrayEntry",
+              "type": "DetachedTrayEntry",
               "static": false,
+              "proto": true,
               "parameters": [
                 {
                   "type": "StringParam",
@@ -29719,8 +29863,8 @@
                   "name": "flags"
                 }
               ],
-              "doc": "",
-              "proto": true
+              "name": "AppendEntry",
+              "doc": ""
             },
             "GetParentEntry": {
               "doc": "Gets the entry for which the menu is a submenu, if the current menu is a\nsubmenu.\n\nEither this function or TrayMenu.GetParentTray() will return non-nullptr\nfor any given menu.\n\n@returns the parent entry, or nullptr if this menu is not a submenu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryBase.CreateSubmenu\n@sa TrayMenu.GetParentTray",
@@ -29742,24 +29886,21 @@
               "immutable": true,
               "proto": true
             }
+          },
+          "hints": {
+            "self": "m_trayMenu"
           }
         },
         "TrayEntryBase": {
-          "doc": "An opaque handle representing an entry on a system tray object.\n\n@since This struct is available since SDL 3.2.0.",
+          "doc": "An opaque handle representing an entry on a system tray object.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa TrayEntry\n@sa TrayEntryRef",
           "name": "TrayEntryBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_TrayEntry *>",
           "sourceName": "SDL_TrayEntry",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_TrayEntry *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "CreateSubmenu": {
@@ -29848,6 +29989,7 @@
               {
                 "kind": "function",
                 "type": "void",
+                "proto": true,
                 "parameters": [
                   {
                     "type": "TrayCB",
@@ -29890,57 +30032,233 @@
               "type": "TrayMenu",
               "parameters": [],
               "sourceName": "SDL_GetTrayEntryParent"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "TrayEntryRef": {
+          "name": "TrayEntryRef",
+          "kind": "struct",
+          "type": "TrayEntryBase",
+          "doc": "Handle to a non owned trayEntry\n\n@cat resource\n\n@sa TrayEntryBase\n@sa TrayEntry",
+          "entries": {
+            "TrayEntryBase::TrayEntryBase": {
+              "kind": "alias",
+              "name": "TrayEntryBase::TrayEntryBase",
+              "doc": ""
+            },
+            "TrayEntryRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const TrayEntryRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "TrayEntryBase(other.get())"
+                  ]
+                },
+                "name": "TrayEntryRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "TrayEntryRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "TrayEntryBase(other.release())"
+                  ]
+                },
+                "name": "TrayEntryRef"
+              }
+            ],
+            "~TrayEntryRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~TrayEntryRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "TrayEntryRef &",
+              "parameters": [
+                {
+                  "type": "TrayEntryRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_TrayEntry *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Removes a tray entry.\n\n@param entry The entry to be deleted.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry",
+              "hints": {
+                "body": "SDL_RemoveTrayEntry(release(newResource));"
+              }
             },
             "Remove": {
-              "doc": "Removes a tray entry.\n\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry",
+              "doc": "Removes a tray entry.\n\n@param entry The entry to be deleted.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.GetEntries\n@sa TrayMenu.InsertEntry",
               "name": "Remove",
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "sourceName": "SDL_RemoveTrayEntry"
+              "sourceName": "SDL_RemoveTrayEntry",
+              "static": false
             }
           }
         },
-        "ObjectRef<SDL_TrayEntry>::doFree": {
-          "name": "ObjectRef<SDL_TrayEntry>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for trayEntry resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_TrayEntry *",
-              "name": "resource"
+        "TrayEntry": {
+          "name": "TrayEntry",
+          "kind": "struct",
+          "type": "TrayEntryRef",
+          "doc": "Handle to an owned trayEntry\n\n@cat resource\n\n@sa TrayEntryBase\n@sa TrayEntryRef",
+          "entries": {
+            "TrayEntryRef::TrayEntryRef": {
+              "kind": "alias",
+              "name": "TrayEntryRef::TrayEntryRef",
+              "doc": ""
+            },
+            "TrayEntry": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_TrayEntry *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "TrayEntryRef(resource)"
+                  ]
+                },
+                "name": "TrayEntry"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const TrayEntry &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "TrayEntry",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "TrayEntry &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "TrayEntry"
+              }
+            ],
+            "~TrayEntry": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~TrayEntry"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "TrayEntry &",
+              "parameters": [
+                {
+                  "type": "TrayEntry",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_RemoveTrayEntry"
+          }
         },
         "TrayBase::CreateMenu": {
-          "name": "TrayBase<T>::CreateMenu",
+          "name": "TrayBase::CreateMenu",
           "kind": "function",
           "type": "TrayMenu",
           "parameters": [],
           "sourceName": "SDL_CreateTrayMenu",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Tray *>",
-              "name": "T"
-            }
-          ]
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
         },
         "TrayBase::GetMenu": {
-          "name": "TrayBase<T>::GetMenu",
+          "name": "TrayBase::GetMenu",
           "kind": "function",
           "type": "TrayMenu",
           "parameters": [],
           "sourceName": "SDL_GetTrayMenu",
           "immutable": true,
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Tray *>",
-              "name": "T"
-            }
-          ]
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
         },
         "TrayMenu::GetEntries": {
           "name": "TrayMenu::GetEntries",
@@ -29955,7 +30273,7 @@
         "TrayMenu::InsertEntry": {
           "name": "TrayMenu::InsertEntry",
           "kind": "function",
-          "type": "TrayEntry",
+          "type": "DetachedTrayEntry",
           "parameters": [
             {
               "name": "pos",
@@ -29971,24 +30289,6 @@
             }
           ],
           "sourceName": "SDL_InsertTrayEntryAt",
-          "hints": {
-            "self": "m_trayMenu"
-          }
-        },
-        "TrayMenu::AppendEntry": {
-          "name": "TrayMenu::AppendEntry",
-          "kind": "function",
-          "type": "TrayEntry",
-          "parameters": [
-            {
-              "type": "StringParam",
-              "name": "label"
-            },
-            {
-              "type": "TrayEntryFlags",
-              "name": "flags"
-            }
-          ],
           "hints": {
             "self": "m_trayMenu"
           }
@@ -30014,6 +30314,14 @@
           "hints": {
             "self": "m_trayMenu"
           }
+        },
+        "UpdateTrays": {
+          "doc": "Update the trays.\n\nThis is called automatically by the event loop and is only needed if you're\nusing trays but aren't handling SDL events.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "UpdateTrays",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_UpdateTrays"
         }
       }
     },

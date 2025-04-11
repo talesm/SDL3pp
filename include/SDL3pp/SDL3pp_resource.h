@@ -136,6 +136,27 @@ public:
   }
 };
 
+/**
+ * A detached reference to resource that might be transformed into an owned
+ * handle.
+ *
+ * This is meant to be aliased like this:
+ *
+ * ```cpp
+ * using DetachedTrayEntry = DetachedResource<TrayEntryRef, TrayEntry>;
+ * ```
+ *
+ * @tparam REF the *Type*Ref.
+ * @tparam UNIQUE the *Type*.
+ */
+template<class REF, class UNIQUE>
+struct DetachedResource : REF
+{
+  using REF::REF;
+
+  operator UNIQUE() { return UNIQUE{REF::release()}; }
+};
+
 } // namespace SDL
 
 #endif /* SDL3PP_RESOURCE_H_ */

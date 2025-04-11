@@ -151,6 +151,16 @@ export interface ApiResource extends ApiEntryTransform {
   prependAliases?: boolean;
 
   /**
+   * If true it prepend an alias to OptionalResource
+   */
+  aliasOptional?: boolean
+
+  /**
+   * If true it prepend an alias to DetachedResource
+   */
+  aliasDetached?: boolean
+
+  /**
    * The type to replace on parameters, defaults to "ref"
    * 
    */
