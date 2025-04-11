@@ -20209,9 +20209,11 @@ inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
  * A property is a variable that can be created and retrieved by name at
  * runtime.
  *
- * All properties are part of a property group (SDL_PropertiesID). A property
- * group can be created with the SDL_CreateProperties function and destroyed
- * with the SDL_DestroyProperties function.
+ * All properties are part of a property group (PropertiesBase). A property
+ * group can be created with the CreateProperties() function or by simply
+ * instantiating @ref Properties. It can be destroyed with the
+ * PropertiesRef.reset(), but the Properties destructor probably will do what
+ * you want to, automatically.
  *
  * Properties can be added to and retrieved from a property group through the
  * following functions:
@@ -20374,13 +20376,15 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * Properties can be removed from a group by using SDL_ClearProperty.
  *
- * To create a new properties group use CreateProperties().
+ * To create a new properties group use CreateProperties() or
+ * Properties.Properties().
  *
  * @since This datatype is available since SDL 3.2.0.
  *
  * @cat resource
  *
  * @sa CreateProperties()
+ * @sa Properties.Properties
  * @sa Properties
  * @sa PropertiesRef
  */
@@ -20933,6 +20937,7 @@ struct PropertiesRef : PropertiesBase
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateProperties
+   * @sa Properties.Properties()
    */
   void reset(SDL_PropertiesID newResource = {})
   {
@@ -20966,6 +20971,25 @@ struct Properties : PropertiesRef
    * Move constructor.
    */
   constexpr Properties(Properties&& other) = default;
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @post an ID for a new group of properties, or 0 on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesRef.reset
+   */
+  Properties()
+    : Properties(SDL_CreateProperties())
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

@@ -2525,7 +2525,7 @@ const transform = {
             "kind": "alias"
           },
           { "name": "EnumeratePropertiesCallback" },
-          { "name": "PropertiesRef" },
+          { "name": "PropertiesRef", kind: "forward" },
           {
             "name": "EnumeratePropertiesCB",
             "doc": "@sa PropertiesRef.EnumerateCallback",
@@ -2754,7 +2754,8 @@ const transform = {
       },
       transform: {
         "SDL_CreateProperties": {
-          type: "Properties"
+          name: "Properties.Properties",
+          type: ""
         }
       }
     },
