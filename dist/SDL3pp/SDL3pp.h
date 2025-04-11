@@ -737,6 +737,24 @@ struct DetachedResource : REF
 {
   using REF::REF;
 
+  DetachedResource(const DetachedResource& other) = delete;
+
+  /// Move ctor
+  constexpr DetachedResource(DetachedResource&& other)
+    : REF(other.release())
+  {
+  }
+
+  DetachedResource& operator=(const DetachedResource& other) = delete;
+
+  /// Move assignment
+  constexpr DetachedResource& operator=(DetachedResource&& other)
+  {
+    release(other.release());
+    return *this;
+  }
+
+  /// Converts to UNIQUE
   operator UNIQUE() { return UNIQUE{REF::release()}; }
 };
 
