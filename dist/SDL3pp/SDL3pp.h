@@ -473,6 +473,122 @@ constexpr OptionalRef<T> fromNullable(T* ptr)
 }
 
 /**
+ * @defgroup CategoryOwnPtr Pointer wrapper to SDL::free()
+ *
+ * Wraps SDL generated pointers to automatically freeing them.
+ * @{
+ */
+
+/// Calls SDL_free()
+struct PtrDeleter
+{
+  void operator()(void* ptr) const;
+};
+
+/**
+ * Handle to an owned SDL memory allocated pointer
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa PtrBase
+ * @sa RefPtr
+ */
+template<class T>
+using OwnPtr = std::unique_ptr<T, PtrDeleter>;
+
+/**
+ * Base class for SDL memory allocated array wrap
+ *
+ * @tparam T the wrapped array type, without the []
+ *
+ * @cat resource
+ */
+template<class T>
+class OwnArray
+{
+  OwnPtr<T> m_ptr;
+  size_t m_size = 0;
+
+public:
+  constexpr OwnArray(std::nullptr_t = nullptr) {}
+
+  constexpr explicit OwnArray(T* ptr, size_t size)
+    : m_ptr(ptr)
+    , m_size(size)
+  {
+  }
+
+  constexpr explicit OwnArray(T* ptr)
+    : m_ptr(ptr)
+  {
+    if (ptr) {
+      auto endPtr = ptr;
+      while (*endPtr) ++endPtr;
+      m_size = endPtr - ptr;
+    }
+  }
+
+  /// True if not empty
+  constexpr explicit operator bool() const { return bool(m_ptr); }
+
+  /// True if size() == 0
+  constexpr bool empty() const { return !m_ptr; }
+
+  /// Data
+  constexpr T* data() { return m_ptr.get(); }
+
+  /// Data
+  constexpr const T* data() const { return m_ptr.get(); }
+
+  /// Size
+  constexpr size_t size() const { return m_size; }
+
+  /// Access index
+  constexpr T& operator[](size_t i) { return m_ptr.get()[i]; }
+
+  /// Access index
+  constexpr const T& operator[](size_t i) const { return m_ptr.get()[i]; }
+
+  /**
+   * @{
+   *
+   * Get iterator to first element
+   */
+  T* begin() { return data(); }
+  const T* begin() const { return data(); }
+  const T* cbegin() const { return begin(); }
+  /// @}
+
+  /**
+   * @{
+   *
+   * Get iterator to one past end element
+   */
+  T* end() { return begin() + size(); }
+  const T* end() const { return begin() + size(); }
+  const T* cend() const { return begin() + size(); }
+  /// @}
+};
+
+/**
+ * Handle to an owned SDL memory allocated array
+ *
+ * @tparam T the wrapped array type, without the []
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa ArrayBase
+ * @sa OwnArray
+ * @sa RefPtr
+ */
+template<class T>
+using RefArray = std::span<T>;
+
+/// @}
+
+/**
  * @brief A SDL managed resource.
  *
  * @tparam T the underlying resource type.
@@ -800,145 +916,6 @@ public:
 using StringParam = const char*;
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
-
-/**
- * @defgroup CategoryOwnPtr Pointer wrapper to SDL::free()
- *
- * Wraps SDL generated pointers to automatically freeing them.
- * @{
- */
-
-/**
- * Base class for SDL memory allocated pointer wrap
- *
- * @tparam T the wrapped type
- *
- * @cat resource
- */
-template<class T>
-struct PtrBase : T
-{
-  using T::T;
-
-  void free();
-};
-
-/**
- * Handle to a non owned SDL memory allocated pointer
- *
- * @cat resource
- *
- * @sa resource
- * @sa SurfaceBase
- * @sa Surface
- */
-template<class T>
-using RefPtr = PtrBase<ObjectRef<T>>;
-
-template<class T>
-struct PtrDeleter
-{
-  void operator()(RefPtr<T> ptr) const { ptr.free(); }
-};
-
-/**
- * Handle to an owned SDL memory allocated pointer
- *
- * @cat resource
- *
- * @sa resource
- * @sa PtrBase
- * @sa RefPtr
- */
-template<class T>
-using OwnPtr = PtrBase<ObjectUnique<T, PtrDeleter<T>>>;
-
-/**
- * Base class for SDL memory allocated array wrap
- *
- * @tparam T the wrapped array type, without the []
- *
- * @cat resource
- */
-template<class T>
-class ArrayBase : public PtrBase<T>
-{
-  size_t m_size = 0;
-
-public:
-  using PtrBase<T>::PtrBase;
-
-  constexpr explicit ArrayBase(PtrBase<T>::pointer ptr, size_t size)
-    : PtrBase<T>{ptr}
-    , m_size(size)
-  {
-  }
-
-  constexpr explicit ArrayBase(PtrBase<T>::pointer ptr)
-    : PtrBase<T>{ptr}
-    , m_size(0)
-  {
-    if (ptr) {
-      auto endPtr = ptr;
-      while (*endPtr) ++endPtr;
-      m_size = endPtr - ptr;
-    }
-  }
-
-  constexpr size_t size() const { return m_size; }
-
-  /**
-   * @{
-   *
-   * Get iterator to first element
-   */
-  PtrBase<T>::pointer begin() { return PtrBase<T>::get(); }
-  const PtrBase<T>::pointer begin() const { return PtrBase<T>::get(); }
-  const PtrBase<T>::pointer cbegin() const { return begin(); }
-  /// @}
-
-  /**
-   * @{
-   *
-   * Get iterator to one past end element
-   */
-  PtrBase<T>::pointer end() { return begin() + size(); }
-  const PtrBase<T>::pointer end() const { return begin() + size(); }
-  const PtrBase<T>::pointer cend() const { return begin() + size(); }
-  /// @}
-};
-
-/**
- * Handle to an owned SDL memory allocated array
- *
- * @tparam T the wrapped array type, without the []
- *
- * @cat resource
- *
- * @sa resource
- * @sa ArrayBase
- * @sa OwnArray
- * @sa RefPtr
- */
-template<class T>
-using RefArray = ArrayBase<ObjectRef<T[]>>;
-
-/**
- * Handle to an owned SDL memory allocated array
- *
- * @tparam T the wrapped array type, without the []
- *
- * @cat resource
- *
- * @sa resource
- * @sa ArrayBase
- * @sa RefArray
- * @sa OwnPtr
- */
-template<class T>
-using OwnArray = ArrayBase<ObjectUnique<T[], PtrDeleter<T[]>>>;
-
-/// @}
 
 /**
  * @defgroup CategoryStdinc Standard Library Functionality
@@ -6259,11 +6236,7 @@ using FunctionPointer = SDL_FunctionPointer;
 #pragma region impl
 /// @}
 
-template<class T>
-void PtrBase<T>::free()
-{
-  SDL::free(T::release());
-}
+inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
 
 #pragma endregion impl
 

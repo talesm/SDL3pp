@@ -5332,11 +5332,7 @@ using FunctionPointer = SDL_FunctionPointer;
 #pragma region impl
 /// @}
 
-template<class T>
-void PtrBase<T>::free()
-{
-  SDL::free(T::release());
-}
+inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
 
 #pragma endregion impl
 
