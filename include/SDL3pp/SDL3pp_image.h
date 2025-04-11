@@ -222,25 +222,24 @@ inline Surface LoadSurface(IOStreamBase& src)
  *
  * A Texture represents an image in GPU memory, usable by SDL's 2D Render
  * API. This can be significantly more efficient than using a CPU-bound
- * SDL_Surface if you don't need to manipulate the image directly after
- * loading it.
+ * Surface if you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * SDL_Texture in the most format that most reasonably represents the image
+ * Texture in the most format that most reasonably represents the image
  * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
  * RGBA).
  *
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
- * memory), call LoadSurface(StringParam) instead.
+ * memory), call LoadSurface() instead.
  *
- * @param renderer the Renderer to use to create the GPU texture.
+ * @param renderer the RendererBase to use to create the GPU texture.
  * @param file a path on the filesystem to load an image from.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Texture LoadTexture(RendererRef renderer, StringParam file)
+inline Texture LoadTexture(RendererBase& renderer, StringParam file)
 {
   return Texture{IMG_LoadTexture(renderer.get(), file)};
 }
@@ -277,7 +276,7 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Texture LoadTexture(RendererRef renderer, IOStreamBase& src)
+inline Texture LoadTexture(RendererBase& renderer, IOStreamBase& src)
 {
   return Texture{IMG_LoadTexture_IO(renderer.get(), src.get(), false)};
 }
@@ -322,7 +321,7 @@ inline Texture LoadTexture(RendererRef renderer, IOStreamBase& src)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Texture LoadTexture(RendererRef renderer,
+inline Texture LoadTexture(RendererBase& renderer,
                            IOStreamBase& src,
                            StringParam type)
 {
@@ -2207,9 +2206,13 @@ inline SurfaceBase::SurfaceBase(IOStreamBase& src)
 {
 }
 
-template<ObjectBox<SDL_Texture*> T>
-TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
-  : T(LoadTexture(renderer, std::move(file)))
+inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
+  : Resource(IMG_LoadTexture(renderer.get(), file))
+{
+}
+
+inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
+  : Resource(IMG_LoadTexture_IO(renderer.get(), src.get(), false))
 {
 }
 
@@ -2231,9 +2234,13 @@ inline SurfaceBase::SurfaceBase(IOStreamBase& src)
 {
 }
 
-template<ObjectBox<SDL_Texture*> T>
-TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
-  : T(LoadTextureBMP(renderer, std::move(file)))
+inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
+  : Resource(LoadTextureBMP(renderer, file).release())
+{
+}
+
+inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
+  : Resource(LoadTextureBMP(renderer, src).release())
 {
 }
 

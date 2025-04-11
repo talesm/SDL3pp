@@ -3331,121 +3331,116 @@ const transform = {
         "SDL_GetTextureSize"
       ],
       includeAfter: {
-        "__begin": [
-          {
-            "name": "TextureLock",
-            "kind": "forward"
-          },
-          {
-            "name": "Renderer",
-            "kind": "alias",
-            "type": "RendererBase<ObjectUnique<SDL_Renderer>>"
-          }
-        ],
+        "__begin":
+        {
+          name: "TextureLock",
+          kind: "forward"
+        },
         "SDL_Texture": {
           "name": "TextureLock",
           "kind": "struct",
           "entries": {
             "texture": {
-              "kind": "var",
-              "type": "TextureRef"
+              kind: "var",
+              type: "TextureRef"
             },
             "surface": {
-              "kind": "var",
-              "type": "SurfaceRef"
+              kind: "var",
+              type: "SurfaceRef"
             },
             "TextureLock": [
               {
-                "doc": "@sa TextureBase.Lock()",
-                "kind": "function",
-                "type": "",
-                "explicit": true,
-                "parameters": [
+                doc: "@sa TextureBase.Lock()",
+                kind: "function",
+                type: "",
+                explicit: true,
+                parameters: [
                   {
-                    "name": "texture",
-                    "type": "TextureRef"
+                    name: "texture",
+                    type: "TextureRef"
                   },
                   {
-                    "name": "rect",
-                    "type": "OptionalRef<const SDL_Rect>"
+                    name: "rect",
+                    type: "OptionalRef<const SDL_Rect>"
                   }
                 ]
               },
               {
-                "kind": "function",
-                "type": "",
-                "parameters": []
+                kind: "function",
+                type: "",
+                parameters: []
               },
               {
-                "kind": "function",
-                "type": "",
-                "parameters": [
+                kind: "function",
+                type: "",
+                parameters: [
                   {
-                    "type": "const TextureLock &",
-                    "name": "other"
+                    type: "const TextureLock &",
+                    name: "other"
                   }
                 ]
               },
               {
-                "kind": "function",
-                "type": "",
-                "parameters": [
+                kind: "function",
+                type: "",
+                parameters: [
                   {
-                    "type": "TextureLock &&",
-                    "name": "other"
+                    type: "TextureLock &&",
+                    name: "other"
                   }
                 ]
               }
             ],
             "~TextureLock": {
-              "kind": "function",
-              "doc": "@sa Unlock()",
-              "type": "",
-              "parameters": []
+              kind: "function",
+              doc: "@sa Unlock()",
+              type: "",
+              parameters: []
             },
             "operator=": {
-              "kind": "function",
-              "type": "TextureLock &",
-              "parameters": [
+              kind: "function",
+              type: "TextureLock &",
+              parameters: [
                 {
-                  "type": "TextureLock",
-                  "name": "other"
+                  type: "TextureLock",
+                  name: "other"
                 }
               ]
             },
             "operator bool": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": []
+              kind: "function",
+              type: "",
+              constexpr: true,
+              immutable: true,
+              parameters: []
             },
             "SDL_UnlockTexture": {
-              "name": "Unlock",
-              "parameters": []
+              name: "Unlock",
+              static: false,
+              parameters: []
             },
             "GetPixels": {
-              "kind": "function",
-              "type": "void *",
-              "immutable": true,
-              "parameters": []
+              kind: "function",
+              type: "void *",
+              immutable: true,
+              parameters: []
             },
             "GetPitch": {
-              "kind": "function",
-              "type": "int",
-              "immutable": true,
-              "parameters": []
+              kind: "function",
+              type: "int",
+              immutable: true,
+              parameters: []
             },
             "GetFormat": {
-              "kind": "function",
-              "type": "PixelFormat",
-              "immutable": true,
-              "parameters": []
+              kind: "function",
+              type: "PixelFormat",
+              immutable: true,
+              parameters: []
             }
           }
         }
       },
-      resources: {
+      resourcesX: {
         "SDL_Renderer": {
           "prependAliases": false,
           "entries": {
@@ -3496,11 +3491,17 @@ const transform = {
               "parameters": []
             },
             "SDL_SetRenderTarget": {
-              "name": "SetTarget"
+              name: "SetTarget",
+              proto: true,
+              parameters: [
+                {},
+                { type: "OptionalTexture" }
+              ]
             },
             "SDL_GetRenderTarget": {
-              "immutable": true,
-              "name": "GetTarget"
+              immutable: true,
+              proto: true,
+              name: "GetTarget"
             },
             "SDL_SetRenderLogicalPresentation": {
               "name": "SetLogicalPresentation",
@@ -3793,11 +3794,12 @@ const transform = {
               ]
             },
             "SDL_RenderTexture": {
-              "static": false,
-              "parameters": [
+              static: false,
+              proto: true,
+              parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -3810,11 +3812,12 @@ const transform = {
               ]
             },
             "SDL_RenderTextureRotated": {
-              "static": false,
-              "parameters": [
+              static: false,
+              proto: true,
+              parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -3830,22 +3833,21 @@ const transform = {
                 },
                 {
                   "name": "center",
-                  "default": "{}",
                   "type": "OptionalRef<const SDL_FPoint>"
                 },
                 {
                   "name": "flip",
                   "type": "FlipMode",
-                  "default": "SDL_FLIP_NONE"
                 }
               ]
             },
             "SDL_RenderTextureAffine": {
-              "static": false,
-              "parameters": [
+              static: false,
+              proto: true,
+              parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -3866,11 +3868,12 @@ const transform = {
               ]
             },
             "SDL_RenderTextureTiled": {
-              "static": false,
-              "parameters": [
+              static: false,
+              proto: true,
+              parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -3887,11 +3890,12 @@ const transform = {
               ]
             },
             "SDL_RenderTexture9Grid": {
-              "static": false,
-              "parameters": [
+              static: false,
+              proto: true,
+              parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -3924,11 +3928,12 @@ const transform = {
               ]
             },
             "SDL_RenderGeometry": {
-              "static": false,
-              "parameters": [
+              static: false,
+              proto: true,
+              parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "OptionalTexture"
                 },
                 {
                   "name": "vertices",
@@ -3937,16 +3942,17 @@ const transform = {
                 {
                   "name": "indices",
                   "type": "std::span<const int>",
-                  "default": "{}"
                 }
               ]
             },
             "SDL_RenderGeometryRaw": {
-              "parameters": [
+              static: false,
+              proto: true,
+              parameters: [
                 {},
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "OptionalTexture"
                 },
                 {
                   "name": "xy",
@@ -4055,25 +4061,40 @@ const transform = {
                 }
               ]
             },
-            "SDL_DestroyRenderer": "function"
           }
         },
         "SDL_Texture": {
-          "entries": {
-            "TextureBase": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
+          prependAliases: true,
+          entries: {
+            "TextureBase": [{
+              kind: "function",
+              type: "",
+              proto: true,
+              parameters: [
                 {
-                  "type": "RendererRef",
-                  "name": "renderer"
+                  type: "RendererBase &",
+                  name: "renderer"
                 },
                 {
-                  "type": "StringParam",
-                  "name": "file"
+                  type: "StringParam",
+                  name: "file"
                 }
               ]
-            },
+            }, {
+              kind: "function",
+              type: "",
+              proto: true,
+              parameters: [
+                {
+                  type: "RendererBase &",
+                  name: "renderer"
+                },
+                {
+                  type: "IOStream &",
+                  name: "src"
+                }
+              ]
+            }],
             "SDL_CreateTexture": "ctor",
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
@@ -4267,7 +4288,6 @@ const transform = {
               "type": "PixelFormat",
               "parameters": []
             },
-            "SDL_DestroyTexture": "function"
           }
         }
       },
@@ -6067,17 +6087,10 @@ const transform = {
           {
             "name": "RendererBase",
             "kind": "forward",
-            "template": [
-              {
-                "type": "ObjectBox<SDL_Renderer *>",
-                "name": "T"
-              }
-            ]
           },
           {
             "name": "RendererRef",
-            "kind": "alias",
-            "type": "RendererBase<ObjectRef<SDL_Renderer>>"
+            "kind": "forward",
           },
           {
             "name": "DisplayOrientation",
@@ -6415,10 +6428,11 @@ const transform = {
             "SDL_SetWindowFullscreen": "function",
             "SDL_SyncWindow": "function",
             "GetRenderer": {
-              "kind": "function",
-              "type": "RendererRef",
-              "immutable": true,
-              "parameters": []
+              kind: "function",
+              type: "RendererRef",
+              immutable: true,
+              parameters: [],
+              proto: true,
             },
             "SDL_WindowHasSurface": "immutable",
             "SDL_GetWindowSurface": "function",
@@ -6873,7 +6887,7 @@ const transform = {
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef"
+              "type": "RendererBase &"
             },
             {
               "name": "src",
@@ -6887,7 +6901,7 @@ const transform = {
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef"
+              "type": "RendererBase &"
             },
             {
               "name": "src",

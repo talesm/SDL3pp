@@ -68,20 +68,10 @@ using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
 using Window = WindowBase<ObjectUnique<SDL_Window>>;
 
 // Forward decl
-template<ObjectBox<SDL_Renderer*> T>
 struct RendererBase;
 
-/**
- * Handle to a non owned renderer
- *
- * @cat resource
- * @ingroup CategoryRender
- *
- * @sa resource
- * @sa RendererBase
- * @sa Renderer
- */
-using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
+// Forward decl
+struct RendererRef;
 
 /**
  * @name DisplayOrientations

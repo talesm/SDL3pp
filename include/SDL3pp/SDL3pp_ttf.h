@@ -3382,7 +3382,7 @@ inline TextEngine CreateSurfaceTextEngine()
  * @sa Text
  * @sa CreateRendererTextEngineWithProperties
  */
-inline TextEngine CreateRendererTextEngine(RendererRef renderer)
+inline TextEngine CreateRendererTextEngine(RendererBase& renderer)
 {
   return TextEngine{
     TextEngineWrapper{TTF_CreateRendererTextEngine(renderer.get()),

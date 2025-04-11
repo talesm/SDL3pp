@@ -517,16 +517,26 @@ function expandResources(sourceEntries, file, context) {
     const uniqueName = resourceEntry.uniqueName || transformName(sourceName, context);
     const name = resourceEntry.name || (uniqueName + "Base");
     const refName = resourceEntry.refName || (uniqueName + "Ref");
+    const optionalName = "Optional" + uniqueName;
     const type = resourceEntry.type ?? sourceName;
     const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
     const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
     const pointerType = resourceEntry.pointerType ?? (isStruct ? `${type} *` : type);
     const constPointerType = `const ${pointerType}`;
+    const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
     referenceAliases.push(
       { name, kind: "forward" },
       { name: refName, kind: "forward" },
-      { name: uniqueName, kind: "forward" },
+      { name: uniqueName, kind: "forward" }
     );
+    if (resourceEntry.prependAliases) {
+      referenceAliases.push({
+        name: optionalName,
+        kind: "alias",
+        type: `OptionalResource<${refName}, ${uniqueName}>`,
+        doc: `A ${title} parameter that might own its value.\n\nThis is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned ${refName} or an owned ${uniqueName}`
+      });
+    }
     context.addParamType(pointerType, `${name} &`);
     context.addParamType(constPointerType, `const ${name} &`);
 
@@ -543,7 +553,6 @@ function expandResources(sourceEntries, file, context) {
     }
     const subEntries = resourceEntry.entries || {};
     const resourceType = `Resource<${pointerType}>`;
-    const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
 
     /** @type {ApiEntryTransform} */
     const entry = {
@@ -720,7 +729,7 @@ function expandResources(sourceEntries, file, context) {
     } else {
       prependIncludeAfter(derivedEntries, file, includeAfterKey);
     }
-    const derivedNames = new Set([refName, uniqueName]);
+    const derivedNames = new Set([refName, uniqueName, optionalName]);
     let pointToIncludeFunc = includeAfterKey;
     for (const [subName, subEntry] of Object.entries(subEntries)) {
       if (Array.isArray(subEntry)) {

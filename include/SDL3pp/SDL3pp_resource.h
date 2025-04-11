@@ -22,6 +22,18 @@ public:
   {
   }
 
+  /// Equivalent to default ctor
+  constexpr Resource(std::nullptr_t)
+    : m_resource{0}
+  {
+  }
+
+  /// Equivalent to default ctor
+  constexpr Resource(std::nullopt_t)
+    : m_resource{0}
+  {
+  }
+
   Resource(const Resource& other) = delete;
   Resource(Resource&& other) = delete;
   Resource& operator=(const Resource& other) = delete;
@@ -55,6 +67,73 @@ public:
 
   /// Access to fields
   constexpr T operator->() { return get(); }
+};
+
+/**
+ * A optional reference to resource.
+ *
+ * This is meant to be aliased like this:
+ *
+ * ```cpp
+ * using OptionalTexture = OptionalResource<TextureRef, Texture>;
+ * ```
+ *
+ * @tparam REF the *Type*Ref.
+ * @tparam UNIQUE the *Type*.
+ */
+template<class REF, class UNIQUE>
+class OptionalResource : public REF
+{
+  bool m_owning = false;
+
+public:
+  using REF::REF;
+
+  /// Constructs from a reference
+  constexpr OptionalResource(const REF& other)
+    : REF(other)
+  {
+  }
+
+  /// Constructs from a reference
+  constexpr OptionalResource(const UNIQUE& other)
+    : REF(other)
+  {
+  }
+
+  /// Constructs from a moved from unique
+  constexpr OptionalResource(UNIQUE&& other)
+    : REF(other.release())
+    , m_owning(true)
+  {
+  }
+
+  OptionalResource(const OptionalResource& other) = delete;
+
+  /// Move ctor
+  OptionalResource(OptionalResource&& other)
+    : REF(other.release())
+    , m_owning(other.m_owning)
+  {
+    other.m_owning = false;
+  }
+
+  OptionalResource& operator=(const OptionalResource& other) = delete;
+
+  /// Assignment operator.
+  OptionalResource& operator=(OptionalResource&& other)
+  {
+    REF::operator=(REF(other.release()));
+    m_owning = other.m_owning;
+    other.m_owning = false;
+    return *this;
+  }
+
+  /// Destructor
+  ~OptionalResource()
+  {
+    if (m_owning) REF::reset();
+  }
 };
 
 } // namespace SDL

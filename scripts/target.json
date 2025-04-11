@@ -4575,18 +4575,11 @@
         "RendererBase-forward": {
           "name": "RendererBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Renderer *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "RendererRef": {
+        "RendererRef-forward": {
           "name": "RendererRef",
-          "kind": "alias",
-          "type": "RendererBase<ObjectRef<SDL_Renderer>>",
+          "kind": "forward",
           "doc": ""
         },
         "DisplayOrientation": {
@@ -5923,6 +5916,7 @@
               "type": "RendererRef",
               "immutable": true,
               "parameters": [],
+              "proto": true,
               "name": "GetRenderer",
               "doc": ""
             },
@@ -7814,34 +7808,41 @@
           "kind": "forward",
           "doc": ""
         },
-        "Renderer": {
+        "RendererBase-forward": {
+          "name": "RendererBase",
+          "kind": "forward",
+          "doc": ""
+        },
+        "RendererRef-forward": {
+          "name": "RendererRef",
+          "kind": "forward",
+          "doc": ""
+        },
+        "Renderer-forward": {
           "name": "Renderer",
-          "kind": "alias",
-          "type": "RendererBase<ObjectUnique<SDL_Renderer>>",
+          "kind": "forward",
           "doc": ""
         },
         "TextureBase-forward": {
           "name": "TextureBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Texture *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "TextureRef": {
+        "TextureRef-forward": {
           "name": "TextureRef",
-          "kind": "alias",
-          "type": "TextureBase<ObjectRef<SDL_Texture>>",
-          "doc": "Handle to a non owned texture\n\n@cat resource\n\n@sa TextureBase\n@sa Texture"
+          "kind": "forward",
+          "doc": ""
         },
-        "Texture": {
+        "Texture-forward": {
           "name": "Texture",
+          "kind": "forward",
+          "doc": ""
+        },
+        "OptionalTexture": {
+          "name": "OptionalTexture",
           "kind": "alias",
-          "type": "TextureBase<ObjectUnique<SDL_Texture>>",
-          "doc": "Handle to an owned texture\n\n@cat resource\n\n@sa TextureBase\n@sa TextureRef"
+          "type": "OptionalResource<TextureRef, Texture>",
+          "doc": "A texture parameter that might own its value.\n\nThis is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned TextureRef or an owned Texture"
         },
         "SDL_SOFTWARE_RENDERER": {
           "doc": "The name of the software renderer.\n\n@since This macro is available since SDL 3.2.0.",
@@ -7936,21 +7937,15 @@
           "sourceName": "SDL_LOGICAL_PRESENTATION_INTEGER_SCALE"
         },
         "RendererBase": {
-          "doc": "A structure representing rendering state\n\n@since This struct is available since SDL 3.2.0.",
+          "doc": "A structure representing rendering state\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Renderer\n@sa RendererRef",
           "name": "RendererBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_Renderer *>",
           "sourceName": "SDL_Renderer",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Renderer *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "RendererBase": [
@@ -7967,7 +7962,7 @@
                 "doc": ""
               },
               {
-                "doc": "Create a 2D rendering context for a window.\n\nIf you want a specific renderer, you can specify its name here. A list of\navailable renderers can be obtained by calling GetRenderDriver()\nmultiple times, with indices from 0 to GetNumRenderDrivers()-1. If you\ndon't need a specific renderer, specify nullptr and SDL will attempt to choose\nthe best option for you, based on what is available on the user's system.\n\nIf `name` is a comma-separated list, SDL will try each name, in the order\nlisted, until one succeeds or all of them fail.\n\nBy default the rendering size matches the window size in pixels, but you\ncan call RendererBase.SetLogicalPresentation() to change the content size and\nscaling options.\n\n@param window the window where rendering is displayed.\n@param name the name of the rendering driver to initialize, or nullptr to let\n            SDL choose one.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RendererBase\n@sa RendererBase.RendererBase\n@sa RendererBase.Destroy\n@sa GetNumRenderDrivers\n@sa GetRenderDriver\n@sa RendererBase.GetName",
+                "doc": "Create a 2D rendering context for a window.\n\nIf you want a specific renderer, you can specify its name here. A list of\navailable renderers can be obtained by calling GetRenderDriver()\nmultiple times, with indices from 0 to GetNumRenderDrivers()-1. If you\ndon't need a specific renderer, specify nullptr and SDL will attempt to choose\nthe best option for you, based on what is available on the user's system.\n\nIf `name` is a comma-separated list, SDL will try each name, in the order\nlisted, until one succeeds or all of them fail.\n\nBy default the rendering size matches the window size in pixels, but you\ncan call RendererBase.SetLogicalPresentation() to change the content size and\nscaling options.\n\n@param window the window where rendering is displayed.\n@param name the name of the rendering driver to initialize, or nullptr to let\n            SDL choose one.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RendererBase\n@sa RendererBase.RendererBase\n@sa RendererRef.reset\n@sa GetNumRenderDrivers\n@sa GetRenderDriver\n@sa RendererBase.GetName",
                 "name": "RendererBase",
                 "kind": "function",
                 "type": "",
@@ -7984,7 +7979,7 @@
                 "sourceName": "SDL_CreateRenderer"
               },
               {
-                "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererBase.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa RendererBase.RendererBase\n@sa RendererBase.RendererBase\n@sa RendererBase.Destroy\n@sa RendererBase.GetName",
+                "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererBase.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa RendererBase.RendererBase\n@sa RendererBase.RendererBase\n@sa RendererRef.reset\n@sa RendererBase.GetName",
                 "name": "RendererBase",
                 "kind": "function",
                 "type": "",
@@ -7997,7 +7992,7 @@
                 "sourceName": "SDL_CreateRendererWithProperties"
               },
               {
-                "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create RendererBase:\nRendererBase.RendererBase() and CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nWindowBase as the final destination and not an SurfaceBase.\n\n@param surface the SurfaceBase structure representing the surface where\n               rendering is done.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.Destroy",
+                "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create RendererBase:\nRendererBase.RendererBase() and CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nWindowBase as the final destination and not an SurfaceBase.\n\n@param surface the SurfaceBase structure representing the surface where\n               rendering is done.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererRef.reset",
                 "name": "RendererBase",
                 "kind": "function",
                 "type": "",
@@ -8107,10 +8102,11 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "OptionalTexture"
                 }
               ],
-              "sourceName": "SDL_SetRenderTarget"
+              "sourceName": "SDL_SetRenderTarget",
+              "proto": true
             },
             "GetTarget": {
               "doc": "Get the current render target.\n\nThe default render target is the window for which the renderer was created,\nand is reported a nullptr here.\n\n@returns the current render target or nullptr for the default render target.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.SetTarget",
@@ -8119,7 +8115,8 @@
               "type": "TextureRef",
               "parameters": [],
               "sourceName": "SDL_GetRenderTarget",
-              "immutable": true
+              "immutable": true,
+              "proto": true
             },
             "SetLogicalPresentation": {
               "doc": "Set a device-independent resolution and presentation mode for rendering.\n\nThis function sets the width and height of the logical rendering output.\nThe renderer will act as if the current render target is always the\nrequested dimensions, scaling to the actual resolution as necessary.\n\nThis can be useful for games that expect a fixed size, but would like to\nscale the output to whatever is available, regardless of how a user resizes\na window, or if the display is high DPI.\n\nLogical presentation can be used with both render target textures and the\nrenderer's window; the state is unique to each render target, and this\nfunction sets the state for the current render target. It might be useful\nto draw to a texture that matches the window dimensions with logical\npresentation enabled, and then draw that texture across the entire window\nwith logical presentation disabled. Be careful not to render both with\nlogical presentation enabled, however, as this could produce\ndouble-letterboxing, etc.\n\nYou can disable logical coordinates by setting the mode to\nLOGICAL_PRESENTATION_DISABLED, and in that case you get the full pixel\nresolution of the render target; it is safe to toggle logical presentation\nduring the rendering of a frame: perhaps most of the rendering is done to\nspecific dimensions but to make fonts look sharp, the app turns off logical\npresentation while drawing text, for example.\n\nFor the renderer's window, letterboxing is drawn into the framebuffer if\nlogical presentation is enabled during RendererBase.Present; be sure to\nreenable it before presenting if you were toggling it, otherwise the\nletterbox areas might have artifacts from previous frames (or artifacts\nfrom external overlays, etc). Letterboxing is never drawn into texture\nrender targets; be sure to call RendererBase.RenderClear() before drawing into the\ntexture so the letterboxing areas are cleared, if appropriate.\n\nYou can convert coordinates in an event into rendering coordinates using\nRendererBase.ConvertEventToRenderCoordinates().\n\n@param renderer the rendering context.\n@param w the width of the logical resolution.\n@param h the height of the logical resolution.\n@param mode the presentation mode used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.ConvertEventToRenderCoordinates\n@sa RendererBase.GetLogicalPresentation\n@sa RendererBase.GetLogicalPresentationRect",
@@ -8655,7 +8652,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -8667,7 +8664,8 @@
                 }
               ],
               "sourceName": "SDL_RenderTexture",
-              "static": false
+              "static": false,
+              "proto": true
             },
             "RenderTextureRotated": {
               "doc": "Copy a portion of the source texture to the current rendering target, with\nrotation and flipping, at subpixel precision.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect a pointer to the source rectangle, or nullptr for the entire\n               texture.\n@param dstrect a pointer to the destination rectangle, or nullptr for the\n               entire rendering target.\n@param angle an angle in degrees that indicates the rotation that will be\n             applied to dstrect, rotating it in a clockwise direction.\n@param center a pointer to a point indicating the point around which\n              dstrect will be rotated (if nullptr, rotation will be done\n              around dstrect.w/2, dstrect.h/2).\n@param flip an FlipMode value stating which flipping actions should be\n            performed on the texture.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RenderTexture",
@@ -8677,7 +8675,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -8693,17 +8691,16 @@
                 },
                 {
                   "name": "center",
-                  "type": "OptionalRef<const SDL_FPoint>",
-                  "default": "{}"
+                  "type": "OptionalRef<const SDL_FPoint>"
                 },
                 {
                   "name": "flip",
-                  "type": "FlipMode",
-                  "default": "SDL_FLIP_NONE"
+                  "type": "FlipMode"
                 }
               ],
               "sourceName": "SDL_RenderTextureRotated",
-              "static": false
+              "static": false,
+              "proto": true
             },
             "RenderTextureAffine": {
               "doc": "Copy a portion of the source texture to the current rendering target, with\naffine transform, at subpixel precision.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect a pointer to the source rectangle, or nullptr for the entire\n               texture.\n@param origin a pointer to a point indicating where the top-left corner of\n              srcrect should be mapped to, or nullptr for the rendering\n              target's origin.\n@param right a pointer to a point indicating where the top-right corner of\n             srcrect should be mapped to, or nullptr for the rendering\n             target's top-right corner.\n@param down a pointer to a point indicating where the bottom-left corner of\n            srcrect should be mapped to, or nullptr for the rendering target's\n            bottom-left corner.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety You may only call this function from the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RenderTexture",
@@ -8713,7 +8710,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -8733,7 +8730,8 @@
                 }
               ],
               "sourceName": "SDL_RenderTextureAffine",
-              "static": false
+              "static": false,
+              "proto": true
             },
             "RenderTextureTiled": {
               "doc": "Tile a portion of the texture to the current rendering target at subpixel\nprecision.\n\nThe pixels in `srcrect` will be repeated as many times as needed to\ncompletely fill `dstrect`.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect a pointer to the source rectangle, or nullptr for the entire\n               texture.\n@param scale the scale used to transform srcrect into the destination\n             rectangle, e.g. a 32x32 texture with a scale of 2 would fill\n             64x64 tiles.\n@param dstrect a pointer to the destination rectangle, or nullptr for the\n               entire rendering target.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RenderTexture",
@@ -8743,7 +8741,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -8759,7 +8757,8 @@
                 }
               ],
               "sourceName": "SDL_RenderTextureTiled",
-              "static": false
+              "static": false,
+              "proto": true
             },
             "RenderTexture9Grid": {
               "doc": "Perform a scaled copy using the 9-grid algorithm to the current rendering\ntarget at subpixel precision.\n\nThe pixels in the texture are split into a 3x3 grid, using the different\ncorner sizes for each corner, and the sides and center making up the\nremaining pixels. The corners are then scaled using `scale` and fit into\nthe corners of the destination rectangle. The sides and center are then\nstretched into place to cover the remaining destination rectangle.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect the Rect structure representing the rectangle to be used\n               for the 9-grid, or nullptr to use the entire texture.\n@param left_width the width, in pixels, of the left corners in `srcrect`.\n@param right_width the width, in pixels, of the right corners in `srcrect`.\n@param top_height the height, in pixels, of the top corners in `srcrect`.\n@param bottom_height the height, in pixels, of the bottom corners in\n                     `srcrect`.\n@param scale the scale used to transform the corner of `srcrect` into the\n             corner of `dstrect`, or 0.0f for an unscaled copy.\n@param dstrect a pointer to the destination rectangle, or nullptr for the\n               entire rendering target.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RenderTexture",
@@ -8769,7 +8768,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "TextureBase &"
                 },
                 {
                   "name": "srcrect",
@@ -8801,7 +8800,8 @@
                 }
               ],
               "sourceName": "SDL_RenderTexture9Grid",
-              "static": false
+              "static": false,
+              "proto": true
             },
             "RenderGeometry": {
               "doc": "Render a list of triangles, optionally using a texture and indices into the\nvertex array Color and alpha modulation is done per vertex\n(TextureBase.SetColorMod and TextureBase.SetAlphaMod are ignored).\n\n@param renderer the rendering context.\n@param texture (optional) The SDL texture to use.\n@param vertices vertices.\n@param num_vertices number of vertices.\n@param indices (optional) An array of integer indices into the 'vertices'\n               array, if nullptr all vertices will be rendered in sequential\n               order.\n@param num_indices number of indices.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RenderGeometryRaw",
@@ -8811,7 +8811,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "OptionalTexture"
                 },
                 {
                   "name": "vertices",
@@ -8819,12 +8819,12 @@
                 },
                 {
                   "name": "indices",
-                  "type": "std::span<const int>",
-                  "default": "{}"
+                  "type": "std::span<const int>"
                 }
               ],
               "sourceName": "SDL_RenderGeometry",
-              "static": false
+              "static": false,
+              "proto": true
             },
             "RenderGeometryRaw": {
               "doc": "Render a list of triangles, optionally using a texture and indices into the\nvertex arrays Color and alpha modulation is done per vertex\n(TextureBase.SetColorMod and TextureBase.SetAlphaMod are ignored).\n\n@param texture (optional) The SDL texture to use.\n@param xy vertex positions.\n@param xy_stride byte size to move from one element to the next element.\n@param color vertex colors (as FColor).\n@param color_stride byte size to move from one element to the next element.\n@param uv vertex normalized texture coordinates.\n@param uv_stride byte size to move from one element to the next element.\n@param num_vertices number of vertices.\n@param indices (optional) An array of indices into the 'vertices' arrays,\n               if nullptr all vertices will be rendered in sequential order.\n@param num_indices number of indices.\n@param size_indices index size: 1 (byte), 2 (short), 4 (int).\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RenderGeometry",
@@ -8834,7 +8834,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef"
+                  "type": "OptionalTexture"
                 },
                 {
                   "name": "xy",
@@ -8877,7 +8877,9 @@
                   "type": "int"
                 }
               ],
-              "sourceName": "SDL_RenderGeometryRaw"
+              "sourceName": "SDL_RenderGeometryRaw",
+              "static": false,
+              "proto": true
             },
             "RenderReadPixels": {
               "doc": "Read pixels from the current rendering target.\n\nThe returned surface contains pixels inside the desired area clipped to the\ncurrent viewport, and should be freed with SurfaceRef.reset().\n\nNote that this returns the actual pixels on the screen, so if you are using\nlogical presentation you should use RendererBase.GetLogicalPresentationRect()\nto get the area containing your content.\n\n**WARNING**: This is a very slow operation, and should not be used\nfrequently. If you're using this on the main rendering target, it should be\ncalled after rendering and before RendererBase.Present().\n\n@param renderer the rendering context.\n@param rect an Rect structure representing the area to read, which will\n            be clipped to the current viewport, or nullptr for the entire\n            viewport.\n@returns a new SurfaceBase on success or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -8974,56 +8976,222 @@
               ],
               "name": "RenderDebugTextFormat",
               "doc": ""
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererRef": {
+          "name": "RendererRef",
+          "kind": "struct",
+          "type": "RendererBase",
+          "doc": "Handle to a non owned renderer\n\n@cat resource\n\n@sa RendererBase\n@sa Renderer",
+          "entries": {
+            "RendererBase::RendererBase": {
+              "kind": "alias",
+              "name": "RendererBase::RendererBase",
+              "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RendererBase",
-              "name": "Destroy",
+            "RendererRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const RendererRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "RendererBase(other.get())"
+                  ]
+                },
+                "name": "RendererRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "RendererRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "RendererBase(other.release())"
+                  ]
+                },
+                "name": "RendererRef"
+              }
+            ],
+            "~RendererRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroyRenderer"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~RendererRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "RendererRef &",
+              "parameters": [
+                {
+                  "type": "RendererRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Renderer *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n@param renderer the rendering context.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.RendererBase",
+              "hints": {
+                "body": "SDL_DestroyRenderer(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_Renderer>::doFree": {
-          "name": "ObjectRef<SDL_Renderer>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for renderer resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Renderer *",
-              "name": "resource"
+        "Renderer": {
+          "name": "Renderer",
+          "kind": "struct",
+          "type": "RendererRef",
+          "doc": "Handle to an owned renderer\n\n@cat resource\n\n@sa RendererBase\n@sa RendererRef",
+          "entries": {
+            "RendererRef::RendererRef": {
+              "kind": "alias",
+              "name": "RendererRef::RendererRef",
+              "doc": ""
+            },
+            "Renderer": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Renderer *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "RendererRef(resource)"
+                  ]
+                },
+                "name": "Renderer"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Renderer &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Renderer",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Renderer &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Renderer"
+              }
+            ],
+            "~Renderer": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Renderer"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Renderer &",
+              "parameters": [
+                {
+                  "type": "Renderer",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroyRenderer"
+          }
         },
         "TextureBase": {
-          "doc": "An efficient driver-specific representation of pixel data\n\n@since This struct is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureBase.Destroy",
+          "doc": "An efficient driver-specific representation of pixel data\n\n@since This struct is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureRef.reset\n\n@cat resource\n\n@sa Texture\n@sa TextureRef",
           "name": "TextureBase",
           "kind": "struct",
           "sourceName": "SDL_Texture",
-          "type": "T",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Texture *>",
-              "name": "T"
-            }
-          ],
+          "type": "Resource<SDL_Texture *>",
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "TextureBase": [
               {
                 "kind": "function",
                 "type": "",
+                "proto": true,
                 "parameters": [
                   {
-                    "type": "RendererRef",
+                    "type": "RendererBase &",
                     "name": "renderer"
                   },
                   {
@@ -9035,14 +9203,31 @@
                 "doc": ""
               },
               {
-                "doc": "Create a texture for a rendering context.\n\nThe contents of a texture when first created are not defined.\n\n@param renderer the rendering context.\n@param format one of the enumerated values in PixelFormat.\n@param access one of the enumerated values in TextureAccess.\n@param w the width of the texture in pixels.\n@param h the height of the texture in pixels.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureBase.Destroy\n@sa SDL_GetTextureSize\n@sa TextureBase.Update",
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "RendererBase &",
+                    "name": "renderer"
+                  },
+                  {
+                    "type": "IOStream &",
+                    "name": "src"
+                  }
+                ],
+                "name": "TextureBase",
+                "doc": ""
+              },
+              {
+                "doc": "Create a texture for a rendering context.\n\nThe contents of a texture when first created are not defined.\n\n@param renderer the rendering context.\n@param format one of the enumerated values in PixelFormat.\n@param access one of the enumerated values in TextureAccess.\n@param w the width of the texture in pixels.\n@param h the height of the texture in pixels.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureRef.reset\n@sa SDL_GetTextureSize\n@sa TextureBase.Update",
                 "name": "TextureBase",
                 "kind": "function",
                 "type": "",
                 "parameters": [
                   {
                     "name": "renderer",
-                    "type": "RendererRef"
+                    "type": "RendererBase &"
                   },
                   {
                     "name": "format",
@@ -9064,14 +9249,14 @@
                 "sourceName": "SDL_CreateTexture"
               },
               {
-                "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe TextureAccess hint for the created texture is\n`TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nprop::Texture.FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SurfaceBase structure containing pixel data used to fill\n               the texture.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureBase.Destroy",
+                "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe TextureAccess hint for the created texture is\n`TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nprop::Texture.FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SurfaceBase structure containing pixel data used to fill\n               the texture.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureRef.reset",
                 "name": "TextureBase",
                 "kind": "function",
                 "type": "",
                 "parameters": [
                   {
                     "name": "renderer",
-                    "type": "RendererRef"
+                    "type": "RendererBase &"
                   },
                   {
                     "name": "surface",
@@ -9081,14 +9266,14 @@
                 "sourceName": "SDL_CreateTextureFromSurface"
               },
               {
-                "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureBase.Destroy\n@sa SDL_GetTextureSize\n@sa TextureBase.Update",
+                "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureRef.reset\n@sa SDL_GetTextureSize\n@sa TextureBase.Update",
                 "name": "TextureBase",
                 "kind": "function",
                 "type": "",
                 "parameters": [
                   {
                     "name": "renderer",
-                    "type": "RendererRef"
+                    "type": "RendererBase &"
                   },
                   {
                     "name": "props",
@@ -9511,30 +9696,201 @@
               "parameters": [],
               "name": "GetFormat",
               "doc": ""
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "TextureRef": {
+          "name": "TextureRef",
+          "kind": "struct",
+          "type": "TextureBase",
+          "doc": "Handle to a non owned texture\n\n@cat resource\n\n@sa TextureBase\n@sa Texture",
+          "entries": {
+            "TextureBase::TextureBase": {
+              "kind": "alias",
+              "name": "TextureBase::TextureBase",
+              "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy the specified texture.\n\nPassing nullptr or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase",
-              "name": "Destroy",
+            "TextureRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const TextureRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "TextureBase(other.get())"
+                  ]
+                },
+                "name": "TextureRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "TextureRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "TextureBase(other.release())"
+                  ]
+                },
+                "name": "TextureRef"
+              }
+            ],
+            "~TextureRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroyTexture"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~TextureRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "TextureRef &",
+              "parameters": [
+                {
+                  "type": "TextureRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Texture *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroy the specified texture.\n\nPassing nullptr or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase",
+              "hints": {
+                "body": "SDL_DestroyTexture(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_Texture>::doFree": {
-          "name": "ObjectRef<SDL_Texture>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for texture resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Texture *",
-              "name": "resource"
+        "Texture": {
+          "name": "Texture",
+          "kind": "struct",
+          "type": "TextureRef",
+          "doc": "Handle to an owned texture\n\n@cat resource\n\n@sa TextureBase\n@sa TextureRef",
+          "entries": {
+            "TextureRef::TextureRef": {
+              "kind": "alias",
+              "name": "TextureRef::TextureRef",
+              "doc": ""
+            },
+            "Texture": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Texture *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "TextureRef(resource)"
+                  ]
+                },
+                "name": "Texture"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Texture &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Texture",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Texture &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Texture"
+              }
+            ],
+            "~Texture": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Texture"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Texture &",
+              "parameters": [
+                {
+                  "type": "Texture",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroyTexture"
+          }
         },
         "TextureLock": {
           "name": "TextureLock",
@@ -9636,7 +9992,8 @@
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "sourceName": "SDL_UnlockTexture"
+              "sourceName": "SDL_UnlockTexture",
+              "static": false
             },
             "GetPixels": {
               "kind": "function",
@@ -10478,6 +10835,278 @@
           },
           "doc": ""
         },
+        "RendererBase::SetTarget": {
+          "name": "RendererBase::SetTarget",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "OptionalTexture"
+            }
+          ],
+          "sourceName": "SDL_SetRenderTarget",
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererBase::GetTarget": {
+          "name": "RendererBase::GetTarget",
+          "kind": "function",
+          "type": "TextureRef",
+          "parameters": [],
+          "sourceName": "SDL_GetRenderTarget",
+          "immutable": true,
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererBase::RenderTexture": {
+          "name": "RendererBase::RenderTexture",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "TextureBase &"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            },
+            {
+              "name": "dstrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            }
+          ],
+          "sourceName": "SDL_RenderTexture",
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererBase::RenderTextureRotated": {
+          "name": "RendererBase::RenderTextureRotated",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "TextureBase &"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            },
+            {
+              "name": "dstrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            },
+            {
+              "name": "angle",
+              "type": "double"
+            },
+            {
+              "name": "center",
+              "type": "OptionalRef<const SDL_FPoint>"
+            },
+            {
+              "name": "flip",
+              "type": "FlipMode"
+            }
+          ],
+          "sourceName": "SDL_RenderTextureRotated",
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererBase::RenderTextureAffine": {
+          "name": "RendererBase::RenderTextureAffine",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "TextureBase &"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            },
+            {
+              "name": "origin",
+              "type": "OptionalRef<const SDL_FPoint>"
+            },
+            {
+              "name": "right",
+              "type": "OptionalRef<const SDL_FPoint>"
+            },
+            {
+              "name": "down",
+              "type": "OptionalRef<const SDL_FPoint>"
+            }
+          ],
+          "sourceName": "SDL_RenderTextureAffine",
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererBase::RenderTextureTiled": {
+          "name": "RendererBase::RenderTextureTiled",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "TextureBase &"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            },
+            {
+              "name": "scale",
+              "type": "float"
+            },
+            {
+              "name": "dstrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            }
+          ],
+          "sourceName": "SDL_RenderTextureTiled",
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererBase::RenderTexture9Grid": {
+          "name": "RendererBase::RenderTexture9Grid",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "TextureBase &"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            },
+            {
+              "name": "left_width",
+              "type": "float"
+            },
+            {
+              "name": "right_width",
+              "type": "float"
+            },
+            {
+              "name": "top_height",
+              "type": "float"
+            },
+            {
+              "name": "bottom_height",
+              "type": "float"
+            },
+            {
+              "name": "scale",
+              "type": "float"
+            },
+            {
+              "name": "dstrect",
+              "type": "OptionalRef<const SDL_FRect>"
+            }
+          ],
+          "sourceName": "SDL_RenderTexture9Grid",
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererBase::RenderGeometry": {
+          "name": "RendererBase::RenderGeometry",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "OptionalTexture"
+            },
+            {
+              "name": "vertices",
+              "type": "std::span<const Vertex>"
+            },
+            {
+              "name": "indices",
+              "type": "std::span<const int>"
+            }
+          ],
+          "sourceName": "SDL_RenderGeometry",
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RendererBase::RenderGeometryRaw": {
+          "name": "RendererBase::RenderGeometryRaw",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "OptionalTexture"
+            },
+            {
+              "name": "xy",
+              "type": "const float *"
+            },
+            {
+              "name": "xy_stride",
+              "type": "int"
+            },
+            {
+              "name": "color",
+              "type": "const FColor *"
+            },
+            {
+              "name": "color_stride",
+              "type": "int"
+            },
+            {
+              "name": "uv",
+              "type": "const float *"
+            },
+            {
+              "name": "uv_stride",
+              "type": "int"
+            },
+            {
+              "name": "num_vertices",
+              "type": "int"
+            },
+            {
+              "name": "indices",
+              "type": "const void *"
+            },
+            {
+              "name": "num_indices",
+              "type": "int"
+            },
+            {
+              "name": "size_indices",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_RenderGeometryRaw",
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
         "GetRenderMetalLayer": {
           "doc": "Get the CAMetalLayer associated with the given Metal renderer.\n\nThis function returns `void *`, so SDL doesn't have to include Metal's\nheaders, but it can be safely cast to a `CAMetalLayer *`.\n\n@param renderer the renderer to query.\n@returns a `CAMetalLayer *` on success, or nullptr if the renderer isn't a\n         Metal renderer.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetRenderMetalCommandEncoder",
           "name": "GetRenderMetalLayer",
@@ -10486,7 +11115,7 @@
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef"
+              "type": "RendererBase &"
             }
           ],
           "sourceName": "SDL_GetRenderMetalLayer"
@@ -10499,7 +11128,7 @@
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef"
+              "type": "RendererBase &"
             }
           ],
           "sourceName": "SDL_GetRenderMetalCommandEncoder"
@@ -10512,7 +11141,7 @@
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef"
+              "type": "RendererBase &"
             },
             {
               "name": "wait_stage_mask",
@@ -33215,14 +33844,14 @@
         ],
         "LoadTexture": [
           {
-            "doc": "Load an image from a filesystem path into a GPU texture.\n\nAn TextureBase represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceBase if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureBase in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nThere is a separate function to read files from an IOStreamBase, if you\nneed an i/o abstraction to provide data from anywhere instead of a simple\nfilesystem read; that function is LoadTexture().\n\nIf you would rather decode an image to an SurfaceBase (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureBase.Destroy().\n\n@param renderer the RendererBase to use to create the GPU texture.\n@param file a path on the filesystem to load an image from.\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture",
+            "doc": "Load an image from a filesystem path into a GPU texture.\n\nAn TextureBase represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceBase if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureBase in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nThere is a separate function to read files from an IOStreamBase, if you\nneed an i/o abstraction to provide data from anywhere instead of a simple\nfilesystem read; that function is LoadTexture().\n\nIf you would rather decode an image to an SurfaceBase (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureRef.reset().\n\n@param renderer the RendererBase to use to create the GPU texture.\n@param file a path on the filesystem to load an image from.\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture",
             "name": "LoadTexture",
             "kind": "function",
             "type": "Texture",
             "parameters": [
               {
                 "name": "renderer",
-                "type": "RendererRef"
+                "type": "RendererBase &"
               },
               {
                 "name": "file",
@@ -33232,14 +33861,14 @@
             "sourceName": "IMG_LoadTexture"
           },
           {
-            "doc": "Load an image from an SDL data source into a GPU texture.\n\nAn TextureBase represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceBase if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureBase in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamBase: `LoadTexture(renderer, \"filename.jpg\")` will call\nthis function and manage those details for you, determining the file type\nfrom the filename's extension.\n\nThere is also LoadTexture(), which is equivalent to this\nfunction except a file extension (like \"BMP\", \"JPG\", etc) can be specified,\nin case SDL_image cannot autodetect the file format.\n\nIf you would rather decode an image to an SurfaceBase (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureBase.Destroy().\n\n@param renderer the RendererBase to use to create the GPU texture.\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture\n@sa TextureBase.Destroy",
+            "doc": "Load an image from an SDL data source into a GPU texture.\n\nAn TextureBase represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceBase if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureBase in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamBase: `LoadTexture(renderer, \"filename.jpg\")` will call\nthis function and manage those details for you, determining the file type\nfrom the filename's extension.\n\nThere is also LoadTexture(), which is equivalent to this\nfunction except a file extension (like \"BMP\", \"JPG\", etc) can be specified,\nin case SDL_image cannot autodetect the file format.\n\nIf you would rather decode an image to an SurfaceBase (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureRef.reset().\n\n@param renderer the RendererBase to use to create the GPU texture.\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture\n@sa TextureRef.reset",
             "name": "LoadTexture",
             "kind": "function",
             "type": "Texture",
             "parameters": [
               {
                 "name": "renderer",
-                "type": "RendererRef"
+                "type": "RendererBase &"
               },
               {
                 "name": "src",
@@ -33249,14 +33878,14 @@
             "sourceName": "IMG_LoadTexture_IO"
           },
           {
-            "doc": "Load an image from an SDL data source into a GPU texture.\n\nAn TextureBase represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceBase if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureBase in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamBase: `LoadTexture(\"filename.jpg\")` will call this\nfunction and manage those details for you, determining the file type from\nthe filename's extension.\n\nThere is also LoadTexture(), which is equivalent to this function\nexcept that it will rely on SDL_image to determine what type of data it is\nloading, much like passing a nullptr for type.\n\nIf you would rather decode an image to an SurfaceBase (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureBase.Destroy().\n\n@param renderer the RendererBase to use to create the GPU texture.\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"BMP\", \"GIF\",\n            \"PNG\", etc).\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture\n@sa TextureBase.Destroy",
+            "doc": "Load an image from an SDL data source into a GPU texture.\n\nAn TextureBase represents an image in GPU memory, usable by SDL's 2D Render\nAPI. This can be significantly more efficient than using a CPU-bound\nSurfaceBase if you don't need to manipulate the image directly after\nloading it.\n\nIf the loaded image has transparency or a colorkey, a texture with an alpha\nchannel will be created. Otherwise, SDL_image will attempt to create an\nTextureBase in the most format that most reasonably represents the image\ndata (but in many cases, this will just end up being 32-bit RGB or 32-bit\nRGBA).\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nThere is a separate function to read files from disk without having to deal\nwith IOStreamBase: `LoadTexture(\"filename.jpg\")` will call this\nfunction and manage those details for you, determining the file type from\nthe filename's extension.\n\nThere is also LoadTexture(), which is equivalent to this function\nexcept that it will rely on SDL_image to determine what type of data it is\nloading, much like passing a nullptr for type.\n\nIf you would rather decode an image to an SurfaceBase (a buffer of pixels\nin CPU memory), call LoadSurface() instead.\n\nWhen done with the returned texture, the app should dispose of it with a\ncall to TextureRef.reset().\n\n@param renderer the RendererBase to use to create the GPU texture.\n@param src an IOStreamBase that data will be read from.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"BMP\", \"GIF\",\n            \"PNG\", etc).\n@returns a new texture, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa LoadTexture\n@sa LoadTexture\n@sa TextureRef.reset",
             "name": "LoadTexture",
             "kind": "function",
             "type": "Texture",
             "parameters": [
               {
                 "name": "renderer",
-                "type": "RendererRef"
+                "type": "RendererBase &"
               },
               {
                 "name": "src",
@@ -36898,7 +37527,7 @@
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef"
+              "type": "RendererBase &"
             }
           ],
           "sourceName": "TTF_CreateRendererTextEngine"
