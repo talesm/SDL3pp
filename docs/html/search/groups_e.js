@@ -7,5 +7,6 @@ var searchData=
   ['points_4',['Application entry points',['../group__CategoryMain.html',1,'']]],
   ['power_20management_20status_5',['Power Management Status',['../group__CategoryPower.html',1,'']]],
   ['primitives_6',['Thread Synchronization Primitives',['../group__CategoryMutex.html',1,'']]],
-  ['properties_7',['Object Properties',['../group__CategoryProperties.html',1,'']]]
+  ['process_20control_7',['Process Control',['../group__CategoryProcess.html',1,'']]],
+  ['properties_8',['Object Properties',['../group__CategoryProperties.html',1,'']]]
 ];

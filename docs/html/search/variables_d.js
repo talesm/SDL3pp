@@ -111,10 +111,14 @@ var searchData=
   ['powerstate_5fno_5fbattery_108',['POWERSTATE_NO_BATTERY',['../group__CategoryPower.html#ga49d768ccd9bac62ac317afc4b04fb4a8',1,'SDL']]],
   ['powerstate_5fon_5fbattery_109',['POWERSTATE_ON_BATTERY',['../group__CategoryPower.html#ga1bc24c65645e030f4e96f30003ea0cbd',1,'SDL']]],
   ['powerstate_5funknown_110',['POWERSTATE_UNKNOWN',['../group__CategoryPower.html#ga25c407edb7134d9bed51897ffde972ec',1,'SDL']]],
-  ['property_5ftype_5fboolean_111',['PROPERTY_TYPE_BOOLEAN',['../group__CategoryProperties.html#ga025458181fc191644ae8cc11537aea63',1,'SDL']]],
-  ['property_5ftype_5ffloat_112',['PROPERTY_TYPE_FLOAT',['../group__CategoryProperties.html#ga9839a1da3c23357a87438ee8f5d16169',1,'SDL']]],
-  ['property_5ftype_5finvalid_113',['PROPERTY_TYPE_INVALID',['../group__CategoryProperties.html#ga93217b69771e54cce530e9bca787b24e',1,'SDL']]],
-  ['property_5ftype_5fnumber_114',['PROPERTY_TYPE_NUMBER',['../group__CategoryProperties.html#ga77c4cc507896812729464a687f5d0af7',1,'SDL']]],
-  ['property_5ftype_5fpointer_115',['PROPERTY_TYPE_POINTER',['../group__CategoryProperties.html#ga7c46a39412d67b784ba0cc8ded92dc85',1,'SDL']]],
-  ['property_5ftype_5fstring_116',['PROPERTY_TYPE_STRING',['../group__CategoryProperties.html#gaa0fbb4ae7fb0a346d4b70d2b8d580640',1,'SDL']]]
+  ['process_5fstdio_5fapp_111',['PROCESS_STDIO_APP',['../group__CategoryProcess.html#ga88a2fed48b7d9379404299fb1db6cfae',1,'SDL']]],
+  ['process_5fstdio_5finherited_112',['PROCESS_STDIO_INHERITED',['../group__CategoryProcess.html#gaf3459182b9a6fdf46679567579f79cea',1,'SDL']]],
+  ['process_5fstdio_5fnull_113',['PROCESS_STDIO_NULL',['../group__CategoryProcess.html#ga9b927aebc04f8de9d3cc849a357ae4a9',1,'SDL']]],
+  ['process_5fstdio_5fredirect_114',['PROCESS_STDIO_REDIRECT',['../group__CategoryProcess.html#gaec3785d350205170bf8198577c2eaea6',1,'SDL']]],
+  ['property_5ftype_5fboolean_115',['PROPERTY_TYPE_BOOLEAN',['../group__CategoryProperties.html#ga025458181fc191644ae8cc11537aea63',1,'SDL']]],
+  ['property_5ftype_5ffloat_116',['PROPERTY_TYPE_FLOAT',['../group__CategoryProperties.html#ga9839a1da3c23357a87438ee8f5d16169',1,'SDL']]],
+  ['property_5ftype_5finvalid_117',['PROPERTY_TYPE_INVALID',['../group__CategoryProperties.html#ga93217b69771e54cce530e9bca787b24e',1,'SDL']]],
+  ['property_5ftype_5fnumber_118',['PROPERTY_TYPE_NUMBER',['../group__CategoryProperties.html#ga77c4cc507896812729464a687f5d0af7',1,'SDL']]],
+  ['property_5ftype_5fpointer_119',['PROPERTY_TYPE_POINTER',['../group__CategoryProperties.html#ga7c46a39412d67b784ba0cc8ded92dc85',1,'SDL']]],
+  ['property_5ftype_5fstring_120',['PROPERTY_TYPE_STRING',['../group__CategoryProperties.html#gaa0fbb4ae7fb0a346d4b70d2b8d580640',1,'SDL']]]
 ];

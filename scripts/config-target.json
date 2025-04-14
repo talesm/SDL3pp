@@ -30,6 +30,7 @@
     "SDL3pp_endian.h",
     "SDL3pp_bits.h",
     "SDL3pp_loadso.h",
+    "SDL3pp_process.h",
     "SDL3pp_power.h",
     "SDL3pp_messagebox.h",
     "SDL3pp_dialog.h",

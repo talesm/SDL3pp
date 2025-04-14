@@ -22484,6 +22484,271 @@
         }
       }
     },
+    "SDL_process.h": {
+      "name": "SDL_process.h",
+      "doc": "# CategoryProcess\n\nProcess control support.\n\nThese functions provide a cross-platform way to spawn and manage OS-level\nprocesses.\n\nYou can create a new subprocess with SDL_CreateProcess() and optionally\nread and write to it using SDL_ReadProcess() or SDL_GetProcessInput() and\nSDL_GetProcessOutput(). If more advanced functionality like chaining input\nbetween processes is necessary, you can use\nSDL_CreateProcessWithProperties().\n\nYou can get the status of a created process with SDL_WaitProcess(), or\nterminate the process with SDL_KillProcess().\n\nDon't forget to call SDL_DestroyProcess() to clean up, whether the process\nprocess was killed, terminated on its own, or is still running!",
+      "entries": {
+        "SDL_Process": {
+          "doc": "An opaque handle representing a system process.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess",
+          "name": "SDL_Process",
+          "kind": "alias",
+          "type": "struct SDL_Process"
+        },
+        "SDL_CreateProcess": {
+          "doc": "Create a new process.\n\nThe path to the executable is supplied in args[0]. args[1..N] are\nadditional arguments passed on the command line of the new process, and the\nargument list should be terminated with a NULL, e.g.:\n\n```c\nconst char *args[] = { \"myprogram\", \"argument\", NULL };\n```\n\nSetting pipe_stdio to true is equivalent to setting\n`SDL_PROP_PROCESS_CREATE_STDIN_NUMBER` and\n`SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER` to `SDL_PROCESS_STDIO_APP`, and\nwill allow the use of SDL_ReadProcess() or SDL_GetProcessInput() and\nSDL_GetProcessOutput().\n\nSee SDL_CreateProcessWithProperties() for more details.\n\n\\param args the path and arguments for the new process.\n\\param pipe_stdio true to create pipes to the process's standard input and\n                  from the process's standard output, false for the process\n                  to have no input and inherit the application's standard\n                  output.\n\\returns the newly created and running process, or NULL if the process\n         couldn't be created.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcessWithProperties\n\\sa SDL_GetProcessProperties\n\\sa SDL_ReadProcess\n\\sa SDL_GetProcessInput\n\\sa SDL_GetProcessOutput\n\\sa SDL_KillProcess\n\\sa SDL_WaitProcess\n\\sa SDL_DestroyProcess",
+          "name": "SDL_CreateProcess",
+          "kind": "function",
+          "type": "SDL_Process *",
+          "parameters": [
+            {
+              "name": "args",
+              "type": "const char *const *"
+            },
+            {
+              "name": "pipe_stdio",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_ProcessIO": {
+          "doc": "Description of where standard I/O should be directed when creating a\nprocess.\n\nIf a standard I/O stream is set to SDL_PROCESS_STDIO_INHERITED, it will go\nto the same place as the application's I/O stream. This is the default for\nstandard output and standard error.\n\nIf a standard I/O stream is set to SDL_PROCESS_STDIO_NULL, it is connected\nto `NUL:` on Windows and `/dev/null` on POSIX systems. This is the default\nfor standard input.\n\nIf a standard I/O stream is set to SDL_PROCESS_STDIO_APP, it is connected\nto a new SDL_IOStream that is available to the application. Standard input\nwill be available as `SDL_PROP_PROCESS_STDIN_POINTER` and allows\nSDL_GetProcessInput(), standard output will be available as\n`SDL_PROP_PROCESS_STDOUT_POINTER` and allows SDL_ReadProcess() and\nSDL_GetProcessOutput(), and standard error will be available as\n`SDL_PROP_PROCESS_STDERR_POINTER` in the properties for the created\nprocess.\n\nIf a standard I/O stream is set to SDL_PROCESS_STDIO_REDIRECT, it is\nconnected to an existing SDL_IOStream provided by the application. Standard\ninput is provided using `SDL_PROP_PROCESS_CREATE_STDIN_POINTER`, standard\noutput is provided using `SDL_PROP_PROCESS_CREATE_STDOUT_POINTER`, and\nstandard error is provided using `SDL_PROP_PROCESS_CREATE_STDERR_POINTER`\nin the creation properties. These existing streams should be closed by the\napplication once the new process is created.\n\nIn order to use an SDL_IOStream with SDL_PROCESS_STDIO_REDIRECT, it must\nhave `SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER` or\n`SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER` set. This is true for streams\nrepresenting files and process I/O.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcessWithProperties\n\\sa SDL_GetProcessProperties\n\\sa SDL_ReadProcess\n\\sa SDL_GetProcessInput\n\\sa SDL_GetProcessOutput",
+          "name": "SDL_ProcessIO",
+          "kind": "enum",
+          "entries": {
+            "SDL_PROCESS_STDIO_INHERITED": {
+              "doc": "The I/O stream is inherited from the application.",
+              "name": "SDL_PROCESS_STDIO_INHERITED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PROCESS_STDIO_NULL": {
+              "doc": "The I/O stream is ignored.",
+              "name": "SDL_PROCESS_STDIO_NULL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PROCESS_STDIO_APP": {
+              "doc": "The I/O stream is connected to a new SDL_IOStream that the application can read or write.",
+              "name": "SDL_PROCESS_STDIO_APP",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PROCESS_STDIO_REDIRECT": {
+              "doc": "The I/O stream is redirected to an existing SDL_IOStream.",
+              "name": "SDL_PROCESS_STDIO_REDIRECT",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_CreateProcessWithProperties": {
+          "doc": "Create a new process with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_PROCESS_CREATE_ARGS_POINTER`: an array of strings containing\n  the program to run, any arguments, and a NULL pointer, e.g. const char\n  *args[] = { \"myprogram\", \"argument\", NULL }. This is a required property.\n- `SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER`: an SDL_Environment\n  pointer. If this property is set, it will be the entire environment for\n  the process, otherwise the current environment is used.\n- `SDL_PROP_PROCESS_CREATE_STDIN_NUMBER`: an SDL_ProcessIO value describing\n  where standard input for the process comes from, defaults to\n  `SDL_PROCESS_STDIO_NULL`.\n- `SDL_PROP_PROCESS_CREATE_STDIN_POINTER`: an SDL_IOStream pointer used for\n  standard input when `SDL_PROP_PROCESS_CREATE_STDIN_NUMBER` is set to\n  `SDL_PROCESS_STDIO_REDIRECT`.\n- `SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER`: an SDL_ProcessIO value\n  describing where standard output for the process goes to, defaults to\n  `SDL_PROCESS_STDIO_INHERITED`.\n- `SDL_PROP_PROCESS_CREATE_STDOUT_POINTER`: an SDL_IOStream pointer used\n  for standard output when `SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER` is set\n  to `SDL_PROCESS_STDIO_REDIRECT`.\n- `SDL_PROP_PROCESS_CREATE_STDERR_NUMBER`: an SDL_ProcessIO value\n  describing where standard error for the process goes to, defaults to\n  `SDL_PROCESS_STDIO_INHERITED`.\n- `SDL_PROP_PROCESS_CREATE_STDERR_POINTER`: an SDL_IOStream pointer used\n  for standard error when `SDL_PROP_PROCESS_CREATE_STDERR_NUMBER` is set to\n  `SDL_PROCESS_STDIO_REDIRECT`.\n- `SDL_PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error\n  output of the process should be redirected into the standard output of\n  the process. This property has no effect if\n  `SDL_PROP_PROCESS_CREATE_STDERR_NUMBER` is set.\n- `SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN`: true if the process should\n  run in the background. In this case the default input and output is\n  `SDL_PROCESS_STDIO_NULL` and the exitcode of the process is not\n  available, and will always be 0.\n\nOn POSIX platforms, wait() and waitpid(-1, ...) should not be called, and\nSIGCHLD should not be ignored or handled because those would prevent SDL\nfrom properly tracking the lifetime of the underlying process. You should\nuse SDL_WaitProcess() instead.\n\n\\param props the properties to use.\n\\returns the newly created and running process, or NULL if the process\n         couldn't be created.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess\n\\sa SDL_GetProcessProperties\n\\sa SDL_ReadProcess\n\\sa SDL_GetProcessInput\n\\sa SDL_GetProcessOutput\n\\sa SDL_KillProcess\n\\sa SDL_WaitProcess\n\\sa SDL_DestroyProcess",
+          "name": "SDL_CreateProcessWithProperties",
+          "kind": "function",
+          "type": "SDL_Process *",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "SDL_PropertiesID"
+            }
+          ]
+        },
+        "SDL_PROP_PROCESS_CREATE_ARGS_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_ARGS_POINTER",
+          "kind": "def",
+          "value": "\"SDL.process.create.args\""
+        },
+        "SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER",
+          "kind": "def",
+          "value": "\"SDL.process.create.environment\""
+        },
+        "SDL_PROP_PROCESS_CREATE_STDIN_NUMBER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_STDIN_NUMBER",
+          "kind": "def",
+          "value": "\"SDL.process.create.stdin_option\""
+        },
+        "SDL_PROP_PROCESS_CREATE_STDIN_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_STDIN_POINTER",
+          "kind": "def",
+          "value": "\"SDL.process.create.stdin_source\""
+        },
+        "SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER",
+          "kind": "def",
+          "value": "\"SDL.process.create.stdout_option\""
+        },
+        "SDL_PROP_PROCESS_CREATE_STDOUT_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_STDOUT_POINTER",
+          "kind": "def",
+          "value": "\"SDL.process.create.stdout_source\""
+        },
+        "SDL_PROP_PROCESS_CREATE_STDERR_NUMBER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_STDERR_NUMBER",
+          "kind": "def",
+          "value": "\"SDL.process.create.stderr_option\""
+        },
+        "SDL_PROP_PROCESS_CREATE_STDERR_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_STDERR_POINTER",
+          "kind": "def",
+          "value": "\"SDL.process.create.stderr_source\""
+        },
+        "SDL_PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN",
+          "kind": "def",
+          "value": "\"SDL.process.create.stderr_to_stdout\""
+        },
+        "SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN",
+          "kind": "def",
+          "value": "\"SDL.process.create.background\""
+        },
+        "SDL_GetProcessProperties": {
+          "doc": "Get the properties associated with a process.\n\nThe following read-only properties are provided by SDL:\n\n- `SDL_PROP_PROCESS_PID_NUMBER`: the process ID of the process.\n- `SDL_PROP_PROCESS_STDIN_POINTER`: an SDL_IOStream that can be used to\n  write input to the process, if it was created with\n  `SDL_PROP_PROCESS_CREATE_STDIN_NUMBER` set to `SDL_PROCESS_STDIO_APP`.\n- `SDL_PROP_PROCESS_STDOUT_POINTER`: a non-blocking SDL_IOStream that can\n  be used to read output from the process, if it was created with\n  `SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER` set to `SDL_PROCESS_STDIO_APP`.\n- `SDL_PROP_PROCESS_STDERR_POINTER`: a non-blocking SDL_IOStream that can\n  be used to read error output from the process, if it was created with\n  `SDL_PROP_PROCESS_CREATE_STDERR_NUMBER` set to `SDL_PROCESS_STDIO_APP`.\n- `SDL_PROP_PROCESS_BACKGROUND_BOOLEAN`: true if the process is running in\n  the background.\n\n\\param process the process to query.\n\\returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess\n\\sa SDL_CreateProcessWithProperties",
+          "name": "SDL_GetProcessProperties",
+          "kind": "function",
+          "type": "SDL_PropertiesID",
+          "parameters": [
+            {
+              "name": "process",
+              "type": "SDL_Process *"
+            }
+          ]
+        },
+        "SDL_PROP_PROCESS_PID_NUMBER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_PID_NUMBER",
+          "kind": "def",
+          "value": "\"SDL.process.pid\""
+        },
+        "SDL_PROP_PROCESS_STDIN_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_STDIN_POINTER",
+          "kind": "def",
+          "value": "\"SDL.process.stdin\""
+        },
+        "SDL_PROP_PROCESS_STDOUT_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_STDOUT_POINTER",
+          "kind": "def",
+          "value": "\"SDL.process.stdout\""
+        },
+        "SDL_PROP_PROCESS_STDERR_POINTER": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_STDERR_POINTER",
+          "kind": "def",
+          "value": "\"SDL.process.stderr\""
+        },
+        "SDL_PROP_PROCESS_BACKGROUND_BOOLEAN": {
+          "doc": "",
+          "name": "SDL_PROP_PROCESS_BACKGROUND_BOOLEAN",
+          "kind": "def",
+          "value": "\"SDL.process.background\""
+        },
+        "SDL_ReadProcess": {
+          "doc": "Read all the output from a process.\n\nIf a process was created with I/O enabled, you can use this function to\nread the output. This function blocks until the process is complete,\ncapturing all output, and providing the process exit code.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with SDL_free().\n\n\\param process The process to read.\n\\param datasize a pointer filled in with the number of bytes read, may be\n                NULL.\n\\param exitcode a pointer filled in with the process exit code if the\n                process has exited, may be NULL.\n\\returns the data or NULL on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function is not thread safe.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess\n\\sa SDL_CreateProcessWithProperties\n\\sa SDL_DestroyProcess",
+          "name": "SDL_ReadProcess",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "process",
+              "type": "SDL_Process *"
+            },
+            {
+              "name": "datasize",
+              "type": "size_t *"
+            },
+            {
+              "name": "exitcode",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_GetProcessInput": {
+          "doc": "Get the SDL_IOStream associated with process standard input.\n\nThe process must have been created with SDL_CreateProcess() and pipe_stdio\nset to true, or with SDL_CreateProcessWithProperties() and\n`SDL_PROP_PROCESS_CREATE_STDIN_NUMBER` set to `SDL_PROCESS_STDIO_APP`.\n\nWriting to this stream can return less data than expected if the process\nhasn't read its input. It may be blocked waiting for its output to be read,\nif so you may need to call SDL_GetProcessOutput() and read the output in\nparallel with writing input.\n\n\\param process The process to get the input stream for.\n\\returns the input stream or NULL on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess\n\\sa SDL_CreateProcessWithProperties\n\\sa SDL_GetProcessOutput",
+          "name": "SDL_GetProcessInput",
+          "kind": "function",
+          "type": "SDL_IOStream *",
+          "parameters": [
+            {
+              "name": "process",
+              "type": "SDL_Process *"
+            }
+          ]
+        },
+        "SDL_GetProcessOutput": {
+          "doc": "Get the SDL_IOStream associated with process standard output.\n\nThe process must have been created with SDL_CreateProcess() and pipe_stdio\nset to true, or with SDL_CreateProcessWithProperties() and\n`SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER` set to `SDL_PROCESS_STDIO_APP`.\n\nReading from this stream can return 0 with SDL_GetIOStatus() returning\nSDL_IO_STATUS_NOT_READY if no output is available yet.\n\n\\param process The process to get the output stream for.\n\\returns the output stream or NULL on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess\n\\sa SDL_CreateProcessWithProperties\n\\sa SDL_GetProcessInput",
+          "name": "SDL_GetProcessOutput",
+          "kind": "function",
+          "type": "SDL_IOStream *",
+          "parameters": [
+            {
+              "name": "process",
+              "type": "SDL_Process *"
+            }
+          ]
+        },
+        "SDL_KillProcess": {
+          "doc": "Stop a process.\n\n\\param process The process to stop.\n\\param force true to terminate the process immediately, false to try to\n             stop the process gracefully. In general you should try to stop\n             the process gracefully first as terminating a process may\n             leave it with half-written data or in some other unstable\n             state.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function is not thread safe.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess\n\\sa SDL_CreateProcessWithProperties\n\\sa SDL_WaitProcess\n\\sa SDL_DestroyProcess",
+          "name": "SDL_KillProcess",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "process",
+              "type": "SDL_Process *"
+            },
+            {
+              "name": "force",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_WaitProcess": {
+          "doc": "Wait for a process to finish.\n\nThis can be called multiple times to get the status of a process.\n\nThe exit code will be the exit code of the process if it terminates\nnormally, a negative signal if it terminated due to a signal, or -255\notherwise. It will not be changed if the process is still running.\n\nIf you create a process with standard output piped to the application\n(`pipe_stdio` being true) then you should read all of the process output\nbefore calling SDL_WaitProcess(). If you don't do this the process might be\nblocked indefinitely waiting for output to be read and SDL_WaitProcess()\nwill never return true;\n\n\\param process The process to wait for.\n\\param block If true, block until the process finishes; otherwise, report\n             on the process' status.\n\\param exitcode a pointer filled in with the process exit code if the\n                process has exited, may be NULL.\n\\returns true if the process exited, false otherwise.\n\n\\threadsafety This function is not thread safe.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess\n\\sa SDL_CreateProcessWithProperties\n\\sa SDL_KillProcess\n\\sa SDL_DestroyProcess",
+          "name": "SDL_WaitProcess",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "process",
+              "type": "SDL_Process *"
+            },
+            {
+              "name": "block",
+              "type": "bool"
+            },
+            {
+              "name": "exitcode",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_DestroyProcess": {
+          "doc": "Destroy a previously created process object.\n\nNote that this does not stop the process, just destroys the SDL object used\nto track it. If you want to stop the process you should use\nSDL_KillProcess().\n\n\\param process The process object to destroy.\n\n\\threadsafety This function is not thread safe.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CreateProcess\n\\sa SDL_CreateProcessWithProperties\n\\sa SDL_KillProcess",
+          "name": "SDL_DestroyProcess",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "process",
+              "type": "SDL_Process *"
+            }
+          ]
+        }
+      }
+    },
     "SDL_power.h": {
       "name": "SDL_power.h",
       "doc": "# CategoryPower\n\nSDL power management routines.\n\nThere is a single function in this category: SDL_GetPowerInfo().\n\nThis function is useful for games on the go. This allows an app to know if\nit's running on a draining battery, which can be useful if the app wants to\nreduce processing, or perhaps framerate, to extend the duration of the\nbattery's charge. Perhaps the app just wants to show a battery meter when\nfullscreen, or alert the user when the power is getting extremely low, so\nthey can save their game.",

@@ -5,7 +5,7 @@ var searchData=
   ['egl_5fgetprocaddress_2',['EGL_GetProcAddress',['../group__CategoryVideo.html#ga37eb8e6a189cd293223a7cb1d0a2a32f',1,'SDL']]],
   ['egl_5fgetwindowsurface_3',['EGL_GetWindowSurface',['../group__CategoryVideo.html#gac2b67a73fcb32e44c2468c2cfeb6c47a',1,'SDL']]],
   ['egl_5fsetattributecallbacks_4',['EGL_SetAttributeCallbacks',['../group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683',1,'SDL']]],
-  ['empty_5',['empty',['../structSDL_1_1Rect.html#a69592160d95cc8d1d81dcf321559bfae',1,'SDL::Rect::Empty()'],['../classSDL_1_1OwnArray.html#a2fd8799a55c9af74fb011cb52774f36c',1,'SDL::OwnArray::empty()'],['../structSDL_1_1FRect.html#a815a929d9f6b4e0866f458155d07c23e',1,'SDL::FRect::Empty()']]],
+  ['empty_5',['empty',['../structSDL_1_1FRect.html#a815a929d9f6b4e0866f458155d07c23e',1,'SDL::FRect::Empty()'],['../structSDL_1_1Rect.html#a69592160d95cc8d1d81dcf321559bfae',1,'SDL::Rect::Empty()'],['../classSDL_1_1OwnArray.html#a2fd8799a55c9af74fb011cb52774f36c',1,'SDL::OwnArray::empty()']]],
   ['enablescreensaver_6',['EnableScreenSaver',['../group__CategoryVideo.html#ga881c12afac49a4ab69332d736885dfc2',1,'SDL']]],
   ['end_7',['end',['../classSDL_1_1OwnArray.html#aaf52cf9f1144e446a3ad99ae5c51a2ff',1,'SDL::OwnArray::end()'],['../structSDL_1_1TextBase.html#ae548de9ac0098db066f883aab0566722',1,'SDL::TextBase::end()']]],
   ['enterappmaincallbacks_8',['EnterAppMainCallbacks',['../group__CategoryMain.html#ga2e1cbd26b90891eef642549754780b48',1,'SDL']]],

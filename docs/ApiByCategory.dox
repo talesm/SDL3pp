@@ -102,7 +102,7 @@ Category                            | Header
 Category                            | Header
 ----------------------------------- | --------------------
 @ref CategorySharedObject           | SDL3pp_loadso.h         
-Process Control                     | SDL3pp_process.h       
+@ref CategoryProcess                | SDL3pp_process.h       
 @ref CategoryPower                  | SDL3pp_power.h           
 @ref CategoryMessagebox             | SDL3pp_messagebox.h 
 @ref CategoryDialog                 | SDL3pp_dialog.h         
@@ -202,6 +202,7 @@ thread facilities.
 @defgroup CategoriesAdditionalFunctionality Additional Functionality
 @{
 @addtogroup CategorySharedObject
+@addtogroup CategoryProcess
 @addtogroup CategoryPower
 @addtogroup CategoryMessagebox
 @addtogroup CategoryDialog

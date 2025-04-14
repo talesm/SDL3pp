@@ -115,6 +115,9 @@ constexpr const T *&#160;</td><td class="memItemRight" valign="bottom"><b>data</
 constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
 <tr class="memdesc:acc961907e25af6463035571f9e64e2aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size. <br /></td></tr>
 <tr class="separator:acc961907e25af6463035571f9e64e2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6de4a3f14d7d617c81883b2b38890dd6" id="r_a6de4a3f14d7d617c81883b2b38890dd6"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1OwnArray.html#a6de4a3f14d7d617c81883b2b38890dd6">release</a> ()</td></tr>
+<tr class="memdesc:a6de4a3f14d7d617c81883b2b38890dd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release control on object.  <br /></td></tr>
+<tr class="separator:a6de4a3f14d7d617c81883b2b38890dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02d627466d48cb842e4237121b1962ec" id="r_a02d627466d48cb842e4237121b1962ec"><td class="memItemLeft" align="right" valign="top"><a id="a02d627466d48cb842e4237121b1962ec" name="a02d627466d48cb842e4237121b1962ec"></a>
 constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_t i)</td></tr>
 <tr class="memdesc:a02d627466d48cb842e4237121b1962ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access index. <br /></td></tr>
@@ -155,7 +158,36 @@ class SDL::OwnArray&lt; T &gt;</div><dl class="tparams"><dt>Template Parameters<
   </dd>
 </dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a> </dd></dl>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6de4a3f14d7d617c81883b2b38890dd6" name="a6de4a3f14d7d617c81883b2b38890dd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6de4a3f14d7d617c81883b2b38890dd6">&#9670;&#160;</a></span>release()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T * <a class="el" href="classSDL_1_1OwnArray.html">SDL::OwnArray</a>&lt; T &gt;::release </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>You are responsible to call <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a> on the returned value, if its different than nullptr. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__ownPtr_8h_source.html">SDL3pp_ownPtr.h</a></li>
 </ul>
 </div><!-- contents -->

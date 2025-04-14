@@ -78,6 +78,14 @@ public:
   /// Size
   constexpr size_t size() const { return m_size; }
 
+  /**
+   * Release control on object.
+   *
+   * You are responsible to call free() on the returned value, if its different
+   * than nullptr.
+   */
+  T* release() { return m_ptr.release(); }
+
   /// Access index
   constexpr T& operator[](size_t i) { return m_ptr.get()[i]; }
 

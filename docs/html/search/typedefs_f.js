@@ -10,5 +10,6 @@ var searchData=
   ['pixelformatdetails_7',['PixelFormatDetails',['../group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc',1,'SDL']]],
   ['pixeltype_8',['PixelType',['../group__CategoryPixels.html#gaedfdadf087ddd7d55c732a8f05d2bde2',1,'SDL']]],
   ['powerstate_9',['PowerState',['../group__CategoryPower.html#ga0e25d3bc6ae4cd0d3659b86b7c56f886',1,'SDL']]],
-  ['propertytype_10',['PropertyType',['../group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f',1,'SDL']]]
+  ['processio_10',['ProcessIO',['../group__CategoryProcess.html#ga1d1316bf2aedf1db96e190b42b567654',1,'SDL']]],
+  ['propertytype_11',['PropertyType',['../group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f',1,'SDL']]]
 ];

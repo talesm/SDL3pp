@@ -2257,6 +2257,53 @@ const transform = {
         }
       }
     },
+    "SDL_process.h": {
+      enumerations: {
+        "SDL_ProcessIO": {
+          prefix: "SDL_PROCESS_STDIO_",
+          includeAfter: "__begin",
+        },
+      },
+      resources: {
+        "SDL_Process": {
+          free: "SDL_DestroyProcess",
+          entries: {
+            "SDL_CreateProcess": "ctor",
+            "SDL_CreateProcessWithProperties": "ctor",
+            "SDL_GetProcessProperties": "immutable",
+            "SDL_ReadProcess": {
+              type: "OwnArray<std::byte>",
+              parameters: [
+                {
+                },
+                {
+                  type: "int *",
+                  name: "exitcode",
+                  default: "nullptr",
+                }
+              ]
+            },
+            "ReadAs": {
+              kind: "function",
+              type: "OwnArray<T>",
+              template: [{ type: "class", name: "T" }],
+              parameters: [{
+                type: "int *",
+                name: "exitcode",
+                default: "nullptr",
+              }]
+            },
+            "SDL_GetProcessInput": "function",
+            "SDL_GetProcessOutput": "function",
+            "SDL_KillProcess": "function",
+            "SDL_WaitProcess": "function",
+          }
+        }
+      },
+      namespacesMap: {
+        "SDL_PROP_PROCESS_": "prop::process"
+      }
+    },
     "SDL_main.h": {
       definitionPrefix: "SDL3PP_",
       ignoreEntries: [
