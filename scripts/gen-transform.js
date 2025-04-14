@@ -2434,7 +2434,7 @@ const transform = {
         "SDL_RETURN_CAPABILITY",
         "SDL_NO_THREAD_SAFETY_ANALYSIS",
       ],
-      resources: {
+      resourcesX: {
         "SDL_Mutex": {
           entries: {
             "SDL_CreateMutex": "ctor",
@@ -2453,7 +2453,6 @@ const transform = {
                 type: "SDL_Mutex *"
               }]
             },
-            "SDL_DestroyMutex": "function",
           }
         },
         "SDL_RWLock": {
@@ -2484,7 +2483,6 @@ const transform = {
                 type: "SDL_RWLock *"
               }]
             },
-            "SDL_DestroyRWLock": "function",
           }
         },
         "SDL_Semaphore": {
@@ -2503,7 +2501,6 @@ const transform = {
             },
             "SDL_SignalSemaphore": "function",
             "SDL_GetSemaphoreValue": "immutable",
-            "SDL_DestroySemaphore": "function",
           }
         },
         "SDL_Condition": {
@@ -2522,7 +2519,6 @@ const transform = {
                 },
               ]
             },
-            "SDL_DestroyCondition": "function",
           }
         },
       },
@@ -4503,16 +4499,16 @@ const transform = {
       },
       resources: {
         "SDL_Environment": {
-          "entries": {
+          entries: {
             "SDL_CreateEnvironment": "ctor",
             "SDL_GetEnvironmentVariable": "function",
             "SDL_GetEnvironmentVariables": {
-              "type": "OwnArray<char *>"
+              type: "OwnArray<char *>"
             },
             "GetVariableCount": {
-              "kind": "function",
-              "type": "Uint64",
-              "parameters": []
+              kind: "function",
+              type: "Uint64",
+              parameters: []
             },
             "SDL_SetEnvironmentVariable": "function",
             "SDL_UnsetEnvironmentVariable": "function",
@@ -4520,9 +4516,9 @@ const transform = {
           }
         },
         "SDL_iconv_t": {
-          "uniqueName": "IConv",
-          "type": "SDL_iconv_data_t",
-          "entries": {
+          uniqueName: "IConv",
+          type: "SDL_iconv_data_t",
+          entries: {
             "SDL_iconv_open": "ctor",
             "SDL_iconv": "function",
             "SDL_iconv_close": {
@@ -5781,8 +5777,9 @@ const transform = {
           includeAfter: "__begin"
         }
       },
-      resources: {
+      resourcesX: {
         "SDL_Thread": {
+          free: "SDL_DetachThread",
           entries: {
             "ThreadBase": {
               kind: "function",
@@ -5796,17 +5793,23 @@ const transform = {
             "SDL_CreateThreadWithProperties": "ctor",
             "SDL_GetThreadName": "immutable",
             "SDL_GetThreadID": "immutable",
-            "SDL_SetCurrentThreadPriority": "function",
+            "SDL_SetCurrentThreadPriority": {
+              static: true
+            },
             "SDL_WaitThread": "function",
             "SDL_GetThreadState": "immutable",
-            "SDL_DetachThread": "function",
           }
         }
       },
       transform: {
         "SDL_TLSID": {
           type: "AtomicInt"
-        }
+        },
+        "SDL_DetachThread": {
+          name: "ThreadRef.Detach",
+          static: false,
+          parameters: [],
+        },
       }
     },
     "SDL_time.h": {

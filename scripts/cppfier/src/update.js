@@ -516,8 +516,8 @@ function generateBody(entry, prefix) {
     const superStr = hint?.super ?? "T";
     return `\n${prefix}  : ${superStr}(${sourceName}(${paramStr}))\n${prefix}{}`;
   }
-  if (!prefix || entry.static) {
-    const selfStr = (hint?.self && !hint?.static) ? hint.self + (paramStr.length ? ", " : "") : "";
+  if (!prefix || entry.static || entry.hints?.static) {
+    const selfStr = (hint?.self && !entry.static && !hint?.static) ? hint.self + (paramStr.length ? ", " : "") : "";
     return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${selfStr}${paramStr});\n${prefix}}`;
   }
   if (paramStr) {

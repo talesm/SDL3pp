@@ -25167,25 +25167,17 @@
         "ThreadBase-forward": {
           "name": "ThreadBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Thread *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "ThreadRef": {
+        "ThreadRef-forward": {
           "name": "ThreadRef",
-          "kind": "alias",
-          "type": "ThreadBase<ObjectRef<SDL_Thread>>",
-          "doc": "Handle to a non owned thread\n\n@cat resource\n\n@sa ThreadBase\n@sa Thread"
+          "kind": "forward",
+          "doc": ""
         },
-        "Thread": {
+        "Thread-forward": {
           "name": "Thread",
-          "kind": "alias",
-          "type": "ThreadBase<ObjectUnique<SDL_Thread>>",
-          "doc": "Handle to an owned thread\n\n@cat resource\n\n@sa ThreadBase\n@sa ThreadRef"
+          "kind": "forward",
+          "doc": ""
         },
         "ThreadPriority": {
           "doc": "The SDL thread priority.\n\nSDL will make system changes as necessary in order to apply the thread\npriority. Code which attempts to control thread state related to priority\nshould be aware that calling ThreadBase.SetCurrentPriority may alter such\nstate. SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of\nthis behavior.\n\n@since This enum is available since SDL 3.2.0.",
@@ -25266,21 +25258,15 @@
           "sourceName": "SDL_THREAD_COMPLETE"
         },
         "ThreadBase": {
-          "doc": "The SDL thread object.\n\nThese are opaque data.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa ThreadBase.ThreadBase\n@sa ThreadBase.Wait",
+          "doc": "The SDL thread object.\n\nThese are opaque data.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa ThreadBase.ThreadBase\n@sa ThreadBase.Wait\n\n@cat resource\n\n@sa Thread\n@sa ThreadRef",
           "name": "ThreadBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_Thread *>",
           "sourceName": "SDL_Thread",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Thread *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "ThreadBase": [
@@ -25354,15 +25340,21 @@
               "immutable": true
             },
             "SetCurrentPriority": {
-              "doc": "Set the priority for the current thread.\n\nNote that some platforms will not let you alter the priority (or at least,\npromote the thread to a higher priority) at all, and some require you to be\nan administrator account. Be prepared for this to fail.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Set the priority for the current thread.\n\nNote that some platforms will not let you alter the priority (or at least,\npromote the thread to a higher priority) at all, and some require you to be\nan administrator account. Be prepared for this to fail.\n\n@param priority the ThreadPriority to set.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
               "name": "SetCurrentPriority",
               "kind": "function",
               "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_SetCurrentThreadPriority"
+              "parameters": [
+                {
+                  "name": "priority",
+                  "type": "ThreadPriority"
+                }
+              ],
+              "sourceName": "SDL_SetCurrentThreadPriority",
+              "static": true
             },
             "Wait": {
-              "doc": "Wait for a thread to finish.\n\nThreads that haven't been detached will remain until this function cleans\nthem up. Not doing so is a resource leak.\n\nOnce a thread has been cleaned up through this function, the ThreadBase\nthat references it becomes invalid and should not be referenced again. As\nsuch, only one thread may call ThreadBase.Wait() on another.\n\nThe return code from the thread function is placed in the area pointed to\nby `status`, if `status` is not nullptr.\n\nYou may not wait on a thread that has been used in a call to\nThreadBase.Detach(). Use either that function or this one, but not both, or\nbehavior is undefined.\n\nIt is safe to pass a nullptr thread to this function; it is a no-op.\n\nNote that the thread pointer is freed by this function and is not valid\nafterward.\n\n              ThreadBase.ThreadBase() call that started this thread.\n@param status a pointer filled in with the value returned from the thread\n              function by its 'return', or -1 if the thread has been\n              detached or isn't valid, may be nullptr.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ThreadBase.ThreadBase\n@sa ThreadBase.Detach",
+              "doc": "Wait for a thread to finish.\n\nThreads that haven't been detached will remain until this function cleans\nthem up. Not doing so is a resource leak.\n\nOnce a thread has been cleaned up through this function, the ThreadBase\nthat references it becomes invalid and should not be referenced again. As\nsuch, only one thread may call ThreadBase.Wait() on another.\n\nThe return code from the thread function is placed in the area pointed to\nby `status`, if `status` is not nullptr.\n\nYou may not wait on a thread that has been used in a call to\nThreadRef.Detach(). Use either that function or this one, but not both, or\nbehavior is undefined.\n\nIt is safe to pass a nullptr thread to this function; it is a no-op.\n\nNote that the thread pointer is freed by this function and is not valid\nafterward.\n\n              ThreadBase.ThreadBase() call that started this thread.\n@param status a pointer filled in with the value returned from the thread\n              function by its 'return', or -1 if the thread has been\n              detached or isn't valid, may be nullptr.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ThreadBase.ThreadBase\n@sa ThreadRef.Detach",
               "name": "Wait",
               "kind": "function",
               "type": "void",
@@ -25382,14 +25374,208 @@
               "parameters": [],
               "sourceName": "SDL_GetThreadState",
               "immutable": true
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "ThreadRef": {
+          "name": "ThreadRef",
+          "kind": "struct",
+          "type": "ThreadBase",
+          "doc": "Handle to a non owned thread\n\n@cat resource\n\n@sa ThreadBase\n@sa Thread",
+          "entries": {
+            "ThreadBase::ThreadBase": {
+              "kind": "alias",
+              "name": "ThreadBase::ThreadBase",
+              "doc": ""
+            },
+            "ThreadRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const ThreadRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "ThreadBase(other.get())"
+                  ]
+                },
+                "name": "ThreadRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "ThreadRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "ThreadBase(other.release())"
+                  ]
+                },
+                "name": "ThreadRef"
+              }
+            ],
+            "~ThreadRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~ThreadRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "ThreadRef &",
+              "parameters": [
+                {
+                  "type": "ThreadRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Thread *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Let a thread clean up on exit without intervention.\n\nA thread may be \"detached\" to signify that it should not remain until\nanother thread has called ThreadBase.Wait() on it. Detaching a thread is\nuseful for long-running threads that nothing needs to synchronize with or\nfurther manage. When a detached thread is done, it simply goes away.\n\nThere is no way to recover the return code of a detached thread. If you\nneed this, don't detach the thread and instead use ThreadBase.Wait().\n\nOnce a thread is detached, you should usually assume the ThreadBase isn't\nsafe to reference again, as it will become invalid immediately upon the\ndetached thread's exit, instead of remaining until someone has called\nThreadBase.Wait() to finally clean it up. As such, don't detach the same\nthread more than once.\n\nIf a thread has already exited when passed to ThreadRef.Detach(), it will\nstop waiting for a call to ThreadBase.Wait() and clean up immediately. It is\nnot safe to detach a thread that might be used with ThreadBase.Wait().\n\nYou may not call ThreadBase.Wait() on a thread that has been detached. Use\neither that function or this one, but not both, or behavior is undefined.\n\nIt is safe to pass nullptr to this function; it is a no-op.\n\n@param thread the ThreadBase pointer that was returned from the\n              ThreadBase.ThreadBase() call that started this thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ThreadBase.ThreadBase\n@sa ThreadBase.Wait",
+              "hints": {
+                "body": "SDL_DetachThread(release(newResource));"
+              }
             },
             "Detach": {
-              "doc": "Let a thread clean up on exit without intervention.\n\nA thread may be \"detached\" to signify that it should not remain until\nanother thread has called ThreadBase.Wait() on it. Detaching a thread is\nuseful for long-running threads that nothing needs to synchronize with or\nfurther manage. When a detached thread is done, it simply goes away.\n\nThere is no way to recover the return code of a detached thread. If you\nneed this, don't detach the thread and instead use ThreadBase.Wait().\n\nOnce a thread is detached, you should usually assume the ThreadBase isn't\nsafe to reference again, as it will become invalid immediately upon the\ndetached thread's exit, instead of remaining until someone has called\nThreadBase.Wait() to finally clean it up. As such, don't detach the same\nthread more than once.\n\nIf a thread has already exited when passed to ThreadBase.Detach(), it will\nstop waiting for a call to ThreadBase.Wait() and clean up immediately. It is\nnot safe to detach a thread that might be used with ThreadBase.Wait().\n\nYou may not call ThreadBase.Wait() on a thread that has been detached. Use\neither that function or this one, but not both, or behavior is undefined.\n\nIt is safe to pass nullptr to this function; it is a no-op.\n\n              ThreadBase.ThreadBase() call that started this thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ThreadBase.ThreadBase\n@sa ThreadBase.Wait",
+              "doc": "Let a thread clean up on exit without intervention.\n\nA thread may be \"detached\" to signify that it should not remain until\nanother thread has called ThreadBase.Wait() on it. Detaching a thread is\nuseful for long-running threads that nothing needs to synchronize with or\nfurther manage. When a detached thread is done, it simply goes away.\n\nThere is no way to recover the return code of a detached thread. If you\nneed this, don't detach the thread and instead use ThreadBase.Wait().\n\nOnce a thread is detached, you should usually assume the ThreadBase isn't\nsafe to reference again, as it will become invalid immediately upon the\ndetached thread's exit, instead of remaining until someone has called\nThreadBase.Wait() to finally clean it up. As such, don't detach the same\nthread more than once.\n\nIf a thread has already exited when passed to ThreadRef.Detach(), it will\nstop waiting for a call to ThreadBase.Wait() and clean up immediately. It is\nnot safe to detach a thread that might be used with ThreadBase.Wait().\n\nYou may not call ThreadBase.Wait() on a thread that has been detached. Use\neither that function or this one, but not both, or behavior is undefined.\n\nIt is safe to pass nullptr to this function; it is a no-op.\n\n@param thread the ThreadBase pointer that was returned from the\n              ThreadBase.ThreadBase() call that started this thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ThreadBase.ThreadBase\n@sa ThreadBase.Wait",
               "name": "Detach",
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "sourceName": "SDL_DetachThread"
+              "sourceName": "SDL_DetachThread",
+              "static": false
+            }
+          }
+        },
+        "Thread": {
+          "name": "Thread",
+          "kind": "struct",
+          "type": "ThreadRef",
+          "doc": "Handle to an owned thread\n\n@cat resource\n\n@sa ThreadBase\n@sa ThreadRef",
+          "entries": {
+            "ThreadRef::ThreadRef": {
+              "kind": "alias",
+              "name": "ThreadRef::ThreadRef",
+              "doc": ""
+            },
+            "Thread": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Thread *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "ThreadRef(resource)"
+                  ]
+                },
+                "name": "Thread"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Thread &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Thread",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Thread &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Thread"
+              }
+            ],
+            "~Thread": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Thread"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Thread &",
+              "parameters": [
+                {
+                  "type": "Thread",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
           }
         },
@@ -25495,115 +25681,77 @@
         "MutexBase-forward": {
           "name": "MutexBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Mutex *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "MutexRef": {
+        "MutexRef-forward": {
           "name": "MutexRef",
-          "kind": "alias",
-          "type": "MutexBase<ObjectRef<SDL_Mutex>>",
-          "doc": "Handle to a non owned mutex\n\n@cat resource\n\n@sa MutexBase\n@sa Mutex"
+          "kind": "forward",
+          "doc": ""
         },
-        "Mutex": {
+        "Mutex-forward": {
           "name": "Mutex",
-          "kind": "alias",
-          "type": "MutexBase<ObjectUnique<SDL_Mutex>>",
-          "doc": "Handle to an owned mutex\n\n@cat resource\n\n@sa MutexBase\n@sa MutexRef"
+          "kind": "forward",
+          "doc": ""
         },
         "RWLockBase-forward": {
           "name": "RWLockBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_RWLock *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "RWLockRef": {
+        "RWLockRef-forward": {
           "name": "RWLockRef",
-          "kind": "alias",
-          "type": "RWLockBase<ObjectRef<SDL_RWLock>>",
-          "doc": "Handle to a non owned rWLock\n\n@cat resource\n\n@sa RWLockBase\n@sa RWLock"
+          "kind": "forward",
+          "doc": ""
         },
-        "RWLock": {
+        "RWLock-forward": {
           "name": "RWLock",
-          "kind": "alias",
-          "type": "RWLockBase<ObjectUnique<SDL_RWLock>>",
-          "doc": "Handle to an owned rWLock\n\n@cat resource\n\n@sa RWLockBase\n@sa RWLockRef"
+          "kind": "forward",
+          "doc": ""
         },
         "SemaphoreBase-forward": {
           "name": "SemaphoreBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Semaphore *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "SemaphoreRef": {
+        "SemaphoreRef-forward": {
           "name": "SemaphoreRef",
-          "kind": "alias",
-          "type": "SemaphoreBase<ObjectRef<SDL_Semaphore>>",
-          "doc": "Handle to a non owned semaphore\n\n@cat resource\n\n@sa SemaphoreBase\n@sa Semaphore"
+          "kind": "forward",
+          "doc": ""
         },
-        "Semaphore": {
+        "Semaphore-forward": {
           "name": "Semaphore",
-          "kind": "alias",
-          "type": "SemaphoreBase<ObjectUnique<SDL_Semaphore>>",
-          "doc": "Handle to an owned semaphore\n\n@cat resource\n\n@sa SemaphoreBase\n@sa SemaphoreRef"
+          "kind": "forward",
+          "doc": ""
         },
         "ConditionBase-forward": {
           "name": "ConditionBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Condition *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "ConditionRef": {
+        "ConditionRef-forward": {
           "name": "ConditionRef",
-          "kind": "alias",
-          "type": "ConditionBase<ObjectRef<SDL_Condition>>",
-          "doc": "Handle to a non owned condition\n\n@cat resource\n\n@sa ConditionBase\n@sa Condition"
+          "kind": "forward",
+          "doc": ""
         },
-        "Condition": {
+        "Condition-forward": {
           "name": "Condition",
-          "kind": "alias",
-          "type": "ConditionBase<ObjectUnique<SDL_Condition>>",
-          "doc": "Handle to an owned condition\n\n@cat resource\n\n@sa ConditionBase\n@sa ConditionRef"
+          "kind": "forward",
+          "doc": ""
         },
         "MutexBase": {
-          "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n@since This struct is available since SDL 3.2.0.",
+          "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Mutex\n@sa MutexRef",
           "name": "MutexBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_Mutex *>",
           "sourceName": "SDL_Mutex",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Mutex *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "MutexBase": {
-              "doc": "Create a new mutex.\n\nAll newly-created mutexes begin in the _unlocked_ state.\n\nCalls to MutexBase.Lock() will not return while the mutex is locked by\nanother thread. See MutexBase.TryLock() to attempt to lock without blocking.\n\nSDL mutexes are reentrant.\n\n@post the initialized and unlocked mutex or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexBase.Destroy\n@sa MutexBase.Lock\n@sa MutexBase.TryLock\n@sa MutexBase.Unlock",
+              "doc": "Create a new mutex.\n\nAll newly-created mutexes begin in the _unlocked_ state.\n\nCalls to MutexBase.Lock() will not return while the mutex is locked by\nanother thread. See MutexBase.TryLock() to attempt to lock without blocking.\n\nSDL mutexes are reentrant.\n\n@post the initialized and unlocked mutex or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexRef.reset\n@sa MutexBase.Lock\n@sa MutexBase.TryLock\n@sa MutexBase.Unlock",
               "name": "MutexBase",
               "kind": "function",
               "type": "",
@@ -25633,51 +25781,216 @@
               "type": "void",
               "parameters": [],
               "sourceName": "SDL_UnlockMutex"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "MutexRef": {
+          "name": "MutexRef",
+          "kind": "struct",
+          "type": "MutexBase",
+          "doc": "Handle to a non owned mutex\n\n@cat resource\n\n@sa MutexBase\n@sa Mutex",
+          "entries": {
+            "MutexBase::MutexBase": {
+              "kind": "alias",
+              "name": "MutexBase::MutexBase",
+              "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy a mutex created with MutexBase.MutexBase().\n\nThis function must be called on any mutex that is no longer needed. Failure\nto destroy a mutex will result in a system memory or resource leak. While\nit is safe to destroy a mutex that is _unlocked_, it is not safe to attempt\nto destroy a locked mutex, and may result in undefined behavior depending\non the platform.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexBase.MutexBase",
-              "name": "Destroy",
+            "MutexRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const MutexRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "MutexBase(other.get())"
+                  ]
+                },
+                "name": "MutexRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "MutexRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "MutexBase(other.release())"
+                  ]
+                },
+                "name": "MutexRef"
+              }
+            ],
+            "~MutexRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroyMutex"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~MutexRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "MutexRef &",
+              "parameters": [
+                {
+                  "type": "MutexRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Mutex *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroy a mutex created with MutexBase.MutexBase().\n\nThis function must be called on any mutex that is no longer needed. Failure\nto destroy a mutex will result in a system memory or resource leak. While\nit is safe to destroy a mutex that is _unlocked_, it is not safe to attempt\nto destroy a locked mutex, and may result in undefined behavior depending\non the platform.\n\n@param mutex the mutex to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexBase.MutexBase",
+              "hints": {
+                "body": "SDL_DestroyMutex(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_Mutex>::doFree": {
-          "name": "ObjectRef<SDL_Mutex>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for mutex resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Mutex *",
-              "name": "resource"
+        "Mutex": {
+          "name": "Mutex",
+          "kind": "struct",
+          "type": "MutexRef",
+          "doc": "Handle to an owned mutex\n\n@cat resource\n\n@sa MutexBase\n@sa MutexRef",
+          "entries": {
+            "MutexRef::MutexRef": {
+              "kind": "alias",
+              "name": "MutexRef::MutexRef",
+              "doc": ""
+            },
+            "Mutex": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Mutex *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "MutexRef(resource)"
+                  ]
+                },
+                "name": "Mutex"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Mutex &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Mutex",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Mutex &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Mutex"
+              }
+            ],
+            "~Mutex": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Mutex"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Mutex &",
+              "parameters": [
+                {
+                  "type": "Mutex",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroyMutex"
+          }
         },
         "RWLockBase": {
-          "doc": "A mutex that allows read-only threads to run in parallel.\n\nA rwlock is roughly the same concept as MutexBase, but allows threads that\nrequest read-only access to all hold the lock at the same time. If a thread\nrequests write access, it will block until all read-only threads have\nreleased the lock, and no one else can hold the thread (for reading or\nwriting) at the same time as the writing thread.\n\nThis can be more efficient in cases where several threads need to access\ndata frequently, but changes to that data are rare.\n\nThere are other rules that apply to rwlocks that don't apply to mutexes,\nabout how threads are scheduled and when they can be recursively locked.\nThese are documented in the other rwlock functions.\n\n@since This struct is available since SDL 3.2.0.",
+          "doc": "A mutex that allows read-only threads to run in parallel.\n\nA rwlock is roughly the same concept as MutexBase, but allows threads that\nrequest read-only access to all hold the lock at the same time. If a thread\nrequests write access, it will block until all read-only threads have\nreleased the lock, and no one else can hold the thread (for reading or\nwriting) at the same time as the writing thread.\n\nThis can be more efficient in cases where several threads need to access\ndata frequently, but changes to that data are rare.\n\nThere are other rules that apply to rwlocks that don't apply to mutexes,\nabout how threads are scheduled and when they can be recursively locked.\nThese are documented in the other rwlock functions.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa RWLock\n@sa RWLockRef",
           "name": "RWLockBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_RWLock *>",
           "sourceName": "SDL_RWLock",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_RWLock *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "RWLockBase": {
-              "doc": "Create a new read/write lock.\n\nA read/write lock is useful for situations where you have multiple threads\ntrying to access a resource that is rarely updated. All threads requesting\na read-only lock will be allowed to run in parallel; if a thread requests a\nwrite lock, it will be provided exclusive access. This makes it safe for\nmultiple threads to use a resource at the same time if they promise not to\nchange it, and when it has to be changed, the rwlock will serve as a\ngateway to make sure those changes can be made safely.\n\nIn the right situation, a rwlock can be more efficient than a mutex, which\nonly lets a single thread proceed at a time, even if it won't be modifying\nthe data.\n\nAll newly-created read/write locks begin in the _unlocked_ state.\n\nCalls to RWLockBase.LockForReading() and RWLockBase.LockForWriting will not\nreturn while the rwlock is locked _for writing_ by another thread. See\nRWLockBase.TryLockForReading() and RWLockBase.TryLockForWriting() to attempt\nto lock without blocking.\n\nSDL read/write locks are only recursive for read-only locks! They are not\nguaranteed to be fair, or provide access in a FIFO manner! They are not\nguaranteed to favor writers. You may not lock a rwlock for both read-only\nand write access at the same time from the same thread (so you can't\npromote your read-only lock to a write lock without unlocking first).\n\n@post the initialized and unlocked read/write lock or nullptr on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.Destroy\n@sa RWLockBase.LockForReading\n@sa RWLockBase.LockForWriting\n@sa RWLockBase.TryLockForReading\n@sa RWLockBase.TryLockForWriting\n@sa RWLockBase.Unlock",
+              "doc": "Create a new read/write lock.\n\nA read/write lock is useful for situations where you have multiple threads\ntrying to access a resource that is rarely updated. All threads requesting\na read-only lock will be allowed to run in parallel; if a thread requests a\nwrite lock, it will be provided exclusive access. This makes it safe for\nmultiple threads to use a resource at the same time if they promise not to\nchange it, and when it has to be changed, the rwlock will serve as a\ngateway to make sure those changes can be made safely.\n\nIn the right situation, a rwlock can be more efficient than a mutex, which\nonly lets a single thread proceed at a time, even if it won't be modifying\nthe data.\n\nAll newly-created read/write locks begin in the _unlocked_ state.\n\nCalls to RWLockBase.LockForReading() and RWLockBase.LockForWriting will not\nreturn while the rwlock is locked _for writing_ by another thread. See\nRWLockBase.TryLockForReading() and RWLockBase.TryLockForWriting() to attempt\nto lock without blocking.\n\nSDL read/write locks are only recursive for read-only locks! They are not\nguaranteed to be fair, or provide access in a FIFO manner! They are not\nguaranteed to favor writers. You may not lock a rwlock for both read-only\nand write access at the same time from the same thread (so you can't\npromote your read-only lock to a write lock without unlocking first).\n\n@post the initialized and unlocked read/write lock or nullptr on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockRef.reset\n@sa RWLockBase.LockForReading\n@sa RWLockBase.LockForWriting\n@sa RWLockBase.TryLockForReading\n@sa RWLockBase.TryLockForWriting\n@sa RWLockBase.Unlock",
               "name": "RWLockBase",
               "kind": "function",
               "type": "",
@@ -25723,51 +26036,216 @@
               "type": "void",
               "parameters": [],
               "sourceName": "SDL_UnlockRWLock"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "RWLockRef": {
+          "name": "RWLockRef",
+          "kind": "struct",
+          "type": "RWLockBase",
+          "doc": "Handle to a non owned rWLock\n\n@cat resource\n\n@sa RWLockBase\n@sa RWLock",
+          "entries": {
+            "RWLockBase::RWLockBase": {
+              "kind": "alias",
+              "name": "RWLockBase::RWLockBase",
+              "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy a read/write lock created with RWLockBase.RWLockBase().\n\nThis function must be called on any read/write lock that is no longer\nneeded. Failure to destroy a rwlock will result in a system memory or\nresource leak. While it is safe to destroy a rwlock that is _unlocked_, it\nis not safe to attempt to destroy a locked rwlock, and may result in\nundefined behavior depending on the platform.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.RWLockBase",
-              "name": "Destroy",
+            "RWLockRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const RWLockRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "RWLockBase(other.get())"
+                  ]
+                },
+                "name": "RWLockRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "RWLockRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "RWLockBase(other.release())"
+                  ]
+                },
+                "name": "RWLockRef"
+              }
+            ],
+            "~RWLockRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroyRWLock"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~RWLockRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "RWLockRef &",
+              "parameters": [
+                {
+                  "type": "RWLockRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_RWLock *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroy a read/write lock created with RWLockBase.RWLockBase().\n\nThis function must be called on any read/write lock that is no longer\nneeded. Failure to destroy a rwlock will result in a system memory or\nresource leak. While it is safe to destroy a rwlock that is _unlocked_, it\nis not safe to attempt to destroy a locked rwlock, and may result in\nundefined behavior depending on the platform.\n\n@param rwlock the rwlock to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockBase.RWLockBase",
+              "hints": {
+                "body": "SDL_DestroyRWLock(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_RWLock>::doFree": {
-          "name": "ObjectRef<SDL_RWLock>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for rWLock resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_RWLock *",
-              "name": "resource"
+        "RWLock": {
+          "name": "RWLock",
+          "kind": "struct",
+          "type": "RWLockRef",
+          "doc": "Handle to an owned rWLock\n\n@cat resource\n\n@sa RWLockBase\n@sa RWLockRef",
+          "entries": {
+            "RWLockRef::RWLockRef": {
+              "kind": "alias",
+              "name": "RWLockRef::RWLockRef",
+              "doc": ""
+            },
+            "RWLock": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_RWLock *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "RWLockRef(resource)"
+                  ]
+                },
+                "name": "RWLock"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const RWLock &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "RWLock",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "RWLock &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "RWLock"
+              }
+            ],
+            "~RWLock": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~RWLock"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "RWLock &",
+              "parameters": [
+                {
+                  "type": "RWLock",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroyRWLock"
+          }
         },
         "SemaphoreBase": {
-          "doc": "A means to manage access to a resource, by count, between threads.\n\nSemaphores (specifically, \"counting semaphores\"), let X number of threads\nrequest access at the same time, each thread granted access decrementing a\ncounter. When the counter reaches zero, future requests block until a prior\nthread releases their request, incrementing the counter again.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Semaphore_(programming)\n\n@since This struct is available since SDL 3.2.0.",
+          "doc": "A means to manage access to a resource, by count, between threads.\n\nSemaphores (specifically, \"counting semaphores\"), let X number of threads\nrequest access at the same time, each thread granted access decrementing a\ncounter. When the counter reaches zero, future requests block until a prior\nthread releases their request, incrementing the counter again.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Semaphore_(programming)\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Semaphore\n@sa SemaphoreRef",
           "name": "SemaphoreBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_Semaphore *>",
           "sourceName": "SDL_Semaphore",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Semaphore *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "SemaphoreBase": {
-              "doc": "Create a semaphore.\n\nThis function creates a new semaphore and initializes it with the value\n`initial_value`. Each wait operation on the semaphore will atomically\ndecrement the semaphore value and potentially block if the semaphore value\nis 0. Each post operation will atomically increment the semaphore value and\nwake waiting threads and allow them to retry the wait operation.\n\n@param initial_value the starting value of the semaphore.\n@post a new semaphore or nullptr on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.Destroy\n@sa SemaphoreBase.Signal\n@sa SemaphoreBase.TryWait\n@sa SemaphoreBase.GetValue\n@sa SemaphoreBase.Wait\n@sa SemaphoreBase.WaitTimeout",
+              "doc": "Create a semaphore.\n\nThis function creates a new semaphore and initializes it with the value\n`initial_value`. Each wait operation on the semaphore will atomically\ndecrement the semaphore value and potentially block if the semaphore value\nis 0. Each post operation will atomically increment the semaphore value and\nwake waiting threads and allow them to retry the wait operation.\n\n@param initial_value the starting value of the semaphore.\n@post a new semaphore or nullptr on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreRef.reset\n@sa SemaphoreBase.Signal\n@sa SemaphoreBase.TryWait\n@sa SemaphoreBase.GetValue\n@sa SemaphoreBase.Wait\n@sa SemaphoreBase.WaitTimeout",
               "name": "SemaphoreBase",
               "kind": "function",
               "type": "",
@@ -25824,51 +26302,216 @@
               "parameters": [],
               "sourceName": "SDL_GetSemaphoreValue",
               "immutable": true
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "SemaphoreRef": {
+          "name": "SemaphoreRef",
+          "kind": "struct",
+          "type": "SemaphoreBase",
+          "doc": "Handle to a non owned semaphore\n\n@cat resource\n\n@sa SemaphoreBase\n@sa Semaphore",
+          "entries": {
+            "SemaphoreBase::SemaphoreBase": {
+              "kind": "alias",
+              "name": "SemaphoreBase::SemaphoreBase",
+              "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy a semaphore.\n\nIt is not safe to destroy a semaphore if there are threads currently\nwaiting on it.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.SemaphoreBase",
-              "name": "Destroy",
+            "SemaphoreRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SemaphoreRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "SemaphoreBase(other.get())"
+                  ]
+                },
+                "name": "SemaphoreRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SemaphoreRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "SemaphoreBase(other.release())"
+                  ]
+                },
+                "name": "SemaphoreRef"
+              }
+            ],
+            "~SemaphoreRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroySemaphore"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~SemaphoreRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "SemaphoreRef &",
+              "parameters": [
+                {
+                  "type": "SemaphoreRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Semaphore *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroy a semaphore.\n\nIt is not safe to destroy a semaphore if there are threads currently\nwaiting on it.\n\n@param sem the semaphore to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreBase.SemaphoreBase",
+              "hints": {
+                "body": "SDL_DestroySemaphore(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_Semaphore>::doFree": {
-          "name": "ObjectRef<SDL_Semaphore>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for semaphore resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Semaphore *",
-              "name": "resource"
+        "Semaphore": {
+          "name": "Semaphore",
+          "kind": "struct",
+          "type": "SemaphoreRef",
+          "doc": "Handle to an owned semaphore\n\n@cat resource\n\n@sa SemaphoreBase\n@sa SemaphoreRef",
+          "entries": {
+            "SemaphoreRef::SemaphoreRef": {
+              "kind": "alias",
+              "name": "SemaphoreRef::SemaphoreRef",
+              "doc": ""
+            },
+            "Semaphore": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Semaphore *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "SemaphoreRef(resource)"
+                  ]
+                },
+                "name": "Semaphore"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Semaphore &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Semaphore",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Semaphore &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Semaphore"
+              }
+            ],
+            "~Semaphore": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Semaphore"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Semaphore &",
+              "parameters": [
+                {
+                  "type": "Semaphore",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroySemaphore"
+          }
         },
         "ConditionBase": {
-          "doc": "A means to block multiple threads until a condition is satisfied.\n\nCondition variables, paired with an MutexBase, let an app halt multiple\nthreads until a condition has occurred, at which time the app can release\none or all waiting threads.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Condition_variable\n\n@since This struct is available since SDL 3.2.0.",
+          "doc": "A means to block multiple threads until a condition is satisfied.\n\nCondition variables, paired with an MutexBase, let an app halt multiple\nthreads until a condition has occurred, at which time the app can release\none or all waiting threads.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Condition_variable\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Condition\n@sa ConditionRef",
           "name": "ConditionBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_Condition *>",
           "sourceName": "SDL_Condition",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Condition *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "ConditionBase": {
-              "doc": "Create a condition variable.\n\n@post a new condition variable or nullptr on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.Broadcast\n@sa ConditionBase.Signal\n@sa ConditionBase.Wait\n@sa ConditionBase.WaitTimeout\n@sa ConditionBase.Destroy",
+              "doc": "Create a condition variable.\n\n@post a new condition variable or nullptr on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.Broadcast\n@sa ConditionBase.Signal\n@sa ConditionBase.Wait\n@sa ConditionBase.WaitTimeout\n@sa ConditionRef.reset",
               "name": "ConditionBase",
               "kind": "function",
               "type": "",
@@ -25899,7 +26542,7 @@
               "parameters": [
                 {
                   "name": "mutex",
-                  "type": "MutexRef"
+                  "type": "MutexBase &"
                 }
               ],
               "sourceName": "SDL_WaitCondition"
@@ -25912,7 +26555,7 @@
               "parameters": [
                 {
                   "name": "mutex",
-                  "type": "MutexRef"
+                  "type": "MutexBase &"
                 },
                 {
                   "name": "timeout",
@@ -25920,30 +26563,201 @@
                 }
               ],
               "sourceName": "SDL_WaitConditionTimeout"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "ConditionRef": {
+          "name": "ConditionRef",
+          "kind": "struct",
+          "type": "ConditionBase",
+          "doc": "Handle to a non owned condition\n\n@cat resource\n\n@sa ConditionBase\n@sa Condition",
+          "entries": {
+            "ConditionBase::ConditionBase": {
+              "kind": "alias",
+              "name": "ConditionBase::ConditionBase",
+              "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy a condition variable.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.ConditionBase",
-              "name": "Destroy",
+            "ConditionRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const ConditionRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "ConditionBase(other.get())"
+                  ]
+                },
+                "name": "ConditionRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "ConditionRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "ConditionBase(other.release())"
+                  ]
+                },
+                "name": "ConditionRef"
+              }
+            ],
+            "~ConditionRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroyCondition"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~ConditionRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "ConditionRef &",
+              "parameters": [
+                {
+                  "type": "ConditionRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Condition *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroy a condition variable.\n\n@param cond the condition variable to destroy.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionBase.ConditionBase",
+              "hints": {
+                "body": "SDL_DestroyCondition(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_Condition>::doFree": {
-          "name": "ObjectRef<SDL_Condition>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for condition resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Condition *",
-              "name": "resource"
+        "Condition": {
+          "name": "Condition",
+          "kind": "struct",
+          "type": "ConditionRef",
+          "doc": "Handle to an owned condition\n\n@cat resource\n\n@sa ConditionBase\n@sa ConditionRef",
+          "entries": {
+            "ConditionRef::ConditionRef": {
+              "kind": "alias",
+              "name": "ConditionRef::ConditionRef",
+              "doc": ""
+            },
+            "Condition": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Condition *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "ConditionRef(resource)"
+                  ]
+                },
+                "name": "Condition"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Condition &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Condition",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Condition &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Condition"
+              }
+            ],
+            "~Condition": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Condition"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Condition &",
+              "parameters": [
+                {
+                  "type": "Condition",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroyCondition"
+          }
         },
         "InitStatus": {
           "doc": "The current status of an InitState structure.\n\n@since This enum is available since SDL 3.2.0.",

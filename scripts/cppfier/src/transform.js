@@ -1271,7 +1271,7 @@ function prepareForTypeInsert(entry, name, typeName) {
   if (!parameters?.length) return;
   const parameter = parameters[0];
   const type = typeof parameter !== "string" ? parameter.type : "";
-  if (type.includes(typeName)) {
+  if (type.includes(typeName) && !entry.static) {
     parameters.shift();
     if (entry.doc) entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
     if (type.startsWith("const ")) entry.immutable = true;
