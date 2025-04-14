@@ -1,5 +1,5 @@
-<map id="SDL::AnimationBase&lt; T &gt;" name="SDL::AnimationBase&lt; T &gt;">
-<area shape="rect" id="Node000001" title="Animated image support." alt="" coords="5,79,197,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="82,5,121,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,44,104,79,99,79,99,44"/>
+<map id="SDL::AnimationBase" name="SDL::AnimationBase">
+<area shape="rect" id="Node000001" title="Animated image support." alt="" coords="6,93,161,119"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,161,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,59,86,93,81,93,81,59"/>
 </map>

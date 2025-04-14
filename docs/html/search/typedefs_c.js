@@ -14,7 +14,5 @@ var searchData=
   ['mousebuttonevent_11',['MouseButtonEvent',['../group__CategoryEvents.html#ga74309768261a3e9b6ea0f512fa5acacc',1,'SDL']]],
   ['mousedeviceevent_12',['MouseDeviceEvent',['../group__CategoryEvents.html#ga45f1c9410b70b9d5e5531a1acefa2055',1,'SDL']]],
   ['mousemotionevent_13',['MouseMotionEvent',['../group__CategoryEvents.html#gab544bd86a6b21b3ebef030f92d1c8c28',1,'SDL']]],
-  ['mousewheelevent_14',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]],
-  ['mutex_15',['Mutex',['../group__CategoryMutex.html#ga8245e24f66bac0f04f3550a75b543e28',1,'SDL']]],
-  ['mutexref_16',['MutexRef',['../group__CategoryMutex.html#gaccb2269938f251f7c9b7a99db17cf8e2',1,'SDL']]]
+  ['mousewheelevent_14',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]]
 ];

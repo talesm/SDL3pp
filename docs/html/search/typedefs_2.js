@@ -12,7 +12,5 @@ var searchData=
   ['colortype_9',['ColorType',['../group__CategoryPixels.html#gaa2ffd13114a8e0729d0a8151cb8690fb',1,'SDL']]],
   ['commonevent_10',['CommonEvent',['../group__CategoryEvents.html#gacd7d68741f6b72245ec445fd09335554',1,'SDL']]],
   ['comparecallback_11',['CompareCallback',['../group__CategoryStdinc.html#gabc94be94823c25031d6dd9210ef3e81a',1,'SDL']]],
-  ['comparecallback_5fr_12',['CompareCallback_r',['../group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478',1,'SDL']]],
-  ['condition_13',['Condition',['../group__CategoryMutex.html#ga25d71b05ed7afdccf49335c6a8780d9e',1,'SDL']]],
-  ['conditionref_14',['ConditionRef',['../group__CategoryMutex.html#ga40d0ad7825c6987e0f73c95741de6745',1,'SDL']]]
+  ['comparecallback_5fr_12',['CompareCallback_r',['../group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478',1,'SDL']]]
 ];

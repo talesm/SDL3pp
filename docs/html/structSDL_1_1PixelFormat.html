@@ -96,9 +96,11 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>PixelFormat</b> 
 <tr class="separator:a0ed48d982f8036424718bf69dbc3036d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add937454930b731e9befbaef9d0457e7" id="r_add937454930b731e9befbaef9d0457e7"><td class="memItemLeft" align="right" valign="top"><a id="add937454930b731e9befbaef9d0457e7" name="add937454930b731e9befbaef9d0457e7"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
+<tr class="memdesc:add937454930b731e9befbaef9d0457e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if a valid format. <br /></td></tr>
 <tr class="separator:add937454930b731e9befbaef9d0457e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad694bac893422df7cc4e4373d97b3d17" id="r_ad694bac893422df7cc4e4373d97b3d17"><td class="memItemLeft" align="right" valign="top"><a id="ad694bac893422df7cc4e4373d97b3d17" name="ad694bac893422df7cc4e4373d97b3d17"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator SDL_PixelFormat</b> () const</td></tr>
+<tr class="memdesc:ad694bac893422df7cc4e4373d97b3d17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to underlying type. <br /></td></tr>
 <tr class="separator:ad694bac893422df7cc4e4373d97b3d17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5692c30f488ae5dae0345b1261ba719" id="r_ad5692c30f488ae5dae0345b1261ba719"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#gaedfdadf087ddd7d55c732a8f05d2bde2">PixelType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#ad5692c30f488ae5dae0345b1261ba719">GetType</a> () const</td></tr>
 <tr class="memdesc:ad5692c30f488ae5dae0345b1261ba719"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the type.  <br /></td></tr>
@@ -143,12 +145,12 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator SDL_Pix
 <tr class="memdesc:abba3ab09ade332b130c4592b0a8669fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert one of the enumerated pixel formats to a bpp value and RGBA masks.  <br /></td></tr>
 <tr class="separator:abba3ab09ade332b130c4592b0a8669fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21558986fed65bb09d029a9f05a3df41" id="r_a21558986fed65bb09d029a9f05a3df41"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41">GetDetails</a> () const</td></tr>
-<tr class="memdesc:a21558986fed65bb09d029a9f05a3df41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an SDL_PixelFormatDetails structure corresponding to a pixel format.  <br /></td></tr>
+<tr class="memdesc:a21558986fed65bb09d029a9f05a3df41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an PixelFormatDetails structure corresponding to a pixel format.  <br /></td></tr>
 <tr class="separator:a21558986fed65bb09d029a9f05a3df41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fcb872686be3ac5ed167751bfe04880" id="r_a3fcb872686be3ac5ed167751bfe04880"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880">Map</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> color, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette) const</td></tr>
+<tr class="memitem:a3fcb872686be3ac5ed167751bfe04880" id="r_a3fcb872686be3ac5ed167751bfe04880"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880">Map</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> color, <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> palette) const</td></tr>
 <tr class="memdesc:a3fcb872686be3ac5ed167751bfe04880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a given pixel format.  <br /></td></tr>
 <tr class="separator:a3fcb872686be3ac5ed167751bfe04880"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2770572204fc028e87c914fed6e744c" id="r_ab2770572204fc028e87c914fed6e744c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#ab2770572204fc028e87c914fed6e744c">Get</a> (Uint32 pixel, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette) const</td></tr>
+<tr class="memitem:ab2770572204fc028e87c914fed6e744c" id="r_ab2770572204fc028e87c914fed6e744c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#ab2770572204fc028e87c914fed6e744c">Get</a> (Uint32 pixel, <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> palette) const</td></tr>
 <tr class="memdesc:ab2770572204fc028e87c914fed6e744c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGBA values from a pixel in the specified format.  <br /></td></tr>
 <tr class="separator:ab2770572204fc028e87c914fed6e744c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -229,20 +231,24 @@ PixelFormats </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>For example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:</p>
-<div class="fragment"><div class="line"><a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> format(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA,</div>
-<div class="line">  SDL_PACKEDLAYOUT_8888, 32, 4);</div>
-<div class="ttc" id="astructSDL_1_1PixelFormat_html"><div class="ttname"><a href="structSDL_1_1PixelFormat.html">SDL::PixelFormat</a></div><div class="ttdoc">Pixel format.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:388</div></div>
+<p>For example, defining PIXELFORMAT_RGBA8888 looks like this:</p>
+<div class="fragment"><div class="line"><a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a>(<a class="code hl_variable" href="group__CategoryPixels.html#ga27af5b3b6938a2cac0c31befd4314b0c">PIXELTYPE_PACKED32</a>, <a class="code hl_variable" href="group__CategoryPixels.html#gab7d65cff8fb59f169b4362596e2d2cf6">PACKEDORDER_RGBA</a>,</div>
+<div class="line"><a class="code hl_variable" href="group__CategoryPixels.html#gaf04e7b709c4bb83abb2d1ad8ce17198d">PACKEDLAYOUT_8888</a>, 32, 4)</div>
+<div class="ttc" id="agroup__CategoryPixels_html_ga27af5b3b6938a2cac0c31befd4314b0c"><div class="ttname"><a href="group__CategoryPixels.html#ga27af5b3b6938a2cac0c31befd4314b0c">SDL::PIXELTYPE_PACKED32</a></div><div class="ttdeci">constexpr PixelType PIXELTYPE_PACKED32</div><div class="ttdoc">PACKED32.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:149</div></div>
+<div class="ttc" id="agroup__CategoryPixels_html_gab7d65cff8fb59f169b4362596e2d2cf6"><div class="ttname"><a href="group__CategoryPixels.html#gab7d65cff8fb59f169b4362596e2d2cf6">SDL::PACKEDORDER_RGBA</a></div><div class="ttdeci">constexpr PackedOrder PACKEDORDER_RGBA</div><div class="ttdoc">RGBA.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:205</div></div>
+<div class="ttc" id="agroup__CategoryPixels_html_gaf04e7b709c4bb83abb2d1ad8ce17198d"><div class="ttname"><a href="group__CategoryPixels.html#gaf04e7b709c4bb83abb2d1ad8ce17198d">SDL::PACKEDLAYOUT_8888</a></div><div class="ttdeci">constexpr PackedLayout PACKEDLAYOUT_8888</div><div class="ttdoc">8888</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:269</div></div>
+<div class="ttc" id="astructSDL_1_1PixelFormat_html"><div class="ttname"><a href="structSDL_1_1PixelFormat.html">SDL::PixelFormat</a></div><div class="ttdoc">Pixel format.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:374</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>the type of the new format, probably a SDL_PixelType value. </td></tr>
-    <tr><td class="paramname">order</td><td>the order of the new format, probably a SDL_BitmapOrder, SDL_PackedOrder, or SDL_ArrayOrder value. </td></tr>
-    <tr><td class="paramname">layout</td><td>the layout of the new format, probably an SDL_PackedLayout value or zero. </td></tr>
+    <tr><td class="paramname">type</td><td>the type of the new format, probably a PixelType value. </td></tr>
+    <tr><td class="paramname">order</td><td>the order of the new format, probably a BitmapOrder, PackedOrder, or ArrayOrder value. </td></tr>
+    <tr><td class="paramname">layout</td><td>the layout of the new format, probably an PackedLayout value or zero. </td></tr>
     <tr><td class="paramname">bits</td><td>the number of bits per pixel of the new format. </td></tr>
-    <tr><td class="paramname">bytes</td><td>the number of bytes per pixel of the new format.</td></tr>
+    <tr><td class="paramname">bytes</td><td>the number of bytes per pixel of the new format. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a format value in the style of <a class="el" href="structSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
@@ -300,7 +306,7 @@ PixelFormats </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will return <code>SDL_PIXELFORMAT_UNKNOWN</code> if the conversion wasn't possible.</p>
+<p>This will return <code>PIXELFORMAT_UNKNOWN</code> if the conversion wasn't possible.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bpp</td><td>a bits per pixel value; usually 15, 16, or 32. </td></tr>
@@ -311,10 +317,10 @@ PixelFormats </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the SDL_PixelFormat value corresponding to the format masks, or SDL_PIXELFORMAT_UNKNOWN if there isn't a match.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="structSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> value corresponding to the format masks, or PIXELFORMAT_UNKNOWN if there isn't a match.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#abba3ab09ade332b130c4592b0a8669fa" title="Convert one of the enumerated pixel formats to a bpp value and RGBA masks.">GetMasks()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#abba3ab09ade332b130c4592b0a8669fa" title="Convert one of the enumerated pixel formats to a bpp value and RGBA masks.">PixelFormat.GetMasks</a> </dd></dl>
 
 </div>
 </div>
@@ -336,7 +342,7 @@ PixelFormats </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a>&#160;</td>
           <td class="paramname"><em>palette</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
@@ -365,7 +371,7 @@ PixelFormats </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetPixelFormatDetails() </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gad74c76d122c82eef85a4803c69ea7d85" title="Get RGBA values from a pixel in the specified format.">GetRGBA()</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaea943762e402bea20719ac40c6380bee" title="Get RGBA values from a pixel in the specified format.">GetRGBA()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880" title="Map an RGBA quadruple to a pixel value for a given pixel format.">Map()</a> </dd></dl>
 
@@ -396,7 +402,8 @@ PixelFormats </dd></dl>
 <p>FourCC formats will report zero here, as it rarely makes sense to measure them per-pixel.</p>
 <dl class="section return"><dt>Returns</dt><dd>the bits-per-pixel.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#ac70f06658642478f15281848fcbd9f33" title="Determine this&#39;s bytes per pixel.">PixelFormat.GetBytesPerPixel</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#ac70f06658642478f15281848fcbd9f33" title="Determine this&#39;s bytes per pixel.">GetBytesPerPixel</a> </dd></dl>
 
 </div>
 </div>
@@ -426,7 +433,8 @@ PixelFormats </dd></dl>
 <p>FourCC formats do their best here, but many of them don't have a meaningful measurement of bytes per pixel.</p>
 <dl class="section return"><dt>Returns</dt><dd>the bytes-per-pixel.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#aec5c735da8d2958f1e7558bb94b192c4" title="Determine this&#39;s bits per pixel.">PixelFormat.GetBitsPerPixel</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#aec5c735da8d2958f1e7558bb94b192c4" title="Determine this&#39;s bits per pixel.">GetBitsPerPixel</a> </dd></dl>
 
 </div>
 </div>
@@ -453,7 +461,7 @@ PixelFormats </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>Returned structure may come from a shared global cache (i.e. not newly allocated), and hence should not be modified, especially the palette. Weird errors such as <code>Blit combination not supported</code> may occur.</p>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to a SDL_PixelFormatDetails structure or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to a PixelFormatDetails structure or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
@@ -481,9 +489,10 @@ PixelFormats </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This is usually a value from the SDL_PackedLayout enumeration, or zero if a layout doesn't make sense for the format type.</p>
+<p>This is usually a value from the PackedLayout enumeration, or zero if a layout doesn't make sense for the format type.</p>
 <dl class="section return"><dt>Returns</dt><dd>the layout</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -548,10 +557,10 @@ PixelFormats </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#adf3c56b25390fc768df4519096b5288d" title="Convert a bpp value and RGBA masks to an enumerated pixel format.">ForMasks()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#adf3c56b25390fc768df4519096b5288d" title="Convert a bpp value and RGBA masks to an enumerated pixel format.">PixelFormat.ForMasks</a> </dd></dl>
 
 </div>
 </div>
@@ -577,7 +586,7 @@ PixelFormats </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the human readable name of the specified pixel format or "SDL_PIXELFORMAT_UNKNOWN" if the format isn't recognized.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the human readable name of the specified pixel format or "PIXELFORMAT_UNKNOWN" if the format isn't recognized.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
@@ -607,7 +616,8 @@ PixelFormats </dd></dl>
 </div><div class="memdoc">
 <p>This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder enumerations, depending on the format type.</p>
 <dl class="section return"><dt>Returns</dt><dd>the order.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -634,7 +644,8 @@ PixelFormats </dd></dl>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the type as PixelType.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -661,7 +672,8 @@ PixelFormats </dd></dl>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true if the format is 10-bit, false otherwise.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -688,7 +700,8 @@ PixelFormats </dd></dl>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true if the format has alpha, false otherwise.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -715,7 +728,8 @@ PixelFormats </dd></dl>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true if the format is an array, false otherwise.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -742,7 +756,8 @@ PixelFormats </dd></dl>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true if the format is 10-bit, false otherwise.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -770,7 +785,8 @@ PixelFormats </dd></dl>
 </div><div class="memdoc">
 <p>This covers custom and other unusual formats.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the format has alpha, false otherwise.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -797,7 +813,8 @@ PixelFormats </dd></dl>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true if the format is indexed, false otherwise.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -824,7 +841,8 @@ PixelFormats </dd></dl>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true if the format is packed, false otherwise.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -846,7 +864,7 @@ PixelFormats </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a>&#160;</td>
           <td class="paramname"><em>palette</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
@@ -879,9 +897,9 @@ PixelFormats </dd></dl>
 <dd>
 <a class="el" href="structSDL_1_1PixelFormat.html#ab2770572204fc028e87c914fed6e744c" title="Get RGBA values from a pixel in the specified format.">Get()</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA()</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA()</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceBase.html#a6bb9611e93645c5c755589055e6ff9a6" title="Map an RGBA quadruple to a pixel value for a surface.">Surface.MapColor()</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceBase.html#a788252ffebfba64d8239ac7af3b667e8" title="Map an RGBA quadruple to a pixel value for a surface.">Surface.MapColor()</a> </dd></dl>
 
 </div>
 </div>

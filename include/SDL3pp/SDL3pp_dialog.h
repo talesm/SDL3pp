@@ -177,7 +177,7 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  */
 inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window = {},
+                               OptionalWindow window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -239,7 +239,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               WindowRef window = {},
+                               OptionalWindow window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -247,7 +247,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFileDialog(&Wrapper::CallOnce,
                      Wrapper::Wrap(std::move(callback)),
-                     window,
+                     std::move(window),
                      filters,
                      std::move(default_location),
                      allow_many);
@@ -302,7 +302,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window = {},
+                               OptionalWindow window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
@@ -360,14 +360,14 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               WindowRef window = {},
+                               OptionalWindow window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowSaveFileDialog(&Wrapper::CallOnce,
                      Wrapper::Wrap(std::move(callback)),
-                     window,
+                     std::move(window),
                      filters,
                      std::move(default_location));
 }
@@ -418,7 +418,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 WindowRef window = {},
+                                 OptionalWindow window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
@@ -469,14 +469,14 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 WindowRef window = {},
+                                 OptionalWindow window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFolderDialog(&Wrapper::CallOnce,
                        Wrapper::Wrap(std::move(callback)),
-                       window,
+                       std::move(window),
                        std::move(default_location),
                        allow_many);
 }
@@ -507,23 +507,23 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_FILE_DIALOG_FILTERS_POINTER`: a pointer to a list of
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
  *   DialogFileFilter structs, which will be used as filters for
  *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
  *   If non-nullptr, the array of filters must remain valid at least until the
  *   callback is invoked.
- * - `SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER`: the number of filters in the
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
  *   array of filters, if it exists.
- * - `SDL_PROP_FILE_DIALOG_WINDOW_POINTER`: the window that the dialog should
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
  *   be modal for.
- * - `SDL_PROP_FILE_DIALOG_LOCATION_STRING`: the default folder or file to
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
  *   start the dialog at.
- * - `SDL_PROP_FILE_DIALOG_MANY_BOOLEAN`: true to allow the user to select
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
  *   more than one entry.
- * - `SDL_PROP_FILE_DIALOG_TITLE_STRING`: the title for the dialog.
- * - `SDL_PROP_FILE_DIALOG_ACCEPT_STRING`: the label that the accept button
+ * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
  *   should have.
- * - `SDL_PROP_FILE_DIALOG_CANCEL_STRING`: the label that the cancel button
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
  *   should have.
  *
  * Note that each platform may or may not support any of the properties.
@@ -552,9 +552,9 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCallback callback,
                                          void* userdata,
-                                         PropertiesRef props)
+                                         PropertiesBase& props)
 {
-  SDL_ShowFileDialogWithProperties(type, callback, userdata, props);
+  SDL_ShowFileDialogWithProperties(type, callback, userdata, props.get());
 }
 
 /**

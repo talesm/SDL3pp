@@ -38,6 +38,7 @@ export interface ApiEntryBase {
 export interface EntryHint {
   init?: string[];
   delete?: boolean;
+  default?: boolean;
   body?: string;
   self?: string;
   super?: string;
@@ -144,15 +145,14 @@ export interface ApiResource extends ApiEntryTransform {
   pointerType?: string;
 
   /**
-   * If not false it prepends the aliases for refType and uniqueType at the beginning
+   * If true it prepend an alias to OptionalResource
    */
-  prependAliases?: boolean;
+  aliasOptional?: boolean
 
   /**
-   * The type to replace on parameters, defaults to "ref"
-   * 
+   * If true it prepend an alias to DetachedResource
    */
-  paramType?: "ref" | "unique" | "none";
+  aliasDetached?: boolean
 
   /**
    * The type to replace on return types, defaults to "ref"

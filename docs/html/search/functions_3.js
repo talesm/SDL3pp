@@ -1,15 +1,16 @@
 var searchData=
 [
-  ['datetime_0',['datetime',['../structSDL_1_1DateTime.html#aee00aebad97035b43d0169e7f5cfef0a',1,'SDL::DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int nanosecond, int day_of_week, int utc_offset)'],['../structSDL_1_1DateTime.html#ae847319a174d7457b73a4c7b1cba76c8',1,'SDL::DateTime::DateTime(Time ticks, bool localTime=true)'],['../structSDL_1_1DateTime.html#a4e2c345a8dd24dbc1ac7f98dbbc9525c',1,'SDL::DateTime::DateTime(const SDL_DateTime &amp;dateTime={})']]],
-  ['delay_1',['Delay',['../group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4',1,'SDL']]],
-  ['delayprecise_2',['DelayPrecise',['../group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de',1,'SDL']]],
-  ['deletestring_3',['DeleteString',['../structSDL_1_1TextBase.html#abaab7b22abe189d052ca505a58dea389',1,'SDL::TextBase']]],
-  ['destroy_4',['destroy',['../structSDL_1_1TrayBase.html#a8c5ba74a2ce1aa12616c9d67311cd112',1,'SDL::TrayBase::Destroy()'],['../structSDL_1_1GLContextBase.html#a45b0691b5ffe9bf9e7bfc187c6fd8177',1,'SDL::GLContextBase::Destroy()'],['../structSDL_1_1WindowBase.html#a2c9868cfe69ee8f29755a815494b79b6',1,'SDL::WindowBase::Destroy()'],['../structSDL_1_1TextBase.html#ad7ab7b872bb17495f84d7e3be9a79764',1,'SDL::TextBase::Destroy()'],['../structSDL_1_1TextEngineBase.html#a0de227d66f78600d9ff1940272e585b0',1,'SDL::TextEngineBase::Destroy()'],['../structSDL_1_1SurfaceBase.html#ae35a2d03e5429009c55289a504d49ecb',1,'SDL::SurfaceBase::Destroy()'],['../structSDL_1_1EnvironmentBase.html#af4869b8834a581757030a9b7c311eab2',1,'SDL::EnvironmentBase::Destroy()'],['../structSDL_1_1TextureBase.html#a64977c5b509bb54fc412ec577c7db2e5',1,'SDL::TextureBase::Destroy()'],['../structSDL_1_1RendererBase.html#a8e5798bee1abea5a16b88b6ab0667c76',1,'SDL::RendererBase::Destroy()'],['../structSDL_1_1PropertiesBase.html#afd46fcab027c88f135202d11a5780e2f',1,'SDL::PropertiesBase::Destroy()'],['../structSDL_1_1PaletteBase.html#ab538b0d8ff6a60477d1bb4c14d21ae98',1,'SDL::PaletteBase::Destroy()'],['../structSDL_1_1ConditionBase.html#a935a61eb2ba5dedb71e44c89d9e9a104',1,'SDL::ConditionBase::Destroy()'],['../structSDL_1_1SemaphoreBase.html#a45d3f9597f53c9b4c213c661675e5800',1,'SDL::SemaphoreBase::Destroy()'],['../structSDL_1_1RWLockBase.html#a82cb8e2aa08e34b64278d5be817f360d',1,'SDL::RWLockBase::Destroy()'],['../structSDL_1_1MutexBase.html#a0e6d3b48d8113448bba1dfef1d0db40e',1,'SDL::MutexBase::Destroy()']]],
-  ['destroysurface_5',['DestroySurface',['../structSDL_1_1WindowBase.html#af9a4b5f910f8cea4284b39dc903da4cb',1,'SDL::WindowBase']]],
-  ['detach_6',['Detach',['../structSDL_1_1ThreadBase.html#aa4e5d0aea174127bd1a82b324fd51ae3',1,'SDL::ThreadBase']]],
-  ['disablescreensaver_7',['DisableScreenSaver',['../group__CategoryVideo.html#ga13f5c7a04ece8b15a167476f84cd8975',1,'SDL']]],
-  ['display_8',['Display',['../classSDL_1_1Display.html#af1e8f5ef744bed565850c79c0b97b67e',1,'SDL::Display']]],
-  ['drawrenderer_9',['DrawRenderer',['../structSDL_1_1TextBase.html#ad9a3c5a14cb2c54e55ac923a41c58837',1,'SDL::TextBase']]],
-  ['drawsurface_10',['DrawSurface',['../structSDL_1_1TextBase.html#a0dd2b594c714d397f7255e74919acbdb',1,'SDL::TextBase']]],
-  ['duplicate_11',['Duplicate',['../structSDL_1_1SurfaceBase.html#a2b8d60357059a34ea1724fcacdc23c42',1,'SDL::SurfaceBase']]]
+  ['data_0',['data',['../classSDL_1_1OwnArray.html#afd861fe7aa8df55c4c8f5efe023af4e6',1,'SDL::OwnArray::data()'],['../classSDL_1_1OwnArray.html#a7eb9f1bb3310984f12c229e6b28a3b0b',1,'SDL::OwnArray::data() const']]],
+  ['datetime_1',['datetime',['../structSDL_1_1DateTime.html#a4e2c345a8dd24dbc1ac7f98dbbc9525c',1,'SDL::DateTime::DateTime(const SDL_DateTime &amp;dateTime={})'],['../structSDL_1_1DateTime.html#aee00aebad97035b43d0169e7f5cfef0a',1,'SDL::DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int nanosecond, int day_of_week, int utc_offset)'],['../structSDL_1_1DateTime.html#ae847319a174d7457b73a4c7b1cba76c8',1,'SDL::DateTime::DateTime(Time ticks, bool localTime=true)']]],
+  ['delay_2',['Delay',['../group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4',1,'SDL']]],
+  ['delayprecise_3',['DelayPrecise',['../group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de',1,'SDL']]],
+  ['deletestring_4',['DeleteString',['../structSDL_1_1TextBase.html#a2298bafa4dc8bcb7cd97e01a04c65eef',1,'SDL::TextBase']]],
+  ['destroysurface_5',['DestroySurface',['../structSDL_1_1WindowBase.html#a79ce3062d0dd8420339f7effddb378b9',1,'SDL::WindowBase']]],
+  ['detach_6',['Detach',['../structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7',1,'SDL::ThreadRef']]],
+  ['detachedresource_7',['DetachedResource',['../structSDL_1_1DetachedResource.html#aa3eb758009be4ebfd667b8fba835ce30',1,'SDL::DetachedResource']]],
+  ['disablescreensaver_8',['DisableScreenSaver',['../group__CategoryVideo.html#ga13f5c7a04ece8b15a167476f84cd8975',1,'SDL']]],
+  ['display_9',['Display',['../classSDL_1_1Display.html#af1e8f5ef744bed565850c79c0b97b67e',1,'SDL::Display']]],
+  ['drawrenderer_10',['DrawRenderer',['../structSDL_1_1TextBase.html#a9b3d3291d03c75970aa64707650a539f',1,'SDL::TextBase']]],
+  ['drawsurface_11',['DrawSurface',['../structSDL_1_1TextBase.html#a6cf15bf42ad8c0f7b6ec0cc2ab38ba1c',1,'SDL::TextBase']]],
+  ['duplicate_12',['Duplicate',['../group__CategorySurface.html#ga510ceed6c5bba1666c72a1de931c1a27',1,'SDL::SurfaceBase']]]
 ];

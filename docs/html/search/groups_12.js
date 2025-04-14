@@ -9,6 +9,5 @@ var searchData=
   ['tray_6',['System Tray',['../group__CategoryTray.html',1,'']]],
   ['true_20type_20font_20support_7',['True type font support',['../group__CategorySDLTTF.html',1,'']]],
   ['type_20font_20support_8',['True type font support',['../group__CategorySDLTTF.html',1,'']]],
-  ['type_20wrapping_9',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]],
-  ['types_10',['Event Types',['../group__EventTypes.html',1,'']]]
+  ['types_9',['Event Types',['../group__EventTypes.html',1,'']]]
 ];

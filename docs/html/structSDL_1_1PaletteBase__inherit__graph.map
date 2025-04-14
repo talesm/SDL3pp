@@ -1,5 +1,9 @@
-<map id="SDL::PaletteBase&lt; T &gt;" name="SDL::PaletteBase&lt; T &gt;">
-<area shape="rect" id="Node000001" title="A set of indexed colors representing a palette." alt="" coords="5,79,176,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="71,5,110,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,44,93,79,88,79,88,44"/>
+<map id="SDL::PaletteBase" name="SDL::PaletteBase">
+<area shape="rect" id="Node000001" title="A set of indexed colors representing a palette." alt="" coords="17,93,149,119"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1PaletteRef.html" title="Handle to a non owned palette." alt="" coords="21,167,144,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Palette.html" title="Handle to an owned palette." alt="" coords="33,240,133,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>

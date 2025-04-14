@@ -71,8 +71,7 @@ $(function() {
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle"><div class="title">Shared Object/DLL Management<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a></div></div></div>
 </div><!--header-->
 <div class="contents">
@@ -82,18 +81,15 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectBase.html">SDL::SharedObjectBase&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectBase.html">SDL::SharedObjectBase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque datatype that represents a loaded shared object.  <a href="structSDL_1_1SharedObjectBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ga63c230eff61f33ef6759bbb3756f0a4a" id="r_ga63c230eff61f33ef6759bbb3756f0a4a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySharedObject.html#ga63c230eff61f33ef6759bbb3756f0a4a">SDL::SharedObjectRef</a> = <a class="el" href="structSDL_1_1SharedObjectBase.html">SharedObjectBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_SharedObject &gt; &gt;</td></tr>
-<tr class="memdesc:ga63c230eff61f33ef6759bbb3756f0a4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned sharedObject.  <br /></td></tr>
-<tr class="separator:ga63c230eff61f33ef6759bbb3756f0a4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab26ef4511c76ae1aa4f22a0f99db7538" id="r_gab26ef4511c76ae1aa4f22a0f99db7538"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySharedObject.html#gab26ef4511c76ae1aa4f22a0f99db7538">SDL::SharedObject</a> = <a class="el" href="structSDL_1_1SharedObjectBase.html">SharedObjectBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_SharedObject &gt; &gt;</td></tr>
-<tr class="memdesc:gab26ef4511c76ae1aa4f22a0f99db7538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned sharedObject.  <br /></td></tr>
-<tr class="separator:gab26ef4511c76ae1aa4f22a0f99db7538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html">SDL::SharedObjectRef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned sharedObject.  <a href="structSDL_1_1SharedObjectRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObject.html">SDL::SharedObject</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned sharedObject.  <a href="structSDL_1_1SharedObject.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Shared objects are code that is programmatically loadable at runtime. Windows calls these "DLLs", Linux calls them "shared libraries", etc.</p>
@@ -105,43 +101,6 @@ Typedefs</h2></td></tr>
 <li>Avoid namespace collisions. If you load a symbol from the library, it is not defined whether or not it goes into the global symbol namespace for the application. If it does and it conflicts with symbols in your code or other shared libraries, you will not get the results you expect. :)</li>
 <li>Once a library is unloaded, all pointers into it obtained through SDL_LoadFunction() become invalid, even if the library is later reloaded. Don't unload a library if you plan to use these pointers in the future. Notably: beware of giving one of these pointers to atexit(), since it may call that pointer after the library unloads. </li>
 </ul>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="gab26ef4511c76ae1aa4f22a0f99db7538" name="gab26ef4511c76ae1aa4f22a0f99db7538"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab26ef4511c76ae1aa4f22a0f99db7538">&#9670;&#160;</a></span>SharedObject</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategorySharedObject.html#gab26ef4511c76ae1aa4f22a0f99db7538">SDL::SharedObject</a> = typedef <a class="el" href="structSDL_1_1SharedObjectBase.html">SharedObjectBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_SharedObject&gt; &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObjectBase.html" title="An opaque datatype that represents a loaded shared object.">SharedObjectBase</a> </dd>
-<dd>
-<a class="el" href="group__CategorySharedObject.html#ga63c230eff61f33ef6759bbb3756f0a4a" title="Handle to a non owned sharedObject.">SharedObjectRef</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga63c230eff61f33ef6759bbb3756f0a4a" name="ga63c230eff61f33ef6759bbb3756f0a4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga63c230eff61f33ef6759bbb3756f0a4a">&#9670;&#160;</a></span>SharedObjectRef</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategorySharedObject.html#ga63c230eff61f33ef6759bbb3756f0a4a">SDL::SharedObjectRef</a> = typedef <a class="el" href="structSDL_1_1SharedObjectBase.html">SharedObjectBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_SharedObject&gt; &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObjectBase.html" title="An opaque datatype that represents a loaded shared object.">SharedObjectBase</a> </dd>
-<dd>
-<a class="el" href="group__CategorySharedObject.html#gab26ef4511c76ae1aa4f22a0f99db7538" title="Handle to an owned sharedObject.">SharedObject</a> </dd></dl>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

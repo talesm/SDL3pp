@@ -350,7 +350,7 @@ inline const char* Keycode::GetName() const
  *
  * This function will enable text input (EVENT_TEXT_INPUT and
  * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowBase::StopTextInput().
+ * function paired with WindowBase.StopTextInput().
  *
  * Text input events are not received by default.
  *
@@ -365,16 +365,12 @@ inline const char* Keycode::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::SetTextInputArea
- * @sa WindowBase::StartTextInput
- * @sa WindowBase::StopTextInput
- * @sa WindowBase::IsTextInputActive
+ * @sa WindowBase.SetTextInputArea
+ * @sa WindowBase.StartTextInput
+ * @sa WindowBase.StopTextInput
+ * @sa WindowBase.IsTextInputActive
  */
-template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::StartTextInput()
-{
-  return SDL_StartTextInput(T::get());
-}
+inline bool WindowBase::StartTextInput() { return SDL_StartTextInput(get()); }
 
 /**
  * Start accepting Unicode text input events in a window, with properties
@@ -382,7 +378,7 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * This function will enable text input (EVENT_TEXT_INPUT and
  * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowBase::StopTextInput().
+ * function paired with WindowBase.StopTextInput().
  *
  * Text input events are not received by default.
  *
@@ -392,7 +388,7 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that
+ * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
  *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
  * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
  *   that describes how text should be capitalized, defaults to
@@ -420,15 +416,14 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::SetTextInputArea
- * @sa WindowBase::StartTextInput
- * @sa WindowBase::StopTextInput
- * @sa WindowBase::IsTextInputActive
+ * @sa WindowBase.SetTextInputArea
+ * @sa WindowBase.StartTextInput
+ * @sa WindowBase.StopTextInput
+ * @sa WindowBase.IsTextInputActive
  */
-template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::StartTextInput(PropertiesRef props)
+inline bool WindowBase::StartTextInput(PropertiesBase& props)
 {
-  return SDL_StartTextInputWithProperties(T::get(), props);
+  return SDL_StartTextInputWithProperties(get(), props.get());
 }
 
 /**
@@ -552,19 +547,18 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::StartTextInput
+ * @sa WindowBase.StartTextInput
  */
-template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::IsTextInputActive() const
+inline bool WindowBase::IsTextInputActive() const
 {
-  return SDL_TextInputActive(T::get());
+  return SDL_TextInputActive(get());
 }
 
 /**
  * Stop receiving any text input events in a window.
  *
- * If WindowBase::StartTextInput() showed the screen keyboard, this function
- * will hide it.
+ * If WindowBase.StartTextInput() showed the screen keyboard, this function will
+ * hide it.
  *
  * @returns true on success or false on failure; call GetError() for more
  *          information.
@@ -573,13 +567,9 @@ inline bool WindowBase<T>::IsTextInputActive() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::StartTextInput
+ * @sa WindowBase.StartTextInput
  */
-template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::StopTextInput()
-{
-  return SDL_StopTextInput(T::get());
-}
+inline bool WindowBase::StopTextInput() { return SDL_StopTextInput(get()); }
 
 /**
  * Dismiss the composition window/IME without disabling the subsystem.
@@ -591,13 +581,12 @@ inline bool WindowBase<T>::StopTextInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::StartTextInput
- * @sa WindowBase::StopTextInput
+ * @sa WindowBase.StartTextInput
+ * @sa WindowBase.StopTextInput
  */
-template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::ClearComposition()
+inline bool WindowBase::ClearComposition()
 {
-  return SDL_ClearComposition(T::get());
+  return SDL_ClearComposition(get());
 }
 
 /**
@@ -617,19 +606,18 @@ inline bool WindowBase<T>::ClearComposition()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::GetTextInputArea
- * @sa WindowBase::StartTextInput
+ * @sa WindowBase.GetTextInputArea
+ * @sa WindowBase.StartTextInput
  */
-template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::SetTextInputArea(const SDL_Rect& rect, int cursor)
+inline bool WindowBase::SetTextInputArea(const SDL_Rect& rect, int cursor)
 {
-  return SDL_SetTextInputArea(T::get(), rect, cursor);
+  return SDL_SetTextInputArea(get(), &rect, cursor);
 }
 
 /**
  * Get the area used to type Unicode text input.
  *
- * This returns the values previously set by WindowBase::SetTextInputArea().
+ * This returns the values previously set by WindowBase.SetTextInputArea().
  *
  * @param rect a pointer to an Rect filled in with the text input area,
  *             may be nullptr.
@@ -642,12 +630,11 @@ inline bool WindowBase<T>::SetTextInputArea(const SDL_Rect& rect, int cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase::SetTextInputArea
+ * @sa WindowBase.SetTextInputArea
  */
-template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::GetTextInputArea(Rect* rect, int* cursor)
+inline bool WindowBase::GetTextInputArea(Rect* rect, int* cursor)
 {
-  return SDL_GetTextInputArea(T::get(), rect, cursor);
+  return SDL_GetTextInputArea(get(), rect, cursor);
 }
 
 /**
@@ -679,9 +666,9 @@ inline bool HasScreenKeyboardSupport()
  *
  * @sa HasScreenKeyboardSupport
  */
-inline bool ScreenKeyboardShown(WindowRef window)
+inline bool WindowBase::IsScreenKeyboardShown() const
 {
-  return SDL_ScreenKeyboardShown(window.get());
+  return SDL_ScreenKeyboardShown(get());
 }
 
 /// @}

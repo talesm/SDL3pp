@@ -96,28 +96,13 @@ using ThreadCB = std::function<int()>;
 using TLSDestructorCallback = SDL_TLSDestructorCallback;
 
 // Forward decl
-template<ObjectBox<SDL_Thread*> T>
 struct ThreadBase;
 
-/**
- * Handle to a non owned thread
- *
- * @cat resource
- *
- * @sa ThreadBase
- * @sa Thread
- */
-using ThreadRef = ThreadBase<ObjectRef<SDL_Thread>>;
+// Forward decl
+struct ThreadRef;
 
-/**
- * Handle to an owned thread
- *
- * @cat resource
- *
- * @sa ThreadBase
- * @sa ThreadRef
- */
-using Thread = ThreadBase<ObjectUnique<SDL_Thread>>;
+// Forward decl
+struct Thread;
 
 /**
  * The SDL thread priority.
@@ -177,11 +162,15 @@ constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
  *
  * @sa ThreadBase.ThreadBase
  * @sa ThreadBase.Wait
+ *
+ * @cat resource
+ *
+ * @sa Thread
+ * @sa ThreadRef
  */
-template<ObjectBox<SDL_Thread*> T>
-struct ThreadBase : T
+struct ThreadBase : Resource<SDL_Thread*>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * Create a new thread with a default stack size.
@@ -198,12 +187,12 @@ struct ThreadBase : T
    * @sa ThreadBase.Wait
    */
   ThreadBase(ThreadCB fn, StringParam name)
-    : T(SDL_CreateThread(
+    : ThreadBase(
         [](void* handler) {
           return CallbackWrapper<ThreadCB>::CallOnce(handler);
         },
         std::move(name),
-        CallbackWrapper<ThreadCB>::Wrap(std::move(fn))))
+        CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
   {
   }
 
@@ -233,7 +222,7 @@ struct ThreadBase : T
    * @sa ThreadBase.Wait
    */
   ThreadBase(ThreadFunction fn, StringParam name, void* data)
-    : T(SDL_CreateThread(fn, name, data))
+    : Resource(SDL_CreateThread(fn, name, data))
   {
   }
 
@@ -301,8 +290,8 @@ struct ThreadBase : T
    * @sa ThreadBase.ThreadBase
    * @sa ThreadBase.Wait
    */
-  ThreadBase(PropertiesRef props)
-    : T(SDL_CreateThreadWithProperties(props.get()))
+  ThreadBase(PropertiesBase& props)
+    : Resource(SDL_CreateThreadWithProperties(props.get()))
   {
   }
 
@@ -314,7 +303,7 @@ struct ThreadBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  const char* GetName() const { return SDL_GetThreadName(T::get()); }
+  const char* GetName() const { return SDL_GetThreadName(get()); }
 
   /**
    * Get the thread identifier for the specified thread.
@@ -330,7 +319,7 @@ struct ThreadBase : T
    *
    * @sa GetCurrentThreadID
    */
-  ThreadID GetID() const { return SDL_GetThreadID(T::get()); }
+  ThreadID GetID() const { return SDL_GetThreadID(get()); }
 
   /**
    * Set the priority for the current thread.
@@ -339,12 +328,16 @@ struct ThreadBase : T
    * promote the thread to a higher priority) at all, and some require you to be
    * an administrator account. Be prepared for this to fail.
    *
+   * @param priority the ThreadPriority to set.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetCurrentPriority() { return SDL_SetCurrentThreadPriority(T::get()); }
+  static bool SetCurrentPriority(ThreadPriority priority)
+  {
+    return SDL_SetCurrentThreadPriority(priority);
+  }
 
   /**
    * Wait for a thread to finish.
@@ -360,7 +353,7 @@ struct ThreadBase : T
    * by `status`, if `status` is not nullptr.
    *
    * You may not wait on a thread that has been used in a call to
-   * ThreadBase.Detach(). Use either that function or this one, but not both, or
+   * ThreadRef.Detach(). Use either that function or this one, but not both, or
    * behavior is undefined.
    *
    * It is safe to pass a nullptr thread to this function; it is a no-op.
@@ -376,9 +369,9 @@ struct ThreadBase : T
    * @since This function is available since SDL 3.2.0.
    *
    * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Detach
+   * @sa ThreadRef.Detach
    */
-  void Wait(int* status) { SDL_WaitThread(T::get(), status); }
+  void Wait(int* status) { SDL_WaitThread(get(), status); }
 
   /**
    * Get the current state of a thread.
@@ -390,7 +383,50 @@ struct ThreadBase : T
    *
    * @sa ThreadState
    */
-  ThreadState GetState() const { return SDL_GetThreadState(T::get()); }
+  ThreadState GetState() const { return SDL_GetThreadState(get()); }
+};
+
+/**
+ * Handle to a non owned thread
+ *
+ * @cat resource
+ *
+ * @sa ThreadBase
+ * @sa Thread
+ */
+struct ThreadRef : ThreadBase
+{
+  using ThreadBase::ThreadBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr ThreadRef(const ThreadRef& other)
+    : ThreadBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr ThreadRef(ThreadRef&& other)
+    : ThreadBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~ThreadRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  ThreadRef& operator=(ThreadRef other)
+  {
+    release(other.release());
+    return *this;
+  }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -409,7 +445,7 @@ struct ThreadBase : T
    * ThreadBase.Wait() to finally clean it up. As such, don't detach the same
    * thread more than once.
    *
-   * If a thread has already exited when passed to ThreadBase.Detach(), it will
+   * If a thread has already exited when passed to ThreadRef.Detach(), it will
    * stop waiting for a call to ThreadBase.Wait() and clean up immediately. It
    * is not safe to detach a thread that might be used with ThreadBase.Wait().
    *
@@ -418,14 +454,90 @@ struct ThreadBase : T
    *
    * It is safe to pass nullptr to this function; it is a no-op.
    *
-   *               ThreadBase.ThreadBase() call that started this thread.
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadBase.ThreadBase
+   * @sa ThreadBase.Wait
+   */
+  void reset(SDL_Thread* newResource = {})
+  {
+    SDL_DetachThread(release(newResource));
+  }
+
+  /**
+   * Let a thread clean up on exit without intervention.
+   *
+   * A thread may be "detached" to signify that it should not remain until
+   * another thread has called ThreadBase.Wait() on it. Detaching a thread is
+   * useful for long-running threads that nothing needs to synchronize with or
+   * further manage. When a detached thread is done, it simply goes away.
+   *
+   * There is no way to recover the return code of a detached thread. If you
+   * need this, don't detach the thread and instead use ThreadBase.Wait().
+   *
+   * Once a thread is detached, you should usually assume the ThreadBase isn't
+   * safe to reference again, as it will become invalid immediately upon the
+   * detached thread's exit, instead of remaining until someone has called
+   * ThreadBase.Wait() to finally clean it up. As such, don't detach the same
+   * thread more than once.
+   *
+   * If a thread has already exited when passed to ThreadRef.Detach(), it will
+   * stop waiting for a call to ThreadBase.Wait() and clean up immediately. It
+   * is not safe to detach a thread that might be used with ThreadBase.Wait().
+   *
+   * You may not call ThreadBase.Wait() on a thread that has been detached. Use
+   * either that function or this one, but not both, or behavior is undefined.
+   *
+   * It is safe to pass nullptr to this function; it is a no-op.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa ThreadBase.ThreadBase
    * @sa ThreadBase.Wait
    */
-  void Detach() { SDL_DetachThread(T::get()); }
+  void Detach() { reset(); }
+};
+
+/**
+ * Handle to an owned thread
+ *
+ * @cat resource
+ *
+ * @sa ThreadBase
+ * @sa ThreadRef
+ */
+struct Thread : ThreadRef
+{
+  using ThreadRef::ThreadRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit Thread(SDL_Thread* resource = {})
+    : ThreadRef(resource)
+  {
+  }
+
+  constexpr Thread(const Thread& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr Thread(Thread&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~Thread() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  Thread& operator=(Thread other)
+  {
+    reset(other.release());
+    return *this;
+  }
 };
 
 namespace prop::thread {

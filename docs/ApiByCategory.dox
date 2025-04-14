@@ -125,7 +125,7 @@ Category               | Header
 Category                                            | Header
 --------------------------------------------------- | ------------------------
 @ref CategoryCallbackWrapper                        | SDL3pp_callbackWrapper.h
-@ref CategoryObjectWrapper                          | SDL3pp_objectWrapper.h
+[Resource wrapper](#SDL::Resource)                  | SDL3pp_resource.h
 [Optional references](#SDL::OptionalRef)            | SDL3pp_optionalRef.h
 @ref CategoryOwnPtr                                 | SDL3pp_ownPtr.h
 [Span-like for derived structs](#SDL::SpanRef)      | SDL3pp_spanRef.h
@@ -174,8 +174,8 @@ thread facilities.
 
 @{
 @addtogroup CategoryThread
-@addtogroup CategoryMutex  
-@addtogroup CategoryAtomic 
+@addtogroup CategoryMutex
+@addtogroup CategoryAtomic
 @}
 
 
@@ -221,7 +221,6 @@ thread facilities.
 @defgroup CategoriesCppSupport C++ Support
 @{
 @addtogroup CategoryCallbackWrapper
-@addtogroup CategoryObjectWrapper
 @addtogroup CategoryOwnPtr
 @}
 

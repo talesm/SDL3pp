@@ -141,21 +141,21 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt
 <tr class="memitem:ad6f553a70d37e57323de8550ed2bf09f" id="r_ad6f553a70d37e57323de8550ed2bf09f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1Color.html">Color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Color.html#ad6f553a70d37e57323de8550ed2bf09f">SetA</a> (Uint8 newA)</td></tr>
 <tr class="memdesc:ad6f553a70d37e57323de8550ed2bf09f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the alpha component from the color.  <br /></td></tr>
 <tr class="separator:ad6f553a70d37e57323de8550ed2bf09f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a152048e6de3cdaae27438893d5c4bfac" id="r_a152048e6de3cdaae27438893d5c4bfac"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Color.html#a152048e6de3cdaae27438893d5c4bfac">Map</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette) const</td></tr>
+<tr class="memitem:a152048e6de3cdaae27438893d5c4bfac" id="r_a152048e6de3cdaae27438893d5c4bfac"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Color.html#a152048e6de3cdaae27438893d5c4bfac">Map</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> palette) const</td></tr>
 <tr class="memdesc:a152048e6de3cdaae27438893d5c4bfac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a given pixel format.  <br /></td></tr>
 <tr class="separator:a152048e6de3cdaae27438893d5c4bfac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9a77f1ff08dc846c26e221b1516a258e" id="r_a9a77f1ff08dc846c26e221b1516a258e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Color.html#a9a77f1ff08dc846c26e221b1516a258e">Get</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette)</td></tr>
+<tr class="memitem:a9a77f1ff08dc846c26e221b1516a258e" id="r_a9a77f1ff08dc846c26e221b1516a258e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Color.html#a9a77f1ff08dc846c26e221b1516a258e">Get</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> palette)</td></tr>
 <tr class="memdesc:a9a77f1ff08dc846c26e221b1516a258e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGBA values from a pixel in the specified format.  <br /></td></tr>
 <tr class="separator:a9a77f1ff08dc846c26e221b1516a258e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The bits of this structure can be directly reinterpreted as an integer-packed color which uses the SDL_PIXELFORMAT_RGBA32 format (SDL_PIXELFORMAT_ABGR8888 on little-endian systems and SDL_PIXELFORMAT_RGBA8888 on big-endian systems).</p>
+<div class="textblock"><p>The bits of this structure can be directly reinterpreted as an integer-packed color which uses the PIXELFORMAT_RGBA32 format (PIXELFORMAT_ABGR8888 on little-endian systems and PIXELFORMAT_RGBA8888 on big-endian systems).</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="wrap-extending-struct.html">Wrap extending struct</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>wrap-extending-struct </dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="wrap-extending-struct.html">Wrap extending struct</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1FColor.html" title="The bits of this structure can be directly reinterpreted as a float-packed color which uses the PIXEL...">FColor</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abb2447266e78d0a620ddf7be7bf572d3" name="abb2447266e78d0a620ddf7be7bf572d3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abb2447266e78d0a620ddf7be7bf572d3">&#9670;&#160;</a></span>Color() <span class="overload">[1/2]</span></h2>
@@ -182,7 +182,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">color</td><td>the value to be wrapped. </td></tr>
+    <tr><td class="paramname">color</td><td>the value to be wrapped </td></tr>
   </table>
   </dd>
 </dl>
@@ -271,7 +271,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a>&#160;</td>
           <td class="paramname"><em>palette</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
@@ -299,9 +299,9 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>a color value.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an SDL_PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails()</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gad74c76d122c82eef85a4803c69ea7d85" title="Get RGBA values from a pixel in the specified format.">GetRGBA()</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaea943762e402bea20719ac40c6380bee" title="Get RGBA values from a pixel in the specified format.">GetRGBA()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Color.html#a152048e6de3cdaae27438893d5c4bfac" title="Map an RGBA quadruple to a pixel value for a given pixel format.">Map()</a> </dd></dl>
 
@@ -429,7 +429,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a>&#160;</td>
           <td class="paramname"><em>palette</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
