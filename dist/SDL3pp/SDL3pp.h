@@ -43860,126 +43860,32 @@ constexpr struct TtfInitFlag : InitFlagsExtra
 {
 } INIT_TTF; ///< Flag to init TTF support
 
-/**
- * Wraps the TTF_TextEngine so we can store its
- * Destroy function with it
- *
- * @private
- */
-class TextEngineWrapper
-{
-  TTF_TextEngine* m_ptr;
-  void (*m_destroy)(TTF_TextEngine* engine);
-
-public:
-  constexpr TextEngineWrapper(std::nullptr_t = nullptr)
-    : m_ptr(nullptr)
-    , m_destroy(nullptr)
-  {
-  }
-
-  constexpr TextEngineWrapper(TTF_TextEngine* ptr,
-                              void (*destroy)(TTF_TextEngine* engine))
-    : m_ptr(ptr)
-    , m_destroy(destroy)
-  {
-  }
-
-  constexpr auto operator<=>(const TextEngineWrapper& other) const = default;
-
-  constexpr operator bool() const { return m_ptr != nullptr; }
-
-  constexpr bool operator==(nullptr_t) const { return bool(*this); }
-
-  constexpr operator TTF_TextEngine*() const { return m_ptr; }
-
-  /**
-   * @brief Never call this directly!!!!!
-   *
-   * @private
-   */
-  void doDestroyThis()
-  {
-    if (m_destroy) m_destroy(m_ptr);
-    m_ptr = nullptr;
-    m_destroy = nullptr;
-  }
-};
-
 // Forward decl
-template<ObjectBox<TTF_Font*> T>
 struct FontBase;
 
-/**
- * Handle to a non owned font
- *
- * @cat resource
- *
- * @sa FontBase
- * @sa Font
- */
-using FontRef = FontBase<ObjectRef<TTF_Font>>;
-
-/**
- * Handle to an owned font
- *
- * @cat resource
- *
- * @sa FontBase
- * @sa FontRef
- */
-using Font = FontBase<ObjectUnique<TTF_Font>>;
+// Forward decl
+struct FontRef;
 
 // Forward decl
-template<ObjectBox<TextEngineWrapper> T>
+struct Font;
+
+// Forward decl
 struct TextEngineBase;
 
-/**
- * Handle to a non owned textEngine
- *
- * @cat resource
- *
- * @sa TextEngineBase
- * @sa TextEngine
- */
-using TextEngineRef =
-  TextEngineBase<ObjectRef<TTF_TextEngine, TextEngineWrapper>>;
-
-/**
- * Handle to an owned textEngine
- *
- * @cat resource
- *
- * @sa TextEngineBase
- * @sa TextEngineRef
- */
-using TextEngine = TextEngineBase<
-  ObjectUnique<TTF_TextEngine,
-               ObjectDeleter<ObjectRef<TTF_TextEngine, TextEngineWrapper>>>>;
+// Forward decl
+struct TextEngineRef;
 
 // Forward decl
-template<ObjectBox<TTF_Text*> T>
+struct TextEngine;
+
+// Forward decl
 struct TextBase;
 
-/**
- * Handle to a non owned text
- *
- * @cat resource
- *
- * @sa TextBase
- * @sa Text
- */
-using TextRef = TextBase<ObjectRef<TTF_Text>>;
+// Forward decl
+struct TextRef;
 
-/**
- * Handle to an owned text
- *
- * @cat resource
- *
- * @sa TextBase
- * @sa TextRef
- */
-using Text = TextBase<ObjectUnique<TTF_Text>>;
+// Forward decl
+struct Text;
 
 /**
  * @name Font Style Flags
@@ -44000,30 +43906,17 @@ using Text = TextBase<ObjectUnique<TTF_Text>>;
  */
 using FontStyleFlags = Uint32;
 
-/**
- * No special style
- */
-constexpr FontStyleFlags STYLE_NORMAL = TTF_STYLE_NORMAL;
+constexpr FontStyleFlags STYLE_NORMAL = TTF_STYLE_NORMAL; ///< No special style
 
-/**
- * Bold style
- */
-constexpr FontStyleFlags STYLE_BOLD = TTF_STYLE_BOLD;
+constexpr FontStyleFlags STYLE_BOLD = TTF_STYLE_BOLD; ///< Bold style
 
-/**
- * Italic style
- */
-constexpr FontStyleFlags STYLE_ITALIC = TTF_STYLE_ITALIC;
+constexpr FontStyleFlags STYLE_ITALIC = TTF_STYLE_ITALIC; ///< Italic style
 
-/**
- * Underlined text
- */
-constexpr FontStyleFlags STYLE_UNDERLINE = TTF_STYLE_UNDERLINE;
+constexpr FontStyleFlags STYLE_UNDERLINE =
+  TTF_STYLE_UNDERLINE; ///< Underlined text
 
-/**
- * Strikethrough text
- */
-constexpr FontStyleFlags STYLE_STRIKETHROUGH = TTF_STYLE_STRIKETHROUGH;
+constexpr FontStyleFlags STYLE_STRIKETHROUGH =
+  TTF_STYLE_STRIKETHROUGH; ///< Strikethrough text
 
 /// @}
 
@@ -44046,13 +43939,10 @@ constexpr FontStyleFlags STYLE_STRIKETHROUGH = TTF_STYLE_STRIKETHROUGH;
  */
 using HintingFlags = TTF_HintingFlags;
 
-/// Invalid grid-fitting
 constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID; ///< INVALID
 
-/**
- * Normal hinting applies standard grid-fitting.
- */
-constexpr HintingFlags HINTING_NORMAL = TTF_HINTING_NORMAL;
+constexpr HintingFlags HINTING_NORMAL =
+  TTF_HINTING_NORMAL; ///< Normal hinting applies standard grid-fitting.
 
 /**
  * Light hinting applies subtle adjustments to improve rendering.
@@ -44089,7 +43979,6 @@ constexpr HintingFlags HINTING_LIGHT_SUBPIXEL = TTF_HINTING_LIGHT_SUBPIXEL;
  */
 using HorizontalAlignment = TTF_HorizontalAlignment;
 
-/// Invalid alignment
 constexpr HorizontalAlignment HORIZONTAL_ALIGN_INVALID =
   TTF_HORIZONTAL_ALIGN_INVALID; ///< INVALID
 
@@ -44121,28 +44010,15 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
  */
 using Direction = TTF_Direction;
 
-/// Invalid direction
 constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID; ///< INVALID
 
-/**
- * Left to Right.
- */
-constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR;
+constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR; ///< Left to Right.
 
-/**
- * Right to Left.
- */
-constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL;
+constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL; ///< Right to Left.
 
-/**
- * Top to Bottom.
- */
-constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB;
+constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB; ///< Top to Bottom.
 
-/**
- * Bottom to Top.
- */
-constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT;
+constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT; ///< Bottom to Top.
 
 /// @}
 
@@ -44158,18 +44034,13 @@ constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT;
  */
 using ImageType = TTF_ImageType;
 
-/// Invalid state
 constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID; ///< INVALID
 
-/**
- * The color channels are white.
- */
-constexpr ImageType IMAGE_ALPHA = TTF_IMAGE_ALPHA;
+constexpr ImageType IMAGE_ALPHA =
+  TTF_IMAGE_ALPHA; ///< The color channels are white.
 
-/**
- * The color channels have image data.
- */
-constexpr ImageType IMAGE_COLOR = TTF_IMAGE_COLOR;
+constexpr ImageType IMAGE_COLOR =
+  TTF_IMAGE_COLOR; ///< The color channels have image data.
 
 /**
  * The alpha channel has signed distance field information.
@@ -44192,16 +44063,13 @@ constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
  */
 using SubStringFlags = Uint32;
 
-/**
- * The mask for the flow direction for this substring
- */
 constexpr SubStringFlags SUBSTRING_DIRECTION_MASK =
-  TTF_SUBSTRING_DIRECTION_MASK;
+  TTF_SUBSTRING_DIRECTION_MASK; ///< The mask for the flow direction for this
+                                ///< substring
 
-/**
- * This substring contains the beginning of the text
- */
-constexpr SubStringFlags SUBSTRING_TEXT_START = TTF_SUBSTRING_TEXT_START;
+constexpr SubStringFlags SUBSTRING_TEXT_START =
+  TTF_SUBSTRING_TEXT_START; ///< This substring contains the beginning of the
+                            ///< text
 
 /**
  * This substring contains the beginning of line `line_index`
@@ -44213,10 +44081,8 @@ constexpr SubStringFlags SUBSTRING_LINE_START = TTF_SUBSTRING_LINE_START;
  */
 constexpr SubStringFlags SUBSTRING_LINE_END = TTF_SUBSTRING_LINE_END;
 
-/**
- * This substring contains the end of the text
- */
-constexpr SubStringFlags SUBSTRING_TEXT_END = TTF_SUBSTRING_TEXT_END;
+constexpr SubStringFlags SUBSTRING_TEXT_END =
+  TTF_SUBSTRING_TEXT_END; ///< This substring contains the end of the text
 
 /// @}
 
@@ -44226,13 +44092,12 @@ constexpr SubStringFlags SUBSTRING_TEXT_END = TTF_SUBSTRING_TEXT_END;
  */
 
 /**
- * The winding order of the vertices returned by TTF_GetGPUTextDrawData
+ * The winding order of the vertices returned by TextBase.GetGPUDrawData
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  */
 using GPUTextEngineWinding = TTF_GPUTextEngineWinding;
 
-/// Invalid state
 constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
   TTF_GPU_TEXTENGINE_WINDING_INVALID; ///< INVALID
 
@@ -44247,8 +44112,6 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 #ifdef SDL3PP_DOC
 
 /**
- * @name TTF version
- * @{
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
 #define SDL_TTF_MAJOR_VERSION
@@ -44302,8 +44165,8 @@ inline int TTF_Version() { return ::TTF_Version(); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Init()
- * @sa InitSubSystem()
+ * @sa Init
+ * @sa InitSubSystem
  */
 inline void GetFreeTypeVersion(int* major, int* minor, int* patch)
 {
@@ -44340,11 +44203,12 @@ using TextData = TTF_TextData;
  *
  * @cat resource
  *
+ * @sa Font
+ * @sa FontRef
  */
-template<ObjectBox<TTF_Font*> T>
-struct FontBase : T
+struct FontBase : Resource<TTF_Font*>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * Create a font from a file, using a specified point size.
@@ -44361,11 +44225,9 @@ struct FontBase : T
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontBase.Close
    */
   FontBase(StringParam file, float ptsize)
-    : T(TTF_OpenFont(file, ptsize))
+    : Resource(TTF_OpenFont(file, ptsize))
   {
   }
 
@@ -44384,11 +44246,9 @@ struct FontBase : T
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontBase.Close
    */
   FontBase(IOStreamBase& src, float ptsize)
-    : T(TTF_OpenFontIO(src.get(), false, ptsize))
+    : Resource(TTF_OpenFontIO(src.get(), false, ptsize))
   {
   }
 
@@ -44432,11 +44292,9 @@ struct FontBase : T
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa FontBase.Close
    */
   FontBase(PropertiesBase& props)
-    : T(TTF_OpenFontWithProperties(props.get()))
+    : Resource(TTF_OpenFontWithProperties(props.get()))
   {
   }
 
@@ -44454,7 +44312,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  Font Copy() const { return TTF_CopyFont(T::get()); }
+  Font Copy() const;
 
   /**
    * Get the properties associated with a font.
@@ -44477,7 +44335,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  PropertiesRef GetProperties() { return TTF_GetFontProperties(T::get()); }
+  PropertiesRef GetProperties() { return TTF_GetFontProperties(get()); }
 
   /**
    * Get the font generation.
@@ -44493,7 +44351,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  Uint32 GetGeneration() const { return TTF_GetFontGeneration(T::get()); }
+  Uint32 GetGeneration() const { return TTF_GetFontGeneration(get()); }
 
   /**
    * Add a fallback font.
@@ -44517,9 +44375,9 @@ struct FontBase : T
    * @sa FontBase.ClearFallbacks
    * @sa FontBase.RemoveFallback
    */
-  bool AddFallback(FontRef fallback)
+  bool AddFallback(FontBase& fallback)
   {
-    return TTF_AddFallbackFont(T::get(), fallback);
+    return TTF_AddFallbackFont(get(), fallback.get());
   }
 
   /**
@@ -44537,9 +44395,9 @@ struct FontBase : T
    * @sa FontBase.AddFallback
    * @sa FontBase.ClearFallbacks
    */
-  void RemoveFallback(FontRef fallback)
+  void RemoveFallback(FontBase& fallback)
   {
-    TTF_RemoveFallbackFont(T::get(), fallback);
+    TTF_RemoveFallbackFont(get(), fallback.get());
   }
 
   /**
@@ -44556,7 +44414,7 @@ struct FontBase : T
    * @sa FontBase.AddFallback
    * @sa FontBase.RemoveFallback
    */
-  void ClearFallbacks() { TTF_ClearFallbackFonts(T::get()); }
+  void ClearFallbacks() { TTF_ClearFallbackFonts(get()); }
 
   /**
    * Set a font's size dynamically.
@@ -44575,7 +44433,7 @@ struct FontBase : T
    *
    * @sa FontBase.GetSize
    */
-  bool SetSize(float ptsize) { return TTF_SetFontSize(T::get(), ptsize); }
+  bool SetSize(float ptsize) { return TTF_SetFontSize(get(), ptsize); }
 
   /**
    * Set font size dynamically with target resolutions, in dots per inch.
@@ -44595,11 +44453,11 @@ struct FontBase : T
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa FontBase.GetSize
-   * @sa FontBase.GetSizeDPI
+   * @sa TTF_GetFontSizeDPI
    */
   bool SetSizeDPI(float ptsize, int hdpi, int vdpi)
   {
-    return TTF_SetFontSizeDPI(T::get(), ptsize, hdpi, vdpi);
+    return TTF_SetFontSizeDPI(get(), ptsize, hdpi, vdpi);
   }
 
   /**
@@ -44616,7 +44474,7 @@ struct FontBase : T
    * @sa FontBase.SetSize
    * @sa FontBase.SetSizeDPI
    */
-  float GetSize() const { return TTF_GetFontSize(T::get()); }
+  float GetSize() const { return TTF_GetFontSize(get()); }
 
   /**
    * Get font target resolutions, in dots per inch.
@@ -44635,7 +44493,7 @@ struct FontBase : T
    */
   bool GetDPI(int* hdpi, int* vdpi) const
   {
-    return TTF_GetFontDPI(T::get(), hdpi, vdpi);
+    return TTF_GetFontDPI(get(), hdpi, vdpi);
   }
 
   /**
@@ -44661,7 +44519,7 @@ struct FontBase : T
    *
    * @sa FontBase.GetStyle
    */
-  void SetStyle(FontStyleFlags style) { TTF_SetFontStyle(T::get(), style); }
+  void SetStyle(FontStyleFlags style) { TTF_SetFontStyle(get(), style); }
 
   /**
    * Query a font's current style.
@@ -44682,7 +44540,7 @@ struct FontBase : T
    *
    * @sa FontBase.SetStyle
    */
-  FontStyleFlags GetStyle() const { return TTF_GetFontStyle(T::get()); }
+  FontStyleFlags GetStyle() const { return TTF_GetFontStyle(get()); }
 
   /**
    * Set a font's current outline.
@@ -44705,7 +44563,7 @@ struct FontBase : T
    *
    * @sa FontBase.GetOutline
    */
-  bool SetOutline(int outline) { return TTF_SetFontOutline(T::get(), outline); }
+  bool SetOutline(int outline) { return TTF_SetFontOutline(get(), outline); }
 
   /**
    * Query a font's current outline.
@@ -44718,7 +44576,7 @@ struct FontBase : T
    *
    * @sa FontBase.SetOutline
    */
-  int GetOutline() const { return TTF_GetFontOutline(T::get()); }
+  int GetOutline() const { return TTF_GetFontOutline(get()); }
 
   /**
    * Set a font's current hinter setting.
@@ -44743,10 +44601,7 @@ struct FontBase : T
    *
    * @sa FontBase.GetHinting
    */
-  void SetHinting(HintingFlags hinting)
-  {
-    TTF_SetFontHinting(T::get(), hinting);
-  }
+  void SetHinting(HintingFlags hinting) { TTF_SetFontHinting(get(), hinting); }
 
   /**
    * Query the number of faces of a font.
@@ -44757,7 +44612,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  int GetNumFaces() const { return TTF_GetNumFontFaces(T::get()); }
+  int GetNumFaces() const { return TTF_GetNumFontFaces(get()); }
 
   /**
    * Query a font's current FreeType hinter setting.
@@ -44779,7 +44634,7 @@ struct FontBase : T
    *
    * @sa FontBase.SetHinting
    */
-  HintingFlags GetHinting() const { return TTF_GetFontHinting(T::get()); }
+  HintingFlags GetHinting() const { return TTF_GetFontHinting(get()); }
 
   /**
    * Enable Signed Distance Field rendering for a font.
@@ -44804,7 +44659,7 @@ struct FontBase : T
    *
    * @sa FontBase.GetSDF
    */
-  bool SetSDF(bool enabled) { return TTF_SetFontSDF(T::get(), enabled); }
+  bool SetSDF(bool enabled) { return TTF_SetFontSDF(get(), enabled); }
 
   /**
    * Query whether Signed Distance Field rendering is enabled for a font.
@@ -44817,7 +44672,7 @@ struct FontBase : T
    *
    * @sa FontBase.SetSDF
    */
-  bool GetSDF() const { return TTF_GetFontSDF(T::get()); }
+  bool GetSDF() const { return TTF_GetFontSDF(get()); }
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -44831,7 +44686,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.2.2.
    */
-  int GetWeight() const { return TTF_GetFontWeight(T::get()); }
+  int GetWeight() const { return TTF_GetFontWeight(get()); }
 
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -44851,7 +44706,7 @@ struct FontBase : T
    */
   void SetWrapAlignment(HorizontalAlignment align)
   {
-    TTF_SetFontWrapAlignment(T::get(), align);
+    TTF_SetFontWrapAlignment(get(), align);
   }
 
   /**
@@ -44867,7 +44722,7 @@ struct FontBase : T
    */
   HorizontalAlignment GetWrapAlignment() const
   {
-    return TTF_GetFontWrapAlignment(T::get());
+    return TTF_GetFontWrapAlignment(get());
   }
 
   /**
@@ -44881,7 +44736,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  int GetHeight() const { return TTF_GetFontHeight(T::get()); }
+  int GetHeight() const { return TTF_GetFontHeight(get()); }
 
   /**
    * Query the offset from the baseline to the top of a font.
@@ -44894,7 +44749,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  int GetAscent() const { return TTF_GetFontAscent(T::get()); }
+  int GetAscent() const { return TTF_GetFontAscent(get()); }
 
   /**
    * Query the offset from the baseline to the bottom of a font.
@@ -44907,7 +44762,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  int GetDescent() const { return TTF_GetFontDescent(T::get()); }
+  int GetDescent() const { return TTF_GetFontDescent(get()); }
 
   /**
    * Set the spacing between lines of text for a font.
@@ -44923,7 +44778,7 @@ struct FontBase : T
    *
    * @sa FontBase.GetLineSkip
    */
-  void SetLineSkip(int lineskip) { TTF_SetFontLineSkip(T::get(), lineskip); }
+  void SetLineSkip(int lineskip) { TTF_SetFontLineSkip(get(), lineskip); }
 
   /**
    * Query the spacing between lines of text for a font.
@@ -44936,7 +44791,7 @@ struct FontBase : T
    *
    * @sa FontBase.SetLineSkip
    */
-  int GetLineSkip() const { return TTF_GetFontLineSkip(T::get()); }
+  int GetLineSkip() const { return TTF_GetFontLineSkip(get()); }
 
   /**
    * Set if kerning is enabled for a font.
@@ -44957,7 +44812,7 @@ struct FontBase : T
    *
    * @sa FontBase.GetKerning
    */
-  void SetKerning(bool enabled) { TTF_SetFontKerning(T::get(), enabled); }
+  void SetKerning(bool enabled) { TTF_SetFontKerning(get(), enabled); }
 
   /**
    * Query whether or not kerning is enabled for a font.
@@ -44970,7 +44825,7 @@ struct FontBase : T
    *
    * @sa FontBase.SetKerning
    */
-  bool GetKerning() const { return TTF_GetFontKerning(T::get()); }
+  bool GetKerning() const { return TTF_GetFontKerning(get()); }
 
   /**
    * Query whether a font is fixed-width.
@@ -44987,7 +44842,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool IsFixedWidth() const { return TTF_FontIsFixedWidth(T::get()); }
+  bool IsFixedWidth() const { return TTF_FontIsFixedWidth(get()); }
 
   /**
    * Query whether a font is scalable or not.
@@ -45002,7 +44857,7 @@ struct FontBase : T
    *
    * @sa FontBase.SetSDF
    */
-  bool IsScalable() const { return TTF_FontIsScalable(T::get()); }
+  bool IsScalable() const { return TTF_FontIsScalable(get()); }
 
   /**
    * Query a font's family name.
@@ -45019,7 +44874,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  const char* GetFamilyName() const { return TTF_GetFontFamilyName(T::get()); }
+  const char* GetFamilyName() const { return TTF_GetFontFamilyName(get()); }
 
   /**
    * Query a font's style name.
@@ -45036,7 +44891,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  const char* GetStyleName() const { return TTF_GetFontStyleName(T::get()); }
+  const char* GetStyleName() const { return TTF_GetFontStyleName(get()); }
 
   /**
    * Set the direction to be used for text shaping by a font.
@@ -45057,7 +44912,7 @@ struct FontBase : T
    */
   bool SetDirection(Direction direction)
   {
-    return TTF_SetFontDirection(T::get(), direction);
+    return TTF_SetFontDirection(get(), direction);
   }
 
   /**
@@ -45072,7 +44927,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  Direction GetDirection() const { return TTF_GetFontDirection(T::get()); }
+  Direction GetDirection() const { return TTF_GetFontDirection(get()); }
 
   /**
    * Set the script to be used for text shaping by a font.
@@ -45093,7 +44948,7 @@ struct FontBase : T
    *
    * @sa StringToTag
    */
-  bool SetScript(Uint32 script) { return TTF_SetFontScript(T::get(), script); }
+  bool SetScript(Uint32 script) { return TTF_SetFontScript(get(), script); }
 
   /**
    * Get the script used for text shaping a font.
@@ -45109,7 +44964,7 @@ struct FontBase : T
    *
    * @sa TagToString
    */
-  Uint32 GetScript() const { return TTF_GetFontScript(T::get()); }
+  Uint32 GetScript() const { return TTF_GetFontScript(get()); }
 
   /**
    * Get the script used by a 32-bit codepoint.
@@ -45126,10 +44981,7 @@ struct FontBase : T
    *
    * @sa TagToString
    */
-  Uint32 GetGlyphScript(Uint32 ch) const
-  {
-    return TTF_GetGlyphScript(T::get(), ch);
-  }
+  static Uint32 GetGlyphScript(Uint32 ch) { return TTF_GetGlyphScript(ch); }
 
   /**
    * Set language to be used for text shaping by a font.
@@ -45151,7 +45003,7 @@ struct FontBase : T
    */
   bool SetLanguage(StringParam language_bcp47)
   {
-    return TTF_SetFontLanguage(T::get(), language_bcp47);
+    return TTF_SetFontLanguage(get(), language_bcp47);
   }
 
   /**
@@ -45165,7 +45017,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool HasGlyph(Uint32 ch) const { return TTF_FontHasGlyph(T::get(), ch); }
+  bool HasGlyph(Uint32 ch) const { return TTF_FontHasGlyph(get(), ch); }
 
   /**
    * Get the pixel image for a UNICODE codepoint.
@@ -45181,9 +45033,9 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  SurfaceRef GetGlyphImage(Uint32 ch, ImageType* image_type) const
+  SurfaceRef GetGlyphImage(Uint32 ch, ImageType* image_type = nullptr) const
   {
-    return TTF_GetGlyphImage(T::get(), ch, image_type);
+    return TTF_GetGlyphImage(get(), ch, image_type);
   }
 
   /**
@@ -45204,9 +45056,9 @@ struct FontBase : T
    * @since This function is available since SDL_ttf 3.0.0.
    */
   SurfaceRef GetGlyphImageForIndex(Uint32 glyph_index,
-                                   ImageType* image_type) const
+                                   ImageType* image_type = nullptr) const
   {
-    return TTF_GetGlyphImageForIndex(T::get(), glyph_index, image_type);
+    return TTF_GetGlyphImageForIndex(get(), glyph_index, image_type);
   }
 
   /**
@@ -45244,7 +45096,7 @@ struct FontBase : T
                        int* maxy,
                        int* advance) const
   {
-    return TTF_GetGlyphMetrics(T::get(), ch, minx, maxx, miny, maxy, advance);
+    return TTF_GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance);
   }
 
   /**
@@ -45253,7 +45105,7 @@ struct FontBase : T
    * @param previous_ch the previous codepoint.
    * @param ch the current codepoint.
    * @returns the kerning size between the two glyphs, in pixels, on success or
-   * false on failure; call GetError() for more information.
+   *          false on failure; call GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -45262,7 +45114,7 @@ struct FontBase : T
    */
   std::optional<int> GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
   {
-    if (int r; TTF_GetGlyphKerning(T::get(), previous_ch, ch, &r)) return r;
+    if (int r; TTF_GetGlyphKerning(get(), previous_ch, ch, &r)) return r;
     return std::nullopt;
   }
 
@@ -45306,7 +45158,7 @@ struct FontBase : T
    */
   bool GetStringSize(std::string_view text, int* w, int* h) const
   {
-    return TTF_GetStringSize(T::get(), text.data(), text.size(), w, h);
+    return TTF_GetStringSize(get(), text.data(), text.size(), w, h);
   }
 
   /**
@@ -45366,7 +45218,7 @@ struct FontBase : T
                             int* h) const
   {
     return TTF_GetStringSizeWrapped(
-      T::get(), text.data(), text.size(), wrap_width, w, h);
+      get(), text.data(), text.size(), wrap_width, w, h);
   }
 
   /**
@@ -45397,7 +45249,7 @@ struct FontBase : T
                      int* measured_width,
                      size_t* measured_length) const
   {
-    return TTF_MeasureString(T::get(),
+    return TTF_MeasureString(get(),
                              text.data(),
                              text.size(),
                              max_width,
@@ -45439,7 +45291,7 @@ struct FontBase : T
    */
   Surface RenderText_Solid(std::string_view text, Color fg) const
   {
-    return TTF_RenderText_Solid(T::get(), text.data(), text.size(), fg);
+    return Surface{TTF_RenderText_Solid(get(), text.data(), text.size(), fg)};
   }
 
   /**
@@ -45478,8 +45330,8 @@ struct FontBase : T
                                    Color fg,
                                    int wrapLength) const
   {
-    return TTF_RenderText_Solid_Wrapped(
-      T::get(), text.data(), text.size(), fg, wrapLength);
+    return Surface{TTF_RenderText_Solid_Wrapped(
+      get(), text.data(), text.size(), fg, wrapLength)};
   }
 
   /**
@@ -45510,7 +45362,7 @@ struct FontBase : T
    */
   Surface RenderGlyph_Solid(Uint32 ch, Color fg) const
   {
-    return TTF_RenderGlyph_Solid(T::get(), ch, fg);
+    return Surface{TTF_RenderGlyph_Solid(get(), ch, fg)};
   }
 
   /**
@@ -45548,7 +45400,8 @@ struct FontBase : T
    */
   Surface RenderText_Shaded(std::string_view text, Color fg, Color bg) const
   {
-    return TTF_RenderText_Shaded(T::get(), text.data(), text.size(), fg, bg);
+    return Surface{
+      TTF_RenderText_Shaded(get(), text.data(), text.size(), fg, bg)};
   }
 
   /**
@@ -45590,8 +45443,8 @@ struct FontBase : T
                                     Color bg,
                                     int wrap_width) const
   {
-    return TTF_RenderText_Shaded_Wrapped(
-      T::get(), text.data(), text.size(), fg, bg, wrap_width);
+    return Surface{TTF_RenderText_Shaded_Wrapped(
+      get(), text.data(), text.size(), fg, bg, wrap_width)};
   }
 
   /**
@@ -45624,7 +45477,7 @@ struct FontBase : T
    */
   Surface RenderGlyph_Shaded(Uint32 ch, Color fg, Color bg) const
   {
-    return TTF_RenderGlyph_Shaded(T::get(), ch, fg, bg);
+    return Surface{TTF_RenderGlyph_Shaded(get(), ch, fg, bg)};
   }
 
   /**
@@ -45660,7 +45513,7 @@ struct FontBase : T
    */
   Surface RenderText_Blended(std::string_view text, Color fg) const
   {
-    return TTF_RenderText_Blended(T::get(), text.data(), text.size(), fg);
+    return Surface{TTF_RenderText_Blended(get(), text.data(), text.size(), fg)};
   }
 
   /**
@@ -45699,8 +45552,8 @@ struct FontBase : T
                                      Color fg,
                                      int wrap_width) const
   {
-    return TTF_RenderText_Blended_Wrapped(
-      T::get(), text.data(), text.size(), fg, wrap_width);
+    return Surface{TTF_RenderText_Blended_Wrapped(
+      get(), text.data(), text.size(), fg, wrap_width)};
   }
 
   /**
@@ -45731,7 +45584,7 @@ struct FontBase : T
    */
   Surface RenderGlyph_Blended(Uint32 ch, Color fg) const
   {
-    return TTF_RenderGlyph_Blended(T::get(), ch, fg);
+    return Surface{TTF_RenderGlyph_Blended(get(), ch, fg)};
   }
 
   /**
@@ -45768,7 +45621,7 @@ struct FontBase : T
    */
   Surface RenderText_LCD(std::string_view text, Color fg, Color bg) const
   {
-    return TTF_RenderText_LCD(T::get(), text.data(), text.size(), fg, bg);
+    return Surface{TTF_RenderText_LCD(get(), text.data(), text.size(), fg, bg)};
   }
 
   /**
@@ -45810,8 +45663,8 @@ struct FontBase : T
                                  Color bg,
                                  int wrap_width) const
   {
-    return TTF_RenderText_LCD_Wrapped(
-      T::get(), text.data(), text.size(), fg, bg, wrap_width);
+    return Surface{TTF_RenderText_LCD_Wrapped(
+      get(), text.data(), text.size(), fg, bg, wrap_width)};
   }
 
   /**
@@ -45844,7 +45697,50 @@ struct FontBase : T
    */
   Surface RenderGlyph_LCD(Uint32 ch, Color fg, Color bg) const
   {
-    return TTF_RenderGlyph_LCD(T::get(), ch, fg, bg);
+    return Surface{TTF_RenderGlyph_LCD(get(), ch, fg, bg)};
+  }
+};
+
+/**
+ * Handle to a non owned font
+ *
+ * @cat resource
+ *
+ * @sa FontBase
+ * @sa Font
+ */
+struct FontRef : FontBase
+{
+  using FontBase::FontBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr FontRef(const FontRef& other)
+    : FontBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr FontRef(FontRef&& other)
+    : FontBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~FontRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  FontRef& operator=(FontRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -45865,21 +45761,54 @@ struct FontBase : T
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa FontBase.FontBase
-   * @sa FontBase.FontBase
    */
-  void Close() { T::free(); }
+  void reset(TTF_Font* newResource = {})
+  {
+    TTF_CloseFont(release(newResource));
+  }
 };
 
 /**
- * Callback for font resource cleanup
+ * Handle to an owned font
  *
- * @private
+ * @cat resource
+ *
+ * @sa FontBase
+ * @sa FontRef
  */
-template<>
-inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
+struct Font : FontRef
 {
-  TTF_CloseFont(resource);
-}
+  using FontRef::FontRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit Font(TTF_Font* resource = {})
+    : FontRef(resource)
+  {
+  }
+
+  constexpr Font(const Font& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr Font(Font&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~Font() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  Font& operator=(Font other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
 
 /**
  * Initialize SDL_ttf.
@@ -45914,11 +45843,26 @@ inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
  * - Drawing with the SDL GPU API, created with CreateGPUTextEngine()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @cat resource
+ *
+ * @sa TextEngine
+ * @sa TextEngineRef
  */
-template<ObjectBox<TextEngineWrapper> T>
-struct TextEngineBase : T
+struct TextEngineBase : Resource<TTF_TextEngine*>
 {
-  using T::T;
+  using Resource::Resource;
+
+protected:
+  void (*m_destroy)(TTF_TextEngine* engine) = nullptr;
+
+public:
+  constexpr TextEngineBase(TTF_TextEngine* engine,
+                           void (*destroy)(TTF_TextEngine* engine))
+    : Resource(engine)
+    , m_destroy(destroy)
+  {
+  }
 
   /**
    * Sets the winding order of the vertices returned by TextBase.GetGPUDrawData
@@ -45935,7 +45879,7 @@ struct TextEngineBase : T
    */
   void SetGPUWinding(GPUTextEngineWinding winding)
   {
-    TTF_SetGPUTextEngineWinding(T::get(), winding);
+    TTF_SetGPUTextEngineWinding(get(), winding);
   }
 
   /**
@@ -45954,27 +45898,108 @@ struct TextEngineBase : T
    */
   GPUTextEngineWinding GetGPUWinding() const
   {
-    return TTF_GetGPUTextEngineWinding(T::get());
+    return TTF_GetGPUTextEngineWinding(get());
   }
-
-  /**
-   * Destroy the text engine
-   *
-   */
-  void Destroy() { T::free(); }
 };
 
 /**
- * Callback for text engine resource cleanup
+ * Handle to a non owned textEngine
  *
- * @private
+ * @cat resource
+ *
+ * @sa TextEngineBase
+ * @sa TextEngine
  */
-template<>
-inline void ObjectRef<TTF_TextEngine, TextEngineWrapper>::doFree(
-  TextEngineWrapper resource)
+struct TextEngineRef : TextEngineBase
 {
-  resource.doDestroyThis();
-}
+  using TextEngineBase::TextEngineBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr TextEngineRef(const TextEngineRef& other)
+    : TextEngineBase(other.get(), other.m_destroy)
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr TextEngineRef(TextEngineRef&& other)
+    : TextEngineBase(other.release(), other.m_destroy)
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~TextEngineRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  TextEngineRef& operator=(TextEngineRef other)
+  {
+    release(other.release());
+    m_destroy = other.m_destroy;
+    other.m_destroy = nullptr;
+    return *this;
+  }
+
+  /**
+   * frees up TextEngineBase.
+   */
+  void reset(TTF_TextEngine* newResource = {})
+  {
+    auto prevValue = release(newResource);
+    if (m_destroy) m_destroy(prevValue);
+    m_destroy = nullptr;
+  }
+};
+
+/**
+ * Handle to an owned textEngine
+ *
+ * @cat resource
+ *
+ * @sa TextEngineBase
+ * @sa TextEngineRef
+ */
+struct TextEngine : TextEngineRef
+{
+  using TextEngineRef::TextEngineRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit TextEngine(TTF_TextEngine* resource = {})
+    : TextEngineRef(resource)
+  {
+  }
+
+  constexpr TextEngine(const TextEngine& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr TextEngine(TextEngine&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~TextEngine() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  TextEngine& operator=(TextEngine other)
+  {
+    reset(other.release());
+    m_destroy = other.m_destroy;
+    other.m_destroy = nullptr;
+    return *this;
+  }
+};
 
 /**
  * Draw sequence returned by TextBase.GetGPUDrawData
@@ -46036,6 +46061,8 @@ constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
   TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER;
 
 } // namespace prop::Font
+
+inline Font FontBase::Copy() const { return Font{TTF_CopyFont(get())}; }
 
 #ifdef SDL3PP_DOC
 
@@ -46129,18 +46156,20 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
 }
 
 /**
- * Text
+ * Text created with TextBase.TextBase()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
+ * @cat resource
+ *
  * @sa TextBase.TextBase
  * @sa TextBase.GetProperties
- * @sa TextBase.Destroy
+ * @sa Text
+ * @sa TextRef
  */
-template<ObjectBox<TTF_Text*> T>
-struct TextBase : T
+struct TextBase : Resource<TTF_Text*>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * Draw text to an SDL surface.
@@ -46164,7 +46193,7 @@ struct TextBase : T
    */
   bool DrawSurface(Point p, SurfaceRef surface) const
   {
-    return TTF_DrawSurfaceText(T::get(), p.x, p.y, surface.get());
+    return TTF_DrawSurfaceText(get(), p.x, p.y, surface.get());
   }
 
   /**
@@ -46189,7 +46218,7 @@ struct TextBase : T
    */
   bool DrawRenderer(FPoint p) const
   {
-    return TTF_DrawRendererText(T::get(), p.x, p.y);
+    return TTF_DrawRendererText(get(), p.x, p.y);
   }
 
   /**
@@ -46220,7 +46249,7 @@ struct TextBase : T
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const
   {
-    return TTF_GetGPUTextDrawData(T::get());
+    return TTF_GetGPUTextDrawData(get());
   }
 
   /**
@@ -46231,17 +46260,16 @@ struct TextBase : T
    * @param font the font to render with.
    * @param text the text to use, in UTF-8 encoding.
    * @post a TextBase object or nullptr on failure; call GetError() for more
-   *          information.
+   *       information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font and text engine.
    *
    * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa TextBase.Destroy
    */
-  TextBase(TextEngineRef engine, FontRef font, std::string_view text)
-    : T(TTF_CreateText(engine.get(), font.get(), text.data(), text.size()))
+  TextBase(TextEngineBase& engine, FontRef font, std::string_view text)
+    : Resource(
+        TTF_CreateText(engine.get(), font.get(), text.data(), text.size()))
   {
   }
 
@@ -46256,10 +46284,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  PropertiesRef GetProperties() const
-  {
-    return PropertiesRef{TTF_GetTextProperties(T::get())};
-  }
+  PropertiesRef GetProperties() const { return TTF_GetTextProperties(get()); }
 
   /**
    * Set the text engine used by a text object.
@@ -46277,9 +46302,9 @@ struct TextBase : T
    *
    * @sa TextBase.GetEngine
    */
-  bool SetEngine(TextEngineRef engine)
+  bool SetEngine(TextEngineBase& engine)
   {
-    return TTF_SetTextEngine(T::get(), engine.get());
+    return TTF_SetTextEngine(get(), engine.get());
   }
 
   /**
@@ -46295,10 +46320,7 @@ struct TextBase : T
    *
    * @sa TextBase.SetEngine
    */
-  TextEngineRef GetEngine() const
-  {
-    return TextEngineWrapper{TTF_GetTextEngine(T::get()), nullptr};
-  }
+  TextEngineRef GetEngine() const { return TTF_GetTextEngine(get()); }
 
   /**
    * Set the font used by a text object.
@@ -46320,7 +46342,7 @@ struct TextBase : T
    *
    * @sa TextBase.GetFont
    */
-  bool SetFont(FontRef font) { return TTF_SetTextFont(T::get(), font.get()); }
+  bool SetFont(FontBase& font) { return TTF_SetTextFont(get(), font.get()); }
 
   /**
    * Get the font used by a text object.
@@ -46335,7 +46357,7 @@ struct TextBase : T
    *
    * @sa TextBase.SetFont
    */
-  FontRef GetFont() const { return TTF_GetTextFont(T::get()); }
+  FontRef GetFont() const { return TTF_GetTextFont(get()); }
 
   /**
    * Set the direction to be used for text shaping a text object.
@@ -46354,7 +46376,7 @@ struct TextBase : T
    */
   bool SetDirection(Direction direction)
   {
-    return TTF_SetTextDirection(T::get(), direction);
+    return TTF_SetTextDirection(get(), direction);
   }
 
   /**
@@ -46369,7 +46391,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  Direction GetDirection() const { return TTF_GetTextDirection(T::get()); }
+  Direction GetDirection() const { return TTF_GetTextDirection(get()); }
 
   /**
    * Set the script to be used for text shaping a text object.
@@ -46388,7 +46410,7 @@ struct TextBase : T
    *
    * @sa StringToTag
    */
-  bool SetScript(Uint32 script) { return TTF_SetTextScript(T::get(), script); }
+  bool SetScript(Uint32 script) { return TTF_SetTextScript(get(), script); }
 
   /**
    * Get the script used for text shaping a text object.
@@ -46407,7 +46429,7 @@ struct TextBase : T
    *
    * @sa TagToString
    */
-  Uint32 GetScript() const { return TTF_GetTextScript(T::get()); }
+  Uint32 GetScript() const { return TTF_GetTextScript(get()); }
 
   /**
    * Set the color of a text object.
@@ -46426,10 +46448,7 @@ struct TextBase : T
    * @sa TextBase.GetColor(Color*)
    * @sa TextBase.SetColor(FColor)
    */
-  bool SetColor(Color c)
-  {
-    return TTF_SetTextColor(T::get(), c.r, c.g, c.b, c.a);
-  }
+  bool SetColor(Color c) { return TTF_SetTextColor(get(), c.r, c.g, c.b, c.a); }
 
   /**
    * Set the color of a text object.
@@ -46450,7 +46469,7 @@ struct TextBase : T
    */
   bool SetColor(FColor c)
   {
-    return TTF_SetTextColorFloat(T::get(), c.r, c.g, c.b, c.a);
+    return TTF_SetTextColorFloat(get(), c.r, c.g, c.b, c.a);
   }
 
   /**
@@ -46474,7 +46493,7 @@ struct TextBase : T
    * Get the color of a text object.
    *
    * @param c a pointer filled in with red color value in the range of 0-255,
-   * __must__ not be nullptr.
+   *          __must__ not be nullptr.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -46495,7 +46514,7 @@ struct TextBase : T
    * Get the color of a text object.
    *
    * @param c a pointer filled in with red color value in the range of 0-1,
-   * __must__ not be nullptr.
+   *          __must__ not be nullptr.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -46535,7 +46554,7 @@ struct TextBase : T
    */
   bool GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
   {
-    return TTF_GetTextColor(T::get(), r, g, b, a);
+    return TTF_GetTextColor(get(), r, g, b, a);
   }
 
   /**
@@ -46561,7 +46580,7 @@ struct TextBase : T
    */
   bool GetColor(float* r, float* g, float* b, float* a) const
   {
-    return TTF_GetTextColorFloat(T::get(), r, g, b, a);
+    return TTF_GetTextColorFloat(get(), r, g, b, a);
   }
 
   /**
@@ -46581,7 +46600,7 @@ struct TextBase : T
    *
    * @sa TextBase.GetPosition
    */
-  bool SetPosition(Point p) { return TTF_SetTextPosition(T::get(), p.x, p.y); }
+  bool SetPosition(Point p) { return TTF_SetTextPosition(get(), p.x, p.y); }
 
   /**
    * Get the position of a text object.
@@ -46622,7 +46641,7 @@ struct TextBase : T
    */
   bool GetPosition(int* x, int* y) const
   {
-    return TTF_GetTextPosition(T::get(), x, y);
+    return TTF_GetTextPosition(get(), x, y);
   }
 
   /**
@@ -46644,7 +46663,7 @@ struct TextBase : T
    */
   bool SetWrapWidth(int wrap_width)
   {
-    return TTF_SetTextWrapWidth(T::get(), wrap_width);
+    return TTF_SetTextWrapWidth(get(), wrap_width);
   }
 
   /**
@@ -46663,7 +46682,7 @@ struct TextBase : T
    */
   std::optional<int> GetWrapWidth() const
   {
-    if (int w; TTF_GetTextWrapWidth(T::get(), &w)) return w;
+    if (int w; TTF_GetTextWrapWidth(get(), &w)) return w;
     return std::nullopt;
   }
 
@@ -46691,7 +46710,7 @@ struct TextBase : T
    */
   bool SetWrapWhitespaceVisible(bool visible)
   {
-    return TTF_SetTextWrapWhitespaceVisible(T::get(), visible);
+    return TTF_SetTextWrapWhitespaceVisible(get(), visible);
   }
 
   /**
@@ -46709,7 +46728,7 @@ struct TextBase : T
    */
   bool IsWrapWhitespaceVisible() const
   {
-    return TTF_TextWrapWhitespaceVisible(T::get());
+    return TTF_TextWrapWhitespaceVisible(get());
   }
 
   /**
@@ -46732,7 +46751,7 @@ struct TextBase : T
    */
   bool SetString(std::string_view string)
   {
-    return TTF_SetTextString(T::get(), string.data(), string.size());
+    return TTF_SetTextString(get(), string.data(), string.size());
   }
 
   /**
@@ -46759,7 +46778,7 @@ struct TextBase : T
    */
   bool InsertString(int offset, std::string_view string)
   {
-    return TTF_InsertTextString(T::get(), offset, string.data(), string.size());
+    return TTF_InsertTextString(get(), offset, string.data(), string.size());
   }
 
   /**
@@ -46782,7 +46801,7 @@ struct TextBase : T
    */
   bool AppendString(std::string_view string)
   {
-    return TTF_AppendTextString(T::get(), string.data(), string.size());
+    return TTF_AppendTextString(get(), string.data(), string.size());
   }
 
   /**
@@ -46810,7 +46829,7 @@ struct TextBase : T
    */
   bool DeleteString(int offset, int length = -1)
   {
-    return TTF_DeleteTextString(T::get(), offset, length);
+    return TTF_DeleteTextString(get(), offset, length);
   }
 
   /**
@@ -46853,9 +46872,9 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @see GetSize() if you need both coordinates
+   * @see GetSize() if you need both coordinates.
    */
-  bool GetSize(int* w, int* h) const { return TTF_GetTextSize(T::get(), w, h); }
+  bool GetSize(int* w, int* h) const { return TTF_GetTextSize(get(), w, h); }
 
   /**
    * Get the substring of a text object that surrounds a text offset.
@@ -46879,7 +46898,7 @@ struct TextBase : T
    */
   bool GetSubString(int offset, SubString* substring) const
   {
-    return TTF_GetTextSubString(T::get(), offset, substring);
+    return TTF_GetTextSubString(get(), offset, substring);
   }
 
   /**
@@ -46930,7 +46949,7 @@ struct TextBase : T
    */
   bool GetSubStringForLine(int line, SubString* substring) const
   {
-    return TTF_GetTextSubStringForLine(T::get(), line, substring);
+    return TTF_GetTextSubStringForLine(get(), line, substring);
   }
 
   /**
@@ -46966,8 +46985,8 @@ struct TextBase : T
   OwnArray<SubString*> GetSubStringsForRange(int offset, int length = -1) const
   {
     int count = 0;
-    auto data = TTF_GetTextSubStringsForRange(T::get(), offset, length, &count);
-    return OwnArray<SubString*>{data, count};
+    auto data = TTF_GetTextSubStringsForRange(get(), offset, length, &count);
+    return OwnArray<SubString*>{data, size_t(count)};
   }
 
   /**
@@ -47006,7 +47025,7 @@ struct TextBase : T
    */
   bool GetSubStringForPoint(Point p, SubString* substring) const
   {
-    return TTF_GetTextSubStringForPoint(T::get(), p.x, p.y, substring);
+    return TTF_GetTextSubStringForPoint(get(), p.x, p.y, substring);
   }
 
   /**
@@ -47028,7 +47047,7 @@ struct TextBase : T
   bool GetPreviousSubString(const SubString& substring,
                             SubString* previous) const
   {
-    return TTF_GetPreviousTextSubString(T::get(), &substring, previous);
+    return TTF_GetPreviousTextSubString(get(), &substring, previous);
   }
 
   /**
@@ -47049,7 +47068,7 @@ struct TextBase : T
    */
   bool GetNextSubString(const SubString& substring, SubString* next) const
   {
-    return TTF_GetNextTextSubString(T::get(), &substring, next);
+    return TTF_GetNextTextSubString(get(), &substring, next);
   }
 
   /**
@@ -47067,18 +47086,61 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool Update() { return TTF_UpdateText(T::get()); }
+  bool Update() { return TTF_UpdateText(get()); }
 
   /**
    * A copy of the UTF-8 string that this text object represents, useful for
    * layout, debugging and retrieving substring text
    */
-  const char* GetText() const { return T::get()->text; }
+  const char* GetText() const { return get()->text; }
 
   /**
    * The number of lines in the text, 0 if it's empty
    */
-  int GetNumLines() const { return T::get()->num_lines; }
+  int GetNumLines() const { return get()->num_lines; }
+};
+
+/**
+ * Handle to a non owned text
+ *
+ * @cat resource
+ *
+ * @sa TextBase
+ * @sa Text
+ */
+struct TextRef : TextBase
+{
+  using TextBase::TextBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr TextRef(const TextRef& other)
+    : TextBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr TextRef(TextRef&& other)
+    : TextBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~TextRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  TextRef& operator=(TextRef other)
+  {
+    release(other.release());
+    return *this;
+  }
 
   /**
    * Destroy a text object created by a text engine.
@@ -47090,29 +47152,58 @@ struct TextBase : T
    *
    * @sa TextBase.TextBase
    */
-  void Destroy() { T::free(); }
+  void reset(TTF_Text* newResource = {})
+  {
+    TTF_DestroyText(release(newResource));
+  }
 };
 
 /**
- * Callback for text resource cleanup
+ * Handle to an owned text
  *
- * @private
+ * @cat resource
+ *
+ * @sa TextBase
+ * @sa TextRef
  */
-template<>
-inline void ObjectRef<TTF_Text>::doFree(TTF_Text* resource)
+struct Text : TextRef
 {
-  TTF_DestroyText(resource);
-}
+  using TextRef::TextRef;
 
-/**
- * SubString iterator.
- *
- * @todo document the iterator invalidation characteristics.
- *
- */
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit Text(TTF_Text* resource = {})
+    : TextRef(resource)
+  {
+  }
+
+  constexpr Text(const Text& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr Text(Text&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~Text() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  Text& operator=(Text other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
+
 class SubStringIterator
 {
   TextRef m_text;
+
   SubString m_subString;
 
   constexpr SubStringIterator(TextRef text)
@@ -47164,7 +47255,6 @@ public:
     return curr;
   }
 
-  template<ObjectBox<TTF_Text*> T>
   friend class TextBase;
 };
 
@@ -47183,8 +47273,8 @@ public:
  */
 inline TextEngine CreateSurfaceTextEngine()
 {
-  return TextEngine{TextEngineWrapper{TTF_CreateSurfaceTextEngine(),
-                                      TTF_DestroySurfaceTextEngine}};
+  return TextEngine{TTF_CreateSurfaceTextEngine(),
+                    TTF_DestroySurfaceTextEngine};
 }
 
 /**
@@ -47205,9 +47295,8 @@ inline TextEngine CreateSurfaceTextEngine()
  */
 inline TextEngine CreateRendererTextEngine(RendererBase& renderer)
 {
-  return TextEngine{
-    TextEngineWrapper{TTF_CreateRendererTextEngine(renderer.get()),
-                      TTF_DestroyRendererTextEngine}};
+  return TextEngine{TTF_CreateRendererTextEngine(renderer.get()),
+                    TTF_DestroyRendererTextEngine};
 }
 
 /**
@@ -47236,9 +47325,8 @@ inline TextEngine CreateRendererTextEngine(RendererBase& renderer)
  */
 inline TextEngine CreateRendererTextEngineWithProperties(PropertiesBase& props)
 {
-  return TextEngine{
-    TextEngineWrapper{TTF_CreateRendererTextEngineWithProperties(props.get()),
-                      TTF_DestroyRendererTextEngine}};
+  return TextEngine{TTF_CreateRendererTextEngineWithProperties(props.get()),
+                    TTF_DestroyRendererTextEngine};
 }
 
 namespace prop::RendererTextEngine {
@@ -47269,8 +47357,7 @@ constexpr auto ATLAS_TEXTURE_SIZE =
  */
 inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
 {
-  return TextEngine{TextEngineWrapper{TTF_CreateGPUTextEngine(device),
-                                      TTF_DestroyGPUTextEngine}};
+  return TextEngine{TTF_CreateGPUTextEngine(device), TTF_DestroyGPUTextEngine};
 }
 
 /**
@@ -47299,9 +47386,8 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  */
 inline TextEngine CreateGPUTextEngineWithProperties(PropertiesBase& props)
 {
-  return TextEngine{
-    TextEngineWrapper{TTF_CreateGPUTextEngineWithProperties(props.get()),
-                      TTF_DestroyGPUTextEngine}};
+  return TextEngine{TTF_CreateGPUTextEngineWithProperties(props.get()),
+                    TTF_DestroyGPUTextEngine};
 }
 
 namespace prop::GpuTextEngine {
@@ -47325,8 +47411,7 @@ constexpr auto ATLAS_TEXTURE_SIZE = TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
  * Please note that this does not automatically close any fonts that are still
  * open at the time of deinitialization, and it is possibly not safe to close
  * them afterwards, as parts of the library will no longer be initialized to
- * deal with it. A well-written program should call FontBase.Close() on any
- * open fonts before calling this function!
+ * deal with it.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -47349,7 +47434,7 @@ inline void QuitSubSystem(TtfInitFlag _) { TTF_Quit(); }
  *
  * @returns the current number of initialization calls, that need to
  *          eventually be paired with this many calls to
- * QuitSubSystem(TtfInitFlag).
+ *          QuitSubSystem(TtfInitFlag).
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -47364,35 +47449,31 @@ inline int WasInit(TtfInitFlag _) { return TTF_WasInit(); }
 
 #pragma region impl
 
-template<ObjectBox<TTF_Text*> T>
-SubStringIterator TextBase<T>::begin() const
+inline SubStringIterator TextBase::begin() const
 {
-  if (SubStringIterator it{*this}; GetSubString(0, &it.m_subString)) return it;
+  if (SubStringIterator it{get()}; GetSubString(0, &it.m_subString)) return it;
   return {};
 }
 
-template<ObjectBox<TTF_Text*> T>
-SubStringIterator TextBase<T>::end() const
+inline SubStringIterator TextBase::end() const
 {
-  if (SubStringIterator it{*this}; GetSubString(INT_MAX, &it.m_subString)) {
+  if (SubStringIterator it{get()}; GetSubString(INT_MAX, &it.m_subString)) {
     return it;
   }
   return {};
 }
 
-template<ObjectBox<TTF_Text*> T>
-SubStringIterator TextBase<T>::GetSubStringForLine(int line) const
+inline SubStringIterator TextBase::GetSubStringForLine(int line) const
 {
-  if (SubStringIterator it{*this}; GetSubStringForLine(line, &it.m_subString)) {
+  if (SubStringIterator it{get()}; GetSubStringForLine(line, &it.m_subString)) {
     return it;
   }
   return {};
 }
 
-template<ObjectBox<TTF_Text*> T>
-SubStringIterator TextBase<T>::GetSubStringForPoint(Point p) const
+inline SubStringIterator TextBase::GetSubStringForPoint(Point p) const
 {
-  if (SubStringIterator it{*this}; GetSubStringForPoint(p, &it.m_subString)) {
+  if (SubStringIterator it{get()}; GetSubStringForPoint(p, &it.m_subString)) {
     return it;
   }
   return {};

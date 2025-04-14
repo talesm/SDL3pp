@@ -7104,7 +7104,7 @@ const transform = {
         "TTF_DestroyRendererTextEngine",
         "TTF_DestroyGPUTextEngine"
       ],
-      resources: {
+      resourcesX: {
         "TTF_Font": {
           entries: {
             "TTF_OpenFont": "ctor",
@@ -7157,7 +7157,9 @@ const transform = {
             "TTF_GetFontDirection": "immutable",
             "TTF_SetFontScript": "function",
             "TTF_GetFontScript": "immutable",
-            "TTF_GetGlyphScript": "immutable",
+            "TTF_GetGlyphScript": {
+              static: true,
+            },
             "TTF_SetFontLanguage": "function",
             "TTF_FontHasGlyph": "immutable",
             "TTF_GetGlyphImage": "immutable",
@@ -7417,26 +7419,40 @@ const transform = {
               "immutable": true,
               "type": "Surface"
             },
-            "TTF_CloseFont": "function"
           }
         },
         "TTF_TextEngine": {
-          pointerType: "TextEngineWrapper",
           free: "",
-          paramType: "ref",
           returnType: "unique",
           entries: {
+            "void": {
+              kind: "function",
+              type: "",
+              parameters: [
+                "*m_destroy"
+              ],
+            },
+            "TextEngineBase": {
+              type: "",
+              kind: "function",
+              constexpr: true,
+              parameters: [
+                {
+                  type: "TTF_TextEngine *",
+                  name: "engine"
+                },
+                {
+                  name: "engine)",
+                  type: "void (*destroy)(TTF_TextEngine *"
+                },
+              ]
+            },
             "TTF_SetGPUTextEngineWinding": {
               "name": "SetGPUWinding"
             },
             "TTF_GetGPUTextEngineWinding": {
               "immutable": true,
               "name": "GetGPUWinding"
-            },
-            "Destroy": {
-              "kind": "function",
-              "type": "void",
-              "parameters": []
             }
           }
         },
@@ -7470,7 +7486,7 @@ const transform = {
               "type": "",
               "parameters": [
                 {
-                  "type": "TextEngineRef",
+                  "type": "TextEngineBase &",
                   "name": "engine"
                 },
                 {
@@ -7484,10 +7500,18 @@ const transform = {
               ]
             },
             "TTF_GetTextProperties": "immutable",
-            "TTF_SetTextEngine": "function",
+            "TTF_SetTextEngine": {
+              parameters: [
+                {},
+                {
+                  name: "engine",
+                  type: "TextEngineBase &"
+                }
+              ],
+            },
             "TTF_GetTextEngine": {
-              "type": "TextEngineRef",
-              "immutable": true
+              type: "TextEngineRef",
+              immutable: true
             },
             "TTF_SetTextFont": "function",
             "TTF_GetTextFont": "immutable",
@@ -7691,8 +7715,7 @@ const transform = {
               "immutable": true,
               "doc": "The number of lines in the text, 0 if it's empty",
               "parameters": []
-            },
-            "TTF_DestroyText": "function"
+            }
           }
         }
       },
@@ -7741,31 +7764,9 @@ const transform = {
             "kind": "struct",
             "name": "TtfInitFlag",
             "type": "InitFlagsExtra"
-          },
-          {
-            "name": "TextEngineWrapper",
-            "kind": "struct",
-            "entries": {
-              "m_ptr": {
-                "kind": "var",
-                "type": "TTF_TextEngine *"
-              }
-            }
           }
         ],
         "TTF_TextEngine": [
-          {
-            "name": "ObjectRef<TTF_TextEngine, TextEngineWrapper>::doFree",
-            "kind": "function",
-            "type": "void",
-            "template": [],
-            "parameters": [
-              {
-                "type": "TextEngineWrapper",
-                "name": "resource"
-              }
-            ]
-          },
           {
             "name": "GPUAtlasDrawSequence",
           },
