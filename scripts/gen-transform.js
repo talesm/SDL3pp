@@ -310,7 +310,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "OptionalWindow"
             },
             {
               "name": "filters",
@@ -337,7 +337,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "OptionalWindow"
             },
             {
               "name": "filters",
@@ -360,7 +360,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "OptionalWindow"
             },
             {
               "name": "default_location",
@@ -410,7 +410,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "OptionalWindow"
             },
             {
               "name": "filters",
@@ -438,7 +438,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowRef"
+              "type": "OptionalWindow"
             },
             {
               "name": "filters",
@@ -447,6 +447,30 @@ const transform = {
             {
               "name": "default_location",
               "type": "StringParam"
+            }
+          ]
+        },
+        "SDL_ShowOpenFolderDialog": {
+          parameters: [
+            {
+              "name": "callback",
+              "type": "DialogFileCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            },
+            {
+              "name": "window",
+              "type": "OptionalWindow"
+            },
+            {
+              "name": "default_location",
+              "type": "StringParam"
+            },
+            {
+              "name": "allow_many",
+              "type": "bool"
             }
           ]
         }
@@ -1444,6 +1468,10 @@ const transform = {
         "SDL_GetTextInputArea": {
           "name": "WindowBase::GetTextInputArea",
           "type": "bool"
+        },
+        "SDL_ScreenKeyboardShown": {
+          name: "WindowBase::IsScreenKeyboardShown",
+          immutable: true,
         }
       }
     },
@@ -2325,51 +2353,54 @@ const transform = {
           entries: {
             "MessageBox": [
               {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [
                   {
-                    "type": "const SDL_MessageBoxData &",
-                    "name": "messageBox",
-                    "default": "{}"
+                    type: "const SDL_MessageBoxData &",
+                    name: "messageBox",
+                    default: "{}"
                   }
                 ]
               },
               {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [
                   {
-                    "type": "MessageBoxFlags",
-                    "name": "flags"
+                    type: "MessageBoxFlags",
+                    name: "flags"
                   },
                   {
-                    "type": "WindowRef",
-                    "name": "window"
+                    type: "OptionalWindow",
+                    name: "window"
                   },
                   {
-                    "type": "const char *",
-                    "name": "title"
+                    type: "const char *",
+                    name: "title"
                   },
                   {
-                    "type": "const char *",
-                    "name": "message"
+                    type: "const char *",
+                    name: "message"
                   },
                   {
-                    "type": "std::span<const MessageBoxButtonData>",
-                    "name": "buttons"
+                    type: "std::span<const MessageBoxButtonData>",
+                    name: "buttons"
                   },
                   {
-                    "type": "OptionalRef<const MessageBoxColorScheme>",
-                    "name": "colorScheme"
+                    type: "OptionalRef<const MessageBoxColorScheme>",
+                    name: "colorScheme"
                   }
                 ]
               }
             ],
             "SDL_ShowMessageBox": "function"
           }
+        },
+        "SDL_ShowSimpleMessageBox": {
+          parameters: [{}, {}, {}, { type: "OptionalWindow" }]
         }
       }
     },
@@ -3327,7 +3358,6 @@ const transform = {
       ignoreEntries: [
         "SDL_LockTextureToSurface",
         "SDL_RenderDebugTextFormat",
-        "SDL_GetRenderer",
         "SDL_GetTextureSize"
       ],
       includeAfter: {
@@ -4309,7 +4339,11 @@ const transform = {
               default: "0"
             }
           ]
-        }
+        },
+        "SDL_GetRenderer": {
+          name: "WindowBase::GetRenderer",
+          immutable: true,
+        },
       }
     },
     "SDL_scancode.h": {
@@ -6075,22 +6109,14 @@ const transform = {
           {
             "name": "WindowBase",
             "kind": "forward",
-            "template": [
-              {
-                "name": "T",
-                "type": "ObjectBox<SDL_Window *>"
-              }
-            ]
           },
           {
             "name": "WindowRef",
-            "kind": "alias",
-            "type": "WindowBase<ObjectRef<SDL_Window>>"
+            "kind": "forward",
           },
           {
             "name": "Window",
-            "kind": "alias",
-            "type": "WindowBase<ObjectUnique<SDL_Window>>"
+            "kind": "forward",
           },
           {
             "name": "RendererBase",
@@ -6260,52 +6286,53 @@ const transform = {
           }
         ]
       },
-      resources: {
+      resourcesX: {
         "SDL_Window": {
-          "free": "SDL_DestroyWindow",
-          "entries": {
+          free: "SDL_DestroyWindow",
+          aliasOptional: true,
+          entries: {
             "SDL_CreateWindow": {
-              "kind": "function",
-              "name": "WindowBase",
-              "type": "",
-              "static": false,
-              "parameters": [
+              kind: "function",
+              name: "WindowBase",
+              type: "",
+              static: false,
+              parameters: [
                 {
-                  "name": "title",
-                  "type": "StringParam"
+                  name: "title",
+                  type: "StringParam"
                 },
                 {
-                  "name": "size",
-                  "type": "SDL_Point"
+                  name: "size",
+                  type: "SDL_Point"
                 },
                 {
-                  "name": "flags",
-                  "type": "WindowFlags",
-                  "default": "0"
+                  name: "flags",
+                  type: "WindowFlags",
+                  default: "0"
                 }
               ]
             },
             "SDL_CreatePopupWindow": {
-              "kind": "function",
-              "name": "WindowBase",
-              "type": "",
-              "parameters": [
+              kind: "function",
+              name: "WindowBase",
+              type: "",
+              parameters: [
                 {
-                  "name": "parent",
-                  "type": "WindowRef"
+                  name: "parent",
+                  type: "WindowBase &"
                 },
                 {
-                  "name": "offset",
-                  "type": "SDL_Point"
+                  name: "offset",
+                  type: "SDL_Point"
                 },
                 {
-                  "name": "size",
-                  "type": "SDL_Point"
+                  name: "size",
+                  type: "SDL_Point"
                 },
                 {
-                  "name": "flags",
-                  "type": "WindowFlags",
-                  "default": "0"
+                  name: "flags",
+                  type: "WindowFlags",
+                  default: "0"
                 }
               ]
             },
@@ -6435,13 +6462,6 @@ const transform = {
             "SDL_RestoreWindow": "function",
             "SDL_SetWindowFullscreen": "function",
             "SDL_SyncWindow": "function",
-            "GetRenderer": {
-              kind: "function",
-              type: "RendererRef",
-              immutable: true,
-              parameters: [],
-              proto: true,
-            },
             "SDL_WindowHasSurface": "immutable",
             "SDL_GetWindowSurface": "function",
             "SDL_SetWindowSurfaceVSync": "function",
@@ -6470,10 +6490,18 @@ const transform = {
             "SDL_GetWindowKeyboardGrab": "immutable",
             "SDL_GetWindowMouseGrab": "immutable",
             "SDL_SetWindowMouseRect": "function",
-            "SDL_GetWindowMouseRect": "immutable",
+            "SDL_GetWindowMouseRect": {
+              immutable: true,
+              type: "const SDL_Rect *"
+            },
             "SDL_SetWindowOpacity": "function",
             "SDL_GetWindowOpacity": "immutable",
-            "SDL_SetWindowParent": "function",
+            "SDL_SetWindowParent": {
+              parameters: [
+                {},
+                { type: "OptionalWindow" }
+              ]
+            },
             "SDL_SetWindowModal": "function",
             "SDL_SetWindowFocusable": "function",
             "SDL_ShowWindowSystemMenu": {
@@ -6497,26 +6525,23 @@ const transform = {
             },
             "SDL_SetWindowHitTest": "function",
             "SDL_SetWindowShape": "function",
-            "SDL_FlashWindow": "function",
-            "SDL_DestroyWindow": "function"
+            "SDL_FlashWindow": "function"
           }
         },
         "SDL_GLContext": {
-          "type": "SDL_GLContextState",
-          "entries": {
+          type: "SDL_GLContextState",
+          free: "SDL_GL_DestroyContext",
+          entries: {
             "SDL_GL_CreateContext": "ctor",
             "SDL_GL_MakeCurrent": {
               "name": "MakeCurrent",
               "static": false,
               "parameters": [
                 {
-                  "type": "WindowRef",
+                  "type": "WindowBase &",
                   "name": "window"
                 }
               ]
-            },
-            "SDL_GL_DestroyContext": {
-              "name": "Destroy"
             }
           }
         }
@@ -6759,7 +6784,20 @@ const transform = {
           "kind": "var",
           "constexpr": true,
           "type": "WindowFlags"
-        }
+        },
+        "SDL_GetWindowFromID": {
+          name: "WindowRef::FromID",
+        },
+        "SDL_GetGrabbedWindow": {
+          name: "WindowRef::GetGrabbed",
+          static: true,
+        },
+        "SDL_GL_GetCurrentWindow": {
+          type: "WindowRef"
+        },
+        "SDL_GL_GetCurrentContext": {
+          type: "GLContextRef"
+        },
       }
     },
 

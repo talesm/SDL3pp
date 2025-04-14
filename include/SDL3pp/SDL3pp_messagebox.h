@@ -177,7 +177,7 @@ struct MessageBox : SDL_MessageBoxData
    * @param colorScheme the value for colorScheme.
    */
   constexpr MessageBox(MessageBoxFlags flags,
-                       WindowRef window,
+                       OptionalWindow window,
                        const char* title,
                        const char* message,
                        std::span<const MessageBoxButtonData> buttons,
@@ -399,7 +399,7 @@ struct MessageBox : SDL_MessageBoxData
 inline bool ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,
                                  StringParam message,
-                                 WindowRef window)
+                                 OptionalWindow window)
 {
   return SDL_ShowSimpleMessageBox(flags, title, message, window.get());
 }

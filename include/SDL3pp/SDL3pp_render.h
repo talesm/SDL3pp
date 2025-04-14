@@ -214,7 +214,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa GetRenderDriver
    * @sa RendererBase.GetName
    */
-  RendererBase(WindowRef window, StringParam name)
+  RendererBase(WindowBase& window, StringParam name)
     : Resource(SDL_CreateRenderer(window.get(), name))
   {
   }
@@ -3259,6 +3259,21 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
 
 } // namespace prop::Renderer
 
+/**
+ * Get the renderer associated with a window.
+ *
+ * @returns the rendering context on success or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline RendererRef WindowBase::GetRenderer() const
+{
+  return SDL_GetRenderer(get());
+}
+
 namespace prop::Texture {
 
 constexpr auto CREATE_COLORSPACE_NUMBER =
@@ -3609,12 +3624,6 @@ inline bool AddVulkanRenderSemaphores(RendererBase& renderer,
 #pragma region impl
 
 inline bool RendererBase::ResetTarget() { return SetTarget(nullptr); }
-
-template<ObjectBox<SDL_Window*> T>
-inline RendererRef WindowBase<T>::GetRenderer() const
-{
-  return {SDL_GetRenderer(T::get())};
-}
 
 inline TextureLock TextureBase::Lock(OptionalRef<const SDL_Rect> rect) &
 {

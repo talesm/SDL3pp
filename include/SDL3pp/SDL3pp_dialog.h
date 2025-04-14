@@ -177,7 +177,7 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  */
 inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window = {},
+                               OptionalWindow window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -239,7 +239,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               WindowRef window = {},
+                               OptionalWindow window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -247,7 +247,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFileDialog(&Wrapper::CallOnce,
                      Wrapper::Wrap(std::move(callback)),
-                     window,
+                     std::move(window),
                      filters,
                      std::move(default_location),
                      allow_many);
@@ -302,7 +302,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window = {},
+                               OptionalWindow window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
@@ -360,14 +360,14 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               WindowRef window = {},
+                               OptionalWindow window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowSaveFileDialog(&Wrapper::CallOnce,
                      Wrapper::Wrap(std::move(callback)),
-                     window,
+                     std::move(window),
                      filters,
                      std::move(default_location));
 }
@@ -418,7 +418,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 WindowRef window = {},
+                                 OptionalWindow window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
@@ -469,14 +469,14 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 WindowRef window = {},
+                                 OptionalWindow window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFolderDialog(&Wrapper::CallOnce,
                        Wrapper::Wrap(std::move(callback)),
-                       window,
+                       std::move(window),
                        std::move(default_location),
                        allow_many);
 }
