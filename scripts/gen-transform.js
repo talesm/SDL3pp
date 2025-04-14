@@ -1872,51 +1872,44 @@ const transform = {
     "SDL_pixels.h": {
       includeAfter: {
         "__begin": {
-          "name": "Color",
-          "kind": "forward"
+          name: "Color",
+          kind: "forward"
         },
         "SDL_PackedLayout": {
-          "name": "PixelFormatDetails",
+          name: "PixelFormatDetails",
         },
         "SDL_SetPaletteColors": {
-          "kind": "function",
-          "name": "PaletteBase.SetColors",
-          "type": "bool",
-          "static": false,
-          "parameters": [
+          kind: "function",
+          name: "PaletteBase.SetColors",
+          type: "bool",
+          static: false,
+          parameters: [
             {
-              "type": "SpanRef<const SDL_Color>",
-              "name": "colors"
+              type: "SpanRef<const SDL_Color>",
+              name: "colors"
             },
             {
-              "type": "int",
-              "name": "firstcolor",
-              "default": "0"
+              type: "int",
+              name: "firstcolor",
+              default: "0"
             }
           ]
         }
       },
       enumerations: {
         "SDL_PixelFormat": {
-          "kind": "struct",
-          "type": "",
-          "entries": {
-            "format": {
-              "kind": "var",
-              "type": "SDL_PixelFormat"
-            },
-            "PixelFormat": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "SDL_PixelFormat",
-                  "name": "format",
-                  "default": "SDL_PIXELFORMAT_UNKNOWN"
-                }
-              ]
-            },
+          prefix: "SDL_PIXELFORMAT_",
+        },
+        "SDL_Colorspace": {
+          prefix: "SDL_COLORSPACE_",
+        }
+      },
+      wrappers: {
+        "SDL_PixelFormat": {
+          kind: "struct",
+          type: "",
+          attribute: "format",
+          entries: {
             "SDL_DEFINE_PIXELFORMAT": {
               "kind": "function",
               "name": "PixelFormat",
@@ -1944,20 +1937,6 @@ const transform = {
                   "name": "bytes"
                 }
               ]
-            },
-            "operator bool": {
-              "kind": "function",
-              "parameters": [],
-              "type": "",
-              "immutable": true,
-              "constexpr": true
-            },
-            "operator SDL_PixelFormat": {
-              "kind": "function",
-              "parameters": [],
-              "type": "",
-              "immutable": true,
-              "constexpr": true
             },
             "SDL_PIXELTYPE": {
               "kind": "function",
@@ -2067,10 +2046,11 @@ const transform = {
             },
             "SDL_GetPixelFormatDetails": "immutable",
             "Map": {
-              "kind": "function",
-              "type": "Uint32",
-              "immutable": true,
-              "parameters": [
+              kind: "function",
+              type: "Uint32",
+              immutable: true,
+              proto: true,
+              parameters: [
                 {
                   "type": "Color",
                   "name": "color"
@@ -2082,10 +2062,11 @@ const transform = {
               ]
             },
             "Get": {
-              "kind": "function",
-              "type": "Color",
-              "immutable": true,
-              "parameters": [
+              kind: "function",
+              type: "Color",
+              immutable: true,
+              proto: true,
+              parameters: [
                 {
                   "type": "Uint32",
                   "name": "pixel"
@@ -2102,22 +2083,6 @@ const transform = {
           "kind": "struct",
           "type": "",
           "entries": {
-            "colorspace": {
-              "kind": "var",
-              "type": "SDL_Colorspace"
-            },
-            "Colorspace": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "SDL_Colorspace",
-                  "name": "colorspace",
-                  "default": "SDL_COLORSPACE_UNKNOWN"
-                }
-              ]
-            },
             "SDL_DEFINE_COLORSPACE": {
               "kind": "function",
               "name": "Colorspace",
@@ -2149,20 +2114,6 @@ const transform = {
                   "name": "chroma"
                 }
               ]
-            },
-            "operator bool": {
-              "kind": "function",
-              "parameters": [],
-              "type": "",
-              "immutable": true,
-              "constexpr": true
-            },
-            "operator SDL_Colorspace": {
-              "kind": "function",
-              "parameters": [],
-              "type": "",
-              "immutable": true,
-              "constexpr": true
             },
             "SDL_COLORSPACETYPE": {
               "kind": "function",
@@ -2253,9 +2204,7 @@ const transform = {
               "constexpr": true
             }
           }
-        }
-      },
-      wrappers: {
+        },
         "SDL_Color": {
           "ordered": true,
           "invalidState": false

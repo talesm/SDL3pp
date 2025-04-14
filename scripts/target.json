@@ -5062,7 +5062,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator SDL_DisplayID": {
               "kind": "function",
@@ -5071,7 +5074,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Unwraps to the underlying Display.\n\n@returns the underlying Display."
+              "doc": "Unwraps to the underlying Display.\n\n@returns the underlying Display.",
+              "hints": {
+                "body": "return m_displayID;"
+              }
             },
             "operator bool": {
               "kind": "function",
@@ -5081,7 +5087,10 @@
               "explicit": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return m_displayID != 0;"
+              }
             },
             "GetAll": {
               "doc": "Get a list of currently connected displays.\n\n@param count a pointer filled in with the number of displays returned, may\n             be nullptr.\n@returns a 0 terminated array of display instance IDs or nullptr on failure;\n         call GetError() for more information. This should be freed\n         with free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -12033,26 +12042,31 @@
           "sourceName": "SDL_PixelFormat",
           "type": "",
           "entries": {
-            "format": {
+            "m_format": {
               "kind": "var",
+              "name": "m_format",
               "type": "SDL_PixelFormat",
-              "name": "format",
               "doc": ""
             },
             "PixelFormat": [
               {
                 "kind": "function",
+                "name": "PixelFormat",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
                   {
                     "type": "SDL_PixelFormat",
                     "name": "format",
-                    "default": "SDL_PIXELFORMAT_UNKNOWN"
+                    "default": "{}"
                   }
                 ],
-                "name": "PixelFormat",
-                "doc": ""
+                "doc": "Wraps PixelFormat.\n\n@param format the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "m_format(format)"
+                  ]
+                }
               },
               {
                 "doc": "A macro for defining custom non-FourCC pixel formats.\n\nFor example, defining PIXELFORMAT_RGBA8888 looks like this:\n\n```c\nSDL_DEFINE_PIXELFORMAT(PIXELTYPE_PACKED32, PACKEDORDER_RGBA, PACKEDLAYOUT_8888, 32, 4)\n```\n\n@param type the type of the new format, probably a PixelType value.\n@param order the order of the new format, probably a BitmapOrder,\n             PackedOrder, or ArrayOrder value.\n@param layout the layout of the new format, probably an PackedLayout\n              value or zero.\n@param bits the number of bits per pixel of the new format.\n@param bytes the number of bytes per pixel of the new format.\n@returns a format value in the style of PixelFormat.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -12086,23 +12100,47 @@
                 "constexpr": true
               }
             ],
-            "operator bool": {
+            "operator==": {
               "kind": "function",
-              "parameters": [],
-              "type": "",
-              "immutable": true,
+              "name": "operator==",
+              "type": "bool",
               "constexpr": true,
-              "name": "operator bool",
-              "doc": ""
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const PixelFormat &",
+                  "name": "other"
+                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator SDL_PixelFormat": {
               "kind": "function",
-              "parameters": [],
-              "type": "",
-              "immutable": true,
-              "constexpr": true,
               "name": "operator SDL_PixelFormat",
-              "doc": ""
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Unwraps to the underlying PixelFormat.\n\n@returns the underlying PixelFormat.",
+              "hints": {
+                "body": "return m_format;"
+              }
+            },
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return m_format != 0;"
+              }
             },
             "GetType": {
               "doc": "A macro to retrieve the type of an PixelFormat.\n\nThis is usually a value from the PixelType enumeration.\n\n@param format an PixelFormat to check.\n@returns the type of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -12318,6 +12356,7 @@
               "kind": "function",
               "type": "Uint32",
               "immutable": true,
+              "proto": true,
               "parameters": [
                 {
                   "type": "Color",
@@ -12335,6 +12374,7 @@
               "kind": "function",
               "type": "Color",
               "immutable": true,
+              "proto": true,
               "parameters": [
                 {
                   "type": "Uint32",
@@ -12348,6 +12388,9 @@
               "name": "Get",
               "doc": ""
             }
+          },
+          "hints": {
+            "self": "m_format"
           }
         },
         "PIXELFORMAT_UNKNOWN": {
@@ -13447,26 +13490,31 @@
           "sourceName": "SDL_Colorspace",
           "type": "",
           "entries": {
-            "colorspace": {
+            "m_colorspace": {
               "kind": "var",
+              "name": "m_colorspace",
               "type": "SDL_Colorspace",
-              "name": "colorspace",
               "doc": ""
             },
             "Colorspace": [
               {
                 "kind": "function",
+                "name": "Colorspace",
                 "type": "",
                 "constexpr": true,
                 "parameters": [
                   {
                     "type": "SDL_Colorspace",
                     "name": "colorspace",
-                    "default": "SDL_COLORSPACE_UNKNOWN"
+                    "default": "{}"
                   }
                 ],
-                "name": "Colorspace",
-                "doc": ""
+                "doc": "Wraps Colorspace.\n\n@param colorspace the value to be wrapped",
+                "hints": {
+                  "init": [
+                    "m_colorspace(colorspace)"
+                  ]
+                }
               },
               {
                 "doc": "A macro for defining custom Colorspace formats.\n\nFor example, defining COLORSPACE_SRGB looks like this:\n\n```c\nSDL_DEFINE_COLORSPACE(COLOR_TYPE_RGB,\n                      COLOR_RANGE_FULL,\n                      COLOR_PRIMARIES_BT709,\n                      TRANSFER_CHARACTERISTICS_SRGB,\n                      MATRIX_COEFFICIENTS_IDENTITY,\n                      CHROMA_LOCATION_NONE)\n```\n\n@param type the type of the new format, probably an ColorType value.\n@param range the range of the new format, probably a ColorRange value.\n@param primaries the primaries of the new format, probably an\n                 ColorPrimaries value.\n@param transfer the transfer characteristics of the new format, probably an\n                TransferCharacteristics value.\n@param matrix the matrix coefficients of the new format, probably an\n              MatrixCoefficients value.\n@param chroma the chroma sample location of the new format, probably an\n              ChromaLocation value.\n@returns a format value in the style of Colorspace.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -13504,23 +13552,47 @@
                 "constexpr": true
               }
             ],
-            "operator bool": {
+            "operator==": {
               "kind": "function",
-              "parameters": [],
-              "type": "",
-              "immutable": true,
+              "name": "operator==",
+              "type": "bool",
               "constexpr": true,
-              "name": "operator bool",
-              "doc": ""
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const Colorspace &",
+                  "name": "other"
+                }
+              ],
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator SDL_Colorspace": {
               "kind": "function",
-              "parameters": [],
-              "type": "",
-              "immutable": true,
-              "constexpr": true,
               "name": "operator SDL_Colorspace",
-              "doc": ""
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Unwraps to the underlying Colorspace.\n\n@returns the underlying Colorspace.",
+              "hints": {
+                "body": "return m_colorspace;"
+              }
+            },
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return m_colorspace != 0;"
+              }
             },
             "GetType": {
               "doc": "A macro to retrieve the type of an Colorspace.\n\n@param cspace an Colorspace to check.\n@returns the ColorType for `cspace`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -13643,6 +13715,9 @@
               "immutable": true,
               "constexpr": true
             }
+          },
+          "hints": {
+            "self": "m_colorspace"
           }
         },
         "COLORSPACE_UNKNOWN": {
@@ -13823,7 +13898,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "GetR": {
               "kind": "function",
@@ -14013,7 +14091,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "GetR": {
               "kind": "function",
@@ -14890,7 +14971,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator bool": {
               "kind": "function",
@@ -14900,7 +14984,10 @@
               "explicit": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return *this != Point{}"
+              }
             },
             "GetX": {
               "kind": "function",
@@ -15041,7 +15128,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator bool": {
               "kind": "function",
@@ -15051,7 +15141,10 @@
               "explicit": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return *this != FPoint{}"
+              }
             },
             "GetX": {
               "kind": "function",
@@ -15216,7 +15309,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator bool": {
               "doc": "@sa Empty()",
@@ -15734,7 +15830,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator bool": {
               "doc": "@sa Empty()",
@@ -20762,7 +20861,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator SDL_Keycode": {
               "kind": "function",
@@ -20771,7 +20873,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Unwraps to the underlying Keycode.\n\n@returns the underlying Keycode."
+              "doc": "Unwraps to the underlying Keycode.\n\n@returns the underlying Keycode.",
+              "hints": {
+                "body": "return m_keycode;"
+              }
             },
             "operator bool": {
               "kind": "function",
@@ -20781,7 +20886,10 @@
               "explicit": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return m_keycode != 0;"
+              }
             },
             "IsExtended": {
               "kind": "function",
@@ -23242,7 +23350,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator SDL_Scancode": {
               "kind": "function",
@@ -23251,7 +23362,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Unwraps to the underlying Scancode.\n\n@returns the underlying Scancode."
+              "doc": "Unwraps to the underlying Scancode.\n\n@returns the underlying Scancode.",
+              "hints": {
+                "body": "return m_scancode;"
+              }
             },
             "operator bool": {
               "kind": "function",
@@ -23261,7 +23375,10 @@
               "explicit": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return m_scancode != 0;"
+              }
             },
             "SetName": {
               "doc": "",
@@ -26973,7 +27090,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "InitState": {
               "kind": "function",
@@ -27757,7 +27877,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator bool": {
               "kind": "function",
@@ -27767,7 +27890,10 @@
               "explicit": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return *this != DateTime{}"
+              }
             },
             "GetYear": {
               "kind": "function",
@@ -31319,7 +31445,10 @@
                   "name": "other"
                 }
               ],
-              "doc": "Default comparison operator"
+              "doc": "Default comparison operator",
+              "hints": {
+                "default": true
+              }
             },
             "operator SDL_TrayMenu *": {
               "kind": "function",
@@ -31328,7 +31457,10 @@
               "constexpr": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Unwraps to the underlying TrayMenu.\n\n@returns the underlying TrayMenu *."
+              "doc": "Unwraps to the underlying TrayMenu.\n\n@returns the underlying TrayMenu *.",
+              "hints": {
+                "body": "return m_trayMenu;"
+              }
             },
             "operator bool": {
               "kind": "function",
@@ -31338,7 +31470,10 @@
               "explicit": true,
               "immutable": true,
               "parameters": [],
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "hints": {
+                "body": "return m_trayMenu != 0;"
+              }
             },
             "GetEntries": {
               "doc": "Returns a list of entries in the menu, in order.\n\n@param count An optional pointer to obtain the number of entries in the\n             menu.\n@returns a nullptr-terminated list of entries within the given menu. The\n         pointer becomes invalid when any function that inserts or deletes\n         entries in the menu is called.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayEntryRef.Remove\n@sa TrayMenu.InsertEntry",

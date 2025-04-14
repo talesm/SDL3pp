@@ -145,11 +145,6 @@ export interface ApiResource extends ApiEntryTransform {
   pointerType?: string;
 
   /**
-   * If not false it prepends the aliases for refType and uniqueType at the beginning
-   */
-  prependAliases?: boolean;
-
-  /**
    * If true it prepend an alias to OptionalResource
    */
   aliasOptional?: boolean
@@ -158,12 +153,6 @@ export interface ApiResource extends ApiEntryTransform {
    * If true it prepend an alias to DetachedResource
    */
   aliasDetached?: boolean
-
-  /**
-   * The type to replace on parameters, defaults to "ref"
-   * 
-   */
-  paramType?: "ref" | "unique" | "none";
 
   /**
    * The type to replace on return types, defaults to "ref"

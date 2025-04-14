@@ -372,12 +372,16 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  */
 class PixelFormat
 {
-  SDL_PixelFormat format;
+  SDL_PixelFormat m_format;
 
 public:
-  /// Constructor
-  constexpr PixelFormat(SDL_PixelFormat format = SDL_PIXELFORMAT_UNKNOWN)
-    : format(format)
+  /**
+   * Wraps PixelFormat.
+   *
+   * @param format the value to be wrapped
+   */
+  constexpr PixelFormat(SDL_PixelFormat format = {})
+    : m_format(format)
   {
   }
 
@@ -409,16 +413,29 @@ public:
                         SDL_PackedLayout layout,
                         int bits,
                         int bytes)
-    : format(SDL_PixelFormat(
+    : m_format(SDL_PixelFormat(
         SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
   {
   }
 
-  /// True if a valid format
-  constexpr operator bool() const { return format != SDL_PIXELFORMAT_UNKNOWN; }
+  /**
+   * Default comparison operator
+   */
+  constexpr bool operator==(const PixelFormat& other) const = default;
 
-  /// Convert to underlying type
-  constexpr operator SDL_PixelFormat() const { return format; }
+  /**
+   * Unwraps to the underlying PixelFormat.
+   *
+   * @returns the underlying PixelFormat.
+   */
+  constexpr operator SDL_PixelFormat() const { return m_format; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_format != 0; }
 
   /**
    * Retrieve the type.
@@ -431,7 +448,7 @@ public:
    */
   constexpr PixelType GetType() const
   {
-    return PixelType(SDL_PIXELTYPE(format));
+    return PixelType(SDL_PIXELTYPE(m_format));
   }
 
   /**
@@ -446,7 +463,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr int GetOrder() const { return SDL_PIXELORDER(format); }
+  constexpr int GetOrder() const { return SDL_PIXELORDER(m_format); }
 
   /**
    * Retrieve the layout.
@@ -462,7 +479,7 @@ public:
    */
   constexpr PackedLayout GetLayout() const
   {
-    return PackedLayout(SDL_PIXELLAYOUT(format));
+    return PackedLayout(SDL_PIXELLAYOUT(m_format));
   }
 
   /**
@@ -479,7 +496,7 @@ public:
    *
    * @sa GetBytesPerPixel
    */
-  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(format); }
+  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(m_format); }
 
   /**
    * Determine this's bytes per pixel.
@@ -498,7 +515,7 @@ public:
    *
    * @sa GetBitsPerPixel
    */
-  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(format); }
+  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(m_format); }
 
   /**
    * Determine if this is an indexed format.
@@ -509,7 +526,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsIndexed() const { return SDL_ISPIXELFORMAT_INDEXED(format); }
+  constexpr bool IsIndexed() const
+  {
+    return SDL_ISPIXELFORMAT_INDEXED(m_format);
+  }
 
   /**
    * Determine if this is a packed format.
@@ -520,7 +540,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(format); }
+  constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(m_format); }
 
   /**
    * Determine if this is an array format.
@@ -531,7 +551,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(format); }
+  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(m_format); }
 
   /**
    * Determine if this is a 10-bit format.
@@ -542,7 +562,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(format); }
+  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(m_format); }
 
   /**
    * Determine if this is a floating point format.
@@ -553,7 +573,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(format); }
+  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(m_format); }
 
   /**
    * Determine if this has an alpha channel.
@@ -564,7 +584,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(format); }
+  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(m_format); }
 
   /**
    * Determine if this is a "FourCC" format.
@@ -577,7 +597,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(format); }
+  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(m_format); }
 
   /**
    * Get the human readable name of a pixel format.
@@ -589,7 +609,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  const char* GetName() const { return SDL_GetPixelFormatName(format); }
+  const char* GetName() const { return SDL_GetPixelFormatName(m_format); }
 
   /**
    * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
@@ -614,7 +634,8 @@ public:
                 Uint32* Bmask,
                 Uint32* Amask) const
   {
-    return SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask);
+    return SDL_GetMasksForPixelFormat(
+      m_format, bpp, Rmask, Gmask, Bmask, Amask);
   }
 
   /**
@@ -662,7 +683,7 @@ public:
    */
   const PixelFormatDetails* GetDetails() const
   {
-    return SDL_GetPixelFormatDetails(format);
+    return SDL_GetPixelFormatDetails(m_format);
   }
 
   /**
@@ -1254,15 +1275,16 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  */
 class Colorspace
 {
-  SDL_Colorspace colorspace;
+  SDL_Colorspace m_colorspace;
 
 public:
   /**
-   * Wrap a SDL_Colorspace
+   * Wraps Colorspace.
    *
+   * @param colorspace the value to be wrapped
    */
-  constexpr Colorspace(SDL_Colorspace colorspace = SDL_COLORSPACE_UNKNOWN)
-    : colorspace(colorspace)
+  constexpr Colorspace(SDL_Colorspace colorspace = {})
+    : m_colorspace(colorspace)
   {
   }
 
@@ -1302,23 +1324,34 @@ public:
                        TransferCharacteristics transfer,
                        MatrixCoefficients matrix,
                        ChromaLocation chroma)
-    : colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
-                                                      range,
-                                                      primaries,
-                                                      transfer,
-                                                      matrix,
-                                                      chroma)))
+    : m_colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
+                                                        range,
+                                                        primaries,
+                                                        transfer,
+                                                        matrix,
+                                                        chroma)))
   {
   }
+
+  /**
+   * Default comparison operator
+   */
+  constexpr bool operator==(const Colorspace& other) const = default;
 
   /// True if a valid colorspace
-  constexpr operator bool() const
-  {
-    return colorspace != SDL_COLORSPACE_UNKNOWN;
-  }
+  /**
+   * Unwraps to the underlying Colorspace.
+   *
+   * @returns the underlying Colorspace.
+   */
+  constexpr operator SDL_Colorspace() const { return m_colorspace; }
 
-  /// Convert to underlying type
-  constexpr operator SDL_Colorspace() const { return colorspace; }
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_colorspace != 0; }
 
   /**
    * Retrieve the type of a Colorspace.
@@ -1329,7 +1362,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(colorspace); }
+  constexpr ColorType GetType() const
+  {
+    return SDL_COLORSPACETYPE(m_colorspace);
+  }
 
   /**
    * Retrieve the range of a Colorspace.
@@ -1342,7 +1378,7 @@ public:
    */
   constexpr ColorRange GetRange() const
   {
-    return SDL_COLORSPACERANGE(colorspace);
+    return SDL_COLORSPACERANGE(m_colorspace);
   }
 
   /**
@@ -1356,7 +1392,7 @@ public:
    */
   constexpr ChromaLocation GetChroma() const
   {
-    return SDL_COLORSPACECHROMA(colorspace);
+    return SDL_COLORSPACECHROMA(m_colorspace);
   }
 
   /**
@@ -1370,7 +1406,7 @@ public:
    */
   constexpr ColorPrimaries GetPrimaries() const
   {
-    return SDL_COLORSPACEPRIMARIES(colorspace);
+    return SDL_COLORSPACEPRIMARIES(m_colorspace);
   }
 
   /**
@@ -1384,7 +1420,7 @@ public:
    */
   constexpr TransferCharacteristics GetTransfer() const
   {
-    return SDL_COLORSPACETRANSFER(colorspace);
+    return SDL_COLORSPACETRANSFER(m_colorspace);
   }
 
   /**
@@ -1398,7 +1434,7 @@ public:
    */
   constexpr MatrixCoefficients GetMatrix() const
   {
-    return SDL_COLORSPACEMATRIX(colorspace);
+    return SDL_COLORSPACEMATRIX(m_colorspace);
   }
 
   /**
@@ -1412,7 +1448,7 @@ public:
    */
   constexpr bool IsMatrixBT601() const
   {
-    return SDL_ISCOLORSPACE_MATRIX_BT601(colorspace);
+    return SDL_ISCOLORSPACE_MATRIX_BT601(m_colorspace);
   }
 
   /**
@@ -1426,7 +1462,7 @@ public:
    */
   constexpr bool IsMatrixBT709() const
   {
-    return SDL_ISCOLORSPACE_MATRIX_BT709(colorspace);
+    return SDL_ISCOLORSPACE_MATRIX_BT709(m_colorspace);
   }
 
   /**
@@ -1440,7 +1476,7 @@ public:
    */
   constexpr bool IsMatrixBT2020_NCL() const
   {
-    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(colorspace);
+    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(m_colorspace);
   }
 
   /**
@@ -1454,7 +1490,7 @@ public:
    */
   constexpr bool IsLimitedRange() const
   {
-    return SDL_ISCOLORSPACE_LIMITED_RANGE(colorspace);
+    return SDL_ISCOLORSPACE_LIMITED_RANGE(m_colorspace);
   }
 
   /**
@@ -1468,7 +1504,7 @@ public:
    */
   constexpr bool IsFullRange() const
   {
-    return SDL_ISCOLORSPACE_FULL_RANGE(colorspace);
+    return SDL_ISCOLORSPACE_FULL_RANGE(m_colorspace);
   }
 };
 

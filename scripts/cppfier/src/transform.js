@@ -383,7 +383,8 @@ function expandWrappers(sourceEntries, transform, context) {
           type: `const ${targetType} &`,
           name: "other",
         }],
-        doc: "Default comparison operator"
+        doc: "Default comparison operator",
+        hints: { default: true, }
       });
     } else {
       insertEntry(entries, {
@@ -396,7 +397,8 @@ function expandWrappers(sourceEntries, transform, context) {
           type: `const ${targetType} &`,
           name: "other",
         }],
-        doc: "Default comparison operator"
+        doc: "Default comparison operator",
+        hints: { default: true, }
       });
     }
     if (wrapper.nullable) insertEntry(entries, {
@@ -406,7 +408,8 @@ function expandWrappers(sourceEntries, transform, context) {
       constexpr,
       immutable: true,
       parameters: ["std::nullptr_t"],
-      doc: `Compare with nullptr.\n\n@returns True if invalid state, false otherwise.`
+      doc: `Compare with nullptr.\n\n@returns True if invalid state, false otherwise.`,
+      hints: { body: "return !bool(*this);" }
     });
     if (!isStruct) insertEntry(entries, {
       kind: "function",
@@ -415,7 +418,8 @@ function expandWrappers(sourceEntries, transform, context) {
       constexpr,
       immutable: true,
       parameters: [],
-      doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${type}.`
+      doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${type}.`,
+      hints: { body: `return ${attribute};` }
     });
     if (wrapper.invalidState !== false) insertEntry(entries, {
       kind: "function",
@@ -425,7 +429,8 @@ function expandWrappers(sourceEntries, transform, context) {
       explicit: true,
       immutable: true,
       parameters: [],
-      doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`
+      doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`,
+      hints: { body: isStruct ? `return *this != ${targetType}{}` : `return ${attribute} != 0;` }
     });
 
     if (isStruct) {
@@ -1227,7 +1232,6 @@ function transformParameters(parameters, context) {
   return parameters.map(parameter => {
     if (typeof parameter == "string") return parameter;
     let { name, type, default: defaultValue } = parameter;
-    // if (type === "SDL_IOStream *") console.log(type, context.paramTypeMap[type]);
     type = transformType(type, context.paramTypeMap);
     return { name, type, default: defaultValue };
   });

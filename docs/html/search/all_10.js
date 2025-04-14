@@ -31,7 +31,7 @@ var searchData=
   ['penproximityevent_28',['PenProximityEvent',['../group__CategoryEvents.html#ga171ce555dbb7093f1546ec4acbc336b6',1,'SDL']]],
   ['pentouchevent_29',['PenTouchEvent',['../group__CategoryEvents.html#ga59e4805d95b92c370592f8eba246ec0b',1,'SDL']]],
   ['pixel_20formats_20and_20conversion_20routines_30',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
-  ['pixelformat_31',['pixelformat',['../classSDL_1_1PixelFormat.html#afef2681f7208ab5f1b7d401c1c507070',1,'SDL::PixelFormat::PixelFormat(SDL_PixelFormat format=SDL_PIXELFORMAT_UNKNOWN)'],['../classSDL_1_1PixelFormat.html#a0ed48d982f8036424718bf69dbc3036d',1,'SDL::PixelFormat::PixelFormat(SDL_PixelType type, int order, SDL_PackedLayout layout, int bits, int bytes)'],['../classSDL_1_1PixelFormat.html',1,'SDL::PixelFormat']]],
+  ['pixelformat_31',['pixelformat',['../classSDL_1_1PixelFormat.html#af150a069f230391c417cb7a46b1bae48',1,'SDL::PixelFormat::PixelFormat(SDL_PixelFormat format={})'],['../classSDL_1_1PixelFormat.html#a0ed48d982f8036424718bf69dbc3036d',1,'SDL::PixelFormat::PixelFormat(SDL_PixelType type, int order, SDL_PackedLayout layout, int bits, int bytes)'],['../classSDL_1_1PixelFormat.html',1,'SDL::PixelFormat']]],
   ['pixelformat_5fabgr128_5ffloat_32',['PIXELFORMAT_ABGR128_FLOAT',['../group__CategoryPixels.html#gaa00852e601dbb364f8508ac962e75a46',1,'SDL']]],
   ['pixelformat_5fabgr1555_33',['PIXELFORMAT_ABGR1555',['../group__CategoryPixels.html#ga02323db60813400beaef9d614cf8e3ce',1,'SDL']]],
   ['pixelformat_5fabgr2101010_34',['PIXELFORMAT_ABGR2101010',['../group__CategoryPixels.html#gaa2f5fe114a20b28f5a06671961bf7aa0',1,'SDL']]],
