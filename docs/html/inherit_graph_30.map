@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1RendererBase.html" title="A structure representing rendering state." alt="" coords="208,13,355,38"/>
-<area shape="poly" id="edge34_Node000000_Node000001" title=" " alt="" coords="174,23,207,23,207,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1RendererRef.html" title="Handle to a non owned renderer." alt="" coords="403,13,539,38"/>
-<area shape="poly" id="edge35_Node000001_Node000002" title=" " alt="" coords="369,23,402,23,402,28,369,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Renderer.html" title="Handle to an owned renderer." alt="" coords="587,13,701,38"/>
-<area shape="poly" id="edge36_Node000002_Node000003" title=" " alt="" coords="552,23,586,23,586,28,552,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1PropertiesBase.html" title="Wrap properties id." alt="" coords="208,13,361,38"/>
+<area shape="poly" id="edge32_Node000000_Node000001" title=" " alt="" coords="174,23,207,23,207,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1PropertiesRef.html" title="Handle to a non owned properties." alt="" coords="409,13,552,38"/>
+<area shape="poly" id="edge33_Node000001_Node000002" title=" " alt="" coords="375,23,409,23,409,28,375,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Properties.html" title="Handle to an owned properties." alt="" coords="600,13,721,38"/>
+<area shape="poly" id="edge34_Node000002_Node000003" title=" " alt="" coords="565,23,599,23,599,28,565,28"/>
 </map>

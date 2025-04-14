@@ -8,5 +8,17 @@ var searchData=
   ['flash_5funtil_5ffocused_5',['FLASH_UNTIL_FOCUSED',['../group__CategoryVideo.html#gaba81c5903c233d712d3172801e907441',1,'SDL']]],
   ['flip_5fhorizontal_6',['FLIP_HORIZONTAL',['../group__CategorySurface.html#gac0771f3c7f68c513c444fa255fbc7d44',1,'SDL']]],
   ['flip_5fnone_7',['FLIP_NONE',['../group__CategorySurface.html#ga3e81f3df151b51bf38d6b348491b8b76',1,'SDL']]],
-  ['flip_5fvertical_8',['FLIP_VERTICAL',['../group__CategorySurface.html#ga12eade56d263c052589ed58c274021f2',1,'SDL']]]
+  ['flip_5fvertical_8',['FLIP_VERTICAL',['../group__CategorySurface.html#ga12eade56d263c052589ed58c274021f2',1,'SDL']]],
+  ['folder_5fcount_9',['FOLDER_COUNT',['../group__CategoryFilesystem.html#ga42838cf262c5fcab80c6fc2d335d7b96',1,'SDL']]],
+  ['folder_5fdesktop_10',['FOLDER_DESKTOP',['../group__CategoryFilesystem.html#gac375748ec2b26a316a0a02611ee2df8c',1,'SDL']]],
+  ['folder_5fdocuments_11',['FOLDER_DOCUMENTS',['../group__CategoryFilesystem.html#ga077420518e21bbd05303a840aee0a16d',1,'SDL']]],
+  ['folder_5fdownloads_12',['FOLDER_DOWNLOADS',['../group__CategoryFilesystem.html#ga81770c59325938feb26f88464df35b17',1,'SDL']]],
+  ['folder_5fhome_13',['FOLDER_HOME',['../group__CategoryFilesystem.html#gac641af1056f3d295c328310c63e5dd0e',1,'SDL']]],
+  ['folder_5fmusic_14',['FOLDER_MUSIC',['../group__CategoryFilesystem.html#gaf2b4d41b2ebea00a98409d985cd0b621',1,'SDL']]],
+  ['folder_5fpictures_15',['FOLDER_PICTURES',['../group__CategoryFilesystem.html#gabd12862fdb2d4dabee658f329dd9fa8c',1,'SDL']]],
+  ['folder_5fpublicshare_16',['FOLDER_PUBLICSHARE',['../group__CategoryFilesystem.html#ga60ffe11ad9c28318833ffe2d4f51bf10',1,'SDL']]],
+  ['folder_5fsavedgames_17',['FOLDER_SAVEDGAMES',['../group__CategoryFilesystem.html#ga6701f69686a845b139c7d712236c91eb',1,'SDL']]],
+  ['folder_5fscreenshots_18',['FOLDER_SCREENSHOTS',['../group__CategoryFilesystem.html#ga01b4372d7bc653d0eef7a2bcf39a0c93',1,'SDL']]],
+  ['folder_5ftemplates_19',['FOLDER_TEMPLATES',['../group__CategoryFilesystem.html#ga24ecf3597bc97afe8a1ba64c5817ac5d',1,'SDL']]],
+  ['folder_5fvideos_20',['FOLDER_VIDEOS',['../group__CategoryFilesystem.html#ga879564c07eb5e53985f6fae9dcd4cc16',1,'SDL']]]
 ];

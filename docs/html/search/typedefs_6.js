@@ -9,7 +9,8 @@ var searchData=
   ['glcontextflag_6',['GLContextFlag',['../group__CategoryVideo.html#ga8e9b0270d61d911fde14e4a8bc827ba9',1,'SDL']]],
   ['glcontextreleaseflag_7',['GLContextReleaseFlag',['../group__CategoryVideo.html#ga2e5872a80c718743688791dcc202fba7',1,'SDL']]],
   ['glcontextresetnotification_8',['GLContextResetNotification',['../group__CategoryVideo.html#gad85db1d2dbcb9344946447409c3efa55',1,'SDL']]],
-  ['glprofile_9',['GLProfile',['../group__CategoryVideo.html#gac00ff5755f5501dd94d9148208ecae30',1,'SDL']]],
-  ['gpuatlasdrawsequence_10',['GPUAtlasDrawSequence',['../group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1',1,'SDL']]],
-  ['gputextenginewinding_11',['GPUTextEngineWinding',['../group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a',1,'SDL']]]
+  ['globflags_9',['GlobFlags',['../group__CategoryFilesystem.html#gaa05ff4a5a5f7f2e5b5e18072766b6140',1,'SDL']]],
+  ['glprofile_10',['GLProfile',['../group__CategoryVideo.html#gac00ff5755f5501dd94d9148208ecae30',1,'SDL']]],
+  ['gpuatlasdrawsequence_11',['GPUAtlasDrawSequence',['../group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1',1,'SDL']]],
+  ['gputextenginewinding_12',['GPUTextEngineWinding',['../group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a',1,'SDL']]]
 ];

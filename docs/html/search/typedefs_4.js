@@ -7,11 +7,14 @@ var searchData=
   ['eglint_4',['EGLint',['../group__CategoryVideo.html#gab343f5587432ce5d36726a1ee5cf5bee',1,'SDL']]],
   ['eglintarraycallback_5',['EGLIntArrayCallback',['../group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c',1,'SDL']]],
   ['eglsurface_6',['EGLSurface',['../group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8',1,'SDL']]],
-  ['enumeratepropertiescallback_7',['EnumeratePropertiesCallback',['../group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c',1,'SDL']]],
-  ['enumeratepropertiescb_8',['EnumeratePropertiesCB',['../group__CategoryProperties.html#gabca9f4d0180160fe63ebc8829dd9311d',1,'SDL']]],
-  ['event_9',['Event',['../group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a',1,'SDL']]],
-  ['eventaction_10',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
-  ['eventfilter_11',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
-  ['eventfiltercb_12',['EventFilterCB',['../group__CategoryEvents.html#gaf8d1bbcd20812ea4df09ab62078b98ef',1,'SDL']]],
-  ['eventtype_13',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]]
+  ['enumeratedirectorycallback_7',['EnumerateDirectoryCallback',['../group__CategoryFilesystem.html#ga78c27b0025198c5c5a2299549b3ed150',1,'SDL']]],
+  ['enumeratedirectorycb_8',['EnumerateDirectoryCB',['../group__CategoryFilesystem.html#ga085e952ca08d5cf0df8c9238da16ab81',1,'SDL']]],
+  ['enumeratepropertiescallback_9',['EnumeratePropertiesCallback',['../group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c',1,'SDL']]],
+  ['enumeratepropertiescb_10',['EnumeratePropertiesCB',['../group__CategoryProperties.html#gabca9f4d0180160fe63ebc8829dd9311d',1,'SDL']]],
+  ['enumerationresult_11',['EnumerationResult',['../group__CategoryFilesystem.html#ga504058b73103fc23dbed949f484c78ed',1,'SDL']]],
+  ['event_12',['Event',['../group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a',1,'SDL']]],
+  ['eventaction_13',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
+  ['eventfilter_14',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
+  ['eventfiltercb_15',['EventFilterCB',['../group__CategoryEvents.html#gaf8d1bbcd20812ea4df09ab62078b98ef',1,'SDL']]],
+  ['eventtype_16',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]]
 ];

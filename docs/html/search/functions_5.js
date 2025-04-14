@@ -29,5 +29,6 @@ var searchData=
   ['fromid_26',['FromID',['../group__CategoryVideo.html#ga90fa6cdd75b5f58d4ccb9791ed2e00ca',1,'SDL::WindowRef']]],
   ['fromns_27',['FromNS',['../classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837',1,'SDL::Time']]],
   ['fromposix_28',['FromPosix',['../group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44',1,'SDL::Time']]],
-  ['fromwindows_29',['FromWindows',['../group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845',1,'SDL::Time']]]
+  ['fromwindows_29',['FromWindows',['../group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845',1,'SDL::Time']]],
+  ['front_30',['front',['../classSDL_1_1OwnArray.html#a9e02233e4b59688716916d6b11b43055',1,'SDL::OwnArray']]]
 ];

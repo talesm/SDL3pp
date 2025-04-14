@@ -86,6 +86,34 @@ public:
    */
   T* release() { return m_ptr.release(); }
 
+  /**
+   * Reset object.
+   *
+   * You are responsible to call free() on the returned value, if its different
+   * than nullptr.
+   */
+  void reset(T* newValue = nullptr)
+  {
+    m_ptr.reset(newValue);
+    if (newValue) {
+      auto endPtr = newValue;
+      while (*endPtr) ++endPtr;
+      m_size = endPtr - newValue;
+    }
+  }
+
+  /**
+   * Reset object.
+   *
+   * You are responsible to call free() on the returned value, if its different
+   * than nullptr.
+   */
+  void reset(T* newValue, size_t size)
+  {
+    m_ptr.reset(newValue);
+    m_size = size;
+  }
+
   /// Access index
   constexpr T& operator[](size_t i) { return m_ptr.get()[i]; }
 
@@ -111,6 +139,12 @@ public:
   const T* end() const { return begin() + size(); }
   const T* cend() const { return begin() + size(); }
   /// @}
+
+  /// Return first element.
+  T& front() { return *data(); }
+
+  /// Return last element
+  T& back() { return begin()[size()]; }
 };
 
 /**

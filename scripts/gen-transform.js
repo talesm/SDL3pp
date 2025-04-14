@@ -799,6 +799,150 @@ const transform = {
         }
       }
     },
+    "SDL_filesystem.h": {
+      includeAfter: {
+        "__begin": {
+          kind: "struct",
+          name: "Path",
+          type: "OwnArray<char>",
+          entries: {
+            "OwnArray::OwnArray": "alias",
+            "Path": [{
+              kind: "function",
+              type: "",
+              parameters: [{
+                type: "const Path &",
+                name: "other"
+              }]
+            },
+            {
+              kind: "function",
+              type: "",
+              parameters: [{
+                type: "Path &&",
+                name: "other"
+              }]
+            },
+            {
+              kind: "function",
+              type: "",
+              parameters: [{
+                type: "std::string_view",
+                name: "other"
+              }]
+            }],
+            "operator StringParam": {
+              kind: "function",
+              type: "",
+              immutable: true,
+              constexpr: true,
+              parameters: []
+            },
+            "operator std::string_view": {
+              kind: "function",
+              type: "",
+              immutable: true,
+              constexpr: true,
+              parameters: []
+            },
+            "operator/=": {
+              kind: "function",
+              type: "Path &",
+              parameters: [{
+                type: "std::string_view",
+                name: "other"
+              }]
+            },
+            "operator/": {
+              kind: "function",
+              type: "Path",
+              immutable: true,
+              parameters: [{
+                type: "std::string_view",
+                name: "other"
+              }]
+            },
+            "str": {
+              kind: "function",
+              type: "std::string",
+              immutable: true,
+              parameters: []
+            },
+          }
+        },
+        "SDL_EnumerateDirectoryCallback": {
+          name: "EnumerateDirectoryCB",
+          kind: "alias",
+          type: "std::function<EnumerationResult(const char *dirname, const char *fname)>"
+        },
+        "SDL_EnumerateDirectory": [{
+          name: "EnumerateDirectory",
+          kind: "function",
+          type: "bool",
+          parameters: [
+            {
+              name: "path",
+              type: "StringParam"
+            },
+            {
+              name: "callback",
+              type: "EnumerateDirectoryCB"
+            }
+          ],
+        }, {
+          name: "EnumerateDirectory",
+          kind: "function",
+          type: "std::vector<Path>",
+          parameters: [{
+            name: "path",
+            type: "StringParam"
+          }],
+        }]
+      },
+      wrappers: {
+        "SDL_PathInfo": {
+          genMembers: false,
+          nullable: true,
+        }
+      },
+      enumerations: {
+        "SDL_GlobFlags": {
+          prefix: "SDL_GLOB_"
+        }
+      },
+      transform: {
+        "SDL_GetPrefPath": {
+          type: "Path"
+        },
+        "SDL_GetPathInfo": {
+          type: "PathInfo",
+          parameters: [{
+            name: "path",
+            type: "StringParam"
+          }]
+        },
+        "SDL_GlobDirectory": {
+          type: "OwnArray<char *>",
+          parameters: [
+            {
+              name: "path",
+              type: "StringParam"
+            },
+            {
+              name: "pattern",
+              type: "StringParam"
+            },
+            {
+              name: "flags",
+              type: "GlobFlags"
+            }
+          ],
+        },
+        "SDL_GetCurrentDirectory": {
+          type: "Path"
+        }
+      }
+    },
     "SDL_guid.h": {
       transform: {
         "SDL_GUID": {
