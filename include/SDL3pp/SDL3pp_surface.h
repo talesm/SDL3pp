@@ -325,12 +325,14 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
+   * @threadsafety This function is not thread safe.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette::Palette()
-   * @sa GetPalette()
+   * @sa PaletteBase.PaletteBase
+   * @sa SurfaceBase.GetPalette
    */
-  bool SetPalette(PaletteRef palette)
+  bool SetPalette(PaletteBase& palette)
   {
     return SDL_SetSurfacePalette(get(), palette.get());
   }
@@ -891,7 +893,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @sa SurfaceRef.reset
    */
   Surface Convert(PixelFormat format,
-                  PaletteRef palette,
+                  PaletteBase& palette,
                   Colorspace colorspace,
                   PropertiesBase& props) const;
 
@@ -2093,7 +2095,7 @@ inline Surface SurfaceBase::Convert(PixelFormat format) const
 }
 
 inline Surface SurfaceBase::Convert(PixelFormat format,
-                                    PaletteRef palette,
+                                    PaletteBase& palette,
                                     Colorspace colorspace,
                                     PropertiesBase& props) const
 {

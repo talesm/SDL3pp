@@ -2266,26 +2266,26 @@ const transform = {
           "invalidState": false
         }
       },
-      resources: {
+      resourcesX: {
         "SDL_Palette": {
-          "entries": {
+          entries: {
             "SDL_CreatePalette": "ctor",
             "GetSize": {
-              "kind": "function",
-              "type": "int",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": []
+              kind: "function",
+              type: "int",
+              immutable: true,
+              constexpr: true,
+              parameters: []
             },
             "operator[]": {
-              "kind": "function",
-              "type": "Color",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [
+              kind: "function",
+              type: "Color",
+              immutable: true,
+              constexpr: true,
+              parameters: [
                 {
-                  "type": "int",
-                  "name": "index"
+                  type: "int",
+                  name: "index"
                 }
               ]
             },
@@ -2293,17 +2293,16 @@ const transform = {
               "parameters": [
                 {},
                 {
-                  "name": "colors",
-                  "type": "std::span<const SDL_Color>"
+                  name: "colors",
+                  type: "std::span<const SDL_Color>"
                 },
                 {
-                  "name": "firstcolor",
-                  "type": "int",
-                  "default": "0"
+                  name: "firstcolor",
+                  type: "int",
+                  default: "0"
                 }
               ]
-            },
-            "SDL_DestroyPalette": "function"
+            }
           }
         }
       }

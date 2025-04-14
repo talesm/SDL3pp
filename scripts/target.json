@@ -11593,25 +11593,17 @@
         "PaletteBase-forward": {
           "name": "PaletteBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Palette *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "PaletteRef": {
+        "PaletteRef-forward": {
           "name": "PaletteRef",
-          "kind": "alias",
-          "type": "PaletteBase<ObjectRef<SDL_Palette>>",
-          "doc": "Handle to a non owned palette\n\n@cat resource\n\n@sa PaletteBase\n@sa Palette"
+          "kind": "forward",
+          "doc": ""
         },
-        "Palette": {
+        "Palette-forward": {
           "name": "Palette",
-          "kind": "alias",
-          "type": "PaletteBase<ObjectUnique<SDL_Palette>>",
-          "doc": "Handle to an owned palette\n\n@cat resource\n\n@sa PaletteBase\n@sa PaletteRef"
+          "kind": "forward",
+          "doc": ""
         },
         "SDL_ALPHA_OPAQUE": {
           "doc": "A fully opaque 8-bit alpha value.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_ALPHA_TRANSPARENT",
@@ -14138,25 +14130,19 @@
           }
         },
         "PaletteBase": {
-          "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa PaletteBase.SetColors",
+          "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa PaletteBase.SetColors\n\n@cat resource\n\n@sa Palette\n@sa PaletteRef",
           "name": "PaletteBase",
           "kind": "struct",
           "sourceName": "SDL_Palette",
-          "type": "T",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Palette *>",
-              "name": "T"
-            }
-          ],
+          "type": "Resource<SDL_Palette *>",
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "PaletteBase": {
-              "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@post a new PaletteBase structure on success or nullptr on failure (e.g. if\n         there wasn't enough memory); call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PaletteBase.Destroy\n@sa PaletteBase.SetColors\n@sa SurfaceBase.SetPalette",
+              "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@post a new PaletteBase structure on success or nullptr on failure (e.g. if\n         there wasn't enough memory); call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PaletteRef.reset\n@sa PaletteBase.SetColors\n@sa SurfaceBase.SetPalette",
               "name": "PaletteBase",
               "kind": "function",
               "type": "",
@@ -14228,30 +14214,201 @@
                 ],
                 "doc": ""
               }
+            ]
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "PaletteRef": {
+          "name": "PaletteRef",
+          "kind": "struct",
+          "type": "PaletteBase",
+          "doc": "Handle to a non owned palette\n\n@cat resource\n\n@sa PaletteBase\n@sa Palette",
+          "entries": {
+            "PaletteBase::PaletteBase": {
+              "kind": "alias",
+              "name": "PaletteBase::PaletteBase",
+              "doc": ""
+            },
+            "PaletteRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const PaletteRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "PaletteBase(other.get())"
+                  ]
+                },
+                "name": "PaletteRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "PaletteRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "PaletteBase(other.release())"
+                  ]
+                },
+                "name": "PaletteRef"
+              }
             ],
-            "Destroy": {
-              "doc": "Free a palette created with PaletteBase.PaletteBase().\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PaletteBase.PaletteBase",
-              "name": "Destroy",
+            "~PaletteRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroyPalette"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~PaletteRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "PaletteRef &",
+              "parameters": [
+                {
+                  "type": "PaletteRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Palette *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Free a palette created with PaletteBase.PaletteBase().\n\n@param palette the PaletteBase structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PaletteBase.PaletteBase",
+              "hints": {
+                "body": "SDL_DestroyPalette(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_Palette>::doFree": {
-          "name": "ObjectRef<SDL_Palette>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for palette resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Palette *",
-              "name": "resource"
+        "Palette": {
+          "name": "Palette",
+          "kind": "struct",
+          "type": "PaletteRef",
+          "doc": "Handle to an owned palette\n\n@cat resource\n\n@sa PaletteBase\n@sa PaletteRef",
+          "entries": {
+            "PaletteRef::PaletteRef": {
+              "kind": "alias",
+              "name": "PaletteRef::PaletteRef",
+              "doc": ""
+            },
+            "Palette": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Palette *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "PaletteRef(resource)"
+                  ]
+                },
+                "name": "Palette"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Palette &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Palette",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Palette &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Palette"
+              }
+            ],
+            "~Palette": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Palette"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Palette &",
+              "parameters": [
+                {
+                  "type": "Palette",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroyPalette"
+          }
         },
         "MapRGB": {
           "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be nullptr.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PixelFormat.GetDetails\n@sa GetRGB\n@sa MapRGBA\n@sa SurfaceBase.MapColor",
@@ -14265,7 +14422,7 @@
             },
             {
               "name": "palette",
-              "type": "PaletteRef"
+              "type": "const PaletteBase &"
             },
             {
               "name": "r",
@@ -14294,7 +14451,7 @@
             },
             {
               "name": "palette",
-              "type": "PaletteRef"
+              "type": "const PaletteBase &"
             },
             {
               "name": "r",
@@ -14331,7 +14488,7 @@
             },
             {
               "name": "palette",
-              "type": "PaletteRef"
+              "type": "const PaletteBase &"
             },
             {
               "name": "r",
@@ -14364,7 +14521,7 @@
             },
             {
               "name": "palette",
-              "type": "PaletteRef"
+              "type": "const PaletteBase &"
             },
             {
               "name": "r",
@@ -16281,7 +16438,7 @@
               "parameters": [
                 {
                   "name": "palette",
-                  "type": "PaletteRef"
+                  "type": "PaletteBase &"
                 }
               ],
               "sourceName": "SDL_SetSurfacePalette"
@@ -16667,7 +16824,7 @@
                   },
                   {
                     "name": "palette",
-                    "type": "PaletteRef"
+                    "type": "PaletteBase &"
                   },
                   {
                     "name": "colorspace",
@@ -17910,7 +18067,7 @@
               },
               {
                 "name": "palette",
-                "type": "PaletteRef"
+                "type": "PaletteBase &"
               },
               {
                 "name": "colorspace",
