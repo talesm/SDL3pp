@@ -962,56 +962,22 @@ using StringParam = const char*;
  */
 
 // Forward decl
-template<ObjectBox<SDL_Environment*> T>
 struct EnvironmentBase;
 
-/**
- * Handle to a non owning environment
- *
- * @cat resource
- *
- * @sa resource
- * @sa EnvironmentBase
- * @sa Environment
- */
-using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
-
-/**
- * Handle to an owning environment
- *
- * @cat resource
- *
- * @sa resource
- * @sa EnvironmentBase
- * @sa EnvironmentRef
- */
-using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
+// Forward decl
+struct EnvironmentRef;
 
 // Forward decl
-template<ObjectBox<SDL_iconv_data_t*> T>
+struct Environment;
+
+// Forward decl
 struct IConvBase;
 
-/**
- * Handle to a non owning iconv
- *
- * @cat resource
- *
- * @sa resource
- * @sa IConvBase
- * @sa IConv
- */
-using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
+// Forward decl
+struct IConvRef;
 
-/**
- * Handle to an owning iconv
- *
- * @cat resource
- *
- * @sa resource
- * @sa IConvBase
- * @sa IConvRef
- */
-using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
+// Forward decl
+struct IConv;
 
 #ifdef SDL3PP_DOC
 
@@ -1097,8 +1063,8 @@ constexpr std::size_t arraysize(const T (&array)[N])
  *
  * @threadsafety It is safe to call this macro from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
- **/
+ * @since This function is available since SDL 3.2.0.
+ */
 constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
 {
   return SDL_FOURCC(a, b, c, d);
@@ -1170,14 +1136,14 @@ constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
  * SDL times are signed, 64-bit integers representing nanoseconds since the
  * Unix epoch (Jan 1, 1970).
  *
- * They can be converted between POSIX time_t values with ToPosix()
- * and FromPosix(), and between Windows FILETIME values with
- * ToWindows() and FromWindows().
+ * They can be converted between POSIX time_t values with Time.ToPosix()
+ * and Time.FromPosix(), and between Windows FILETIME values with
+ * Time.ToWindows() and Time.FromWindows().
  *
  * @since This type is available since SDL 3.2.0.
  *
- * @sa SDL_MAX_SINT64
- * @sa SDL_MIN_SINT64
+ * @sa MAX_SINT64
+ * @sa MIN_SINT64
  */
 class Time
 {
@@ -1265,35 +1231,35 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *
  * You can use it like this:
  *
- * ```c
- * SDL_IOStreamInterface iface;
+ * ```cpp
+ * IOStreamInterface iface;
  *
  * SDL_INIT_INTERFACE(&iface);
  *
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = SDL_OpenIO(&iface, NULL);
+ * stream = IOStreamBase.IOStreamBase(&iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
  * interface as the version, e.g.
  *
- * ```c
- * SDL_IOStreamInterface iface = {
+ * ```cpp
+ * IOStreamInterface iface = {
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = SDL_OpenIO(&iface, NULL);
+ * stream = IOStreamBase.IOStreamBase(&iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_IOStreamInterface
- * @sa SDL_StorageInterface
- * @sa SDL_VirtualJoystickDesc
+ * @sa IOStreamInterface
+ * @sa StorageInterface
+ * @sa VirtualJoystickDesc
  */
 #define SDL_INIT_INTERFACE(iface)                                              \
   do {                                                                         \
@@ -1307,46 +1273,53 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * Allocate uninitialized memory.
  *
  * The allocated memory returned by this function must be freed with
- * SDL_free().
+ * free().
  *
  * If `size` is 0, it will be set to 1.
  *
- * If you want to allocate memory aligned to a specific alignment, consider
- * using SDL_aligned_alloc().
+ * If the allocation is successful, the returned pointer is guaranteed to be
+ * aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
+ * C11 and later) or `2 * sizeof(void *)`, whichever is smaller. Use
+ * aligned_alloc() if you need to allocate memory aligned to an alignment
+ * greater than this guarantee.
  *
  * @param size the size to allocate.
- * @returns a pointer to the allocated memory, or NULL if allocation failed.
+ * @returns a pointer to the allocated memory, or nullptr if allocation failed.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_free
- * @sa SDL_calloc
- * @sa SDL_realloc
- * @sa SDL_aligned_alloc
- **/
+ * @sa free
+ * @sa calloc
+ * @sa realloc
+ * @sa aligned_alloc
+ */
 inline void* malloc(size_t size) { return SDL_malloc(size); }
 
 /**
  * Allocate a zero-initialized array.
  *
- * The memory returned by this function must be freed with SDL_free().
+ * The memory returned by this function must be freed with free().
  *
  * If either of `nmemb` or `size` is 0, they will both be set to 1.
  *
+ * If the allocation is successful, the returned pointer is guaranteed to be
+ * aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
+ * C11 and later) or `2 * sizeof(void *)`, whichever is smaller.
+ *
  * @param nmemb the number of elements in the array.
  * @param size the size of each element of the array.
- * @returns a pointer to the allocated array, or NULL if allocation failed.
+ * @returns a pointer to the allocated array, or nullptr if allocation failed.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_free
- * @sa SDL_malloc
- * @sa SDL_realloc
- **/
+ * @sa free
+ * @sa malloc
+ * @sa realloc
+ */
 inline void* calloc(size_t nmemb, size_t size)
 {
   return SDL_calloc(nmemb, size);
@@ -1355,36 +1328,41 @@ inline void* calloc(size_t nmemb, size_t size)
 /**
  * Change the size of allocated memory.
  *
- * The memory returned by this function must be freed with SDL_free().
+ * The memory returned by this function must be freed with free().
  *
  * If `size` is 0, it will be set to 1. Note that this is unlike some other C
  * runtime `realloc` implementations, which may treat `realloc(mem, 0)` the
  * same way as `free(mem)`.
  *
- * If `mem` is NULL, the behavior of this function is equivalent to
- * SDL_malloc(). Otherwise, the function can have one of three possible
+ * If `mem` is nullptr, the behavior of this function is equivalent to
+ * malloc(). Otherwise, the function can have one of three possible
  * outcomes:
  *
  * - If it returns the same pointer as `mem`, it means that `mem` was resized
  *   in place without freeing.
- * - If it returns a different non-NULL pointer, it means that `mem` was freed
- *   and cannot be dereferenced anymore.
- * - If it returns NULL (indicating failure), then `mem` will remain valid and
- *   must still be freed with SDL_free().
+ * - If it returns a different non-nullptr pointer, it means that `mem` was
+ * freed and cannot be dereferenced anymore.
+ * - If it returns nullptr (indicating failure), then `mem` will remain valid
+ * and must still be freed with free().
  *
- * @param mem a pointer to allocated memory to reallocate, or NULL.
+ * If the allocation is successfully resized, the returned pointer is
+ * guaranteed to be aligned to either the *fundamental alignment*
+ * (`alignof(max_align_t)` in C11 and later) or `2 * sizeof(void *)`,
+ * whichever is smaller.
+ *
+ * @param mem a pointer to allocated memory to reallocate, or nullptr.
  * @param size the new size of the memory.
- * @returns a pointer to the newly allocated memory, or NULL if allocation
+ * @returns a pointer to the newly allocated memory, or nullptr if allocation
  *          failed.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_free
- * @sa SDL_malloc
- * @sa SDL_calloc
- **/
+ * @sa free
+ * @sa malloc
+ * @sa calloc
+ */
 inline void* realloc(void* mem, size_t size) { return SDL_realloc(mem, size); }
 
 /**
@@ -1393,85 +1371,85 @@ inline void* realloc(void* mem, size_t size) { return SDL_realloc(mem, size); }
  * The pointer is no longer valid after this call and cannot be dereferenced
  * anymore.
  *
- * If `mem` is NULL, this function does nothing.
+ * If `mem` is nullptr, this function does nothing.
  *
- * @param mem a pointer to allocated memory, or NULL.
+ * @param mem a pointer to allocated memory, or nullptr.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_malloc
- * @sa SDL_calloc
- * @sa SDL_realloc
- **/
+ * @sa malloc
+ * @sa calloc
+ * @sa realloc
+ */
 inline void free(void* mem) { SDL_free(mem); }
 
 /**
- * A callback used to implement SDL_malloc().
+ * A callback used to implement malloc().
  *
  * SDL will always ensure that the passed `size` is greater than 0.
  *
  * @param size the size to allocate.
- * @returns a pointer to the allocated memory, or NULL if allocation failed.
+ * @returns a pointer to the allocated memory, or nullptr if allocation failed.
  *
  * @threadsafety It should be safe to call this callback from any thread.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_malloc
- * @sa SDL_GetOriginalMemoryFunctions
- * @sa SDL_GetMemoryFunctions
- * @sa SDL_SetMemoryFunctions
- **/
+ * @sa malloc
+ * @sa GetOriginalMemoryFunctions
+ * @sa GetMemoryFunctions
+ * @sa SetMemoryFunctions
+ */
 using malloc_func = SDL_malloc_func;
 
 /**
- * A callback used to implement SDL_calloc().
+ * A callback used to implement calloc().
  *
  * SDL will always ensure that the passed `nmemb` and `size` are both greater
  * than 0.
  *
  * @param nmemb the number of elements in the array.
  * @param size the size of each element of the array.
- * @returns a pointer to the allocated array, or NULL if allocation failed.
+ * @returns a pointer to the allocated array, or nullptr if allocation failed.
  *
  * @threadsafety It should be safe to call this callback from any thread.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_calloc
- * @sa SDL_GetOriginalMemoryFunctions
- * @sa SDL_GetMemoryFunctions
- * @sa SDL_SetMemoryFunctions
- **/
+ * @sa calloc
+ * @sa GetOriginalMemoryFunctions
+ * @sa GetMemoryFunctions
+ * @sa SetMemoryFunctions
+ */
 using calloc_func = SDL_calloc_func;
 
 /**
- * A callback used to implement SDL_realloc().
+ * A callback used to implement realloc().
  *
  * SDL will always ensure that the passed `size` is greater than 0.
  *
- * @param mem a pointer to allocated memory to reallocate, or NULL.
+ * @param mem a pointer to allocated memory to reallocate, or nullptr.
  * @param size the new size of the memory.
- * @returns a pointer to the newly allocated memory, or NULL if allocation
+ * @returns a pointer to the newly allocated memory, or nullptr if allocation
  *          failed.
  *
  * @threadsafety It should be safe to call this callback from any thread.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_realloc
- * @sa SDL_GetOriginalMemoryFunctions
- * @sa SDL_GetMemoryFunctions
- * @sa SDL_SetMemoryFunctions
- **/
+ * @sa realloc
+ * @sa GetOriginalMemoryFunctions
+ * @sa GetMemoryFunctions
+ * @sa SetMemoryFunctions
+ */
 using realloc_func = SDL_realloc_func;
 
 /**
- * A callback used to implement SDL_free().
+ * A callback used to implement free().
  *
- * SDL will always ensure that the passed `mem` is a non-NULL pointer.
+ * SDL will always ensure that the passed `mem` is a non-nullptr pointer.
  *
  * @param mem a pointer to allocated memory.
  *
@@ -1479,18 +1457,18 @@ using realloc_func = SDL_realloc_func;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_free
- * @sa SDL_GetOriginalMemoryFunctions
- * @sa SDL_GetMemoryFunctions
- * @sa SDL_SetMemoryFunctions
- **/
+ * @sa free
+ * @sa GetOriginalMemoryFunctions
+ * @sa GetMemoryFunctions
+ * @sa SetMemoryFunctions
+ */
 using free_func = SDL_free_func;
 
 /**
  * Get the original set of SDL memory functions.
  *
- * This is what SDL_malloc and friends will use by default, if there has been
- * no call to SDL_SetMemoryFunctions. This is not necessarily using the C
+ * This is what malloc and friends will use by default, if there has been
+ * no call to SetMemoryFunctions. This is not necessarily using the C
  * runtime's `malloc` functions behind the scenes! Different platforms and
  * build configurations might do any number of unexpected things.
  *
@@ -1502,7 +1480,7 @@ using free_func = SDL_free_func;
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline void GetOriginalMemoryFunctions(malloc_func* malloc_func,
                                        calloc_func* calloc_func,
                                        realloc_func* realloc_func,
@@ -1522,13 +1500,13 @@ inline void GetOriginalMemoryFunctions(malloc_func* malloc_func,
  *
  * @threadsafety This does not hold a lock, so do not call this in the
  *               unlikely event of a background thread calling
- *               SDL_SetMemoryFunctions simultaneously.
+ *               SetMemoryFunctions simultaneously.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetMemoryFunctions
- * @sa SDL_GetOriginalMemoryFunctions
- **/
+ * @sa SetMemoryFunctions
+ * @sa GetOriginalMemoryFunctions
+ */
 inline void GetMemoryFunctions(malloc_func* malloc_func,
                                calloc_func* calloc_func,
                                realloc_func* realloc_func,
@@ -1541,8 +1519,8 @@ inline void GetMemoryFunctions(malloc_func* malloc_func,
  * Replace SDL's memory allocation functions with a custom set.
  *
  * It is not safe to call this function once any allocations have been made,
- * as future calls to SDL_free will use the new allocator, even if they came
- * from an SDL_malloc made with the old one!
+ * as future calls to free will use the new allocator, even if they came
+ * from an malloc made with the old one!
  *
  * If used, usually this needs to be the first call made into the SDL library,
  * if not the very first thing done at program startup time.
@@ -1551,7 +1529,7 @@ inline void GetMemoryFunctions(malloc_func* malloc_func,
  * @param calloc_func custom calloc function.
  * @param realloc_func custom realloc function.
  * @param free_func custom free function.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety It is safe to call this function from any thread, but one
@@ -1560,9 +1538,9 @@ inline void GetMemoryFunctions(malloc_func* malloc_func,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetMemoryFunctions
- * @sa SDL_GetOriginalMemoryFunctions
- **/
+ * @sa GetMemoryFunctions
+ * @sa GetOriginalMemoryFunctions
+ */
 inline bool SetMemoryFunctions(malloc_func malloc_func,
                                calloc_func calloc_func,
                                realloc_func realloc_func,
@@ -1575,8 +1553,8 @@ inline bool SetMemoryFunctions(malloc_func malloc_func,
 /**
  * Allocate memory aligned to a specific alignment.
  *
- * The memory returned by this function must be freed with SDL_aligned_free(),
- * _not_ SDL_free().
+ * The memory returned by this function must be freed with aligned_free(),
+ * _not_ free().
  *
  * If `alignment` is less than the size of `void *`, it will be increased to
  * match that.
@@ -1586,35 +1564,35 @@ inline bool SetMemoryFunctions(malloc_func malloc_func,
  *
  * @param alignment the alignment of the memory.
  * @param size the size to allocate.
- * @returns a pointer to the aligned memory, or NULL if allocation failed.
+ * @returns a pointer to the aligned memory, or nullptr if allocation failed.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_aligned_free
- **/
+ * @sa aligned_free
+ */
 inline void* aligned_alloc(size_t alignment, size_t size)
 {
   return SDL_aligned_alloc(alignment, size);
 }
 
 /**
- * Free memory allocated by SDL_aligned_alloc().
+ * Free memory allocated by aligned_alloc().
  *
  * The pointer is no longer valid after this call and cannot be dereferenced
  * anymore.
  *
- * If `mem` is NULL, this function does nothing.
+ * If `mem` is nullptr, this function does nothing.
  *
- * @param mem a pointer previously returned by SDL_aligned_alloc(), or NULL.
+ * @param mem a pointer previously returned by aligned_alloc(), or nullptr.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_aligned_alloc
- **/
+ * @sa aligned_alloc
+ */
 inline void aligned_free(void* mem) { SDL_aligned_free(mem); }
 
 /**
@@ -1626,7 +1604,7 @@ inline void aligned_free(void* mem) { SDL_aligned_free(mem); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
 
 /**
@@ -1636,14 +1614,18 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @cat resource
  *
- * @sa resource
  * @sa Environment
  * @sa EnvironmentRef
- **/
-template<ObjectBox<SDL_Environment*> T>
-struct EnvironmentBase : T
+ * @sa GetEnvironment
+ * @sa EnvironmentBase.EnvironmentBase
+ * @sa EnvironmentBase.GetVariable
+ * @sa EnvironmentBase.GetVariables
+ * @sa EnvironmentBase.SetVariable
+ * @sa EnvironmentBase.UnsetVariable
+ */
+struct EnvironmentBase : Resource<SDL_Environment*>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * Create a set of environment variables
@@ -1651,7 +1633,7 @@ struct EnvironmentBase : T
    * @param populated true to initialize it from the C runtime environment,
    *                  false to create an empty environment.
    * @post the new environment (convertible to true) on success or convertible
-   * to false on failure; call GetError() for more information.
+   *       to false on failure; call GetError() for more information.
    *
    * @threadsafety If `populated` is false, it is safe to call this function
    *               from any thread, otherwise it is safe if no other threads are
@@ -1659,14 +1641,13 @@ struct EnvironmentBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetEnvironmentVariable
-   * @sa SDL_GetEnvironmentVariables
-   * @sa SDL_SetEnvironmentVariable
-   * @sa SDL_UnsetEnvironmentVariable
-   * @sa SDL_DestroyEnvironment
-   **/
-  inline EnvironmentBase(bool populated)
-    : T(SDL_CreateEnvironment(populated))
+   * @sa EnvironmentBase.GetVariable
+   * @sa EnvironmentBase.GetVariables
+   * @sa EnvironmentBase.SetVariable
+   * @sa EnvironmentBase.UnsetVariable
+   */
+  EnvironmentBase(bool populated)
+    : Resource(SDL_CreateEnvironment(populated))
   {
   }
 
@@ -1674,45 +1655,46 @@ struct EnvironmentBase : T
    * Get the value of a variable in the environment.
    *
    * @param name the name of the variable to get.
-   * @returns a pointer to the value of the variable or NULL if it can't be
+   * @returns a pointer to the value of the variable or nullptr if it can't be
    *          found.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetEnvironment
-   * @sa SDL_CreateEnvironment
-   * @sa SDL_GetEnvironmentVariables
-   * @sa SDL_SetEnvironmentVariable
-   * @sa SDL_UnsetEnvironmentVariable
-   **/
-  inline const char* GetVariable(StringParam name)
+   * @sa GetEnvironment
+   * @sa EnvironmentBase.EnvironmentBase
+   * @sa EnvironmentBase.GetVariables
+   * @sa EnvironmentBase.SetVariable
+   * @sa EnvironmentBase.UnsetVariable
+   */
+  const char* GetVariable(StringParam name)
   {
-    return SDL_GetEnvironmentVariable(T::get(), name);
+    return SDL_GetEnvironmentVariable(get(), name);
   }
 
   /**
    * Get all variables in the environment.
    *
-   * @returns a NULL terminated array of pointers to environment variables in
-   *          the form "variable=value" or NULL on failure; call SDL_GetError()
-   *          for more information. This is wrapped to be auto-deleted, use
-   *          FreeWrapper.release() if you want to manage manually.
+   * @returns a nullptr terminated array of pointers to environment variables in
+   *          the form "variable=value" or nullptr on failure; call
+   *          SDL_GetError() for more information. This is wrapped to be
+   *          auto-deleted, use FreeWrapper.release() if you want to manage
+   *          manually.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetEnvironment
-   * @sa SDL_CreateEnvironment
-   * @sa SDL_GetEnvironmentVariables
-   * @sa SDL_SetEnvironmentVariable
-   * @sa SDL_UnsetEnvironmentVariable
-   **/
+   * @sa GetEnvironment
+   * @sa EnvironmentBase.EnvironmentBase
+   * @sa EnvironmentBase.GetVariables
+   * @sa EnvironmentBase.SetVariable
+   * @sa EnvironmentBase.UnsetVariable
+   */
   inline OwnArray<char*> GetVariables()
   {
-    return OwnArray<char*>{SDL_GetEnvironmentVariables(T::get())};
+    return OwnArray<char*>{SDL_GetEnvironmentVariables(get())};
   }
 
   /**
@@ -1725,7 +1707,7 @@ struct EnvironmentBase : T
   inline Uint64 GetVariableCount()
   {
     Uint64 count = 0;
-    for (auto vars = GetVariables(); vars != nullptr; ++vars) count += 1;
+    for (auto& var : GetVariables()) count += 1;
     return count;
   }
 
@@ -1737,45 +1719,88 @@ struct EnvironmentBase : T
    * @param overwrite true to overwrite the variable if it exists, false to
    *                  return success without setting the variable if it already
    *                  exists.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetEnvironment
-   * @sa SDL_CreateEnvironment
-   * @sa SDL_GetEnvironmentVariable
-   * @sa SDL_GetEnvironmentVariables
-   * @sa SDL_UnsetEnvironmentVariable
-   **/
-  inline bool SetVariable(StringParam name, StringParam value, bool overwrite)
+   * @sa GetEnvironment
+   * @sa EnvironmentBase.EnvironmentBase
+   * @sa EnvironmentBase.GetVariable
+   * @sa EnvironmentBase.GetVariables
+   * @sa EnvironmentBase.UnsetVariable
+   */
+  bool SetVariable(StringParam name, StringParam value, bool overwrite)
   {
-    return SDL_SetEnvironmentVariable(T::get(), name, value, overwrite);
+    return SDL_SetEnvironmentVariable(get(), name, value, overwrite);
   }
 
   /**
    * Clear a variable from the environment.
    *
    * @param name the name of the variable to unset.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetEnvironment()
-   * @sa EnvironmentBase()
-   * @sa GetVariable()
-   * @sa GetVariables()
-   * @sa SetVariable()
-   * @sa UnsetVariable()
-   **/
-  inline bool UnsetVariable(StringParam name)
+   * @sa GetEnvironment
+   * @sa EnvironmentBase.EnvironmentBase
+   * @sa EnvironmentBase.GetVariable
+   * @sa EnvironmentBase.GetVariables
+   * @sa EnvironmentBase.SetVariable
+   * @sa EnvironmentBase.UnsetVariable
+   */
+  bool UnsetVariable(StringParam name)
   {
-    return SDL_UnsetEnvironmentVariable(T::get(), name);
+    return SDL_UnsetEnvironmentVariable(get(), name);
+  }
+};
+
+/**
+ * Handle to a non owned environment
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentBase
+ * @sa Environment
+ */
+struct EnvironmentRef : EnvironmentBase
+{
+  using EnvironmentBase::EnvironmentBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr EnvironmentRef(const EnvironmentRef& other)
+    : EnvironmentBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr EnvironmentRef(EnvironmentRef&& other)
+    : EnvironmentBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~EnvironmentRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  EnvironmentRef& operator=(EnvironmentRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -1788,50 +1813,76 @@ struct EnvironmentBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateEnvironment
+   * @sa EnvironmentBase.EnvironmentBase
    */
-  void Destroy() { return SDL_DestroyEnvironment(T::release()); }
+  void reset(SDL_Environment* newResource = {})
+  {
+    SDL_DestroyEnvironment(release(newResource));
+  }
 };
 
 /**
- * Destroy a set of environment variables.
+ * Handle to an owned environment
  *
- * @param resource the environment to destroy.
+ * @cat resource
  *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the environment is no longer in use.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Environment
  * @sa EnvironmentBase
+ * @sa EnvironmentRef
  */
-template<>
-inline void ObjectRef<SDL_Environment>::doFree(SDL_Environment* resource)
+struct Environment : EnvironmentRef
 {
-  return SDL_DestroyEnvironment(resource);
-}
+  using EnvironmentRef::EnvironmentRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit Environment(SDL_Environment* resource = {})
+    : EnvironmentRef(resource)
+  {
+  }
+
+  constexpr Environment(const Environment& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr Environment(Environment&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~Environment() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  Environment& operator=(Environment other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
 
 /**
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv()
- * and unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and
- * SDL_UnsetEnvironmentVariable() if you want to modify this environment, or
- * SDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist
- * in the C runtime environment after SDL_Quit().
+ * and unsetenv() calls after that point. Use EnvironmentBase.SetVariable() and
+ * EnvironmentBase.UnsetVariable() if you want to modify this environment, or
+ * setenv_unsafe() or unsetenv_unsafe() if you want changes to persist
+ * in the C runtime environment after Quit().
  *
- * @returns a pointer to the environment for the process or NULL on failure;
- *          call SDL_GetError() for more information.
+ * @returns a pointer to the environment for the process or nullptr on failure;
+ *          call GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetEnvironmentVariable
- * @sa SDL_GetEnvironmentVariables
- * @sa SDL_SetEnvironmentVariable
- * @sa SDL_UnsetEnvironmentVariable
+ * @sa EnvironmentBase.GetVariable
+ * @sa EnvironmentBase.GetVariables
+ * @sa EnvironmentBase.SetVariable
+ * @sa EnvironmentBase.UnsetVariable
  */
 inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
 
@@ -1841,13 +1892,13 @@ inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
  * This function uses SDL's cached copy of the environment and is thread-safe.
  *
  * @param name the name of the variable to get.
- * @returns a pointer to the value of the variable or NULL if it can't be
+ * @returns a pointer to the value of the variable or nullptr if it can't be
  *          found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline const char* getenv(StringParam name) { return SDL_getenv(name); }
 
 /**
@@ -1857,16 +1908,16 @@ inline const char* getenv(StringParam name) { return SDL_getenv(name); }
  * thread-safe.
  *
  * @param name the name of the variable to get.
- * @returns a pointer to the value of the variable or NULL if it can't be
+ * @returns a pointer to the value of the variable or nullptr if it can't be
  *          found.
  *
- * @threadsafety This function is not thread safe, consider using SDL_getenv()
+ * @threadsafety This function is not thread safe, consider using getenv()
  *               instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_getenv
- **/
+ * @sa getenv
+ */
 inline const char* getenv_unsafe(StringParam name)
 {
   return SDL_getenv_unsafe(name);
@@ -1882,12 +1933,12 @@ inline const char* getenv_unsafe(StringParam name)
  * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
- *               SDL_SetEnvironmentVariable() instead.
+ *               EnvironmentBase.SetVariable() instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetEnvironmentVariable
- **/
+ * @sa EnvironmentBase.SetVariable
+ */
 inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
 {
   return SDL_setenv_unsafe(name, value, overwrite);
@@ -1900,12 +1951,12 @@ inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
  * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
- *               SDL_UnsetEnvironmentVariable() instead.
+ *               EnvironmentBase.UnsetVariable() instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_UnsetEnvironmentVariable
- **/
+ * @sa EnvironmentBase.UnsetVariable
+ */
 inline int unsetenv_unsafe(StringParam name)
 {
   return SDL_unsetenv_unsafe(name);
@@ -1922,9 +1973,9 @@ inline int unsetenv_unsafe(StringParam name)
  *
  * @since This callback is available since SDL 3.2.0.
  *
- * @sa SDL_bsearch
- * @sa SDL_qsort
- **/
+ * @sa bsearch
+ * @sa qsort
+ */
 using CompareCallback = SDL_CompareCallback;
 
 /**
@@ -1956,7 +2007,7 @@ using CompareCallback = SDL_CompareCallback;
  *     { 3, "third" }, { 1, "first" }, { 2, "second" }
  * };
  *
- * SDL_qsort(values, SDL_arraysize(values), sizeof(values[0]), compare);
+ * qsort(values, arraysize(values), sizeof(values[0]), compare);
  * ```
  *
  * @param base a pointer to the start of the array.
@@ -1968,9 +2019,9 @@ using CompareCallback = SDL_CompareCallback;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_bsearch
- * @sa SDL_qsort_r
- **/
+ * @sa bsearch
+ * @sa qsort_r
+ */
 inline void qsort(void* base,
                   size_t nmemb,
                   size_t size,
@@ -2007,10 +2058,10 @@ inline void qsort(void* base,
  * data values[] = {
  *     { 1, "first" }, { 2, "second" }, { 3, "third" }
  * };
- * data key = { 2, NULL };
+ * data key = { 2, nullptr };
  *
- * data *result = SDL_bsearch(&key, values, SDL_arraysize(values),
- *sizeof(values[0]), compare);
+ * data *result = bsearch(&key, values, arraysize(values), sizeof(values[0]),
+ * compare);
  * ```
  *
  * @param key a pointer to a key equal to the element being searched for.
@@ -2018,16 +2069,16 @@ inline void qsort(void* base,
  * @param nmemb the number of elements in the array.
  * @param size the size of the elements in the array.
  * @param compare a function used to compare elements in the array.
- * @returns a pointer to the matching element in the array, or NULL if not
+ * @returns a pointer to the matching element in the array, or nullptr if not
  *          found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_bsearch_r
- * @sa SDL_qsort
- **/
+ * @sa bsearch_r
+ * @sa qsort
+ */
 inline void* bsearch(const void* key,
                      const void* base,
                      size_t nmemb,
@@ -2049,9 +2100,9 @@ inline void* bsearch(const void* key,
  *
  * @since This callback is available since SDL 3.2.0.
  *
- * @sa SDL_qsort_r
- * @sa SDL_bsearch_r
- **/
+ * @sa qsort_r
+ * @sa bsearch_r
+ */
 using CompareCallback_r = SDL_CompareCallback_r;
 
 /**
@@ -2089,8 +2140,8 @@ using CompareCallback_r = SDL_CompareCallback_r;
  *     { 3, "third" }, { 1, "first" }, { 2, "second" }
  * };
  *
- * SDL_qsort_r(values, SDL_arraysize(values), sizeof(values[0]), compare, (const
- *void *)(uintptr_t)sort_increasing);
+ * qsort_r(values, arraysize(values), sizeof(values[0]), compare, (const void
+ * *)(uintptr_t)sort_increasing);
  * ```
  *
  * @param base a pointer to the start of the array.
@@ -2103,9 +2154,9 @@ using CompareCallback_r = SDL_CompareCallback_r;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_bsearch_r
- * @sa SDL_qsort
- **/
+ * @sa bsearch_r
+ * @sa qsort
+ */
 inline void qsort_r(void* base,
                     size_t nmemb,
                     size_t size,
@@ -2150,10 +2201,10 @@ inline void qsort_r(void* base,
  * data values[] = {
  *     { 1, "first" }, { 2, "second" }, { 3, "third" }
  * };
- * data key = { 2, NULL };
+ * data key = { 2, nullptr };
  *
- * data *result = SDL_bsearch_r(&key, values, SDL_arraysize(values),
- *sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);
+ * data *result = bsearch_r(&key, values, arraysize(values), sizeof(values[0]),
+ * compare, (const void *)(uintptr_t)sort_increasing);
  * ```
  *
  * @param key a pointer to a key equal to the element being searched for.
@@ -2162,16 +2213,16 @@ inline void qsort_r(void* base,
  * @param size the size of the elements in the array.
  * @param compare a function used to compare elements in the array.
  * @param userdata a pointer to pass to the compare function.
- * @returns a pointer to the matching element in the array, or NULL if not
+ * @returns a pointer to the matching element in the array, or nullptr if not
  *          found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_bsearch
- * @sa SDL_qsort_r
- **/
+ * @sa bsearch
+ * @sa qsort_r
+ */
 inline void* bsearch_r(const void* key,
                        const void* base,
                        size_t nmemb,
@@ -2191,7 +2242,7 @@ inline void* bsearch_r(const void* key,
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int abs(int x) { return SDL_abs(x); }
 
 /**
@@ -2278,7 +2329,7 @@ constexpr T clamp(T x, U a, V b)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int isalpha(int x) { return SDL_isalpha(x); }
 
 /**
@@ -2293,7 +2344,7 @@ inline int isalpha(int x) { return SDL_isalpha(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int isalnum(int x) { return SDL_isalnum(x); }
 
 /**
@@ -2308,7 +2359,7 @@ inline int isalnum(int x) { return SDL_isalnum(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int isblank(int x) { return SDL_isblank(x); }
 
 /**
@@ -2323,7 +2374,7 @@ inline int isblank(int x) { return SDL_isblank(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int iscntrl(int x) { return SDL_iscntrl(x); }
 
 /**
@@ -2338,7 +2389,7 @@ inline int iscntrl(int x) { return SDL_iscntrl(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int isdigit(int x) { return SDL_isdigit(x); }
 
 /**
@@ -2353,14 +2404,14 @@ inline int isdigit(int x) { return SDL_isdigit(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int isxdigit(int x) { return SDL_isxdigit(x); }
 
 /**
  * Report if a character is a punctuation mark.
  *
  * **WARNING**: Regardless of system locale, this is equivalent to
- * `((SDL_isgraph(x)) && (!SDL_isalnum(x)))`.
+ * `((isgraph(x)) && (!isalnum(x)))`.
  *
  * @param x character value to check.
  * @returns non-zero if x falls within the character class, zero otherwise.
@@ -2369,9 +2420,9 @@ inline int isxdigit(int x) { return SDL_isxdigit(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_isgraph
- * @sa SDL_isalnum
- **/
+ * @sa isgraph
+ * @sa isalnum
+ */
 inline int ispunct(int x) { return SDL_ispunct(x); }
 
 /**
@@ -2393,7 +2444,7 @@ inline int ispunct(int x) { return SDL_ispunct(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int isspace(int x) { return SDL_isspace(x); }
 
 /**
@@ -2408,7 +2459,7 @@ inline int isspace(int x) { return SDL_isspace(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int isupper(int x) { return SDL_isupper(x); }
 
 /**
@@ -2423,7 +2474,7 @@ inline int isupper(int x) { return SDL_isupper(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int islower(int x) { return SDL_islower(x); }
 
 /**
@@ -2442,7 +2493,7 @@ inline int islower(int x) { return SDL_islower(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int isprint(int x) { return SDL_isprint(x); }
 
 /**
@@ -2453,7 +2504,7 @@ inline int isprint(int x) { return SDL_isprint(x); }
  * function that is not suitable for Unicode (or most any) text management.
  *
  * **WARNING**: Regardless of system locale, this is equivalent to
- * `(SDL_isprint(x)) && ((x) != ' ')`.
+ * `(isprint(x)) && ((x) != ' ')`.
  *
  * @param x character value to check.
  * @returns non-zero if x falls within the character class, zero otherwise.
@@ -2462,8 +2513,8 @@ inline int isprint(int x) { return SDL_isprint(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_isprint
- **/
+ * @sa isprint
+ */
 inline int isgraph(int x) { return SDL_isgraph(x); }
 
 /**
@@ -2481,7 +2532,7 @@ inline int isgraph(int x) { return SDL_isgraph(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int toupper(int x) { return SDL_toupper(x); }
 
 /**
@@ -2499,7 +2550,7 @@ inline int toupper(int x) { return SDL_toupper(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int tolower(int x) { return SDL_tolower(x); }
 
 /**
@@ -2520,7 +2571,7 @@ inline int tolower(int x) { return SDL_tolower(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline Uint16 crc16(Uint16 crc, const void* data, size_t len)
 {
   return SDL_crc16(crc, data, len);
@@ -2544,7 +2595,7 @@ inline Uint16 crc16(Uint16 crc, const void* data, size_t len)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline Uint32 crc32(Uint32 crc, const void* data, size_t len)
 {
   return SDL_crc32(crc, data, len);
@@ -2556,7 +2607,7 @@ inline Uint32 crc32(Uint32 crc, const void* data, size_t len)
  * https://en.wikipedia.org/wiki/MurmurHash
  *
  * A seed may be specified, which changes the final results consistently, but
- * this does not work like SDL_crc16 and SDL_crc32: you can't feed a previous
+ * this does not work like crc16 and crc32: you can't feed a previous
  * result from this function back into itself as the next seed value to
  * calculate a hash in chunks; it won't produce the same hash as it would if
  * the same data was provided in a single call.
@@ -2573,7 +2624,7 @@ inline Uint32 crc32(Uint32 crc, const void* data, size_t len)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline Uint32 murmur3_32(const void* data, size_t len, Uint32 seed)
 {
   return SDL_murmur3_32(data, len, seed);
@@ -2582,12 +2633,12 @@ inline Uint32 murmur3_32(const void* data, size_t len, Uint32 seed)
 /**
  * Copy non-overlapping memory.
  *
- * The memory regions must not overlap. If they do, use SDL_memmove() instead.
+ * The memory regions must not overlap. If they do, use memmove() instead.
  *
- * @param dst The destination memory region. Must not be NULL, and must not
+ * @param dst The destination memory region. Must not be nullptr, and must not
  *            overlap with `src`.
- * @param src The source memory region. Must not be NULL, and must not overlap
- *            with `dst`.
+ * @param src The source memory region. Must not be nullptr, and must not
+ * overlap with `dst`.
  * @param len The length in bytes of both `dst` and `src`.
  * @returns `dst`.
  *
@@ -2595,8 +2646,8 @@ inline Uint32 murmur3_32(const void* data, size_t len, Uint32 seed)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_memmove
- **/
+ * @sa memmove
+ */
 inline void* memcpy(void* dst, const void* src, size_t len)
 {
   return SDL_memcpy(dst, src, len);
@@ -2607,7 +2658,7 @@ inline void* memcpy(void* dst, const void* src, size_t len)
 /**
  * A macro to copy memory between objects, with basic type checking.
  *
- * SDL_memcpy and SDL_memmove do not care where you copy memory to and from,
+ * memcpy and memmove do not care where you copy memory to and from,
  * which can lead to bugs. This macro aims to avoid most of those bugs by
  * making sure that the source and destination are both pointers to objects
  * that are the same size. It does not check that the objects are the same
@@ -2621,8 +2672,8 @@ inline void* memcpy(void* dst, const void* src, size_t len)
  * This macro looks like it double-evaluates its parameters, but the extras
  * them are in `sizeof` sections, which generate no code nor side-effects.
  *
- * @param dst a pointer to the destination object. Must not be NULL.
- * @param src a pointer to the source object. Must not be NULL.
+ * @param dst a pointer to the destination object. Must not be nullptr.
+ * @param src a pointer to the source object. Must not be nullptr.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2640,10 +2691,10 @@ inline void* memcpy(void* dst, const void* src, size_t len)
  * Copy memory ranges that might overlap.
  *
  * It is okay for the memory regions to overlap. If you are confident that the
- * regions never overlap, using SDL_memcpy() may improve performance.
+ * regions never overlap, using memcpy() may improve performance.
  *
- * @param dst The destination memory region. Must not be NULL.
- * @param src The source memory region. Must not be NULL.
+ * @param dst The destination memory region. Must not be nullptr.
+ * @param src The source memory region. Must not be nullptr.
  * @param len The length in bytes of both `dst` and `src`.
  * @returns `dst`.
  *
@@ -2651,8 +2702,8 @@ inline void* memcpy(void* dst, const void* src, size_t len)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_memcpy
- **/
+ * @sa memcpy
+ */
 inline void* memmove(void* dst, const void* src, size_t len)
 {
   return SDL_memmove(dst, src, len);
@@ -2667,7 +2718,7 @@ inline void* memmove(void* dst, const void* src, size_t len)
  * Despite `c` being an `int` instead of a `char`, this only operates on
  * bytes; `c` must be a value between 0 and 255, inclusive.
  *
- * @param dst the destination memory region. Must not be NULL.
+ * @param dst the destination memory region. Must not be nullptr.
  * @param c the byte value to set.
  * @param len the length, in bytes, to set in `dst`.
  * @returns `dst`.
@@ -2675,7 +2726,7 @@ inline void* memmove(void* dst, const void* src, size_t len)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline void* memset(void* dst, int c, size_t len)
 {
   return SDL_memset(dst, c, len);
@@ -2687,10 +2738,10 @@ inline void* memset(void* dst, int c, size_t len)
  * This function will set a buffer of `dwords` Uint32 values, pointed to by
  * `dst`, to the value specified in `val`.
  *
- * Unlike SDL_memset, this sets 32-bit values, not bytes, so it's not limited
+ * Unlike memset, this sets 32-bit values, not bytes, so it's not limited
  * to a range of 0-255.
  *
- * @param dst the destination memory region. Must not be NULL.
+ * @param dst the destination memory region. Must not be nullptr.
  * @param val the Uint32 value to set.
  * @param dwords the number of Uint32 values to set in `dst`.
  * @returns `dst`.
@@ -2698,7 +2749,7 @@ inline void* memset(void* dst, int c, size_t len)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline void* memset4(void* dst, Uint32 val, size_t dwords)
 {
   return SDL_memset4(dst, val, dwords);
@@ -2707,19 +2758,19 @@ inline void* memset4(void* dst, Uint32 val, size_t dwords)
 /**
  * Clear an object's memory to zero.
  *
- * This is wrapper over SDL_memset that handles calculating the object size,
+ * This is wrapper over memset that handles calculating the object size,
  * so there's no chance of copy/paste errors, and the code is cleaner.
  *
  * This requires an object, not a pointer to an object, nor an array.
  *
  * @param x the object to clear.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety It is safe to call this macro from any thread.
  *
- * @since This function is available since SDL 3.2.0.
+ * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_zerop
- * @sa SDL_zeroa
+ * @sa zerop
+ * @sa zeroa
  */
 template<class T>
 inline void zero(T& x)
@@ -2730,19 +2781,19 @@ inline void zero(T& x)
 /**
  * Clear an object's memory to zero, using a pointer.
  *
- * This is wrapper over SDL_memset that handles calculating the object size,
+ * This is wrapper over memset that handles calculating the object size,
  * so there's no chance of copy/paste errors, and the code is cleaner.
  *
  * This requires a pointer to an object, not an object itself, nor an array.
  *
  * @param x a pointer to the object to clear.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety It is safe to call this macro from any thread.
  *
- * @since This function is available since SDL 3.2.0.
+ * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_zero
- * @sa SDL_zeroa
+ * @sa zero
+ * @sa zeroa
  */
 template<class T>
 inline void zerop(T* x)
@@ -2753,7 +2804,7 @@ inline void zerop(T* x)
 /**
  * Clear an array's memory to zero.
  *
- * This is wrapper over SDL_memset that handles calculating the array size, so
+ * This is wrapper over memset that handles calculating the array size, so
  * there's no chance of copy/paste errors, and the code is cleaner.
  *
  * This requires an array, not an object, nor a pointer to an object.
@@ -2764,8 +2815,8 @@ inline void zerop(T* x)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_zero
- * @sa SDL_zeroa
+ * @sa zero
+ * @sa zeroa
  */
 template<class T, std::size_t N>
 inline void zeroa(T (&x)[N])
@@ -2776,8 +2827,8 @@ inline void zeroa(T (&x)[N])
 /**
  * Compare two buffers of memory.
  *
- * @param s1 the first buffer to compare. NULL is not permitted!
- * @param s2 the second buffer to compare. NULL is not permitted!
+ * @param s1 the first buffer to compare. nullptr is not permitted!
+ * @param s2 the second buffer to compare. nullptr is not permitted!
  * @param len the number of bytes to compare between the buffers.
  * @returns less than zero if s1 is "less than" s2, greater than zero if s1 is
  *          "greater than" s2, and zero if the buffers match exactly for `len`
@@ -2786,7 +2837,7 @@ inline void zeroa(T (&x)[N])
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int memcmp(const void* s1, const void* s2, size_t len)
 {
   return SDL_memcmp(s1, s2, len);
@@ -2798,14 +2849,14 @@ inline int memcmp(const void* s1, const void* s2, size_t len)
  * Counts the number of wchar_t values in `wstr`, excluding the null
  * terminator.
  *
- * Like SDL_strlen only counts bytes and not codepoints in a UTF-8 string,
+ * Like strlen only counts bytes and not codepoints in a UTF-8 string,
  * this counts wchar_t values in a string, even if the string's encoding is of
  * variable width, like UTF-16.
  *
  * Also be aware that wchar_t is different sizes on different platforms (4
  * bytes on Linux, 2 on Windows, etc).
  *
- * @param wstr The null-terminated wide string to read. Must not be NULL.
+ * @param wstr The null-terminated wide string to read. Must not be nullptr.
  * @returns the length (in wchar_t values, excluding the null terminator) of
  *          `wstr`.
  *
@@ -2813,10 +2864,10 @@ inline int memcmp(const void* s1, const void* s2, size_t len)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_wcsnlen
- * @sa SDL_utf8strlen
- * @sa SDL_utf8strnlen
- **/
+ * @sa wcsnlen
+ * @sa utf8strlen
+ * @sa utf8strnlen
+ */
 inline size_t wcslen(const wchar_t* wstr) { return SDL_wcslen(wstr); }
 
 /**
@@ -2826,7 +2877,7 @@ inline size_t wcslen(const wchar_t* wstr) { return SDL_wcslen(wstr); }
  * Counts up to a maximum of `maxlen` wchar_t values in `wstr`, excluding the
  * null terminator.
  *
- * Like SDL_strnlen only counts bytes and not codepoints in a UTF-8 string,
+ * Like strnlen only counts bytes and not codepoints in a UTF-8 string,
  * this counts wchar_t values in a string, even if the string's encoding is of
  * variable width, like UTF-16.
  *
@@ -2835,7 +2886,7 @@ inline size_t wcslen(const wchar_t* wstr) { return SDL_wcslen(wstr); }
  *
  * Also, `maxlen` is a count of wide characters, not bytes!
  *
- * @param wstr The null-terminated wide string to read. Must not be NULL.
+ * @param wstr The null-terminated wide string to read. Must not be nullptr.
  * @param maxlen The maximum amount of wide characters to count.
  * @returns the length (in wide characters, excluding the null terminator) of
  *          `wstr` but never more than `maxlen`.
@@ -2844,10 +2895,10 @@ inline size_t wcslen(const wchar_t* wstr) { return SDL_wcslen(wstr); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_wcslen
- * @sa SDL_utf8strlen
- * @sa SDL_utf8strnlen
- **/
+ * @sa wcslen
+ * @sa utf8strlen
+ * @sa utf8strnlen
+ */
 inline size_t wcsnlen(const wchar_t* wstr, size_t maxlen)
 {
   return SDL_wcsnlen(wstr, maxlen);
@@ -2864,9 +2915,9 @@ inline size_t wcsnlen(const wchar_t* wstr, size_t maxlen)
  * If `maxlen` is 0, no wide characters are copied and no null terminator is
  * written.
  *
- * @param dst The destination buffer. Must not be NULL, and must not overlap
+ * @param dst The destination buffer. Must not be nullptr, and must not overlap
  *            with `src`.
- * @param src The null-terminated wide string to copy. Must not be NULL, and
+ * @param src The null-terminated wide string to copy. Must not be nullptr, and
  *            must not overlap with `dst`.
  * @param maxlen The length (in wide characters) of the destination buffer.
  * @returns the length (in wide characters, excluding the null terminator) of
@@ -2876,8 +2927,8 @@ inline size_t wcsnlen(const wchar_t* wstr, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_wcslcat
- **/
+ * @sa wcslcat
+ */
 inline size_t wcslcpy(wchar_t* dst, const wchar_t* src, size_t maxlen)
 {
   return SDL_wcslcpy(dst, src, maxlen);
@@ -2886,19 +2937,19 @@ inline size_t wcslcpy(wchar_t* dst, const wchar_t* src, size_t maxlen)
 /**
  * Concatenate wide strings.
  *
- * This function appends up to `maxlen` - SDL_wcslen(dst) - 1 wide characters
+ * This function appends up to `maxlen` - wcslen(dst) - 1 wide characters
  * from `src` to the end of the wide string in `dst`, then appends a null
  * terminator.
  *
  * `src` and `dst` must not overlap.
  *
- * If `maxlen` - SDL_wcslen(dst) - 1 is less than or equal to 0, then `dst` is
+ * If `maxlen` - wcslen(dst) - 1 is less than or equal to 0, then `dst` is
  * unmodified.
  *
  * @param dst The destination buffer already containing the first
- *            null-terminated wide string. Must not be NULL and must not
+ *            null-terminated wide string. Must not be nullptr and must not
  *            overlap with `src`.
- * @param src The second null-terminated wide string. Must not be NULL, and
+ * @param src The second null-terminated wide string. Must not be nullptr, and
  *            must not overlap with `dst`.
  * @param maxlen The length (in wide characters) of the destination buffer.
  * @returns the length (in wide characters, excluding the null terminator) of
@@ -2908,8 +2959,8 @@ inline size_t wcslcpy(wchar_t* dst, const wchar_t* src, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_wcslcpy
- **/
+ * @sa wcslcpy
+ */
 inline size_t wcslcat(wchar_t* dst, const wchar_t* src, size_t maxlen)
 {
   return SDL_wcslcat(dst, src, maxlen);
@@ -2919,10 +2970,10 @@ inline size_t wcslcat(wchar_t* dst, const wchar_t* src, size_t maxlen)
  * Allocate a copy of a wide string.
  *
  * This allocates enough space for a null-terminated copy of `wstr`, using
- * SDL_malloc, and then makes a copy of the string into this space.
+ * malloc, and then makes a copy of the string into this space.
  *
  * The returned string is owned by the caller, and should be passed to
- * SDL_free when no longer needed.
+ * free when no longer needed.
  *
  * @param wstr the string to copy.
  * @returns a pointer to the newly-allocated wide string.
@@ -2930,7 +2981,7 @@ inline size_t wcslcat(wchar_t* dst, const wchar_t* src, size_t maxlen)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline wchar_t* wcsdup(const wchar_t* wstr) { return SDL_wcsdup(wstr); }
 
 /**
@@ -2942,15 +2993,15 @@ inline wchar_t* wcsdup(const wchar_t* wstr) { return SDL_wcsdup(wstr); }
  * Note that this looks for strings of _wide characters_, not _codepoints_, so
  * it's legal to search for malformed and incomplete UTF-16 sequences.
  *
- * @param haystack the wide string to search. Must not be NULL.
- * @param needle the wide string to search for. Must not be NULL.
- * @returns a pointer to the first instance of `needle` in the string, or NULL
- *          if not found.
+ * @param haystack the wide string to search. Must not be nullptr.
+ * @param needle the wide string to search for. Must not be nullptr.
+ * @returns a pointer to the first instance of `needle` in the string, or
+ * nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline wchar_t* wcsstr(const wchar_t* haystack, const wchar_t* needle)
 {
   return SDL_wcsstr(haystack, needle);
@@ -2968,17 +3019,17 @@ inline wchar_t* wcsstr(const wchar_t* haystack, const wchar_t* needle)
  * Note that this looks for strings of _wide characters_, not _codepoints_, so
  * it's legal to search for malformed and incomplete UTF-16 sequences.
  *
- * @param haystack the wide string to search. Must not be NULL.
- * @param needle the wide string to search for. Must not be NULL.
+ * @param haystack the wide string to search. Must not be nullptr.
+ * @param needle the wide string to search for. Must not be nullptr.
  * @param maxlen the maximum number of wide characters to search in
  *               `haystack`.
- * @returns a pointer to the first instance of `needle` in the string, or NULL
- *          if not found.
+ * @returns a pointer to the first instance of `needle` in the string, or
+ * nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline wchar_t* wcsnstr(const wchar_t* haystack,
                         const wchar_t* needle,
                         size_t maxlen)
@@ -2993,8 +3044,8 @@ inline wchar_t* wcsnstr(const wchar_t* haystack,
  * character; it does not care if the string is well-formed UTF-16 (or UTF-32,
  * depending on your platform's wchar_t size), or uses valid Unicode values.
  *
- * @param str1 the first string to compare. NULL is not permitted!
- * @param str2 the second string to compare. NULL is not permitted!
+ * @param str1 the first string to compare. nullptr is not permitted!
+ * @param str2 the second string to compare. nullptr is not permitted!
  * @returns less than zero if str1 is "less than" str2, greater than zero if
  *          str1 is "greater than" str2, and zero if the strings match
  *          exactly.
@@ -3002,7 +3053,7 @@ inline wchar_t* wcsnstr(const wchar_t* haystack,
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int wcscmp(const wchar_t* str1, const wchar_t* str2)
 {
   return SDL_wcscmp(str1, str2);
@@ -3026,8 +3077,8 @@ inline int wcscmp(const wchar_t* str1, const wchar_t* str2)
  * null-terminator character before this count), they will be considered
  * equal.
  *
- * @param str1 the first string to compare. NULL is not permitted!
- * @param str2 the second string to compare. NULL is not permitted!
+ * @param str1 the first string to compare. nullptr is not permitted!
+ * @param str2 the second string to compare. nullptr is not permitted!
  * @param maxlen the maximum number of wchar_t to compare.
  * @returns less than zero if str1 is "less than" str2, greater than zero if
  *          str1 is "greater than" str2, and zero if the strings match
@@ -3036,7 +3087,7 @@ inline int wcscmp(const wchar_t* str1, const wchar_t* str2)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int wcsncmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
 {
   return SDL_wcsncmp(str1, str2, maxlen);
@@ -3060,8 +3111,8 @@ inline int wcsncmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
  * CHARACTER), which is to say two strings of random bits may turn out to
  * match if they convert to the same amount of replacement characters.
  *
- * @param str1 the first string to compare. NULL is not permitted!
- * @param str2 the second string to compare. NULL is not permitted!
+ * @param str1 the first string to compare. nullptr is not permitted!
+ * @param str2 the second string to compare. nullptr is not permitted!
  * @returns less than zero if str1 is "less than" str2, greater than zero if
  *          str1 is "greater than" str2, and zero if the strings match
  *          exactly.
@@ -3069,7 +3120,7 @@ inline int wcsncmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int wcscasecmp(const wchar_t* str1, const wchar_t* str2)
 {
   return SDL_wcscasecmp(str1, str2);
@@ -3104,8 +3155,8 @@ inline int wcscasecmp(const wchar_t* str1, const wchar_t* str2)
  * null-terminator character before this number of bytes), they will be
  * considered equal.
  *
- * @param str1 the first string to compare. NULL is not permitted!
- * @param str2 the second string to compare. NULL is not permitted!
+ * @param str1 the first string to compare. nullptr is not permitted!
+ * @param str2 the second string to compare. nullptr is not permitted!
  * @param maxlen the maximum number of wchar_t values to compare.
  * @returns less than zero if str1 is "less than" str2, greater than zero if
  *          str1 is "greater than" str2, and zero if the strings match
@@ -3114,7 +3165,7 @@ inline int wcscasecmp(const wchar_t* str1, const wchar_t* str2)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int wcsncasecmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
 {
   return SDL_wcsncasecmp(str1, str2, maxlen);
@@ -3129,8 +3180,8 @@ inline int wcsncasecmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
  * If the parsed number does not fit inside a `long`, the result is clamped to
  * the minimum and maximum representable `long` values.
  *
- * @param str The null-terminated wide string to read. Must not be NULL.
- * @param endp If not NULL, the address of the first invalid wide character
+ * @param str The null-terminated wide string to read. Must not be nullptr.
+ * @param endp If not nullptr, the address of the first invalid wide character
  *             (i.e. the next character after the parsed number) will be
  *             written to this pointer.
  * @param base The base of the integer to read. Supported values are 0 and 2
@@ -3143,8 +3194,8 @@ inline int wcsncasecmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_strtol
- **/
+ * @sa strtol
+ */
 inline long wcstol(const wchar_t* str, wchar_t** endp, int base)
 {
   return SDL_wcstol(str, endp, base);
@@ -3155,19 +3206,19 @@ inline long wcstol(const wchar_t* str, wchar_t** endp, int base)
  *
  * Counts the bytes in `str`, excluding the null terminator.
  *
- * If you need the length of a UTF-8 string, consider using SDL_utf8strlen().
+ * If you need the length of a UTF-8 string, consider using utf8strlen().
  *
- * @param str The null-terminated string to read. Must not be NULL.
+ * @param str The null-terminated string to read. Must not be nullptr.
  * @returns the length (in bytes, excluding the null terminator) of `src`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_strnlen
- * @sa SDL_utf8strlen
- * @sa SDL_utf8strnlen
- **/
+ * @sa strnlen
+ * @sa utf8strlen
+ * @sa utf8strnlen
+ */
 inline size_t strlen(StringParam str) { return SDL_strlen(str); }
 
 /**
@@ -3177,9 +3228,9 @@ inline size_t strlen(StringParam str) { return SDL_strlen(str); }
  * Counts up to a maximum of `maxlen` bytes in `str`, excluding the null
  * terminator.
  *
- * If you need the length of a UTF-8 string, consider using SDL_utf8strnlen().
+ * If you need the length of a UTF-8 string, consider using utf8strnlen().
  *
- * @param str The null-terminated string to read. Must not be NULL.
+ * @param str The null-terminated string to read. Must not be nullptr.
  * @param maxlen The maximum amount of bytes to count.
  * @returns the length (in bytes, excluding the null terminator) of `src` but
  *          never more than `maxlen`.
@@ -3188,10 +3239,10 @@ inline size_t strlen(StringParam str) { return SDL_strlen(str); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_strlen
- * @sa SDL_utf8strlen
- * @sa SDL_utf8strnlen
- **/
+ * @sa strlen
+ * @sa utf8strlen
+ * @sa utf8strnlen
+ */
 inline size_t strnlen(StringParam str, size_t maxlen)
 {
   return SDL_strnlen(str, maxlen);
@@ -3207,11 +3258,11 @@ inline size_t strnlen(StringParam str, size_t maxlen)
  * written.
  *
  * If you want to copy an UTF-8 string but need to ensure that multi-byte
- * sequences are not truncated, consider using SDL_utf8strlcpy().
+ * sequences are not truncated, consider using utf8strlcpy().
  *
- * @param dst The destination buffer. Must not be NULL, and must not overlap
+ * @param dst The destination buffer. Must not be nullptr, and must not overlap
  *            with `src`.
- * @param src The null-terminated string to copy. Must not be NULL, and must
+ * @param src The null-terminated string to copy. Must not be nullptr, and must
  *            not overlap with `dst`.
  * @param maxlen The length (in characters) of the destination buffer.
  * @returns the length (in characters, excluding the null terminator) of
@@ -3221,9 +3272,9 @@ inline size_t strnlen(StringParam str, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_strlcat
- * @sa SDL_utf8strlcpy
- **/
+ * @sa strlcat
+ * @sa utf8strlcpy
+ */
 inline size_t strlcpy(char* dst, StringParam src, size_t maxlen)
 {
   return SDL_strlcpy(dst, src, maxlen);
@@ -3238,12 +3289,12 @@ inline size_t strlcpy(char* dst, StringParam src, size_t maxlen)
  *
  * `src` and `dst` must not overlap.
  *
- * Note that unlike SDL_strlcpy(), this function returns the number of bytes
+ * Note that unlike strlcpy(), this function returns the number of bytes
  * written, not the length of `src`.
  *
- * @param dst The destination buffer. Must not be NULL, and must not overlap
+ * @param dst The destination buffer. Must not be nullptr, and must not overlap
  *            with `src`.
- * @param src The null-terminated UTF-8 string to copy. Must not be NULL, and
+ * @param src The null-terminated UTF-8 string to copy. Must not be nullptr, and
  *            must not overlap with `dst`.
  * @param dst_bytes The length (in bytes) of the destination buffer. Must not
  *                  be 0.
@@ -3253,8 +3304,8 @@ inline size_t strlcpy(char* dst, StringParam src, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_strlcpy
- **/
+ * @sa strlcpy
+ */
 inline size_t utf8strlcpy(char* dst, StringParam src, size_t dst_bytes)
 {
   return SDL_utf8strlcpy(dst, src, dst_bytes);
@@ -3263,18 +3314,18 @@ inline size_t utf8strlcpy(char* dst, StringParam src, size_t dst_bytes)
 /**
  * Concatenate strings.
  *
- * This function appends up to `maxlen` - SDL_strlen(dst) - 1 characters from
+ * This function appends up to `maxlen` - strlen(dst) - 1 characters from
  * `src` to the end of the string in `dst`, then appends a null terminator.
  *
  * `src` and `dst` must not overlap.
  *
- * If `maxlen` - SDL_strlen(dst) - 1 is less than or equal to 0, then `dst` is
+ * If `maxlen` - strlen(dst) - 1 is less than or equal to 0, then `dst` is
  * unmodified.
  *
  * @param dst The destination buffer already containing the first
- *            null-terminated string. Must not be NULL and must not overlap
+ *            null-terminated string. Must not be nullptr and must not overlap
  *            with `src`.
- * @param src The second null-terminated string. Must not be NULL, and must
+ * @param src The second null-terminated string. Must not be nullptr, and must
  *            not overlap with `dst`.
  * @param maxlen The length (in characters) of the destination buffer.
  * @returns the length (in characters, excluding the null terminator) of the
@@ -3284,8 +3335,8 @@ inline size_t utf8strlcpy(char* dst, StringParam src, size_t dst_bytes)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_strlcpy
- **/
+ * @sa strlcpy
+ */
 inline size_t strlcat(char* dst, StringParam src, size_t maxlen)
 {
   return SDL_strlcat(dst, src, maxlen);
@@ -3295,10 +3346,10 @@ inline size_t strlcat(char* dst, StringParam src, size_t maxlen)
  * Allocate a copy of a string.
  *
  * This allocates enough space for a null-terminated copy of `str`, using
- * SDL_malloc, and then makes a copy of the string into this space.
+ * malloc, and then makes a copy of the string into this space.
  *
  * The returned string is owned by the caller, and should be passed to
- * SDL_free when no longer needed.
+ * free when no longer needed.
  *
  * @param str the string to copy.
  * @returns a pointer to the newly-allocated string.
@@ -3306,14 +3357,14 @@ inline size_t strlcat(char* dst, StringParam src, size_t maxlen)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strdup(StringParam str) { return SDL_strdup(str); }
 
 /**
  * Allocate a copy of a string, up to n characters.
  *
  * This allocates enough space for a null-terminated copy of `str`, up to
- * `maxlen` bytes, using SDL_malloc, and then makes a copy of the string into
+ * `maxlen` bytes, using malloc, and then makes a copy of the string into
  * this space.
  *
  * If the string is longer than `maxlen` bytes, the returned string will be
@@ -3321,7 +3372,7 @@ inline char* strdup(StringParam str) { return SDL_strdup(str); }
  * in the count.
  *
  * The returned string is owned by the caller, and should be passed to
- * SDL_free when no longer needed.
+ * free when no longer needed.
  *
  * @param str the string to copy.
  * @param maxlen the maximum length of the copied string, not counting the
@@ -3331,7 +3382,7 @@ inline char* strdup(StringParam str) { return SDL_strdup(str); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strndup(StringParam str, size_t maxlen)
 {
   return SDL_strndup(str, maxlen);
@@ -3355,7 +3406,7 @@ inline char* strndup(StringParam str, size_t maxlen)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strrev(char* str) { return SDL_strrev(str); }
 
 /**
@@ -3368,15 +3419,15 @@ inline char* strrev(char* str) { return SDL_strrev(str); }
  * malformed UTF-8!--and converts ASCII characters 'a' through 'z' to their
  * uppercase equivalents in-place, returning the original `str` pointer.
  *
- * @param str the string to convert in-place. Can not be NULL.
+ * @param str the string to convert in-place. Can not be nullptr.
  * @returns the `str` pointer passed into this function.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_strlwr
- **/
+ * @sa strlwr
+ */
 inline char* strupr(char* str) { return SDL_strupr(str); }
 
 /**
@@ -3389,15 +3440,15 @@ inline char* strupr(char* str) { return SDL_strupr(str); }
  * malformed UTF-8!--and converts ASCII characters 'A' through 'Z' to their
  * lowercase equivalents in-place, returning the original `str` pointer.
  *
- * @param str the string to convert in-place. Can not be NULL.
+ * @param str the string to convert in-place. Can not be nullptr.
  * @returns the `str` pointer passed into this function.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_strupr
- **/
+ * @sa strupr
+ */
 inline char* strlwr(char* str) { return SDL_strlwr(str); }
 
 /**
@@ -3409,15 +3460,15 @@ inline char* strlwr(char* str) { return SDL_strlwr(str); }
  * Note that this looks for _bytes_, not _characters_, so you cannot match
  * against a Unicode codepoint > 255, regardless of character encoding.
  *
- * @param str the string to search. Must not be NULL.
+ * @param str the string to search. Must not be nullptr.
  * @param c the byte value to search for.
- * @returns a pointer to the first instance of `c` in the string, or NULL if
+ * @returns a pointer to the first instance of `c` in the string, or nullptr if
  *          not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strchr(StringParam str, int c) { return SDL_strchr(str, c); }
 
 /**
@@ -3428,15 +3479,15 @@ inline char* strchr(StringParam str, int c) { return SDL_strchr(str, c); }
  * Note that this looks for _bytes_, not _characters_, so you cannot match
  * against a Unicode codepoint > 255, regardless of character encoding.
  *
- * @param str the string to search. Must not be NULL.
+ * @param str the string to search. Must not be nullptr.
  * @param c the byte value to search for.
- * @returns a pointer to the last instance of `c` in the string, or NULL if
+ * @returns a pointer to the last instance of `c` in the string, or nullptr if
  *          not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strrchr(StringParam str, int c) { return SDL_strrchr(str, c); }
 
 /**
@@ -3448,15 +3499,15 @@ inline char* strrchr(StringParam str, int c) { return SDL_strrchr(str, c); }
  * Note that this looks for strings of _bytes_, not _characters_, so it's
  * legal to search for malformed and incomplete UTF-8 sequences.
  *
- * @param haystack the string to search. Must not be NULL.
- * @param needle the string to search for. Must not be NULL.
- * @returns a pointer to the first instance of `needle` in the string, or NULL
- *          if not found.
+ * @param haystack the string to search. Must not be nullptr.
+ * @param needle the string to search for. Must not be nullptr.
+ * @returns a pointer to the first instance of `needle` in the string, or
+ * nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strstr(StringParam haystack, StringParam needle)
 {
   return SDL_strstr(haystack, needle);
@@ -3473,16 +3524,16 @@ inline char* strstr(StringParam haystack, StringParam needle)
  * Note that this looks for strings of _bytes_, not _characters_, so it's
  * legal to search for malformed and incomplete UTF-8 sequences.
  *
- * @param haystack the string to search. Must not be NULL.
- * @param needle the string to search for. Must not be NULL.
+ * @param haystack the string to search. Must not be nullptr.
+ * @param needle the string to search for. Must not be nullptr.
  * @param maxlen the maximum number of bytes to search in `haystack`.
- * @returns a pointer to the first instance of `needle` in the string, or NULL
- *          if not found.
+ * @returns a pointer to the first instance of `needle` in the string, or
+ * nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strnstr(StringParam haystack, StringParam needle, size_t maxlen)
 {
   return SDL_strnstr(haystack, needle, maxlen);
@@ -3505,15 +3556,15 @@ inline char* strnstr(StringParam haystack, StringParam needle, size_t maxlen)
  * CHARACTER), which is to say two strings of random bits may turn out to
  * match if they convert to the same amount of replacement characters.
  *
- * @param haystack the string to search. Must not be NULL.
- * @param needle the string to search for. Must not be NULL.
- * @returns a pointer to the first instance of `needle` in the string, or NULL
- *          if not found.
+ * @param haystack the string to search. Must not be nullptr.
+ * @param needle the string to search for. Must not be nullptr.
+ * @returns a pointer to the first instance of `needle` in the string, or
+ * nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strcasestr(StringParam haystack, StringParam needle)
 {
   return SDL_strcasestr(haystack, needle);
@@ -3525,9 +3576,9 @@ inline char* strcasestr(StringParam haystack, StringParam needle)
  *
  * Break a string up into a series of tokens.
  *
- * To start tokenizing a new string, `str` should be the non-NULL address of
+ * To start tokenizing a new string, `str` should be the non-nullptr address of
  * the string to start tokenizing. Future calls to get the next token from the
- * same string should specify a NULL.
+ * same string should specify a nullptr.
  *
  * Note that this function will overwrite pieces of `str` with null chars to
  * split it into tokens. This function cannot be used with const/read-only
@@ -3535,17 +3586,17 @@ inline char* strcasestr(StringParam haystack, StringParam needle)
  *
  * `saveptr` just needs to point to a `char *` that can be overwritten; SDL
  * will use this to save tokenizing state between calls. It is initialized if
- * `str` is non-NULL, and used to resume tokenizing when `str` is NULL.
+ * `str` is non-nullptr, and used to resume tokenizing when `str` is nullptr.
  *
- * @param str the string to tokenize, or NULL to continue tokenizing.
+ * @param str the string to tokenize, or nullptr to continue tokenizing.
  * @param delim the delimiter string that separates tokens.
  * @param saveptr pointer to a char *, used for ongoing state.
- * @returns A pointer to the next token, or NULL if no tokens remain.
+ * @returns A pointer to the next token, or nullptr if no tokens remain.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strtok_r(char* str, StringParam delim, char** saveptr)
 {
   return SDL_strtok_r(str, delim, saveptr);
@@ -3558,7 +3609,7 @@ inline char* strtok_r(char* str, StringParam delim, char** saveptr)
  * terminator.
  *
  * If you need to count the bytes in a string instead, consider using
- * SDL_strlen().
+ * strlen().
  *
  * Since this handles Unicode, it expects the strings to be well-formed UTF-8
  * and not a null-terminated string of arbitrary bytes. Bytes that are not
@@ -3566,7 +3617,7 @@ inline char* strtok_r(char* str, StringParam delim, char** saveptr)
  * CHARACTER), so a malformed or incomplete UTF-8 sequence might increase the
  * count by several replacement characters.
  *
- * @param str The null-terminated UTF-8 string to read. Must not be NULL.
+ * @param str The null-terminated UTF-8 string to read. Must not be nullptr.
  * @returns The length (in codepoints, excluding the null terminator) of
  *          `src`.
  *
@@ -3574,9 +3625,9 @@ inline char* strtok_r(char* str, StringParam delim, char** saveptr)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_utf8strnlen
- * @sa SDL_strlen
- **/
+ * @sa utf8strnlen
+ * @sa strlen
+ */
 inline size_t utf8strlen(StringParam str) { return SDL_utf8strlen(str); }
 
 /**
@@ -3586,7 +3637,7 @@ inline size_t utf8strlen(StringParam str) { return SDL_utf8strlen(str); }
  * terminator.
  *
  * If you need to count the bytes in a string instead, consider using
- * SDL_strnlen().
+ * strnlen().
  *
  * The counting stops at `bytes` bytes (not codepoints!). This seems
  * counterintuitive, but makes it easy to express the total size of the
@@ -3598,7 +3649,7 @@ inline size_t utf8strlen(StringParam str) { return SDL_utf8strlen(str); }
  * CHARACTER), so a malformed or incomplete UTF-8 sequence might increase the
  * count by several replacement characters.
  *
- * @param str The null-terminated UTF-8 string to read. Must not be NULL.
+ * @param str The null-terminated UTF-8 string to read. Must not be nullptr.
  * @param bytes The maximum amount of bytes to count.
  * @returns The length (in codepoints, excluding the null terminator) of `src`
  *          but never more than `maxlen`.
@@ -3607,9 +3658,9 @@ inline size_t utf8strlen(StringParam str) { return SDL_utf8strlen(str); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_utf8strlen
- * @sa SDL_strnlen
- **/
+ * @sa utf8strlen
+ * @sa strnlen
+ */
 inline size_t utf8strnlen(StringParam str, size_t bytes)
 {
   return SDL_utf8strnlen(str, bytes);
@@ -3623,8 +3674,8 @@ inline size_t utf8strnlen(StringParam str, size_t bytes)
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
- * to hold the output! It may be safer to use SDL_snprintf to clamp output, or
- * SDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
+ * to hold the output! It may be safer to use snprintf to clamp output, or
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
  * much more space than you expect to use (and don't forget possible negative
  * signs, null terminator bytes, etc).
  *
@@ -3637,10 +3688,10 @@ inline size_t utf8strnlen(StringParam str, size_t bytes)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_uitoa
- * @sa SDL_ltoa
+ * @sa uitoa
+ * @sa ltoa
  * @sa SDL_lltoa
- **/
+ */
 inline char* itoa(int value, char* str, int radix)
 {
   return SDL_itoa(value, str, radix);
@@ -3654,8 +3705,8 @@ inline char* itoa(int value, char* str, int radix)
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
- * to hold the output! It may be safer to use SDL_snprintf to clamp output, or
- * SDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
+ * to hold the output! It may be safer to use snprintf to clamp output, or
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
  * much more space than you expect to use (and don't forget null terminator
  * bytes, etc).
  *
@@ -3668,10 +3719,10 @@ inline char* itoa(int value, char* str, int radix)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_itoa
- * @sa SDL_ultoa
+ * @sa itoa
+ * @sa ultoa
  * @sa SDL_ulltoa
- **/
+ */
 inline char* uitoa(unsigned int value, char* str, int radix)
 {
   return SDL_uitoa(value, str, radix);
@@ -3685,8 +3736,8 @@ inline char* uitoa(unsigned int value, char* str, int radix)
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
- * to hold the output! It may be safer to use SDL_snprintf to clamp output, or
- * SDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
+ * to hold the output! It may be safer to use snprintf to clamp output, or
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
  * much more space than you expect to use (and don't forget possible negative
  * signs, null terminator bytes, etc).
  *
@@ -3699,10 +3750,10 @@ inline char* uitoa(unsigned int value, char* str, int radix)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ultoa
- * @sa SDL_itoa
+ * @sa ultoa
+ * @sa itoa
  * @sa SDL_lltoa
- **/
+ */
 inline char* ltoa(long value, char* str, int radix)
 {
   return SDL_ltoa(value, str, radix);
@@ -3716,8 +3767,8 @@ inline char* ltoa(long value, char* str, int radix)
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
- * to hold the output! It may be safer to use SDL_snprintf to clamp output, or
- * SDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
+ * to hold the output! It may be safer to use snprintf to clamp output, or
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
  * much more space than you expect to use (and don't forget null terminator
  * bytes, etc).
  *
@@ -3730,10 +3781,10 @@ inline char* ltoa(long value, char* str, int radix)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ltoa
- * @sa SDL_uitoa
+ * @sa ltoa
+ * @sa uitoa
  * @sa SDL_ulltoa
- **/
+ */
 inline char* ultoa(unsigned long value, char* str, int radix)
 {
   return SDL_ultoa(value, str, radix);
@@ -3742,46 +3793,46 @@ inline char* ultoa(unsigned long value, char* str, int radix)
 /**
  * Parse an `int` from a string.
  *
- * The result of calling `SDL_atoi(str)` is equivalent to
- * `(int)SDL_strtol(str, NULL, 10)`.
+ * The result of calling `atoi(str)` is equivalent to
+ * `(int)strtol(str, nullptr, 10)`.
  *
- * @param str The null-terminated string to read. Must not be NULL.
+ * @param str The null-terminated string to read. Must not be nullptr.
  * @returns the parsed `int`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atof
- * @sa SDL_strtol
- * @sa SDL_strtoul
+ * @sa atof
+ * @sa strtol
+ * @sa strtoul
  * @sa SDL_strtoll
  * @sa SDL_strtoull
- * @sa SDL_strtod
- * @sa SDL_itoa
- **/
+ * @sa strtod
+ * @sa itoa
+ */
 inline int atoi(StringParam str) { return SDL_atoi(str); }
 
 /**
  * Parse a `double` from a string.
  *
- * The result of calling `SDL_atof(str)` is equivalent to `SDL_strtod(str,
- * NULL)`.
+ * The result of calling `atof(str)` is equivalent to `strtod(str,
+ * nullptr)`.
  *
- * @param str The null-terminated string to read. Must not be NULL.
+ * @param str The null-terminated string to read. Must not be nullptr.
  * @returns the parsed `double`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atoi
- * @sa SDL_strtol
- * @sa SDL_strtoul
+ * @sa atoi
+ * @sa strtol
+ * @sa strtoul
  * @sa SDL_strtoll
  * @sa SDL_strtoull
- * @sa SDL_strtod
- **/
+ * @sa strtod
+ */
 inline double atof(StringParam str) { return SDL_atof(str); }
 
 /**
@@ -3793,8 +3844,8 @@ inline double atof(StringParam str) { return SDL_atof(str); }
  * If the parsed number does not fit inside a `long`, the result is clamped to
  * the minimum and maximum representable `long` values.
  *
- * @param str The null-terminated string to read. Must not be NULL.
- * @param endp If not NULL, the address of the first invalid character (i.e.
+ * @param str The null-terminated string to read. Must not be nullptr.
+ * @param endp If not nullptr, the address of the first invalid character (i.e.
  *             the next character after the parsed number) will be written to
  *             this pointer.
  * @param base The base of the integer to read. Supported values are 0 and 2
@@ -3807,15 +3858,15 @@ inline double atof(StringParam str) { return SDL_atof(str); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atoi
- * @sa SDL_atof
- * @sa SDL_strtoul
+ * @sa atoi
+ * @sa atof
+ * @sa strtoul
  * @sa SDL_strtoll
  * @sa SDL_strtoull
- * @sa SDL_strtod
- * @sa SDL_ltoa
- * @sa SDL_wcstol
- **/
+ * @sa strtod
+ * @sa ltoa
+ * @sa wcstol
+ */
 inline long strtol(StringParam str, char** endp, int base)
 {
   return SDL_strtol(str, endp, base);
@@ -3830,8 +3881,8 @@ inline long strtol(StringParam str, char** endp, int base)
  * If the parsed number does not fit inside an `unsigned long`, the result is
  * clamped to the maximum representable `unsigned long` value.
  *
- * @param str The null-terminated string to read. Must not be NULL.
- * @param endp If not NULL, the address of the first invalid character (i.e.
+ * @param str The null-terminated string to read. Must not be nullptr.
+ * @param endp If not nullptr, the address of the first invalid character (i.e.
  *             the next character after the parsed number) will be written to
  *             this pointer.
  * @param base The base of the integer to read. Supported values are 0 and 2
@@ -3844,14 +3895,14 @@ inline long strtol(StringParam str, char** endp, int base)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atoi
- * @sa SDL_atof
- * @sa SDL_strtol
+ * @sa atoi
+ * @sa atof
+ * @sa strtol
  * @sa SDL_strtoll
  * @sa SDL_strtoull
- * @sa SDL_strtod
- * @sa SDL_ultoa
- **/
+ * @sa strtod
+ * @sa ultoa
+ */
 inline unsigned long strtoul(StringParam str, char** endp, int base)
 {
   return SDL_strtoul(str, endp, base);
@@ -3867,8 +3918,8 @@ inline unsigned long strtoul(StringParam str, char** endp, int base)
  * - Whether or not INF and NAN can be parsed is unspecified.
  * - The precision of the result is unspecified.
  *
- * @param str the null-terminated string to read. Must not be NULL.
- * @param endp if not NULL, the address of the first invalid character (i.e.
+ * @param str the null-terminated string to read. Must not be nullptr.
+ * @param endp if not nullptr, the address of the first invalid character (i.e.
  *             the next character after the parsed number) will be written to
  *             this pointer.
  * @returns the parsed `double`, or 0 if no number could be parsed.
@@ -3877,13 +3928,13 @@ inline unsigned long strtoul(StringParam str, char** endp, int base)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atoi
- * @sa SDL_atof
- * @sa SDL_strtol
+ * @sa atoi
+ * @sa atof
+ * @sa strtol
  * @sa SDL_strtoll
- * @sa SDL_strtoul
+ * @sa strtoul
  * @sa SDL_strtoull
- **/
+ */
 inline double strtod(StringParam str, char** endp)
 {
   return SDL_strtod(str, endp);
@@ -3895,10 +3946,10 @@ inline double strtod(StringParam str, char** endp)
  * Due to the nature of UTF-8 encoding, this will work with Unicode strings,
  * since effectively this function just compares bytes until it hits a
  * null-terminating character. Also due to the nature of UTF-8, this can be
- * used with SDL_qsort() to put strings in (roughly) alphabetical order.
+ * used with qsort() to put strings in (roughly) alphabetical order.
  *
- * @param str1 the first string to compare. NULL is not permitted!
- * @param str2 the second string to compare. NULL is not permitted!
+ * @param str1 the first string to compare. nullptr is not permitted!
+ * @param str2 the second string to compare. nullptr is not permitted!
  * @returns less than zero if str1 is "less than" str2, greater than zero if
  *          str1 is "greater than" str2, and zero if the strings match
  *          exactly.
@@ -3906,7 +3957,7 @@ inline double strtod(StringParam str, char** endp)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int strcmp(StringParam str1, StringParam str2)
 {
   return SDL_strcmp(str1, str2);
@@ -3918,7 +3969,7 @@ inline int strcmp(StringParam str1, StringParam str2)
  * Due to the nature of UTF-8 encoding, this will work with Unicode strings,
  * since effectively this function just compares bytes until it hits a
  * null-terminating character. Also due to the nature of UTF-8, this can be
- * used with SDL_qsort() to put strings in (roughly) alphabetical order.
+ * used with qsort() to put strings in (roughly) alphabetical order.
  *
  * Note that while this function is intended to be used with UTF-8, it is
  * doing a bytewise comparison, and `maxlen` specifies a _byte_ limit! If the
@@ -3929,8 +3980,8 @@ inline int strcmp(StringParam str1, StringParam str2)
  * match to this number of bytes (or both have matched to a null-terminator
  * character before this number of bytes), they will be considered equal.
  *
- * @param str1 the first string to compare. NULL is not permitted!
- * @param str2 the second string to compare. NULL is not permitted!
+ * @param str1 the first string to compare. nullptr is not permitted!
+ * @param str2 the second string to compare. nullptr is not permitted!
  * @param maxlen the maximum number of _bytes_ to compare.
  * @returns less than zero if str1 is "less than" str2, greater than zero if
  *          str1 is "greater than" str2, and zero if the strings match
@@ -3939,7 +3990,7 @@ inline int strcmp(StringParam str1, StringParam str2)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int strncmp(StringParam str1, StringParam str2, size_t maxlen)
 {
   return SDL_strncmp(str1, str2, maxlen);
@@ -3961,8 +4012,8 @@ inline int strncmp(StringParam str1, StringParam str2, size_t maxlen)
  * CHARACTER), which is to say two strings of random bits may turn out to
  * match if they convert to the same amount of replacement characters.
  *
- * @param str1 the first string to compare. NULL is not permitted!
- * @param str2 the second string to compare. NULL is not permitted!
+ * @param str1 the first string to compare. nullptr is not permitted!
+ * @param str2 the second string to compare. nullptr is not permitted!
  * @returns less than zero if str1 is "less than" str2, greater than zero if
  *          str1 is "greater than" str2, and zero if the strings match
  *          exactly.
@@ -3970,7 +4021,7 @@ inline int strncmp(StringParam str1, StringParam str2, size_t maxlen)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int strcasecmp(StringParam str1, StringParam str2)
 {
   return SDL_strcasecmp(str1, str2);
@@ -4002,8 +4053,8 @@ inline int strcasecmp(StringParam str1, StringParam str2)
  * match to this number of bytes (or both have matched to a null-terminator
  * character before this number of bytes), they will be considered equal.
  *
- * @param str1 the first string to compare. NULL is not permitted!
- * @param str2 the second string to compare. NULL is not permitted!
+ * @param str1 the first string to compare. nullptr is not permitted!
+ * @param str2 the second string to compare. nullptr is not permitted!
  * @param maxlen the maximum number of bytes to compare.
  * @returns less than zero if str1 is "less than" str2, greater than zero if
  *          str1 is "greater than" str2, and zero if the strings match
@@ -4012,7 +4063,7 @@ inline int strcasecmp(StringParam str1, StringParam str2)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline int strncasecmp(StringParam str1, StringParam str2, size_t maxlen)
 {
   return SDL_strncasecmp(str1, str2, maxlen);
@@ -4022,18 +4073,18 @@ inline int strncasecmp(StringParam str1, StringParam str2, size_t maxlen)
  * Searches a string for the first occurence of any character contained in a
  * breakset, and returns a pointer from the string to that character.
  *
- * @param str The null-terminated string to be searched. Must not be NULL, and
- *            must not overlap with `breakset`.
+ * @param str The null-terminated string to be searched. Must not be nullptr,
+ *            and must not overlap with `breakset`.
  * @param breakset A null-terminated string containing the list of characters
- *                 to look for. Must not be NULL, and must not overlap with
+ *                 to look for. Must not be nullptr, and must not overlap with
  *                 `str`.
  * @returns A pointer to the location, in str, of the first occurence of a
- *          character present in the breakset, or NULL if none is found.
+ *          character present in the breakset, or nullptr if none is found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* strpbrk(StringParam str, StringParam breakset)
 {
   return SDL_strpbrk(str, breakset);
@@ -4042,15 +4093,15 @@ inline char* strpbrk(StringParam str, StringParam breakset)
 /**
  * The Unicode REPLACEMENT CHARACTER codepoint.
  *
- * SDL_StepUTF8() and SDL_StepBackUTF8() report this codepoint when they
+ * StepUTF8() and StepBackUTF8() report this codepoint when they
  * encounter a UTF-8 string with encoding errors.
  *
  * This tends to render as something like a question mark in most places.
  *
- * @since This constant is available since SDL 3.2.0.
+ * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_StepBackUTF8
- * @sa SDL_StepUTF8
+ * @sa StepBackUTF8
+ * @sa StepUTF8
  */
 constexpr Uint32 INVALID_UNICODE_CODEPOINT = SDL_INVALID_UNICODE_CODEPOINT;
 
@@ -4063,23 +4114,23 @@ constexpr Uint32 INVALID_UNICODE_CODEPOINT = SDL_INVALID_UNICODE_CODEPOINT;
  * It will not access more than `*pslen` bytes from the string. `*pslen` will
  * be adjusted, as well, subtracting the number of bytes consumed.
  *
- * `pslen` is allowed to be NULL, in which case the string _must_ be
- * NULL-terminated, as the function will blindly read until it sees the NULL
- * char.
+ * `pslen` is allowed to be nullptr, in which case the string _must_ be
+ * nullptr-terminated, as the function will blindly read until it sees the
+ * nullptr char.
  *
  * if `*pslen` is zero, it assumes the end of string is reached and returns a
  * zero codepoint regardless of the contents of the string buffer.
  *
- * If the resulting codepoint is zero (a NULL terminator), or `*pslen` is
+ * If the resulting codepoint is zero (a nullptr terminator), or `*pslen` is
  * zero, it will not advance `*pstr` or `*pslen` at all.
  *
  * Generally this function is called in a loop until it returns zero,
  * adjusting its parameters each iteration.
  *
  * If an invalid UTF-8 sequence is encountered, this function returns
- * SDL_INVALID_UNICODE_CODEPOINT and advances the string/length by one byte
+ * INVALID_UNICODE_CODEPOINT and advances the string/length by one byte
  * (which is to say, a multibyte sequence might produce several
- * SDL_INVALID_UNICODE_CODEPOINT returns before it syncs to the next valid
+ * INVALID_UNICODE_CODEPOINT returns before it syncs to the next valid
  * UTF-8 sequence).
  *
  * Several things can generate invalid UTF-8 sequences, including overlong
@@ -4090,13 +4141,13 @@ constexpr Uint32 INVALID_UNICODE_CODEPOINT = SDL_INVALID_UNICODE_CODEPOINT;
  *
  * @param pstr a pointer to a UTF-8 string pointer to be read and adjusted.
  * @param pslen a pointer to the number of bytes in the string, to be read and
- *              adjusted. NULL is allowed.
+ *              adjusted. nullptr is allowed.
  * @returns the first Unicode codepoint in the string.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline Uint32 StepUTF8(const char** pstr, size_t* pslen)
 {
   return SDL_StepUTF8(pstr, pslen);
@@ -4115,7 +4166,7 @@ inline Uint32 StepUTF8(const char** pstr, size_t* pslen)
  * adjusting its parameter each iteration.
  *
  * If an invalid UTF-8 sequence is encountered, this function returns
- * SDL_INVALID_UNICODE_CODEPOINT.
+ * INVALID_UNICODE_CODEPOINT.
  *
  * Several things can generate invalid UTF-8 sequences, including overlong
  * encodings, the use of UTF-16 surrogate values, and truncated data. Please
@@ -4130,7 +4181,7 @@ inline Uint32 StepUTF8(const char** pstr, size_t* pslen)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline Uint32 StepBackUTF8(StringParam start, const char** pstr)
 {
   return SDL_StepBackUTF8(start, pstr);
@@ -4144,14 +4195,14 @@ inline Uint32 StepBackUTF8(StringParam start, const char** pstr)
  *
  * This function returns the first byte _after_ the newly-written UTF-8
  * sequence, which is useful for encoding multiple codepoints in a loop, or
- * knowing where to write a NULL-terminator character to end the string (in
+ * knowing where to write a nullptr-terminator character to end the string (in
  * either case, plan to have a buffer of _more_ than 4 bytes!).
  *
  * If `codepoint` is an invalid value (outside the Unicode range, or a UTF-16
  * surrogate value, etc), this will use U+FFFD (REPLACEMENT CHARACTER) for the
  * codepoint instead, and not set an error.
  *
- * If `dst` is NULL, this returns NULL immediately without writing to the
+ * If `dst` is nullptr, this returns nullptr immediately without writing to the
  * pointer and without setting an error.
  *
  * @param codepoint a Unicode codepoint to convert to UTF-8.
@@ -4162,7 +4213,7 @@ inline Uint32 StepBackUTF8(StringParam start, const char** pstr)
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline char* UCS4ToUTF8(Uint32 codepoint, char* dst)
 {
   return SDL_UCS4ToUTF8(codepoint, dst);
@@ -4174,8 +4225,8 @@ inline char* UCS4ToUTF8(Uint32 codepoint, char* dst)
  * Scan a string, matching a format string, converting each '%' item and
  * storing it to pointers provided through variable arguments.
  *
- * @param text the string to scan. Must not be NULL.
- * @param fmt a printf-style format string. Must not be NULL.
+ * @param text the string to scan. Must not be nullptr.
+ * @param fmt a printf-style format string. Must not be nullptr.
  * @param ... a list of pointers to values to be filled in with scanned items.
  * @returns the number of items that matched the format string.
  *
@@ -4199,11 +4250,11 @@ inline int sscanf(StringParam text,
  * This works exactly like vsscanf() but doesn't require access to a C
  * runtime.
  *
- * Functions identically to SDL_sscanf(), except it takes a `va_list` instead
+ * Functions identically to sscanf(), except it takes a `va_list` instead
  * of using `...` variable arguments.
  *
- * @param text the string to scan. Must not be NULL.
- * @param fmt a printf-style format string. Must not be NULL.
+ * @param text the string to scan. Must not be nullptr.
+ * @param fmt a printf-style format string. Must not be nullptr.
  * @param ap a `va_list` of pointers to values to be filled in with scanned
  *           items.
  * @returns the number of items that matched the format string.
@@ -4239,9 +4290,9 @@ inline int vsscanf(StringParam text,
  * Referencing the output string's pointer with a format item is undefined
  * behavior.
  *
- * @param text the buffer to write the string into. Must not be NULL.
+ * @param text the buffer to write the string into. Must not be nullptr.
  * @param maxlen the maximum bytes to write, including the null-terminator.
- * @param fmt a printf-style format string. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be nullptr.
  * @param ... a list of values to be used with the format string.
  * @returns the number of bytes that should be written, not counting the
  *          null-terminator char, or a negative value on error.
@@ -4285,10 +4336,10 @@ inline int snprintf(char* text,
  * Referencing the output string's pointer with a format item is undefined
  * behavior.
  *
- * @param text the buffer to write the wide string into. Must not be NULL.
+ * @param text the buffer to write the wide string into. Must not be nullptr.
  * @param maxlen the maximum wchar_t values to write, including the
  *               null-terminator.
- * @param fmt a printf-style format string. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be nullptr.
  * @param ... a list of values to be used with the format string.
  * @returns the number of wide characters that should be written, not counting
  *          the null-terminator char, or a negative value on error.
@@ -4316,12 +4367,12 @@ inline int swprintf(wchar_t* text,
  * This works exactly like vsnprintf() but doesn't require access to a C
  * runtime.
  *
- * Functions identically to SDL_snprintf(), except it takes a `va_list`
+ * Functions identically to snprintf(), except it takes a `va_list`
  * instead of using `...` variable arguments.
  *
- * @param text the buffer to write the string into. Must not be NULL.
+ * @param text the buffer to write the string into. Must not be nullptr.
  * @param maxlen the maximum bytes to write, including the null-terminator.
- * @param fmt a printf-style format string. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be nullptr.
  * @param ap a `va_list` values to be used with the format string.
  * @returns the number of bytes that should be written, not counting the
  *          null-terminator char, or a negative value on error.
@@ -4342,13 +4393,13 @@ inline int vsnprintf(char* text,
  * This works exactly like vswprintf() but doesn't require access to a C
  * runtime.
  *
- * Functions identically to SDL_swprintf(), except it takes a `va_list`
+ * Functions identically to swprintf(), except it takes a `va_list`
  * instead of using `...` variable arguments.
  *
- * @param text the buffer to write the string into. Must not be NULL.
+ * @param text the buffer to write the string into. Must not be nullptr.
  * @param maxlen the maximum wide characters to write, including the
  *               null-terminator.
- * @param fmt a printf-style format wide string. Must not be NULL.
+ * @param fmt a printf-style format wide string. Must not be nullptr.
  * @param ap a `va_list` values to be used with the format string.
  * @returns the number of wide characters that should be written, not counting
  *          the null-terminator char, or a negative value on error.
@@ -4369,7 +4420,7 @@ inline int vswprintf(wchar_t* text,
  * This works exactly like asprintf() but doesn't require access to a C
  * runtime.
  *
- * Functions identically to SDL_snprintf(), except it allocates a buffer large
+ * Functions identically to snprintf(), except it allocates a buffer large
  * enough to hold the output string on behalf of the caller.
  *
  * On success, this function returns the number of bytes (not characters)
@@ -4380,10 +4431,10 @@ inline int vswprintf(wchar_t* text,
  * is undefined.
  *
  * The returned string is owned by the caller, and should be passed to
- * SDL_free when no longer needed.
+ * free when no longer needed.
  *
- * @param strp on output, is set to the new string. Must not be NULL.
- * @param fmt a printf-style format string. Must not be NULL.
+ * @param strp on output, is set to the new string. Must not be nullptr.
+ * @param fmt a printf-style format string. Must not be nullptr.
  * @param ... a list of values to be used with the format string.
  * @returns the number of bytes in the newly-allocated string, not counting
  *          the null-terminator char, or a negative value on error.
@@ -4408,11 +4459,11 @@ inline int asprintf(char** strp, SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
  * This works exactly like vasprintf() but doesn't require access to a C
  * runtime.
  *
- * Functions identically to SDL_asprintf(), except it takes a `va_list`
+ * Functions identically to asprintf(), except it takes a `va_list`
  * instead of using `...` variable arguments.
  *
- * @param strp on output, is set to the new string. Must not be NULL.
- * @param fmt a printf-style format string. Must not be NULL.
+ * @param strp on output, is set to the new string. Must not be nullptr.
+ * @param fmt a printf-style format string. Must not be nullptr.
  * @param ap a `va_list` values to be used with the format string.
  * @returns the number of bytes in the newly-allocated string, not counting
  *          the null-terminator char, or a negative value on error.
@@ -4431,21 +4482,21 @@ inline int vasprintf(char** strp,
 /**
  * Seeds the pseudo-random number generator.
  *
- * Reusing the seed number will cause rand_*() to repeat the same stream
- * of 'random' numbers.
+ * Reusing the seed number will cause rand() to repeat the same stream of
+ * 'random' numbers.
  *
  * @param seed the value to use as a random number seed, or 0 to use
- *             SDL_GetPerformanceCounter().
+ *             GetPerformanceCounter().
  *
  * @threadsafety This should be called on the same thread that calls
- *               rand*()
+ *               rand()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa rand()
- * @sa rand_bits()
- * @sa randf()
- **/
+ * @sa rand
+ * @sa rand_bits
+ * @sa randf
+ */
 inline void srand(Uint64 seed) { SDL_srand(seed); }
 
 /**
@@ -4459,9 +4510,10 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
  * 1..6
  *
  * If you want to generate a pseudo-random number in the full range of Sint32,
- * you should use: (Sint32)SDL_rand_bits()
+ * you should use: (Sint32)rand_bits()
  *
- * If you want reproducible output, be sure to initialize with srand() first.
+ * If you want reproducible output, be sure to initialize with srand()
+ * first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -4476,9 +4528,9 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa srand()
- * @sa randf()
- **/
+ * @sa srand
+ * @sa randf
+ */
 inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
 
 /**
@@ -4498,9 +4550,9 @@ inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa srand()
- * @sa rand()
- **/
+ * @sa srand
+ * @sa rand
+ */
 inline float randf() { return SDL_randf(); }
 
 /**
@@ -4514,16 +4566,16 @@ inline float randf() { return SDL_randf(); }
  * libraries available with different characteristics and you should pick one
  * of those to meet any serious needs.
  *
- * @returns a random value in the range of [0-SDL_MAX_UINT32].
+ * @returns a random value in the range of [0-MAX_UINT32].
  *
  * @threadsafety All calls should be made from a single thread
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa rand()
- * @sa randf()
- * @sa srand()
- **/
+ * @sa rand
+ * @sa randf
+ * @sa srand
+ */
 inline Uint32 rand_bits() { return SDL_rand_bits(); }
 
 /**
@@ -4579,14 +4631,17 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL::rand()
-   * @sa rand_bits()
-   * @sa randf()
+   * @sa rand
+   * @sa Random.rand_bits
+   * @sa Random.randf
    */
   Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
 
   /**
    * Generate a uniform pseudo-random floating point number less than 1.0
+   *
+   * If you want reproducible output, be sure to initialize with srand()
+   * first.
    *
    * There are no guarantees as to the quality of the random sequence produced,
    * and this should not be used for security (cryptography, passwords) or where
@@ -4601,9 +4656,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa rand_bits()
-   * @sa rand()
-   * @sa SDL::randf()
+   * @sa Random.rand_bits
+   * @sa Random.rand
+   * @sa randf
    */
   float randf() { return SDL_randf_r(&m_state); }
 
@@ -4618,16 +4673,15 @@ public:
    * libraries available with different characteristics and you should pick one
    * of those to meet any serious needs.
    *
-   * @returns a random value in the range of [0-SDL_MAX_UINT32].
+   * @returns a random value in the range of [0-MAX_UINT32].
    *
    * @threadsafety This function is thread-safe, as long as this object
    *               isn't shared between threads.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa rand()
-   * @sa randf()
-   * @sa SDL::rand_bits()
+   * @sa Random.rand
+   * @sa Random.randf
    */
   Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
 };
@@ -4664,7 +4718,7 @@ public:
  * Range: `0 <= y <= Pi`
  *
  * This function operates on double-precision floating point values, use
- * SDL_acosf for single-precision floats.
+ * acosf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4678,10 +4732,10 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_acosf
- * @sa SDL_asin
- * @sa SDL_cos
- **/
+ * @sa acosf
+ * @sa asin
+ * @sa cos
+ */
 inline double acos(double x) { return SDL_acos(x); }
 
 /**
@@ -4694,7 +4748,7 @@ inline double acos(double x) { return SDL_acos(x); }
  * Range: `0 <= y <= Pi`
  *
  * This function operates on single-precision floating point values, use
- * SDL_acos for double-precision floats.
+ * acos for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4708,10 +4762,10 @@ inline double acos(double x) { return SDL_acos(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_acos
- * @sa SDL_asinf
- * @sa SDL_cosf
- **/
+ * @sa acos
+ * @sa asinf
+ * @sa cosf
+ */
 inline float acosf(float x) { return SDL_acosf(x); }
 
 /**
@@ -4724,7 +4778,7 @@ inline float acosf(float x) { return SDL_acosf(x); }
  * Range: `-Pi/2 <= y <= Pi/2`
  *
  * This function operates on double-precision floating point values, use
- * SDL_asinf for single-precision floats.
+ * asinf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4738,10 +4792,10 @@ inline float acosf(float x) { return SDL_acosf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_asinf
- * @sa SDL_acos
- * @sa SDL_sin
- **/
+ * @sa asinf
+ * @sa acos
+ * @sa sin
+ */
 inline double asin(double x) { return SDL_asin(x); }
 
 /**
@@ -4754,7 +4808,7 @@ inline double asin(double x) { return SDL_asin(x); }
  * Range: `-Pi/2 <= y <= Pi/2`
  *
  * This function operates on single-precision floating point values, use
- * SDL_asin for double-precision floats.
+ * asin for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4768,10 +4822,10 @@ inline double asin(double x) { return SDL_asin(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_asin
- * @sa SDL_acosf
- * @sa SDL_sinf
- **/
+ * @sa asin
+ * @sa acosf
+ * @sa sinf
+ */
 inline float asinf(float x) { return SDL_asinf(x); }
 
 /**
@@ -4784,9 +4838,9 @@ inline float asinf(float x) { return SDL_asinf(x); }
  * Range: `-Pi/2 <= y <= Pi/2`
  *
  * This function operates on double-precision floating point values, use
- * SDL_atanf for single-precision floats.
+ * atanf for single-precision floats.
  *
- * To calculate the arc tangent of y / x, use SDL_atan2.
+ * To calculate the arc tangent of y / x, use atan2.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4800,10 +4854,10 @@ inline float asinf(float x) { return SDL_asinf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atanf
- * @sa SDL_atan2
- * @sa SDL_tan
- **/
+ * @sa atanf
+ * @sa atan2
+ * @sa tan
+ */
 inline double atan(double x) { return SDL_atan(x); }
 
 /**
@@ -4816,9 +4870,9 @@ inline double atan(double x) { return SDL_atan(x); }
  * Range: `-Pi/2 <= y <= Pi/2`
  *
  * This function operates on single-precision floating point values, use
- * SDL_atan for dboule-precision floats.
+ * atan for dboule-precision floats.
  *
- * To calculate the arc tangent of y / x, use SDL_atan2f.
+ * To calculate the arc tangent of y / x, use atan2f.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4832,10 +4886,10 @@ inline double atan(double x) { return SDL_atan(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atan
- * @sa SDL_atan2f
- * @sa SDL_tanf
- **/
+ * @sa atan
+ * @sa atan2f
+ * @sa tanf
+ */
 inline float atanf(float x) { return SDL_atanf(x); }
 
 /**
@@ -4850,9 +4904,9 @@ inline float atanf(float x) { return SDL_atanf(x); }
  * Range: `-Pi/2 <= y <= Pi/2`
  *
  * This function operates on double-precision floating point values, use
- * SDL_atan2f for single-precision floats.
+ * atan2f for single-precision floats.
  *
- * To calculate the arc tangent of a single value, use SDL_atan.
+ * To calculate the arc tangent of a single value, use atan.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4868,10 +4922,10 @@ inline float atanf(float x) { return SDL_atanf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atan2f
- * @sa SDL_atan
- * @sa SDL_tan
- **/
+ * @sa atan2f
+ * @sa atan
+ * @sa tan
+ */
 inline double atan2(double y, double x) { return SDL_atan2(y, x); }
 
 /**
@@ -4886,9 +4940,9 @@ inline double atan2(double y, double x) { return SDL_atan2(y, x); }
  * Range: `-Pi/2 <= y <= Pi/2`
  *
  * This function operates on single-precision floating point values, use
- * SDL_atan2 for double-precision floats.
+ * atan2 for double-precision floats.
  *
- * To calculate the arc tangent of a single value, use SDL_atanf.
+ * To calculate the arc tangent of a single value, use atanf.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4904,10 +4958,10 @@ inline double atan2(double y, double x) { return SDL_atan2(y, x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_atan2f
- * @sa SDL_atan
- * @sa SDL_tan
- **/
+ * @sa atan2
+ * @sa atan
+ * @sa tan
+ */
 inline float atan2f(float y, float x) { return SDL_atan2f(y, x); }
 
 /**
@@ -4921,7 +4975,7 @@ inline float atan2f(float y, float x) { return SDL_atan2f(y, x); }
  * Range: `-INF <= y <= INF`, y integer
  *
  * This function operates on double-precision floating point values, use
- * SDL_ceilf for single-precision floats.
+ * ceilf for single-precision floats.
  *
  * @param x floating point value.
  * @returns the ceiling of `x`.
@@ -4930,12 +4984,12 @@ inline float atan2f(float y, float x) { return SDL_atan2f(y, x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ceilf
- * @sa SDL_floor
- * @sa SDL_trunc
- * @sa SDL_round
- * @sa SDL_lround
- **/
+ * @sa ceilf
+ * @sa floor
+ * @sa trunc
+ * @sa round
+ * @sa lround
+ */
 inline double ceil(double x) { return SDL_ceil(x); }
 
 /**
@@ -4949,7 +5003,7 @@ inline double ceil(double x) { return SDL_ceil(x); }
  * Range: `-INF <= y <= INF`, y integer
  *
  * This function operates on single-precision floating point values, use
- * SDL_ceil for double-precision floats.
+ * ceil for double-precision floats.
  *
  * @param x floating point value.
  * @returns the ceiling of `x`.
@@ -4958,12 +5012,12 @@ inline double ceil(double x) { return SDL_ceil(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ceil
- * @sa SDL_floorf
- * @sa SDL_truncf
- * @sa SDL_roundf
- * @sa SDL_lroundf
- **/
+ * @sa ceil
+ * @sa floorf
+ * @sa truncf
+ * @sa roundf
+ * @sa lroundf
+ */
 inline float ceilf(float x) { return SDL_ceilf(x); }
 
 /**
@@ -4976,7 +5030,7 @@ inline float ceilf(float x) { return SDL_ceilf(x); }
  * Range: `-INF <= z <= INF`
  *
  * This function operates on double-precision floating point values, use
- * SDL_copysignf for single-precision floats.
+ * copysignf for single-precision floats.
  *
  * @param x floating point value to use as the magnitude.
  * @param y floating point value to use as the sign.
@@ -4987,9 +5041,9 @@ inline float ceilf(float x) { return SDL_ceilf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_copysignf
- * @sa SDL_fabs
- **/
+ * @sa copysignf
+ * @sa fabs
+ */
 inline double copysign(double x, double y) { return SDL_copysign(x, y); }
 
 /**
@@ -5002,7 +5056,7 @@ inline double copysign(double x, double y) { return SDL_copysign(x, y); }
  * Range: `-INF <= z <= INF`
  *
  * This function operates on single-precision floating point values, use
- * SDL_copysign for double-precision floats.
+ * copysign for double-precision floats.
  *
  * @param x floating point value to use as the magnitude.
  * @param y floating point value to use as the sign.
@@ -5013,9 +5067,9 @@ inline double copysign(double x, double y) { return SDL_copysign(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_copysignf
- * @sa SDL_fabsf
- **/
+ * @sa copysign
+ * @sa fabsf
+ */
 inline float copysignf(float x, float y) { return SDL_copysignf(x, y); }
 
 /**
@@ -5026,7 +5080,7 @@ inline float copysignf(float x, float y) { return SDL_copysignf(x, y); }
  * Range: `-1 <= y <= 1`
  *
  * This function operates on double-precision floating point values, use
- * SDL_cosf for single-precision floats.
+ * cosf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5040,10 +5094,10 @@ inline float copysignf(float x, float y) { return SDL_copysignf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_cosf
- * @sa SDL_acos
- * @sa SDL_sin
- **/
+ * @sa cosf
+ * @sa acos
+ * @sa sin
+ */
 inline double cos(double x) { return SDL_cos(x); }
 
 /**
@@ -5054,7 +5108,7 @@ inline double cos(double x) { return SDL_cos(x); }
  * Range: `-1 <= y <= 1`
  *
  * This function operates on single-precision floating point values, use
- * SDL_cos for double-precision floats.
+ * cos for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5068,17 +5122,17 @@ inline double cos(double x) { return SDL_cos(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_cos
- * @sa SDL_acosf
- * @sa SDL_sinf
- **/
+ * @sa cos
+ * @sa acosf
+ * @sa sinf
+ */
 inline float cosf(float x) { return SDL_cosf(x); }
 
 /**
  * Compute the exponential of `x`.
  *
  * The definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the
- * natural logarithm. The inverse is the natural logarithm, SDL_log.
+ * natural logarithm. The inverse is the natural logarithm, log.
  *
  * Domain: `-INF <= x <= INF`
  *
@@ -5087,7 +5141,7 @@ inline float cosf(float x) { return SDL_cosf(x); }
  * The output will overflow if `exp(x)` is too large to be represented.
  *
  * This function operates on double-precision floating point values, use
- * SDL_expf for single-precision floats.
+ * expf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5101,16 +5155,16 @@ inline float cosf(float x) { return SDL_cosf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_expf
- * @sa SDL_log
- **/
+ * @sa expf
+ * @sa log
+ */
 inline double exp(double x) { return SDL_exp(x); }
 
 /**
  * Compute the exponential of `x`.
  *
  * The definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the
- * natural logarithm. The inverse is the natural logarithm, SDL_logf.
+ * natural logarithm. The inverse is the natural logarithm, logf.
  *
  * Domain: `-INF <= x <= INF`
  *
@@ -5119,7 +5173,7 @@ inline double exp(double x) { return SDL_exp(x); }
  * The output will overflow if `exp(x)` is too large to be represented.
  *
  * This function operates on single-precision floating point values, use
- * SDL_exp for double-precision floats.
+ * exp for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5133,9 +5187,9 @@ inline double exp(double x) { return SDL_exp(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_exp
- * @sa SDL_logf
- **/
+ * @sa exp
+ * @sa logf
+ */
 inline float expf(float x) { return SDL_expf(x); }
 
 /**
@@ -5146,7 +5200,7 @@ inline float expf(float x) { return SDL_expf(x); }
  * Range: `0 <= y <= INF`
  *
  * This function operates on double-precision floating point values, use
- * SDL_copysignf for single-precision floats.
+ * fabsf for single-precision floats.
  *
  * @param x floating point value to use as the magnitude.
  * @returns the absolute value of `x`.
@@ -5155,8 +5209,8 @@ inline float expf(float x) { return SDL_expf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_fabsf
- **/
+ * @sa fabsf
+ */
 inline double fabs(double x) { return SDL_fabs(x); }
 
 /**
@@ -5167,7 +5221,7 @@ inline double fabs(double x) { return SDL_fabs(x); }
  * Range: `0 <= y <= INF`
  *
  * This function operates on single-precision floating point values, use
- * SDL_copysignf for double-precision floats.
+ * fabs for double-precision floats.
  *
  * @param x floating point value to use as the magnitude.
  * @returns the absolute value of `x`.
@@ -5176,8 +5230,8 @@ inline double fabs(double x) { return SDL_fabs(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_fabs
- **/
+ * @sa fabs
+ */
 inline float fabsf(float x) { return SDL_fabsf(x); }
 
 /**
@@ -5191,7 +5245,7 @@ inline float fabsf(float x) { return SDL_fabsf(x); }
  * Range: `-INF <= y <= INF`, y integer
  *
  * This function operates on double-precision floating point values, use
- * SDL_floorf for single-precision floats.
+ * floorf for single-precision floats.
  *
  * @param x floating point value.
  * @returns the floor of `x`.
@@ -5200,12 +5254,12 @@ inline float fabsf(float x) { return SDL_fabsf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_floorf
- * @sa SDL_ceil
- * @sa SDL_trunc
- * @sa SDL_round
- * @sa SDL_lround
- **/
+ * @sa floorf
+ * @sa ceil
+ * @sa trunc
+ * @sa round
+ * @sa lround
+ */
 inline double floor(double x) { return SDL_floor(x); }
 
 /**
@@ -5219,7 +5273,7 @@ inline double floor(double x) { return SDL_floor(x); }
  * Range: `-INF <= y <= INF`, y integer
  *
  * This function operates on single-precision floating point values, use
- * SDL_floorf for double-precision floats.
+ * floor for double-precision floats.
  *
  * @param x floating point value.
  * @returns the floor of `x`.
@@ -5228,12 +5282,12 @@ inline double floor(double x) { return SDL_floor(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_floor
- * @sa SDL_ceilf
- * @sa SDL_truncf
- * @sa SDL_roundf
- * @sa SDL_lroundf
- **/
+ * @sa floor
+ * @sa ceilf
+ * @sa truncf
+ * @sa roundf
+ * @sa lroundf
+ */
 inline float floorf(float x) { return SDL_floorf(x); }
 
 /**
@@ -5247,7 +5301,7 @@ inline float floorf(float x) { return SDL_floorf(x); }
  * Range: `-INF <= y <= INF`, y integer
  *
  * This function operates on double-precision floating point values, use
- * SDL_truncf for single-precision floats.
+ * truncf for single-precision floats.
  *
  * @param x floating point value.
  * @returns `x` truncated to an integer.
@@ -5256,13 +5310,13 @@ inline float floorf(float x) { return SDL_floorf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_truncf
- * @sa SDL_fmod
- * @sa SDL_ceil
- * @sa SDL_floor
- * @sa SDL_round
- * @sa SDL_lround
- **/
+ * @sa truncf
+ * @sa fmod
+ * @sa ceil
+ * @sa floor
+ * @sa round
+ * @sa lround
+ */
 inline double trunc(double x) { return SDL_trunc(x); }
 
 /**
@@ -5276,7 +5330,7 @@ inline double trunc(double x) { return SDL_trunc(x); }
  * Range: `-INF <= y <= INF`, y integer
  *
  * This function operates on single-precision floating point values, use
- * SDL_truncf for double-precision floats.
+ * trunc for double-precision floats.
  *
  * @param x floating point value.
  * @returns `x` truncated to an integer.
@@ -5285,13 +5339,13 @@ inline double trunc(double x) { return SDL_trunc(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_trunc
- * @sa SDL_fmodf
- * @sa SDL_ceilf
- * @sa SDL_floorf
- * @sa SDL_roundf
- * @sa SDL_lroundf
- **/
+ * @sa trunc
+ * @sa fmodf
+ * @sa ceilf
+ * @sa floorf
+ * @sa roundf
+ * @sa lroundf
+ */
 inline float truncf(float x) { return SDL_truncf(x); }
 
 /**
@@ -5304,7 +5358,7 @@ inline float truncf(float x) { return SDL_truncf(x); }
  * Range: `-y <= z <= y`
  *
  * This function operates on double-precision floating point values, use
- * SDL_fmodf for single-precision floats.
+ * fmodf for single-precision floats.
  *
  * @param x the numerator.
  * @param y the denominator. Must not be 0.
@@ -5314,14 +5368,14 @@ inline float truncf(float x) { return SDL_truncf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_fmodf
- * @sa SDL_modf
- * @sa SDL_trunc
- * @sa SDL_ceil
- * @sa SDL_floor
- * @sa SDL_round
- * @sa SDL_lround
- **/
+ * @sa fmodf
+ * @sa modf
+ * @sa trunc
+ * @sa ceil
+ * @sa floor
+ * @sa round
+ * @sa lround
+ */
 inline double fmod(double x, double y) { return SDL_fmod(x, y); }
 
 /**
@@ -5334,7 +5388,7 @@ inline double fmod(double x, double y) { return SDL_fmod(x, y); }
  * Range: `-y <= z <= y`
  *
  * This function operates on single-precision floating point values, use
- * SDL_fmod for single-precision floats.
+ * fmod for double-precision floats.
  *
  * @param x the numerator.
  * @param y the denominator. Must not be 0.
@@ -5344,14 +5398,14 @@ inline double fmod(double x, double y) { return SDL_fmod(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_fmod
- * @sa SDL_truncf
- * @sa SDL_modff
- * @sa SDL_ceilf
- * @sa SDL_floorf
- * @sa SDL_roundf
- * @sa SDL_lroundf
- **/
+ * @sa fmod
+ * @sa truncf
+ * @sa modff
+ * @sa ceilf
+ * @sa floorf
+ * @sa roundf
+ * @sa lroundf
+ */
 inline float fmodf(float x, float y) { return SDL_fmodf(x, y); }
 
 /**
@@ -5364,8 +5418,8 @@ inline float fmodf(float x, float y) { return SDL_fmodf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_isinff
- **/
+ * @sa isinff
+ */
 inline int isinf(double x) { return SDL_isinf(x); }
 
 /**
@@ -5378,8 +5432,8 @@ inline int isinf(double x) { return SDL_isinf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_isinf
- **/
+ * @sa isinf
+ */
 inline int isinff(float x) { return SDL_isinff(x); }
 
 /**
@@ -5392,8 +5446,8 @@ inline int isinff(float x) { return SDL_isinff(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_isnanf
- **/
+ * @sa isnanf
+ */
 inline int isnan(double x) { return SDL_isnan(x); }
 
 /**
@@ -5406,8 +5460,8 @@ inline int isnan(double x) { return SDL_isnan(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_isnan
- **/
+ * @sa isnan
+ */
 inline int isnanf(float x) { return SDL_isnanf(x); }
 
 /**
@@ -5420,7 +5474,7 @@ inline int isnanf(float x) { return SDL_isnanf(x); }
  * It is an error for `x` to be less than or equal to 0.
  *
  * This function operates on double-precision floating point values, use
- * SDL_logf for single-precision floats.
+ * logf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5434,10 +5488,10 @@ inline int isnanf(float x) { return SDL_isnanf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_logf
- * @sa SDL_log10
- * @sa SDL_exp
- **/
+ * @sa logf
+ * @sa log10
+ * @sa exp
+ */
 inline double log(double x) { return SDL_log(x); }
 
 /**
@@ -5450,7 +5504,7 @@ inline double log(double x) { return SDL_log(x); }
  * It is an error for `x` to be less than or equal to 0.
  *
  * This function operates on single-precision floating point values, use
- * SDL_log for double-precision floats.
+ * log for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5464,9 +5518,9 @@ inline double log(double x) { return SDL_log(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_log
- * @sa SDL_expf
- **/
+ * @sa log
+ * @sa expf
+ */
 inline float logf(float x) { return SDL_logf(x); }
 
 /**
@@ -5479,7 +5533,7 @@ inline float logf(float x) { return SDL_logf(x); }
  * It is an error for `x` to be less than or equal to 0.
  *
  * This function operates on double-precision floating point values, use
- * SDL_log10f for single-precision floats.
+ * log10f for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5493,10 +5547,10 @@ inline float logf(float x) { return SDL_logf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_log10f
- * @sa SDL_log
- * @sa SDL_pow
- **/
+ * @sa log10f
+ * @sa log
+ * @sa pow
+ */
 inline double log10(double x) { return SDL_log10(x); }
 
 /**
@@ -5509,7 +5563,7 @@ inline double log10(double x) { return SDL_log10(x); }
  * It is an error for `x` to be less than or equal to 0.
  *
  * This function operates on single-precision floating point values, use
- * SDL_log10 for double-precision floats.
+ * log10 for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5523,17 +5577,17 @@ inline double log10(double x) { return SDL_log10(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_log10
- * @sa SDL_logf
- * @sa SDL_powf
- **/
+ * @sa log10
+ * @sa logf
+ * @sa powf
+ */
 inline float log10f(float x) { return SDL_log10f(x); }
 
 /**
  * Split `x` into integer and fractional parts
  *
  * This function operates on double-precision floating point values, use
- * SDL_modff for single-precision floats.
+ * modff for single-precision floats.
  *
  * @param x floating point value.
  * @param y output pointer to store the integer part of `x`.
@@ -5543,17 +5597,17 @@ inline float log10f(float x) { return SDL_log10f(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_modff
- * @sa SDL_trunc
- * @sa SDL_fmod
- **/
+ * @sa modff
+ * @sa trunc
+ * @sa fmod
+ */
 inline double modf(double x, double* y) { return SDL_modf(x, y); }
 
 /**
  * Split `x` into integer and fractional parts
  *
  * This function operates on single-precision floating point values, use
- * SDL_modf for double-precision floats.
+ * modf for double-precision floats.
  *
  * @param x floating point value.
  * @param y output pointer to store the integer part of `x`.
@@ -5563,10 +5617,10 @@ inline double modf(double x, double* y) { return SDL_modf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_modf
- * @sa SDL_truncf
- * @sa SDL_fmodf
- **/
+ * @sa modf
+ * @sa truncf
+ * @sa fmodf
+ */
 inline float modff(float x, float* y) { return SDL_modff(x, y); }
 
 /**
@@ -5576,11 +5630,11 @@ inline float modff(float x, float* y) { return SDL_modff(x, y); }
  *
  * Range: `-INF <= z <= INF`
  *
- * If `y` is the base of the natural logarithm (e), consider using SDL_exp
+ * If `y` is the base of the natural logarithm (e), consider using exp
  * instead.
  *
  * This function operates on double-precision floating point values, use
- * SDL_powf for single-precision floats.
+ * powf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5595,10 +5649,10 @@ inline float modff(float x, float* y) { return SDL_modff(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_powf
- * @sa SDL_exp
- * @sa SDL_log
- **/
+ * @sa powf
+ * @sa exp
+ * @sa log
+ */
 inline double pow(double x, double y) { return SDL_pow(x, y); }
 
 /**
@@ -5608,11 +5662,11 @@ inline double pow(double x, double y) { return SDL_pow(x, y); }
  *
  * Range: `-INF <= z <= INF`
  *
- * If `y` is the base of the natural logarithm (e), consider using SDL_exp
+ * If `y` is the base of the natural logarithm (e), consider using exp
  * instead.
  *
  * This function operates on single-precision floating point values, use
- * SDL_powf for double-precision floats.
+ * pow for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5627,10 +5681,10 @@ inline double pow(double x, double y) { return SDL_pow(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_pow
- * @sa SDL_expf
- * @sa SDL_logf
- **/
+ * @sa pow
+ * @sa expf
+ * @sa logf
+ */
 inline float powf(float x, float y) { return SDL_powf(x, y); }
 
 /**
@@ -5644,8 +5698,8 @@ inline float powf(float x, float y) { return SDL_powf(x, y); }
  * Range: `-INF <= y <= INF`, y integer
  *
  * This function operates on double-precision floating point values, use
- * SDL_roundf for single-precision floats. To get the result as an integer
- * type, use SDL_lround.
+ * roundf for single-precision floats. To get the result as an integer
+ * type, use lround.
  *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
@@ -5654,12 +5708,12 @@ inline float powf(float x, float y) { return SDL_powf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_roundf
- * @sa SDL_lround
- * @sa SDL_floor
- * @sa SDL_ceil
- * @sa SDL_trunc
- **/
+ * @sa roundf
+ * @sa lround
+ * @sa floor
+ * @sa ceil
+ * @sa trunc
+ */
 inline double round(double x) { return SDL_round(x); }
 
 /**
@@ -5672,9 +5726,9 @@ inline double round(double x) { return SDL_round(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * SDL_roundf for single-precision floats. To get the result as an integer
- * type, use SDL_lroundf.
+ * This function operates on single-precision floating point values, use
+ * round for double-precision floats. To get the result as an integer
+ * type, use lroundf.
  *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
@@ -5683,12 +5737,12 @@ inline double round(double x) { return SDL_round(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_round
- * @sa SDL_lroundf
- * @sa SDL_floorf
- * @sa SDL_ceilf
- * @sa SDL_truncf
- **/
+ * @sa round
+ * @sa lroundf
+ * @sa floorf
+ * @sa ceilf
+ * @sa truncf
+ */
 inline float roundf(float x) { return SDL_roundf(x); }
 
 /**
@@ -5702,8 +5756,8 @@ inline float roundf(float x) { return SDL_roundf(x); }
  * Range: `MIN_LONG <= y <= MAX_LONG`
  *
  * This function operates on double-precision floating point values, use
- * SDL_lround for single-precision floats. To get the result as a
- * floating-point type, use SDL_round.
+ * lroundf for single-precision floats. To get the result as a
+ * floating-point type, use round.
  *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
@@ -5712,12 +5766,12 @@ inline float roundf(float x) { return SDL_roundf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_lroundf
- * @sa SDL_round
- * @sa SDL_floor
- * @sa SDL_ceil
- * @sa SDL_trunc
- **/
+ * @sa lroundf
+ * @sa round
+ * @sa floor
+ * @sa ceil
+ * @sa trunc
+ */
 inline long lround(double x) { return SDL_lround(x); }
 
 /**
@@ -5731,8 +5785,8 @@ inline long lround(double x) { return SDL_lround(x); }
  * Range: `MIN_LONG <= y <= MAX_LONG`
  *
  * This function operates on single-precision floating point values, use
- * SDL_lroundf for double-precision floats. To get the result as a
- * floating-point type, use SDL_roundf,
+ * lround for double-precision floats. To get the result as a
+ * floating-point type, use roundf.
  *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
@@ -5741,12 +5795,12 @@ inline long lround(double x) { return SDL_lround(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_lround
- * @sa SDL_roundf
- * @sa SDL_floorf
- * @sa SDL_ceilf
- * @sa SDL_truncf
- **/
+ * @sa lround
+ * @sa roundf
+ * @sa floorf
+ * @sa ceilf
+ * @sa truncf
+ */
 inline long lroundf(float x) { return SDL_lroundf(x); }
 
 /**
@@ -5759,7 +5813,7 @@ inline long lroundf(float x) { return SDL_lroundf(x); }
  * Range: `-INF <= y <= INF`
  *
  * This function operates on double-precision floating point values, use
- * SDL_scalbnf for single-precision floats.
+ * scalbnf for single-precision floats.
  *
  * @param x floating point value to be scaled.
  * @param n integer exponent.
@@ -5769,9 +5823,9 @@ inline long lroundf(float x) { return SDL_lroundf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_scalbnf
- * @sa SDL_pow
- **/
+ * @sa scalbnf
+ * @sa pow
+ */
 inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
 
 /**
@@ -5784,7 +5838,7 @@ inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
  * Range: `-INF <= y <= INF`
  *
  * This function operates on single-precision floating point values, use
- * SDL_scalbn for double-precision floats.
+ * scalbn for double-precision floats.
  *
  * @param x floating point value to be scaled.
  * @param n integer exponent.
@@ -5794,9 +5848,9 @@ inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_scalbn
- * @sa SDL_powf
- **/
+ * @sa scalbn
+ * @sa powf
+ */
 inline float scalbnf(float x, int n) { return SDL_scalbnf(x, n); }
 
 /**
@@ -5807,7 +5861,7 @@ inline float scalbnf(float x, int n) { return SDL_scalbnf(x, n); }
  * Range: `-1 <= y <= 1`
  *
  * This function operates on double-precision floating point values, use
- * SDL_sinf for single-precision floats.
+ * sinf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5821,10 +5875,10 @@ inline float scalbnf(float x, int n) { return SDL_scalbnf(x, n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_sinf
- * @sa SDL_asin
- * @sa SDL_cos
- **/
+ * @sa sinf
+ * @sa asin
+ * @sa cos
+ */
 inline double sin(double x) { return SDL_sin(x); }
 
 /**
@@ -5835,7 +5889,7 @@ inline double sin(double x) { return SDL_sin(x); }
  * Range: `-1 <= y <= 1`
  *
  * This function operates on single-precision floating point values, use
- * SDL_sin for double-precision floats.
+ * sin for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5849,10 +5903,10 @@ inline double sin(double x) { return SDL_sin(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_sin
- * @sa SDL_asinf
- * @sa SDL_cosf
- **/
+ * @sa sin
+ * @sa asinf
+ * @sa cosf
+ */
 inline float sinf(float x) { return SDL_sinf(x); }
 
 /**
@@ -5863,7 +5917,7 @@ inline float sinf(float x) { return SDL_sinf(x); }
  * Range: `0 <= y <= INF`
  *
  * This function operates on double-precision floating point values, use
- * SDL_sqrtf for single-precision floats.
+ * sqrtf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5877,8 +5931,8 @@ inline float sinf(float x) { return SDL_sinf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_sqrtf
- **/
+ * @sa sqrtf
+ */
 inline double sqrt(double x) { return SDL_sqrt(x); }
 
 /**
@@ -5889,7 +5943,7 @@ inline double sqrt(double x) { return SDL_sqrt(x); }
  * Range: `0 <= y <= INF`
  *
  * This function operates on single-precision floating point values, use
- * SDL_sqrt for double-precision floats.
+ * sqrt for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5903,8 +5957,8 @@ inline double sqrt(double x) { return SDL_sqrt(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_sqrt
- **/
+ * @sa sqrt
+ */
 inline float sqrtf(float x) { return SDL_sqrtf(x); }
 
 /**
@@ -5915,7 +5969,7 @@ inline float sqrtf(float x) { return SDL_sqrtf(x); }
  * Range: `-INF <= y <= INF`
  *
  * This function operates on double-precision floating point values, use
- * SDL_tanf for single-precision floats.
+ * tanf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5929,12 +5983,12 @@ inline float sqrtf(float x) { return SDL_sqrtf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_tanf
- * @sa SDL_sin
- * @sa SDL_cos
- * @sa SDL_atan
- * @sa SDL_atan2
- **/
+ * @sa tanf
+ * @sa sin
+ * @sa cos
+ * @sa atan
+ * @sa atan2
+ */
 inline double tan(double x) { return SDL_tan(x); }
 
 /**
@@ -5945,7 +5999,7 @@ inline double tan(double x) { return SDL_tan(x); }
  * Range: `-INF <= y <= INF`
  *
  * This function operates on single-precision floating point values, use
- * SDL_tanf for double-precision floats.
+ * tan for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5959,12 +6013,12 @@ inline double tan(double x) { return SDL_tan(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_tan
- * @sa SDL_sinf
- * @sa SDL_cosf
- * @sa SDL_atanf
- * @sa SDL_atan2f
- **/
+ * @sa tan
+ * @sa sinf
+ * @sa cosf
+ * @sa atanf
+ * @sa atan2f
+ */
 inline float tanf(float x) { return SDL_tanf(x); }
 
 /**
@@ -5974,31 +6028,30 @@ inline float tanf(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
+ * @sa IConvBase.IConvBase
  * @sa IConv
  * @sa IConvRef
  */
-template<ObjectBox<SDL_iconv_data_t*> T>
-struct IConvBase : T
+struct IConvBase : Resource<SDL_iconv_data_t*>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * This function allocates a context for the specified character set
    * conversion.
    *
-   * @param tocode The target character encoding, must not be NULL.
-   * @param fromcode The source character encoding, must not be NULL.
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
    * @post this becomes a valid handle convertible to true on success, or
-   *          convertible to false on failure.
+   *       convertible to false on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa iconv()
-   * @sa iconv_close()
-   * @sa iconv_string()
-   **/
+   * @sa IConvBase.iconv
+   * @sa iconv_string
+   */
   IConvBase(StringParam tocode, StringParam fromcode)
-    : T(SDL_iconv_open(tocode, fromcode))
+    : Resource(SDL_iconv_open(tocode, fromcode))
   {
   }
 
@@ -6032,46 +6085,123 @@ struct IConvBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa iconv_string()
+   * @sa IConvBase.IConvBase
+   * @sa iconv_string
    */
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
                size_t* outbytesleft)
   {
-    return SDL_iconv(T::get(), inbuf, inbytesleft, outbuf, outbytesleft);
+    return SDL_iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
+  }
+};
+
+/**
+ * Handle to a non owned iConv
+ *
+ * @cat resource
+ *
+ * @sa IConvBase
+ * @sa IConv
+ */
+struct IConvRef : IConvBase
+{
+  using IConvBase::IConvBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr IConvRef(const IConvRef& other)
+    : IConvBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr IConvRef(IConvRef&& other)
+    : IConvBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~IConvRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  IConvRef& operator=(IConvRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
    * This function frees a context used for character set conversion.
    *
-   * This object becomes empty after the call.
    * @returns 0 on success, or -1 on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_iconv
-   * @sa SDL_iconv_open
-   * @sa SDL_iconv_string
+   * @sa IConvBase.iconv
+   * @sa IConvBase.IConvBase
+   * @sa iconv_string
    */
-  int close() { return SDL_iconv_close(T::release()); }
+  int reset(SDL_iconv_data_t* newResource = {})
+  {
+    return SDL_iconv_close(release(newResource));
+  }
 };
 
 /**
- * Callback for iConv resource cleanup
+ * Handle to an owned iConv
  *
- * @private
+ * @cat resource
+ *
+ * @sa IConvBase
+ * @sa IConvRef
  */
-template<>
-inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_data_t* resource)
+struct IConv : IConvRef
 {
-  SDL_iconv_close(resource);
-}
+  using IConvRef::IConvRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit IConv(SDL_iconv_data_t* resource = {})
+    : IConvRef(resource)
+  {
+  }
+
+  constexpr IConv(const IConv& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr IConv(IConv&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~IConv() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  IConv& operator=(IConv other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
 
 #ifdef SDL3PP_DOC
 
 /**
- * Generic error. Check SDL_GetError()?
+ * Generic error. Check GetError()?
  */
 #define SDL_ICONV_ERROR (size_t)-1
 
@@ -6097,26 +6227,22 @@ inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_data_t* resource)
  *
  * This function converts a buffer or string between encodings in one pass.
  *
- * The string does not need to be NULL-terminated; this function operates on
- * the number of bytes specified in `inbytesleft` whether there is a NULL
+ * The string does not need to be nullptr-terminated; this function operates on
+ * the number of bytes specified in `inbytesleft` whether there is a nullptr
  * character anywhere in the buffer.
- *
- * The returned string is owned by the caller, and should be passed to
- * SDL_free when no longer needed.
  *
  * @param tocode the character encoding of the output string. Examples are
  *               "UTF-8", "UCS-4", etc.
  * @param fromcode the character encoding of data in `inbuf`.
  * @param inbuf the string to convert to a different encoding.
  * @param inbytesleft the size of the input string _in bytes_.
- * @returns a new string, converted to the new encoding, or NULL on error.
+ * @returns a new string, converted to the new encoding, or nullptr on error.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_iconv_open
- * @sa SDL_iconv_close
- * @sa SDL_iconv
- **/
+ * @sa IConvBase.IConvBase
+ * @sa IConvBase.iconv
+ */
 inline OwnPtr<char> iconv_string(StringParam tocode,
                                  StringParam fromcode,
                                  StringParam inbuf,
@@ -6131,11 +6257,11 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * Convert a UTF-8 string to the current locale's character encoding.
  *
  * This is a helper macro that might be more clear than calling
- * SDL_iconv_string directly. However, it double-evaluates its parameter, so
+ * iconv_string directly. However, it double-evaluates its parameter, so
  * do not use an expression with side-effects here.
  *
  * @param S the string to convert.
- * @returns a new string, converted to the new encoding, or NULL on error.
+ * @returns a new string, converted to the new encoding, or nullptr on error.
  *
  * @since This macro is available since SDL 3.2.0.
  */
@@ -6146,11 +6272,11 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * Convert a UTF-8 string to UCS-2.
  *
  * This is a helper macro that might be more clear than calling
- * SDL_iconv_string directly. However, it double-evaluates its parameter, so
+ * iconv_string directly. However, it double-evaluates its parameter, so
  * do not use an expression with side-effects here.
  *
  * @param S the string to convert.
- * @returns a new string, converted to the new encoding, or NULL on error.
+ * @returns a new string, converted to the new encoding, or nullptr on error.
  *
  * @since This macro is available since SDL 3.2.0.
  */
@@ -6161,11 +6287,11 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * Convert a UTF-8 string to UCS-4.
  *
  * This is a helper macro that might be more clear than calling
- * SDL_iconv_string directly. However, it double-evaluates its parameter, so
+ * iconv_string directly. However, it double-evaluates its parameter, so
  * do not use an expression with side-effects here.
  *
  * @param S the string to convert.
- * @returns a new string, converted to the new encoding, or NULL on error.
+ * @returns a new string, converted to the new encoding, or nullptr on error.
  *
  * @since This macro is available since SDL 3.2.0.
  */
@@ -6176,11 +6302,11 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * Convert a wchar_t string to UTF-8.
  *
  * This is a helper macro that might be more clear than calling
- * SDL_iconv_string directly. However, it double-evaluates its parameter, so
+ * iconv_string directly. However, it double-evaluates its parameter, so
  * do not use an expression with side-effects here.
  *
  * @param S the string to convert.
- * @returns a new string, converted to the new encoding, or NULL on error.
+ * @returns a new string, converted to the new encoding, or nullptr on error.
  *
  * @since This macro is available since SDL 3.2.0.
  */
@@ -6200,13 +6326,13 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * @param a the multiplicand.
  * @param b the multiplier.
  * @param ret on non-overflow output, stores the multiplication result, may
- *            not be NULL.
+ *            not be nullptr.
  * @returns false on overflow, true if result is multiplied without overflow.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
@@ -6222,13 +6348,13 @@ inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  * @param a the first addend.
  * @param b the second addend.
  * @param ret on non-overflow output, stores the addition result, may not be
- *            NULL.
+ *            nullptr.
  * @returns false on overflow, true if result is added without overflow.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- **/
+ */
 inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
@@ -6248,7 +6374,7 @@ inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
  * `SDL_FUNCTION_POINTER_IS_VOID_POINTER` before including any SDL headers.
  *
  * @since This datatype is available since SDL 3.2.0.
- **/
+ */
 using FunctionPointer = SDL_FunctionPointer;
 
 #pragma region impl

@@ -31719,48 +31719,32 @@
         "EnvironmentBase-forward": {
           "name": "EnvironmentBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Environment *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "EnvironmentRef": {
+        "EnvironmentRef-forward": {
           "name": "EnvironmentRef",
-          "kind": "alias",
-          "type": "EnvironmentBase<ObjectRef<SDL_Environment>>",
-          "doc": "Handle to a non owned environment\n\n@cat resource\n\n@sa EnvironmentBase\n@sa Environment"
+          "kind": "forward",
+          "doc": ""
         },
-        "Environment": {
+        "Environment-forward": {
           "name": "Environment",
-          "kind": "alias",
-          "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>",
-          "doc": "Handle to an owned environment\n\n@cat resource\n\n@sa EnvironmentBase\n@sa EnvironmentRef"
+          "kind": "forward",
+          "doc": ""
         },
         "IConvBase-forward": {
           "name": "IConvBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_iconv_data_t *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "IConvRef": {
+        "IConvRef-forward": {
           "name": "IConvRef",
-          "kind": "alias",
-          "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>",
-          "doc": "Handle to a non owned iConv\n\n@cat resource\n\n@sa IConvBase\n@sa IConv"
+          "kind": "forward",
+          "doc": ""
         },
-        "IConv": {
+        "IConv-forward": {
           "name": "IConv",
-          "kind": "alias",
-          "type": "IConvBase<ObjectUnique<SDL_iconv_data_t>>",
-          "doc": "Handle to an owned iConv\n\n@cat resource\n\n@sa IConvBase\n@sa IConvRef"
+          "kind": "forward",
+          "doc": ""
         },
         "SDL_NOLONGLONG": {
           "doc": "Don't let SDL use \"long long\" C types.\n\nSDL will define this if it believes the compiler doesn't understand the\n\"long long\" syntax for C datatypes. This can happen on older compilers.\n\nIf _your_ compiler doesn't support \"long long\" but SDL doesn't know it, it\nis safe to define this yourself to build against the SDL headers.\n\nIf this is defined, it will remove access to some C runtime support\nfunctions, like SDL_ulltoa and SDL_strtoll that refer to this datatype\nexplicitly. The rest of SDL will still be available.\n\nSDL's own source code cannot be built with a compiler that has this\ndefined, for various technical reasons.",
@@ -32435,25 +32419,19 @@
           "sourceName": "SDL_GetNumAllocations"
         },
         "EnvironmentBase": {
-          "doc": "A thread-safe set of environment variables\n\n@since This struct is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa EnvironmentBase.EnvironmentBase\n@sa EnvironmentBase.GetVariable\n@sa EnvironmentBase.GetVariables\n@sa EnvironmentBase.SetVariable\n@sa EnvironmentBase.UnsetVariable\n@sa EnvironmentBase.Destroy",
+          "doc": "A thread-safe set of environment variables\n\n@since This struct is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa EnvironmentBase.EnvironmentBase\n@sa EnvironmentBase.GetVariable\n@sa EnvironmentBase.GetVariables\n@sa EnvironmentBase.SetVariable\n@sa EnvironmentBase.UnsetVariable\n@sa EnvironmentRef.reset\n\n@cat resource\n\n@sa Environment\n@sa EnvironmentRef",
           "name": "EnvironmentBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_Environment *>",
           "sourceName": "SDL_Environment",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Environment *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "EnvironmentBase": {
-              "doc": "Create a set of environment variables\n\n@param populated true to initialize it from the C runtime environment,\n                 false to create an empty environment.\n@post a pointer to the new environment or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety If `populated` is false, it is safe to call this function\n              from any thread, otherwise it is safe if no other threads are\n              calling setenv() or unsetenv()\n\n@since This function is available since SDL 3.2.0.\n\n@sa EnvironmentBase.GetVariable\n@sa EnvironmentBase.GetVariables\n@sa EnvironmentBase.SetVariable\n@sa EnvironmentBase.UnsetVariable\n@sa EnvironmentBase.Destroy",
+              "doc": "Create a set of environment variables\n\n@param populated true to initialize it from the C runtime environment,\n                 false to create an empty environment.\n@post a pointer to the new environment or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety If `populated` is false, it is safe to call this function\n              from any thread, otherwise it is safe if no other threads are\n              calling setenv() or unsetenv()\n\n@since This function is available since SDL 3.2.0.\n\n@sa EnvironmentBase.GetVariable\n@sa EnvironmentBase.GetVariables\n@sa EnvironmentBase.SetVariable\n@sa EnvironmentBase.UnsetVariable\n@sa EnvironmentRef.reset",
               "name": "EnvironmentBase",
               "kind": "function",
               "type": "",
@@ -32526,30 +32504,201 @@
                 }
               ],
               "sourceName": "SDL_UnsetEnvironmentVariable"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "EnvironmentRef": {
+          "name": "EnvironmentRef",
+          "kind": "struct",
+          "type": "EnvironmentBase",
+          "doc": "Handle to a non owned environment\n\n@cat resource\n\n@sa EnvironmentBase\n@sa Environment",
+          "entries": {
+            "EnvironmentBase::EnvironmentBase": {
+              "kind": "alias",
+              "name": "EnvironmentBase::EnvironmentBase",
+              "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy a set of environment variables.\n\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EnvironmentBase.EnvironmentBase",
-              "name": "Destroy",
+            "EnvironmentRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const EnvironmentRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "EnvironmentBase(other.get())"
+                  ]
+                },
+                "name": "EnvironmentRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "EnvironmentRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "EnvironmentBase(other.release())"
+                  ]
+                },
+                "name": "EnvironmentRef"
+              }
+            ],
+            "~EnvironmentRef": {
               "kind": "function",
-              "type": "void",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_DestroyEnvironment"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~EnvironmentRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "EnvironmentRef &",
+              "parameters": [
+                {
+                  "type": "EnvironmentRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Environment *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Destroy a set of environment variables.\n\n@param env the environment to destroy.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EnvironmentBase.EnvironmentBase",
+              "hints": {
+                "body": "SDL_DestroyEnvironment(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_Environment>::doFree": {
-          "name": "ObjectRef<SDL_Environment>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for environment resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_Environment *",
-              "name": "resource"
+        "Environment": {
+          "name": "Environment",
+          "kind": "struct",
+          "type": "EnvironmentRef",
+          "doc": "Handle to an owned environment\n\n@cat resource\n\n@sa EnvironmentBase\n@sa EnvironmentRef",
+          "entries": {
+            "EnvironmentRef::EnvironmentRef": {
+              "kind": "alias",
+              "name": "EnvironmentRef::EnvironmentRef",
+              "doc": ""
+            },
+            "Environment": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Environment *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "EnvironmentRef(resource)"
+                  ]
+                },
+                "name": "Environment"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Environment &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Environment",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Environment &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Environment"
+              }
+            ],
+            "~Environment": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Environment"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Environment &",
+              "parameters": [
+                {
+                  "type": "Environment",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_DestroyEnvironment"
+          }
         },
         "GetEnvironment": {
           "doc": "Get the process environment.\n\nThis is initialized at application start and is not affected by setenv()\nand unsetenv() calls after that point. Use EnvironmentBase.SetVariable() and\nEnvironmentBase.UnsetVariable() if you want to modify this environment, or\nsetenv_unsafe() or unsetenv_unsafe() if you want changes to persist\nin the C runtime environment after Quit().\n\n@returns a pointer to the environment for the process or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EnvironmentBase.GetVariable\n@sa EnvironmentBase.GetVariables\n@sa EnvironmentBase.SetVariable\n@sa EnvironmentBase.UnsetVariable",
@@ -35094,25 +35243,19 @@
           "sourceName": "SDL_tanf"
         },
         "IConvBase": {
-          "doc": "An opaque handle representing string encoding conversion state.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa IConvBase.IConvBase",
+          "doc": "An opaque handle representing string encoding conversion state.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa IConvBase.IConvBase\n\n@cat resource\n\n@sa IConv\n@sa IConvRef",
           "name": "IConvBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_iconv_data_t *>",
           "sourceName": "SDL_iconv_t",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_iconv_data_t *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "IConvBase": {
-              "doc": "This function allocates a context for the specified character set\nconversion.\n\n@param tocode The target character encoding, must not be nullptr.\n@param fromcode The source character encoding, must not be nullptr.\n@post a handle that must be freed with IConvBase.close, or\n         SDL_ICONV_ERROR on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvBase.iconv\n@sa IConvBase.close\n@sa iconv_string",
+              "doc": "This function allocates a context for the specified character set\nconversion.\n\n@param tocode The target character encoding, must not be nullptr.\n@param fromcode The source character encoding, must not be nullptr.\n@post a handle that must be freed with IConvRef.reset, or\n         SDL_ICONV_ERROR on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvBase.iconv\n@sa IConvRef.reset\n@sa iconv_string",
               "name": "IConvBase",
               "kind": "function",
               "type": "",
@@ -35129,7 +35272,7 @@
               "sourceName": "SDL_iconv_open"
             },
             "iconv": {
-              "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of succesful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n          IConvBase.IConvBase().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success, or a negative error code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvBase.IConvBase\n@sa IConvBase.close\n@sa iconv_string",
+              "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of succesful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n          IConvBase.IConvBase().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success, or a negative error code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvBase.IConvBase\n@sa IConvRef.reset\n@sa iconv_string",
               "name": "iconv",
               "kind": "function",
               "type": "size_t",
@@ -35152,30 +35295,201 @@
                 }
               ],
               "sourceName": "SDL_iconv"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "IConvRef": {
+          "name": "IConvRef",
+          "kind": "struct",
+          "type": "IConvBase",
+          "doc": "Handle to a non owned iConv\n\n@cat resource\n\n@sa IConvBase\n@sa IConv",
+          "entries": {
+            "IConvBase::IConvBase": {
+              "kind": "alias",
+              "name": "IConvBase::IConvBase",
+              "doc": ""
             },
-            "close": {
-              "doc": "This function frees a context used for character set conversion.\n\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvBase.iconv\n@sa IConvBase.IConvBase\n@sa iconv_string",
-              "name": "close",
+            "IConvRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const IConvRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "IConvBase(other.get())"
+                  ]
+                },
+                "name": "IConvRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "IConvRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "IConvBase(other.release())"
+                  ]
+                },
+                "name": "IConvRef"
+              }
+            ],
+            "~IConvRef": {
               "kind": "function",
-              "type": "int",
+              "type": "",
               "parameters": [],
-              "sourceName": "SDL_iconv_close"
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~IConvRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "IConvRef &",
+              "parameters": [
+                {
+                  "type": "IConvRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "int",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_iconv_data_t *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvBase.iconv\n@sa IConvBase.IConvBase\n@sa iconv_string",
+              "hints": {
+                "body": "return SDL_iconv_close(release(newResource));"
+              }
             }
           }
         },
-        "ObjectRef<SDL_iconv_data_t>::doFree": {
-          "name": "ObjectRef<SDL_iconv_data_t>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for iConv resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_iconv_data_t *",
-              "name": "resource"
+        "IConv": {
+          "name": "IConv",
+          "kind": "struct",
+          "type": "IConvRef",
+          "doc": "Handle to an owned iConv\n\n@cat resource\n\n@sa IConvBase\n@sa IConvRef",
+          "entries": {
+            "IConvRef::IConvRef": {
+              "kind": "alias",
+              "name": "IConvRef::IConvRef",
+              "doc": ""
+            },
+            "IConv": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_iconv_data_t *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "IConvRef(resource)"
+                  ]
+                },
+                "name": "IConv"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const IConv &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "IConv",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "IConv &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "IConv"
+              }
+            ],
+            "~IConv": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~IConv"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "IConv &",
+              "parameters": [
+                {
+                  "type": "IConv",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_iconv_close"
+          }
         },
         "SDL_ICONV_ERROR": {
           "doc": "Generic error. Check GetError()?",
@@ -35206,7 +35520,7 @@
           "sourceName": "SDL_ICONV_EINVAL"
         },
         "iconv_string": {
-          "doc": "Helper function to convert a string's encoding in one call.\n\nThis function converts a buffer or string between encodings in one pass.\n\nThe string does not need to be nullptr-terminated; this function operates on\nthe number of bytes specified in `inbytesleft` whether there is a nullptr\ncharacter anywhere in the buffer.\n\nThe returned string is owned by the caller, and should be passed to\nfree when no longer needed.\n\n@param tocode the character encoding of the output string. Examples are\n              \"UTF-8\", \"UCS-4\", etc.\n@param fromcode the character encoding of data in `inbuf`.\n@param inbuf the string to convert to a different encoding.\n@param inbytesleft the size of the input string _in bytes_.\n@returns a new string, converted to the new encoding, or nullptr on error.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvBase.IConvBase\n@sa IConvBase.close\n@sa IConvBase.iconv",
+          "doc": "Helper function to convert a string's encoding in one call.\n\nThis function converts a buffer or string between encodings in one pass.\n\nThe string does not need to be nullptr-terminated; this function operates on\nthe number of bytes specified in `inbytesleft` whether there is a nullptr\ncharacter anywhere in the buffer.\n\nThe returned string is owned by the caller, and should be passed to\nfree when no longer needed.\n\n@param tocode the character encoding of the output string. Examples are\n              \"UTF-8\", \"UCS-4\", etc.\n@param fromcode the character encoding of data in `inbuf`.\n@param inbuf the string to convert to a different encoding.\n@param inbytesleft the size of the input string _in bytes_.\n@returns a new string, converted to the new encoding, or nullptr on error.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvBase.IConvBase\n@sa IConvRef.reset\n@sa IConvBase.iconv",
           "name": "iconv_string",
           "kind": "function",
           "type": "OwnPtr<char>",

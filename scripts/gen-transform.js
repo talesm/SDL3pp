@@ -4406,48 +4406,6 @@ const transform = {
         "true"
       ],
       includeAfter: {
-        "__begin": [
-          {
-            "name": "EnvironmentBase",
-            "kind": "forward",
-            "template": [
-              {
-                "name": "T",
-                "type": "ObjectBox<SDL_Environment *>"
-              }
-            ]
-          },
-          {
-            "name": "EnvironmentRef",
-            "kind": "alias",
-            "type": "EnvironmentBase<ObjectRef<SDL_Environment>>"
-          },
-          {
-            "name": "Environment",
-            "kind": "alias",
-            "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>"
-          },
-          {
-            "name": "IConvBase",
-            "kind": "forward",
-            "template": [
-              {
-                "name": "T",
-                "type": "ObjectBox<SDL_iconv_t>"
-              }
-            ]
-          },
-          {
-            "name": "IConvRef",
-            "kind": "alias",
-            "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>"
-          },
-          {
-            "name": "IConv",
-            "kind": "alias",
-            "type": "IConvBase<ObjectUnique<SDL_iconv_data_t>>"
-          }
-        ],
         "SDL_rand_bits": {
           "kind": "struct",
           "name": "Random",
@@ -4497,7 +4455,7 @@ const transform = {
           }
         }
       },
-      resources: {
+      resourcesX: {
         "SDL_Environment": {
           entries: {
             "SDL_CreateEnvironment": "ctor",
@@ -4512,18 +4470,15 @@ const transform = {
             },
             "SDL_SetEnvironmentVariable": "function",
             "SDL_UnsetEnvironmentVariable": "function",
-            "SDL_DestroyEnvironment": "function"
           }
         },
         "SDL_iconv_t": {
           uniqueName: "IConv",
           type: "SDL_iconv_data_t",
+          free: "SDL_iconv_close",
           entries: {
             "SDL_iconv_open": "ctor",
             "SDL_iconv": "function",
-            "SDL_iconv_close": {
-              "name": "close"
-            }
           }
         }
       },
