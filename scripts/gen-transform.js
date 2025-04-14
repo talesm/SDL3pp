@@ -274,10 +274,11 @@ const transform = {
         },
       }
     },
-    // TODO: Remove??
     "SDL_blendmode.h": {
       enumerations: {
-        "SDL_BlendMode": {}
+        "SDL_BlendMode": {
+          prefix: "SDL_BLENDMODE_"
+        }
       }
     },
     "SDL_cpuinfo.h": {
