@@ -42,65 +42,55 @@ namespace SDL {
  */
 
 // Forward decl
-template<ObjectBox<SDL_SharedObject*> T>
 struct SharedObjectBase;
 
-/**
- * Handle to a non owned sharedObject
- *
- * @cat resource
- *
- * @sa SharedObjectBase
- * @sa SharedObject
- */
-using SharedObjectRef = SharedObjectBase<ObjectRef<SDL_SharedObject>>;
+// Forward decl
+struct SharedObjectRef;
 
-/**
- * Handle to an owned sharedObject
- *
- * @cat resource
- *
- * @sa SharedObjectBase
- * @sa SharedObjectRef
- */
-using SharedObject = SharedObjectBase<ObjectUnique<SDL_SharedObject>>;
+// Forward decl
+struct SharedObject;
 
 /**
  * An opaque datatype that represents a loaded shared object.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SharedObjectBase()
- * @sa LoadFunction()
+ * @cat resource
+ *
+ * @sa SharedObjectBase.SharedObjectBase
+ * @sa SharedObjectBase.LoadFunction
+ * @sa SharedObjectRef.Unload
+ * @sa SharedObject
+ * @sa SharedObjectRef
  */
-template<ObjectBox<SDL_SharedObject*> T>
-struct SharedObjectBase : T
+struct SharedObjectBase : Resource<SDL_SharedObject*>
 {
-  using T::T;
+  using Resource::Resource;
 
   /**
    * Dynamically load a shared object.
    *
    * @param sofile a system-dependent name of the object file.
-   * @post an opaque pointer to the object handle or NULL on failure; call
-   *          GetError() for more information.
+   * @post an opaque pointer to the object handle or nullptr on failure; call
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa LoadFunction()
-   * @sa Unload()
+   * @sa SharedObjectBase.LoadFunction
+   * @sa SharedObjectRef.Unload
    */
   SharedObjectBase(StringParam sofile)
-    : T(SDL_LoadObject(sofile))
+    : Resource(SDL_LoadObject(sofile))
   {
   }
 
   /**
    * Look up the address of the named function in a shared object.
    *
-   * This function pointer is no longer valid after calling SDL_UnloadObject().
+   * This function pointer is no longer valid after calling
+   * SharedObjectRef.Unload().
    *
    * This function can only look up C function names. Other languages may have
    * name mangling and intrinsic language support that varies from compiler to
@@ -110,46 +100,145 @@ struct SharedObjectBase : T
    * convention as the actual library function. Your code will crash
    * mysteriously if you do not do this.
    *
-   * If the requested function doesn't exist, NULL is returned.
+   * If the requested function doesn't exist, nullptr is returned.
    *
    * @param name the name of the function to look up.
-   * @returns a pointer to the function or NULL on failure; call SDL_GetError()
+   * @returns a pointer to the function or nullptr on failure; call GetError()
    *          for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObjectBase.SharedObjectBase
    */
   FunctionPointer LoadFunction(StringParam name)
   {
-    return SDL_LoadFunction(T::get(), name);
+    return SDL_LoadFunction(get(), name);
+  }
+};
+
+/**
+ * Handle to a non owned sharedObject
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectBase
+ * @sa SharedObject
+ */
+struct SharedObjectRef : SharedObjectBase
+{
+  using SharedObjectBase::SharedObjectBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr SharedObjectRef(const SharedObjectRef& other)
+    : SharedObjectBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr SharedObjectRef(SharedObjectRef&& other)
+    : SharedObjectBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~SharedObjectRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  SharedObjectRef& operator=(SharedObjectRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
    * Unload a shared object from memory.
    *
    * Note that any pointers from this object looked up through
-   * SDL_LoadFunction() will no longer be valid.
+   * SharedObjectBase.LoadFunction() will no longer be valid.
+   *
+   * @param handle a valid shared object handle returned by
+   * SharedObjectBase.SharedObjectBase().
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_LoadObject
+   * @sa SharedObjectBase.SharedObjectBase
    */
-  void Unload() { T::free(); }
+  void reset(SDL_SharedObject* newResource = {})
+  {
+    SDL_UnloadObject(release(newResource));
+  }
+
+  /**
+   * Unload a shared object from memory.
+   *
+   * Note that any pointers from this object looked up through
+   * SharedObjectBase.LoadFunction() will no longer be valid.
+   *
+   * @param handle a valid shared object handle returned by
+   * SharedObjectBase.SharedObjectBase().
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObjectBase.SharedObjectBase
+   */
+  void Unload() { reset(); }
 };
 
 /**
- * Callback for sharedObject resource cleanup
+ * Handle to an owned sharedObject
  *
- * @private
+ * @cat resource
+ *
+ * @sa SharedObjectBase
+ * @sa SharedObjectRef
  */
-template<>
-inline void ObjectRef<SDL_SharedObject>::doFree(SDL_SharedObject* resource)
+struct SharedObject : SharedObjectRef
 {
-  SDL_UnloadObject(resource);
-}
+  using SharedObjectRef::SharedObjectRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit SharedObject(SDL_SharedObject* resource = {})
+    : SharedObjectRef(resource)
+  {
+  }
+
+  constexpr SharedObject(const SharedObject& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr SharedObject(SharedObject&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~SharedObject() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  SharedObject& operator=(SharedObject other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
 
 /// @}
 

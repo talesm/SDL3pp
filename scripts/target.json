@@ -28974,51 +28974,37 @@
     },
     "SDL3pp_loadso.h": {
       "name": "SDL3pp_loadso.h",
-      "doc": "@defgroup CategorySharedObject Category SharedObject\n\nSystem-dependent library loading routines.\n\nShared objects are code that is programmatically loadable at runtime.\nWindows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.\n\nTo use them, build such a library, then call SharedObjectBase.SharedObjectBase() on it. Once\nloaded, you can use SharedObjectBase.LoadFunction() on that object to find the address\nof its exported symbols. When done with the object, call SharedObjectBase.Unload()\nto dispose of it.\n\nSome things to keep in mind:\n\n- These functions only work on C function names. Other languages may have\n  name mangling and intrinsic language support that varies from compiler to\n  compiler.\n- Make sure you declare your function pointers with the same calling\n  convention as the actual library function. Your code will crash\n  mysteriously if you do not do this.\n- Avoid namespace collisions. If you load a symbol from the library, it is\n  not defined whether or not it goes into the global symbol namespace for\n  the application. If it does and it conflicts with symbols in your code or\n  other shared libraries, you will not get the results you expect. :)\n- Once a library is unloaded, all pointers into it obtained through\n  SharedObjectBase.LoadFunction() become invalid, even if the library is later reloaded.\n  Don't unload a library if you plan to use these pointers in the future.\n  Notably: beware of giving one of these pointers to atexit(), since it may\n  call that pointer after the library unloads.",
+      "doc": "@defgroup CategorySharedObject Category SharedObject\n\nSystem-dependent library loading routines.\n\nShared objects are code that is programmatically loadable at runtime.\nWindows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.\n\nTo use them, build such a library, then call SharedObjectBase.SharedObjectBase() on it. Once\nloaded, you can use SharedObjectBase.LoadFunction() on that object to find the address\nof its exported symbols. When done with the object, call SharedObjectRef.Unload()\nto dispose of it.\n\nSome things to keep in mind:\n\n- These functions only work on C function names. Other languages may have\n  name mangling and intrinsic language support that varies from compiler to\n  compiler.\n- Make sure you declare your function pointers with the same calling\n  convention as the actual library function. Your code will crash\n  mysteriously if you do not do this.\n- Avoid namespace collisions. If you load a symbol from the library, it is\n  not defined whether or not it goes into the global symbol namespace for\n  the application. If it does and it conflicts with symbols in your code or\n  other shared libraries, you will not get the results you expect. :)\n- Once a library is unloaded, all pointers into it obtained through\n  SharedObjectBase.LoadFunction() become invalid, even if the library is later reloaded.\n  Don't unload a library if you plan to use these pointers in the future.\n  Notably: beware of giving one of these pointers to atexit(), since it may\n  call that pointer after the library unloads.",
       "entries": {
         "SharedObjectBase-forward": {
           "name": "SharedObjectBase",
           "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_SharedObject *>",
-              "name": "T"
-            }
-          ],
           "doc": ""
         },
-        "SharedObjectRef": {
+        "SharedObjectRef-forward": {
           "name": "SharedObjectRef",
-          "kind": "alias",
-          "type": "SharedObjectBase<ObjectRef<SDL_SharedObject>>",
-          "doc": "Handle to a non owned sharedObject\n\n@cat resource\n\n@sa SharedObjectBase\n@sa SharedObject"
+          "kind": "forward",
+          "doc": ""
         },
-        "SharedObject": {
+        "SharedObject-forward": {
           "name": "SharedObject",
-          "kind": "alias",
-          "type": "SharedObjectBase<ObjectUnique<SDL_SharedObject>>",
-          "doc": "Handle to an owned sharedObject\n\n@cat resource\n\n@sa SharedObjectBase\n@sa SharedObjectRef"
+          "kind": "forward",
+          "doc": ""
         },
         "SharedObjectBase": {
-          "doc": "An opaque datatype that represents a loaded shared object.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SharedObjectBase.SharedObjectBase\n@sa SharedObjectBase.LoadFunction\n@sa SharedObjectBase.Unload",
+          "doc": "An opaque datatype that represents a loaded shared object.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SharedObjectBase.SharedObjectBase\n@sa SharedObjectBase.LoadFunction\n@sa SharedObjectRef.Unload\n\n@cat resource\n\n@sa SharedObject\n@sa SharedObjectRef",
           "name": "SharedObjectBase",
           "kind": "struct",
-          "type": "T",
+          "type": "Resource<SDL_SharedObject *>",
           "sourceName": "SDL_SharedObject",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_SharedObject *>",
-              "name": "T"
-            }
-          ],
           "entries": {
-            "T::T": {
+            "Resource::Resource": {
               "kind": "alias",
-              "name": "T::T",
+              "name": "Resource::Resource",
               "doc": ""
             },
             "SharedObjectBase": {
-              "doc": "Dynamically load a shared object.\n\n@param sofile a system-dependent name of the object file.\n@post an opaque pointer to the object handle or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectBase.LoadFunction\n@sa SharedObjectBase.Unload",
+              "doc": "Dynamically load a shared object.\n\n@param sofile a system-dependent name of the object file.\n@post an opaque pointer to the object handle or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectBase.LoadFunction\n@sa SharedObjectRef.Unload",
               "name": "SharedObjectBase",
               "kind": "function",
               "type": "",
@@ -29031,7 +29017,7 @@
               "sourceName": "SDL_LoadObject"
             },
             "LoadFunction": {
-              "doc": "Look up the address of the named function in a shared object.\n\nThis function pointer is no longer valid after calling SharedObjectBase.Unload().\n\nThis function can only look up C function names. Other languages may have\nname mangling and intrinsic language support that varies from compiler to\ncompiler.\n\nMake sure you declare your function pointers with the same calling\nconvention as the actual library function. Your code will crash\nmysteriously if you do not do this.\n\nIf the requested function doesn't exist, nullptr is returned.\n\n@param name the name of the function to look up.\n@returns a pointer to the function or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectBase.SharedObjectBase",
+              "doc": "Look up the address of the named function in a shared object.\n\nThis function pointer is no longer valid after calling SharedObjectRef.Unload().\n\nThis function can only look up C function names. Other languages may have\nname mangling and intrinsic language support that varies from compiler to\ncompiler.\n\nMake sure you declare your function pointers with the same calling\nconvention as the actual library function. Your code will crash\nmysteriously if you do not do this.\n\nIf the requested function doesn't exist, nullptr is returned.\n\n@param name the name of the function to look up.\n@returns a pointer to the function or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectBase.SharedObjectBase",
               "name": "LoadFunction",
               "kind": "function",
               "type": "FunctionPointer",
@@ -29042,30 +29028,210 @@
                 }
               ],
               "sourceName": "SDL_LoadFunction"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "SharedObjectRef": {
+          "name": "SharedObjectRef",
+          "kind": "struct",
+          "type": "SharedObjectBase",
+          "doc": "Handle to a non owned sharedObject\n\n@cat resource\n\n@sa SharedObjectBase\n@sa SharedObject",
+          "entries": {
+            "SharedObjectBase::SharedObjectBase": {
+              "kind": "alias",
+              "name": "SharedObjectBase::SharedObjectBase",
+              "doc": ""
+            },
+            "SharedObjectRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SharedObjectRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "SharedObjectBase(other.get())"
+                  ]
+                },
+                "name": "SharedObjectRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SharedObjectRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "SharedObjectBase(other.release())"
+                  ]
+                },
+                "name": "SharedObjectRef"
+              }
+            ],
+            "~SharedObjectRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~SharedObjectRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "SharedObjectRef &",
+              "parameters": [
+                {
+                  "type": "SharedObjectRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "void",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_SharedObject *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSharedObjectBase.LoadFunction() will no longer be valid.\n\n@param handle a valid shared object handle returned by SharedObjectBase.SharedObjectBase().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectBase.SharedObjectBase",
+              "hints": {
+                "body": "SDL_UnloadObject(release(newResource));"
+              }
             },
             "Unload": {
-              "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSharedObjectBase.LoadFunction() will no longer be valid.\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectBase.SharedObjectBase",
+              "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSharedObjectBase.LoadFunction() will no longer be valid.\n\n@param handle a valid shared object handle returned by SharedObjectBase.SharedObjectBase().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectBase.SharedObjectBase",
               "name": "Unload",
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "sourceName": "SDL_UnloadObject"
+              "sourceName": "SDL_UnloadObject",
+              "static": false
             }
           }
         },
-        "ObjectRef<SDL_SharedObject>::doFree": {
-          "name": "ObjectRef<SDL_SharedObject>::doFree",
-          "type": "void",
-          "kind": "function",
-          "doc": "Callback for sharedObject resource cleanup\n\n@private",
-          "template": [],
-          "parameters": [
-            {
-              "type": "SDL_SharedObject *",
-              "name": "resource"
+        "SharedObject": {
+          "name": "SharedObject",
+          "kind": "struct",
+          "type": "SharedObjectRef",
+          "doc": "Handle to an owned sharedObject\n\n@cat resource\n\n@sa SharedObjectBase\n@sa SharedObjectRef",
+          "entries": {
+            "SharedObjectRef::SharedObjectRef": {
+              "kind": "alias",
+              "name": "SharedObjectRef::SharedObjectRef",
+              "doc": ""
+            },
+            "SharedObject": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_SharedObject *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "SharedObjectRef(resource)"
+                  ]
+                },
+                "name": "SharedObject"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const SharedObject &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "SharedObject",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "SharedObject &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "SharedObject"
+              }
+            ],
+            "~SharedObject": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~SharedObject"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "SharedObject &",
+              "parameters": [
+                {
+                  "type": "SharedObject",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
             }
-          ],
-          "sourceName": "SDL_UnloadObject"
+          }
         }
       }
     },

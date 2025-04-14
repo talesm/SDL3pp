@@ -1525,15 +1525,21 @@ const transform = {
       }
     },
     "SDL_loadso.h": {
-      resources: {
+      resourcesX: {
         "SDL_SharedObject": {
           free: "SDL_UnloadObject",
           entries: {
             "SDL_LoadObject": "ctor",
             "SDL_LoadFunction": "function",
-            "SDL_UnloadObject": { name: "Unload" },
           }
         }
+      },
+      transform: {
+        "SDL_UnloadObject": {
+          name: "SharedObjectRef.Unload",
+          static: false,
+          parameters: [],
+        },
       }
     },
     "SDL_locale.h": {
