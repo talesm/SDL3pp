@@ -1,5 +1,9 @@
-<map id="SDL::SurfaceBase&lt; T &gt;" name="SDL::SurfaceBase&lt; T &gt;">
-<area shape="rect" id="Node000001" title="A collection of pixels used in software blitting." alt="" coords="5,79,180,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="73,5,112,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,44,95,79,90,79,90,44"/>
+<map id="SDL::SurfaceBase" name="SDL::SurfaceBase">
+<area shape="rect" id="Node000001" title="A collection of pixels used in software blitting." alt="" coords="15,93,151,119"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1SurfaceRef.html" title="Handle to a non owned surface." alt="" coords="19,167,146,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Surface.html" title="Handle to an owned surface." alt="" coords="31,240,135,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>

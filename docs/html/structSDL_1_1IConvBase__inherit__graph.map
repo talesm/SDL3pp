@@ -1,5 +1,9 @@
-<map id="SDL::IConvBase&lt; T &gt;" name="SDL::IConvBase&lt; T &gt;">
-<area shape="rect" id="Node000001" title="An opaque handle representing string encoding conversion state." alt="" coords="5,79,168,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="67,5,106,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,44,89,79,84,79,84,44"/>
+<map id="SDL::IConvBase" name="SDL::IConvBase">
+<area shape="rect" id="Node000001" title="An opaque handle representing string encoding conversion state." alt="" coords="21,93,145,119"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1IConvRef.html" title="Handle to a non owned iConv." alt="" coords="25,167,140,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1IConv.html" title="Handle to an owned iConv." alt="" coords="37,240,129,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>

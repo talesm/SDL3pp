@@ -85,14 +85,26 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An efficient driver-specific representation of pixel data.  <a href="structSDL_1_1TextureBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structure representing rendering state.  <a href="structSDL_1_1RendererBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererRef.html">SDL::RendererRef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned renderer.  <a href="structSDL_1_1RendererRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Renderer.html">SDL::Renderer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned renderer.  <a href="structSDL_1_1Renderer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An efficient driver-specific representation of pixel data.  <a href="structSDL_1_1TextureBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html">SDL::TextureRef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned texture.  <a href="structSDL_1_1TextureRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html">SDL::Texture</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned texture.  <a href="structSDL_1_1Texture.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1TextureLock.html">SDL::TextureLock</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a Texture for access to its pixels.  <a href="classSDL_1_1TextureLock.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> for access to its pixels.  <a href="classSDL_1_1TextureLock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -109,35 +121,23 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga9c38c0fbf64f8f54c6cb020aaf79b267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adaptative vsync. <br /></td></tr>
 <tr class="separator:ga9c38c0fbf64f8f54c6cb020aaf79b267"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5fc4af7d7615c76b199f51abfcca4d84" id="r_ga5fc4af7d7615c76b199f51abfcca4d84"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga5fc4af7d7615c76b199f51abfcca4d84">SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE</a>&#160;&#160;&#160;8</td></tr>
-<tr class="memdesc:ga5fc4af7d7615c76b199f51abfcca4d84"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size, in pixels, of a single SDL_RenderDebugText() character.  <br /></td></tr>
+<tr class="memdesc:ga5fc4af7d7615c76b199f51abfcca4d84"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size, in pixels, of a single RendererBase.RenderDebugText() character.  <br /></td></tr>
 <tr class="separator:ga5fc4af7d7615c76b199f51abfcca4d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:gaf76226a4b7cbb3af8578bdbd93f6b068" id="r_gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">SDL::Renderer</a> = <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_Renderer &gt; &gt;</td></tr>
-<tr class="memdesc:gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned renderer.  <br /></td></tr>
-<tr class="separator:gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4b68df1674a8dea4fabd4e9ab9e745d7" id="r_ga4b68df1674a8dea4fabd4e9ab9e745d7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7">SDL::TextureRef</a> = <a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_Texture &gt; &gt;</td></tr>
-<tr class="memdesc:ga4b68df1674a8dea4fabd4e9ab9e745d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned texture.  <br /></td></tr>
-<tr class="separator:ga4b68df1674a8dea4fabd4e9ab9e745d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga13d0a07c826d3f2531cb140115008f5a" id="r_ga13d0a07c826d3f2531cb140115008f5a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">SDL::Texture</a> = <a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_Texture &gt; &gt;</td></tr>
-<tr class="memdesc:ga13d0a07c826d3f2531cb140115008f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned texture.  <br /></td></tr>
-<tr class="separator:ga13d0a07c826d3f2531cb140115008f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4b86011ede078f9ba75274ed30df602b" id="r_ga4b86011ede078f9ba75274ed30df602b"><td class="memItemLeft" align="right" valign="top"><a id="ga4b86011ede078f9ba75274ed30df602b" name="ga4b86011ede078f9ba75274ed30df602b"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Vertex</b> = SDL_Vertex</td></tr>
-<tr class="memdesc:ga4b86011ede078f9ba75274ed30df602b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex structure. <br /></td></tr>
+<tr class="memitem:ga67dcd8cf53bbc3effa7dfbca9427ea04" id="r_ga67dcd8cf53bbc3effa7dfbca9427ea04"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">SDL::OptionalTexture</a> = <a class="el" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&lt; <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>, <a class="el" href="structSDL_1_1Texture.html">Texture</a> &gt;</td></tr>
+<tr class="memdesc:ga67dcd8cf53bbc3effa7dfbca9427ea04"><td class="mdescLeft">&#160;</td><td class="mdescRight">A texture parameter that might own its value.  <br /></td></tr>
+<tr class="separator:ga67dcd8cf53bbc3effa7dfbca9427ea04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b86011ede078f9ba75274ed30df602b" id="r_ga4b86011ede078f9ba75274ed30df602b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">SDL::Vertex</a> = SDL_Vertex</td></tr>
+<tr class="memdesc:ga4b86011ede078f9ba75274ed30df602b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex structure.  <br /></td></tr>
 <tr class="separator:ga4b86011ede078f9ba75274ed30df602b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga736d13caaeee38a712dfb94180a24f56" id="r_ga736d13caaeee38a712dfb94180a24f56"><td class="memItemLeft" align="right" valign="top"><a id="ga736d13caaeee38a712dfb94180a24f56" name="ga736d13caaeee38a712dfb94180a24f56"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TextureAccess</b> = SDL_TextureAccess</td></tr>
-<tr class="memdesc:ga736d13caaeee38a712dfb94180a24f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">The access pattern allowed for a texture. <br /></td></tr>
+<tr class="memitem:ga736d13caaeee38a712dfb94180a24f56" id="r_ga736d13caaeee38a712dfb94180a24f56"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">SDL::TextureAccess</a> = SDL_TextureAccess</td></tr>
+<tr class="memdesc:ga736d13caaeee38a712dfb94180a24f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">The access pattern allowed for a texture.  <br /></td></tr>
 <tr class="separator:ga736d13caaeee38a712dfb94180a24f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga91be24b12fa4efe591c43f2ece44e32d" id="r_ga91be24b12fa4efe591c43f2ece44e32d"><td class="memItemLeft" align="right" valign="top"><a id="ga91be24b12fa4efe591c43f2ece44e32d" name="ga91be24b12fa4efe591c43f2ece44e32d"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::RendererLogicalPresentation</b> = SDL_RendererLogicalPresentation</td></tr>
-<tr class="memdesc:ga91be24b12fa4efe591c43f2ece44e32d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the logical size is mapped to the output. <br /></td></tr>
+<tr class="memitem:ga91be24b12fa4efe591c43f2ece44e32d" id="r_ga91be24b12fa4efe591c43f2ece44e32d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">SDL::RendererLogicalPresentation</a> = SDL_RendererLogicalPresentation</td></tr>
+<tr class="memdesc:ga91be24b12fa4efe591c43f2ece44e32d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the logical size is mapped to the output.  <br /></td></tr>
 <tr class="separator:ga91be24b12fa4efe591c43f2ece44e32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3c15747c0c3091d37a2f14511aba1c7d" id="r_ga3c15747c0c3091d37a2f14511aba1c7d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">SDL::RendererRef</a> = <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_Renderer &gt; &gt;</td></tr>
-<tr class="memdesc:ga3c15747c0c3091d37a2f14511aba1c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned renderer.  <br /></td></tr>
-<tr class="separator:ga3c15747c0c3091d37a2f14511aba1c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -147,38 +147,71 @@ Functions</h2></td></tr>
 <tr class="memitem:gaec060bae8c84c9565bf316e335b36c5a" id="r_gaec060bae8c84c9565bf316e335b36c5a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a">SDL::GetRenderDriver</a> (int index)</td></tr>
 <tr class="memdesc:gaec060bae8c84c9565bf316e335b36c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to get the name of a built in 2D rendering driver.  <br /></td></tr>
 <tr class="separator:gaec060bae8c84c9565bf316e335b36c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga46a4e94c9436427b1e58a045f9ac177d" id="r_ga46a4e94c9436427b1e58a045f9ac177d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847">Window</a>, <a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> window_flags=0)</td></tr>
+<tr class="memitem:ga46a4e94c9436427b1e58a045f9ac177d" id="r_ga46a4e94c9436427b1e58a045f9ac177d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="structSDL_1_1Window.html">Window</a>, <a class="el" href="structSDL_1_1Renderer.html">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> window_flags=0)</td></tr>
 <tr class="memdesc:ga46a4e94c9436427b1e58a045f9ac177d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window and default renderer.  <br /></td></tr>
 <tr class="separator:ga46a4e94c9436427b1e58a045f9ac177d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1ebebe2c47d899c12deaf9131867080a" id="r_ga1ebebe2c47d899c12deaf9131867080a"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga1ebebe2c47d899c12deaf9131867080a">SDL::GetRenderMetalLayer</a> (<a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer)</td></tr>
-<tr class="memdesc:ga1ebebe2c47d899c12deaf9131867080a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the CAMetalLayer associated with the given Metal renderer.  <br /></td></tr>
-<tr class="separator:ga1ebebe2c47d899c12deaf9131867080a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga84052dce4147959aeaeefd6bf36c8424" id="r_ga84052dce4147959aeaeefd6bf36c8424"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga84052dce4147959aeaeefd6bf36c8424">SDL::GetRenderMetalCommandEncoder</a> (<a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer)</td></tr>
-<tr class="memdesc:ga84052dce4147959aeaeefd6bf36c8424"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Metal command encoder for the current frame.  <br /></td></tr>
-<tr class="separator:ga84052dce4147959aeaeefd6bf36c8424"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac4528e04e28d93b190e651508b82ac18" id="r_gac4528e04e28d93b190e651508b82ac18"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac4528e04e28d93b190e651508b82ac18">SDL::AddVulkanRenderSemaphores</a> (<a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore)</td></tr>
-<tr class="memdesc:gac4528e04e28d93b190e651508b82ac18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a set of synchronization semaphores for the current frame.  <br /></td></tr>
-<tr class="separator:gac4528e04e28d93b190e651508b82ac18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga55becfff281d094fc47916ab05fc947b" id="r_ga55becfff281d094fc47916ab05fc947b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga55becfff281d094fc47916ab05fc947b">SDL::LoadTextureBMP</a> (<a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
-<tr class="memdesc:ga55becfff281d094fc47916ab05fc947b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream.  <br /></td></tr>
-<tr class="separator:ga55becfff281d094fc47916ab05fc947b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad2866da5ac1fa8e6fc88967d3d37ab8a" id="r_gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a">SDL::LoadTextureBMP</a> (<a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
-<tr class="memdesc:gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a file.  <br /></td></tr>
-<tr class="separator:gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga62bc5a223508e704621041de4092d770" id="r_ga62bc5a223508e704621041de4092d770"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga62bc5a223508e704621041de4092d770">SDL::GetRenderMetalLayer</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer)</td></tr>
+<tr class="memdesc:ga62bc5a223508e704621041de4092d770"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the CAMetalLayer associated with the given Metal renderer.  <br /></td></tr>
+<tr class="separator:ga62bc5a223508e704621041de4092d770"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gada9b33c941a648f61bd4f1d9da67c8d8" id="r_gada9b33c941a648f61bd4f1d9da67c8d8"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gada9b33c941a648f61bd4f1d9da67c8d8">SDL::GetRenderMetalCommandEncoder</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer)</td></tr>
+<tr class="memdesc:gada9b33c941a648f61bd4f1d9da67c8d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Metal command encoder for the current frame.  <br /></td></tr>
+<tr class="separator:gada9b33c941a648f61bd4f1d9da67c8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae0a3ed82279ee237450c52b3d616ab2a" id="r_gae0a3ed82279ee237450c52b3d616ab2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gae0a3ed82279ee237450c52b3d616ab2a">SDL::AddVulkanRenderSemaphores</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore)</td></tr>
+<tr class="memdesc:gae0a3ed82279ee237450c52b3d616ab2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a set of synchronization semaphores for the current frame.  <br /></td></tr>
+<tr class="separator:gae0a3ed82279ee237450c52b3d616ab2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga17e441a70ad744717f480bec33fe25da" id="r_ga17e441a70ad744717f480bec33fe25da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga17e441a70ad744717f480bec33fe25da">SDL::LoadTextureBMP</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="structSDL_1_1IOStreamBase.html">IOStreamBase</a> &amp;src)</td></tr>
+<tr class="memdesc:ga17e441a70ad744717f480bec33fe25da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream.  <br /></td></tr>
+<tr class="separator:ga17e441a70ad744717f480bec33fe25da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga629c9bc766766e63273385f9ed926e97" id="r_ga629c9bc766766e63273385f9ed926e97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga629c9bc766766e63273385f9ed926e97">SDL::LoadTextureBMP</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
+<tr class="memdesc:ga629c9bc766766e63273385f9ed926e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a file.  <br /></td></tr>
+<tr class="separator:ga629c9bc766766e63273385f9ed926e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga02480f73cb343e7ce943bed29242e64b" id="r_ga02480f73cb343e7ce943bed29242e64b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga02480f73cb343e7ce943bed29242e64b">SDL::WindowBase::GetRenderer</a> () const</td></tr>
+<tr class="memdesc:ga02480f73cb343e7ce943bed29242e64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer associated with a window.  <br /></td></tr>
+<tr class="separator:ga02480f73cb343e7ce943bed29242e64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga190ab2f8a1ee94d74d8209f305936a13" id="r_ga190ab2f8a1ee94d74d8209f305936a13"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga190ab2f8a1ee94d74d8209f305936a13">SDL::RendererBase::SetTarget</a> (<a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a> texture)</td></tr>
+<tr class="memdesc:ga190ab2f8a1ee94d74d8209f305936a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a texture as the current rendering target.  <br /></td></tr>
+<tr class="separator:ga190ab2f8a1ee94d74d8209f305936a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga97fdf4d5be180686f5c796a3cce085bb" id="r_ga97fdf4d5be180686f5c796a3cce085bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga97fdf4d5be180686f5c796a3cce085bb">SDL::RendererBase::GetTarget</a> () const</td></tr>
+<tr class="memdesc:ga97fdf4d5be180686f5c796a3cce085bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current render target.  <br /></td></tr>
+<tr class="separator:ga97fdf4d5be180686f5c796a3cce085bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad65bdf14238a4866f91e839b9a32501f" id="r_gad65bdf14238a4866f91e839b9a32501f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad65bdf14238a4866f91e839b9a32501f">SDL::RendererBase::RenderTexture</a> (<a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; dstrect)</td></tr>
+<tr class="memdesc:gad65bdf14238a4866f91e839b9a32501f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the texture to the current rendering target at subpixel precision.  <br /></td></tr>
+<tr class="separator:gad65bdf14238a4866f91e839b9a32501f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga33efcf00650c63c565e7b6d5ff9d9007" id="r_ga33efcf00650c63c565e7b6d5ff9d9007"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga33efcf00650c63c565e7b6d5ff9d9007">SDL::RendererBase::RenderTextureRotated</a> (<a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; dstrect, double angle, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FPoint &gt; center={}, <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b">FlipMode</a> flip=SDL_FLIP_NONE)</td></tr>
+<tr class="memdesc:ga33efcf00650c63c565e7b6d5ff9d9007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the source texture to the current rendering target, with rotation and flipping, at subpixel precision.  <br /></td></tr>
+<tr class="separator:ga33efcf00650c63c565e7b6d5ff9d9007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac1092d422c0d89c839ab65db3ff6b9a5" id="r_gac1092d422c0d89c839ab65db3ff6b9a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac1092d422c0d89c839ab65db3ff6b9a5">SDL::RendererBase::RenderTextureAffine</a> (<a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; srcrect, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FPoint &gt; origin, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FPoint &gt; right, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FPoint &gt; down)</td></tr>
+<tr class="memdesc:gac1092d422c0d89c839ab65db3ff6b9a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy a portion of the source texture to the current rendering target, with affine transform, at subpixel precision.  <br /></td></tr>
+<tr class="separator:gac1092d422c0d89c839ab65db3ff6b9a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga415205845af745ccc67df7746d8e5b64" id="r_ga415205845af745ccc67df7746d8e5b64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga415205845af745ccc67df7746d8e5b64">SDL::RendererBase::RenderTextureTiled</a> (<a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; srcrect, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; dstrect)</td></tr>
+<tr class="memdesc:ga415205845af745ccc67df7746d8e5b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tile a portion of the texture to the current rendering target at subpixel precision.  <br /></td></tr>
+<tr class="separator:ga415205845af745ccc67df7746d8e5b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf65f63f7f366f5e46f643a8b7fcb7583" id="r_gaf65f63f7f366f5e46f643a8b7fcb7583"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf65f63f7f366f5e46f643a8b7fcb7583">SDL::RendererBase::RenderTexture9Grid</a> (<a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; dstrect)</td></tr>
+<tr class="memdesc:gaf65f63f7f366f5e46f643a8b7fcb7583"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.  <br /></td></tr>
+<tr class="separator:gaf65f63f7f366f5e46f643a8b7fcb7583"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaa5edd7372b75c84cccf5234923d1c2b" id="r_gaaa5edd7372b75c84cccf5234923d1c2b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaaa5edd7372b75c84cccf5234923d1c2b">SDL::RendererBase::RenderGeometry</a> (<a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a> texture, std::span&lt; const <a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">Vertex</a> &gt; vertices, std::span&lt; const int &gt; indices={})</td></tr>
+<tr class="memdesc:gaaa5edd7372b75c84cccf5234923d1c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex array <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="structSDL_1_1TextureBase.html#a7a1f2976b010b01f929c91aa943eca43" title="Set an additional color value multiplied into render copy operations.">TextureBase.SetColorMod</a> and <a class="el" href="structSDL_1_1TextureBase.html#aad98005686d9aab8fc9d78b82b195eb3" title="Set an additional alpha value multiplied into render copy operations.">TextureBase.SetAlphaMod</a> are ignored).  <br /></td></tr>
+<tr class="separator:gaaa5edd7372b75c84cccf5234923d1c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf414bff4d4cb3c594d71155c0a718ba3" id="r_gaf414bff4d4cb3c594d71155c0a718ba3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf414bff4d4cb3c594d71155c0a718ba3">SDL::RendererBase::RenderGeometryRaw</a> (<a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a> texture, const float *xy, int xy_stride, const <a class="el" href="structSDL_1_1FColor.html">FColor</a> *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)</td></tr>
+<tr class="memdesc:gaf414bff4d4cb3c594d71155c0a718ba3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex arrays <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="structSDL_1_1TextureBase.html#a7a1f2976b010b01f929c91aa943eca43" title="Set an additional color value multiplied into render copy operations.">TextureBase.SetColorMod</a> and <a class="el" href="structSDL_1_1TextureBase.html#aad98005686d9aab8fc9d78b82b195eb3" title="Set an additional alpha value multiplied into render copy operations.">TextureBase.SetAlphaMod</a> are ignored).  <br /></td></tr>
+<tr class="separator:gaf414bff4d4cb3c594d71155c0a718ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga78d0efb7d201460bdbe7dbb32e9e61a8" id="r_ga78d0efb7d201460bdbe7dbb32e9e61a8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga78d0efb7d201460bdbe7dbb32e9e61a8">SDL::RendererBase::ResetTarget</a> ()</td></tr>
+<tr class="memdesc:ga78d0efb7d201460bdbe7dbb32e9e61a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target texture back to window.  <br /></td></tr>
+<tr class="separator:ga78d0efb7d201460bdbe7dbb32e9e61a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaef6480072ae24e63a62faa73a7298073" id="r_gaef6480072ae24e63a62faa73a7298073"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TextureLock.html">TextureLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaef6480072ae24e63a62faa73a7298073">SDL::TextureBase::Lock</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect) &amp;</td></tr>
+<tr class="memdesc:gaef6480072ae24e63a62faa73a7298073"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock a portion of the texture for <b>write-only</b> pixel access.  <br /></td></tr>
+<tr class="separator:gaef6480072ae24e63a62faa73a7298073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:gaa279e3194ca1c39c29ba228dfbaf1a11" id="r_gaa279e3194ca1c39c29ba228dfbaf1a11"><td class="memItemLeft" align="right" valign="top"><a id="gaa279e3194ca1c39c29ba228dfbaf1a11" name="gaa279e3194ca1c39c29ba228dfbaf1a11"></a>
-constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TEXTUREACCESS_STATIC</b> = SDL_TEXTUREACCESS_STATIC</td></tr>
-<tr class="memdesc:gaa279e3194ca1c39c29ba228dfbaf1a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes rarely, not lockable. <br /></td></tr>
+<tr class="memitem:gaa279e3194ca1c39c29ba228dfbaf1a11" id="r_gaa279e3194ca1c39c29ba228dfbaf1a11"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaa279e3194ca1c39c29ba228dfbaf1a11">SDL::TEXTUREACCESS_STATIC</a></td></tr>
+<tr class="memdesc:gaa279e3194ca1c39c29ba228dfbaf1a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes rarely, not lockable.  <br /></td></tr>
 <tr class="separator:gaa279e3194ca1c39c29ba228dfbaf1a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa7a17f596678e5bb9c8b67844a1024c9" id="r_gaa7a17f596678e5bb9c8b67844a1024c9"><td class="memItemLeft" align="right" valign="top"><a id="gaa7a17f596678e5bb9c8b67844a1024c9" name="gaa7a17f596678e5bb9c8b67844a1024c9"></a>
-constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TEXTUREACCESS_STREAMING</b> = SDL_TEXTUREACCESS_STREAMING</td></tr>
-<tr class="memdesc:gaa7a17f596678e5bb9c8b67844a1024c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes frequently, lockable. <br /></td></tr>
+<tr class="memitem:gaa7a17f596678e5bb9c8b67844a1024c9" id="r_gaa7a17f596678e5bb9c8b67844a1024c9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaa7a17f596678e5bb9c8b67844a1024c9">SDL::TEXTUREACCESS_STREAMING</a></td></tr>
+<tr class="memdesc:gaa7a17f596678e5bb9c8b67844a1024c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes frequently, lockable.  <br /></td></tr>
 <tr class="separator:gaa7a17f596678e5bb9c8b67844a1024c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9229ccd5925e315f1375f422a64c3f57" id="r_ga9229ccd5925e315f1375f422a64c3f57"><td class="memItemLeft" align="right" valign="top"><a id="ga9229ccd5925e315f1375f422a64c3f57" name="ga9229ccd5925e315f1375f422a64c3f57"></a>
-constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TEXTUREACCESS_TARGET</b> = SDL_TEXTUREACCESS_TARGET</td></tr>
-<tr class="memdesc:ga9229ccd5925e315f1375f422a64c3f57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Texture can be used as a render target. <br /></td></tr>
+<tr class="memitem:ga9229ccd5925e315f1375f422a64c3f57" id="r_ga9229ccd5925e315f1375f422a64c3f57"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga9229ccd5925e315f1375f422a64c3f57">SDL::TEXTUREACCESS_TARGET</a></td></tr>
+<tr class="memdesc:ga9229ccd5925e315f1375f422a64c3f57"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> can be used as a render target.  <br /></td></tr>
 <tr class="separator:ga9229ccd5925e315f1375f422a64c3f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga857ef502206ed4d471eaafc4d94fbfbc" id="r_ga857ef502206ed4d471eaafc4d94fbfbc"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">RendererLogicalPresentation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga857ef502206ed4d471eaafc4d94fbfbc">SDL::LOGICAL_PRESENTATION_DISABLED</a></td></tr>
 <tr class="memdesc:ga857ef502206ed4d471eaafc4d94fbfbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">There is no logical size in effect.  <br /></td></tr>
@@ -223,7 +256,7 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
 </div><div class="memdoc">
 <p>The font is monospaced and square, so this applies to all characters.</p>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_RenderDebugText </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>RendererBase.RenderDebugText </dd></dl>
 
 </div>
 </div>
@@ -243,83 +276,69 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="gaf76226a4b7cbb3af8578bdbd93f6b068" name="gaf76226a4b7cbb3af8578bdbd93f6b068"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf76226a4b7cbb3af8578bdbd93f6b068">&#9670;&#160;</a></span>Renderer</h2>
+<a id="ga67dcd8cf53bbc3effa7dfbca9427ea04" name="ga67dcd8cf53bbc3effa7dfbca9427ea04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga67dcd8cf53bbc3effa7dfbca9427ea04">&#9670;&#160;</a></span>OptionalTexture</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">SDL::Renderer</a> = typedef <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_Renderer&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">SDL::OptionalTexture</a> = typedef <a class="el" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&lt;<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>, <a class="el" href="structSDL_1_1Texture.html">Texture</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html" title="A structure representing rendering state.">RendererBase</a> </dd>
-<dd>
-<a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d" title="Handle to a non owned renderer.">RendererRef</a> </dd></dl>
+<p>This is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned <a class="el" href="structSDL_1_1TextureRef.html" title="Handle to a non owned texture.">TextureRef</a> or an owned <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> </p>
 
 </div>
 </div>
-<a id="ga3c15747c0c3091d37a2f14511aba1c7d" name="ga3c15747c0c3091d37a2f14511aba1c7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3c15747c0c3091d37a2f14511aba1c7d">&#9670;&#160;</a></span>RendererRef</h2>
+<a id="ga91be24b12fa4efe591c43f2ece44e32d" name="ga91be24b12fa4efe591c43f2ece44e32d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga91be24b12fa4efe591c43f2ece44e32d">&#9670;&#160;</a></span>RendererLogicalPresentation</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">SDL::RendererRef</a> = typedef <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_Renderer&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d">SDL::RendererLogicalPresentation</a> = typedef SDL_RendererLogicalPresentation</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>resource </dd>
-<dd>
-<a class="el" href="structSDL_1_1RendererBase.html" title="A structure representing rendering state.">RendererBase</a> </dd>
-<dd>
-<a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068" title="Handle to an owned renderer.">Renderer</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
-<a id="ga13d0a07c826d3f2531cb140115008f5a" name="ga13d0a07c826d3f2531cb140115008f5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga13d0a07c826d3f2531cb140115008f5a">&#9670;&#160;</a></span>Texture</h2>
+<a id="ga736d13caaeee38a712dfb94180a24f56" name="ga736d13caaeee38a712dfb94180a24f56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga736d13caaeee38a712dfb94180a24f56">&#9670;&#160;</a></span>TextureAccess</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">SDL::Texture</a> = typedef <a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_Texture&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">SDL::TextureAccess</a> = typedef SDL_TextureAccess</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html" title="An efficient driver-specific representation of pixel data.">TextureBase</a> </dd>
-<dd>
-<a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7" title="Handle to a non owned texture.">TextureRef</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
-<a id="ga4b68df1674a8dea4fabd4e9ab9e745d7" name="ga4b68df1674a8dea4fabd4e9ab9e745d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4b68df1674a8dea4fabd4e9ab9e745d7">&#9670;&#160;</a></span>TextureRef</h2>
+<a id="ga4b86011ede078f9ba75274ed30df602b" name="ga4b86011ede078f9ba75274ed30df602b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4b86011ede078f9ba75274ed30df602b">&#9670;&#160;</a></span>Vertex</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7">SDL::TextureRef</a> = typedef <a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_Texture&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">SDL::Vertex</a> = typedef SDL_Vertex</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html" title="An efficient driver-specific representation of pixel data.">TextureBase</a> </dd>
-<dd>
-<a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a" title="Handle to an owned texture.">Texture</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gac4528e04e28d93b190e651508b82ac18" name="gac4528e04e28d93b190e651508b82ac18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac4528e04e28d93b190e651508b82ac18">&#9670;&#160;</a></span>AddVulkanRenderSemaphores()</h2>
+<a id="gae0a3ed82279ee237450c52b3d616ab2a" name="gae0a3ed82279ee237450c52b3d616ab2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae0a3ed82279ee237450c52b3d616ab2a">&#9670;&#160;</a></span>AddVulkanRenderSemaphores()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -330,7 +349,7 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
         <tr>
           <td class="memname">bool SDL::AddVulkanRenderSemaphores </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>
@@ -364,7 +383,7 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
 </table>
 </div><div class="memdoc">
 <p>The Vulkan renderer will wait for <code>wait_semaphore</code> before submitting rendering commands and signal <code>signal_semaphore</code> after rendering commands are complete for this frame.</p>
-<p>This should be called each frame that you want semaphore synchronization. The Vulkan renderer may have multiple frames in flight on the GPU, so you should have multiple semaphores that are used for synchronization. Querying SDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum number of semaphores you'll need.</p>
+<p>This should be called each frame that you want semaphore synchronization. The Vulkan renderer may have multiple frames in flight on the GPU, so you should have multiple semaphores that are used for synchronization. Querying prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum number of semaphores you'll need.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
@@ -374,7 +393,7 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is <b>NOT</b> safe to call this function from two threads at once.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
@@ -390,7 +409,7 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; <a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847">Window</a>, <a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">Renderer</a> &gt; SDL::CreateWindowAndRenderer </td>
+          <td class="memname">std::pair&lt; <a class="el" href="structSDL_1_1Window.html">Window</a>, <a class="el" href="structSDL_1_1Renderer.html">Renderer</a> &gt; SDL::CreateWindowAndRenderer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>title</em>, </td>
@@ -423,16 +442,16 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
   <table class="params">
     <tr><td class="paramname">title</td><td>the title of the window, in UTF-8 encoding. </td></tr>
     <tr><td class="paramname">size</td><td>the width and height of the window. </td></tr>
-    <tr><td class="paramname">window_flags</td><td>the flags used to create the window (see Window::Window()). </td></tr>
+    <tr><td class="paramname">window_flags</td><td>the flags used to create the window (see <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase()</a>). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pair with Window and Renderer on success or a pair of std::nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pair with <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a> and <a class="el" href="structSDL_1_1Renderer.html" title="Handle to an owned renderer.">Renderer</a> on success or a pair of nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068" title="Handle to an owned renderer.">Renderer</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a71dcf1733934a35d778e9cae26778b65" title="Create a 2D rendering context for a window.">RendererBase.RendererBase</a> </dd>
 <dd>
-<a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847" title="Handle to an owned window.">Window</a> </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> </dd></dl>
 
 </div>
 </div>
@@ -463,7 +482,9 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
 <dl class="section return"><dt>Returns</dt><dd>the number of built in render drivers.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>GetDriver() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a71dcf1733934a35d778e9cae26778b65" title="Create a 2D rendering context for a window.">RendererBase.RendererBase</a> </dd>
+<dd>
+<a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a" title="Use this function to get the name of a built in 2D rendering driver.">GetRenderDriver</a> </dd></dl>
 
 </div>
 </div>
@@ -494,19 +515,47 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
 <p>The names of drivers are all simple, low-ASCII identifiers, like "opengl", "direct3d12" or "metal". These never have Unicode characters, and are not meant to be proper names.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">index</td><td>the index of the rendering driver; the value ranges from 0 to SDL_GetNumRenderDrivers() - 1. </td></tr>
+    <tr><td class="paramname">index</td><td>the index of the rendering driver; the value ranges from 0 to <a class="el" href="group__CategoryRender.html#gaeb8dc812e83b8aee07c7bc37d233d599" title="Get the number of 2D rendering drivers available for the current display.">GetNumRenderDrivers()</a> - 1. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the name of the rendering driver at the requested index, or NULL if an invalid index was specified.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the name of the rendering driver at the requested index, or nullptr if an invalid index was specified.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetNumRenderDrivers </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gaeb8dc812e83b8aee07c7bc37d233d599" title="Get the number of 2D rendering drivers available for the current display.">GetNumRenderDrivers</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga84052dce4147959aeaeefd6bf36c8424" name="ga84052dce4147959aeaeefd6bf36c8424"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga84052dce4147959aeaeefd6bf36c8424">&#9670;&#160;</a></span>GetRenderMetalCommandEncoder()</h2>
+<a id="ga02480f73cb343e7ce943bed29242e64b" name="ga02480f73cb343e7ce943bed29242e64b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga02480f73cb343e7ce943bed29242e64b">&#9670;&#160;</a></span>GetRenderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> SDL::WindowBase::GetRenderer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the rendering context on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gada9b33c941a648f61bd4f1d9da67c8d8" name="gada9b33c941a648f61bd4f1d9da67c8d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gada9b33c941a648f61bd4f1d9da67c8d8">&#9670;&#160;</a></span>GetRenderMetalCommandEncoder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -517,7 +566,7 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
         <tr>
           <td class="memname">void * SDL::GetRenderMetalCommandEncoder </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
           <td class="paramname"><em>renderer</em></td><td>)</td>
           <td></td>
         </tr>
@@ -529,22 +578,22 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
 </table>
 </div><div class="memdoc">
 <p>This function returns <code>void *</code>, so <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> doesn't have to include Metal's headers, but it can be safely cast to an <code>id&lt;MTLRenderCommandEncoder&gt;</code>.</p>
-<p>This will return NULL if Metal refuses to give <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> a drawable to render to, which might happen if the window is hidden/minimized/offscreen. This doesn't apply to command encoders for render targets, just the window's backbuffer. Check your return values!</p>
+<p>This will return nullptr if Metal refuses to give <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> a drawable to render to, which might happen if the window is hidden/minimized/offscreen. This doesn't apply to command encoders for render targets, just the window's backbuffer. Check your return values!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">renderer</td><td>the renderer to query. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>an <code>id&lt;MTLRenderCommandEncoder&gt;</code> on success, or NULL if the renderer isn't a Metal renderer or there was an error.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>an <code>id&lt;MTLRenderCommandEncoder&gt;</code> on success, or nullptr if the renderer isn't a Metal renderer or there was an error.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetRenderMetalLayer </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga62bc5a223508e704621041de4092d770" title="Get the CAMetalLayer associated with the given Metal renderer.">GetRenderMetalLayer</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga1ebebe2c47d899c12deaf9131867080a" name="ga1ebebe2c47d899c12deaf9131867080a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1ebebe2c47d899c12deaf9131867080a">&#9670;&#160;</a></span>GetRenderMetalLayer()</h2>
+<a id="ga62bc5a223508e704621041de4092d770" name="ga62bc5a223508e704621041de4092d770"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga62bc5a223508e704621041de4092d770">&#9670;&#160;</a></span>GetRenderMetalLayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -555,7 +604,7 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
         <tr>
           <td class="memname">void * SDL::GetRenderMetalLayer </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
           <td class="paramname"><em>renderer</em></td><td>)</td>
           <td></td>
         </tr>
@@ -573,15 +622,15 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a <code>CAMetalLayer *</code> on success, or NULL if the renderer isn't a Metal renderer.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a <code>CAMetalLayer *</code> on success, or nullptr if the renderer isn't a Metal renderer.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetRenderMetalCommandEncoder </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gada9b33c941a648f61bd4f1d9da67c8d8" title="Get the Metal command encoder for the current frame.">GetRenderMetalCommandEncoder</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga55becfff281d094fc47916ab05fc947b" name="ga55becfff281d094fc47916ab05fc947b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga55becfff281d094fc47916ab05fc947b">&#9670;&#160;</a></span>LoadTextureBMP() <span class="overload">[1/2]</span></h2>
+<a id="ga97fdf4d5be180686f5c796a3cce085bb" name="ga97fdf4d5be180686f5c796a3cce085bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga97fdf4d5be180686f5c796a3cce085bb">&#9670;&#160;</a></span>GetTarget()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -590,15 +639,45 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a> SDL::LoadTextureBMP </td>
+          <td class="memname"><a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> SDL::RendererBase::GetTarget </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The default render target is the window for which the renderer was created, and is reported a nullptr here.</p>
+<dl class="section return"><dt>Returns</dt><dd>the current render target or nullptr for the default render target.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga190ab2f8a1ee94d74d8209f305936a13" title="Set a texture as the current rendering target.">RendererBase.SetTarget</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga17e441a70ad744717f480bec33fe25da" name="ga17e441a70ad744717f480bec33fe25da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga17e441a70ad744717f480bec33fe25da">&#9670;&#160;</a></span>LoadTextureBMP() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1Texture.html">Texture</a> SDL::LoadTextureBMP </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamBase.html">IOStreamBase</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>&#160;</td>
         </tr>
         <tr>
@@ -620,13 +699,13 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a Texture with loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
-<a id="gad2866da5ac1fa8e6fc88967d3d37ab8a" name="gad2866da5ac1fa8e6fc88967d3d37ab8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad2866da5ac1fa8e6fc88967d3d37ab8a">&#9670;&#160;</a></span>LoadTextureBMP() <span class="overload">[2/2]</span></h2>
+<a id="ga629c9bc766766e63273385f9ed926e97" name="ga629c9bc766766e63273385f9ed926e97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga629c9bc766766e63273385f9ed926e97">&#9670;&#160;</a></span>LoadTextureBMP() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -635,9 +714,9 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a> SDL::LoadTextureBMP </td>
+          <td class="memname"><a class="el" href="structSDL_1_1Texture.html">Texture</a> SDL::LoadTextureBMP </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>
@@ -665,8 +744,631 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a Texture with loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaef6480072ae24e63a62faa73a7298073" name="gaef6480072ae24e63a62faa73a7298073"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaef6480072ae24e63a62faa73a7298073">&#9670;&#160;</a></span>Lock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1TextureLock.html">TextureLock</a> SDL::TextureBase::Lock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt;&#160;</td>
+          <td class="paramname"><em>rect</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>As an optimization, the pixels made available for editing don't necessarily contain the old texture data. This is a write-only operation, and if you need to keep a copy of the texture data you should do that at the application level.</p>
+<p>You must use <a class="el" href="classSDL_1_1TextureLock.html#a64d4299d0b3b140db84ad04e380d6044" title="Unlock a texture, uploading the changes to video memory, if needed.">TextureLock.Unlock()</a> to unlock the pixels and apply any changes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the area to lock for access; nullptr to lock the entire texture. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels.">TextureLock</a> on success or false if the texture is not valid or was not created with <code>SDL_TEXTUREACCESS_STREAMING</code>; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1TextureLock.html#a64d4299d0b3b140db84ad04e380d6044" title="Unlock a texture, uploading the changes to video memory, if needed.">TextureLock.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaaa5edd7372b75c84cccf5234923d1c2b" name="gaaa5edd7372b75c84cccf5234923d1c2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaa5edd7372b75c84cccf5234923d1c2b">&#9670;&#160;</a></span>RenderGeometry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::RenderGeometry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a>&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::span&lt; const <a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">Vertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>vertices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::span&lt; const int &gt;&#160;</td>
+          <td class="paramname"><em>indices</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>(optional) The <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> texture to use. </td></tr>
+    <tr><td class="paramname">vertices</td><td>vertices. </td></tr>
+    <tr><td class="paramname">indices</td><td>(optional) An array of integer indices into the 'vertices' array, if nullptr all vertices will be rendered in sequential order. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gaf414bff4d4cb3c594d71155c0a718ba3" title="Render a list of triangles, optionally using a texture and indices into the vertex arrays Color and a...">RendererBase.RenderGeometryRaw</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf414bff4d4cb3c594d71155c0a718ba3" name="gaf414bff4d4cb3c594d71155c0a718ba3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf414bff4d4cb3c594d71155c0a718ba3">&#9670;&#160;</a></span>RenderGeometryRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::RenderGeometryRaw </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a>&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>xy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>xy_stride</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1FColor.html">FColor</a> *&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>color_stride</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>uv</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>uv_stride</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_vertices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size_indices</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>(optional) The <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> texture to use. </td></tr>
+    <tr><td class="paramname">xy</td><td>vertex positions. </td></tr>
+    <tr><td class="paramname">xy_stride</td><td>byte size to move from one element to the next element. </td></tr>
+    <tr><td class="paramname">color</td><td>vertex colors (as <a class="el" href="structSDL_1_1FColor.html" title="The bits of this structure can be directly reinterpreted as a float-packed color which uses the PIXEL...">FColor</a>). </td></tr>
+    <tr><td class="paramname">color_stride</td><td>byte size to move from one element to the next element. </td></tr>
+    <tr><td class="paramname">uv</td><td>vertex normalized texture coordinates. </td></tr>
+    <tr><td class="paramname">uv_stride</td><td>byte size to move from one element to the next element. </td></tr>
+    <tr><td class="paramname">num_vertices</td><td>number of vertices. </td></tr>
+    <tr><td class="paramname">indices</td><td>(optional) An array of indices into the 'vertices' arrays, if nullptr all vertices will be rendered in sequential order. </td></tr>
+    <tr><td class="paramname">num_indices</td><td>number of indices. </td></tr>
+    <tr><td class="paramname">size_indices</td><td>index size: 1 (byte), 2 (short), 4 (int). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gaaa5edd7372b75c84cccf5234923d1c2b" title="Render a list of triangles, optionally using a texture and indices into the vertex array Color and al...">RendererBase.RenderGeometry</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad65bdf14238a4866f91e839b9a32501f" name="gad65bdf14238a4866f91e839b9a32501f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad65bdf14238a4866f91e839b9a32501f">&#9670;&#160;</a></span>RenderTexture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::RenderTexture </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>srcrect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>dstrect</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>the source texture. </td></tr>
+    <tr><td class="paramname">srcrect</td><td>a pointer to the source rectangle, or nullptr for the entire texture. </td></tr>
+    <tr><td class="paramname">dstrect</td><td>a pointer to the destination rectangle, or nullptr for the entire rendering target. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga33efcf00650c63c565e7b6d5ff9d9007" title="Copy a portion of the source texture to the current rendering target, with rotation and flipping,...">RendererBase.RenderTextureRotated</a> </dd>
+<dd>
+<a class="el" href="group__CategoryRender.html#ga415205845af745ccc67df7746d8e5b64" title="Tile a portion of the texture to the current rendering target at subpixel precision.">RendererBase.RenderTextureTiled</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf65f63f7f366f5e46f643a8b7fcb7583" name="gaf65f63f7f366f5e46f643a8b7fcb7583"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf65f63f7f366f5e46f643a8b7fcb7583">&#9670;&#160;</a></span>RenderTexture9Grid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::RenderTexture9Grid </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>srcrect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>left_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>right_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>top_height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bottom_height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>dstrect</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The pixels in the texture are split into a 3x3 grid, using the different corner sizes for each corner, and the sides and center making up the remaining pixels. The corners are then scaled using <code>scale</code> and fit into the corners of the destination rectangle. The sides and center are then stretched into place to cover the remaining destination rectangle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>the source texture. </td></tr>
+    <tr><td class="paramname">srcrect</td><td>the <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the rectangle to be used for the 9-grid, or nullptr to use the entire texture. </td></tr>
+    <tr><td class="paramname">left_width</td><td>the width, in pixels, of the left corners in <code>srcrect</code>. </td></tr>
+    <tr><td class="paramname">right_width</td><td>the width, in pixels, of the right corners in <code>srcrect</code>. </td></tr>
+    <tr><td class="paramname">top_height</td><td>the height, in pixels, of the top corners in <code>srcrect</code>. </td></tr>
+    <tr><td class="paramname">bottom_height</td><td>the height, in pixels, of the bottom corners in <code>srcrect</code>. </td></tr>
+    <tr><td class="paramname">scale</td><td>the scale used to transform the corner of <code>srcrect</code> into the corner of <code>dstrect</code>, or 0.0f for an unscaled copy. </td></tr>
+    <tr><td class="paramname">dstrect</td><td>a pointer to the destination rectangle, or nullptr for the entire rendering target. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gad65bdf14238a4866f91e839b9a32501f" title="Copy a portion of the texture to the current rendering target at subpixel precision.">RendererBase.RenderTexture</a> </dd></dl>
+
+</div>
+</div>
+<a id="gac1092d422c0d89c839ab65db3ff6b9a5" name="gac1092d422c0d89c839ab65db3ff6b9a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac1092d422c0d89c839ab65db3ff6b9a5">&#9670;&#160;</a></span>RenderTextureAffine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::RenderTextureAffine </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>srcrect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FPoint &gt;&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FPoint &gt;&#160;</td>
+          <td class="paramname"><em>right</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FPoint &gt;&#160;</td>
+          <td class="paramname"><em>down</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>the source texture. </td></tr>
+    <tr><td class="paramname">srcrect</td><td>a pointer to the source rectangle, or nullptr for the entire texture. </td></tr>
+    <tr><td class="paramname">origin</td><td>a pointer to a point indicating where the top-left corner of srcrect should be mapped to, or nullptr for the rendering target's origin. </td></tr>
+    <tr><td class="paramname">right</td><td>a pointer to a point indicating where the top-right corner of srcrect should be mapped to, or nullptr for the rendering target's top-right corner. </td></tr>
+    <tr><td class="paramname">down</td><td>a pointer to a point indicating where the bottom-left corner of srcrect should be mapped to, or nullptr for the rendering target's bottom-left corner. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>You may only call this function from the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gad65bdf14238a4866f91e839b9a32501f" title="Copy a portion of the texture to the current rendering target at subpixel precision.">RendererBase.RenderTexture</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga33efcf00650c63c565e7b6d5ff9d9007" name="ga33efcf00650c63c565e7b6d5ff9d9007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga33efcf00650c63c565e7b6d5ff9d9007">&#9670;&#160;</a></span>RenderTextureRotated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::RenderTextureRotated </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>srcrect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>dstrect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FPoint &gt;&#160;</td>
+          <td class="paramname"><em>center</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b">FlipMode</a>&#160;</td>
+          <td class="paramname"><em>flip</em> = <code>SDL_FLIP_NONE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>the source texture. </td></tr>
+    <tr><td class="paramname">srcrect</td><td>a pointer to the source rectangle, or nullptr for the entire texture. </td></tr>
+    <tr><td class="paramname">dstrect</td><td>a pointer to the destination rectangle, or nullptr for the entire rendering target. </td></tr>
+    <tr><td class="paramname">angle</td><td>an angle in degrees that indicates the rotation that will be applied to dstrect, rotating it in a clockwise direction. </td></tr>
+    <tr><td class="paramname">center</td><td>a pointer to a point indicating the point around which dstrect will be rotated (if nullptr, rotation will be done around dstrect.w/2, dstrect.h/2). </td></tr>
+    <tr><td class="paramname">flip</td><td>an FlipMode value stating which flipping actions should be performed on the texture. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gad65bdf14238a4866f91e839b9a32501f" title="Copy a portion of the texture to the current rendering target at subpixel precision.">RendererBase.RenderTexture</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga415205845af745ccc67df7746d8e5b64" name="ga415205845af745ccc67df7746d8e5b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga415205845af745ccc67df7746d8e5b64">&#9670;&#160;</a></span>RenderTextureTiled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::RenderTextureTiled </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>srcrect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt;&#160;</td>
+          <td class="paramname"><em>dstrect</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The pixels in <code>srcrect</code> will be repeated as many times as needed to completely fill <code>dstrect</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>the source texture. </td></tr>
+    <tr><td class="paramname">srcrect</td><td>a pointer to the source rectangle, or nullptr for the entire texture. </td></tr>
+    <tr><td class="paramname">scale</td><td>the scale used to transform srcrect into the destination rectangle, e.g. a 32x32 texture with a scale of 2 would fill 64x64 tiles. </td></tr>
+    <tr><td class="paramname">dstrect</td><td>a pointer to the destination rectangle, or nullptr for the entire rendering target. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gad65bdf14238a4866f91e839b9a32501f" title="Copy a portion of the texture to the current rendering target at subpixel precision.">RendererBase.RenderTexture</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga78d0efb7d201460bdbe7dbb32e9e61a8" name="ga78d0efb7d201460bdbe7dbb32e9e61a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga78d0efb7d201460bdbe7dbb32e9e61a8">&#9670;&#160;</a></span>ResetTarget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::ResetTarget </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is equivalent to SetTarget(nullptr)</p>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SetTarget(nullptr) </dd>
+<dd>
+<a class="el" href="group__CategoryRender.html#ga97fdf4d5be180686f5c796a3cce085bb" title="Get the current render target.">GetTarget()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga190ab2f8a1ee94d74d8209f305936a13" name="ga190ab2f8a1ee94d74d8209f305936a13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga190ab2f8a1ee94d74d8209f305936a13">&#9670;&#160;</a></span>SetTarget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RendererBase::SetTarget </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a>&#160;</td>
+          <td class="paramname"><em>texture</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The default render target is the window for which the renderer was created. To stop rendering to a texture and render to the window again, call this function with a nullptr <code>texture</code>.</p>
+<p>Viewport, cliprect, scale, and logical presentation are unique to each render target. Get and set functions for these states apply to the current render target set by this function, and those states persist on each target when the current render target changes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>the targeted texture, which must be created with the <code>TEXTUREACCESS_TARGET</code> flag, or nullptr to render to the window instead of a texture. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga97fdf4d5be180686f5c796a3cce085bb" title="Get the current render target.">RendererBase.GetTarget</a> </dd></dl>
 
 </div>
 </div>
@@ -788,6 +1490,78 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  SDL_LOGICAL_PRESENTATION_STRETCH</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gaa279e3194ca1c39c29ba228dfbaf1a11" name="gaa279e3194ca1c39c29ba228dfbaf1a11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa279e3194ca1c39c29ba228dfbaf1a11">&#9670;&#160;</a></span>TEXTUREACCESS_STATIC</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> SDL::TEXTUREACCESS_STATIC</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_TEXTUREACCESS_STATIC</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gaa7a17f596678e5bb9c8b67844a1024c9" name="gaa7a17f596678e5bb9c8b67844a1024c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7a17f596678e5bb9c8b67844a1024c9">&#9670;&#160;</a></span>TEXTUREACCESS_STREAMING</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> SDL::TEXTUREACCESS_STREAMING</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_TEXTUREACCESS_STREAMING</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga9229ccd5925e315f1375f422a64c3f57" name="ga9229ccd5925e315f1375f422a64c3f57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9229ccd5925e315f1375f422a64c3f57">&#9670;&#160;</a></span>TEXTUREACCESS_TARGET</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> SDL::TEXTUREACCESS_TARGET</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_TEXTUREACCESS_TARGET</div>
 </div><!-- fragment -->
 </div>
 </div>

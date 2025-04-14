@@ -89,57 +89,181 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html">   14</a></span><span class="keyword">class </span><a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  T m_resource;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a959604d891dcae230bf4c378c046a21d">   20</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1Resource.html#a959604d891dcae230bf4c378c046a21d">Resource</a>(T resource = {})</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    : m_resource(std::move(resource))</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  }</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html">   16</a></span><span class="keyword">class </span><a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  T m_resource;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a959604d891dcae230bf4c378c046a21d">   22</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1Resource.html#a959604d891dcae230bf4c378c046a21d">Resource</a>(T resource = {})</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    : m_resource(std::move(resource))</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  }</div>
 </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  Resource(<span class="keyword">const</span> Resource&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  Resource(Resource&amp;&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  Resource&amp; operator=(<span class="keyword">const</span> Resource&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  Resource&amp; operator=(Resource&amp;&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a0c1e912fa44fa869f6db73e4ba7720a9">   31</a></span>  <span class="keyword">constexpr</span> <span class="keyword">explicit</span> <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_resource; }</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a988d47fefd6d7a5f623d3de9fce5ea59">   28</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1Resource.html#a988d47fefd6d7a5f623d3de9fce5ea59">Resource</a>(std::nullptr_t)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    : m_resource{0}</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  }</div>
+</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a00783ea48f16c278f89467a3ade29b18">   34</a></span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classSDL_1_1Resource.html#a00783ea48f16c278f89467a3ade29b18">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>&amp; other) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#ad2a82bc79a7dae41ceb1a25647ae1c0d">   37</a></span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classSDL_1_1Resource.html#ad2a82bc79a7dae41ceb1a25647ae1c0d">operator==</a>(std::nullopt_t)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> !m_resource; }</div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#afbb3168108af6a8bd0e23edc712b6a09">   34</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1Resource.html#afbb3168108af6a8bd0e23edc712b6a09">Resource</a>(std::nullopt_t)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    : m_resource{0}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
+</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#ab110e6568060a7ae58ab7b29ad68f7fc">   40</a></span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classSDL_1_1Resource.html#ab110e6568060a7ae58ab7b29ad68f7fc">operator==</a>(std::nullptr_t)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> !m_resource; }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">   43</a></span>  <span class="keyword">constexpr</span> T <a class="code hl_function" href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">get</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_resource; }</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a604a674bee6d19b0418e4b07b3e9ff3e">   46</a></span>  <span class="keyword">constexpr</span> T <a class="code hl_function" href="classSDL_1_1Resource.html#a604a674bee6d19b0418e4b07b3e9ff3e">release</a>()</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    T result = std::move(m_resource);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    m_resource = {};</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
-</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
-</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>(<a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>&amp;&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>&amp; operator=(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>&amp; operator=(<a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>&amp;&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a0c1e912fa44fa869f6db73e4ba7720a9">   45</a></span>  <span class="keyword">constexpr</span> <span class="keyword">explicit</span> <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_resource; }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a00783ea48f16c278f89467a3ade29b18">   48</a></span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classSDL_1_1Resource.html#a00783ea48f16c278f89467a3ade29b18">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1Resource.html">Resource</a>&amp; other) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#ad2a82bc79a7dae41ceb1a25647ae1c0d">   51</a></span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classSDL_1_1Resource.html#ad2a82bc79a7dae41ceb1a25647ae1c0d">operator==</a>(std::nullopt_t)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> !m_resource; }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#ab110e6568060a7ae58ab7b29ad68f7fc">   54</a></span>  <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classSDL_1_1Resource.html#ab110e6568060a7ae58ab7b29ad68f7fc">operator==</a>(std::nullptr_t)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> !m_resource; }</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_RESOURCE_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassSDL_1_1Resource_html"><div class="ttname"><a href="classSDL_1_1Resource.html">SDL::Resource</a></div><div class="ttdoc">A SDL managed resource.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:15</div></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">   57</a></span>  <span class="keyword">constexpr</span> T <a class="code hl_function" href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">get</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_resource; }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a795922875f43cc42165896b02af59d0c">   60</a></span>  <span class="keyword">constexpr</span> T <a class="code hl_function" href="classSDL_1_1Resource.html#a795922875f43cc42165896b02af59d0c">release</a>(T newResource = {})</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    T result = std::move(m_resource);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    m_resource = newResource;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#aa21f6ed563dbdb86c0d6d21c2721c767">   68</a></span>  <span class="keyword">constexpr</span> <span class="keyword">const</span> T <a class="code hl_function" href="classSDL_1_1Resource.html#aa21f6ed563dbdb86c0d6d21c2721c767">operator-&gt;</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">get</a>(); }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classSDL_1_1Resource.html#a1bac10eb8bfedf254b67081d767c1a68">   71</a></span>  <span class="keyword">constexpr</span> T <a class="code hl_function" href="classSDL_1_1Resource.html#a1bac10eb8bfedf254b67081d767c1a68">operator-&gt;</a>() { <span class="keywordflow">return</span> <a class="code hl_function" href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">get</a>(); }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>};</div>
+</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> REF, <span class="keyword">class</span> UNIQUE&gt;</div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="};">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classSDL_1_1OptionalResource.html">   87</a></span><span class="keyword">class </span><a class="code hl_class" href="classSDL_1_1OptionalResource.html">OptionalResource</a> : <span class="keyword">public</span> REF</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>{</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordtype">bool</span> m_owning = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">using </span>REF::REF;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classSDL_1_1OptionalResource.html#ab7df507083ef440e17ef86c144d51534">   95</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1OptionalResource.html#ab7df507083ef440e17ef86c144d51534">OptionalResource</a>(<span class="keyword">const</span> REF&amp; other)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    : REF(other)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
+</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classSDL_1_1OptionalResource.html#afa63943d9d3d4bca539475e917b401b2">  101</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1OptionalResource.html#afa63943d9d3d4bca539475e917b401b2">OptionalResource</a>(<span class="keyword">const</span> UNIQUE&amp; other)</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    : REF(other)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  }</div>
+</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classSDL_1_1OptionalResource.html#adfa3576c2ca57e6db7e29ec5ada3547b">  107</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1OptionalResource.html#adfa3576c2ca57e6db7e29ec5ada3547b">OptionalResource</a>(UNIQUE&amp;&amp; other)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    : REF(other.release())</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    , m_owning(true)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  }</div>
+</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <a class="code hl_class" href="classSDL_1_1OptionalResource.html">OptionalResource</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classSDL_1_1OptionalResource.html#ad88ef270df99d45db94cdf05916a12ba">  116</a></span>  <a class="code hl_function" href="classSDL_1_1OptionalResource.html#ad88ef270df99d45db94cdf05916a12ba">OptionalResource</a>(<a class="code hl_class" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&amp;&amp; other)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    : REF(other.release())</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    , m_owning(other.m_owning)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    other.m_owning = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  }</div>
+</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <a class="code hl_class" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&amp; operator=(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="classSDL_1_1OptionalResource.html#a7b94e38e49793f85b879c56cd0a271c0">  126</a></span>  <a class="code hl_class" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&amp; <a class="code hl_function" href="classSDL_1_1OptionalResource.html#a7b94e38e49793f85b879c56cd0a271c0">operator=</a>(<a class="code hl_class" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&amp;&amp; other)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    REF::operator=(REF(other.release()));</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    m_owning = other.m_owning;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    other.m_owning = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  }</div>
+</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classSDL_1_1OptionalResource.html#aba29cd9243193556a060ae73ea105152">  135</a></span>  <a class="code hl_function" href="classSDL_1_1OptionalResource.html#aba29cd9243193556a060ae73ea105152">~OptionalResource</a>()</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  {</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">if</span> (m_owning) REF::reset();</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  }</div>
+</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
+</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> REF, <span class="keyword">class</span> UNIQUE&gt;</div>
+<div class="foldopen" id="foldopen00155" data-start="{" data-end="};">
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="structSDL_1_1DetachedResource.html">  155</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1DetachedResource.html">DetachedResource</a> : REF</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>{</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keyword">using </span>REF::REF;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <a class="code hl_struct" href="structSDL_1_1DetachedResource.html">DetachedResource</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structSDL_1_1DetachedResource.html">DetachedResource</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="foldopen" id="foldopen00162" data-start="{" data-end="}">
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="structSDL_1_1DetachedResource.html#aa3eb758009be4ebfd667b8fba835ce30">  162</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="structSDL_1_1DetachedResource.html#aa3eb758009be4ebfd667b8fba835ce30">DetachedResource</a>(<a class="code hl_struct" href="structSDL_1_1DetachedResource.html">DetachedResource</a>&amp;&amp; other)</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    : REF(other.release())</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  }</div>
+</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <a class="code hl_struct" href="structSDL_1_1DetachedResource.html">DetachedResource</a>&amp; operator=(<span class="keyword">const</span> <a class="code hl_struct" href="structSDL_1_1DetachedResource.html">DetachedResource</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="structSDL_1_1DetachedResource.html#acaee288a06e1fdfb180d78aabc226b62">  170</a></span>  <span class="keyword">constexpr</span> <a class="code hl_struct" href="structSDL_1_1DetachedResource.html">DetachedResource</a>&amp; <a class="code hl_function" href="structSDL_1_1DetachedResource.html#acaee288a06e1fdfb180d78aabc226b62">operator=</a>(<a class="code hl_struct" href="structSDL_1_1DetachedResource.html">DetachedResource</a>&amp;&amp; other)</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  {</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    release(other.release());</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  }</div>
+</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="structSDL_1_1DetachedResource.html#ae40cef8094c1d832b0f65c40ff1d69c3">  177</a></span>  <span class="keyword">operator</span> UNIQUE() { <span class="keywordflow">return</span> UNIQUE{REF::release()}; }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>};</div>
+</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_RESOURCE_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassSDL_1_1OptionalResource_html"><div class="ttname"><a href="classSDL_1_1OptionalResource.html">SDL::OptionalResource</a></div><div class="ttdoc">A optional reference to resource.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:88</div></div>
+<div class="ttc" id="aclassSDL_1_1OptionalResource_html_a7b94e38e49793f85b879c56cd0a271c0"><div class="ttname"><a href="classSDL_1_1OptionalResource.html#a7b94e38e49793f85b879c56cd0a271c0">SDL::OptionalResource::operator=</a></div><div class="ttdeci">OptionalResource &amp; operator=(OptionalResource &amp;&amp;other)</div><div class="ttdoc">Assignment operator.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:126</div></div>
+<div class="ttc" id="aclassSDL_1_1OptionalResource_html_ab7df507083ef440e17ef86c144d51534"><div class="ttname"><a href="classSDL_1_1OptionalResource.html#ab7df507083ef440e17ef86c144d51534">SDL::OptionalResource::OptionalResource</a></div><div class="ttdeci">constexpr OptionalResource(const REF &amp;other)</div><div class="ttdoc">Constructs from a reference.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:95</div></div>
+<div class="ttc" id="aclassSDL_1_1OptionalResource_html_aba29cd9243193556a060ae73ea105152"><div class="ttname"><a href="classSDL_1_1OptionalResource.html#aba29cd9243193556a060ae73ea105152">SDL::OptionalResource::~OptionalResource</a></div><div class="ttdeci">~OptionalResource()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:135</div></div>
+<div class="ttc" id="aclassSDL_1_1OptionalResource_html_ad88ef270df99d45db94cdf05916a12ba"><div class="ttname"><a href="classSDL_1_1OptionalResource.html#ad88ef270df99d45db94cdf05916a12ba">SDL::OptionalResource::OptionalResource</a></div><div class="ttdeci">OptionalResource(OptionalResource &amp;&amp;other)</div><div class="ttdoc">Move ctor.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:116</div></div>
+<div class="ttc" id="aclassSDL_1_1OptionalResource_html_adfa3576c2ca57e6db7e29ec5ada3547b"><div class="ttname"><a href="classSDL_1_1OptionalResource.html#adfa3576c2ca57e6db7e29ec5ada3547b">SDL::OptionalResource::OptionalResource</a></div><div class="ttdeci">constexpr OptionalResource(UNIQUE &amp;&amp;other)</div><div class="ttdoc">Constructs from a moved from unique.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:107</div></div>
+<div class="ttc" id="aclassSDL_1_1OptionalResource_html_afa63943d9d3d4bca539475e917b401b2"><div class="ttname"><a href="classSDL_1_1OptionalResource.html#afa63943d9d3d4bca539475e917b401b2">SDL::OptionalResource::OptionalResource</a></div><div class="ttdeci">constexpr OptionalResource(const UNIQUE &amp;other)</div><div class="ttdoc">Constructs from a reference.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:101</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html"><div class="ttname"><a href="classSDL_1_1Resource.html">SDL::Resource</a></div><div class="ttdoc">A SDL managed resource.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:17</div></div>
 <div class="ttc" id="aclassSDL_1_1Resource_html_a00783ea48f16c278f89467a3ade29b18"><div class="ttname"><a href="classSDL_1_1Resource.html#a00783ea48f16c278f89467a3ade29b18">SDL::Resource::operator==</a></div><div class="ttdeci">constexpr bool operator==(const Resource &amp;other) const =default</div><div class="ttdoc">Comparison.</div></div>
-<div class="ttc" id="aclassSDL_1_1Resource_html_a604a674bee6d19b0418e4b07b3e9ff3e"><div class="ttname"><a href="classSDL_1_1Resource.html#a604a674bee6d19b0418e4b07b3e9ff3e">SDL::Resource::release</a></div><div class="ttdeci">constexpr T release()</div><div class="ttdoc">Return contained resource and empties this.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:46</div></div>
-<div class="ttc" id="aclassSDL_1_1Resource_html_a959604d891dcae230bf4c378c046a21d"><div class="ttname"><a href="classSDL_1_1Resource.html#a959604d891dcae230bf4c378c046a21d">SDL::Resource::Resource</a></div><div class="ttdeci">constexpr Resource(T resource={})</div><div class="ttdoc">Constructs from value.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:20</div></div>
-<div class="ttc" id="aclassSDL_1_1Resource_html_ab110e6568060a7ae58ab7b29ad68f7fc"><div class="ttname"><a href="classSDL_1_1Resource.html#ab110e6568060a7ae58ab7b29ad68f7fc">SDL::Resource::operator==</a></div><div class="ttdeci">constexpr bool operator==(std::nullptr_t) const</div><div class="ttdoc">Comparison.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:40</div></div>
-<div class="ttc" id="aclassSDL_1_1Resource_html_ab273a0a0285b8eed1f70f5d3759f4167"><div class="ttname"><a href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">SDL::Resource::get</a></div><div class="ttdeci">constexpr T get() const</div><div class="ttdoc">Return contained resource;.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:43</div></div>
-<div class="ttc" id="aclassSDL_1_1Resource_html_ad2a82bc79a7dae41ceb1a25647ae1c0d"><div class="ttname"><a href="classSDL_1_1Resource.html#ad2a82bc79a7dae41ceb1a25647ae1c0d">SDL::Resource::operator==</a></div><div class="ttdeci">constexpr bool operator==(std::nullopt_t) const</div><div class="ttdoc">Comparison.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:37</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_a1bac10eb8bfedf254b67081d767c1a68"><div class="ttname"><a href="classSDL_1_1Resource.html#a1bac10eb8bfedf254b67081d767c1a68">SDL::Resource::operator-&gt;</a></div><div class="ttdeci">constexpr T operator-&gt;()</div><div class="ttdoc">Access to fields.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:71</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_a795922875f43cc42165896b02af59d0c"><div class="ttname"><a href="classSDL_1_1Resource.html#a795922875f43cc42165896b02af59d0c">SDL::Resource::release</a></div><div class="ttdeci">constexpr T release(T newResource={})</div><div class="ttdoc">Return contained resource and empties or replace value.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:60</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_a959604d891dcae230bf4c378c046a21d"><div class="ttname"><a href="classSDL_1_1Resource.html#a959604d891dcae230bf4c378c046a21d">SDL::Resource::Resource</a></div><div class="ttdeci">constexpr Resource(T resource={})</div><div class="ttdoc">Constructs the underlying resource.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:22</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_a988d47fefd6d7a5f623d3de9fce5ea59"><div class="ttname"><a href="classSDL_1_1Resource.html#a988d47fefd6d7a5f623d3de9fce5ea59">SDL::Resource::Resource</a></div><div class="ttdeci">constexpr Resource(std::nullptr_t)</div><div class="ttdoc">Equivalent to default ctor.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:28</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_aa21f6ed563dbdb86c0d6d21c2721c767"><div class="ttname"><a href="classSDL_1_1Resource.html#aa21f6ed563dbdb86c0d6d21c2721c767">SDL::Resource::operator-&gt;</a></div><div class="ttdeci">constexpr const T operator-&gt;() const</div><div class="ttdoc">Access to fields.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:68</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_ab110e6568060a7ae58ab7b29ad68f7fc"><div class="ttname"><a href="classSDL_1_1Resource.html#ab110e6568060a7ae58ab7b29ad68f7fc">SDL::Resource::operator==</a></div><div class="ttdeci">constexpr bool operator==(std::nullptr_t) const</div><div class="ttdoc">Comparison.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:54</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_ab273a0a0285b8eed1f70f5d3759f4167"><div class="ttname"><a href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">SDL::Resource::get</a></div><div class="ttdeci">constexpr T get() const</div><div class="ttdoc">Return contained resource;.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:57</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_ad2a82bc79a7dae41ceb1a25647ae1c0d"><div class="ttname"><a href="classSDL_1_1Resource.html#ad2a82bc79a7dae41ceb1a25647ae1c0d">SDL::Resource::operator==</a></div><div class="ttdeci">constexpr bool operator==(std::nullopt_t) const</div><div class="ttdoc">Comparison.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:51</div></div>
+<div class="ttc" id="aclassSDL_1_1Resource_html_afbb3168108af6a8bd0e23edc712b6a09"><div class="ttname"><a href="classSDL_1_1Resource.html#afbb3168108af6a8bd0e23edc712b6a09">SDL::Resource::Resource</a></div><div class="ttdeci">constexpr Resource(std::nullopt_t)</div><div class="ttdoc">Equivalent to default ctor.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:34</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
+<div class="ttc" id="astructSDL_1_1DetachedResource_html"><div class="ttname"><a href="structSDL_1_1DetachedResource.html">SDL::DetachedResource</a></div><div class="ttdoc">A detached reference to resource that might be transformed into an owned handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:156</div></div>
+<div class="ttc" id="astructSDL_1_1DetachedResource_html_aa3eb758009be4ebfd667b8fba835ce30"><div class="ttname"><a href="structSDL_1_1DetachedResource.html#aa3eb758009be4ebfd667b8fba835ce30">SDL::DetachedResource::DetachedResource</a></div><div class="ttdeci">constexpr DetachedResource(DetachedResource &amp;&amp;other)</div><div class="ttdoc">Move ctor.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:162</div></div>
+<div class="ttc" id="astructSDL_1_1DetachedResource_html_acaee288a06e1fdfb180d78aabc226b62"><div class="ttname"><a href="structSDL_1_1DetachedResource.html#acaee288a06e1fdfb180d78aabc226b62">SDL::DetachedResource::operator=</a></div><div class="ttdeci">constexpr DetachedResource &amp; operator=(DetachedResource &amp;&amp;other)</div><div class="ttdoc">Move assignment.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:170</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

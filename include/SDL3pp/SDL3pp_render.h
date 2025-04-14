@@ -1973,8 +1973,6 @@ struct RendererRef : RendererBase
    *
    * This should be called before destroying the associated window.
    *
-   * @param renderer the rendering context.
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -2048,8 +2046,35 @@ struct TextureBase : Resource<SDL_Texture*>
 {
   using Resource::Resource;
 
+  /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param renderer the rendering context.
+   * @param file a path on the filesystem to load an image from.
+   * @post the created texture is convertible to true on success or false on
+   *       failure; call GetError() for more information.
+   *
+   * @sa LoadTexture(StringParam)
+   */
   TextureBase(RendererBase& renderer, StringParam file);
 
+  /**
+   * Load an image from a IOStreamBase into a software surface.
+   *
+   * If available, this uses LoadSurface(IOStreamBase&), otherwise it uses
+   * LoadBMP(IOStreamBase&).
+   *
+   * @param renderer the rendering context.
+   * @param src an IOStreamBase to load an image from.
+   * @post the created texture is convertible to true on success or false on
+   *       failure; call GetError() for more information.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
   TextureBase(RendererBase& renderer, IOStream& src);
 
   /**

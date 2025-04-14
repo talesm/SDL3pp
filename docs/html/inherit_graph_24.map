@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1SDL.html" title="Initialize the SDL library." alt="" coords="5,5,85,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1IConvBase.html" title="An opaque handle representing string encoding conversion state." alt="" coords="208,13,332,38"/>
+<area shape="poly" id="edge16_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1IConvRef.html" title="Handle to a non owned iConv." alt="" coords="380,13,495,38"/>
+<area shape="poly" id="edge17_Node000001_Node000002" title=" " alt="" coords="346,23,380,23,380,28,346,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1IConv.html" title="Handle to an owned iConv." alt="" coords="543,13,635,38"/>
+<area shape="poly" id="edge18_Node000002_Node000003" title=" " alt="" coords="508,23,543,23,543,28,508,28"/>
 </map>

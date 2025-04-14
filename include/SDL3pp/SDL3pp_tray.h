@@ -242,8 +242,6 @@ struct TrayRef : TrayBase
    *
    * This also destroys all associated menus and entries.
    *
-   * @param tray the tray icon to be destroyed.
-   *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *

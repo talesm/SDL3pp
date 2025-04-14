@@ -370,10 +370,12 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  * @sa wrap-state
  * @sa PixelFormats
  */
-struct PixelFormat
+class PixelFormat
 {
   SDL_PixelFormat format;
 
+public:
+  /// Constructor
   constexpr PixelFormat(SDL_PixelFormat format = SDL_PIXELFORMAT_UNKNOWN)
     : format(format)
   {
@@ -1881,7 +1883,6 @@ struct PaletteBase : Resource<SDL_Palette*>
    *
    * @param colors an array of Color structures to copy into the palette.
    * @param firstcolor the index of the first palette entry to modify.
-   * @param ncolors the number of entries to modify.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *

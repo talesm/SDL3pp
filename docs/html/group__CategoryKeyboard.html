@@ -87,7 +87,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ga1567adc0e79b5fcc4cd6c2f8edf8b751"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a unique ID for a keyboard for the time it is connected to the system, and is never reused for the lifetime of the application.  <br /></td></tr>
 <tr class="separator:ga1567adc0e79b5fcc4cd6c2f8edf8b751"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga93d4f8c994f8efd07519354c0e06443d" id="r_ga93d4f8c994f8efd07519354c0e06443d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga93d4f8c994f8efd07519354c0e06443d">SDL::TextInputType</a> = SDL_TextInputType</td></tr>
-<tr class="memdesc:ga93d4f8c994f8efd07519354c0e06443d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text input type.  <br /></td></tr>
+<tr class="memdesc:ga93d4f8c994f8efd07519354c0e06443d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> input type.  <br /></td></tr>
 <tr class="separator:ga93d4f8c994f8efd07519354c0e06443d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab3829ba140229524ce50f886a5274355" id="r_gab3829ba140229524ce50f886a5274355"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gab3829ba140229524ce50f886a5274355">SDL::Capitalization</a> = SDL_Capitalization</td></tr>
 <tr class="memdesc:gab3829ba140229524ce50f886a5274355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Auto capitalization type.  <br /></td></tr>
@@ -104,7 +104,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga50e72442663345699b14e7dd74d5ee26" id="r_ga50e72442663345699b14e7dd74d5ee26"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga50e72442663345699b14e7dd74d5ee26">SDL::GetKeyboardNameForID</a> (<a class="el" href="group__CategoryKeyboard.html#ga1567adc0e79b5fcc4cd6c2f8edf8b751">KeyboardID</a> instance_id)</td></tr>
 <tr class="memdesc:ga50e72442663345699b14e7dd74d5ee26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of a keyboard.  <br /></td></tr>
 <tr class="separator:ga50e72442663345699b14e7dd74d5ee26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga555c41c8ca6b934701fb6d3cc9ed669e" id="r_ga555c41c8ca6b934701fb6d3cc9ed669e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga555c41c8ca6b934701fb6d3cc9ed669e">SDL::GetKeyboardFocus</a> ()</td></tr>
+<tr class="memitem:ga555c41c8ca6b934701fb6d3cc9ed669e" id="r_ga555c41c8ca6b934701fb6d3cc9ed669e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga555c41c8ca6b934701fb6d3cc9ed669e">SDL::GetKeyboardFocus</a> ()</td></tr>
 <tr class="memdesc:ga555c41c8ca6b934701fb6d3cc9ed669e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the window which currently has keyboard focus.  <br /></td></tr>
 <tr class="separator:ga555c41c8ca6b934701fb6d3cc9ed669e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga18341c0c48766a04399a796d51347df1" id="r_ga18341c0c48766a04399a796d51347df1"><td class="memItemLeft" align="right" valign="top">const bool *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga18341c0c48766a04399a796d51347df1">SDL::GetKeyboardState</a> (int *numkeys=nullptr)</td></tr>
@@ -122,9 +122,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf0b4724fff3a7d37e15b997a223d78d1" id="r_gaf0b4724fff3a7d37e15b997a223d78d1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gaf0b4724fff3a7d37e15b997a223d78d1">SDL::HasScreenKeyboardSupport</a> ()</td></tr>
 <tr class="memdesc:gaf0b4724fff3a7d37e15b997a223d78d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the platform has screen keyboard support.  <br /></td></tr>
 <tr class="separator:gaf0b4724fff3a7d37e15b997a223d78d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabba95047638ff076e42db09f4c84c959" id="r_gabba95047638ff076e42db09f4c84c959"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gabba95047638ff076e42db09f4c84c959">SDL::ScreenKeyboardShown</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window)</td></tr>
-<tr class="memdesc:gabba95047638ff076e42db09f4c84c959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the screen keyboard is shown for given window.  <br /></td></tr>
-<tr class="separator:gabba95047638ff076e42db09f4c84c959"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaacfec5794b9e40b989c6a874856a8ef3" id="r_gaacfec5794b9e40b989c6a874856a8ef3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gaacfec5794b9e40b989c6a874856a8ef3">SDL::Keycode::Keycode</a> (<a class="el" href="classSDL_1_1Scancode.html">Scancode</a> scancode, <a class="el" href="group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c">Keymod</a> modstate=0, bool key_event=false)</td></tr>
 <tr class="memdesc:gaacfec5794b9e40b989c6a874856a8ef3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the key code corresponding to the given scancode according to the current keyboard layout.  <br /></td></tr>
 <tr class="separator:gaacfec5794b9e40b989c6a874856a8ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,27 +143,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ga10fe971ef54ae1b74a829da9ec588465" id="r_ga10fe971ef54ae1b74a829da9ec588465"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga10fe971ef54ae1b74a829da9ec588465">SDL::Keycode::GetName</a> () const</td></tr>
 <tr class="memdesc:ga10fe971ef54ae1b74a829da9ec588465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a human-readable name for a key.  <br /></td></tr>
 <tr class="separator:ga10fe971ef54ae1b74a829da9ec588465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab963300ef493a7eaa72a3396f8b8067a" id="r_gab963300ef493a7eaa72a3396f8b8067a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a">SDL::WindowBase&lt; T &gt;::StartTextInput</a> ()</td></tr>
-<tr class="memdesc:gab963300ef493a7eaa72a3396f8b8067a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start accepting Unicode text input events in a window.  <br /></td></tr>
-<tr class="separator:gab963300ef493a7eaa72a3396f8b8067a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2b921a1926b2303a1f419e87140b3d20" id="r_ga2b921a1926b2303a1f419e87140b3d20"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga2b921a1926b2303a1f419e87140b3d20">SDL::WindowBase&lt; T &gt;::StartTextInput</a> (<a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props)</td></tr>
-<tr class="memdesc:ga2b921a1926b2303a1f419e87140b3d20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start accepting Unicode text input events in a window, with properties describing the input.  <br /></td></tr>
-<tr class="separator:ga2b921a1926b2303a1f419e87140b3d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga198b50031aef081398255842eebca666" id="r_ga198b50031aef081398255842eebca666"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga198b50031aef081398255842eebca666">SDL::WindowBase&lt; T &gt;::IsTextInputActive</a> () const</td></tr>
-<tr class="memdesc:ga198b50031aef081398255842eebca666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether or not Unicode text input events are enabled for a window.  <br /></td></tr>
-<tr class="separator:ga198b50031aef081398255842eebca666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafa53adef762e6df36c85a6064df7e130" id="r_gafa53adef762e6df36c85a6064df7e130"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gafa53adef762e6df36c85a6064df7e130">SDL::WindowBase&lt; T &gt;::StopTextInput</a> ()</td></tr>
-<tr class="memdesc:gafa53adef762e6df36c85a6064df7e130"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop receiving any text input events in a window.  <br /></td></tr>
-<tr class="separator:gafa53adef762e6df36c85a6064df7e130"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40814b96f45ad3ae7615f640c972bd28" id="r_ga40814b96f45ad3ae7615f640c972bd28"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga40814b96f45ad3ae7615f640c972bd28">SDL::WindowBase&lt; T &gt;::ClearComposition</a> ()</td></tr>
-<tr class="memdesc:ga40814b96f45ad3ae7615f640c972bd28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dismiss the composition window/IME without disabling the subsystem.  <br /></td></tr>
-<tr class="separator:ga40814b96f45ad3ae7615f640c972bd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga05554cf3d44f6e921db68c9e78883cbe" id="r_ga05554cf3d44f6e921db68c9e78883cbe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga05554cf3d44f6e921db68c9e78883cbe">SDL::WindowBase&lt; T &gt;::SetTextInputArea</a> (const SDL_Rect &amp;rect, int cursor)</td></tr>
-<tr class="memdesc:ga05554cf3d44f6e921db68c9e78883cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the area used to type Unicode text input.  <br /></td></tr>
-<tr class="separator:ga05554cf3d44f6e921db68c9e78883cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae6eaf88fd9d6bebc8391756f56a520f6" id="r_gae6eaf88fd9d6bebc8391756f56a520f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gae6eaf88fd9d6bebc8391756f56a520f6">SDL::WindowBase&lt; T &gt;::GetTextInputArea</a> (<a class="el" href="structSDL_1_1Rect.html">Rect</a> *rect, int *cursor)</td></tr>
-<tr class="memdesc:gae6eaf88fd9d6bebc8391756f56a520f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the area used to type Unicode text input.  <br /></td></tr>
-<tr class="separator:gae6eaf88fd9d6bebc8391756f56a520f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac8b2768c9f0dad003d19c345142c34f0" id="r_gac8b2768c9f0dad003d19c345142c34f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0">SDL::WindowBase::StartTextInput</a> ()</td></tr>
+<tr class="memdesc:gac8b2768c9f0dad003d19c345142c34f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start accepting Unicode text input events in a window.  <br /></td></tr>
+<tr class="separator:gac8b2768c9f0dad003d19c345142c34f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac145b8d6f51edc200ebea97c3757d7fb" id="r_gac145b8d6f51edc200ebea97c3757d7fb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gac145b8d6f51edc200ebea97c3757d7fb">SDL::WindowBase::StartTextInput</a> (<a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a> &amp;props)</td></tr>
+<tr class="memdesc:gac145b8d6f51edc200ebea97c3757d7fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start accepting Unicode text input events in a window, with properties describing the input.  <br /></td></tr>
+<tr class="separator:gac145b8d6f51edc200ebea97c3757d7fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f604e8fcc96f77a5481d0cc06669ab7" id="r_ga9f604e8fcc96f77a5481d0cc06669ab7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga9f604e8fcc96f77a5481d0cc06669ab7">SDL::WindowBase::IsTextInputActive</a> () const</td></tr>
+<tr class="memdesc:ga9f604e8fcc96f77a5481d0cc06669ab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether or not Unicode text input events are enabled for a window.  <br /></td></tr>
+<tr class="separator:ga9f604e8fcc96f77a5481d0cc06669ab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1d2f64cca814f461e52092fdcb65aea0" id="r_ga1d2f64cca814f461e52092fdcb65aea0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga1d2f64cca814f461e52092fdcb65aea0">SDL::WindowBase::StopTextInput</a> ()</td></tr>
+<tr class="memdesc:ga1d2f64cca814f461e52092fdcb65aea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop receiving any text input events in a window.  <br /></td></tr>
+<tr class="separator:ga1d2f64cca814f461e52092fdcb65aea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad22700b93ff31fb6bc4efc3d10db3970" id="r_gad22700b93ff31fb6bc4efc3d10db3970"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gad22700b93ff31fb6bc4efc3d10db3970">SDL::WindowBase::ClearComposition</a> ()</td></tr>
+<tr class="memdesc:gad22700b93ff31fb6bc4efc3d10db3970"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dismiss the composition window/IME without disabling the subsystem.  <br /></td></tr>
+<tr class="separator:gad22700b93ff31fb6bc4efc3d10db3970"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c0c3c4b3856af72cf0cf06776e98173" id="r_ga5c0c3c4b3856af72cf0cf06776e98173"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga5c0c3c4b3856af72cf0cf06776e98173">SDL::WindowBase::SetTextInputArea</a> (const SDL_Rect &amp;rect, int cursor)</td></tr>
+<tr class="memdesc:ga5c0c3c4b3856af72cf0cf06776e98173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the area used to type Unicode text input.  <br /></td></tr>
+<tr class="separator:ga5c0c3c4b3856af72cf0cf06776e98173"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac8c8fbb7ed29752c719ec3a8b23fd0b1" id="r_gac8c8fbb7ed29752c719ec3a8b23fd0b1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#gac8c8fbb7ed29752c719ec3a8b23fd0b1">SDL::WindowBase::GetTextInputArea</a> (<a class="el" href="structSDL_1_1Rect.html">Rect</a> *rect, int *cursor)</td></tr>
+<tr class="memdesc:gac8c8fbb7ed29752c719ec3a8b23fd0b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the area used to type Unicode text input.  <br /></td></tr>
+<tr class="separator:gac8c8fbb7ed29752c719ec3a8b23fd0b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e938f510f85010a7d5316a5eb43f42e" id="r_ga4e938f510f85010a7d5316a5eb43f42e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryKeyboard.html#ga4e938f510f85010a7d5316a5eb43f42e">SDL::WindowBase::IsScreenKeyboardShown</a> () const</td></tr>
+<tr class="memdesc:ga4e938f510f85010a7d5316a5eb43f42e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the screen keyboard is shown for given window.  <br /></td></tr>
+<tr class="separator:ga4e938f510f85010a7d5316a5eb43f42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -273,19 +273,17 @@ constexpr <a class="el" href="group__CategoryKeyboard.html#gab3829ba140229524ce5
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga40814b96f45ad3ae7615f640c972bd28" name="ga40814b96f45ad3ae7615f640c972bd28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga40814b96f45ad3ae7615f640c972bd28">&#9670;&#160;</a></span>ClearComposition()</h2>
+<a id="gad22700b93ff31fb6bc4efc3d10db3970" name="gad22700b93ff31fb6bc4efc3d10db3970"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad22700b93ff31fb6bc4efc3d10db3970">&#9670;&#160;</a></span>ClearComposition()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::ClearComposition </td>
+          <td class="memname">bool SDL::WindowBase::ClearComposition </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -300,9 +298,9 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a" title="Start accepting Unicode text input events in a window.">WindowBase::StartTextInput</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#gafa53adef762e6df36c85a6064df7e130" title="Stop receiving any text input events in a window.">WindowBase::StopTextInput</a> </dd></dl>
+<a class="el" href="group__CategoryKeyboard.html#ga1d2f64cca814f461e52092fdcb65aea0" title="Stop receiving any text input events in a window.">WindowBase.StopTextInput</a> </dd></dl>
 
 </div>
 </div>
@@ -316,7 +314,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> SDL::GetKeyboardFocus </td>
+          <td class="memname"><a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> SDL::GetKeyboardFocus </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -593,19 +591,17 @@ GetScancodeFromName </dd>
 
 </div>
 </div>
-<a id="gae6eaf88fd9d6bebc8391756f56a520f6" name="gae6eaf88fd9d6bebc8391756f56a520f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae6eaf88fd9d6bebc8391756f56a520f6">&#9670;&#160;</a></span>GetTextInputArea()</h2>
+<a id="gac8c8fbb7ed29752c719ec3a8b23fd0b1" name="gac8c8fbb7ed29752c719ec3a8b23fd0b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac8c8fbb7ed29752c719ec3a8b23fd0b1">&#9670;&#160;</a></span>GetTextInputArea()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::GetTextInputArea </td>
+          <td class="memname">bool SDL::WindowBase::GetTextInputArea </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structSDL_1_1Rect.html">Rect</a> *&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
@@ -628,7 +624,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This returns the values previously set by <a class="el" href="group__CategoryKeyboard.html#ga05554cf3d44f6e921db68c9e78883cbe" title="Set the area used to type Unicode text input.">WindowBase::SetTextInputArea()</a>.</p>
+<p>This returns the values previously set by <a class="el" href="group__CategoryKeyboard.html#ga5c0c3c4b3856af72cf0cf06776e98173" title="Set the area used to type Unicode text input.">WindowBase.SetTextInputArea()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rect</td><td>a pointer to an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> filled in with the text input area, may be nullptr. </td></tr>
@@ -639,7 +635,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#ga05554cf3d44f6e921db68c9e78883cbe" title="Set the area used to type Unicode text input.">WindowBase::SetTextInputArea</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#ga5c0c3c4b3856af72cf0cf06776e98173" title="Set the area used to type Unicode text input.">WindowBase.SetTextInputArea</a> </dd></dl>
 
 </div>
 </div>
@@ -697,25 +693,52 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true if the platform has some screen keyboard support or false if not.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#gabba95047638ff076e42db09f4c84c959" title="Check whether the screen keyboard is shown for given window.">ScreenKeyboardShown</a> </dd></dl>
+ScreenKeyboardShown </dd></dl>
 
 </div>
 </div>
-<a id="ga198b50031aef081398255842eebca666" name="ga198b50031aef081398255842eebca666"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga198b50031aef081398255842eebca666">&#9670;&#160;</a></span>IsTextInputActive()</h2>
+<a id="ga4e938f510f85010a7d5316a5eb43f42e" name="ga4e938f510f85010a7d5316a5eb43f42e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4e938f510f85010a7d5316a5eb43f42e">&#9670;&#160;</a></span>IsScreenKeyboardShown()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::IsTextInputActive </td>
+          <td class="memname">bool SDL::WindowBase::IsScreenKeyboardShown </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true if screen keyboard is shown or false if not.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gaf0b4724fff3a7d37e15b997a223d78d1" title="Check whether the platform has screen keyboard support.">HasScreenKeyboardSupport</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga9f604e8fcc96f77a5481d0cc06669ab7" name="ga9f604e8fcc96f77a5481d0cc06669ab7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9f604e8fcc96f77a5481d0cc06669ab7">&#9670;&#160;</a></span>IsTextInputActive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::WindowBase::IsTextInputActive </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -730,7 +753,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true if text input events are enabled else false.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a" title="Start accepting Unicode text input events in a window.">WindowBase::StartTextInput</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput</a> </dd></dl>
 
 </div>
 </div>
@@ -899,36 +922,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 
 </div>
 </div>
-<a id="gabba95047638ff076e42db09f4c84c959" name="gabba95047638ff076e42db09f4c84c959"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabba95047638ff076e42db09f4c84c959">&#9670;&#160;</a></span>ScreenKeyboardShown()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::ScreenKeyboardShown </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td>
-          <td class="paramname"><em>window</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>true if screen keyboard is shown or false if not.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gaf0b4724fff3a7d37e15b997a223d78d1" title="Check whether the platform has screen keyboard support.">HasScreenKeyboardSupport</a> </dd></dl>
-
-</div>
-</div>
 <a id="ga4a90f56405497fc7006e745965c0d285" name="ga4a90f56405497fc7006e745965c0d285"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4a90f56405497fc7006e745965c0d285">&#9670;&#160;</a></span>SetModState()</h2>
 
@@ -1002,19 +995,17 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 
 </div>
 </div>
-<a id="ga05554cf3d44f6e921db68c9e78883cbe" name="ga05554cf3d44f6e921db68c9e78883cbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga05554cf3d44f6e921db68c9e78883cbe">&#9670;&#160;</a></span>SetTextInputArea()</h2>
+<a id="ga5c0c3c4b3856af72cf0cf06776e98173" name="ga5c0c3c4b3856af72cf0cf06776e98173"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5c0c3c4b3856af72cf0cf06776e98173">&#9670;&#160;</a></span>SetTextInputArea()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::SetTextInputArea </td>
+          <td class="memname">bool SDL::WindowBase::SetTextInputArea </td>
           <td>(</td>
           <td class="paramtype">const SDL_Rect &amp;&#160;</td>
           <td class="paramname"><em>rect</em>, </td>
@@ -1048,25 +1039,23 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gae6eaf88fd9d6bebc8391756f56a520f6" title="Get the area used to type Unicode text input.">WindowBase::GetTextInputArea</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gac8c8fbb7ed29752c719ec3a8b23fd0b1" title="Get the area used to type Unicode text input.">WindowBase.GetTextInputArea</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a" title="Start accepting Unicode text input events in a window.">WindowBase::StartTextInput</a> </dd></dl>
+<a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput</a> </dd></dl>
 
 </div>
 </div>
-<a id="gab963300ef493a7eaa72a3396f8b8067a" name="gab963300ef493a7eaa72a3396f8b8067a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab963300ef493a7eaa72a3396f8b8067a">&#9670;&#160;</a></span>StartTextInput() <span class="overload">[1/2]</span></h2>
+<a id="gac8b2768c9f0dad003d19c345142c34f0" name="gac8b2768c9f0dad003d19c345142c34f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac8b2768c9f0dad003d19c345142c34f0">&#9670;&#160;</a></span>StartTextInput() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::StartTextInput </td>
+          <td class="memname">bool SDL::WindowBase::StartTextInput </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1078,37 +1067,35 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with <a class="el" href="group__CategoryKeyboard.html#gafa53adef762e6df36c85a6064df7e130" title="Stop receiving any text input events in a window.">WindowBase::StopTextInput()</a>.</p>
-<p>Text input events are not received by default.</p>
+<p>This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with <a class="el" href="group__CategoryKeyboard.html#ga1d2f64cca814f461e52092fdcb65aea0" title="Stop receiving any text input events in a window.">WindowBase.StopTextInput()</a>.</p>
+<p><a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> input events are not received by default.</p>
 <p>On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#ga05554cf3d44f6e921db68c9e78883cbe" title="Set the area used to type Unicode text input.">WindowBase::SetTextInputArea</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#ga5c0c3c4b3856af72cf0cf06776e98173" title="Set the area used to type Unicode text input.">WindowBase.SetTextInputArea</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a" title="Start accepting Unicode text input events in a window.">WindowBase::StartTextInput</a> </dd>
+<a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#gafa53adef762e6df36c85a6064df7e130" title="Stop receiving any text input events in a window.">WindowBase::StopTextInput</a> </dd>
+<a class="el" href="group__CategoryKeyboard.html#ga1d2f64cca814f461e52092fdcb65aea0" title="Stop receiving any text input events in a window.">WindowBase.StopTextInput</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#ga198b50031aef081398255842eebca666" title="Check whether or not Unicode text input events are enabled for a window.">WindowBase::IsTextInputActive</a> </dd></dl>
+<a class="el" href="group__CategoryKeyboard.html#ga9f604e8fcc96f77a5481d0cc06669ab7" title="Check whether or not Unicode text input events are enabled for a window.">WindowBase.IsTextInputActive</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga2b921a1926b2303a1f419e87140b3d20" name="ga2b921a1926b2303a1f419e87140b3d20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2b921a1926b2303a1f419e87140b3d20">&#9670;&#160;</a></span>StartTextInput() <span class="overload">[2/2]</span></h2>
+<a id="gac145b8d6f51edc200ebea97c3757d7fb" name="gac145b8d6f51edc200ebea97c3757d7fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac145b8d6f51edc200ebea97c3757d7fb">&#9670;&#160;</a></span>StartTextInput() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::StartTextInput </td>
+          <td class="memname">bool SDL::WindowBase::StartTextInput </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a> &amp;&#160;</td>
           <td class="paramname"><em>props</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1119,12 +1106,12 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with <a class="el" href="group__CategoryKeyboard.html#gafa53adef762e6df36c85a6064df7e130" title="Stop receiving any text input events in a window.">WindowBase::StopTextInput()</a>.</p>
-<p>Text input events are not received by default.</p>
+<p>This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with <a class="el" href="group__CategoryKeyboard.html#ga1d2f64cca814f461e52092fdcb65aea0" title="Stop receiving any text input events in a window.">WindowBase.StopTextInput()</a>.</p>
+<p><a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> input events are not received by default.</p>
 <p>On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.</p>
 <p>These are the supported properties:</p>
 <ul>
-<li><code>SDL_PROP_TEXTINPUT_TYPE_NUMBER</code> - an TextInputType value that describes text being input, defaults to TEXTINPUT_TYPE_TEXT.</li>
+<li><code>prop::TextInput.TYPE_NUMBER</code> - an TextInputType value that describes text being input, defaults to TEXTINPUT_TYPE_TEXT.</li>
 <li><code>prop::TextInput.CAPITALIZATION_NUMBER</code> - an Capitalization value that describes how text should be capitalized, defaults to CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail addresses, usernames, and passwords.</li>
 <li><code>prop::TextInput.AUTOCORRECT_BOOLEAN</code> - true to enable auto completion and auto correction, defaults to true.</li>
 <li><code>prop::TextInput.MULTILINE_BOOLEAN</code> - true if multiple lines of text are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is "0" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is "1".</li>
@@ -1142,29 +1129,27 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#ga05554cf3d44f6e921db68c9e78883cbe" title="Set the area used to type Unicode text input.">WindowBase::SetTextInputArea</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#ga5c0c3c4b3856af72cf0cf06776e98173" title="Set the area used to type Unicode text input.">WindowBase.SetTextInputArea</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a" title="Start accepting Unicode text input events in a window.">WindowBase::StartTextInput</a> </dd>
+<a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#gafa53adef762e6df36c85a6064df7e130" title="Stop receiving any text input events in a window.">WindowBase::StopTextInput</a> </dd>
+<a class="el" href="group__CategoryKeyboard.html#ga1d2f64cca814f461e52092fdcb65aea0" title="Stop receiving any text input events in a window.">WindowBase.StopTextInput</a> </dd>
 <dd>
-<a class="el" href="group__CategoryKeyboard.html#ga198b50031aef081398255842eebca666" title="Check whether or not Unicode text input events are enabled for a window.">WindowBase::IsTextInputActive</a> </dd></dl>
+<a class="el" href="group__CategoryKeyboard.html#ga9f604e8fcc96f77a5481d0cc06669ab7" title="Check whether or not Unicode text input events are enabled for a window.">WindowBase.IsTextInputActive</a> </dd></dl>
 
 </div>
 </div>
-<a id="gafa53adef762e6df36c85a6064df7e130" name="gafa53adef762e6df36c85a6064df7e130"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafa53adef762e6df36c85a6064df7e130">&#9670;&#160;</a></span>StopTextInput()</h2>
+<a id="ga1d2f64cca814f461e52092fdcb65aea0" name="ga1d2f64cca814f461e52092fdcb65aea0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1d2f64cca814f461e52092fdcb65aea0">&#9670;&#160;</a></span>StopTextInput()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::StopTextInput </td>
+          <td class="memname">bool SDL::WindowBase::StopTextInput </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1176,11 +1161,11 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If <a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a" title="Start accepting Unicode text input events in a window.">WindowBase::StartTextInput()</a> showed the screen keyboard, this function will hide it.</p>
+<p>If <a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput()</a> showed the screen keyboard, this function will hide it.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gab963300ef493a7eaa72a3396f8b8067a" title="Start accepting Unicode text input events in a window.">WindowBase::StartTextInput</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryKeyboard.html#gac8b2768c9f0dad003d19c345142c34f0" title="Start accepting Unicode text input events in a window.">WindowBase.StartTextInput</a> </dd></dl>
 
 </div>
 </div>

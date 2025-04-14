@@ -13501,9 +13501,6 @@ struct SharedObjectRef : SharedObjectBase
    * Note that any pointers from this object looked up through
    * SharedObjectBase.LoadFunction() will no longer be valid.
    *
-   * @param handle a valid shared object handle returned by
-   * SharedObjectBase.SharedObjectBase().
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -13520,9 +13517,6 @@ struct SharedObjectRef : SharedObjectBase
    *
    * Note that any pointers from this object looked up through
    * SharedObjectBase.LoadFunction() will no longer be valid.
-   *
-   * @param handle a valid shared object handle returned by
-   * SharedObjectBase.SharedObjectBase().
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -14801,10 +14795,12 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  * @sa wrap-state
  * @sa PixelFormats
  */
-struct PixelFormat
+class PixelFormat
 {
   SDL_PixelFormat format;
 
+public:
+  /// Constructor
   constexpr PixelFormat(SDL_PixelFormat format = SDL_PIXELFORMAT_UNKNOWN)
     : format(format)
   {
@@ -16312,7 +16308,6 @@ struct PaletteBase : Resource<SDL_Palette*>
    *
    * @param colors an array of Color structures to copy into the palette.
    * @param firstcolor the index of the first palette entry to modify.
-   * @param ncolors the number of entries to modify.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -29743,8 +29738,6 @@ struct TrayRef : TrayBase
    *
    * This also destroys all associated menus and entries.
    *
-   * @param tray the tray icon to be destroyed.
-   *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *
@@ -40310,8 +40303,6 @@ struct RendererRef : RendererBase
    *
    * This should be called before destroying the associated window.
    *
-   * @param renderer the rendering context.
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -40385,8 +40376,35 @@ struct TextureBase : Resource<SDL_Texture*>
 {
   using Resource::Resource;
 
+  /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param renderer the rendering context.
+   * @param file a path on the filesystem to load an image from.
+   * @post the created texture is convertible to true on success or false on
+   *       failure; call GetError() for more information.
+   *
+   * @sa LoadTexture(StringParam)
+   */
   TextureBase(RendererBase& renderer, StringParam file);
 
+  /**
+   * Load an image from a IOStreamBase into a software surface.
+   *
+   * If available, this uses LoadSurface(IOStreamBase&), otherwise it uses
+   * LoadBMP(IOStreamBase&).
+   *
+   * @param renderer the rendering context.
+   * @param src an IOStreamBase to load an image from.
+   * @post the created texture is convertible to true on success or false on
+   *       failure; call GetError() for more information.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
   TextureBase(RendererBase& renderer, IOStream& src);
 
   /**
@@ -44527,6 +44545,8 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 #ifdef SDL3PP_DOC
 
 /**
+ * @name TTF version
+ * @{
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
 #define SDL_TTF_MAJOR_VERSION
@@ -46269,9 +46289,11 @@ struct TextEngineBase : Resource<TTF_TextEngine*>
   using Resource::Resource;
 
 protected:
+  /// Custom destroyer
   void (*m_destroy)(TTF_TextEngine* engine) = nullptr;
 
 public:
+  /// Create from engine and custom destroyer
   constexpr TextEngineBase(TTF_TextEngine* engine,
                            void (*destroy)(TTF_TextEngine* engine))
     : Resource(engine)
@@ -47615,6 +47637,10 @@ struct Text : TextRef
   }
 };
 
+/**
+ * Iterator for substrings
+ *
+ */
 class SubStringIterator
 {
   TextRef m_text;
@@ -47628,28 +47654,35 @@ class SubStringIterator
   }
 
 public:
+  /// Default constructor.
   constexpr SubStringIterator()
     : SubStringIterator(nullptr)
   {
   }
 
+  /// True if pointing to valid SubString.
   constexpr operator bool() const { return m_text != nullptr; }
 
+  /// Retrieve SubString
   constexpr const SubString& operator*() const { return m_subString; }
 
+  /// Retrieve SubString.
   constexpr const SubString* operator->() const { return &m_subString; }
 
+  /// Comparison.
   constexpr bool operator==(const SubStringIterator& other) const
   {
     return m_subString.offset == other.m_subString.offset;
   }
 
+  /// Increment operator.
   constexpr SubStringIterator& operator++()
   {
     m_text.GetNextSubString(m_subString, &m_subString);
     return *this;
   }
 
+  /// Increment operator.
   constexpr SubStringIterator operator++(int)
   {
     auto curr = *this;
@@ -47657,12 +47690,14 @@ public:
     return curr;
   }
 
+  /// Decrement operator.
   constexpr SubStringIterator& operator--()
   {
     m_text.GetPreviousSubString(m_subString, &m_subString);
     return *this;
   }
 
+  /// Decrement operator.
   constexpr SubStringIterator operator--(int)
   {
     auto curr = *this;

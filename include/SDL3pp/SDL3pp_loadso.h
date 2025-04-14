@@ -166,9 +166,6 @@ struct SharedObjectRef : SharedObjectBase
    * Note that any pointers from this object looked up through
    * SharedObjectBase.LoadFunction() will no longer be valid.
    *
-   * @param handle a valid shared object handle returned by
-   * SharedObjectBase.SharedObjectBase().
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -185,9 +182,6 @@ struct SharedObjectRef : SharedObjectBase
    *
    * Note that any pointers from this object looked up through
    * SharedObjectBase.LoadFunction() will no longer be valid.
-   *
-   * @param handle a valid shared object handle returned by
-   * SharedObjectBase.SharedObjectBase().
    *
    * @threadsafety It is safe to call this function from any thread.
    *

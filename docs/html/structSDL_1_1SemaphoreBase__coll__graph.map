@@ -1,5 +1,5 @@
-<map id="SDL::SemaphoreBase&lt; T &gt;" name="SDL::SemaphoreBase&lt; T &gt;">
-<area shape="rect" id="Node000001" title="A means to manage access to a resource, by count, between threads." alt="" coords="5,79,204,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="85,5,124,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,44,107,79,102,79,102,44"/>
+<map id="SDL::SemaphoreBase" name="SDL::SemaphoreBase">
+<area shape="rect" id="Node000001" title="A means to manage access to a resource, by count, between threads." alt="" coords="5,93,167,119"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="9,5,163,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,59,89,93,83,93,83,59"/>
 </map>

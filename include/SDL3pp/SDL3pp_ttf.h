@@ -291,6 +291,8 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 #ifdef SDL3PP_DOC
 
 /**
+ * @name TTF version
+ * @{
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
 #define SDL_TTF_MAJOR_VERSION
@@ -2033,9 +2035,11 @@ struct TextEngineBase : Resource<TTF_TextEngine*>
   using Resource::Resource;
 
 protected:
+  /// Custom destroyer
   void (*m_destroy)(TTF_TextEngine* engine) = nullptr;
 
 public:
+  /// Create from engine and custom destroyer
   constexpr TextEngineBase(TTF_TextEngine* engine,
                            void (*destroy)(TTF_TextEngine* engine))
     : Resource(engine)
@@ -3379,6 +3383,10 @@ struct Text : TextRef
   }
 };
 
+/**
+ * Iterator for substrings
+ *
+ */
 class SubStringIterator
 {
   TextRef m_text;
@@ -3392,28 +3400,35 @@ class SubStringIterator
   }
 
 public:
+  /// Default constructor.
   constexpr SubStringIterator()
     : SubStringIterator(nullptr)
   {
   }
 
+  /// True if pointing to valid SubString.
   constexpr operator bool() const { return m_text != nullptr; }
 
+  /// Retrieve SubString
   constexpr const SubString& operator*() const { return m_subString; }
 
+  /// Retrieve SubString.
   constexpr const SubString* operator->() const { return &m_subString; }
 
+  /// Comparison.
   constexpr bool operator==(const SubStringIterator& other) const
   {
     return m_subString.offset == other.m_subString.offset;
   }
 
+  /// Increment operator.
   constexpr SubStringIterator& operator++()
   {
     m_text.GetNextSubString(m_subString, &m_subString);
     return *this;
   }
 
+  /// Increment operator.
   constexpr SubStringIterator operator++(int)
   {
     auto curr = *this;
@@ -3421,12 +3436,14 @@ public:
     return curr;
   }
 
+  /// Decrement operator.
   constexpr SubStringIterator& operator--()
   {
     m_text.GetPreviousSubString(m_subString, &m_subString);
     return *this;
   }
 
+  /// Decrement operator.
   constexpr SubStringIterator operator--(int)
   {
     auto curr = *this;

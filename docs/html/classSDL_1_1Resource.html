@@ -77,7 +77,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classSDL_1_1Resource-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SDL::Resource&lt; T &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">SDL::Resource&lt; T &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesCppSupport.html">C++ Support</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -88,8 +88,16 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from value. <br /></td></tr>
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
 <tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
+<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
+<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top"><a id="afbcdc46caa3c15a1b9c9a116a6e32382" name="afbcdc46caa3c15a1b9c9a116a6e32382"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
 <tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,10 +130,18 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==<
 constexpr T&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
 <tr class="memdesc:ab273a0a0285b8eed1f70f5d3759f4167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource;. <br /></td></tr>
 <tr class="separator:ab273a0a0285b8eed1f70f5d3759f4167"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a604a674bee6d19b0418e4b07b3e9ff3e" id="r_a604a674bee6d19b0418e4b07b3e9ff3e"><td class="memItemLeft" align="right" valign="top"><a id="a604a674bee6d19b0418e4b07b3e9ff3e" name="a604a674bee6d19b0418e4b07b3e9ff3e"></a>
-constexpr T&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> ()</td></tr>
-<tr class="memdesc:a604a674bee6d19b0418e4b07b3e9ff3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource and empties this. <br /></td></tr>
-<tr class="separator:a604a674bee6d19b0418e4b07b3e9ff3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795922875f43cc42165896b02af59d0c" id="r_a795922875f43cc42165896b02af59d0c"><td class="memItemLeft" align="right" valign="top"><a id="a795922875f43cc42165896b02af59d0c" name="a795922875f43cc42165896b02af59d0c"></a>
+constexpr T&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (T newResource={})</td></tr>
+<tr class="memdesc:a795922875f43cc42165896b02af59d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return contained resource and empties or replace value. <br /></td></tr>
+<tr class="separator:a795922875f43cc42165896b02af59d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa21f6ed563dbdb86c0d6d21c2721c767" id="r_aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memItemLeft" align="right" valign="top"><a id="aa21f6ed563dbdb86c0d6d21c2721c767" name="aa21f6ed563dbdb86c0d6d21c2721c767"></a>
+constexpr const T&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const</td></tr>
+<tr class="memdesc:aa21f6ed563dbdb86c0d6d21c2721c767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
+<tr class="separator:aa21f6ed563dbdb86c0d6d21c2721c767"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bac10eb8bfedf254b67081d767c1a68" id="r_a1bac10eb8bfedf254b67081d767c1a68"><td class="memItemLeft" align="right" valign="top"><a id="a1bac10eb8bfedf254b67081d767c1a68" name="a1bac10eb8bfedf254b67081d767c1a68"></a>
+constexpr T&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
+<tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
+<tr class="separator:a1bac10eb8bfedf254b67081d767c1a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />

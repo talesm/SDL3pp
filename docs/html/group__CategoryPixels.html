@@ -84,11 +84,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html">SDL::PaletteBase&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of indexed colors representing a palette.  <a href="structSDL_1_1PaletteBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html">SDL::PixelFormat</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel format.  <a href="structSDL_1_1PixelFormat.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PixelFormat.html">SDL::PixelFormat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel format.  <a href="classSDL_1_1PixelFormat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Colorspace.html">SDL::Colorspace</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1Colorspace.html" title="Colorspace definitions.">Colorspace</a> definitions.  <a href="classSDL_1_1Colorspace.html#details">More...</a><br /></td></tr>
@@ -97,7 +94,16 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structure that represents a color as RGBA components.  <a href="structSDL_1_1Color.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FColor.html">SDL::FColor</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bits of this structure can be directly reinterpreted as a float-packed color which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format.  <a href="structSDL_1_1FColor.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bits of this structure can be directly reinterpreted as a float-packed color which uses the PIXELFORMAT_RGBA128_FLOAT format.  <a href="structSDL_1_1FColor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html">SDL::PaletteBase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of indexed colors representing a palette.  <a href="structSDL_1_1PaletteBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteRef.html">SDL::PaletteRef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned palette.  <a href="structSDL_1_1PaletteRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Palette.html">SDL::Palette</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned palette.  <a href="structSDL_1_1Palette.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -118,36 +124,29 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga7dc1903b18ca972a3676628782873f71"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro for defining custom FourCC pixel formats.  <br /></td></tr>
 <tr class="separator:ga7dc1903b18ca972a3676628782873f71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8fd08febb4e52553ad2eed33d098b753" id="r_ga8fd08febb4e52553ad2eed33d098b753"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga8fd08febb4e52553ad2eed33d098b753">SDL_PIXELFLAG</a>(format)&#160;&#160;&#160;(((format) &gt;&gt; 28) &amp; 0x0F)</td></tr>
-<tr class="memdesc:ga8fd08febb4e52553ad2eed33d098b753"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro to retrieve the flags of an SDL_PixelFormat.  <br /></td></tr>
+<tr class="memdesc:ga8fd08febb4e52553ad2eed33d098b753"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro to retrieve the flags of an PixelFormat.  <br /></td></tr>
 <tr class="separator:ga8fd08febb4e52553ad2eed33d098b753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga8e1ece7b927ff75a946a84bddb60e991" id="r_ga8e1ece7b927ff75a946a84bddb60e991"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">SDL::PaletteRef</a> = <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_Palette &gt; &gt;</td></tr>
-<tr class="memdesc:ga8e1ece7b927ff75a946a84bddb60e991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned palette.  <br /></td></tr>
-<tr class="separator:ga8e1ece7b927ff75a946a84bddb60e991"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga82736cd9bdf83b4850b54726f51e9644" id="r_ga82736cd9bdf83b4850b54726f51e9644"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga82736cd9bdf83b4850b54726f51e9644">SDL::Palette</a> = <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_Palette &gt; &gt;</td></tr>
-<tr class="memdesc:ga82736cd9bdf83b4850b54726f51e9644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned palette.  <br /></td></tr>
-<tr class="separator:ga82736cd9bdf83b4850b54726f51e9644"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga87ff9a33ccc542e0888dd408ba08bfbc" id="r_ga87ff9a33ccc542e0888dd408ba08bfbc"><td class="memItemLeft" align="right" valign="top"><a id="ga87ff9a33ccc542e0888dd408ba08bfbc" name="ga87ff9a33ccc542e0888dd408ba08bfbc"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PixelFormatDetails</b> = SDL_PixelFormatDetails</td></tr>
-<tr class="memdesc:ga87ff9a33ccc542e0888dd408ba08bfbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Details about the format of a pixel. <br /></td></tr>
+<tr class="memitem:ga87ff9a33ccc542e0888dd408ba08bfbc" id="r_ga87ff9a33ccc542e0888dd408ba08bfbc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">SDL::PixelFormatDetails</a> = SDL_PixelFormatDetails</td></tr>
+<tr class="memdesc:ga87ff9a33ccc542e0888dd408ba08bfbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Details about the format of a pixel.  <br /></td></tr>
 <tr class="separator:ga87ff9a33ccc542e0888dd408ba08bfbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga4cbff25e6b58ddcdabed09145b23ad89" id="r_ga4cbff25e6b58ddcdabed09145b23ad89"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga4cbff25e6b58ddcdabed09145b23ad89">SDL::MapRGB</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette, Uint8 r, Uint8 g, Uint8 b)</td></tr>
-<tr class="memdesc:ga4cbff25e6b58ddcdabed09145b23ad89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGB triple to an opaque pixel value for a given pixel format.  <br /></td></tr>
-<tr class="separator:ga4cbff25e6b58ddcdabed09145b23ad89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad02ad21af6f4472fc42d05601e77723b" id="r_gad02ad21af6f4472fc42d05601e77723b"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b">SDL::MapRGBA</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette, Uint8 r, Uint8 g, Uint8 b, Uint8 a)</td></tr>
-<tr class="memdesc:gad02ad21af6f4472fc42d05601e77723b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a given pixel format.  <br /></td></tr>
-<tr class="separator:gad02ad21af6f4472fc42d05601e77723b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga42b2524778dc58d37b47861926d9f2d8" id="r_ga42b2524778dc58d37b47861926d9f2d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga42b2524778dc58d37b47861926d9f2d8">SDL::GetRGB</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette, Uint8 *r, Uint8 *g, Uint8 *b)</td></tr>
-<tr class="memdesc:ga42b2524778dc58d37b47861926d9f2d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGB values from a pixel in the specified format.  <br /></td></tr>
-<tr class="separator:ga42b2524778dc58d37b47861926d9f2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad74c76d122c82eef85a4803c69ea7d85" id="r_gad74c76d122c82eef85a4803c69ea7d85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad74c76d122c82eef85a4803c69ea7d85">SDL::GetRGBA</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a)</td></tr>
-<tr class="memdesc:gad74c76d122c82eef85a4803c69ea7d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGBA values from a pixel in the specified format.  <br /></td></tr>
-<tr class="separator:gad74c76d122c82eef85a4803c69ea7d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0154cb3b56b41f03cb7b21b627b1626c" id="r_ga0154cb3b56b41f03cb7b21b627b1626c"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c">SDL::MapRGB</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;palette, Uint8 r, Uint8 g, Uint8 b)</td></tr>
+<tr class="memdesc:ga0154cb3b56b41f03cb7b21b627b1626c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGB triple to an opaque pixel value for a given pixel format.  <br /></td></tr>
+<tr class="separator:ga0154cb3b56b41f03cb7b21b627b1626c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3ab23ef5a4df2ea8aef4df1ed0088fd4" id="r_ga3ab23ef5a4df2ea8aef4df1ed0088fd4"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4">SDL::MapRGBA</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;palette, Uint8 r, Uint8 g, Uint8 b, Uint8 a)</td></tr>
+<tr class="memdesc:ga3ab23ef5a4df2ea8aef4df1ed0088fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a given pixel format.  <br /></td></tr>
+<tr class="separator:ga3ab23ef5a4df2ea8aef4df1ed0088fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeb6958ed7d37f689e9f925dcced856e2" id="r_gaeb6958ed7d37f689e9f925dcced856e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaeb6958ed7d37f689e9f925dcced856e2">SDL::GetRGB</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;palette, Uint8 *r, Uint8 *g, Uint8 *b)</td></tr>
+<tr class="memdesc:gaeb6958ed7d37f689e9f925dcced856e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGB values from a pixel in the specified format.  <br /></td></tr>
+<tr class="separator:gaeb6958ed7d37f689e9f925dcced856e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea943762e402bea20719ac40c6380bee" id="r_gaea943762e402bea20719ac40c6380bee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaea943762e402bea20719ac40c6380bee">SDL::GetRGBA</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a)</td></tr>
+<tr class="memdesc:gaea943762e402bea20719ac40c6380bee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGBA values from a pixel in the specified format.  <br /></td></tr>
+<tr class="separator:gaea943762e402bea20719ac40c6380bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">PixelTypes</h2></td></tr>
 <tr class="memitem:gaedfdadf087ddd7d55c732a8f05d2bde2" id="r_gaedfdadf087ddd7d55c732a8f05d2bde2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaedfdadf087ddd7d55c732a8f05d2bde2">SDL::PixelType</a> = SDL_PixelType</td></tr>
@@ -372,38 +371,32 @@ constexpr <a class="el" href="group__CategoryPixels.html#gaa2ffd13114a8e0729d0a8
 <tr class="memitem:ga3f7c1b6ae39127c8d74a6df26a82680f" id="r_ga3f7c1b6ae39127c8d74a6df26a82680f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3f7c1b6ae39127c8d74a6df26a82680f">SDL::COLOR_PRIMARIES_UNKNOWN</a></td></tr>
 <tr class="memdesc:ga3f7c1b6ae39127c8d74a6df26a82680f"><td class="mdescLeft">&#160;</td><td class="mdescRight">COLOR_PRIMARIES_UNKNOWN.  <br /></td></tr>
 <tr class="separator:ga3f7c1b6ae39127c8d74a6df26a82680f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0a12c83cae07f21f8c13ab1911aa7937" id="r_ga0a12c83cae07f21f8c13ab1911aa7937"><td class="memItemLeft" align="right" valign="top"><a id="ga0a12c83cae07f21f8c13ab1911aa7937" name="ga0a12c83cae07f21f8c13ab1911aa7937"></a>
-constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLOR_PRIMARIES_BT709</b> = SDL_COLOR_PRIMARIES_BT709</td></tr>
-<tr class="memdesc:ga0a12c83cae07f21f8c13ab1911aa7937"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.709-6. <br /></td></tr>
+<tr class="memitem:ga0a12c83cae07f21f8c13ab1911aa7937" id="r_ga0a12c83cae07f21f8c13ab1911aa7937"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga0a12c83cae07f21f8c13ab1911aa7937">SDL::COLOR_PRIMARIES_BT709</a></td></tr>
+<tr class="memdesc:ga0a12c83cae07f21f8c13ab1911aa7937"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.709-6.  <br /></td></tr>
 <tr class="separator:ga0a12c83cae07f21f8c13ab1911aa7937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0708bec437ffc9ed61fdf1cd0a217296" id="r_ga0708bec437ffc9ed61fdf1cd0a217296"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga0708bec437ffc9ed61fdf1cd0a217296">SDL::COLOR_PRIMARIES_UNSPECIFIED</a></td></tr>
 <tr class="memdesc:ga0708bec437ffc9ed61fdf1cd0a217296"><td class="mdescLeft">&#160;</td><td class="mdescRight">COLOR_PRIMARIES_UNSPECIFIED.  <br /></td></tr>
 <tr class="separator:ga0708bec437ffc9ed61fdf1cd0a217296"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9e527c67a133d7ea8eb1fbf90f5cb29f" id="r_ga9e527c67a133d7ea8eb1fbf90f5cb29f"><td class="memItemLeft" align="right" valign="top"><a id="ga9e527c67a133d7ea8eb1fbf90f5cb29f" name="ga9e527c67a133d7ea8eb1fbf90f5cb29f"></a>
-constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLOR_PRIMARIES_BT470M</b> = SDL_COLOR_PRIMARIES_BT470M</td></tr>
-<tr class="memdesc:ga9e527c67a133d7ea8eb1fbf90f5cb29f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.470-6 System M. <br /></td></tr>
+<tr class="memitem:ga9e527c67a133d7ea8eb1fbf90f5cb29f" id="r_ga9e527c67a133d7ea8eb1fbf90f5cb29f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9e527c67a133d7ea8eb1fbf90f5cb29f">SDL::COLOR_PRIMARIES_BT470M</a></td></tr>
+<tr class="memdesc:ga9e527c67a133d7ea8eb1fbf90f5cb29f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.470-6 System M.  <br /></td></tr>
 <tr class="separator:ga9e527c67a133d7ea8eb1fbf90f5cb29f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5d1ddfd06c1ba1f19f88c8a7b2bf902f" id="r_ga5d1ddfd06c1ba1f19f88c8a7b2bf902f"><td class="memItemLeft" align="right" valign="top"><a id="ga5d1ddfd06c1ba1f19f88c8a7b2bf902f" name="ga5d1ddfd06c1ba1f19f88c8a7b2bf902f"></a>
-constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLOR_PRIMARIES_BT470BG</b> = SDL_COLOR_PRIMARIES_BT470BG</td></tr>
-<tr class="memdesc:ga5d1ddfd06c1ba1f19f88c8a7b2bf902f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625. <br /></td></tr>
+<tr class="memitem:ga5d1ddfd06c1ba1f19f88c8a7b2bf902f" id="r_ga5d1ddfd06c1ba1f19f88c8a7b2bf902f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga5d1ddfd06c1ba1f19f88c8a7b2bf902f">SDL::COLOR_PRIMARIES_BT470BG</a></td></tr>
+<tr class="memdesc:ga5d1ddfd06c1ba1f19f88c8a7b2bf902f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.470-6 System B, G / ITU-R BT.601-7.  <br /></td></tr>
 <tr class="separator:ga5d1ddfd06c1ba1f19f88c8a7b2bf902f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad0ac0eceee25d380e84da6b07adc1dc5" id="r_gad0ac0eceee25d380e84da6b07adc1dc5"><td class="memItemLeft" align="right" valign="top"><a id="gad0ac0eceee25d380e84da6b07adc1dc5" name="gad0ac0eceee25d380e84da6b07adc1dc5"></a>
-constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLOR_PRIMARIES_BT601</b> = SDL_COLOR_PRIMARIES_BT601</td></tr>
-<tr class="memdesc:gad0ac0eceee25d380e84da6b07adc1dc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.601-7 525, SMPTE 170M. <br /></td></tr>
+<tr class="memitem:gad0ac0eceee25d380e84da6b07adc1dc5" id="r_gad0ac0eceee25d380e84da6b07adc1dc5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad0ac0eceee25d380e84da6b07adc1dc5">SDL::COLOR_PRIMARIES_BT601</a></td></tr>
+<tr class="memdesc:gad0ac0eceee25d380e84da6b07adc1dc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.601-7 525, SMPTE 170M.  <br /></td></tr>
 <tr class="separator:gad0ac0eceee25d380e84da6b07adc1dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga83d863cb7b1ffc06047adcfb76877619" id="r_ga83d863cb7b1ffc06047adcfb76877619"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga83d863cb7b1ffc06047adcfb76877619">SDL::COLOR_PRIMARIES_SMPTE240</a></td></tr>
-<tr class="memdesc:ga83d863cb7b1ffc06047adcfb76877619"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601.  <br /></td></tr>
+<tr class="memdesc:ga83d863cb7b1ffc06047adcfb76877619"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601.  <br /></td></tr>
 <tr class="separator:ga83d863cb7b1ffc06047adcfb76877619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacdd9443c28f2a73b6a94cc7078b19e17" id="r_gacdd9443c28f2a73b6a94cc7078b19e17"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gacdd9443c28f2a73b6a94cc7078b19e17">SDL::COLOR_PRIMARIES_GENERIC_FILM</a></td></tr>
 <tr class="memdesc:gacdd9443c28f2a73b6a94cc7078b19e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic film (color filters using Illuminant C)  <br /></td></tr>
 <tr class="separator:gacdd9443c28f2a73b6a94cc7078b19e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8bd7bd2c015dd8a8af701e9ade454465" id="r_ga8bd7bd2c015dd8a8af701e9ade454465"><td class="memItemLeft" align="right" valign="top"><a id="ga8bd7bd2c015dd8a8af701e9ade454465" name="ga8bd7bd2c015dd8a8af701e9ade454465"></a>
-constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLOR_PRIMARIES_BT2020</b> = SDL_COLOR_PRIMARIES_BT2020</td></tr>
-<tr class="memdesc:ga8bd7bd2c015dd8a8af701e9ade454465"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.2020-2 / ITU-R BT.2100-0. <br /></td></tr>
+<tr class="memitem:ga8bd7bd2c015dd8a8af701e9ade454465" id="r_ga8bd7bd2c015dd8a8af701e9ade454465"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga8bd7bd2c015dd8a8af701e9ade454465">SDL::COLOR_PRIMARIES_BT2020</a></td></tr>
+<tr class="memdesc:ga8bd7bd2c015dd8a8af701e9ade454465"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.2020-2 / ITU-R BT.2100-0.  <br /></td></tr>
 <tr class="separator:ga8bd7bd2c015dd8a8af701e9ade454465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa2e96ee964ce2a9d14bac5c59901d97e" id="r_gaa2e96ee964ce2a9d14bac5c59901d97e"><td class="memItemLeft" align="right" valign="top"><a id="gaa2e96ee964ce2a9d14bac5c59901d97e" name="gaa2e96ee964ce2a9d14bac5c59901d97e"></a>
-constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLOR_PRIMARIES_XYZ</b> = SDL_COLOR_PRIMARIES_XYZ</td></tr>
-<tr class="memdesc:gaa2e96ee964ce2a9d14bac5c59901d97e"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE ST 428-1. <br /></td></tr>
+<tr class="memitem:gaa2e96ee964ce2a9d14bac5c59901d97e" id="r_gaa2e96ee964ce2a9d14bac5c59901d97e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa2e96ee964ce2a9d14bac5c59901d97e">SDL::COLOR_PRIMARIES_XYZ</a></td></tr>
+<tr class="memdesc:gaa2e96ee964ce2a9d14bac5c59901d97e"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE ST 428-1.  <br /></td></tr>
 <tr class="separator:gaa2e96ee964ce2a9d14bac5c59901d97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9fe1bbab35a52362e7034bfba1976bac" id="r_ga9fe1bbab35a52362e7034bfba1976bac"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9fe1bbab35a52362e7034bfba1976bac">SDL::COLOR_PRIMARIES_SMPTE431</a></td></tr>
 <tr class="memdesc:ga9fe1bbab35a52362e7034bfba1976bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE RP 431-2.  <br /></td></tr>
@@ -411,8 +404,8 @@ constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d
 <tr class="memitem:gab29bb0b948281c00b7c2901392dcdfb6" id="r_gab29bb0b948281c00b7c2901392dcdfb6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gab29bb0b948281c00b7c2901392dcdfb6">SDL::COLOR_PRIMARIES_SMPTE432</a></td></tr>
 <tr class="memdesc:gab29bb0b948281c00b7c2901392dcdfb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE EG 432-1 / DCI P3.  <br /></td></tr>
 <tr class="separator:gab29bb0b948281c00b7c2901392dcdfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga810772eb33c4d296430edc7c00b1e8de" id="r_ga810772eb33c4d296430edc7c00b1e8de"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga810772eb33c4d296430edc7c00b1e8de">SDL::COLOR_PRIMARIES_EBU3213</a> = SDL_COLOR_PRIMARIES_EBU3213</td></tr>
-<tr class="memdesc:ga810772eb33c4d296430edc7c00b1e8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">EBU Tech.  <br /></td></tr>
+<tr class="memitem:ga810772eb33c4d296430edc7c00b1e8de" id="r_ga810772eb33c4d296430edc7c00b1e8de"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga810772eb33c4d296430edc7c00b1e8de">SDL::COLOR_PRIMARIES_EBU3213</a></td></tr>
+<tr class="memdesc:ga810772eb33c4d296430edc7c00b1e8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">EBU Tech. 3213-E.  <br /></td></tr>
 <tr class="separator:ga810772eb33c4d296430edc7c00b1e8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8b6e7a425b643d143bc04ee95ce86517" id="r_ga8b6e7a425b643d143bc04ee95ce86517"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga8b6e7a425b643d143bc04ee95ce86517">SDL::COLOR_PRIMARIES_CUSTOM</a></td></tr>
 <tr class="memdesc:ga8b6e7a425b643d143bc04ee95ce86517"><td class="mdescLeft">&#160;</td><td class="mdescRight">COLOR_PRIMARIES_CUSTOM.  <br /></td></tr>
@@ -426,7 +419,7 @@ constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d
 <tr class="memdesc:gad233d6d5100c24bab856652a415d11b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">TRANSFER_CHARACTERISTICS_UNKNOWN.  <br /></td></tr>
 <tr class="separator:gad233d6d5100c24bab856652a415d11b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaec5cced75e29a6ccc1726417d6dfffbe" id="r_gaec5cced75e29a6ccc1726417d6dfffbe"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5">TransferCharacteristics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaec5cced75e29a6ccc1726417d6dfffbe">SDL::TRANSFER_CHARACTERISTICS_BT709</a></td></tr>
-<tr class="memdesc:gaec5cced75e29a6ccc1726417d6dfffbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rec.  <br /></td></tr>
+<tr class="memdesc:gaec5cced75e29a6ccc1726417d6dfffbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rec. ITU-R BT.709-6 / ITU-R BT1361.  <br /></td></tr>
 <tr class="separator:gaec5cced75e29a6ccc1726417d6dfffbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabf9b0c3030212c9dc28301c90a9decfb" id="r_gabf9b0c3030212c9dc28301c90a9decfb"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5">TransferCharacteristics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gabf9b0c3030212c9dc28301c90a9decfb">SDL::TRANSFER_CHARACTERISTICS_UNSPECIFIED</a></td></tr>
 <tr class="memdesc:gabf9b0c3030212c9dc28301c90a9decfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">TRANSFER_CHARACTERISTICS_UNSPECIFIED.  <br /></td></tr>
@@ -438,7 +431,7 @@ constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d
 <tr class="memdesc:gae5f88bdb4ec65b1a82335e416ee3ac30"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.470-6 System B, G.  <br /></td></tr>
 <tr class="separator:gae5f88bdb4ec65b1a82335e416ee3ac30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga46816481ad8297d6bddc570a62a65b1d" id="r_ga46816481ad8297d6bddc570a62a65b1d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5">TransferCharacteristics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga46816481ad8297d6bddc570a62a65b1d">SDL::TRANSFER_CHARACTERISTICS_BT601</a></td></tr>
-<tr class="memdesc:ga46816481ad8297d6bddc570a62a65b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE ST 170M / ITU-R BT.601-7 525 or 625.  <br /></td></tr>
+<tr class="memdesc:ga46816481ad8297d6bddc570a62a65b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE ST 170M / ITU-R BT.601-7 525 or.  <br /></td></tr>
 <tr class="separator:ga46816481ad8297d6bddc570a62a65b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1a87b7b0d197d112388b4957f8b10f83" id="r_ga1a87b7b0d197d112388b4957f8b10f83"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5">TransferCharacteristics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga1a87b7b0d197d112388b4957f8b10f83">SDL::TRANSFER_CHARACTERISTICS_SMPTE240</a></td></tr>
 <tr class="memdesc:ga1a87b7b0d197d112388b4957f8b10f83"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE ST 240M.  <br /></td></tr>
@@ -474,7 +467,8 @@ constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d
 <tr class="memdesc:ga53cad8871d4a4e7d8801c0ef0487cffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">SMPTE ST 428-1.  <br /></td></tr>
 <tr class="separator:ga53cad8871d4a4e7d8801c0ef0487cffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga692854435e3b59e09ffa7666fa03a2ba" id="r_ga692854435e3b59e09ffa7666fa03a2ba"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5">TransferCharacteristics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga692854435e3b59e09ffa7666fa03a2ba">SDL::TRANSFER_CHARACTERISTICS_HLG</a></td></tr>
-<tr class="memdesc:ga692854435e3b59e09ffa7666fa03a2ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARIB STD-B67, known as "hybrid log-gamma" (HLG)  <br /></td></tr>
+<tr class="memdesc:ga692854435e3b59e09ffa7666fa03a2ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARIB STD-B67, known as "hybrid
+                                  log-gamma" (HLG)  <br /></td></tr>
 <tr class="separator:ga692854435e3b59e09ffa7666fa03a2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacb679aa0bf4f04c37019de9afceda5d9" id="r_gacb679aa0bf4f04c37019de9afceda5d9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5">TransferCharacteristics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gacb679aa0bf4f04c37019de9afceda5d9">SDL::TRANSFER_CHARACTERISTICS_CUSTOM</a></td></tr>
 <tr class="memdesc:gacb679aa0bf4f04c37019de9afceda5d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">TRANSFER_CHARACTERISTICS_CUSTOM.  <br /></td></tr>
@@ -497,7 +491,7 @@ constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d
 <tr class="memdesc:ga02561966131dd77d62b4fcb778b9f04a"><td class="mdescLeft">&#160;</td><td class="mdescRight">US FCC Title 47.  <br /></td></tr>
 <tr class="separator:ga02561966131dd77d62b4fcb778b9f04a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga58f14ec6c6d059ba46e8529d6cab88e9" id="r_ga58f14ec6c6d059ba46e8529d6cab88e9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#gab21170cc89744e8d42089515cb258320">MatrixCoefficients</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga58f14ec6c6d059ba46e8529d6cab88e9">SDL::MATRIX_COEFFICIENTS_BT470BG</a></td></tr>
-<tr class="memdesc:ga58f14ec6c6d059ba46e8529d6cab88e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as SDL_MATRIX_COEFFICIENTS_BT601.  <br /></td></tr>
+<tr class="memdesc:ga58f14ec6c6d059ba46e8529d6cab88e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as MATRIX_COEFFICIENTS_BT601.  <br /></td></tr>
 <tr class="separator:ga58f14ec6c6d059ba46e8529d6cab88e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7fcf5b2ab0a4c2cffa1825ac3d88871e" id="r_ga7fcf5b2ab0a4c2cffa1825ac3d88871e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#gab21170cc89744e8d42089515cb258320">MatrixCoefficients</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga7fcf5b2ab0a4c2cffa1825ac3d88871e">SDL::MATRIX_COEFFICIENTS_BT601</a></td></tr>
 <tr class="memdesc:ga7fcf5b2ab0a4c2cffa1825ac3d88871e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ITU-R BT.601-7 525.  <br /></td></tr>
@@ -534,9 +528,8 @@ constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d
 <tr class="memitem:ga2e12fe1c4b173b97e915cd7e8963bdca" id="r_ga2e12fe1c4b173b97e915cd7e8963bdca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga2e12fe1c4b173b97e915cd7e8963bdca">SDL::ChromaLocation</a> = SDL_ChromaLocation</td></tr>
 <tr class="memdesc:ga2e12fe1c4b173b97e915cd7e8963bdca"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1Colorspace.html" title="Colorspace definitions.">Colorspace</a> chroma sample location.  <br /></td></tr>
 <tr class="separator:ga2e12fe1c4b173b97e915cd7e8963bdca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gade3d0b182e1cc5d629e95d74b1c139e8" id="r_gade3d0b182e1cc5d629e95d74b1c139e8"><td class="memItemLeft" align="right" valign="top"><a id="gade3d0b182e1cc5d629e95d74b1c139e8" name="gade3d0b182e1cc5d629e95d74b1c139e8"></a>
-constexpr <a class="el" href="group__CategoryPixels.html#ga2e12fe1c4b173b97e915cd7e8963bdca">ChromaLocation</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::CHROMA_LOCATION_NONE</b> = SDL_CHROMA_LOCATION_NONE</td></tr>
-<tr class="memdesc:gade3d0b182e1cc5d629e95d74b1c139e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB, no chroma sampling. <br /></td></tr>
+<tr class="memitem:gade3d0b182e1cc5d629e95d74b1c139e8" id="r_gade3d0b182e1cc5d629e95d74b1c139e8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga2e12fe1c4b173b97e915cd7e8963bdca">ChromaLocation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gade3d0b182e1cc5d629e95d74b1c139e8">SDL::CHROMA_LOCATION_NONE</a></td></tr>
+<tr class="memdesc:gade3d0b182e1cc5d629e95d74b1c139e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB, no chroma sampling.  <br /></td></tr>
 <tr class="separator:gade3d0b182e1cc5d629e95d74b1c139e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga648ccd78b102d8450c7d4040fe15672e" id="r_ga648ccd78b102d8450c7d4040fe15672e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryPixels.html#ga2e12fe1c4b173b97e915cd7e8963bdca">ChromaLocation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga648ccd78b102d8450c7d4040fe15672e">SDL::CHROMA_LOCATION_LEFT</a> = SDL_CHROMA_LOCATION_LEFT</td></tr>
 <tr class="memdesc:ga648ccd78b102d8450c7d4040fe15672e"><td class="mdescLeft">&#160;</td><td class="mdescRight">In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge of the 2x2 square.  <br /></td></tr>
@@ -550,252 +543,244 @@ constexpr <a class="el" href="group__CategoryPixels.html#ga2e12fe1c4b173b97e915c
 <tr class="separator:ga55aeeff590010b069e623d04217c6ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">PixelFormats</h2></td></tr>
-<tr class="memitem:ga3e6cec7d1f94a7959fad4b94d9d5d7ec" id="r_ga3e6cec7d1f94a7959fad4b94d9d5d7ec"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3e6cec7d1f94a7959fad4b94d9d5d7ec">SDL::PIXELFORMAT_UNKNOWN</a></td></tr>
+<tr class="memitem:ga3e6cec7d1f94a7959fad4b94d9d5d7ec" id="r_ga3e6cec7d1f94a7959fad4b94d9d5d7ec"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3e6cec7d1f94a7959fad4b94d9d5d7ec">SDL::PIXELFORMAT_UNKNOWN</a></td></tr>
 <tr class="memdesc:ga3e6cec7d1f94a7959fad4b94d9d5d7ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">UNKNOWN.  <br /></td></tr>
 <tr class="separator:ga3e6cec7d1f94a7959fad4b94d9d5d7ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga52ab34815d589121c49c15d6cabe4e3f" id="r_ga52ab34815d589121c49c15d6cabe4e3f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga52ab34815d589121c49c15d6cabe4e3f">SDL::PIXELFORMAT_INDEX1LSB</a></td></tr>
+<tr class="memitem:ga52ab34815d589121c49c15d6cabe4e3f" id="r_ga52ab34815d589121c49c15d6cabe4e3f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga52ab34815d589121c49c15d6cabe4e3f">SDL::PIXELFORMAT_INDEX1LSB</a></td></tr>
 <tr class="memdesc:ga52ab34815d589121c49c15d6cabe4e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">INDEX1LSB.  <br /></td></tr>
 <tr class="separator:ga52ab34815d589121c49c15d6cabe4e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga23afe5df69761b983bfb60dee007f0d5" id="r_ga23afe5df69761b983bfb60dee007f0d5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga23afe5df69761b983bfb60dee007f0d5">SDL::PIXELFORMAT_INDEX1MSB</a></td></tr>
+<tr class="memitem:ga23afe5df69761b983bfb60dee007f0d5" id="r_ga23afe5df69761b983bfb60dee007f0d5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga23afe5df69761b983bfb60dee007f0d5">SDL::PIXELFORMAT_INDEX1MSB</a></td></tr>
 <tr class="memdesc:ga23afe5df69761b983bfb60dee007f0d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">INDEX1MSB.  <br /></td></tr>
 <tr class="separator:ga23afe5df69761b983bfb60dee007f0d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab2ae3d5533a67198840dadc8c9cba4ed" id="r_gab2ae3d5533a67198840dadc8c9cba4ed"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gab2ae3d5533a67198840dadc8c9cba4ed">SDL::PIXELFORMAT_INDEX2LSB</a></td></tr>
+<tr class="memitem:gab2ae3d5533a67198840dadc8c9cba4ed" id="r_gab2ae3d5533a67198840dadc8c9cba4ed"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gab2ae3d5533a67198840dadc8c9cba4ed">SDL::PIXELFORMAT_INDEX2LSB</a></td></tr>
 <tr class="memdesc:gab2ae3d5533a67198840dadc8c9cba4ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">INDEX2LSB.  <br /></td></tr>
 <tr class="separator:gab2ae3d5533a67198840dadc8c9cba4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa8fa11ff00ac8cca7169cef8ef493557" id="r_gaa8fa11ff00ac8cca7169cef8ef493557"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa8fa11ff00ac8cca7169cef8ef493557">SDL::PIXELFORMAT_INDEX2MSB</a></td></tr>
+<tr class="memitem:gaa8fa11ff00ac8cca7169cef8ef493557" id="r_gaa8fa11ff00ac8cca7169cef8ef493557"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa8fa11ff00ac8cca7169cef8ef493557">SDL::PIXELFORMAT_INDEX2MSB</a></td></tr>
 <tr class="memdesc:gaa8fa11ff00ac8cca7169cef8ef493557"><td class="mdescLeft">&#160;</td><td class="mdescRight">INDEX2MSB.  <br /></td></tr>
 <tr class="separator:gaa8fa11ff00ac8cca7169cef8ef493557"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9a8b342224ae2c522e6f83cfeb635e76" id="r_ga9a8b342224ae2c522e6f83cfeb635e76"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9a8b342224ae2c522e6f83cfeb635e76">SDL::PIXELFORMAT_INDEX4LSB</a></td></tr>
+<tr class="memitem:ga9a8b342224ae2c522e6f83cfeb635e76" id="r_ga9a8b342224ae2c522e6f83cfeb635e76"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9a8b342224ae2c522e6f83cfeb635e76">SDL::PIXELFORMAT_INDEX4LSB</a></td></tr>
 <tr class="memdesc:ga9a8b342224ae2c522e6f83cfeb635e76"><td class="mdescLeft">&#160;</td><td class="mdescRight">INDEX4LSB.  <br /></td></tr>
 <tr class="separator:ga9a8b342224ae2c522e6f83cfeb635e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3b9c6d3ba11a96caadd4c27656d3dfeb" id="r_ga3b9c6d3ba11a96caadd4c27656d3dfeb"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3b9c6d3ba11a96caadd4c27656d3dfeb">SDL::PIXELFORMAT_INDEX4MSB</a></td></tr>
+<tr class="memitem:ga3b9c6d3ba11a96caadd4c27656d3dfeb" id="r_ga3b9c6d3ba11a96caadd4c27656d3dfeb"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3b9c6d3ba11a96caadd4c27656d3dfeb">SDL::PIXELFORMAT_INDEX4MSB</a></td></tr>
 <tr class="memdesc:ga3b9c6d3ba11a96caadd4c27656d3dfeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">INDEX4MSB.  <br /></td></tr>
 <tr class="separator:ga3b9c6d3ba11a96caadd4c27656d3dfeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4f90390850a9f678442f66d751a828dd" id="r_ga4f90390850a9f678442f66d751a828dd"><td class="memItemLeft" align="right" valign="top"><a id="ga4f90390850a9f678442f66d751a828dd" name="ga4f90390850a9f678442f66d751a828dd"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_INDEX8</b> = SDL_PIXELFORMAT_INDEX8</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_INDEX8</b> = SDL_PIXELFORMAT_INDEX8</td></tr>
 <tr class="memdesc:ga4f90390850a9f678442f66d751a828dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">INDEX8. <br /></td></tr>
 <tr class="separator:ga4f90390850a9f678442f66d751a828dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaca8b6001cb74a30bdef81ad134d684b5" id="r_gaca8b6001cb74a30bdef81ad134d684b5"><td class="memItemLeft" align="right" valign="top"><a id="gaca8b6001cb74a30bdef81ad134d684b5" name="gaca8b6001cb74a30bdef81ad134d684b5"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGB332</b> = SDL_PIXELFORMAT_RGB332</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGB332</b> = SDL_PIXELFORMAT_RGB332</td></tr>
 <tr class="memdesc:gaca8b6001cb74a30bdef81ad134d684b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB332. <br /></td></tr>
 <tr class="separator:gaca8b6001cb74a30bdef81ad134d684b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad8ae0450100a879cc422f9d94e25a9d8" id="r_gad8ae0450100a879cc422f9d94e25a9d8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad8ae0450100a879cc422f9d94e25a9d8">SDL::PIXELFORMAT_XRGB4444</a></td></tr>
+<tr class="memitem:gad8ae0450100a879cc422f9d94e25a9d8" id="r_gad8ae0450100a879cc422f9d94e25a9d8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad8ae0450100a879cc422f9d94e25a9d8">SDL::PIXELFORMAT_XRGB4444</a></td></tr>
 <tr class="memdesc:gad8ae0450100a879cc422f9d94e25a9d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">XRGB4444.  <br /></td></tr>
 <tr class="separator:gad8ae0450100a879cc422f9d94e25a9d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9008a98ec3fc8312960be6ded03b8d85" id="r_ga9008a98ec3fc8312960be6ded03b8d85"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9008a98ec3fc8312960be6ded03b8d85">SDL::PIXELFORMAT_XBGR4444</a></td></tr>
+<tr class="memitem:ga9008a98ec3fc8312960be6ded03b8d85" id="r_ga9008a98ec3fc8312960be6ded03b8d85"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9008a98ec3fc8312960be6ded03b8d85">SDL::PIXELFORMAT_XBGR4444</a></td></tr>
 <tr class="memdesc:ga9008a98ec3fc8312960be6ded03b8d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">XBGR4444.  <br /></td></tr>
 <tr class="separator:ga9008a98ec3fc8312960be6ded03b8d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga186324acfa5ade9b542bcfe7a8a6bd1a" id="r_ga186324acfa5ade9b542bcfe7a8a6bd1a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga186324acfa5ade9b542bcfe7a8a6bd1a">SDL::PIXELFORMAT_XRGB1555</a></td></tr>
+<tr class="memitem:ga186324acfa5ade9b542bcfe7a8a6bd1a" id="r_ga186324acfa5ade9b542bcfe7a8a6bd1a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga186324acfa5ade9b542bcfe7a8a6bd1a">SDL::PIXELFORMAT_XRGB1555</a></td></tr>
 <tr class="memdesc:ga186324acfa5ade9b542bcfe7a8a6bd1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">XRGB1555.  <br /></td></tr>
 <tr class="separator:ga186324acfa5ade9b542bcfe7a8a6bd1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafa0233cac3416b1fc3802b4b9aec8669" id="r_gafa0233cac3416b1fc3802b4b9aec8669"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gafa0233cac3416b1fc3802b4b9aec8669">SDL::PIXELFORMAT_XBGR1555</a></td></tr>
+<tr class="memitem:gafa0233cac3416b1fc3802b4b9aec8669" id="r_gafa0233cac3416b1fc3802b4b9aec8669"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gafa0233cac3416b1fc3802b4b9aec8669">SDL::PIXELFORMAT_XBGR1555</a></td></tr>
 <tr class="memdesc:gafa0233cac3416b1fc3802b4b9aec8669"><td class="mdescLeft">&#160;</td><td class="mdescRight">XBGR1555.  <br /></td></tr>
 <tr class="separator:gafa0233cac3416b1fc3802b4b9aec8669"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae89b9a52c88f6580aa70bca6eaa02bd0" id="r_gae89b9a52c88f6580aa70bca6eaa02bd0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gae89b9a52c88f6580aa70bca6eaa02bd0">SDL::PIXELFORMAT_ARGB4444</a></td></tr>
+<tr class="memitem:gae89b9a52c88f6580aa70bca6eaa02bd0" id="r_gae89b9a52c88f6580aa70bca6eaa02bd0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gae89b9a52c88f6580aa70bca6eaa02bd0">SDL::PIXELFORMAT_ARGB4444</a></td></tr>
 <tr class="memdesc:gae89b9a52c88f6580aa70bca6eaa02bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARGB4444.  <br /></td></tr>
 <tr class="separator:gae89b9a52c88f6580aa70bca6eaa02bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga97fa19757660bee79464ef02e2bc0fef" id="r_ga97fa19757660bee79464ef02e2bc0fef"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga97fa19757660bee79464ef02e2bc0fef">SDL::PIXELFORMAT_RGBA4444</a></td></tr>
+<tr class="memitem:ga97fa19757660bee79464ef02e2bc0fef" id="r_ga97fa19757660bee79464ef02e2bc0fef"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga97fa19757660bee79464ef02e2bc0fef">SDL::PIXELFORMAT_RGBA4444</a></td></tr>
 <tr class="memdesc:ga97fa19757660bee79464ef02e2bc0fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBA4444.  <br /></td></tr>
 <tr class="separator:ga97fa19757660bee79464ef02e2bc0fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3fccc8806f207d847896e21a2976098e" id="r_ga3fccc8806f207d847896e21a2976098e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3fccc8806f207d847896e21a2976098e">SDL::PIXELFORMAT_ABGR4444</a></td></tr>
+<tr class="memitem:ga3fccc8806f207d847896e21a2976098e" id="r_ga3fccc8806f207d847896e21a2976098e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3fccc8806f207d847896e21a2976098e">SDL::PIXELFORMAT_ABGR4444</a></td></tr>
 <tr class="memdesc:ga3fccc8806f207d847896e21a2976098e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ABGR4444.  <br /></td></tr>
 <tr class="separator:ga3fccc8806f207d847896e21a2976098e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa7a1b68601994558cb42470654d4b347" id="r_gaa7a1b68601994558cb42470654d4b347"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa7a1b68601994558cb42470654d4b347">SDL::PIXELFORMAT_BGRA4444</a></td></tr>
+<tr class="memitem:gaa7a1b68601994558cb42470654d4b347" id="r_gaa7a1b68601994558cb42470654d4b347"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa7a1b68601994558cb42470654d4b347">SDL::PIXELFORMAT_BGRA4444</a></td></tr>
 <tr class="memdesc:gaa7a1b68601994558cb42470654d4b347"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRA4444.  <br /></td></tr>
 <tr class="separator:gaa7a1b68601994558cb42470654d4b347"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7f01a15b75b1c824e94f2dee2dfd085d" id="r_ga7f01a15b75b1c824e94f2dee2dfd085d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga7f01a15b75b1c824e94f2dee2dfd085d">SDL::PIXELFORMAT_ARGB1555</a></td></tr>
+<tr class="memitem:ga7f01a15b75b1c824e94f2dee2dfd085d" id="r_ga7f01a15b75b1c824e94f2dee2dfd085d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga7f01a15b75b1c824e94f2dee2dfd085d">SDL::PIXELFORMAT_ARGB1555</a></td></tr>
 <tr class="memdesc:ga7f01a15b75b1c824e94f2dee2dfd085d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARGB1555.  <br /></td></tr>
 <tr class="separator:ga7f01a15b75b1c824e94f2dee2dfd085d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7611c37d92fbb43384c5fca33198f4e4" id="r_ga7611c37d92fbb43384c5fca33198f4e4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga7611c37d92fbb43384c5fca33198f4e4">SDL::PIXELFORMAT_RGBA5551</a></td></tr>
+<tr class="memitem:ga7611c37d92fbb43384c5fca33198f4e4" id="r_ga7611c37d92fbb43384c5fca33198f4e4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga7611c37d92fbb43384c5fca33198f4e4">SDL::PIXELFORMAT_RGBA5551</a></td></tr>
 <tr class="memdesc:ga7611c37d92fbb43384c5fca33198f4e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBA5551.  <br /></td></tr>
 <tr class="separator:ga7611c37d92fbb43384c5fca33198f4e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga02323db60813400beaef9d614cf8e3ce" id="r_ga02323db60813400beaef9d614cf8e3ce"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga02323db60813400beaef9d614cf8e3ce">SDL::PIXELFORMAT_ABGR1555</a></td></tr>
+<tr class="memitem:ga02323db60813400beaef9d614cf8e3ce" id="r_ga02323db60813400beaef9d614cf8e3ce"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga02323db60813400beaef9d614cf8e3ce">SDL::PIXELFORMAT_ABGR1555</a></td></tr>
 <tr class="memdesc:ga02323db60813400beaef9d614cf8e3ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">ABGR1555.  <br /></td></tr>
 <tr class="separator:ga02323db60813400beaef9d614cf8e3ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacaf357ebc39bf98fb99c56ed8baf47ec" id="r_gacaf357ebc39bf98fb99c56ed8baf47ec"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gacaf357ebc39bf98fb99c56ed8baf47ec">SDL::PIXELFORMAT_BGRA5551</a></td></tr>
+<tr class="memitem:gacaf357ebc39bf98fb99c56ed8baf47ec" id="r_gacaf357ebc39bf98fb99c56ed8baf47ec"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gacaf357ebc39bf98fb99c56ed8baf47ec">SDL::PIXELFORMAT_BGRA5551</a></td></tr>
 <tr class="memdesc:gacaf357ebc39bf98fb99c56ed8baf47ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRA5551.  <br /></td></tr>
 <tr class="separator:gacaf357ebc39bf98fb99c56ed8baf47ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa9f2294d4da7d3616004b6390a1afad1" id="r_gaa9f2294d4da7d3616004b6390a1afad1"><td class="memItemLeft" align="right" valign="top"><a id="gaa9f2294d4da7d3616004b6390a1afad1" name="gaa9f2294d4da7d3616004b6390a1afad1"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGB565</b> = SDL_PIXELFORMAT_RGB565</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGB565</b> = SDL_PIXELFORMAT_RGB565</td></tr>
 <tr class="memdesc:gaa9f2294d4da7d3616004b6390a1afad1"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB565. <br /></td></tr>
 <tr class="separator:gaa9f2294d4da7d3616004b6390a1afad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa9c5131e2fc663077ae77b0176faae65" id="r_gaa9c5131e2fc663077ae77b0176faae65"><td class="memItemLeft" align="right" valign="top"><a id="gaa9c5131e2fc663077ae77b0176faae65" name="gaa9c5131e2fc663077ae77b0176faae65"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGR565</b> = SDL_PIXELFORMAT_BGR565</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGR565</b> = SDL_PIXELFORMAT_BGR565</td></tr>
 <tr class="memdesc:gaa9c5131e2fc663077ae77b0176faae65"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGR565. <br /></td></tr>
 <tr class="separator:gaa9c5131e2fc663077ae77b0176faae65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga627f3f75ca6d7b941e9d512bc12cb71e" id="r_ga627f3f75ca6d7b941e9d512bc12cb71e"><td class="memItemLeft" align="right" valign="top"><a id="ga627f3f75ca6d7b941e9d512bc12cb71e" name="ga627f3f75ca6d7b941e9d512bc12cb71e"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGB24</b> = SDL_PIXELFORMAT_RGB24</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGB24</b> = SDL_PIXELFORMAT_RGB24</td></tr>
 <tr class="memdesc:ga627f3f75ca6d7b941e9d512bc12cb71e"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB24. <br /></td></tr>
 <tr class="separator:ga627f3f75ca6d7b941e9d512bc12cb71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaab6ba97f2f12f686752ee995f53a7850" id="r_gaab6ba97f2f12f686752ee995f53a7850"><td class="memItemLeft" align="right" valign="top"><a id="gaab6ba97f2f12f686752ee995f53a7850" name="gaab6ba97f2f12f686752ee995f53a7850"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGR24</b> = SDL_PIXELFORMAT_BGR24</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGR24</b> = SDL_PIXELFORMAT_BGR24</td></tr>
 <tr class="memdesc:gaab6ba97f2f12f686752ee995f53a7850"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGR24. <br /></td></tr>
 <tr class="separator:gaab6ba97f2f12f686752ee995f53a7850"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4cc81cabbfc5d137388a1bb1d94384f0" id="r_ga4cc81cabbfc5d137388a1bb1d94384f0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga4cc81cabbfc5d137388a1bb1d94384f0">SDL::PIXELFORMAT_XRGB8888</a></td></tr>
+<tr class="memitem:ga4cc81cabbfc5d137388a1bb1d94384f0" id="r_ga4cc81cabbfc5d137388a1bb1d94384f0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga4cc81cabbfc5d137388a1bb1d94384f0">SDL::PIXELFORMAT_XRGB8888</a></td></tr>
 <tr class="memdesc:ga4cc81cabbfc5d137388a1bb1d94384f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">XRGB8888.  <br /></td></tr>
 <tr class="separator:ga4cc81cabbfc5d137388a1bb1d94384f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5b72b3013b77426437fdbd4b66f08f25" id="r_ga5b72b3013b77426437fdbd4b66f08f25"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga5b72b3013b77426437fdbd4b66f08f25">SDL::PIXELFORMAT_RGBX8888</a></td></tr>
+<tr class="memitem:ga5b72b3013b77426437fdbd4b66f08f25" id="r_ga5b72b3013b77426437fdbd4b66f08f25"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga5b72b3013b77426437fdbd4b66f08f25">SDL::PIXELFORMAT_RGBX8888</a></td></tr>
 <tr class="memdesc:ga5b72b3013b77426437fdbd4b66f08f25"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBX8888.  <br /></td></tr>
 <tr class="separator:ga5b72b3013b77426437fdbd4b66f08f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7d7393d6f46862602eacbef1996e2791" id="r_ga7d7393d6f46862602eacbef1996e2791"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga7d7393d6f46862602eacbef1996e2791">SDL::PIXELFORMAT_XBGR8888</a></td></tr>
+<tr class="memitem:ga7d7393d6f46862602eacbef1996e2791" id="r_ga7d7393d6f46862602eacbef1996e2791"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga7d7393d6f46862602eacbef1996e2791">SDL::PIXELFORMAT_XBGR8888</a></td></tr>
 <tr class="memdesc:ga7d7393d6f46862602eacbef1996e2791"><td class="mdescLeft">&#160;</td><td class="mdescRight">XBGR8888.  <br /></td></tr>
 <tr class="separator:ga7d7393d6f46862602eacbef1996e2791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa328d2f95370d6b754dfaefaf56a96b4" id="r_gaa328d2f95370d6b754dfaefaf56a96b4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa328d2f95370d6b754dfaefaf56a96b4">SDL::PIXELFORMAT_BGRX8888</a></td></tr>
+<tr class="memitem:gaa328d2f95370d6b754dfaefaf56a96b4" id="r_gaa328d2f95370d6b754dfaefaf56a96b4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa328d2f95370d6b754dfaefaf56a96b4">SDL::PIXELFORMAT_BGRX8888</a></td></tr>
 <tr class="memdesc:gaa328d2f95370d6b754dfaefaf56a96b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRX8888.  <br /></td></tr>
 <tr class="separator:gaa328d2f95370d6b754dfaefaf56a96b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6687de87b7875ab4d805049b9d7c2d83" id="r_ga6687de87b7875ab4d805049b9d7c2d83"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga6687de87b7875ab4d805049b9d7c2d83">SDL::PIXELFORMAT_ARGB8888</a></td></tr>
+<tr class="memitem:ga6687de87b7875ab4d805049b9d7c2d83" id="r_ga6687de87b7875ab4d805049b9d7c2d83"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga6687de87b7875ab4d805049b9d7c2d83">SDL::PIXELFORMAT_ARGB8888</a></td></tr>
 <tr class="memdesc:ga6687de87b7875ab4d805049b9d7c2d83"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARGB8888.  <br /></td></tr>
 <tr class="separator:ga6687de87b7875ab4d805049b9d7c2d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9518c0ed01ba952800e1280ec2a74ce9" id="r_ga9518c0ed01ba952800e1280ec2a74ce9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9518c0ed01ba952800e1280ec2a74ce9">SDL::PIXELFORMAT_RGBA8888</a></td></tr>
+<tr class="memitem:ga9518c0ed01ba952800e1280ec2a74ce9" id="r_ga9518c0ed01ba952800e1280ec2a74ce9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9518c0ed01ba952800e1280ec2a74ce9">SDL::PIXELFORMAT_RGBA8888</a></td></tr>
 <tr class="memdesc:ga9518c0ed01ba952800e1280ec2a74ce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBA8888.  <br /></td></tr>
 <tr class="separator:ga9518c0ed01ba952800e1280ec2a74ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga297b4c5ff4e2f79453fe4b154ee0628c" id="r_ga297b4c5ff4e2f79453fe4b154ee0628c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga297b4c5ff4e2f79453fe4b154ee0628c">SDL::PIXELFORMAT_ABGR8888</a></td></tr>
+<tr class="memitem:ga297b4c5ff4e2f79453fe4b154ee0628c" id="r_ga297b4c5ff4e2f79453fe4b154ee0628c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga297b4c5ff4e2f79453fe4b154ee0628c">SDL::PIXELFORMAT_ABGR8888</a></td></tr>
 <tr class="memdesc:ga297b4c5ff4e2f79453fe4b154ee0628c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ABGR8888.  <br /></td></tr>
 <tr class="separator:ga297b4c5ff4e2f79453fe4b154ee0628c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5b7115badc6cad8e56732b43535f880d" id="r_ga5b7115badc6cad8e56732b43535f880d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga5b7115badc6cad8e56732b43535f880d">SDL::PIXELFORMAT_BGRA8888</a></td></tr>
+<tr class="memitem:ga5b7115badc6cad8e56732b43535f880d" id="r_ga5b7115badc6cad8e56732b43535f880d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga5b7115badc6cad8e56732b43535f880d">SDL::PIXELFORMAT_BGRA8888</a></td></tr>
 <tr class="memdesc:ga5b7115badc6cad8e56732b43535f880d"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRA8888.  <br /></td></tr>
 <tr class="separator:ga5b7115badc6cad8e56732b43535f880d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga89b4608caabe5f293c43733aac01f255" id="r_ga89b4608caabe5f293c43733aac01f255"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga89b4608caabe5f293c43733aac01f255">SDL::PIXELFORMAT_XRGB2101010</a></td></tr>
+<tr class="memitem:ga89b4608caabe5f293c43733aac01f255" id="r_ga89b4608caabe5f293c43733aac01f255"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga89b4608caabe5f293c43733aac01f255">SDL::PIXELFORMAT_XRGB2101010</a></td></tr>
 <tr class="memdesc:ga89b4608caabe5f293c43733aac01f255"><td class="mdescLeft">&#160;</td><td class="mdescRight">XRGB2101010.  <br /></td></tr>
 <tr class="separator:ga89b4608caabe5f293c43733aac01f255"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga461289202f7ac142e8435a0c6eb40dd3" id="r_ga461289202f7ac142e8435a0c6eb40dd3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga461289202f7ac142e8435a0c6eb40dd3">SDL::PIXELFORMAT_XBGR2101010</a></td></tr>
+<tr class="memitem:ga461289202f7ac142e8435a0c6eb40dd3" id="r_ga461289202f7ac142e8435a0c6eb40dd3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga461289202f7ac142e8435a0c6eb40dd3">SDL::PIXELFORMAT_XBGR2101010</a></td></tr>
 <tr class="memdesc:ga461289202f7ac142e8435a0c6eb40dd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">XBGR2101010.  <br /></td></tr>
 <tr class="separator:ga461289202f7ac142e8435a0c6eb40dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a9e52b9891a1df8b7bb283f70aaa0da" id="r_ga3a9e52b9891a1df8b7bb283f70aaa0da"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3a9e52b9891a1df8b7bb283f70aaa0da">SDL::PIXELFORMAT_ARGB2101010</a></td></tr>
+<tr class="memitem:ga3a9e52b9891a1df8b7bb283f70aaa0da" id="r_ga3a9e52b9891a1df8b7bb283f70aaa0da"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3a9e52b9891a1df8b7bb283f70aaa0da">SDL::PIXELFORMAT_ARGB2101010</a></td></tr>
 <tr class="memdesc:ga3a9e52b9891a1df8b7bb283f70aaa0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARGB2101010.  <br /></td></tr>
 <tr class="separator:ga3a9e52b9891a1df8b7bb283f70aaa0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa2f5fe114a20b28f5a06671961bf7aa0" id="r_gaa2f5fe114a20b28f5a06671961bf7aa0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa2f5fe114a20b28f5a06671961bf7aa0">SDL::PIXELFORMAT_ABGR2101010</a></td></tr>
+<tr class="memitem:gaa2f5fe114a20b28f5a06671961bf7aa0" id="r_gaa2f5fe114a20b28f5a06671961bf7aa0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa2f5fe114a20b28f5a06671961bf7aa0">SDL::PIXELFORMAT_ABGR2101010</a></td></tr>
 <tr class="memdesc:gaa2f5fe114a20b28f5a06671961bf7aa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ABGR2101010.  <br /></td></tr>
 <tr class="separator:gaa2f5fe114a20b28f5a06671961bf7aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf4d1d8faf86ac130481ec95ab5420e79" id="r_gaf4d1d8faf86ac130481ec95ab5420e79"><td class="memItemLeft" align="right" valign="top"><a id="gaf4d1d8faf86ac130481ec95ab5420e79" name="gaf4d1d8faf86ac130481ec95ab5420e79"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGB48</b> = SDL_PIXELFORMAT_RGB48</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGB48</b> = SDL_PIXELFORMAT_RGB48</td></tr>
 <tr class="memdesc:gaf4d1d8faf86ac130481ec95ab5420e79"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB48. <br /></td></tr>
 <tr class="separator:gaf4d1d8faf86ac130481ec95ab5420e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d8b174f7ba9217eba5b2becee0af3f1" id="r_ga7d8b174f7ba9217eba5b2becee0af3f1"><td class="memItemLeft" align="right" valign="top"><a id="ga7d8b174f7ba9217eba5b2becee0af3f1" name="ga7d8b174f7ba9217eba5b2becee0af3f1"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGR48</b> = SDL_PIXELFORMAT_BGR48</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGR48</b> = SDL_PIXELFORMAT_BGR48</td></tr>
 <tr class="memdesc:ga7d8b174f7ba9217eba5b2becee0af3f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGR48. <br /></td></tr>
 <tr class="separator:ga7d8b174f7ba9217eba5b2becee0af3f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadf5d480f3b65c48aaed28755bc62f169" id="r_gadf5d480f3b65c48aaed28755bc62f169"><td class="memItemLeft" align="right" valign="top"><a id="gadf5d480f3b65c48aaed28755bc62f169" name="gadf5d480f3b65c48aaed28755bc62f169"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGBA64</b> = SDL_PIXELFORMAT_RGBA64</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGBA64</b> = SDL_PIXELFORMAT_RGBA64</td></tr>
 <tr class="memdesc:gadf5d480f3b65c48aaed28755bc62f169"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBA64. <br /></td></tr>
 <tr class="separator:gadf5d480f3b65c48aaed28755bc62f169"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeeba4dd68a0f5959b379df0d0ce20af6" id="r_gaeeba4dd68a0f5959b379df0d0ce20af6"><td class="memItemLeft" align="right" valign="top"><a id="gaeeba4dd68a0f5959b379df0d0ce20af6" name="gaeeba4dd68a0f5959b379df0d0ce20af6"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_ARGB64</b> = SDL_PIXELFORMAT_ARGB64</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_ARGB64</b> = SDL_PIXELFORMAT_ARGB64</td></tr>
 <tr class="memdesc:gaeeba4dd68a0f5959b379df0d0ce20af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARGB64. <br /></td></tr>
 <tr class="separator:gaeeba4dd68a0f5959b379df0d0ce20af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0a43982b5852b37a5664bd96ea297c8a" id="r_ga0a43982b5852b37a5664bd96ea297c8a"><td class="memItemLeft" align="right" valign="top"><a id="ga0a43982b5852b37a5664bd96ea297c8a" name="ga0a43982b5852b37a5664bd96ea297c8a"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGRA64</b> = SDL_PIXELFORMAT_BGRA64</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGRA64</b> = SDL_PIXELFORMAT_BGRA64</td></tr>
 <tr class="memdesc:ga0a43982b5852b37a5664bd96ea297c8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRA64. <br /></td></tr>
 <tr class="separator:ga0a43982b5852b37a5664bd96ea297c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab77c7b3765f33d6b1475382d63b36cb0" id="r_gab77c7b3765f33d6b1475382d63b36cb0"><td class="memItemLeft" align="right" valign="top"><a id="gab77c7b3765f33d6b1475382d63b36cb0" name="gab77c7b3765f33d6b1475382d63b36cb0"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_ABGR64</b> = SDL_PIXELFORMAT_ABGR64</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_ABGR64</b> = SDL_PIXELFORMAT_ABGR64</td></tr>
 <tr class="memdesc:gab77c7b3765f33d6b1475382d63b36cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">ABGR64. <br /></td></tr>
 <tr class="separator:gab77c7b3765f33d6b1475382d63b36cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa9e0fff965ed551e4398af12c75e4d1c" id="r_gaa9e0fff965ed551e4398af12c75e4d1c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa9e0fff965ed551e4398af12c75e4d1c">SDL::PIXELFORMAT_RGB48_FLOAT</a></td></tr>
+<tr class="memitem:gaa9e0fff965ed551e4398af12c75e4d1c" id="r_gaa9e0fff965ed551e4398af12c75e4d1c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa9e0fff965ed551e4398af12c75e4d1c">SDL::PIXELFORMAT_RGB48_FLOAT</a></td></tr>
 <tr class="memdesc:gaa9e0fff965ed551e4398af12c75e4d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB48_FLOAT.  <br /></td></tr>
 <tr class="separator:gaa9e0fff965ed551e4398af12c75e4d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaff7af3f47ee6971a9bfe112e9e3bea76" id="r_gaff7af3f47ee6971a9bfe112e9e3bea76"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaff7af3f47ee6971a9bfe112e9e3bea76">SDL::PIXELFORMAT_BGR48_FLOAT</a></td></tr>
+<tr class="memitem:gaff7af3f47ee6971a9bfe112e9e3bea76" id="r_gaff7af3f47ee6971a9bfe112e9e3bea76"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaff7af3f47ee6971a9bfe112e9e3bea76">SDL::PIXELFORMAT_BGR48_FLOAT</a></td></tr>
 <tr class="memdesc:gaff7af3f47ee6971a9bfe112e9e3bea76"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGR48_FLOAT.  <br /></td></tr>
 <tr class="separator:gaff7af3f47ee6971a9bfe112e9e3bea76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad6876ee3d4096a62ff4c8e36e98e06df" id="r_gad6876ee3d4096a62ff4c8e36e98e06df"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad6876ee3d4096a62ff4c8e36e98e06df">SDL::PIXELFORMAT_RGBA64_FLOAT</a></td></tr>
+<tr class="memitem:gad6876ee3d4096a62ff4c8e36e98e06df" id="r_gad6876ee3d4096a62ff4c8e36e98e06df"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad6876ee3d4096a62ff4c8e36e98e06df">SDL::PIXELFORMAT_RGBA64_FLOAT</a></td></tr>
 <tr class="memdesc:gad6876ee3d4096a62ff4c8e36e98e06df"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBA64_FLOAT.  <br /></td></tr>
 <tr class="separator:gad6876ee3d4096a62ff4c8e36e98e06df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga86cc09281efd92e1e3e71fae9f06c28f" id="r_ga86cc09281efd92e1e3e71fae9f06c28f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga86cc09281efd92e1e3e71fae9f06c28f">SDL::PIXELFORMAT_ARGB64_FLOAT</a></td></tr>
+<tr class="memitem:ga86cc09281efd92e1e3e71fae9f06c28f" id="r_ga86cc09281efd92e1e3e71fae9f06c28f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga86cc09281efd92e1e3e71fae9f06c28f">SDL::PIXELFORMAT_ARGB64_FLOAT</a></td></tr>
 <tr class="memdesc:ga86cc09281efd92e1e3e71fae9f06c28f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARGB64_FLOAT.  <br /></td></tr>
 <tr class="separator:ga86cc09281efd92e1e3e71fae9f06c28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40bb9b1d99b1e4cd4f339e50f6ced9f1" id="r_ga40bb9b1d99b1e4cd4f339e50f6ced9f1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga40bb9b1d99b1e4cd4f339e50f6ced9f1">SDL::PIXELFORMAT_BGRA64_FLOAT</a></td></tr>
+<tr class="memitem:ga40bb9b1d99b1e4cd4f339e50f6ced9f1" id="r_ga40bb9b1d99b1e4cd4f339e50f6ced9f1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga40bb9b1d99b1e4cd4f339e50f6ced9f1">SDL::PIXELFORMAT_BGRA64_FLOAT</a></td></tr>
 <tr class="memdesc:ga40bb9b1d99b1e4cd4f339e50f6ced9f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRA64_FLOAT.  <br /></td></tr>
 <tr class="separator:ga40bb9b1d99b1e4cd4f339e50f6ced9f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9ddbc9e68d543cd8af15de21862a21ba" id="r_ga9ddbc9e68d543cd8af15de21862a21ba"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9ddbc9e68d543cd8af15de21862a21ba">SDL::PIXELFORMAT_ABGR64_FLOAT</a></td></tr>
+<tr class="memitem:ga9ddbc9e68d543cd8af15de21862a21ba" id="r_ga9ddbc9e68d543cd8af15de21862a21ba"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga9ddbc9e68d543cd8af15de21862a21ba">SDL::PIXELFORMAT_ABGR64_FLOAT</a></td></tr>
 <tr class="memdesc:ga9ddbc9e68d543cd8af15de21862a21ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">ABGR64_FLOAT.  <br /></td></tr>
 <tr class="separator:ga9ddbc9e68d543cd8af15de21862a21ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0b960ca10cc1c229581bb9dba406ab55" id="r_ga0b960ca10cc1c229581bb9dba406ab55"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga0b960ca10cc1c229581bb9dba406ab55">SDL::PIXELFORMAT_RGB96_FLOAT</a></td></tr>
+<tr class="memitem:ga0b960ca10cc1c229581bb9dba406ab55" id="r_ga0b960ca10cc1c229581bb9dba406ab55"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga0b960ca10cc1c229581bb9dba406ab55">SDL::PIXELFORMAT_RGB96_FLOAT</a></td></tr>
 <tr class="memdesc:ga0b960ca10cc1c229581bb9dba406ab55"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB96_FLOAT.  <br /></td></tr>
 <tr class="separator:ga0b960ca10cc1c229581bb9dba406ab55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4db9d06ea9c05fe5f8033c900a0776b4" id="r_ga4db9d06ea9c05fe5f8033c900a0776b4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga4db9d06ea9c05fe5f8033c900a0776b4">SDL::PIXELFORMAT_BGR96_FLOAT</a></td></tr>
+<tr class="memitem:ga4db9d06ea9c05fe5f8033c900a0776b4" id="r_ga4db9d06ea9c05fe5f8033c900a0776b4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga4db9d06ea9c05fe5f8033c900a0776b4">SDL::PIXELFORMAT_BGR96_FLOAT</a></td></tr>
 <tr class="memdesc:ga4db9d06ea9c05fe5f8033c900a0776b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGR96_FLOAT.  <br /></td></tr>
 <tr class="separator:ga4db9d06ea9c05fe5f8033c900a0776b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabe4f95689b498afa07d983206159032c" id="r_gabe4f95689b498afa07d983206159032c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gabe4f95689b498afa07d983206159032c">SDL::PIXELFORMAT_RGBA128_FLOAT</a></td></tr>
+<tr class="memitem:gabe4f95689b498afa07d983206159032c" id="r_gabe4f95689b498afa07d983206159032c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gabe4f95689b498afa07d983206159032c">SDL::PIXELFORMAT_RGBA128_FLOAT</a></td></tr>
 <tr class="memdesc:gabe4f95689b498afa07d983206159032c"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBA128_FLOAT.  <br /></td></tr>
 <tr class="separator:gabe4f95689b498afa07d983206159032c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b522048bebc5fb8ea10a733cca47c43" id="r_ga6b522048bebc5fb8ea10a733cca47c43"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga6b522048bebc5fb8ea10a733cca47c43">SDL::PIXELFORMAT_ARGB128_FLOAT</a></td></tr>
+<tr class="memitem:ga6b522048bebc5fb8ea10a733cca47c43" id="r_ga6b522048bebc5fb8ea10a733cca47c43"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga6b522048bebc5fb8ea10a733cca47c43">SDL::PIXELFORMAT_ARGB128_FLOAT</a></td></tr>
 <tr class="memdesc:ga6b522048bebc5fb8ea10a733cca47c43"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARGB128_FLOAT.  <br /></td></tr>
 <tr class="separator:ga6b522048bebc5fb8ea10a733cca47c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga44dd6177553fdcc5897a1a7a1e671e83" id="r_ga44dd6177553fdcc5897a1a7a1e671e83"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga44dd6177553fdcc5897a1a7a1e671e83">SDL::PIXELFORMAT_BGRA128_FLOAT</a></td></tr>
+<tr class="memitem:ga44dd6177553fdcc5897a1a7a1e671e83" id="r_ga44dd6177553fdcc5897a1a7a1e671e83"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga44dd6177553fdcc5897a1a7a1e671e83">SDL::PIXELFORMAT_BGRA128_FLOAT</a></td></tr>
 <tr class="memdesc:ga44dd6177553fdcc5897a1a7a1e671e83"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRA128_FLOAT.  <br /></td></tr>
 <tr class="separator:ga44dd6177553fdcc5897a1a7a1e671e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa00852e601dbb364f8508ac962e75a46" id="r_gaa00852e601dbb364f8508ac962e75a46"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa00852e601dbb364f8508ac962e75a46">SDL::PIXELFORMAT_ABGR128_FLOAT</a></td></tr>
+<tr class="memitem:gaa00852e601dbb364f8508ac962e75a46" id="r_gaa00852e601dbb364f8508ac962e75a46"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa00852e601dbb364f8508ac962e75a46">SDL::PIXELFORMAT_ABGR128_FLOAT</a></td></tr>
 <tr class="memdesc:gaa00852e601dbb364f8508ac962e75a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">ABGR128_FLOAT.  <br /></td></tr>
 <tr class="separator:gaa00852e601dbb364f8508ac962e75a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa76a23d99d4a003c2ca24fd88b586f6d" id="r_gaa76a23d99d4a003c2ca24fd88b586f6d"><td class="memItemLeft" align="right" valign="top"><a id="gaa76a23d99d4a003c2ca24fd88b586f6d" name="gaa76a23d99d4a003c2ca24fd88b586f6d"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_YV12</b> = SDL_PIXELFORMAT_YV12</td></tr>
-<tr class="memdesc:gaa76a23d99d4a003c2ca24fd88b586f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + V + U (3 planes) <br /></td></tr>
+<tr class="memitem:gaa76a23d99d4a003c2ca24fd88b586f6d" id="r_gaa76a23d99d4a003c2ca24fd88b586f6d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaa76a23d99d4a003c2ca24fd88b586f6d">SDL::PIXELFORMAT_YV12</a></td></tr>
+<tr class="memdesc:gaa76a23d99d4a003c2ca24fd88b586f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + V + U (3 planes)  <br /></td></tr>
 <tr class="separator:gaa76a23d99d4a003c2ca24fd88b586f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga040562f0e398b8f1ca75499673353c7c" id="r_ga040562f0e398b8f1ca75499673353c7c"><td class="memItemLeft" align="right" valign="top"><a id="ga040562f0e398b8f1ca75499673353c7c" name="ga040562f0e398b8f1ca75499673353c7c"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_IYUV</b> = SDL_PIXELFORMAT_IYUV</td></tr>
-<tr class="memdesc:ga040562f0e398b8f1ca75499673353c7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + U + V (3 planes) <br /></td></tr>
+<tr class="memitem:ga040562f0e398b8f1ca75499673353c7c" id="r_ga040562f0e398b8f1ca75499673353c7c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga040562f0e398b8f1ca75499673353c7c">SDL::PIXELFORMAT_IYUV</a></td></tr>
+<tr class="memdesc:ga040562f0e398b8f1ca75499673353c7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + U + V (3 planes)  <br /></td></tr>
 <tr class="separator:ga040562f0e398b8f1ca75499673353c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad16ef5ce4b346d2d8fe2197049a4c6ae" id="r_gad16ef5ce4b346d2d8fe2197049a4c6ae"><td class="memItemLeft" align="right" valign="top"><a id="gad16ef5ce4b346d2d8fe2197049a4c6ae" name="gad16ef5ce4b346d2d8fe2197049a4c6ae"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_YUY2</b> = SDL_PIXELFORMAT_YUY2</td></tr>
-<tr class="memdesc:gad16ef5ce4b346d2d8fe2197049a4c6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packed mode: Y0+U0+Y1+V0 (1 plane) <br /></td></tr>
+<tr class="memitem:gad16ef5ce4b346d2d8fe2197049a4c6ae" id="r_gad16ef5ce4b346d2d8fe2197049a4c6ae"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad16ef5ce4b346d2d8fe2197049a4c6ae">SDL::PIXELFORMAT_YUY2</a></td></tr>
+<tr class="memdesc:gad16ef5ce4b346d2d8fe2197049a4c6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packed mode: Y0+U0+Y1+V0 (1 plane)  <br /></td></tr>
 <tr class="separator:gad16ef5ce4b346d2d8fe2197049a4c6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae1811a4f8cb157eaaf5a453251c45798" id="r_gae1811a4f8cb157eaaf5a453251c45798"><td class="memItemLeft" align="right" valign="top"><a id="gae1811a4f8cb157eaaf5a453251c45798" name="gae1811a4f8cb157eaaf5a453251c45798"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_UYVY</b> = SDL_PIXELFORMAT_UYVY</td></tr>
-<tr class="memdesc:gae1811a4f8cb157eaaf5a453251c45798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packed mode: U0+Y0+V0+Y1 (1 plane) <br /></td></tr>
+<tr class="memitem:gae1811a4f8cb157eaaf5a453251c45798" id="r_gae1811a4f8cb157eaaf5a453251c45798"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gae1811a4f8cb157eaaf5a453251c45798">SDL::PIXELFORMAT_UYVY</a></td></tr>
+<tr class="memdesc:gae1811a4f8cb157eaaf5a453251c45798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packed mode: U0+Y0+V0+Y1 (1 plane)  <br /></td></tr>
 <tr class="separator:gae1811a4f8cb157eaaf5a453251c45798"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5ba9d5ffc58056999681d81d3f1e344f" id="r_ga5ba9d5ffc58056999681d81d3f1e344f"><td class="memItemLeft" align="right" valign="top"><a id="ga5ba9d5ffc58056999681d81d3f1e344f" name="ga5ba9d5ffc58056999681d81d3f1e344f"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_YVYU</b> = SDL_PIXELFORMAT_YVYU</td></tr>
-<tr class="memdesc:ga5ba9d5ffc58056999681d81d3f1e344f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packed mode: Y0+V0+Y1+U0 (1 plane) <br /></td></tr>
+<tr class="memitem:ga5ba9d5ffc58056999681d81d3f1e344f" id="r_ga5ba9d5ffc58056999681d81d3f1e344f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga5ba9d5ffc58056999681d81d3f1e344f">SDL::PIXELFORMAT_YVYU</a></td></tr>
+<tr class="memdesc:ga5ba9d5ffc58056999681d81d3f1e344f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packed mode: Y0+V0+Y1+U0 (1 plane)  <br /></td></tr>
 <tr class="separator:ga5ba9d5ffc58056999681d81d3f1e344f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab10f213ac3b303a2943eb653ee67b966" id="r_gab10f213ac3b303a2943eb653ee67b966"><td class="memItemLeft" align="right" valign="top"><a id="gab10f213ac3b303a2943eb653ee67b966" name="gab10f213ac3b303a2943eb653ee67b966"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_NV12</b> = SDL_PIXELFORMAT_NV12</td></tr>
-<tr class="memdesc:gab10f213ac3b303a2943eb653ee67b966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + U/V interleaved (2 planes) <br /></td></tr>
+<tr class="memitem:gab10f213ac3b303a2943eb653ee67b966" id="r_gab10f213ac3b303a2943eb653ee67b966"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gab10f213ac3b303a2943eb653ee67b966">SDL::PIXELFORMAT_NV12</a></td></tr>
+<tr class="memdesc:gab10f213ac3b303a2943eb653ee67b966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + U/V interleaved (2 planes)  <br /></td></tr>
 <tr class="separator:gab10f213ac3b303a2943eb653ee67b966"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2d3e5166d840134b7f55fa74bcab872d" id="r_ga2d3e5166d840134b7f55fa74bcab872d"><td class="memItemLeft" align="right" valign="top"><a id="ga2d3e5166d840134b7f55fa74bcab872d" name="ga2d3e5166d840134b7f55fa74bcab872d"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_NV21</b> = SDL_PIXELFORMAT_NV21</td></tr>
-<tr class="memdesc:ga2d3e5166d840134b7f55fa74bcab872d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + V/U interleaved (2 planes) <br /></td></tr>
+<tr class="memitem:ga2d3e5166d840134b7f55fa74bcab872d" id="r_ga2d3e5166d840134b7f55fa74bcab872d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga2d3e5166d840134b7f55fa74bcab872d">SDL::PIXELFORMAT_NV21</a></td></tr>
+<tr class="memdesc:ga2d3e5166d840134b7f55fa74bcab872d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + V/U interleaved (2 planes)  <br /></td></tr>
 <tr class="separator:ga2d3e5166d840134b7f55fa74bcab872d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0e10c733fcd607dcda2e4221100125ff" id="r_ga0e10c733fcd607dcda2e4221100125ff"><td class="memItemLeft" align="right" valign="top"><a id="ga0e10c733fcd607dcda2e4221100125ff" name="ga0e10c733fcd607dcda2e4221100125ff"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_P010</b> = SDL_PIXELFORMAT_P010</td></tr>
-<tr class="memdesc:ga0e10c733fcd607dcda2e4221100125ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + U/V interleaved (2 planes) <br /></td></tr>
+<tr class="memitem:ga0e10c733fcd607dcda2e4221100125ff" id="r_ga0e10c733fcd607dcda2e4221100125ff"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga0e10c733fcd607dcda2e4221100125ff">SDL::PIXELFORMAT_P010</a></td></tr>
+<tr class="memdesc:ga0e10c733fcd607dcda2e4221100125ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Planar mode: Y + U/V interleaved (2 planes)  <br /></td></tr>
 <tr class="separator:ga0e10c733fcd607dcda2e4221100125ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga20bd85fae1afd8a2c668a2cdb6d3beb6" id="r_ga20bd85fae1afd8a2c668a2cdb6d3beb6"><td class="memItemLeft" align="right" valign="top"><a id="ga20bd85fae1afd8a2c668a2cdb6d3beb6" name="ga20bd85fae1afd8a2c668a2cdb6d3beb6"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_EXTERNAL_OES</b> = SDL_PIXELFORMAT_EXTERNAL_OES</td></tr>
-<tr class="memdesc:ga20bd85fae1afd8a2c668a2cdb6d3beb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Android video texture format. <br /></td></tr>
+<tr class="memitem:ga20bd85fae1afd8a2c668a2cdb6d3beb6" id="r_ga20bd85fae1afd8a2c668a2cdb6d3beb6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga20bd85fae1afd8a2c668a2cdb6d3beb6">SDL::PIXELFORMAT_EXTERNAL_OES</a></td></tr>
+<tr class="memdesc:ga20bd85fae1afd8a2c668a2cdb6d3beb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Android video texture format.  <br /></td></tr>
 <tr class="separator:ga20bd85fae1afd8a2c668a2cdb6d3beb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga147542771bc5af236c0e2b393ad30065" id="r_ga147542771bc5af236c0e2b393ad30065"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga147542771bc5af236c0e2b393ad30065">SDL::PIXELFORMAT_MJPG</a> = SDL_PIXELFORMAT_MJPG</td></tr>
-<tr class="memdesc:ga147542771bc5af236c0e2b393ad30065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motion JPEG.  <br /></td></tr>
+<tr class="memitem:ga147542771bc5af236c0e2b393ad30065" id="r_ga147542771bc5af236c0e2b393ad30065"><td class="memItemLeft" align="right" valign="top"><a id="ga147542771bc5af236c0e2b393ad30065" name="ga147542771bc5af236c0e2b393ad30065"></a>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_MJPG</b> = SDL_PIXELFORMAT_MJPG</td></tr>
+<tr class="memdesc:ga147542771bc5af236c0e2b393ad30065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motion JPEG. <br /></td></tr>
 <tr class="separator:ga147542771bc5af236c0e2b393ad30065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaaa8d186bd892ce0859407fd16cfe8272" id="r_gaaa8d186bd892ce0859407fd16cfe8272"><td class="memItemLeft" align="right" valign="top"><a id="gaaa8d186bd892ce0859407fd16cfe8272" name="gaaa8d186bd892ce0859407fd16cfe8272"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGBA32</b> = SDL_PIXELFORMAT_RGBA32</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGBA32</b> = SDL_PIXELFORMAT_RGBA32</td></tr>
 <tr class="memdesc:gaaa8d186bd892ce0859407fd16cfe8272"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBA32. <br /></td></tr>
 <tr class="separator:gaaa8d186bd892ce0859407fd16cfe8272"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9a0e644572c56a607cb58d580f3979f1" id="r_ga9a0e644572c56a607cb58d580f3979f1"><td class="memItemLeft" align="right" valign="top"><a id="ga9a0e644572c56a607cb58d580f3979f1" name="ga9a0e644572c56a607cb58d580f3979f1"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_ARGB32</b> = SDL_PIXELFORMAT_ARGB32</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_ARGB32</b> = SDL_PIXELFORMAT_ARGB32</td></tr>
 <tr class="memdesc:ga9a0e644572c56a607cb58d580f3979f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARGB32. <br /></td></tr>
 <tr class="separator:ga9a0e644572c56a607cb58d580f3979f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaea5c0aecc585ec27cf4bdea4719614ac" id="r_gaea5c0aecc585ec27cf4bdea4719614ac"><td class="memItemLeft" align="right" valign="top"><a id="gaea5c0aecc585ec27cf4bdea4719614ac" name="gaea5c0aecc585ec27cf4bdea4719614ac"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGRA32</b> = SDL_PIXELFORMAT_BGRA32</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGRA32</b> = SDL_PIXELFORMAT_BGRA32</td></tr>
 <tr class="memdesc:gaea5c0aecc585ec27cf4bdea4719614ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRA32. <br /></td></tr>
 <tr class="separator:gaea5c0aecc585ec27cf4bdea4719614ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga42422dedb8f352e397338b72689b9835" id="r_ga42422dedb8f352e397338b72689b9835"><td class="memItemLeft" align="right" valign="top"><a id="ga42422dedb8f352e397338b72689b9835" name="ga42422dedb8f352e397338b72689b9835"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_ABGR32</b> = SDL_PIXELFORMAT_ABGR32</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_ABGR32</b> = SDL_PIXELFORMAT_ABGR32</td></tr>
 <tr class="memdesc:ga42422dedb8f352e397338b72689b9835"><td class="mdescLeft">&#160;</td><td class="mdescRight">ABGR32. <br /></td></tr>
 <tr class="separator:ga42422dedb8f352e397338b72689b9835"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6eababc34d26bb1d72e16c58542c28c9" id="r_ga6eababc34d26bb1d72e16c58542c28c9"><td class="memItemLeft" align="right" valign="top"><a id="ga6eababc34d26bb1d72e16c58542c28c9" name="ga6eababc34d26bb1d72e16c58542c28c9"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGBX32</b> = SDL_PIXELFORMAT_RGBX32</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_RGBX32</b> = SDL_PIXELFORMAT_RGBX32</td></tr>
 <tr class="memdesc:ga6eababc34d26bb1d72e16c58542c28c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGBX32. <br /></td></tr>
 <tr class="separator:ga6eababc34d26bb1d72e16c58542c28c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1011a6ad6d939de98e9a0458c804c246" id="r_ga1011a6ad6d939de98e9a0458c804c246"><td class="memItemLeft" align="right" valign="top"><a id="ga1011a6ad6d939de98e9a0458c804c246" name="ga1011a6ad6d939de98e9a0458c804c246"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_XRGB32</b> = SDL_PIXELFORMAT_XRGB32</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_XRGB32</b> = SDL_PIXELFORMAT_XRGB32</td></tr>
 <tr class="memdesc:ga1011a6ad6d939de98e9a0458c804c246"><td class="mdescLeft">&#160;</td><td class="mdescRight">XRGB32. <br /></td></tr>
 <tr class="separator:ga1011a6ad6d939de98e9a0458c804c246"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa7709f5f48eacb864049aaba40e239f4" id="r_gaa7709f5f48eacb864049aaba40e239f4"><td class="memItemLeft" align="right" valign="top"><a id="gaa7709f5f48eacb864049aaba40e239f4" name="gaa7709f5f48eacb864049aaba40e239f4"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGRX32</b> = SDL_PIXELFORMAT_BGRX32</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_BGRX32</b> = SDL_PIXELFORMAT_BGRX32</td></tr>
 <tr class="memdesc:gaa7709f5f48eacb864049aaba40e239f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">BGRX32. <br /></td></tr>
 <tr class="separator:gaa7709f5f48eacb864049aaba40e239f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaed36cc2193ffd79429949311842e2f6a" id="r_gaed36cc2193ffd79429949311842e2f6a"><td class="memItemLeft" align="right" valign="top"><a id="gaed36cc2193ffd79429949311842e2f6a" name="gaed36cc2193ffd79429949311842e2f6a"></a>
-constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_XBGR32</b> = SDL_PIXELFORMAT_XBGR32</td></tr>
+constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PIXELFORMAT_XBGR32</b> = SDL_PIXELFORMAT_XBGR32</td></tr>
 <tr class="memdesc:gaed36cc2193ffd79429949311842e2f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">XBGR32. <br /></td></tr>
 <tr class="separator:gaed36cc2193ffd79429949311842e2f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -808,13 +793,11 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLORSPACE_SRGB</b> = SDL_COLORSPACE_SRGB</td></tr>
 <tr class="memdesc:ga7357dec04008bd21200eb7db8f86e8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709. <br /></td></tr>
 <tr class="separator:ga7357dec04008bd21200eb7db8f86e8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6735ab46af5bbdd309066a6107c56c1c" id="r_ga6735ab46af5bbdd309066a6107c56c1c"><td class="memItemLeft" align="right" valign="top"><a id="ga6735ab46af5bbdd309066a6107c56c1c" name="ga6735ab46af5bbdd309066a6107c56c1c"></a>
-constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLORSPACE_SRGB_LINEAR</b> = SDL_COLORSPACE_SRGB_LINEAR</td></tr>
-<tr class="memdesc:ga6735ab46af5bbdd309066a6107c56c1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709. <br /></td></tr>
+<tr class="memitem:ga6735ab46af5bbdd309066a6107c56c1c" id="r_ga6735ab46af5bbdd309066a6107c56c1c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga6735ab46af5bbdd309066a6107c56c1c">SDL::COLORSPACE_SRGB_LINEAR</a></td></tr>
+<tr class="memdesc:ga6735ab46af5bbdd309066a6107c56c1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">[object Object]  <br /></td></tr>
 <tr class="separator:ga6735ab46af5bbdd309066a6107c56c1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaef32c7c2f043d084d724d07bf1b5533c" id="r_gaef32c7c2f043d084d724d07bf1b5533c"><td class="memItemLeft" align="right" valign="top"><a id="gaef32c7c2f043d084d724d07bf1b5533c" name="gaef32c7c2f043d084d724d07bf1b5533c"></a>
-constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLORSPACE_HDR10</b> = SDL_COLORSPACE_HDR10</td></tr>
-<tr class="memdesc:gaef32c7c2f043d084d724d07bf1b5533c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020. <br /></td></tr>
+<tr class="memitem:gaef32c7c2f043d084d724d07bf1b5533c" id="r_gaef32c7c2f043d084d724d07bf1b5533c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaef32c7c2f043d084d724d07bf1b5533c">SDL::COLORSPACE_HDR10</a></td></tr>
+<tr class="memdesc:gaef32c7c2f043d084d724d07bf1b5533c"><td class="mdescLeft">&#160;</td><td class="mdescRight">[object Object]  <br /></td></tr>
 <tr class="separator:gaef32c7c2f043d084d724d07bf1b5533c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab2a702f6ad5993a7fbe702b30e7364d1" id="r_gab2a702f6ad5993a7fbe702b30e7364d1"><td class="memItemLeft" align="right" valign="top"><a id="gab2a702f6ad5993a7fbe702b30e7364d1" name="gab2a702f6ad5993a7fbe702b30e7364d1"></a>
 constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::COLORSPACE_JPEG</b> = SDL_COLORSPACE_JPEG</td></tr>
@@ -972,9 +955,9 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
         </tr>
       </table>
 </div><div class="memdoc">
-<p>For example, defining SDL_PIXELFORMAT_YV12 looks like this:</p>
+<p>For example, defining PIXELFORMAT_YV12 looks like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_define" href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a>(<span class="charliteral">&#39;Y&#39;</span>, <span class="charliteral">&#39;V&#39;</span>, <span class="charliteral">&#39;1&#39;</span>, <span class="charliteral">&#39;2&#39;</span>)</div>
-<div class="ttc" id="agroup__CategoryPixels_html_ga7dc1903b18ca972a3676628782873f71"><div class="ttname"><a href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a></div><div class="ttdeci">#define SDL_DEFINE_PIXELFOURCC(A, B, C, D)</div><div class="ttdoc">A macro for defining custom FourCC pixel formats.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:321</div></div>
+<div class="ttc" id="agroup__CategoryPixels_html_ga7dc1903b18ca972a3676628782873f71"><div class="ttname"><a href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a></div><div class="ttdeci">#define SDL_DEFINE_PIXELFOURCC(A, B, C, D)</div><div class="ttdoc">A macro for defining custom FourCC pixel formats.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:307</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>the first character of the FourCC code. </td></tr>
@@ -984,7 +967,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a format value in the style of SDL_PixelFormat.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a format value in the style of PixelFormat.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
@@ -1008,7 +991,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 <p>This macro is generally not needed directly by an app, which should use specific tests, like SDL_ISPIXELFORMAT_FOURCC, instead.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">format</td><td>an SDL_PixelFormat to check. </td></tr>
+    <tr><td class="paramname">format</td><td>an PixelFormat to check. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1155,39 +1138,18 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 
 </div>
 </div>
-<a id="ga82736cd9bdf83b4850b54726f51e9644" name="ga82736cd9bdf83b4850b54726f51e9644"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga82736cd9bdf83b4850b54726f51e9644">&#9670;&#160;</a></span>Palette</h2>
+<a id="ga87ff9a33ccc542e0888dd408ba08bfbc" name="ga87ff9a33ccc542e0888dd408ba08bfbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga87ff9a33ccc542e0888dd408ba08bfbc">&#9670;&#160;</a></span>PixelFormatDetails</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryPixels.html#ga82736cd9bdf83b4850b54726f51e9644">SDL::Palette</a> = typedef <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_Palette&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">SDL::PixelFormatDetails</a> = typedef SDL_PixelFormatDetails</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html" title="A set of indexed colors representing a palette.">PaletteBase</a> </dd>
-<dd>
-<a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991" title="Handle to a non owned palette.">PaletteRef</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga8e1ece7b927ff75a946a84bddb60e991" name="ga8e1ece7b927ff75a946a84bddb60e991"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8e1ece7b927ff75a946a84bddb60e991">&#9670;&#160;</a></span>PaletteRef</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">SDL::PaletteRef</a> = typedef <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_Palette&gt; &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html" title="A set of indexed colors representing a palette.">PaletteBase</a> </dd>
-<dd>
-<a class="el" href="group__CategoryPixels.html#ga82736cd9bdf83b4850b54726f51e9644" title="Handle to an owned palette.">Palette</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -1223,8 +1185,8 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga42b2524778dc58d37b47861926d9f2d8" name="ga42b2524778dc58d37b47861926d9f2d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga42b2524778dc58d37b47861926d9f2d8">&#9670;&#160;</a></span>GetRGB()</h2>
+<a id="gaeb6958ed7d37f689e9f925dcced856e2" name="gaeb6958ed7d37f689e9f925dcced856e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeb6958ed7d37f689e9f925dcced856e2">&#9670;&#160;</a></span>GetRGB()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1247,7 +1209,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;&#160;</td>
           <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
@@ -1294,18 +1256,18 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an SDL_PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gad74c76d122c82eef85a4803c69ea7d85" title="Get RGBA values from a pixel in the specified format.">GetRGBA</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaea943762e402bea20719ac40c6380bee" title="Get RGBA values from a pixel in the specified format.">GetRGBA</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga4cbff25e6b58ddcdabed09145b23ad89" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd></dl>
+<a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd></dl>
 
 </div>
 </div>
-<a id="gad74c76d122c82eef85a4803c69ea7d85" name="gad74c76d122c82eef85a4803c69ea7d85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad74c76d122c82eef85a4803c69ea7d85">&#9670;&#160;</a></span>GetRGBA()</h2>
+<a id="gaea943762e402bea20719ac40c6380bee" name="gaea943762e402bea20719ac40c6380bee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaea943762e402bea20719ac40c6380bee">&#9670;&#160;</a></span>GetRGBA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1328,7 +1290,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;&#160;</td>
           <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
@@ -1383,18 +1345,18 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an SDL_PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga42b2524778dc58d37b47861926d9f2d8" title="Get RGB values from a pixel in the specified format.">GetRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaeb6958ed7d37f689e9f925dcced856e2" title="Get RGB values from a pixel in the specified format.">GetRGB</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga4cbff25e6b58ddcdabed09145b23ad89" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd></dl>
+<a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga4cbff25e6b58ddcdabed09145b23ad89" name="ga4cbff25e6b58ddcdabed09145b23ad89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4cbff25e6b58ddcdabed09145b23ad89">&#9670;&#160;</a></span>MapRGB()</h2>
+<a id="ga0154cb3b56b41f03cb7b21b627b1626c" name="ga0154cb3b56b41f03cb7b21b627b1626c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0154cb3b56b41f03cb7b21b627b1626c">&#9670;&#160;</a></span>MapRGB()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1411,7 +1373,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;&#160;</td>
           <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
@@ -1461,18 +1423,18 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 <dl class="section return"><dt>Returns</dt><dd>a pixel value.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an SDL_PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga42b2524778dc58d37b47861926d9f2d8" title="Get RGB values from a pixel in the specified format.">GetRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaeb6958ed7d37f689e9f925dcced856e2" title="Get RGB values from a pixel in the specified format.">GetRGB</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceBase.html#a6bb9611e93645c5c755589055e6ff9a6" title="Map an RGBA quadruple to a pixel value for a surface.">SurfaceBase.MapColor</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceBase.html#a788252ffebfba64d8239ac7af3b667e8" title="Map an RGBA quadruple to a pixel value for a surface.">SurfaceBase.MapColor</a> </dd></dl>
 
 </div>
 </div>
-<a id="gad02ad21af6f4472fc42d05601e77723b" name="gad02ad21af6f4472fc42d05601e77723b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad02ad21af6f4472fc42d05601e77723b">&#9670;&#160;</a></span>MapRGBA()</h2>
+<a id="ga3ab23ef5a4df2ea8aef4df1ed0088fd4" name="ga3ab23ef5a4df2ea8aef4df1ed0088fd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3ab23ef5a4df2ea8aef4df1ed0088fd4">&#9670;&#160;</a></span>MapRGBA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1489,7 +1451,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;&#160;</td>
           <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
@@ -1546,13 +1508,13 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 <dl class="section return"><dt>Returns</dt><dd>a pixel value.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an SDL_PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gad74c76d122c82eef85a4803c69ea7d85" title="Get RGBA values from a pixel in the specified format.">GetRGBA</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaea943762e402bea20719ac40c6380bee" title="Get RGBA values from a pixel in the specified format.">GetRGBA</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga4cbff25e6b58ddcdabed09145b23ad89" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceBase.html#a6bb9611e93645c5c755589055e6ff9a6" title="Map an RGBA quadruple to a pixel value for a surface.">SurfaceBase.MapColor</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceBase.html#a788252ffebfba64d8239ac7af3b667e8" title="Map an RGBA quadruple to a pixel value for a surface.">SurfaceBase.MapColor</a> </dd></dl>
 
 </div>
 </div>
@@ -1603,6 +1565,153 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 
 </div>
 </div>
+<a id="gade3d0b182e1cc5d629e95d74b1c139e8" name="gade3d0b182e1cc5d629e95d74b1c139e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gade3d0b182e1cc5d629e95d74b1c139e8">&#9670;&#160;</a></span>CHROMA_LOCATION_NONE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga2e12fe1c4b173b97e915cd7e8963bdca">ChromaLocation</a> SDL::CHROMA_LOCATION_NONE</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_CHROMA_LOCATION_NONE</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga8bd7bd2c015dd8a8af701e9ade454465" name="ga8bd7bd2c015dd8a8af701e9ade454465"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8bd7bd2c015dd8a8af701e9ade454465">&#9670;&#160;</a></span>COLOR_PRIMARIES_BT2020</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a> SDL::COLOR_PRIMARIES_BT2020</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLOR_PRIMARIES_BT2020</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga5d1ddfd06c1ba1f19f88c8a7b2bf902f" name="ga5d1ddfd06c1ba1f19f88c8a7b2bf902f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5d1ddfd06c1ba1f19f88c8a7b2bf902f">&#9670;&#160;</a></span>COLOR_PRIMARIES_BT470BG</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a> SDL::COLOR_PRIMARIES_BT470BG</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLOR_PRIMARIES_BT470BG</div>
+</div><!-- fragment --><ol type="1">
+<li></li>
+</ol>
+
+</div>
+</div>
+<a id="ga9e527c67a133d7ea8eb1fbf90f5cb29f" name="ga9e527c67a133d7ea8eb1fbf90f5cb29f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9e527c67a133d7ea8eb1fbf90f5cb29f">&#9670;&#160;</a></span>COLOR_PRIMARIES_BT470M</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a> SDL::COLOR_PRIMARIES_BT470M</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLOR_PRIMARIES_BT470M</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gad0ac0eceee25d380e84da6b07adc1dc5" name="gad0ac0eceee25d380e84da6b07adc1dc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad0ac0eceee25d380e84da6b07adc1dc5">&#9670;&#160;</a></span>COLOR_PRIMARIES_BT601</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a> SDL::COLOR_PRIMARIES_BT601</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLOR_PRIMARIES_BT601</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga0a12c83cae07f21f8c13ab1911aa7937" name="ga0a12c83cae07f21f8c13ab1911aa7937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0a12c83cae07f21f8c13ab1911aa7937">&#9670;&#160;</a></span>COLOR_PRIMARIES_BT709</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a> SDL::COLOR_PRIMARIES_BT709</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLOR_PRIMARIES_BT709</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="ga8b6e7a425b643d143bc04ee95ce86517" name="ga8b6e7a425b643d143bc04ee95ce86517"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga8b6e7a425b643d143bc04ee95ce86517">&#9670;&#160;</a></span>COLOR_PRIMARIES_CUSTOM</h2>
 
@@ -1637,7 +1746,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a> SDL::COLOR_PRIMARIES_EBU3213 = SDL_COLOR_PRIMARIES_EBU3213</td>
+          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a> SDL::COLOR_PRIMARIES_EBU3213</td>
         </tr>
       </table>
   </td>
@@ -1646,8 +1755,9 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   </tr>
 </table>
 </div><div class="memdoc">
-<p>3213-E </p>
-
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLOR_PRIMARIES_EBU3213</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="gacdd9443c28f2a73b6a94cc7078b19e17" name="gacdd9443c28f2a73b6a94cc7078b19e17"></a>
@@ -1794,6 +1904,30 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div><!-- fragment -->
 </div>
 </div>
+<a id="gaa2e96ee964ce2a9d14bac5c59901d97e" name="gaa2e96ee964ce2a9d14bac5c59901d97e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa2e96ee964ce2a9d14bac5c59901d97e">&#9670;&#160;</a></span>COLOR_PRIMARIES_XYZ</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be">ColorPrimaries</a> SDL::COLOR_PRIMARIES_XYZ</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLOR_PRIMARIES_XYZ</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="gab4c896e42f3914ce8acc93a8ec38bdd3" name="gab4c896e42f3914ce8acc93a8ec38bdd3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gab4c896e42f3914ce8acc93a8ec38bdd3">&#9670;&#160;</a></span>COLOR_RANGE_FULL</h2>
 
@@ -1909,6 +2043,54 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  SDL_COLOR_TYPE_YCBCR</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gaef32c7c2f043d084d724d07bf1b5533c" name="gaef32c7c2f043d084d724d07bf1b5533c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaef32c7c2f043d084d724d07bf1b5533c">&#9670;&#160;</a></span>COLORSPACE_HDR10</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a> SDL::COLORSPACE_HDR10</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLORSPACE_HDR10</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga6735ab46af5bbdd309066a6107c56c1c" name="ga6735ab46af5bbdd309066a6107c56c1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6735ab46af5bbdd309066a6107c56c1c">&#9670;&#160;</a></span>COLORSPACE_SRGB_LINEAR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a> SDL::COLORSPACE_SRGB_LINEAR</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_COLORSPACE_SRGB_LINEAR</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2330,7 +2512,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR128_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR128_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -2354,7 +2536,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR1555</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR1555</td>
         </tr>
       </table>
   </td>
@@ -2378,7 +2560,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR2101010</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR2101010</td>
         </tr>
       </table>
   </td>
@@ -2402,7 +2584,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR4444</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR4444</td>
         </tr>
       </table>
   </td>
@@ -2426,7 +2608,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR64_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR64_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -2450,7 +2632,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR8888</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ABGR8888</td>
         </tr>
       </table>
   </td>
@@ -2474,7 +2656,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB128_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB128_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -2498,7 +2680,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB1555</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB1555</td>
         </tr>
       </table>
   </td>
@@ -2522,7 +2704,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB2101010</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB2101010</td>
         </tr>
       </table>
   </td>
@@ -2546,7 +2728,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB4444</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB4444</td>
         </tr>
       </table>
   </td>
@@ -2570,7 +2752,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB64_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB64_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -2594,7 +2776,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB8888</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_ARGB8888</td>
         </tr>
       </table>
   </td>
@@ -2618,7 +2800,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGR48_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGR48_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -2642,7 +2824,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGR96_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGR96_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -2666,7 +2848,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA128_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA128_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -2690,7 +2872,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA4444</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA4444</td>
         </tr>
       </table>
   </td>
@@ -2714,7 +2896,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA5551</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA5551</td>
         </tr>
       </table>
   </td>
@@ -2738,7 +2920,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA64_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA64_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -2762,7 +2944,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA8888</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRA8888</td>
         </tr>
       </table>
   </td>
@@ -2786,7 +2968,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRX8888</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_BGRX8888</td>
         </tr>
       </table>
   </td>
@@ -2800,6 +2982,30 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div><!-- fragment -->
 </div>
 </div>
+<a id="ga20bd85fae1afd8a2c668a2cdb6d3beb6" name="ga20bd85fae1afd8a2c668a2cdb6d3beb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga20bd85fae1afd8a2c668a2cdb6d3beb6">&#9670;&#160;</a></span>PIXELFORMAT_EXTERNAL_OES</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_EXTERNAL_OES</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_EXTERNAL_OES</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="ga52ab34815d589121c49c15d6cabe4e3f" name="ga52ab34815d589121c49c15d6cabe4e3f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga52ab34815d589121c49c15d6cabe4e3f">&#9670;&#160;</a></span>PIXELFORMAT_INDEX1LSB</h2>
 
@@ -2810,7 +3016,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX1LSB</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX1LSB</td>
         </tr>
       </table>
   </td>
@@ -2834,7 +3040,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX1MSB</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX1MSB</td>
         </tr>
       </table>
   </td>
@@ -2858,7 +3064,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX2LSB</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX2LSB</td>
         </tr>
       </table>
   </td>
@@ -2882,7 +3088,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX2MSB</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX2MSB</td>
         </tr>
       </table>
   </td>
@@ -2906,7 +3112,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX4LSB</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX4LSB</td>
         </tr>
       </table>
   </td>
@@ -2930,7 +3136,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX4MSB</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_INDEX4MSB</td>
         </tr>
       </table>
   </td>
@@ -2944,8 +3150,8 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ga147542771bc5af236c0e2b393ad30065" name="ga147542771bc5af236c0e2b393ad30065"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga147542771bc5af236c0e2b393ad30065">&#9670;&#160;</a></span>PIXELFORMAT_MJPG</h2>
+<a id="ga040562f0e398b8f1ca75499673353c7c" name="ga040562f0e398b8f1ca75499673353c7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga040562f0e398b8f1ca75499673353c7c">&#9670;&#160;</a></span>PIXELFORMAT_IYUV</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2954,7 +3160,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_IYUV</td>
         </tr>
       </table>
   </td>
@@ -2963,8 +3169,81 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.10 </dd></dl>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_IYUV</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gab10f213ac3b303a2943eb653ee67b966" name="gab10f213ac3b303a2943eb653ee67b966"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab10f213ac3b303a2943eb653ee67b966">&#9670;&#160;</a></span>PIXELFORMAT_NV12</h2>
 
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_NV12</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_NV12</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga2d3e5166d840134b7f55fa74bcab872d" name="ga2d3e5166d840134b7f55fa74bcab872d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2d3e5166d840134b7f55fa74bcab872d">&#9670;&#160;</a></span>PIXELFORMAT_NV21</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_NV21</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_NV21</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga0e10c733fcd607dcda2e4221100125ff" name="ga0e10c733fcd607dcda2e4221100125ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0e10c733fcd607dcda2e4221100125ff">&#9670;&#160;</a></span>PIXELFORMAT_P010</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_P010</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_P010</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="gaa9e0fff965ed551e4398af12c75e4d1c" name="gaa9e0fff965ed551e4398af12c75e4d1c"></a>
@@ -2977,7 +3256,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGB48_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGB48_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -3001,7 +3280,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGB96_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGB96_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -3025,7 +3304,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA128_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA128_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -3049,7 +3328,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA4444</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA4444</td>
         </tr>
       </table>
   </td>
@@ -3073,7 +3352,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA5551</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA5551</td>
         </tr>
       </table>
   </td>
@@ -3097,7 +3376,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA64_FLOAT</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA64_FLOAT</td>
         </tr>
       </table>
   </td>
@@ -3121,7 +3400,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA8888</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBA8888</td>
         </tr>
       </table>
   </td>
@@ -3145,7 +3424,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBX8888</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_RGBX8888</td>
         </tr>
       </table>
   </td>
@@ -3169,7 +3448,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_UNKNOWN</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_UNKNOWN</td>
         </tr>
       </table>
   </td>
@@ -3183,6 +3462,30 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div><!-- fragment -->
 </div>
 </div>
+<a id="gae1811a4f8cb157eaaf5a453251c45798" name="gae1811a4f8cb157eaaf5a453251c45798"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae1811a4f8cb157eaaf5a453251c45798">&#9670;&#160;</a></span>PIXELFORMAT_UYVY</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_UYVY</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_UYVY</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="gafa0233cac3416b1fc3802b4b9aec8669" name="gafa0233cac3416b1fc3802b4b9aec8669"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gafa0233cac3416b1fc3802b4b9aec8669">&#9670;&#160;</a></span>PIXELFORMAT_XBGR1555</h2>
 
@@ -3193,7 +3496,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XBGR1555</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XBGR1555</td>
         </tr>
       </table>
   </td>
@@ -3217,7 +3520,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XBGR2101010</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XBGR2101010</td>
         </tr>
       </table>
   </td>
@@ -3241,7 +3544,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XBGR4444</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XBGR4444</td>
         </tr>
       </table>
   </td>
@@ -3265,7 +3568,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XBGR8888</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XBGR8888</td>
         </tr>
       </table>
   </td>
@@ -3289,7 +3592,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XRGB1555</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XRGB1555</td>
         </tr>
       </table>
   </td>
@@ -3313,7 +3616,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XRGB2101010</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XRGB2101010</td>
         </tr>
       </table>
   </td>
@@ -3337,7 +3640,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XRGB4444</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XRGB4444</td>
         </tr>
       </table>
   </td>
@@ -3361,7 +3664,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XRGB8888</td>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_XRGB8888</td>
         </tr>
       </table>
   </td>
@@ -3372,6 +3675,78 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  SDL_PIXELFORMAT_XRGB8888</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gad16ef5ce4b346d2d8fe2197049a4c6ae" name="gad16ef5ce4b346d2d8fe2197049a4c6ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad16ef5ce4b346d2d8fe2197049a4c6ae">&#9670;&#160;</a></span>PIXELFORMAT_YUY2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_YUY2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_YUY2</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gaa76a23d99d4a003c2ca24fd88b586f6d" name="gaa76a23d99d4a003c2ca24fd88b586f6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa76a23d99d4a003c2ca24fd88b586f6d">&#9670;&#160;</a></span>PIXELFORMAT_YV12</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_YV12</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_YV12</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga5ba9d5ffc58056999681d81d3f1e344f" name="ga5ba9d5ffc58056999681d81d3f1e344f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5ba9d5ffc58056999681d81d3f1e344f">&#9670;&#160;</a></span>PIXELFORMAT_YVYU</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> SDL::PIXELFORMAT_YVYU</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_PIXELFORMAT_YVYU</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -3468,7 +3843,10 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  SDL_TRANSFER_CHARACTERISTICS_BT601</div>
-</div><!-- fragment -->
+</div><!-- fragment --><ol type="1">
+<li></li>
+</ol>
+
 </div>
 </div>
 <a id="gaec5cced75e29a6ccc1726417d6dfffbe" name="gaec5cced75e29a6ccc1726417d6dfffbe"></a>
@@ -3492,8 +3870,7 @@ constexpr <a class="el" href="classSDL_1_1Colorspace.html">Colorspace</a>&#160;<
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  SDL_TRANSFER_CHARACTERISTICS_BT709</div>
-</div><!-- fragment --><p>ITU-R BT.709-6 / ITU-R BT1361 </p>
-
+</div><!-- fragment -->
 </div>
 </div>
 <a id="gacb679aa0bf4f04c37019de9afceda5d9" name="gacb679aa0bf4f04c37019de9afceda5d9"></a>
