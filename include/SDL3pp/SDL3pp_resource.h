@@ -9,6 +9,8 @@ namespace SDL {
  * @brief A SDL managed resource.
  *
  * @tparam T the underlying resource type.
+ *
+ * @ingroup CategoriesCppSupport
  */
 template<class T>
 class Resource

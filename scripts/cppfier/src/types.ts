@@ -96,7 +96,6 @@ export interface ApiFileTransform {
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
-  resourcesX?: Dict<ApiResource>;
   enumerations?: Dict<ApiEnumeration>;
   wrappers?: Dict<ApiWrapper>;
   namespacesMap?: StringMap;

@@ -221,7 +221,6 @@ thread facilities.
 @defgroup CategoriesCppSupport C++ Support
 @{
 @addtogroup CategoryCallbackWrapper
-@addtogroup CategoryObjectWrapper
 @addtogroup CategoryOwnPtr
 @}
 

@@ -5,7 +5,6 @@
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
 #include "SDL3pp_events.h"
-#include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"

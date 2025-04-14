@@ -513,7 +513,7 @@ function expandResources(sourceEntries, file, context) {
 
   /** @type {ApiEntry[]} */
   const referenceAliases = [];
-  for (const [sourceName, resourceEntry] of Object.entries(file.resourcesX ?? {})) {
+  for (const [sourceName, resourceEntry] of Object.entries(file.resources ?? {})) {
     const uniqueName = resourceEntry.uniqueName || transformName(sourceName, context);
     const name = resourceEntry.name || (uniqueName + "Base");
     const refName = resourceEntry.refName || (uniqueName + "Ref");
@@ -765,103 +765,6 @@ function expandResources(sourceEntries, file, context) {
         }
       }
     }
-  }
-
-  for (const [sourceName, resourceEntry] of Object.entries(file.resources ?? {})) {
-    const uniqueName = resourceEntry.uniqueName || transformName(sourceName, context);
-    const name = resourceEntry.name || (uniqueName + "Base");
-    const refName = resourceEntry.refName || (uniqueName + "Ref");
-    const type = resourceEntry.type ?? sourceName;
-    const customPointerType = resourceEntry.pointerType;
-    const pointerType = customPointerType ?? `${type} *`;
-
-    const refTypeParams = customPointerType ? `${type}, ${customPointerType}` : type;
-    const refType = `${name}<ObjectRef<${refTypeParams}>>`;
-    const uniqueTypeParams = customPointerType ? `${type}, ObjectDeleter<ObjectRef<${refTypeParams}>>` : type;
-    const uniqueType = `${name}<ObjectUnique<${uniqueTypeParams}>>`;
-
-    const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
-    const template = resourceEntry.template ?? [{ type: `ObjectBox<${pointerType}>`, name: "T" }];
-    const replaceType = sourceName;
-    const replaceTypeConst = "const " + replaceType;
-    const replacePointerType = pointerType;
-    const replacePointerTypeConst = "const " + replacePointerType;
-    const freeFunction = resourceEntry.free ?? scanFreeFunction(resourceEntry.entries ?? {});
-
-    if (freeFunction) {
-      /** @type {ApiEntry} */
-      const freeEntry = {
-        name: `ObjectRef<${refTypeParams}>::doFree`,
-        type: "void",
-        kind: "function",
-        doc: `Callback for ${title} resource cleanup\n\n@private`,
-        template: [],
-        parameters: [
-          {
-            "type": pointerType,
-            "name": "resource"
-          }
-        ],
-        sourceName: freeFunction
-      };
-      prependIncludeAfter(freeEntry, file, sourceName);
-    }
-    if (resourceEntry.prependAliases !== false) {
-      referenceAliases.push({ name, kind: "forward", template, },
-        {
-          name: refName, kind: "alias", type: refType,
-          doc: `Handle to a non owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${uniqueName}`
-        },
-        {
-          name: uniqueName, kind: "alias", type: uniqueType,
-          doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${refName}`
-        },
-      );
-    }
-    switch (resourceEntry.paramType) {
-      case "none": break;
-      case "unique":
-        context.paramTypeMap[replaceType] = uniqueName;
-        context.addParamType(replaceTypeConst, uniqueName);
-        context.paramTypeMap[replacePointerType] = uniqueName;
-        context.addParamType(replacePointerTypeConst, uniqueName);
-        break;
-      default:
-        context.paramTypeMap[replaceType] = refName;
-        context.addParamType(replaceTypeConst, refName);
-        context.paramTypeMap[replacePointerType] = refName;
-        context.addParamType(replacePointerTypeConst, refName);
-        break;
-    }
-    switch (resourceEntry.returnType) {
-      case "none": break;
-      case "unique":
-        context.returnTypeMap[replaceType] = uniqueName;
-        context.addReturnType(replaceTypeConst, uniqueName);
-        context.returnTypeMap[replacePointerType] = uniqueName;
-        context.addReturnType(replacePointerTypeConst, uniqueName);
-        break;
-      default:
-        context.returnTypeMap[replaceType] = refName;
-        context.addReturnType(replaceTypeConst, refName);
-        context.returnTypeMap[replacePointerType] = refName;
-        context.addReturnType(replacePointerTypeConst, refName);
-        break;
-    }
-    const subEntries = resourceEntry.entries || {};
-    /** @type {ApiEntryTransform} */
-    const entry = {
-      name,
-      kind: "struct",
-      type: "T",
-      template,
-      entries: {
-        "T::T": "alias",
-        ...subEntries
-      }
-    };
-    // TODO if (resourceEntry.insertAfter) {...}
-    file.transform[sourceName] = entry;
   }
   includeAfter(referenceAliases, file, "__begin");
 }

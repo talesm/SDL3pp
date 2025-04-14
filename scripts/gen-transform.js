@@ -1212,7 +1212,7 @@ const transform = {
           }
         ]
       },
-      resourcesX: {
+      resources: {
         "SDL_IOStream": {
           entries: {
             "SDL_IOFromFile": "ctor",
@@ -1525,7 +1525,7 @@ const transform = {
       }
     },
     "SDL_loadso.h": {
-      resourcesX: {
+      resources: {
         "SDL_SharedObject": {
           free: "SDL_UnloadObject",
           entries: {
@@ -2266,7 +2266,7 @@ const transform = {
           "invalidState": false
         }
       },
-      resourcesX: {
+      resources: {
         "SDL_Palette": {
           entries: {
             "SDL_CreatePalette": "ctor",
@@ -2433,7 +2433,7 @@ const transform = {
         "SDL_RETURN_CAPABILITY",
         "SDL_NO_THREAD_SAFETY_ANALYSIS",
       ],
-      resourcesX: {
+      resources: {
         "SDL_Mutex": {
           entries: {
             "SDL_CreateMutex": "ctor",
@@ -2651,7 +2651,7 @@ const transform = {
           prefix: "SDL_PROPERTY_TYPE_"
         }
       },
-      resourcesX: {
+      resources: {
         "SDL_PropertiesID": {
           uniqueName: "Properties",
           entries: {
@@ -3471,7 +3471,7 @@ const transform = {
           }
         }
       },
-      resourcesX: {
+      resources: {
         "SDL_Renderer": {
           entries: {
             "RendererBase": {
@@ -4454,7 +4454,7 @@ const transform = {
           }
         }
       },
-      resourcesX: {
+      resources: {
         "SDL_Environment": {
           entries: {
             "SDL_CreateEnvironment": "ctor",
@@ -4966,7 +4966,7 @@ const transform = {
           }
         }
       },
-      resourcesX: {
+      resources: {
         "SDL_Surface": {
           entries: {
             "SurfaceBase": [{
@@ -5731,7 +5731,7 @@ const transform = {
           includeAfter: "__begin"
         }
       },
-      resourcesX: {
+      resources: {
         "SDL_Thread": {
           free: "SDL_DetachThread",
           entries: {
@@ -5946,7 +5946,7 @@ const transform = {
           type: "std::function<void(TrayEntryRef)>"
         }],
       },
-      resourcesX: {
+      resources: {
         "SDL_Tray": {
           entries: {
             "SDL_CreateTray": "ctor",
@@ -6249,7 +6249,7 @@ const transform = {
           }
         ]
       },
-      resourcesX: {
+      resources: {
         "SDL_Window": {
           free: "SDL_DestroyWindow",
           aliasOptional: true,
@@ -6774,7 +6774,7 @@ const transform = {
           "name": "SDL3PP_ENABLE_IMAGE"
         }
       },
-      resourcesX: {
+      resources: {
         "IMG_Animation": {
           returnType: "unique",
           free: "IMG_FreeAnimation",
@@ -7067,7 +7067,7 @@ const transform = {
         "TTF_DestroyRendererTextEngine",
         "TTF_DestroyGPUTextEngine"
       ],
-      resourcesX: {
+      resources: {
         "TTF_Font": {
           entries: {
             "TTF_OpenFont": "ctor",
