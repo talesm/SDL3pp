@@ -4,8 +4,8 @@ using namespace std::chrono_literals;
 
 struct Main
 {
-  static constexpr SDL::Point WINDOW_SZ = {400, 400};
-  static constexpr SDL::FRect characterRect{SDL::FPoint(WINDOW_SZ) / 2 -
+  static constexpr SDL::Point windowSz = {400, 400};
+  static constexpr SDL::FRect characterRect{SDL::FPoint(windowSz) / 2 -
                                               SDL::FPoint{64, 64},
                                             {128, 128}};
 
