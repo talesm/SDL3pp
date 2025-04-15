@@ -58,6 +58,7 @@ var searchData=
   ['button_5fx1mask_55',['BUTTON_X1MASK',['../group__CategoryMouse.html#gaac5cd204f74dc3d382e4488392506c1e',1,'SDL']]],
   ['button_5fx2_56',['BUTTON_X2',['../group__CategoryMouse.html#gaf54bb6fba244d51ad8041a5f4e3ef3d2',1,'SDL']]],
   ['button_5fx2mask_57',['BUTTON_X2MASK',['../group__CategoryMouse.html#ga931428fbd429f4b7e2a5b4c35e1a91f5',1,'SDL']]],
-  ['by_20category_58',['API by Category',['../ApiByCategory.html',1,'']]],
-  ['byte_20order_20and_20byte_20swapping_59',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
+  ['buttonmask_58',['ButtonMask',['../group__CategoryMouse.html#ga448ef317015b55e139bbb4e1e4a31ed6',1,'SDL']]],
+  ['by_20category_59',['API by Category',['../ApiByCategory.html',1,'']]],
+  ['byte_20order_20and_20byte_20swapping_60',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
 ];

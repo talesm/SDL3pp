@@ -104,6 +104,7 @@ Typedefs</h2></td></tr>
 <tr class="separator:ga733d09de50440ff2a5587b8a47080440"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9b8df445d428312de2e9e08aa83d87fa" id="r_ga9b8df445d428312de2e9e08aa83d87fa"><td class="memItemLeft" align="right" valign="top"><a id="ga9b8df445d428312de2e9e08aa83d87fa" name="ga9b8df445d428312de2e9e08aa83d87fa"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MouseButton</b> = Uint8</td></tr>
+<tr class="memdesc:ga9b8df445d428312de2e9e08aa83d87fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a button index. <br /></td></tr>
 <tr class="separator:ga9b8df445d428312de2e9e08aa83d87fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadbe9935692f8af3d5db0c9133cc03f1d" id="r_gadbe9935692f8af3d5db0c9133cc03f1d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gadbe9935692f8af3d5db0c9133cc03f1d">SDL::MouseWheelDirection</a> = SDL_MouseWheelDirection</td></tr>
 <tr class="memdesc:gadbe9935692f8af3d5db0c9133cc03f1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scroll direction types for the Scroll event.  <br /></td></tr>
@@ -114,8 +115,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MouseButton</b>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga448ef317015b55e139bbb4e1e4a31ed6" id="r_ga448ef317015b55e139bbb4e1e4a31ed6"><td class="memItemLeft" align="right" valign="top"><a id="ga448ef317015b55e139bbb4e1e4a31ed6" name="ga448ef317015b55e139bbb4e1e4a31ed6"></a>
-constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::ButtonMask</b> (MouseButton button)</td></tr>
+<tr class="memitem:ga448ef317015b55e139bbb4e1e4a31ed6" id="r_ga448ef317015b55e139bbb4e1e4a31ed6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga448ef317015b55e139bbb4e1e4a31ed6">SDL::ButtonMask</a> (<a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa">MouseButton</a> button)</td></tr>
+<tr class="memdesc:ga448ef317015b55e139bbb4e1e4a31ed6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a button index to a button mask.  <br /></td></tr>
 <tr class="separator:ga448ef317015b55e139bbb4e1e4a31ed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafdd0116b9bc9ecf79c8247b58275f3ed" id="r_gafdd0116b9bc9ecf79c8247b58275f3ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gafdd0116b9bc9ecf79c8247b58275f3ed">SDL::HasMouse</a> ()</td></tr>
 <tr class="memdesc:gafdd0116b9bc9ecf79c8247b58275f3ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether a mouse is currently connected.  <br /></td></tr>
@@ -240,24 +241,24 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758
 <tr class="memdesc:ga6f6debe8dd79734184634fbbb4aa4b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">COUNT. <br /></td></tr>
 <tr class="separator:ga6f6debe8dd79734184634fbbb4aa4b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7f91419c89f5f6f78d921faf8712251c" id="r_ga7f91419c89f5f6f78d921faf8712251c"><td class="memItemLeft" align="right" valign="top"><a id="ga7f91419c89f5f6f78d921faf8712251c" name="ga7f91419c89f5f6f78d921faf8712251c"></a>
-constexpr MouseButton&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_LEFT</b> = SDL_BUTTON_LEFT</td></tr>
-<tr class="memdesc:ga7f91419c89f5f6f78d921faf8712251c"><td class="mdescLeft">&#160;</td><td class="mdescRight">LEFT. <br /></td></tr>
+constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa">MouseButton</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_LEFT</b> = SDL_BUTTON_LEFT</td></tr>
+<tr class="memdesc:ga7f91419c89f5f6f78d921faf8712251c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left button. <br /></td></tr>
 <tr class="separator:ga7f91419c89f5f6f78d921faf8712251c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2ad23b7e0f8d1b957ad7df0bfe4b3789" id="r_ga2ad23b7e0f8d1b957ad7df0bfe4b3789"><td class="memItemLeft" align="right" valign="top"><a id="ga2ad23b7e0f8d1b957ad7df0bfe4b3789" name="ga2ad23b7e0f8d1b957ad7df0bfe4b3789"></a>
-constexpr MouseButton&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_MIDDLE</b> = SDL_BUTTON_MIDDLE</td></tr>
-<tr class="memdesc:ga2ad23b7e0f8d1b957ad7df0bfe4b3789"><td class="mdescLeft">&#160;</td><td class="mdescRight">MIDDLE. <br /></td></tr>
+constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa">MouseButton</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_MIDDLE</b> = SDL_BUTTON_MIDDLE</td></tr>
+<tr class="memdesc:ga2ad23b7e0f8d1b957ad7df0bfe4b3789"><td class="mdescLeft">&#160;</td><td class="mdescRight">Middle button. <br /></td></tr>
 <tr class="separator:ga2ad23b7e0f8d1b957ad7df0bfe4b3789"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga19daa210288395a4bb98096bdefe5918" id="r_ga19daa210288395a4bb98096bdefe5918"><td class="memItemLeft" align="right" valign="top"><a id="ga19daa210288395a4bb98096bdefe5918" name="ga19daa210288395a4bb98096bdefe5918"></a>
-constexpr MouseButton&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_RIGHT</b> = SDL_BUTTON_RIGHT</td></tr>
-<tr class="memdesc:ga19daa210288395a4bb98096bdefe5918"><td class="mdescLeft">&#160;</td><td class="mdescRight">RIGHT. <br /></td></tr>
+constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa">MouseButton</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_RIGHT</b> = SDL_BUTTON_RIGHT</td></tr>
+<tr class="memdesc:ga19daa210288395a4bb98096bdefe5918"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right button. <br /></td></tr>
 <tr class="separator:ga19daa210288395a4bb98096bdefe5918"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga69e14a7c84102501b1472075fca20fac" id="r_ga69e14a7c84102501b1472075fca20fac"><td class="memItemLeft" align="right" valign="top"><a id="ga69e14a7c84102501b1472075fca20fac" name="ga69e14a7c84102501b1472075fca20fac"></a>
-constexpr MouseButton&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_X1</b> = SDL_BUTTON_X1</td></tr>
-<tr class="memdesc:ga69e14a7c84102501b1472075fca20fac"><td class="mdescLeft">&#160;</td><td class="mdescRight">X1. <br /></td></tr>
+constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa">MouseButton</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_X1</b> = SDL_BUTTON_X1</td></tr>
+<tr class="memdesc:ga69e14a7c84102501b1472075fca20fac"><td class="mdescLeft">&#160;</td><td class="mdescRight">X1 button. <br /></td></tr>
 <tr class="separator:ga69e14a7c84102501b1472075fca20fac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf54bb6fba244d51ad8041a5f4e3ef3d2" id="r_gaf54bb6fba244d51ad8041a5f4e3ef3d2"><td class="memItemLeft" align="right" valign="top"><a id="gaf54bb6fba244d51ad8041a5f4e3ef3d2" name="gaf54bb6fba244d51ad8041a5f4e3ef3d2"></a>
-constexpr MouseButton&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_X2</b> = SDL_BUTTON_X2</td></tr>
-<tr class="memdesc:gaf54bb6fba244d51ad8041a5f4e3ef3d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">X2. <br /></td></tr>
+constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa">MouseButton</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_X2</b> = SDL_BUTTON_X2</td></tr>
+<tr class="memdesc:gaf54bb6fba244d51ad8041a5f4e3ef3d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">X2 button. <br /></td></tr>
 <tr class="separator:gaf54bb6fba244d51ad8041a5f4e3ef3d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga15149191518ae36fb11e310bacba791b" id="r_ga15149191518ae36fb11e310bacba791b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMouse.html#gadbe9935692f8af3d5db0c9133cc03f1d">MouseWheelDirection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga15149191518ae36fb11e310bacba791b">SDL::MOUSEWHEEL_NORMAL</a></td></tr>
 <tr class="memdesc:ga15149191518ae36fb11e310bacba791b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scroll direction is normal.  <br /></td></tr>
@@ -265,25 +266,20 @@ constexpr MouseButton&#160;</td><td class="memItemRight" valign="bottom"><b>SDL:
 <tr class="memitem:ga3bcab48c8301bb6b562f5284f60a6624" id="r_ga3bcab48c8301bb6b562f5284f60a6624"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMouse.html#gadbe9935692f8af3d5db0c9133cc03f1d">MouseWheelDirection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga3bcab48c8301bb6b562f5284f60a6624">SDL::MOUSEWHEEL_FLIPPED</a></td></tr>
 <tr class="memdesc:ga3bcab48c8301bb6b562f5284f60a6624"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scroll direction is flipped / natural.  <br /></td></tr>
 <tr class="separator:ga3bcab48c8301bb6b562f5284f60a6624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85dfcc1f14c1a06ade41b5f34d813093" id="r_ga85dfcc1f14c1a06ade41b5f34d813093"><td class="memItemLeft" align="right" valign="top"><a id="ga85dfcc1f14c1a06ade41b5f34d813093" name="ga85dfcc1f14c1a06ade41b5f34d813093"></a>
-constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_LMASK</b> = SDL_BUTTON_LMASK</td></tr>
-<tr class="memdesc:ga85dfcc1f14c1a06ade41b5f34d813093"><td class="mdescLeft">&#160;</td><td class="mdescRight">LMASK. <br /></td></tr>
+<tr class="memitem:ga85dfcc1f14c1a06ade41b5f34d813093" id="r_ga85dfcc1f14c1a06ade41b5f34d813093"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga85dfcc1f14c1a06ade41b5f34d813093">SDL::BUTTON_LMASK</a></td></tr>
+<tr class="memdesc:ga85dfcc1f14c1a06ade41b5f34d813093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left button mask.  <br /></td></tr>
 <tr class="separator:ga85dfcc1f14c1a06ade41b5f34d813093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad13ce9bb97624925b8a323a6bee44de8" id="r_gad13ce9bb97624925b8a323a6bee44de8"><td class="memItemLeft" align="right" valign="top"><a id="gad13ce9bb97624925b8a323a6bee44de8" name="gad13ce9bb97624925b8a323a6bee44de8"></a>
-constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_MMASK</b> = SDL_BUTTON_MMASK</td></tr>
-<tr class="memdesc:gad13ce9bb97624925b8a323a6bee44de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">MMASK. <br /></td></tr>
+<tr class="memitem:gad13ce9bb97624925b8a323a6bee44de8" id="r_gad13ce9bb97624925b8a323a6bee44de8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gad13ce9bb97624925b8a323a6bee44de8">SDL::BUTTON_MMASK</a></td></tr>
+<tr class="memdesc:gad13ce9bb97624925b8a323a6bee44de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Middle button mask.  <br /></td></tr>
 <tr class="separator:gad13ce9bb97624925b8a323a6bee44de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7835b16fe2023f438b89d843c413825f" id="r_ga7835b16fe2023f438b89d843c413825f"><td class="memItemLeft" align="right" valign="top"><a id="ga7835b16fe2023f438b89d843c413825f" name="ga7835b16fe2023f438b89d843c413825f"></a>
-constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_RMASK</b> = SDL_BUTTON_RMASK</td></tr>
-<tr class="memdesc:ga7835b16fe2023f438b89d843c413825f"><td class="mdescLeft">&#160;</td><td class="mdescRight">RMASK. <br /></td></tr>
+<tr class="memitem:ga7835b16fe2023f438b89d843c413825f" id="r_ga7835b16fe2023f438b89d843c413825f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga7835b16fe2023f438b89d843c413825f">SDL::BUTTON_RMASK</a></td></tr>
+<tr class="memdesc:ga7835b16fe2023f438b89d843c413825f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right button mask.  <br /></td></tr>
 <tr class="separator:ga7835b16fe2023f438b89d843c413825f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaac5cd204f74dc3d382e4488392506c1e" id="r_gaac5cd204f74dc3d382e4488392506c1e"><td class="memItemLeft" align="right" valign="top"><a id="gaac5cd204f74dc3d382e4488392506c1e" name="gaac5cd204f74dc3d382e4488392506c1e"></a>
-constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_X1MASK</b> = SDL_BUTTON_X1MASK</td></tr>
-<tr class="memdesc:gaac5cd204f74dc3d382e4488392506c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">X1MASK. <br /></td></tr>
+<tr class="memitem:gaac5cd204f74dc3d382e4488392506c1e" id="r_gaac5cd204f74dc3d382e4488392506c1e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gaac5cd204f74dc3d382e4488392506c1e">SDL::BUTTON_X1MASK</a></td></tr>
+<tr class="memdesc:gaac5cd204f74dc3d382e4488392506c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">X1 button mask.  <br /></td></tr>
 <tr class="separator:gaac5cd204f74dc3d382e4488392506c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga931428fbd429f4b7e2a5b4c35e1a91f5" id="r_ga931428fbd429f4b7e2a5b4c35e1a91f5"><td class="memItemLeft" align="right" valign="top"><a id="ga931428fbd429f4b7e2a5b4c35e1a91f5" name="ga931428fbd429f4b7e2a5b4c35e1a91f5"></a>
-constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BUTTON_X2MASK</b> = SDL_BUTTON_X2MASK</td></tr>
-<tr class="memdesc:ga931428fbd429f4b7e2a5b4c35e1a91f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">X2MASK. <br /></td></tr>
+<tr class="memitem:ga931428fbd429f4b7e2a5b4c35e1a91f5" id="r_ga931428fbd429f4b7e2a5b4c35e1a91f5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga931428fbd429f4b7e2a5b4c35e1a91f5">SDL::BUTTON_X2MASK</a></td></tr>
+<tr class="memdesc:ga931428fbd429f4b7e2a5b4c35e1a91f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">X2 button mask.  <br /></td></tr>
 <tr class="separator:ga931428fbd429f4b7e2a5b4c35e1a91f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -368,6 +364,39 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe947
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga448ef317015b55e139bbb4e1e4a31ed6" name="ga448ef317015b55e139bbb4e1e4a31ed6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga448ef317015b55e139bbb4e1e4a31ed6">&#9670;&#160;</a></span>ButtonMask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a> SDL::ButtonMask </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa">MouseButton</a>&#160;</td>
+          <td class="paramname"><em>button</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">button</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr MouseButtonFlags </dd></dl>
+
+</div>
+</div>
 <a id="gaa6a9b7aa5b488b88f730b962bd8370d8" name="gaa6a9b7aa5b488b88f730b962bd8370d8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa6a9b7aa5b488b88f730b962bd8370d8">&#9670;&#160;</a></span>CaptureMouse()</h2>
 
@@ -577,12 +606,6 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe947
 </table>
 </div><div class="memdoc">
 <p>Note that this will include any device or virtual driver that includes mouse functionality, including some game controllers, KVM switches, etc. You should wait for input from a device before you consider it actively in use.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">count</td><td>a pointer filled in with the number of mice returned, may be nullptr. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>a 0 terminated array of mouse instance IDs or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. This should be freed with <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a> when it is no longer needed.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
@@ -1058,6 +1081,126 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe947
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="ga85dfcc1f14c1a06ade41b5f34d813093" name="ga85dfcc1f14c1a06ade41b5f34d813093"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85dfcc1f14c1a06ade41b5f34d813093">&#9670;&#160;</a></span>BUTTON_LMASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a> SDL::BUTTON_LMASK</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_BUTTON_LMASK</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gad13ce9bb97624925b8a323a6bee44de8" name="gad13ce9bb97624925b8a323a6bee44de8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad13ce9bb97624925b8a323a6bee44de8">&#9670;&#160;</a></span>BUTTON_MMASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a> SDL::BUTTON_MMASK</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_BUTTON_MMASK</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga7835b16fe2023f438b89d843c413825f" name="ga7835b16fe2023f438b89d843c413825f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7835b16fe2023f438b89d843c413825f">&#9670;&#160;</a></span>BUTTON_RMASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a> SDL::BUTTON_RMASK</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_BUTTON_RMASK</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gaac5cd204f74dc3d382e4488392506c1e" name="gaac5cd204f74dc3d382e4488392506c1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaac5cd204f74dc3d382e4488392506c1e">&#9670;&#160;</a></span>BUTTON_X1MASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a> SDL::BUTTON_X1MASK</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_BUTTON_X1MASK</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga931428fbd429f4b7e2a5b4c35e1a91f5" name="ga931428fbd429f4b7e2a5b4c35e1a91f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga931428fbd429f4b7e2a5b4c35e1a91f5">&#9670;&#160;</a></span>BUTTON_X2MASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120">MouseButtonFlags</a> SDL::BUTTON_X2MASK</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_BUTTON_X2MASK</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="ga3bcab48c8301bb6b562f5284f60a6624" name="ga3bcab48c8301bb6b562f5284f60a6624"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga3bcab48c8301bb6b562f5284f60a6624">&#9670;&#160;</a></span>MOUSEWHEEL_FLIPPED</h2>
 

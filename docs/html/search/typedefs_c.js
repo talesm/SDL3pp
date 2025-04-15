@@ -11,11 +11,12 @@ var searchData=
   ['messageboxcolorscheme_8',['MessageBoxColorScheme',['../group__CategoryMessagebox.html#ga82f274dbb72440f9da657e1e887797f6',1,'SDL']]],
   ['messageboxcolortype_9',['MessageBoxColorType',['../group__CategoryMessagebox.html#ga4188ef2b3a57de9a30d4e72283977e6b',1,'SDL']]],
   ['messageboxflags_10',['MessageBoxFlags',['../group__CategoryMessagebox.html#ga1f1cc2ebff8c3b76909040b379ebd491',1,'SDL']]],
-  ['mousebuttonevent_11',['MouseButtonEvent',['../group__CategoryEvents.html#ga74309768261a3e9b6ea0f512fa5acacc',1,'SDL']]],
-  ['mousebuttonflags_12',['MouseButtonFlags',['../group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120',1,'SDL']]],
-  ['mousedeviceevent_13',['MouseDeviceEvent',['../group__CategoryEvents.html#ga45f1c9410b70b9d5e5531a1acefa2055',1,'SDL']]],
-  ['mouseid_14',['MouseID',['../group__CategoryMouse.html#ga733d09de50440ff2a5587b8a47080440',1,'SDL']]],
-  ['mousemotionevent_15',['MouseMotionEvent',['../group__CategoryEvents.html#gab544bd86a6b21b3ebef030f92d1c8c28',1,'SDL']]],
-  ['mousewheeldirection_16',['MouseWheelDirection',['../group__CategoryMouse.html#gadbe9935692f8af3d5db0c9133cc03f1d',1,'SDL']]],
-  ['mousewheelevent_17',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]]
+  ['mousebutton_11',['MouseButton',['../group__CategoryMouse.html#ga9b8df445d428312de2e9e08aa83d87fa',1,'SDL']]],
+  ['mousebuttonevent_12',['MouseButtonEvent',['../group__CategoryEvents.html#ga74309768261a3e9b6ea0f512fa5acacc',1,'SDL']]],
+  ['mousebuttonflags_13',['MouseButtonFlags',['../group__CategoryMouse.html#ga46f1428bf8fd96fcefe94761ed4b5120',1,'SDL']]],
+  ['mousedeviceevent_14',['MouseDeviceEvent',['../group__CategoryEvents.html#ga45f1c9410b70b9d5e5531a1acefa2055',1,'SDL']]],
+  ['mouseid_15',['MouseID',['../group__CategoryMouse.html#ga733d09de50440ff2a5587b8a47080440',1,'SDL']]],
+  ['mousemotionevent_16',['MouseMotionEvent',['../group__CategoryEvents.html#gab544bd86a6b21b3ebef030f92d1c8c28',1,'SDL']]],
+  ['mousewheeldirection_17',['MouseWheelDirection',['../group__CategoryMouse.html#gadbe9935692f8af3d5db0c9133cc03f1d',1,'SDL']]],
+  ['mousewheelevent_18',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]]
 ];

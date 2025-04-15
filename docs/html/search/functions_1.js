@@ -12,5 +12,6 @@ var searchData=
   ['blituncheckedscaled_9',['BlitUncheckedScaled',['../structSDL_1_1SurfaceBase.html#a0f26312b801d13fb79a4e4a2a74f9938',1,'SDL::SurfaceBase']]],
   ['broadcast_10',['Broadcast',['../structSDL_1_1ConditionBase.html#ad02e742efd604e19717220879a56545d',1,'SDL::ConditionBase']]],
   ['bsearch_11',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
-  ['bsearch_5fr_12',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]]
+  ['bsearch_5fr_12',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
+  ['buttonmask_13',['ButtonMask',['../group__CategoryMouse.html#ga448ef317015b55e139bbb4e1e4a31ed6',1,'SDL']]]
 ];

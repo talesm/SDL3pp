@@ -325,14 +325,10 @@ struct CursorRef : CursorBase
    * CursorBase.CursorBase(), CursorBase.CursorBase() or
    * CursorBase.CursorBase().
    *
-   * @param cursor the cursor to free.
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorBase.CursorBase
-   * @sa CursorBase.CursorBase
    * @sa CursorBase.CursorBase
    */
   void reset(SDL_Cursor* newResource = {})
@@ -383,17 +379,21 @@ struct Cursor : CursorRef
   }
 };
 
+/**
+ * Represents a button index.
+ *
+ */
 using MouseButton = Uint8;
 
-constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< LEFT
+constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
 
-constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< MIDDLE
+constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
 
-constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< RIGHT
+constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
 
-constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1
+constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
 
-constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2
+constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
 
 /**
  * Scroll direction types for the Scroll event
@@ -425,20 +425,31 @@ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
  */
 using MouseButtonFlags = Uint32;
 
+/**
+ * Convert a button index to a button mask
+ *
+ * @param button
+ * @return constexpr MouseButtonFlags
+ */
 constexpr MouseButtonFlags ButtonMask(MouseButton button)
 {
   return SDL_BUTTON_MASK(button);
 }
 
-constexpr MouseButtonFlags BUTTON_LMASK = SDL_BUTTON_LMASK; ///< LMASK
+constexpr MouseButtonFlags BUTTON_LMASK =
+  SDL_BUTTON_LMASK; ///< Left button mask
 
-constexpr MouseButtonFlags BUTTON_MMASK = SDL_BUTTON_MMASK; ///< MMASK
+constexpr MouseButtonFlags BUTTON_MMASK =
+  SDL_BUTTON_MMASK; ///< Middle button mask
 
-constexpr MouseButtonFlags BUTTON_RMASK = SDL_BUTTON_RMASK; ///< RMASK
+constexpr MouseButtonFlags BUTTON_RMASK =
+  SDL_BUTTON_RMASK; ///< Right button mask
 
-constexpr MouseButtonFlags BUTTON_X1MASK = SDL_BUTTON_X1MASK; ///< X1MASK
+constexpr MouseButtonFlags BUTTON_X1MASK =
+  SDL_BUTTON_X1MASK; ///< X1 button mask
 
-constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
+constexpr MouseButtonFlags BUTTON_X2MASK =
+  SDL_BUTTON_X2MASK; ///< X2 button mask
 
 /**
  * Return whether a mouse is currently connected.
@@ -461,8 +472,6 @@ inline bool HasMouse() { return SDL_HasMouse(); }
  * You should wait for input from a device before you consider it actively in
  * use.
  *
- * @param count a pointer filled in with the number of mice returned, may be
- *              nullptr.
  * @returns a 0 terminated array of mouse instance IDs or nullptr on failure;
  *          call GetError() for more information. This should be freed
  *          with free() when it is no longer needed.
