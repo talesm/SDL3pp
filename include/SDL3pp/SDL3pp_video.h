@@ -2794,6 +2794,12 @@ struct WindowBase : Resource<SDL_Window*>
   bool GetTextInputArea(Rect* rect, int* cursor);
 
   bool IsScreenKeyboardShown() const;
+
+  void WarpMouse(float x, float y);
+
+  bool SetRelativeMouseMode(bool enabled);
+
+  bool GetRelativeMouseMode() const;
 };
 
 /**

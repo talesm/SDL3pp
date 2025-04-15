@@ -28,5 +28,7 @@ var searchData=
   ['messagebox_5fcolor_5ftext_25',['MESSAGEBOX_COLOR_TEXT',['../group__CategoryMessagebox.html#ga912cbcbde9aaa260599302a906d193f0',1,'SDL']]],
   ['messagebox_5ferror_26',['MESSAGEBOX_ERROR',['../group__CategoryMessagebox.html#ga65a6fbca8d509ed2a4dc1fe8922904c2',1,'SDL']]],
   ['messagebox_5finformation_27',['MESSAGEBOX_INFORMATION',['../group__CategoryMessagebox.html#ga13aa89a06b25c0de599f488ec3c164f1',1,'SDL']]],
-  ['messagebox_5fwarning_28',['MESSAGEBOX_WARNING',['../group__CategoryMessagebox.html#ga990b99f173daf7504716cb9dba01b99f',1,'SDL']]]
+  ['messagebox_5fwarning_28',['MESSAGEBOX_WARNING',['../group__CategoryMessagebox.html#ga990b99f173daf7504716cb9dba01b99f',1,'SDL']]],
+  ['mousewheel_5fflipped_29',['MOUSEWHEEL_FLIPPED',['../group__CategoryMouse.html#ga3bcab48c8301bb6b562f5284f60a6624',1,'SDL']]],
+  ['mousewheel_5fnormal_30',['MOUSEWHEEL_NORMAL',['../group__CategoryMouse.html#ga15149191518ae36fb11e310bacba791b',1,'SDL']]]
 ];

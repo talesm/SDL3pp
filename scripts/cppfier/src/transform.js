@@ -585,7 +585,7 @@ function expandResources(sourceEntries, file, context) {
     };
     file.transform[sourceName] = entry;
 
-    const freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free]) ?? scanFreeFunctionX(sourceEntries, uniqueName, pointerType);
+    const freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free]) ?? scanFreeFunction(sourceEntries, uniqueName, pointerType);
     const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
     if (freeFunction && !file.transform[freeFunction.name]) {
       context.nameMap[freeFunction.name] = refName + ".reset";
@@ -793,8 +793,14 @@ function expandEnumerations(sourceEntries, file, context) {
     combineObject(enumTransform, file.transform[type] ?? {});
     file.transform[type] = enumTransform;
     const targetType = enumTransform.name ?? transformName(type, context);
-    if (enumTransform.includeAfter) {
-      includeAfter(targetType, file, enumTransform.includeAfter);
+    const includeAfterKey = enumTransform.includeAfter;
+    if (includeAfterKey) {
+      if (sourceEntry) {
+        includeAfter(targetType, file, includeAfterKey);
+      } else {
+        enumTransform.name = targetType;
+        includeAfter(enumTransform, file, includeAfterKey);
+      }
     }
 
     if (!enumTransform.kind && sourceEntry.kind !== "alias") {
@@ -838,9 +844,9 @@ function expandEnumerations(sourceEntries, file, context) {
       context.nameMap[value] = entry.name;
       if (!sourceEntries[value]) {
         entry.sourceName = value;
-        includeAfter(entry, file, enumTransform.includeAfter || type);
-      } else if (enumTransform.includeAfter) {
-        includeAfter(entry, file, enumTransform.includeAfter);
+        includeAfter(entry, file, includeAfterKey || type);
+      } else if (includeAfterKey) {
+        includeAfter(entry, file, includeAfterKey);
         file.transform[value] = entry;
       } else {
         file.transform[value] = entry;
@@ -905,21 +911,11 @@ function getOrCreateIncludeAfter(transform, includeAfterKey) {
 
 /**
  * 
- * @param {ApiSubEntryTransformMap} entries 
- */
-function scanFreeFunction(entries) {
-  for (const sourceName of Object.keys(entries)) {
-    if (looksLikeFreeFunction(sourceName)) return sourceName;
-  }
-}
-
-/**
- * 
  * @param {ApiEntries}  entries 
  * @param {string}      uniqueType 
  * @param {string}      pointerType
  */
-function scanFreeFunctionX(entries, uniqueType, pointerType) {
+function scanFreeFunction(entries, uniqueType, pointerType) {
   /** @type {ApiEntry[]} */
   const candidates = [];
   for (const sourceName of Object.keys(entries)) {
@@ -1008,7 +1004,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
     } else if (!entries[nameChange.name]) {
       insertEntry(entries, { name: nameChange.name, kind: "def" });
     }
-    if (typeof entry !== "string" && entry.proto) {
+    if (typeof entry !== "string" && entry.proto && nameChange.type !== "") {
       nameChange.name = `${type}::${nameChange.name}`;
       delete nameChange.proto;
     } else {
@@ -1142,6 +1138,8 @@ function makeRenameEntry(entry, name, typeName) {
     newEntry = { kind: "function", immutable: true };
   } else if (typeof entry !== "object") {
     newEntry = { kind: /** @type {ApiEntryKind} */(entry) };
+  } else if (entry.name === "ctor") {
+    newEntry = { ...entry, kind: "function", name: typeName, type: "", proto: false };
   } else {
     newEntry = entry;
   }

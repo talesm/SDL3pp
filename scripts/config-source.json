@@ -18,6 +18,7 @@
     "SDL_keyboard.h",
     "SDL_keycode.h",
     "SDL_scancode.h",
+    "SDL_mouse.h",
     "SDL_thread.h",
     "SDL_mutex.h",
     "SDL_atomic.h",

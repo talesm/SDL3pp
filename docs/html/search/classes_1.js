@@ -6,5 +6,8 @@ var searchData=
   ['colorspace_3',['Colorspace',['../classSDL_1_1Colorspace.html',1,'SDL']]],
   ['condition_4',['Condition',['../structSDL_1_1Condition.html',1,'SDL']]],
   ['conditionbase_5',['ConditionBase',['../structSDL_1_1ConditionBase.html',1,'SDL']]],
-  ['conditionref_6',['ConditionRef',['../structSDL_1_1ConditionRef.html',1,'SDL']]]
+  ['conditionref_6',['ConditionRef',['../structSDL_1_1ConditionRef.html',1,'SDL']]],
+  ['cursor_7',['Cursor',['../structSDL_1_1Cursor.html',1,'SDL']]],
+  ['cursorbase_8',['CursorBase',['../structSDL_1_1CursorBase.html',1,'SDL']]],
+  ['cursorref_9',['CursorRef',['../structSDL_1_1CursorRef.html',1,'SDL']]]
 ];

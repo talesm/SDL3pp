@@ -47,7 +47,7 @@ Category                 | Header
 @ref CategoryKeyboard    | SDL3pp_keyboard.h
 @ref CategoryKeycode     | SDL3pp_keycode.h
 @ref CategoryScancode    | SDL3pp_scancode.h
-Mouse Support            | SDL3pp_mouse.h
+@ref CategoryMouse       | SDL3pp_mouse.h
 Joystick Support         | SDL3pp_joystick.h
 Gamepad Support          | SDL3pp_gamepad.h
 Touch Support            | SDL3pp_touch.h
@@ -165,6 +165,7 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryKeyboard
 @addtogroup CategoryKeycode
 @addtogroup CategoryScancode
+@addtogroup CategoryMouse
 @}
 
 @defgroup CategoriesThreads Threads

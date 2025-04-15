@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1IOStreamBase.html" title="The read/write operation structure." alt="" coords="208,13,356,38"/>
-<area shape="poly" id="edge20_Node000000_Node000001" title=" " alt="" coords="174,23,207,23,207,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1IOStreamRef.html" title="Handle to a non owned iOStream." alt="" coords="404,13,543,38"/>
-<area shape="poly" id="edge21_Node000001_Node000002" title=" " alt="" coords="370,23,404,23,404,28,370,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1IOStream.html" title="Handle to an owned iOStream." alt="" coords="591,13,707,38"/>
-<area shape="poly" id="edge22_Node000002_Node000003" title=" " alt="" coords="556,23,590,23,590,28,556,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1IConvBase.html" title="An opaque handle representing string encoding conversion state." alt="" coords="208,13,332,38"/>
+<area shape="poly" id="edge20_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1IConvRef.html" title="Handle to a non owned iConv." alt="" coords="380,13,495,38"/>
+<area shape="poly" id="edge21_Node000001_Node000002" title=" " alt="" coords="346,23,380,23,380,28,346,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1IConv.html" title="Handle to an owned iConv." alt="" coords="543,13,635,38"/>
+<area shape="poly" id="edge22_Node000002_Node000003" title=" " alt="" coords="508,23,543,23,543,28,508,28"/>
 </map>

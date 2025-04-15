@@ -2550,6 +2550,85 @@ const transform = {
         }
       }
     },
+    "SDL_mouse.h": {
+      enumerations: {
+        "SDL_SystemCursor": {
+          prefix: "SDL_SYSTEM_CURSOR_",
+          includeAfter: "__begin",
+        },
+        "MouseButton": {
+          kind: "alias",
+          type: "Uint8",
+          prefix: "SDL_BUTTON_",
+          includeAfter: "SDL_Cursor",
+          values: [
+            "SDL_BUTTON_LEFT",
+            "SDL_BUTTON_MIDDLE",
+            "SDL_BUTTON_RIGHT",
+            "SDL_BUTTON_X1",
+            "SDL_BUTTON_X2",
+          ],
+        },
+        "SDL_MouseButtonFlags": {
+          prefix: "SDL_BUTTON_",
+          values: [
+            "SDL_BUTTON_LMASK",
+            "SDL_BUTTON_MMASK",
+            "SDL_BUTTON_RMASK",
+            "SDL_BUTTON_X1MASK",
+            "SDL_BUTTON_X2MASK",
+          ],
+        },
+      },
+      resources: {
+        "SDL_Cursor": {
+          entries: {
+            "SDL_CreateCursor": {
+              name: "ctor",
+              parameters: [
+                { type: "const Uint8 *" },
+                { type: "const Uint8 *" },
+                {},
+                {},
+                {},
+                {},
+              ],
+            },
+            "SDL_CreateColorCursor": "ctor",
+            "SDL_CreateSystemCursor": "ctor",
+          }
+        }
+      },
+      transform: {
+        "SDL_BUTTON_MASK": {
+          kind: "function",
+          name: "ButtonMask",
+          constexpr: true,
+          type: "MouseButtonFlags",
+          parameters: [{
+            type: "MouseButton",
+            name: "button"
+          }]
+        },
+        "SDL_GetMice": {
+          type: "OwnArray<MouseID>",
+          parameters: []
+        },
+        "SDL_WarpMouseInWindow": {
+          name: "WindowBase::WarpMouse"
+        },
+        "SDL_WarpMouseGlobal": {
+          name: "WarpMouse"
+        },
+        "SDL_SetWindowRelativeMouseMode": {
+          name: "WindowBase::SetRelativeMouseMode"
+        },
+        "SDL_GetWindowRelativeMouseMode": {
+          name: "WindowBase::GetRelativeMouseMode",
+          immutable: true,
+        }
+      }
+    },
     "SDL_mutex.h": {
       ignoreEntries: [
         "SDL_THREAD_ANNOTATION_ATTRIBUTE__",
