@@ -17,25 +17,22 @@ using namespace std::chrono_literals;
 struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
-  static constexpr SDL::FRect characterRect{SDL::FPoint(windowSz) / 2 -
-                                              SDL::FPoint{64, 64},
-                                            {128, 128}};
 
-  SDL::SDL init;
-  SDL::Window window;
-  SDL::Renderer renderer;
+  SDL::SDL init{SDL::INIT_VIDEO};
+  SDL::Window window{"Test", windowSz};
+  SDL::Renderer renderer{window};
 
-  Main(int, char**)
-    : init(SDL::INIT_VIDEO)
+  static SDL::AppResult Init(Main** state, SDL::AppArgs args)
   {
     SDL::SetAppMetadata(
       "Example Renderer Clear", "1.0", "com.example.renderer-clear");
-    if (!init) throw std::runtime_error{SDL::GetError()};
-    std::tie(window, renderer) = SDL::CreateWindowAndRenderer("Test", windowSz);
-    if (!window) throw std::runtime_error{SDL::GetError()};
+    return SDL::DefaultCreateClass(state, args);
   }
 
-  // SDL::AppResult Init(int argc, char* argv[]) {}
+  Main()
+  {
+    if (!renderer) throw std::runtime_error{SDL::GetError()};
+  }
 
   SDL::AppResult Iterate()
   {
@@ -55,18 +52,6 @@ struct Main
     renderer.Present();
     return SDL::APP_CONTINUE;
   }
-
-  SDL::AppResult Event(const SDL::Event& ev)
-  {
-    switch (ev.type) {
-    case SDL::EVENT_QUIT: return SDL::APP_SUCCESS;
-
-    default: break;
-    }
-    return SDL::APP_CONTINUE;
-  }
-
-  // void Quit(SDL::AppResult) { SDL::Log("Bye"); }
 };
 
 #define SDL3PP_MAIN_USE_THIS_CLASS Main

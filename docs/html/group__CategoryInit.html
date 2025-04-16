@@ -72,7 +72,10 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
+<a href="#concepts">Concepts</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Initialization and Shutdown<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a></div></div></div>
 </div><!--header-->
@@ -86,11 +89,36 @@ Modules</h2></td></tr>
 <tr class="memitem:group__InitFlags" id="r_group__InitFlags"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__InitFlags.html">Initialization flags</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
+Concepts</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptSDL_1_1HasInitFunction.html">SDL::HasInitFunction</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptSDL_1_1HasIterateFunction.html">SDL::HasIterateFunction</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptSDL_1_1HasEventFunction.html">SDL::HasEventFunction</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptSDL_1_1HasQuitFunction.html">SDL::HasQuitFunction</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SDL.html">SDL::SDL</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library.  <a href="classSDL_1_1SDL.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gab189214a4cfe1df8a756a57d3da2bb07" id="r_gab189214a4cfe1df8a756a57d3da2bb07"><td class="memItemLeft" align="right" valign="top"><a id="gab189214a4cfe1df8a756a57d3da2bb07" name="gab189214a4cfe1df8a756a57d3da2bb07"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SDL3PP_APPCLASS_LOG_PRIORITY</b>&#160;&#160;&#160;LOG_PRIORITY_CRITICAL</td></tr>
+<tr class="memdesc:gab189214a4cfe1df8a756a57d3da2bb07"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default log priority for app class. <br /></td></tr>
+<tr class="separator:gab189214a4cfe1df8a756a57d3da2bb07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga5e144248c6563123ce5ba9e54235f37e" id="r_ga5e144248c6563123ce5ba9e54235f37e"><td class="memItemLeft" align="right" valign="top"><a id="ga5e144248c6563123ce5ba9e54235f37e" name="ga5e144248c6563123ce5ba9e54235f37e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AppArgs</b> = std::span&lt; char const  *const  &gt;</td></tr>
+<tr class="memdesc:ga5e144248c6563123ce5ba9e54235f37e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents application parameters. <br /></td></tr>
+<tr class="separator:ga5e144248c6563123ce5ba9e54235f37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -148,6 +176,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7ae0a016d954f3a072c0a49d9dd9caf2" id="r_ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
 <tr class="memdesc:ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get metadata about your app.  <br /></td></tr>
 <tr class="separator:ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2a3032ece7da9d1cef7a7e3352a820d8" id="r_ga2a3032ece7da9d1cef7a7e3352a820d8"><td class="memTemplParams" colspan="2">template&lt;HasIterateFunction T&gt; </td></tr>
+<tr class="memitem:ga2a3032ece7da9d1cef7a7e3352a820d8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga2a3032ece7da9d1cef7a7e3352a820d8">SDL::IterateClass</a> (T *state)</td></tr>
+<tr class="memdesc:ga2a3032ece7da9d1cef7a7e3352a820d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate the state.  <br /></td></tr>
+<tr class="separator:ga2a3032ece7da9d1cef7a7e3352a820d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa96159d38c2548461aec892f0fed66f2" id="r_gaa96159d38c2548461aec892f0fed66f2"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gaa96159d38c2548461aec892f0fed66f2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa96159d38c2548461aec892f0fed66f2">SDL::DefaultEventClass</a> (T *state, const SDL_Event &amp;event)</td></tr>
+<tr class="memdesc:gaa96159d38c2548461aec892f0fed66f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default handle by finishing if QUIT is requested.  <br /></td></tr>
+<tr class="separator:gaa96159d38c2548461aec892f0fed66f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaab9867564fcaf4a3954fd7aa6b6a524a" id="r_gaab9867564fcaf4a3954fd7aa6b6a524a"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gaab9867564fcaf4a3954fd7aa6b6a524a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaab9867564fcaf4a3954fd7aa6b6a524a">SDL::DefaultClassDestroy</a> (T *state)</td></tr>
+<tr class="memdesc:gaab9867564fcaf4a3954fd7aa6b6a524a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy state with delete;.  <br /></td></tr>
+<tr class="separator:gaab9867564fcaf4a3954fd7aa6b6a524a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">AppResult</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>App result for Main callback </p>
@@ -188,6 +228,22 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
 <tr class="separator:ga85ebd45ffe827a5fe36abd499560314c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f8cd7a48bac7f78b92bb612d160585b" id="r_ga2f8cd7a48bac7f78b92bb612d160585b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga2f8cd7a48bac7f78b92bb612d160585b">SDL::MainThreadCB</a> = std::function&lt; void()&gt;</td></tr>
 <tr class="separator:ga2f8cd7a48bac7f78b92bb612d160585b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4dd42c4b0db483c8dea2ed5389d3613b" id="r_ga4dd42c4b0db483c8dea2ed5389d3613b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga4dd42c4b0db483c8dea2ed5389d3613b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga4dd42c4b0db483c8dea2ed5389d3613b">SDL::DefaultCreateClass</a> (T **state, <a class="el" href="group__CategoryInit.html#ga5e144248c6563123ce5ba9e54235f37e">AppArgs</a> args)</td></tr>
+<tr class="memdesc:ga4dd42c4b0db483c8dea2ed5389d3613b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate and initialize state with new.  <br /></td></tr>
+<tr class="separator:ga4dd42c4b0db483c8dea2ed5389d3613b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac990a4caaf956991eecc59137081f220" id="r_gac990a4caaf956991eecc59137081f220"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gac990a4caaf956991eecc59137081f220"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac990a4caaf956991eecc59137081f220">SDL::InitClass</a> (T **state, <a class="el" href="group__CategoryInit.html#ga5e144248c6563123ce5ba9e54235f37e">AppArgs</a> args)</td></tr>
+<tr class="memdesc:gac990a4caaf956991eecc59137081f220"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init state with arguments.  <br /></td></tr>
+<tr class="separator:gac990a4caaf956991eecc59137081f220"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab720fe23c9b07d412ac63d250bd96f3a" id="r_gab720fe23c9b07d412ac63d250bd96f3a"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gab720fe23c9b07d412ac63d250bd96f3a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gab720fe23c9b07d412ac63d250bd96f3a">SDL::EventClass</a> (T *state, const SDL_Event &amp;event)</td></tr>
+<tr class="memdesc:gab720fe23c9b07d412ac63d250bd96f3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate the state.  <br /></td></tr>
+<tr class="separator:gab720fe23c9b07d412ac63d250bd96f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga18ff61b28788b04451ffcd81fc3728cd" id="r_ga18ff61b28788b04451ffcd81fc3728cd"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga18ff61b28788b04451ffcd81fc3728cd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga18ff61b28788b04451ffcd81fc3728cd">SDL::QuitClass</a> (T *state, <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a> result)</td></tr>
+<tr class="memdesc:ga18ff61b28788b04451ffcd81fc3728cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy state with given result.  <br /></td></tr>
+<tr class="separator:ga18ff61b28788b04451ffcd81fc3728cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Almost everything can simply call SDL_Init() near startup, with a handful of flags to specify subsystems to touch. These are here to make sure <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not even attempt to touch low-level pieces of the operating system that you don't intend to use. For example, you might be using <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> for video and input but chose an external library for audio, and in this case you would just need to leave off the <code>SDL_INIT_AUDIO</code> flag to make sure that external library has complete control.</p>
@@ -348,6 +404,203 @@ result-callback</dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gaab9867564fcaf4a3954fd7aa6b6a524a" name="gaab9867564fcaf4a3954fd7aa6b6a524a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaab9867564fcaf4a3954fd7aa6b6a524a">&#9670;&#160;</a></span>DefaultClassDestroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::DefaultClassDestroy </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga4dd42c4b0db483c8dea2ed5389d3613b" name="ga4dd42c4b0db483c8dea2ed5389d3613b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4dd42c4b0db483c8dea2ed5389d3613b">&#9670;&#160;</a></span>DefaultCreateClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a> SDL::DefaultCreateClass </td>
+          <td>(</td>
+          <td class="paramtype">T **&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryInit.html#ga5e144248c6563123ce5ba9e54235f37e">AppArgs</a>&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If possible, pass the args to constructor, otherwise expects a default ctor;</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the state class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the state to initialize </td></tr>
+    <tr><td class="paramname">args</td><td>the program arguments </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the app status </dd></dl>
+
+</div>
+</div>
+<a id="gaa96159d38c2548461aec892f0fed66f2" name="gaa96159d38c2548461aec892f0fed66f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa96159d38c2548461aec892f0fed66f2">&#9670;&#160;</a></span>DefaultEventClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a> SDL::DefaultEventClass </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Event &amp;&#160;</td>
+          <td class="paramname"><em>event</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the state class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the state </td></tr>
+    <tr><td class="paramname">event</td><td>the event </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise, </dd></dl>
+
+</div>
+</div>
+<a id="gab720fe23c9b07d412ac63d250bd96f3a" name="gab720fe23c9b07d412ac63d250bd96f3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab720fe23c9b07d412ac63d250bd96f3a">&#9670;&#160;</a></span>EventClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a> SDL::EventClass </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SDL_Event &amp;&#160;</td>
+          <td class="paramname"><em>event</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the state class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the state </td></tr>
+    <tr><td class="paramname">event</td><td>the event to handle </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the app status </dd></dl>
+
+</div>
+</div>
 <a id="ga7ae0a016d954f3a072c0a49d9dd9caf2" name="ga7ae0a016d954f3a072c0a49d9dd9caf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7ae0a016d954f3a072c0a49d9dd9caf2">&#9670;&#160;</a></span>GetAppMetadataProperty()</h2>
 
@@ -384,6 +637,59 @@ result-callback</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_SetAppMetadata </dd>
 <dd>
 SDL_SetAppMetadataProperty </dd></dl>
+
+</div>
+</div>
+<a id="gac990a4caaf956991eecc59137081f220" name="gac990a4caaf956991eecc59137081f220"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac990a4caaf956991eecc59137081f220">&#9670;&#160;</a></span>InitClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a> SDL::InitClass </td>
+          <td>(</td>
+          <td class="paramtype">T **&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryInit.html#ga5e144248c6563123ce5ba9e54235f37e">AppArgs</a>&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will call T::Init() if available, otherwise it delegates to <a class="el" href="group__CategoryInit.html#ga4dd42c4b0db483c8dea2ed5389d3613b" title="Allocate and initialize state with new.">DefaultCreateClass()</a>.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the state class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the state to initialize </td></tr>
+    <tr><td class="paramname">args</td><td>the program arguments </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the app status </dd></dl>
 
 </div>
 </div>
@@ -658,6 +964,47 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 
 </div>
 </div>
+<a id="ga2a3032ece7da9d1cef7a7e3352a820d8" name="ga2a3032ece7da9d1cef7a7e3352a820d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2a3032ece7da9d1cef7a7e3352a820d8">&#9670;&#160;</a></span>IterateClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;HasIterateFunction T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a> SDL::IterateClass </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the state class </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the state </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the app status </dd></dl>
+
+</div>
+</div>
 <a id="gac0812d3287da34e3d6b228677440a24c" name="gac0812d3287da34e3d6b228677440a24c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gac0812d3287da34e3d6b228677440a24c">&#9670;&#160;</a></span>Quit()</h2>
 
@@ -686,6 +1033,58 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>Init() </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga18ff61b28788b04451ffcd81fc3728cd" name="ga18ff61b28788b04451ffcd81fc3728cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga18ff61b28788b04451ffcd81fc3728cd">&#9670;&#160;</a></span>QuitClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::QuitClass </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a>&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is responsible to destroy and deallocate the state. It tries to call T::Quit() if available and delegates to it the duty of deleting. Otherwise it calls delete directly.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the state class. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>the state to destroy. </td></tr>
+    <tr><td class="paramname">result</td><td>the app result. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

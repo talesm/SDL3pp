@@ -4,14 +4,11 @@ using namespace std::chrono_literals;
 
 struct Main
 {
-  static constexpr SDL::Point windowSz = {400, 400};
-  static constexpr SDL::FRect characterRect{SDL::FPoint(windowSz) / 2 -
-                                              SDL::FPoint{64, 64},
-                                            {128, 128}};
+  static constexpr SDL::Point windowSz = {640, 480};
 
-  SDL::SDL init;
-  SDL::Window window;
-  SDL::Renderer renderer;
+  SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_TTF};
+  SDL::Window window{"Test", windowSz};
+  SDL::Renderer renderer{window};
   SDL::Font font;
   std::string testString = "the quick brown fox jumps over the lazy dog\n"
                            "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG\n"
@@ -23,13 +20,9 @@ struct Main
   static constexpr int testQualityCount = 2;
   SDL::Color testColor{0, 0, 0};
 
-  Main(int, char**)
-    : init(SDL::INIT_VIDEO, SDL::INIT_TTF)
+  Main()
   {
-    if (!init) throw std::runtime_error{SDL::GetError()};
-    std::tie(window, renderer) =
-      SDL::CreateWindowAndRenderer("Test", {windowSz.x, windowSz.y});
-    if (!window) throw std::runtime_error{SDL::GetError()};
+    if (!renderer) throw std::runtime_error{SDL::GetError()};
   }
 
   SDL::AppResult Iterate()
