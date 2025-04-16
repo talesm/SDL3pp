@@ -25,6 +25,7 @@
     "SDL3pp_timer.h",
     "SDL3pp_time.h",
     "SDL3pp_filesystem.h",
+    "SDL3pp_storage.h",
     "SDL3pp_iostream.h",
     "SDL3pp_platform.h",
     "SDL3pp_cpuinfo.h",

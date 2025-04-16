@@ -110,7 +110,7 @@ public:
    * @return the C string representation. We guarantee it to be null terminated
    * unless the objects it was constructed from are corrupted.
    */
-  operator const char*() const
+  constexpr const char* c_str() const
   {
     struct Visitor
     {
@@ -119,6 +119,14 @@ public:
     };
     return std::visit(Visitor{}, data);
   }
+
+  /**
+   * Converts to a null terminated C string.
+   *
+   * @return the C string representation. We guarantee it to be null terminated
+   * unless the objects it was constructed from are corrupted.
+   */
+  constexpr operator const char*() const { return c_str(); }
 };
 
 #else // SDL3PP_ENABLE_STRING_PARAM

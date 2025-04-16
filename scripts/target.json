@@ -29513,7 +29513,7 @@
           "sourceName": "SDL_PATHTYPE_OTHER"
         },
         "PathInfo": {
-          "doc": "Information about a path on the filesystem.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa GetPathInfo\n@sa SDL_GetStoragePathInfo",
+          "doc": "Information about a path on the filesystem.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa GetPathInfo\n@sa StorageBase.GetPathInfo",
           "name": "PathInfo",
           "kind": "struct",
           "sourceName": "SDL_PathInfo",
@@ -29591,7 +29591,7 @@
           }
         },
         "GlobFlags": {
-          "doc": "Flags for path matching.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa GlobDirectory\n@sa SDL_GlobStorageDirectory",
+          "doc": "Flags for path matching.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa GlobDirectory\n@sa StorageBase.GlobDirectory",
           "name": "GlobFlags",
           "kind": "alias",
           "type": "Uint32",
@@ -29802,6 +29802,619 @@
           "type": "Path",
           "parameters": [],
           "sourceName": "SDL_GetCurrentDirectory"
+        }
+      }
+    },
+    "SDL3pp_storage.h": {
+      "name": "SDL3pp_storage.h",
+      "doc": "@defgroup CategoryStorage Category Storage\n\nThe storage API is a high-level API designed to abstract away the\nportability issues that come up when using something lower-level (in SDL's\ncase, this sits on top of the [Filesystem](CategoryFilesystem) and\n[IOStream](CategoryIOStream) subsystems). It is significantly more\nrestrictive than a typical filesystem API, for a number of reasons:\n\n1. **What to Access:** A common pitfall with existing filesystem APIs is\nthe assumption that all storage is monolithic. However, many other\nplatforms (game consoles in particular) are more strict about what _type_\nof filesystem is being accessed; for example, game content and user data\nare usually two separate storage devices with entirely different\ncharacteristics (and possibly different low-level APIs altogether!).\n\n2. **How to Access:** Another common mistake is applications assuming that\nall storage is universally writeable - again, many platforms treat game\ncontent and user data as two separate storage devices, and only user data\nis writeable while game content is read-only.\n\n3. **When to Access:** The most common portability issue with filesystem\naccess is _timing_ - you cannot always assume that the storage device is\nalways accessible all of the time, nor can you assume that there are no\nlimits to how long you have access to a particular device.\n\nConsider the following example:\n\n```c\nvoid ReadGameData(void)\n{\n    extern char** fileNames;\n    extern size_t numFiles;\n    for (size_t i = 0; i < numFiles; i += 1) {\n        FILE *data = fopen(fileNames[i], \"rwb\");\n        if (data == nullptr) {\n            // Something bad happened!\n        } else {\n            // A bunch of stuff happens here\n            fclose(data);\n        }\n    }\n}\n\nvoid ReadSave(void)\n{\n    FILE *save = fopen(\"saves/save0.sav\", \"rb\");\n    if (save == nullptr) {\n        // Something bad happened!\n    } else {\n        // A bunch of stuff happens here\n        fclose(save);\n    }\n}\n\nvoid WriteSave(void)\n{\n    FILE *save = fopen(\"saves/save0.sav\", \"wb\");\n    if (save == nullptr) {\n        // Something bad happened!\n    } else {\n        // A bunch of stuff happens here\n        fclose(save);\n    }\n}\n```\n\nGoing over the bullet points again:\n\n1. **What to Access:** This code accesses a global filesystem; game data\nand saves are all presumed to be in the current working directory (which\nmay or may not be the game's installation folder!).\n\n2. **How to Access:** This code assumes that content paths are writeable,\nand that save data is also writeable despite being in the same location as\nthe game data.\n\n3. **When to Access:** This code assumes that they can be called at any\ntime, since the filesystem is always accessible and has no limits on how\nlong the filesystem is being accessed.\n\nDue to these assumptions, the filesystem code is not portable and will fail\nunder these common scenarios:\n\n- The game is installed on a device that is read-only, both content loading\n  and game saves will fail or crash outright\n- Game/User storage is not implicitly mounted, so no files will be found\n  for either scenario when a platform requires explicitly mounting\n  filesystems\n- Save data may not be safe since the I/O is not being flushed or\n  validated, so an error occurring elsewhere in the program may result in\n  missing/corrupted save data\n\nWhen using StorageBase, these types of problems are virtually impossible to\ntrip over:\n\n```c\nvoid ReadGameData(void)\n{\n    extern char** fileNames;\n    extern size_t numFiles;\n\n    StorageBase *title = StorageBase.StorageBase(nullptr, 0);\n    if (title == nullptr) {\n        // Something bad happened!\n    }\n    while (!StorageBase.Ready(title)) {\n        Delay(1);\n    }\n\n    for (size_t i = 0; i < numFiles; i += 1) {\n        void* dst;\n        Uint64 dstLen = 0;\n\n        if (StorageBase.GetFileSize(title, fileNames[i], &dstLen) && dstLen > 0) {\n            dst = malloc(dstLen);\n            if (StorageBase.ReadFile(title, fileNames[i], dst, dstLen)) {\n                // A bunch of stuff happens here\n            } else {\n                // Something bad happened!\n            }\n            free(dst);\n        } else {\n            // Something bad happened!\n        }\n    }\n\n    StorageRef.Close(title);\n}\n\nvoid ReadSave(void)\n{\n    StorageBase *user = StorageBase.StorageBase(\"libsdl\", \"Storage Example\", 0);\n    if (user == nullptr) {\n        // Something bad happened!\n    }\n    while (!StorageBase.Ready(user)) {\n        Delay(1);\n    }\n\n    Uint64 saveLen = 0;\n    if (StorageBase.GetFileSize(user, \"save0.sav\", &saveLen) && saveLen > 0) {\n        void* dst = malloc(saveLen);\n        if (StorageBase.ReadFile(user, \"save0.sav\", dst, saveLen)) {\n            // A bunch of stuff happens here\n        } else {\n            // Something bad happened!\n        }\n        free(dst);\n    } else {\n        // Something bad happened!\n    }\n\n    StorageRef.Close(user);\n}\n\nvoid WriteSave(void)\n{\n    StorageBase *user = StorageBase.StorageBase(\"libsdl\", \"Storage Example\", 0);\n    if (user == nullptr) {\n        // Something bad happened!\n    }\n    while (!StorageBase.Ready(user)) {\n        Delay(1);\n    }\n\n    extern void *saveData; // A bunch of stuff happened here...\n    extern Uint64 saveLen;\n    if (!StorageBase.WriteFile(user, \"save0.sav\", saveData, saveLen)) {\n        // Something bad happened!\n    }\n\n    StorageRef.Close(user);\n}\n```\n\nNote the improvements that StorageBase makes:\n\n1. **What to Access:** This code explicitly reads from a title or user\nstorage device based on the context of the function.\n\n2. **How to Access:** This code explicitly uses either a read or write\nfunction based on the context of the function.\n\n3. **When to Access:** This code explicitly opens the device when it needs\nto, and closes it when it is finished working with the filesystem.\n\nThe result is an application that is significantly more robust against the\nincreasing demands of platforms and their filesystems!\n\nA publicly available example of an StorageBase backend is the\n[Steam Cloud](https://partner.steamgames.com/doc/features/cloud)\nbackend - you can initialize Steamworks when starting the program, and then\nSDL will recognize that Steamworks is initialized and automatically use\nISteamRemoteStorage when the application opens user storage. More\nimportantly, when you _open_ storage it knows to begin a \"batch\" of\nfilesystem operations, and when you _close_ storage it knows to end and\nflush the batch. This is used by Steam to support\n[Dynamic Cloud Sync](https://steamcommunity.com/groups/steamworks/announcements/detail/3142949576401813670)\n; users can save data on one PC, put the device to sleep, and then continue\nplaying on another PC (and vice versa) with the save data fully\nsynchronized across all devices, allowing for a seamless experience without\nhaving to do full restarts of the program.\n\n## Notes on valid paths\n\nAll paths in the Storage API use Unix-style path separators ('/'). Using a\ndifferent path separator will not work, even if the underlying platform\nwould otherwise accept it. This is to keep code using the Storage API\nportable between platforms and Storage implementations and simplify app\ncode.\n\nPaths with relative directories (\".\" and \"..\") are forbidden by the Storage\nAPI.\n\nAll valid UTF-8 strings (discounting the nullptr terminator character and the\n'/' path separator) are usable for filenames, however, an underlying\nStorage implementation may not support particularly strange sequences and\nrefuse to create files with those names, etc.",
+      "entries": {
+        "StorageBase-forward": {
+          "name": "StorageBase",
+          "kind": "forward",
+          "doc": ""
+        },
+        "StorageRef-forward": {
+          "name": "StorageRef",
+          "kind": "forward",
+          "doc": ""
+        },
+        "Storage-forward": {
+          "name": "Storage",
+          "kind": "forward",
+          "doc": ""
+        },
+        "StorageInterface": {
+          "doc": "Function interface for StorageBase.\n\nApps that want to supply a custom implementation of StorageBase will fill\nin all the functions in this struct, and then pass it to StorageBase.StorageBase to\ncreate a custom StorageBase object.\n\nIt is not usually necessary to do this; SDL provides standard\nimplementations for many things you might expect to do with an StorageBase.\n\nThis structure should be initialized using SDL_INIT_INTERFACE()\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_INIT_INTERFACE",
+          "name": "StorageInterface",
+          "kind": "alias",
+          "sourceName": "SDL_StorageInterface",
+          "type": "SDL_StorageInterface"
+        },
+        "StorageBase": {
+          "doc": "An abstract interface for filesystem access.\n\nThis is an opaque datatype. One can create this object using standard SDL\nfunctions like StorageBase.StorageBase or StorageBase.StorageBase, etc, or create\nan object with a custom implementation using StorageBase.StorageBase.\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Storage\n@sa StorageRef",
+          "name": "StorageBase",
+          "kind": "struct",
+          "type": "Resource<SDL_Storage *>",
+          "sourceName": "SDL_Storage",
+          "entries": {
+            "Resource::Resource": {
+              "kind": "alias",
+              "name": "Resource::Resource",
+              "doc": ""
+            },
+            "StorageBase": [
+              {
+                "doc": "Opens up a read-only container for the application's filesystem.\n\n@param override a path to override the backend's default title root.\n@param props a property list that may contain backend-specific information.\n@post a title storage container on success or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageBase.GetFileSize\n@sa StorageBase.StorageBase\n@sa StorageBase.ReadFile",
+                "name": "StorageBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "override",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "props",
+                    "type": "PropertiesBase &"
+                  }
+                ],
+                "sourceName": "SDL_OpenTitleStorage"
+              },
+              {
+                "doc": "Opens up a container for a user's unique read/write filesystem.\n\nWhile title storage can generally be kept open throughout runtime, user\nstorage should only be opened when the client is ready to read/write files.\nThis allows the backend to properly batch file operations and flush them\nwhen the container has been closed; ensuring safe and optimal save I/O.\n\n@param org the name of your organization.\n@param app the name of your application.\n@param props a property list that may contain backend-specific information.\n@post a user storage container on success or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageBase.GetFileSize\n@sa StorageBase.GetSpaceRemaining\n@sa StorageBase.StorageBase\n@sa StorageBase.ReadFile\n@sa StorageBase.Ready\n@sa StorageBase.WriteFile",
+                "name": "StorageBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "org",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "app",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "props",
+                    "type": "PropertiesBase &"
+                  }
+                ],
+                "sourceName": "SDL_OpenUserStorage"
+              },
+              {
+                "doc": "Opens up a container for local filesystem storage.\n\nThis is provided for development and tools. Portable applications should\nuse StorageBase.StorageBase() for access to game data and\nStorageBase.StorageBase() for access to user data.\n\n@param path the base path prepended to all storage paths, or nullptr for no\n            base path.\n@post a filesystem storage container on success or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageBase.GetFileSize\n@sa StorageBase.GetSpaceRemaining\n@sa StorageBase.StorageBase\n@sa StorageBase.StorageBase\n@sa StorageBase.ReadFile\n@sa StorageBase.WriteFile",
+                "name": "StorageBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "SDL_OpenFileStorage"
+              },
+              {
+                "doc": "Opens up a container using a client-provided storage interface.\n\nApplications do not need to use this function unless they are providing\ntheir own StorageBase implementation. If you just need an StorageBase, you\nshould use the built-in implementations in SDL, like StorageBase.StorageBase()\nor StorageBase.StorageBase().\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this storage, initialized using\n             SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@post a storage container on success or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageBase.GetFileSize\n@sa StorageBase.GetSpaceRemaining\n@sa SDL_INIT_INTERFACE\n@sa StorageBase.ReadFile\n@sa StorageBase.Ready\n@sa StorageBase.WriteFile",
+                "name": "StorageBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "iface",
+                    "type": "const StorageInterface &"
+                  },
+                  {
+                    "name": "userdata",
+                    "type": "void *"
+                  }
+                ],
+                "sourceName": "SDL_OpenStorage"
+              }
+            ],
+            "Ready": {
+              "doc": "Checks if the storage container is ready to use.\n\nThis function should be called in regular intervals until it returns true -\nhowever, it is not recommended to spinwait on this call, as the backend may\ndepend on a synchronous message loop. You might instead poll this in your\ngame's main loop while processing events and drawing a loading screen.\n\n@returns true if the container is ready, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "Ready",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_StorageReady",
+              "immutable": true
+            },
+            "GetFileSize": {
+              "doc": "Query the size of a file within a storage container.\n\n@param path the relative path of the file to query.\n@param length a pointer to be filled with the file's length.\n@returns true if the file could be queried or false on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.ReadFile\n@sa StorageBase.Ready",
+              "name": "GetFileSize",
+              "kind": "function",
+              "type": "std::optional<Uint64>",
+              "parameters": [
+                {
+                  "name": "path",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_GetStorageFileSize",
+              "immutable": true
+            },
+            "ReadFile": [
+              {
+                "kind": "function",
+                "type": "std::string",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  }
+                ],
+                "name": "ReadFile",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "template": [
+                  {
+                    "type": "class",
+                    "name": "T"
+                  }
+                ],
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "destination",
+                    "type": "std::span<T>"
+                  }
+                ],
+                "name": "ReadFile",
+                "doc": ""
+              },
+              {
+                "doc": "Synchronously read a file from a storage container into a client-provided\nbuffer.\n\nThe value of `length` must match the length of the file exactly; call\nStorageBase.GetFileSize() to get this value. This behavior may be relaxed in\na future release.\n\n@param path the relative path of the file to read.\n@param destination a client-provided buffer to read the file into.\n@param length the length of the destination buffer.\n@returns true if the file was read or false on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.GetFileSize\n@sa StorageBase.Ready\n@sa StorageBase.WriteFile",
+                "name": "ReadFile",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "destination",
+                    "type": "void *"
+                  },
+                  {
+                    "name": "length",
+                    "type": "Uint64"
+                  }
+                ],
+                "sourceName": "SDL_ReadStorageFile",
+                "immutable": true
+              }
+            ],
+            "WriteFile": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "source",
+                    "type": "std::string_view"
+                  }
+                ],
+                "name": "WriteFile",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "template": [
+                  {
+                    "type": "class",
+                    "name": "T"
+                  }
+                ],
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "source",
+                    "type": "std::span<T>"
+                  }
+                ],
+                "name": "WriteFile",
+                "doc": ""
+              },
+              {
+                "doc": "Synchronously write a file from client memory into a storage container.\n\n@param path the relative path of the file to write.\n@param source a client-provided buffer to write from.\n@param length the length of the source buffer.\n@returns true if the file was written or false on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.GetSpaceRemaining\n@sa StorageBase.ReadFile\n@sa StorageBase.Ready",
+                "name": "WriteFile",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "source",
+                    "type": "const void *"
+                  },
+                  {
+                    "name": "length",
+                    "type": "Uint64"
+                  }
+                ],
+                "sourceName": "SDL_WriteStorageFile"
+              }
+            ],
+            "CreateDirectory": {
+              "doc": "Create a directory in a writable storage container.\n\n@param path the path of the directory to create.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.Ready",
+              "name": "CreateDirectory",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "path",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_CreateStorageDirectory"
+            },
+            "EnumerateDirectory": [
+              {
+                "kind": "function",
+                "type": "std::vector<Path>",
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  }
+                ],
+                "name": "EnumerateDirectory",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "callback",
+                    "type": "EnumerateDirectoryCB"
+                  }
+                ],
+                "name": "EnumerateDirectory",
+                "doc": ""
+              },
+              {
+                "doc": "Enumerate a directory in a storage container through a callback function.\n\nThis function provides every directory entry through an app-provided\ncallback, called once for each directory entry, until all results have been\nprovided or the callback returns either ENUM_SUCCESS or\nENUM_FAILURE.\n\nThis will return false if there was a system problem in general, or if a\ncallback returns ENUM_FAILURE. A successful return means a callback\nreturned ENUM_SUCCESS to halt enumeration, or all directory entries\nwere enumerated.\n\nIf `path` is nullptr, this is treated as a request to enumerate the root of\nthe storage container's tree. An empty string also works for this.\n\n@param path the path of the directory to enumerate, or nullptr for the root.\n@param callback a function that is called for each entry in the directory.\n@param userdata a pointer that is passed to `callback`.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.Ready",
+                "name": "EnumerateDirectory",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "path",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "callback",
+                    "type": "EnumerateDirectoryCallback"
+                  },
+                  {
+                    "name": "userdata",
+                    "type": "void *"
+                  }
+                ],
+                "sourceName": "SDL_EnumerateStorageDirectory"
+              }
+            ],
+            "RemovePath": {
+              "doc": "Remove a file or an empty directory in a writable storage container.\n\n@param path the path of the directory to enumerate.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.Ready",
+              "name": "RemovePath",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "path",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_RemoveStoragePath"
+            },
+            "RenamePath": {
+              "doc": "Rename a file or directory in a writable storage container.\n\n@param oldpath the old path.\n@param newpath the new path.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.Ready",
+              "name": "RenamePath",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "oldpath",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "newpath",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_RenameStoragePath"
+            },
+            "CopyFile": {
+              "doc": "Copy a file in a writable storage container.\n\n@param oldpath the old path.\n@param newpath the new path.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.Ready",
+              "name": "CopyFile",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "oldpath",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "newpath",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_CopyStorageFile"
+            },
+            "GetPathInfo": {
+              "doc": "Get information about a filesystem path in a storage container.\n\n@param path the path to query.\n@param info a pointer filled in with information about the path, or nullptr to\n            check for the existence of a file.\n@returns true on success or false if the file doesn't exist, or another\n         failure; call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.Ready",
+              "name": "GetPathInfo",
+              "kind": "function",
+              "type": "PathInfo",
+              "parameters": [
+                {
+                  "name": "path",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_GetStoragePathInfo",
+              "immutable": true
+            },
+            "GetSpaceRemaining": {
+              "doc": "Queries the remaining space in a storage container.\n\n@returns the amount of remaining space, in bytes.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.Ready\n@sa StorageBase.WriteFile",
+              "name": "GetSpaceRemaining",
+              "kind": "function",
+              "type": "Uint64",
+              "parameters": [],
+              "sourceName": "SDL_GetStorageSpaceRemaining",
+              "immutable": true
+            },
+            "GlobDirectory": {
+              "doc": "Enumerate a directory tree, filtered by pattern, and return a list.\n\nFiles are filtered out if they don't match the string in `pattern`, which\nmay contain wildcard characters `*` (match everything) and `?` (match one\ncharacter). If pattern is nullptr, no filtering is done and all results are\nreturned. Subdirectories are permitted, and are specified with a path\nseparator of '/'. Wildcard characters `*` and `?` never match a path\nseparator.\n\n`flags` may be set to GLOB_CASEINSENSITIVE to make the pattern matching\ncase-insensitive.\n\nThe returned array is always nullptr-terminated, for your iterating\nconvenience, but if `count` is non-nullptr, on return it will contain the\nnumber of items in the array, not counting the nullptr terminator.\n\nIf `path` is nullptr, this is treated as a request to enumerate the root of\nthe storage container's tree. An empty string also works for this.\n\n@param path the path of the directory to enumerate, or nullptr for the root.\n@param pattern the pattern that files in the directory must match. Can be\n               nullptr.\n@param flags `SDL_GLOB_*` bitflags that affect this search.\n@param count on return, will be set to the number of items in the returned\n             array. Can be nullptr.\n@returns an array of strings on success or nullptr on failure; call\n         GetError() for more information. The caller should pass the\n         returned pointer to free when done with it. This is a single\n         allocation that should be freed with free() when it is no\n         longer needed.\n\n@threadsafety It is safe to call this function from any thread, assuming\n              the `storage` object is thread-safe.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GlobDirectory",
+              "kind": "function",
+              "type": "OwnArray<char *>",
+              "parameters": [
+                {
+                  "name": "path",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "pattern",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "flags",
+                  "type": "GlobFlags"
+                }
+              ],
+              "sourceName": "SDL_GlobStorageDirectory"
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "Resource"
+          }
+        },
+        "StorageRef": {
+          "name": "StorageRef",
+          "kind": "struct",
+          "type": "StorageBase",
+          "doc": "Handle to a non owned storage\n\n@cat resource\n\n@sa StorageBase\n@sa Storage",
+          "entries": {
+            "StorageBase::StorageBase": {
+              "kind": "alias",
+              "name": "StorageBase::StorageBase",
+              "doc": ""
+            },
+            "StorageRef": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const StorageRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Copy constructor.",
+                "hints": {
+                  "init": [
+                    "StorageBase(other.get())"
+                  ]
+                },
+                "name": "StorageRef"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "StorageRef &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "init": [
+                    "StorageBase(other.release())"
+                  ]
+                },
+                "name": "StorageRef"
+              }
+            ],
+            "~StorageRef": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "proto": true,
+              "constexpr": true,
+              "doc": "Default constructor",
+              "hints": {
+                "default": true
+              },
+              "name": "~StorageRef"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "StorageRef &",
+              "parameters": [
+                {
+                  "type": "StorageRef",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            },
+            "reset": {
+              "kind": "function",
+              "name": "reset",
+              "type": "bool",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "newResource",
+                  "type": "SDL_Storage *",
+                  "default": "{}"
+                }
+              ],
+              "doc": "Closes and frees a storage container.\n\n@param storage a storage container to close.\n@returns true if the container was freed with no errors, false otherwise;\n         call GetError() for more information. Even if the function\n         returns an error, the container data will be freed; the error is\n         only for informational purposes.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.StorageBase\n@sa StorageBase.StorageBase\n@sa StorageBase.StorageBase\n@sa StorageBase.StorageBase",
+              "hints": {
+                "body": "return SDL_CloseStorage(release(newResource));"
+              }
+            },
+            "Close": {
+              "doc": "Closes and frees a storage container.\n\n@param storage a storage container to close.\n@returns true if the container was freed with no errors, false otherwise;\n         call GetError() for more information. Even if the function\n         returns an error, the container data will be freed; the error is\n         only for informational purposes.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.StorageBase\n@sa StorageBase.StorageBase\n@sa StorageBase.StorageBase\n@sa StorageBase.StorageBase",
+              "name": "Close",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_CloseStorage",
+              "static": false
+            }
+          }
+        },
+        "Storage": {
+          "name": "Storage",
+          "kind": "struct",
+          "type": "StorageRef",
+          "doc": "Handle to an owned storage\n\n@cat resource\n\n@sa StorageBase\n@sa StorageRef",
+          "entries": {
+            "StorageRef::StorageRef": {
+              "kind": "alias",
+              "name": "StorageRef::StorageRef",
+              "doc": ""
+            },
+            "Storage": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Storage *",
+                    "name": "resource",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Constructs from the underlying resource.",
+                "hints": {
+                  "init": [
+                    "StorageRef(resource)"
+                  ]
+                },
+                "name": "Storage"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Storage &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "Storage",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "Storage &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Move constructor.",
+                "hints": {
+                  "default": true
+                },
+                "name": "Storage"
+              }
+            ],
+            "~Storage": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Frees up resource when object goes out of scope.",
+              "hints": {
+                "body": "reset();"
+              },
+              "name": "~Storage"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Storage &",
+              "parameters": [
+                {
+                  "type": "Storage",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "reset(other.release());\nreturn *this;"
+              },
+              "name": "operator="
+            }
+          }
         }
       }
     },
@@ -34493,7 +35106,7 @@
           "sourceName": "SDL_FLT_EPSILON"
         },
         "SDL_INIT_INTERFACE": {
-          "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nIOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = IOStreamBase.IOStreamBase(&iface, nullptr);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nIOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = IOStreamBase.IOStreamBase(&iface, nullptr);\n```\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa IOStreamInterface\n@sa SDL_StorageInterface\n@sa SDL_VirtualJoystickDesc",
+          "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nIOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = IOStreamBase.IOStreamBase(&iface, nullptr);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nIOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = IOStreamBase.IOStreamBase(&iface, nullptr);\n```\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa IOStreamInterface\n@sa StorageInterface\n@sa SDL_VirtualJoystickDesc",
           "name": "SDL_INIT_INTERFACE",
           "kind": "def",
           "parameters": [

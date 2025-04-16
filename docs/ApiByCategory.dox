@@ -83,7 +83,7 @@ Category                 | Header
 Category                 | Header
 ------------------------ | --------------------
 @ref CategoryFilesystem  | SDL3pp_filesystem.h
-Storage Abstraction      | SDL3pp_storage.h
+@ref CategoryStorage     | SDL3pp_storage.h
 @ref CategoryIOStream    | SDL3pp_iostream.h
 Async I/O                | SDL3pp_asyncio.h
 
@@ -189,6 +189,7 @@ thread facilities.
 @defgroup CategoriesFileIO File and I/O Abstractions
 @{
 @addtogroup CategoryFilesystem
+@addtogroup CategoryStorage
 @addtogroup CategoryIOStream
 @}
 
