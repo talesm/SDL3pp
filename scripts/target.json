@@ -34884,6 +34884,38 @@
           "type": "Uint8",
           "constexpr": true
         },
+        "Seconds": {
+          "kind": "alias",
+          "name": "Seconds",
+          "type": "std::chrono::duration<float>",
+          "doc": "Duration in seconds (float)."
+        },
+        "ToSeconds": {
+          "kind": "function",
+          "name": "ToSeconds",
+          "type": "float",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "std::chrono::duration<float>",
+              "name": "duration"
+            }
+          ],
+          "doc": "Converts a time duration to seconds (float)."
+        },
+        "FromSeconds": {
+          "kind": "function",
+          "name": "FromSeconds",
+          "type": "Seconds",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "float",
+              "name": "duration"
+            }
+          ],
+          "doc": "Converts a float to seconds representation."
+        },
         "Time": {
           "doc": "SDL times are signed, 64-bit integers representing nanoseconds since the\nUnix epoch (Jan 1, 1970).\n\nThey can be converted between POSIX time_t values with Time.ToPosix()\nand Time.FromPosix(), and between Windows FILETIME values with\nTime.ToWindows() and Time.FromWindows().\n\n@since This macro is available since SDL 3.2.0.\n\n@sa MAX_SINT64\n@sa MIN_SINT64",
           "name": "Time",
@@ -35051,6 +35083,29 @@
               "sourceName": "SDL_TimeToWindows",
               "immutable": true,
               "proto": true
+            },
+            "ToSeconds": {
+              "kind": "function",
+              "name": "ToSeconds",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Converts a time to seconds (float) since epoch."
+            },
+            "FromSeconds": {
+              "kind": "function",
+              "name": "FromSeconds",
+              "type": "Time",
+              "constexpr": true,
+              "static": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "interval"
+                }
+              ],
+              "doc": "Converts a time to seconds (float) since epoch."
             },
             "operator+=": {
               "kind": "function",

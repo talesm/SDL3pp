@@ -4674,6 +4674,53 @@ const transform = {
           }
         }
       },
+      includeBefore: {
+        "SDL_Time": [{
+          kind: "alias",
+          name: "Seconds",
+          type: "std::chrono::duration<float>",
+          doc: "Duration in seconds (float)."
+        }, {
+          kind: "function",
+          name: "ToSeconds",
+          type: "float",
+          constexpr: true,
+          parameters: [{
+            type: "std::chrono::duration<float>",
+            name: "duration"
+          }],
+          doc: "Converts a time duration to seconds (float)."
+        }, {
+          kind: "function",
+          name: "FromSeconds",
+          type: "Seconds",
+          constexpr: true,
+          parameters: [{
+            type: "float",
+            name: "duration"
+          }],
+          doc: "Converts a float to seconds representation."
+        }, {
+          kind: "function",
+          name: "Time.ToSeconds",
+          type: "float",
+          constexpr: true,
+          immutable: true,
+          parameters: [],
+          doc: "Converts a time to seconds (float) since epoch."
+        }, {
+          kind: "function",
+          name: "Time.FromSeconds",
+          type: "Time",
+          constexpr: true,
+          static: true,
+          parameters: [{
+            type: "float",
+            name: "interval"
+          }],
+          doc: "Converts a time to seconds (float) since epoch."
+        }],
+      },
       resources: {
         "SDL_Environment": {
           entries: {
@@ -4703,9 +4750,9 @@ const transform = {
       },
       transform: {
         "SDL_Time": {
-          "kind": "struct",
-          "type": "",
-          "entries": {
+          kind: "struct",
+          type: "",
+          entries: {
             "m_value": {
               "kind": "var",
               "type": "std::chrono::nanoseconds"
@@ -4780,6 +4827,8 @@ const transform = {
             "ToPosix": {},
             "FromWindows": {},
             "ToWindows": {},
+            "ToSeconds": {},
+            "FromSeconds": {},
             "operator+=": {
               "kind": "function",
               "type": "Time &",

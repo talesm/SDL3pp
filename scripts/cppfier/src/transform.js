@@ -34,9 +34,10 @@ function transformApi(config) {
       fileConfig.ignoreEntries?.forEach(s => context.blacklist.add(s));
       if (!fileConfig.transform) fileConfig.transform = {};
       if (!fileConfig.definitionPrefix) fileConfig.definitionPrefix = context.definitionPrefix;
+      if (!fileConfig.includeBefore) fileConfig.includeBefore = {};
       if (!fileConfig.includeAfter) fileConfig.includeAfter = {};
     } else {
-      fileTransformMap[sourceName] = { transform: {}, definitionPrefix: context.definitionPrefix, includeAfter: {} };
+      fileTransformMap[sourceName] = { transform: {}, definitionPrefix: context.definitionPrefix, includeAfter: {}, includeBefore: {} };
     }
   }
 
@@ -204,12 +205,15 @@ function transformEntries(sourceEntries, file, context) {
   const targetEntries = {};
   const transformMap = file.transform;
   const defPrefix = file.definitionPrefix;
+  const includeBefore = file.includeBefore;
   const includeAfter = file.includeAfter;
 
+  insertEntryAndCheck(targetEntries, includeBefore.__begin ?? [], context, file);
   insertEntryAndCheck(targetEntries, includeAfter.__begin ?? [], context, file);
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (context.blacklist.has(sourceName)) continue;
+    insertEntryAndCheck(targetEntries, includeBefore[sourceName] ?? [], context, file);
     let targetName = transformName(sourceName, context);
     if (Array.isArray(sourceEntry)) {
       const targetDelta = transformMap[sourceName];
@@ -243,6 +247,7 @@ function transformEntries(sourceEntries, file, context) {
     }
     insertEntryAndCheck(targetEntries, includeAfter[sourceName] ?? [], context, file);
   }
+  insertEntryAndCheck(targetEntries, includeBefore.__end ?? [], context, file);
   insertEntryAndCheck(targetEntries, includeAfter.__end ?? [], context, file);
 
   return targetEntries;

@@ -637,7 +637,7 @@ struct FPoint : SDL_FPoint
    * @returns Reference to self
    *
    */
-  constexpr FPoint& operator+=(const Point& other)
+  constexpr FPoint& operator+=(const FPoint& other)
   {
     x += other.x;
     y += other.y;
@@ -652,7 +652,7 @@ struct FPoint : SDL_FPoint
    * @returns Reference to self
    *
    */
-  constexpr FPoint& operator-=(const Point& other)
+  constexpr FPoint& operator-=(const FPoint& other)
   {
     x -= other.x;
     y -= other.y;
@@ -682,7 +682,7 @@ struct FPoint : SDL_FPoint
    * @returns Reference to self
    *
    */
-  constexpr FPoint& operator/=(const Point& other)
+  constexpr FPoint& operator/=(const FPoint& other)
   {
     x /= other.x;
     y /= other.y;

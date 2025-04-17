@@ -93,6 +93,7 @@ export interface ApiFileTransform {
   name?: string;
   doc?: string;
   ignoreEntries?: string[];
+  includeBefore?: ApiEntryTransformMap;
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;

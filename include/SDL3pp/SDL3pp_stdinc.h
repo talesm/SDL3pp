@@ -210,6 +210,24 @@ constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
 constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 
 /**
+ * Duration in seconds (float).
+ */
+using Seconds = std::chrono::duration<float>;
+
+/**
+ * Converts a time duration to seconds (float).
+ */
+constexpr float ToSeconds(std::chrono::duration<float> duration)
+{
+  return duration.count();
+}
+
+/**
+ * Converts a float to seconds representation.
+ */
+constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
+
+/**
  * SDL times are signed, 64-bit integers representing nanoseconds since the
  * Unix epoch (Jan 1, 1970).
  *
@@ -268,6 +286,20 @@ public:
   static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
 
   void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
+
+  /**
+   * Converts a time to seconds (float) since epoch.
+   */
+  constexpr float ToSeconds() const { return Seconds(m_value).count(); }
+
+  /**
+   * Converts a time to seconds (float) since epoch.
+   */
+  static constexpr Time FromSeconds(float interval)
+  {
+    return std::chrono::duration_cast<std::chrono::nanoseconds>(
+      Seconds(interval));
+  }
 
   /// Increment time
   constexpr Time& operator+=(std::chrono::nanoseconds interval)
