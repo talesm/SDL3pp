@@ -106,12 +106,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a81661b4ad54ba892198df89bec69e7e1" id="r_a81661b4ad54ba892198df89bec69e7e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a81661b4ad54ba892198df89bec69e7e1">SurfaceBase</a> (<a class="el" href="structSDL_1_1IOStreamBase.html">IOStreamBase</a> &amp;src)</td></tr>
 <tr class="memdesc:a81661b4ad54ba892198df89bec69e7e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> into a software surface.  <br /></td></tr>
 <tr class="separator:a81661b4ad54ba892198df89bec69e7e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09b787174b2a94604d35a03ea57e5e2f" id="r_a09b787174b2a94604d35a03ea57e5e2f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a09b787174b2a94604d35a03ea57e5e2f">SurfaceBase</a> (int width, int height, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format)</td></tr>
-<tr class="memdesc:a09b787174b2a94604d35a03ea57e5e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format.  <br /></td></tr>
-<tr class="separator:a09b787174b2a94604d35a03ea57e5e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cd2f24910663484430f799d49eb55f8" id="r_a2cd2f24910663484430f799d49eb55f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a2cd2f24910663484430f799d49eb55f8">SurfaceBase</a> (int width, int height, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, void *pixels, int pitch)</td></tr>
-<tr class="memdesc:a2cd2f24910663484430f799d49eb55f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format and existing pixel data.  <br /></td></tr>
-<tr class="separator:a2cd2f24910663484430f799d49eb55f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9152ae43a50e7d8755cc5e51562119b1" id="r_a9152ae43a50e7d8755cc5e51562119b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a9152ae43a50e7d8755cc5e51562119b1">SurfaceBase</a> (const SDL_Point &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format)</td></tr>
+<tr class="memdesc:a9152ae43a50e7d8755cc5e51562119b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format.  <br /></td></tr>
+<tr class="separator:a9152ae43a50e7d8755cc5e51562119b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5fbf52c905401bff2b134c66a975652" id="r_ad5fbf52c905401bff2b134c66a975652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#ad5fbf52c905401bff2b134c66a975652">SurfaceBase</a> (const SDL_Point &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, void *pixels, int pitch)</td></tr>
+<tr class="memdesc:ad5fbf52c905401bff2b134c66a975652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format and existing pixel data.  <br /></td></tr>
+<tr class="separator:ad5fbf52c905401bff2b134c66a975652"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70f2efff06c80d4f22eb8aa0c69e3c58" id="r_a70f2efff06c80d4f22eb8aa0c69e3c58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a70f2efff06c80d4f22eb8aa0c69e3c58">GetProperties</a> () const</td></tr>
 <tr class="memdesc:a70f2efff06c80d4f22eb8aa0c69e3c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a surface.  <br /></td></tr>
 <tr class="separator:a70f2efff06c80d4f22eb8aa0c69e3c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -493,8 +493,8 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 
 </div>
 </div>
-<a id="a09b787174b2a94604d35a03ea57e5e2f" name="a09b787174b2a94604d35a03ea57e5e2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09b787174b2a94604d35a03ea57e5e2f">&#9670;&#160;</a></span>SurfaceBase() <span class="overload">[3/4]</span></h2>
+<a id="a9152ae43a50e7d8755cc5e51562119b1" name="a9152ae43a50e7d8755cc5e51562119b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9152ae43a50e7d8755cc5e51562119b1">&#9670;&#160;</a></span>SurfaceBase() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,14 +505,8 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
         <tr>
           <td class="memname">SDL::SurfaceBase::SurfaceBase </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>width</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>height</em>, </td>
+          <td class="paramtype">const SDL_Point &amp;&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -535,8 +529,7 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <p>The pixels of the new surface are initialized to zero.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">width</td><td>the width of the surface. </td></tr>
-    <tr><td class="paramname">height</td><td>the height of the surface. </td></tr>
+    <tr><td class="paramname">size</td><td>the width and height of the surface. </td></tr>
     <tr><td class="paramname">format</td><td>the <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> for the new surface's pixel format. </td></tr>
   </table>
   </dd>
@@ -547,8 +540,8 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 
 </div>
 </div>
-<a id="a2cd2f24910663484430f799d49eb55f8" name="a2cd2f24910663484430f799d49eb55f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cd2f24910663484430f799d49eb55f8">&#9670;&#160;</a></span>SurfaceBase() <span class="overload">[4/4]</span></h2>
+<a id="ad5fbf52c905401bff2b134c66a975652" name="ad5fbf52c905401bff2b134c66a975652"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5fbf52c905401bff2b134c66a975652">&#9670;&#160;</a></span>SurfaceBase() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -559,14 +552,8 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
         <tr>
           <td class="memname">SDL::SurfaceBase::SurfaceBase </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>width</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>height</em>, </td>
+          <td class="paramtype">const SDL_Point &amp;&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -603,8 +590,7 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <p>You may pass nullptr for pixels and 0 for pitch to create a surface that you will fill in with valid values later.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">width</td><td>the width of the surface. </td></tr>
-    <tr><td class="paramname">height</td><td>the height of the surface. </td></tr>
+    <tr><td class="paramname">size</td><td>the width and height of the surface. </td></tr>
     <tr><td class="paramname">format</td><td>the <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> for the new surface's pixel format. </td></tr>
     <tr><td class="paramname">pixels</td><td>a pointer to existing pixel data. </td></tr>
     <tr><td class="paramname">pitch</td><td>the number of bytes between each row, including padding. </td></tr>

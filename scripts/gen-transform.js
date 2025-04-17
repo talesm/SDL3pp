@@ -4345,7 +4345,27 @@ const transform = {
                 }
               ]
             }],
-            "SDL_CreateTexture": "ctor",
+            "SDL_CreateTexture": {
+              name: "ctor",
+              parameters: [
+                {
+                  name: "renderer",
+                  type: "RendererBase &"
+                },
+                {
+                  name: "format",
+                  type: "PixelFormat"
+                },
+                {
+                  name: "access",
+                  type: "TextureAccess"
+                },
+                {
+                  name: "size",
+                  type: "const SDL_Point &"
+                }
+              ]
+            },
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
             "SDL_GetTextureProperties": "immutable",
@@ -5411,8 +5431,40 @@ const transform = {
                 name: "src"
               }],
             }],
-            "SDL_CreateSurface": "ctor",
-            "SDL_CreateSurfaceFrom": "ctor",
+            "SDL_CreateSurface": {
+              name: "ctor",
+              parameters: [
+                {
+                  name: "size",
+                  type: "const SDL_Point &"
+                },
+                {
+                  name: "format",
+                  type: "PixelFormat"
+                }
+              ]
+            },
+            "SDL_CreateSurfaceFrom": {
+              name: "ctor",
+              parameters: [
+                {
+                  name: "size",
+                  type: "const SDL_Point &"
+                },
+                {
+                  name: "format",
+                  type: "PixelFormat"
+                },
+                {
+                  name: "pixels",
+                  type: "void *"
+                },
+                {
+                  name: "pitch",
+                  type: "int"
+                }
+              ]
+            },
             "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",
             "SDL_GetSurfaceColorspace": "immutable",

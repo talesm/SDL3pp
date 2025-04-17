@@ -178,8 +178,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * The pixels of the new surface are initialized to zero.
    *
-   * @param width the width of the surface.
-   * @param height the height of the surface.
+   * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    * @post the new SurfaceBase structure that is created or nullptr on failure;
    *       call GetError() for more information.
@@ -188,8 +187,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  SurfaceBase(int width, int height, PixelFormat format)
-    : Resource(SDL_CreateSurface(width, height, format))
+  SurfaceBase(const SDL_Point& size, PixelFormat format)
+    : Resource(SDL_CreateSurface(size.x, size.y, format))
   {
   }
 
@@ -206,8 +205,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * You may pass nullptr for pixels and 0 for pitch to create a surface that
    * you will fill in with valid values later.
    *
-   * @param width the width of the surface.
-   * @param height the height of the surface.
+   * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
@@ -218,12 +216,11 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  SurfaceBase(int width,
-              int height,
+  SurfaceBase(const SDL_Point& size,
               PixelFormat format,
               void* pixels,
               int pitch)
-    : Resource(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch))
+    : Resource(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch))
   {
   }
 

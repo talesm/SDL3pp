@@ -2085,8 +2085,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param renderer the rendering context.
    * @param format one of the enumerated values in PixelFormat.
    * @param access one of the enumerated values in TextureAccess.
-   * @param w the width of the texture in pixels.
-   * @param h the height of the texture in pixels.
+   * @param size the width and height of the texture in pixels.
    * @post the created texture is convertible to true on success or false on
    *       failure; call GetError() for more information.
    *
@@ -2100,9 +2099,9 @@ struct TextureBase : Resource<SDL_Texture*>
   TextureBase(RendererBase& renderer,
               PixelFormat format,
               TextureAccess access,
-              int w,
-              int h)
-    : Resource(SDL_CreateTexture(renderer.get(), format, access, w, h))
+              const SDL_Point& size)
+    : Resource(
+        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y))
   {
   }
 

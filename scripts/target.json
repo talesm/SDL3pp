@@ -9676,15 +9676,12 @@
                     "type": "TextureAccess"
                   },
                   {
-                    "name": "w",
-                    "type": "int"
-                  },
-                  {
-                    "name": "h",
-                    "type": "int"
+                    "name": "size",
+                    "type": "const SDL_Point &"
                   }
                 ],
-                "sourceName": "SDL_CreateTexture"
+                "sourceName": "SDL_CreateTexture",
+                "proto": false
               },
               {
                 "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe TextureAccess hint for the created texture is\n`TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nprop::Texture.FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SurfaceBase structure containing pixel data used to fill\n               the texture.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureBase.TextureBase\n@sa TextureBase.TextureBase\n@sa TextureRef.reset",
@@ -16488,19 +16485,16 @@
                 "type": "",
                 "parameters": [
                   {
-                    "name": "width",
-                    "type": "int"
-                  },
-                  {
-                    "name": "height",
-                    "type": "int"
+                    "name": "size",
+                    "type": "const SDL_Point &"
                   },
                   {
                     "name": "format",
                     "type": "PixelFormat"
                   }
                 ],
-                "sourceName": "SDL_CreateSurface"
+                "sourceName": "SDL_CreateSurface",
+                "proto": false
               },
               {
                 "doc": "Allocate a new surface with a specific pixel format and existing pixel\ndata.\n\nNo copy is made of the pixel data. Pixel data is not managed automatically;\nyou must free the surface before you free the pixel data.\n\nPitch is the offset in bytes from one row of pixels to the next, e.g.\n`width*4` for `PIXELFORMAT_RGBA8888`.\n\nYou may pass nullptr for pixels and 0 for pitch to create a surface that you\nwill fill in with valid values later.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@param pixels a pointer to existing pixel data.\n@param pitch the number of bytes between each row, including padding.\n@post the new SurfaceBase structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SurfaceBase.SurfaceBase\n@sa SurfaceRef.reset",
@@ -16509,12 +16503,8 @@
                 "type": "",
                 "parameters": [
                   {
-                    "name": "width",
-                    "type": "int"
-                  },
-                  {
-                    "name": "height",
-                    "type": "int"
+                    "name": "size",
+                    "type": "const SDL_Point &"
                   },
                   {
                     "name": "format",
@@ -16529,7 +16519,8 @@
                     "type": "int"
                   }
                 ],
-                "sourceName": "SDL_CreateSurfaceFrom"
+                "sourceName": "SDL_CreateSurfaceFrom",
+                "proto": false
               }
             ],
             "GetProperties": {
