@@ -2143,6 +2143,42 @@ inline void* bsearch_r(const void* key,
 inline int abs(int x) { return SDL_abs(x); }
 
 /**
+ * Compute the absolute value of `x`
+ *
+ * Domain: `-INF <= x <= INF`
+ *
+ * Range: `0 <= y <= INF`
+ *
+ * @param x floating point value to use as the magnitude.
+ * @returns the absolute value of `x`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa abs
+ */
+inline double abs(double x) { return SDL_fabs(x); }
+
+/**
+ * Compute the absolute value of `x`
+ *
+ * Domain: `-INF <= x <= INF`
+ *
+ * Range: `0 <= y <= INF`
+ *
+ * @param x floating point value to use as the magnitude.
+ * @returns the absolute value of `x`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa abs
+ */
+inline float abs(float x) { return SDL_fabsf(x); }
+
+/**
  * Return the lesser of two values.
  *
  * This is a helper macro that might be more clear than writing out the
@@ -4614,9 +4650,6 @@ public:
  *
  * Range: `0 <= y <= Pi`
  *
- * This function operates on double-precision floating point values, use
- * acosf for single-precision floats.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4629,7 +4662,6 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa acosf
  * @sa asin
  * @sa cos
  */
@@ -4644,9 +4676,6 @@ inline double acos(double x) { return SDL_acos(x); }
  *
  * Range: `0 <= y <= Pi`
  *
- * This function operates on single-precision floating point values, use
- * acos for double-precision floats.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4659,11 +4688,10 @@ inline double acos(double x) { return SDL_acos(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa acos
- * @sa asinf
- * @sa cosf
+ * @sa asin
+ * @sa cos
  */
-inline float acosf(float x) { return SDL_acosf(x); }
+inline float acos(float x) { return SDL_acosf(x); }
 
 /**
  * Compute the arc sine of `x`.
@@ -4673,9 +4701,6 @@ inline float acosf(float x) { return SDL_acosf(x); }
  * Domain: `-1 <= x <= 1`
  *
  * Range: `-Pi/2 <= y <= Pi/2`
- *
- * This function operates on double-precision floating point values, use
- * asinf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4689,7 +4714,6 @@ inline float acosf(float x) { return SDL_acosf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa asinf
  * @sa acos
  * @sa sin
  */
@@ -4719,11 +4743,10 @@ inline double asin(double x) { return SDL_asin(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa asin
- * @sa acosf
- * @sa sinf
+ * @sa acos
+ * @sa sin
  */
-inline float asinf(float x) { return SDL_asinf(x); }
+inline float asin(float x) { return SDL_asinf(x); }
 
 /**
  * Compute the arc tangent of `x`.
@@ -4733,9 +4756,6 @@ inline float asinf(float x) { return SDL_asinf(x); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-Pi/2 <= y <= Pi/2`
- *
- * This function operates on double-precision floating point values, use
- * atanf for single-precision floats.
  *
  * To calculate the arc tangent of y / x, use atan2.
  *
@@ -4751,7 +4771,6 @@ inline float asinf(float x) { return SDL_asinf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa atanf
  * @sa atan2
  * @sa tan
  */
@@ -4765,9 +4784,6 @@ inline double atan(double x) { return SDL_atan(x); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-Pi/2 <= y <= Pi/2`
- *
- * This function operates on single-precision floating point values, use
- * atan for dboule-precision floats.
  *
  * To calculate the arc tangent of y / x, use atan2f.
  *
@@ -4783,11 +4799,9 @@ inline double atan(double x) { return SDL_atan(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa atan
- * @sa atan2f
- * @sa tanf
+ * @sa atan2
  */
-inline float atanf(float x) { return SDL_atanf(x); }
+inline float atan(float x) { return SDL_atanf(x); }
 
 /**
  * Compute the arc tangent of `y / x`, using the signs of x and y to adjust
@@ -4803,8 +4817,6 @@ inline float atanf(float x) { return SDL_atanf(x); }
  * This function operates on double-precision floating point values, use
  * atan2f for single-precision floats.
  *
- * To calculate the arc tangent of a single value, use atan.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4819,7 +4831,6 @@ inline float atanf(float x) { return SDL_atanf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa atan2f
  * @sa atan
  * @sa tan
  */
@@ -4839,8 +4850,6 @@ inline double atan2(double y, double x) { return SDL_atan2(y, x); }
  * This function operates on single-precision floating point values, use
  * atan2 for double-precision floats.
  *
- * To calculate the arc tangent of a single value, use atanf.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -4855,11 +4864,10 @@ inline double atan2(double y, double x) { return SDL_atan2(y, x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa atan2
  * @sa atan
  * @sa tan
  */
-inline float atan2f(float y, float x) { return SDL_atan2f(y, x); }
+inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
 
 /**
  * Compute the ceiling of `x`.
@@ -4871,9 +4879,6 @@ inline float atan2f(float y, float x) { return SDL_atan2f(y, x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * ceilf for single-precision floats.
- *
  * @param x floating point value.
  * @returns the ceiling of `x`.
  *
@@ -4881,7 +4886,6 @@ inline float atan2f(float y, float x) { return SDL_atan2f(y, x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa ceilf
  * @sa floor
  * @sa trunc
  * @sa round
@@ -4899,9 +4903,6 @@ inline double ceil(double x) { return SDL_ceil(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on single-precision floating point values, use
- * ceil for double-precision floats.
- *
  * @param x floating point value.
  * @returns the ceiling of `x`.
  *
@@ -4909,13 +4910,12 @@ inline double ceil(double x) { return SDL_ceil(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa ceil
- * @sa floorf
- * @sa truncf
- * @sa roundf
- * @sa lroundf
+ * @sa floor
+ * @sa trunc
+ * @sa round
+ * @sa lround
  */
-inline float ceilf(float x) { return SDL_ceilf(x); }
+inline float ceil(float x) { return SDL_ceilf(x); }
 
 /**
  * Copy the sign of one floating-point value to another.
@@ -4926,9 +4926,6 @@ inline float ceilf(float x) { return SDL_ceilf(x); }
  *
  * Range: `-INF <= z <= INF`
  *
- * This function operates on double-precision floating point values, use
- * copysignf for single-precision floats.
- *
  * @param x floating point value to use as the magnitude.
  * @param y floating point value to use as the sign.
  * @returns the floating point value with the sign of y and the magnitude of
@@ -4938,8 +4935,7 @@ inline float ceilf(float x) { return SDL_ceilf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa copysignf
- * @sa fabs
+ * @sa abs
  */
 inline double copysign(double x, double y) { return SDL_copysign(x, y); }
 
@@ -4952,9 +4948,6 @@ inline double copysign(double x, double y) { return SDL_copysign(x, y); }
  *
  * Range: `-INF <= z <= INF`
  *
- * This function operates on single-precision floating point values, use
- * copysign for double-precision floats.
- *
  * @param x floating point value to use as the magnitude.
  * @param y floating point value to use as the sign.
  * @returns the floating point value with the sign of y and the magnitude of
@@ -4964,10 +4957,9 @@ inline double copysign(double x, double y) { return SDL_copysign(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa copysign
- * @sa fabsf
+ * @sa abs
  */
-inline float copysignf(float x, float y) { return SDL_copysignf(x, y); }
+inline float copysign(float x, float y) { return SDL_copysignf(x, y); }
 
 /**
  * Compute the cosine of `x`.
@@ -4975,9 +4967,6 @@ inline float copysignf(float x, float y) { return SDL_copysignf(x, y); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-1 <= y <= 1`
- *
- * This function operates on double-precision floating point values, use
- * cosf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -4991,7 +4980,6 @@ inline float copysignf(float x, float y) { return SDL_copysignf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa cosf
  * @sa acos
  * @sa sin
  */
@@ -5004,9 +4992,6 @@ inline double cos(double x) { return SDL_cos(x); }
  *
  * Range: `-1 <= y <= 1`
  *
- * This function operates on single-precision floating point values, use
- * cos for double-precision floats.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5019,26 +5004,22 @@ inline double cos(double x) { return SDL_cos(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa cos
- * @sa acosf
- * @sa sinf
+ * @sa acos
+ * @sa sin
  */
-inline float cosf(float x) { return SDL_cosf(x); }
+inline float cos(float x) { return SDL_cosf(x); }
 
 /**
  * Compute the exponential of `x`.
  *
  * The definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the
- * natural logarithm. The inverse is the natural logarithm, log.
+ * natural logarithm. The inverse is the natural logarithm, log().
  *
  * Domain: `-INF <= x <= INF`
  *
  * Range: `0 <= y <= INF`
  *
  * The output will overflow if `exp(x)` is too large to be represented.
- *
- * This function operates on double-precision floating point values, use
- * expf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5052,7 +5033,6 @@ inline float cosf(float x) { return SDL_cosf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa expf
  * @sa log
  */
 inline double exp(double x) { return SDL_exp(x); }
@@ -5061,16 +5041,13 @@ inline double exp(double x) { return SDL_exp(x); }
  * Compute the exponential of `x`.
  *
  * The definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the
- * natural logarithm. The inverse is the natural logarithm, logf.
+ * natural logarithm. The inverse is the natural logarithm, log().
  *
  * Domain: `-INF <= x <= INF`
  *
  * Range: `0 <= y <= INF`
  *
  * The output will overflow if `exp(x)` is too large to be represented.
- *
- * This function operates on single-precision floating point values, use
- * exp for double-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5084,52 +5061,9 @@ inline double exp(double x) { return SDL_exp(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa exp
- * @sa logf
+ * @sa log
  */
-inline float expf(float x) { return SDL_expf(x); }
-
-/**
- * Compute the absolute value of `x`
- *
- * Domain: `-INF <= x <= INF`
- *
- * Range: `0 <= y <= INF`
- *
- * This function operates on double-precision floating point values, use
- * fabsf for single-precision floats.
- *
- * @param x floating point value to use as the magnitude.
- * @returns the absolute value of `x`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa fabsf
- */
-inline double fabs(double x) { return SDL_fabs(x); }
-
-/**
- * Compute the absolute value of `x`
- *
- * Domain: `-INF <= x <= INF`
- *
- * Range: `0 <= y <= INF`
- *
- * This function operates on single-precision floating point values, use
- * fabs for double-precision floats.
- *
- * @param x floating point value to use as the magnitude.
- * @returns the absolute value of `x`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa fabs
- */
-inline float fabsf(float x) { return SDL_fabsf(x); }
+inline float exp(float x) { return SDL_expf(x); }
 
 /**
  * Compute the floor of `x`.
@@ -5141,9 +5075,6 @@ inline float fabsf(float x) { return SDL_fabsf(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * floorf for single-precision floats.
- *
  * @param x floating point value.
  * @returns the floor of `x`.
  *
@@ -5151,7 +5082,6 @@ inline float fabsf(float x) { return SDL_fabsf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa floorf
  * @sa ceil
  * @sa trunc
  * @sa round
@@ -5169,9 +5099,6 @@ inline double floor(double x) { return SDL_floor(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on single-precision floating point values, use
- * floor for double-precision floats.
- *
  * @param x floating point value.
  * @returns the floor of `x`.
  *
@@ -5179,13 +5106,12 @@ inline double floor(double x) { return SDL_floor(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa floor
- * @sa ceilf
- * @sa truncf
- * @sa roundf
- * @sa lroundf
+ * @sa ceil
+ * @sa trunc
+ * @sa round
+ * @sa lround
  */
-inline float floorf(float x) { return SDL_floorf(x); }
+inline float floor(float x) { return SDL_floorf(x); }
 
 /**
  * Truncate `x` to an integer.
@@ -5197,9 +5123,6 @@ inline float floorf(float x) { return SDL_floorf(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * truncf for single-precision floats.
- *
  * @param x floating point value.
  * @returns `x` truncated to an integer.
  *
@@ -5207,7 +5130,6 @@ inline float floorf(float x) { return SDL_floorf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa truncf
  * @sa fmod
  * @sa ceil
  * @sa floor
@@ -5226,9 +5148,6 @@ inline double trunc(double x) { return SDL_trunc(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on single-precision floating point values, use
- * trunc for double-precision floats.
- *
  * @param x floating point value.
  * @returns `x` truncated to an integer.
  *
@@ -5236,14 +5155,13 @@ inline double trunc(double x) { return SDL_trunc(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa trunc
- * @sa fmodf
- * @sa ceilf
- * @sa floorf
- * @sa roundf
- * @sa lroundf
+ * @sa fmod
+ * @sa ceil
+ * @sa floor
+ * @sa round
+ * @sa lround
  */
-inline float truncf(float x) { return SDL_truncf(x); }
+inline float trunc(float x) { return SDL_truncf(x); }
 
 /**
  * Return the floating-point remainder of `x / y`
@@ -5254,9 +5172,6 @@ inline float truncf(float x) { return SDL_truncf(x); }
  *
  * Range: `-y <= z <= y`
  *
- * This function operates on double-precision floating point values, use
- * fmodf for single-precision floats.
- *
  * @param x the numerator.
  * @param y the denominator. Must not be 0.
  * @returns the remainder of `x / y`.
@@ -5265,7 +5180,6 @@ inline float truncf(float x) { return SDL_truncf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa fmodf
  * @sa modf
  * @sa trunc
  * @sa ceil
@@ -5284,9 +5198,6 @@ inline double fmod(double x, double y) { return SDL_fmod(x, y); }
  *
  * Range: `-y <= z <= y`
  *
- * This function operates on single-precision floating point values, use
- * fmod for double-precision floats.
- *
  * @param x the numerator.
  * @param y the denominator. Must not be 0.
  * @returns the remainder of `x / y`.
@@ -5295,15 +5206,14 @@ inline double fmod(double x, double y) { return SDL_fmod(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa fmod
- * @sa truncf
- * @sa modff
- * @sa ceilf
- * @sa floorf
- * @sa roundf
- * @sa lroundf
+ * @sa trunc
+ * @sa modf
+ * @sa ceil
+ * @sa floor
+ * @sa round
+ * @sa lround
  */
-inline float fmodf(float x, float y) { return SDL_fmodf(x, y); }
+inline float fmod(float x, float y) { return SDL_fmodf(x, y); }
 
 /**
  * Return whether the value is infinity.
@@ -5314,8 +5224,6 @@ inline float fmodf(float x, float y) { return SDL_fmodf(x, y); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa isinff
  */
 inline int isinf(double x) { return SDL_isinf(x); }
 
@@ -5328,10 +5236,8 @@ inline int isinf(double x) { return SDL_isinf(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa isinf
  */
-inline int isinff(float x) { return SDL_isinff(x); }
+inline int isinf(float x) { return SDL_isinff(x); }
 
 /**
  * Return whether the value is NaN.
@@ -5342,8 +5248,6 @@ inline int isinff(float x) { return SDL_isinff(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa isnanf
  */
 inline int isnan(double x) { return SDL_isnan(x); }
 
@@ -5356,10 +5260,8 @@ inline int isnan(double x) { return SDL_isnan(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa isnan
  */
-inline int isnanf(float x) { return SDL_isnanf(x); }
+inline int isnan(float x) { return SDL_isnanf(x); }
 
 /**
  * Compute the natural logarithm of `x`.
@@ -5369,9 +5271,6 @@ inline int isnanf(float x) { return SDL_isnanf(x); }
  * Range: `-INF <= y <= INF`
  *
  * It is an error for `x` to be less than or equal to 0.
- *
- * This function operates on double-precision floating point values, use
- * logf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5385,7 +5284,6 @@ inline int isnanf(float x) { return SDL_isnanf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa logf
  * @sa log10
  * @sa exp
  */
@@ -5400,9 +5298,6 @@ inline double log(double x) { return SDL_log(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
- * This function operates on single-precision floating point values, use
- * log for double-precision floats.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5415,10 +5310,10 @@ inline double log(double x) { return SDL_log(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa log
- * @sa expf
+ * @sa log10
+ * @sa exp
  */
-inline float logf(float x) { return SDL_logf(x); }
+inline float log(float x) { return SDL_logf(x); }
 
 /**
  * Compute the base-10 logarithm of `x`.
@@ -5428,9 +5323,6 @@ inline float logf(float x) { return SDL_logf(x); }
  * Range: `-INF <= y <= INF`
  *
  * It is an error for `x` to be less than or equal to 0.
- *
- * This function operates on double-precision floating point values, use
- * log10f for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5444,7 +5336,6 @@ inline float logf(float x) { return SDL_logf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa log10f
  * @sa log
  * @sa pow
  */
@@ -5459,9 +5350,6 @@ inline double log10(double x) { return SDL_log10(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
- * This function operates on single-precision floating point values, use
- * log10 for double-precision floats.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5474,17 +5362,13 @@ inline double log10(double x) { return SDL_log10(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa log10
- * @sa logf
- * @sa powf
+ * @sa log
+ * @sa pow
  */
-inline float log10f(float x) { return SDL_log10f(x); }
+inline float log10(float x) { return SDL_log10f(x); }
 
 /**
  * Split `x` into integer and fractional parts
- *
- * This function operates on double-precision floating point values, use
- * modff for single-precision floats.
  *
  * @param x floating point value.
  * @param y output pointer to store the integer part of `x`.
@@ -5494,7 +5378,6 @@ inline float log10f(float x) { return SDL_log10f(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa modff
  * @sa trunc
  * @sa fmod
  */
@@ -5503,9 +5386,6 @@ inline double modf(double x, double* y) { return SDL_modf(x, y); }
 /**
  * Split `x` into integer and fractional parts
  *
- * This function operates on single-precision floating point values, use
- * modf for double-precision floats.
- *
  * @param x floating point value.
  * @param y output pointer to store the integer part of `x`.
  * @returns the fractional part of `x`.
@@ -5514,11 +5394,10 @@ inline double modf(double x, double* y) { return SDL_modf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa modf
- * @sa truncf
- * @sa fmodf
+ * @sa trunc
+ * @sa fmod
  */
-inline float modff(float x, float* y) { return SDL_modff(x, y); }
+inline float modf(float x, float* y) { return SDL_modff(x, y); }
 
 /**
  * Raise `x` to the power `y`
@@ -5529,9 +5408,6 @@ inline float modff(float x, float* y) { return SDL_modff(x, y); }
  *
  * If `y` is the base of the natural logarithm (e), consider using exp
  * instead.
- *
- * This function operates on double-precision floating point values, use
- * powf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5546,7 +5422,6 @@ inline float modff(float x, float* y) { return SDL_modff(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa powf
  * @sa exp
  * @sa log
  */
@@ -5562,9 +5437,6 @@ inline double pow(double x, double y) { return SDL_pow(x, y); }
  * If `y` is the base of the natural logarithm (e), consider using exp
  * instead.
  *
- * This function operates on single-precision floating point values, use
- * pow for double-precision floats.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5578,11 +5450,10 @@ inline double pow(double x, double y) { return SDL_pow(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa pow
- * @sa expf
- * @sa logf
+ * @sa exp
+ * @sa log
  */
-inline float powf(float x, float y) { return SDL_powf(x, y); }
+inline float pow(float x, float y) { return SDL_powf(x, y); }
 
 /**
  * Round `x` to the nearest integer.
@@ -5594,10 +5465,6 @@ inline float powf(float x, float y) { return SDL_powf(x, y); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * roundf for single-precision floats. To get the result as an integer
- * type, use lround.
- *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
  *
@@ -5605,7 +5472,6 @@ inline float powf(float x, float y) { return SDL_powf(x, y); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa roundf
  * @sa lround
  * @sa floor
  * @sa ceil
@@ -5623,10 +5489,6 @@ inline double round(double x) { return SDL_round(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on single-precision floating point values, use
- * round for double-precision floats. To get the result as an integer
- * type, use lroundf.
- *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
  *
@@ -5634,13 +5496,12 @@ inline double round(double x) { return SDL_round(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa round
- * @sa lroundf
- * @sa floorf
- * @sa ceilf
- * @sa truncf
+ * @sa lround
+ * @sa floor
+ * @sa ceil
+ * @sa trunc
  */
-inline float roundf(float x) { return SDL_roundf(x); }
+inline float round(float x) { return SDL_roundf(x); }
 
 /**
  * Round `x` to the nearest integer representable as a long
@@ -5652,10 +5513,6 @@ inline float roundf(float x) { return SDL_roundf(x); }
  *
  * Range: `MIN_LONG <= y <= MAX_LONG`
  *
- * This function operates on double-precision floating point values, use
- * lroundf for single-precision floats. To get the result as a
- * floating-point type, use round.
- *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
  *
@@ -5663,7 +5520,6 @@ inline float roundf(float x) { return SDL_roundf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa lroundf
  * @sa round
  * @sa floor
  * @sa ceil
@@ -5681,10 +5537,6 @@ inline long lround(double x) { return SDL_lround(x); }
  *
  * Range: `MIN_LONG <= y <= MAX_LONG`
  *
- * This function operates on single-precision floating point values, use
- * lround for double-precision floats. To get the result as a
- * floating-point type, use roundf.
- *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
  *
@@ -5692,13 +5544,12 @@ inline long lround(double x) { return SDL_lround(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa lround
- * @sa roundf
- * @sa floorf
- * @sa ceilf
- * @sa truncf
+ * @sa round
+ * @sa floor
+ * @sa ceil
+ * @sa trunc
  */
-inline long lroundf(float x) { return SDL_lroundf(x); }
+inline long lround(float x) { return SDL_lroundf(x); }
 
 /**
  * Scale `x` by an integer power of two.
@@ -5709,9 +5560,6 @@ inline long lroundf(float x) { return SDL_lroundf(x); }
  *
  * Range: `-INF <= y <= INF`
  *
- * This function operates on double-precision floating point values, use
- * scalbnf for single-precision floats.
- *
  * @param x floating point value to be scaled.
  * @param n integer exponent.
  * @returns `x * 2^n`.
@@ -5720,7 +5568,6 @@ inline long lroundf(float x) { return SDL_lroundf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa scalbnf
  * @sa pow
  */
 inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
@@ -5734,9 +5581,6 @@ inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
  *
  * Range: `-INF <= y <= INF`
  *
- * This function operates on single-precision floating point values, use
- * scalbn for double-precision floats.
- *
  * @param x floating point value to be scaled.
  * @param n integer exponent.
  * @returns `x * 2^n`.
@@ -5745,10 +5589,9 @@ inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa scalbn
- * @sa powf
+ * @sa pow
  */
-inline float scalbnf(float x, int n) { return SDL_scalbnf(x, n); }
+inline float scalbn(float x, int n) { return SDL_scalbnf(x, n); }
 
 /**
  * Compute the sine of `x`.
@@ -5756,9 +5599,6 @@ inline float scalbnf(float x, int n) { return SDL_scalbnf(x, n); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-1 <= y <= 1`
- *
- * This function operates on double-precision floating point values, use
- * sinf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5772,7 +5612,6 @@ inline float scalbnf(float x, int n) { return SDL_scalbnf(x, n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa sinf
  * @sa asin
  * @sa cos
  */
@@ -5785,9 +5624,6 @@ inline double sin(double x) { return SDL_sin(x); }
  *
  * Range: `-1 <= y <= 1`
  *
- * This function operates on single-precision floating point values, use
- * sin for double-precision floats.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5800,11 +5636,10 @@ inline double sin(double x) { return SDL_sin(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa sin
- * @sa asinf
- * @sa cosf
+ * @sa asin
+ * @sa cos
  */
-inline float sinf(float x) { return SDL_sinf(x); }
+inline float sin(float x) { return SDL_sinf(x); }
 
 /**
  * Compute the square root of `x`.
@@ -5812,9 +5647,6 @@ inline float sinf(float x) { return SDL_sinf(x); }
  * Domain: `0 <= x <= INF`
  *
  * Range: `0 <= y <= INF`
- *
- * This function operates on double-precision floating point values, use
- * sqrtf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5827,8 +5659,6 @@ inline float sinf(float x) { return SDL_sinf(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa sqrtf
  */
 inline double sqrt(double x) { return SDL_sqrt(x); }
 
@@ -5839,9 +5669,6 @@ inline double sqrt(double x) { return SDL_sqrt(x); }
  *
  * Range: `0 <= y <= INF`
  *
- * This function operates on single-precision floating point values, use
- * sqrt for double-precision floats.
- *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
  * the same input on different machines or operating systems, or if SDL is
@@ -5853,10 +5680,8 @@ inline double sqrt(double x) { return SDL_sqrt(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
- *
- * @sa sqrt
  */
-inline float sqrtf(float x) { return SDL_sqrtf(x); }
+inline float sqrt(float x) { return SDL_sqrtf(x); }
 
 /**
  * Compute the tangent of `x`.
@@ -5864,9 +5689,6 @@ inline float sqrtf(float x) { return SDL_sqrtf(x); }
  * Domain: `-INF <= x <= INF`
  *
  * Range: `-INF <= y <= INF`
- *
- * This function operates on double-precision floating point values, use
- * tanf for single-precision floats.
  *
  * This function may use a different approximation across different versions,
  * platforms and configurations. i.e, it can return a different value given
@@ -5880,7 +5702,6 @@ inline float sqrtf(float x) { return SDL_sqrtf(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa tanf
  * @sa sin
  * @sa cos
  * @sa atan
@@ -5910,13 +5731,12 @@ inline double tan(double x) { return SDL_tan(x); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa tan
- * @sa sinf
- * @sa cosf
- * @sa atanf
+ * @sa sin
+ * @sa cos
+ * @sa atan
  * @sa atan2f
  */
-inline float tanf(float x) { return SDL_tanf(x); }
+inline float tan(float x) { return SDL_tanf(x); }
 
 /**
  * An opaque handle representing string encoding conversion state.

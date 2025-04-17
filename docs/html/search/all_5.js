@@ -163,8 +163,7 @@ var searchData=
   ['eventtype_160',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]],
   ['eventwatchhandle_161',['EventWatchHandle',['../classSDL_1_1EventWatchHandle.html',1,'SDL']]],
   ['example_162',['Example',['../index.html#example',1,'']]],
-  ['exp_163',['exp',['../group__CategoryStdinc.html#ga3e4417a78f0393e80fa7645a534a53a3',1,'SDL']]],
-  ['expf_164',['expf',['../group__CategoryStdinc.html#ga5c6a34f6bfb50b176f502a6133880aa8',1,'SDL']]],
-  ['extend_165',['extend',['../structSDL_1_1Rect.html#a5a156963ab44072868b25b5e94c43c9c',1,'SDL::Rect::Extend(unsigned int hAmount, unsigned int vAmount)'],['../structSDL_1_1Rect.html#a8c3b56bb319014397a303c36ff698015',1,'SDL::Rect::Extend(unsigned int amount)'],['../structSDL_1_1FRect.html#acda40231b458b74f6eed23f6bdfa81b8',1,'SDL::FRect::Extend(float amount)'],['../structSDL_1_1FRect.html#a1b96b2a9b1585a3b6b8118426f878ea9',1,'SDL::FRect::Extend(float hAmount, float vAmount)']]],
-  ['extending_20struct_166',['Wrap extending struct',['../wrap-extending-struct.html',1,'DesignNotes']]]
+  ['exp_163',['exp',['../group__CategoryStdinc.html#ga28dae763363f8a8f6ee6cc850dd609e0',1,'SDL::exp(float x)'],['../group__CategoryStdinc.html#ga3e4417a78f0393e80fa7645a534a53a3',1,'SDL::exp(double x)']]],
+  ['extend_164',['extend',['../structSDL_1_1Rect.html#a5a156963ab44072868b25b5e94c43c9c',1,'SDL::Rect::Extend(unsigned int hAmount, unsigned int vAmount)'],['../structSDL_1_1Rect.html#a8c3b56bb319014397a303c36ff698015',1,'SDL::Rect::Extend(unsigned int amount)'],['../structSDL_1_1FRect.html#acda40231b458b74f6eed23f6bdfa81b8',1,'SDL::FRect::Extend(float amount)'],['../structSDL_1_1FRect.html#a1b96b2a9b1585a3b6b8118426f878ea9',1,'SDL::FRect::Extend(float hAmount, float vAmount)']]],
+  ['extending_20struct_165',['Wrap extending struct',['../wrap-extending-struct.html',1,'DesignNotes']]]
 ];

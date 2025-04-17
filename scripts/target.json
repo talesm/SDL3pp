@@ -35796,19 +35796,47 @@
           ],
           "sourceName": "SDL_bsearch_r"
         },
-        "abs": {
-          "doc": "Compute the absolute value of `x`.\n\n@param x an integer value.\n@returns the absolute value of x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "abs",
-          "kind": "function",
-          "type": "int",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "int"
-            }
-          ],
-          "sourceName": "SDL_abs"
-        },
+        "abs": [
+          {
+            "doc": "Compute the absolute value of `x`.\n\n@param x an integer value.\n@returns the absolute value of x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+            "name": "abs",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "int"
+              }
+            ],
+            "sourceName": "SDL_abs"
+          },
+          {
+            "doc": "Compute the absolute value of `x`\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nabs for single-precision floats.\n\n@param x floating point value to use as the magnitude.\n@returns the absolute value of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa abs",
+            "name": "abs",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_fabs"
+          },
+          {
+            "doc": "Compute the absolute value of `x`\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nabs for double-precision floats.\n\n@param x floating point value to use as the magnitude.\n@returns the absolute value of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa abs",
+            "name": "abs",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_fabsf"
+          }
+        ],
         "min": {
           "doc": "Return the lesser of two values.\n\nThis is a helper macro that might be more clear than writing out the\ncomparisons directly, and works with any type that can be compared with the\n`<` operator. However, it double-evaluates both its parameters, so do not\nuse expressions with side-effects here.\n\n@param x the first value to compare.\n@param y the second value to compare.\n@returns the lesser of `x` and `y`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "min",
@@ -37468,678 +37496,698 @@
           "value": "3.141592653589793238462643383279502884F",
           "sourceName": "SDL_PI_F"
         },
-        "acos": {
-          "doc": "Compute the arc cosine of `x`.\n\nThe definition of `y = acos(x)` is `x = cos(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `0 <= y <= Pi`\n\nThis function operates on double-precision floating point values, use\nacosf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc cosine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa acosf\n@sa asin\n@sa cos",
-          "name": "acos",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_acos"
-        },
-        "acosf": {
-          "doc": "Compute the arc cosine of `x`.\n\nThe definition of `y = acos(x)` is `x = cos(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `0 <= y <= Pi`\n\nThis function operates on single-precision floating point values, use\nacos for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc cosine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa acos\n@sa asinf\n@sa cosf",
-          "name": "acosf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_acosf"
-        },
-        "asin": {
-          "doc": "Compute the arc sine of `x`.\n\nThe definition of `y = asin(x)` is `x = sin(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\nasinf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc sine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa asinf\n@sa acos\n@sa sin",
-          "name": "asin",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_asin"
-        },
-        "asinf": {
-          "doc": "Compute the arc sine of `x`.\n\nThe definition of `y = asin(x)` is `x = sin(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\nasin for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc sine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa asin\n@sa acosf\n@sa sinf",
-          "name": "asinf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_asinf"
-        },
-        "atan": {
-          "doc": "Compute the arc tangent of `x`.\n\nThe definition of `y = atan(x)` is `x = tan(y)`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\natanf for single-precision floats.\n\nTo calculate the arc tangent of y / x, use atan2.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc tangent of of `x` in radians, or 0 if `x = 0`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa atanf\n@sa atan2\n@sa tan",
-          "name": "atan",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_atan"
-        },
-        "atanf": {
-          "doc": "Compute the arc tangent of `x`.\n\nThe definition of `y = atan(x)` is `x = tan(y)`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\natan for dboule-precision floats.\n\nTo calculate the arc tangent of y / x, use atan2f.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc tangent of of `x` in radians, or 0 if `x = 0`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa atan\n@sa atan2f\n@sa tanf",
-          "name": "atanf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_atanf"
-        },
-        "atan2": {
-          "doc": "Compute the arc tangent of `y / x`, using the signs of x and y to adjust\nthe result's quadrant.\n\nThe definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant\nof z is determined based on the signs of x and y.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\natan2f for single-precision floats.\n\nTo calculate the arc tangent of a single value, use atan.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param y floating point value of the numerator (y coordinate).\n@param x floating point value of the denominator (x coordinate).\n@returns arc tangent of of `y / x` in radians, or, if `x = 0`, either\n         `-Pi/2`, `0`, or `Pi/2`, depending on the value of `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa atan2f\n@sa atan\n@sa tan",
-          "name": "atan2",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "y",
-              "type": "double"
-            },
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_atan2"
-        },
-        "atan2f": {
-          "doc": "Compute the arc tangent of `y / x`, using the signs of x and y to adjust\nthe result's quadrant.\n\nThe definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant\nof z is determined based on the signs of x and y.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\natan2 for double-precision floats.\n\nTo calculate the arc tangent of a single value, use atanf.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param y floating point value of the numerator (y coordinate).\n@param x floating point value of the denominator (x coordinate).\n@returns arc tangent of of `y / x` in radians, or, if `x = 0`, either\n         `-Pi/2`, `0`, or `Pi/2`, depending on the value of `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa atan2\n@sa atan\n@sa tan",
-          "name": "atan2f",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "y",
-              "type": "float"
-            },
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_atan2f"
-        },
-        "ceil": {
-          "doc": "Compute the ceiling of `x`.\n\nThe ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`\nrounded up to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nceilf for single-precision floats.\n\n@param x floating point value.\n@returns the ceiling of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ceilf\n@sa floor\n@sa trunc\n@sa round\n@sa lround",
-          "name": "ceil",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_ceil"
-        },
-        "ceilf": {
-          "doc": "Compute the ceiling of `x`.\n\nThe ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`\nrounded up to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nceil for double-precision floats.\n\n@param x floating point value.\n@returns the ceiling of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ceil\n@sa floorf\n@sa truncf\n@sa roundf\n@sa lroundf",
-          "name": "ceilf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_ceilf"
-        },
-        "copysign": {
-          "doc": "Copy the sign of one floating-point value to another.\n\nThe definition of copysign is that ``copysign(x, y) = abs(x) * sign(y)``.\n\nDomain: `-INF <= x <= INF`, ``-INF <= y <= f``\n\nRange: `-INF <= z <= INF`\n\nThis function operates on double-precision floating point values, use\ncopysignf for single-precision floats.\n\n@param x floating point value to use as the magnitude.\n@param y floating point value to use as the sign.\n@returns the floating point value with the sign of y and the magnitude of\n         x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa copysignf\n@sa fabs",
-          "name": "copysign",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            },
-            {
-              "name": "y",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_copysign"
-        },
-        "copysignf": {
-          "doc": "Copy the sign of one floating-point value to another.\n\nThe definition of copysign is that ``copysign(x, y) = abs(x) * sign(y)``.\n\nDomain: `-INF <= x <= INF`, ``-INF <= y <= f``\n\nRange: `-INF <= z <= INF`\n\nThis function operates on single-precision floating point values, use\ncopysign for double-precision floats.\n\n@param x floating point value to use as the magnitude.\n@param y floating point value to use as the sign.\n@returns the floating point value with the sign of y and the magnitude of\n         x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa copysign\n@sa fabsf",
-          "name": "copysignf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            },
-            {
-              "name": "y",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_copysignf"
-        },
-        "cos": {
-          "doc": "Compute the cosine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on double-precision floating point values, use\ncosf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns cosine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa cosf\n@sa acos\n@sa sin",
-          "name": "cos",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_cos"
-        },
-        "cosf": {
-          "doc": "Compute the cosine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on single-precision floating point values, use\ncos for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns cosine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa cos\n@sa acosf\n@sa sinf",
-          "name": "cosf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_cosf"
-        },
-        "exp": {
-          "doc": "Compute the exponential of `x`.\n\nThe definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the\nnatural logarithm. The inverse is the natural logarithm, log.\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThe output will overflow if `exp(x)` is too large to be represented.\n\nThis function operates on double-precision floating point values, use\nexpf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns value of `e^x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa expf\n@sa log",
-          "name": "exp",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_exp"
-        },
-        "expf": {
-          "doc": "Compute the exponential of `x`.\n\nThe definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the\nnatural logarithm. The inverse is the natural logarithm, logf.\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThe output will overflow if `exp(x)` is too large to be represented.\n\nThis function operates on single-precision floating point values, use\nexp for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns value of `e^x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa exp\n@sa logf",
-          "name": "expf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_expf"
-        },
-        "fabs": {
-          "doc": "Compute the absolute value of `x`\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nfabsf for single-precision floats.\n\n@param x floating point value to use as the magnitude.\n@returns the absolute value of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa fabsf",
-          "name": "fabs",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_fabs"
-        },
-        "fabsf": {
-          "doc": "Compute the absolute value of `x`\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nfabs for double-precision floats.\n\n@param x floating point value to use as the magnitude.\n@returns the absolute value of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa fabs",
-          "name": "fabsf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_fabsf"
-        },
-        "floor": {
-          "doc": "Compute the floor of `x`.\n\nThe floor of `x` is the largest integer `y` such that `y > x`, i.e `x`\nrounded down to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nfloorf for single-precision floats.\n\n@param x floating point value.\n@returns the floor of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa floorf\n@sa ceil\n@sa trunc\n@sa round\n@sa lround",
-          "name": "floor",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_floor"
-        },
-        "floorf": {
-          "doc": "Compute the floor of `x`.\n\nThe floor of `x` is the largest integer `y` such that `y > x`, i.e `x`\nrounded down to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nfloor for double-precision floats.\n\n@param x floating point value.\n@returns the floor of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa floor\n@sa ceilf\n@sa truncf\n@sa roundf\n@sa lroundf",
-          "name": "floorf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_floorf"
-        },
-        "trunc": {
-          "doc": "Truncate `x` to an integer.\n\nRounds `x` to the next closest integer to 0. This is equivalent to removing\nthe fractional part of `x`, leaving only the integer part.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\ntruncf for single-precision floats.\n\n@param x floating point value.\n@returns `x` truncated to an integer.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa truncf\n@sa fmod\n@sa ceil\n@sa floor\n@sa round\n@sa lround",
-          "name": "trunc",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_trunc"
-        },
-        "truncf": {
-          "doc": "Truncate `x` to an integer.\n\nRounds `x` to the next closest integer to 0. This is equivalent to removing\nthe fractional part of `x`, leaving only the integer part.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\ntrunc for double-precision floats.\n\n@param x floating point value.\n@returns `x` truncated to an integer.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa trunc\n@sa fmodf\n@sa ceilf\n@sa floorf\n@sa roundf\n@sa lroundf",
-          "name": "truncf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_truncf"
-        },
-        "fmod": {
-          "doc": "Return the floating-point remainder of `x / y`\n\nDivides `x` by `y`, and returns the remainder.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`, `y != 0`\n\nRange: `-y <= z <= y`\n\nThis function operates on double-precision floating point values, use\nfmodf for single-precision floats.\n\n@param x the numerator.\n@param y the denominator. Must not be 0.\n@returns the remainder of `x / y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa fmodf\n@sa modf\n@sa trunc\n@sa ceil\n@sa floor\n@sa round\n@sa lround",
-          "name": "fmod",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            },
-            {
-              "name": "y",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_fmod"
-        },
-        "fmodf": {
-          "doc": "Return the floating-point remainder of `x / y`\n\nDivides `x` by `y`, and returns the remainder.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`, `y != 0`\n\nRange: `-y <= z <= y`\n\nThis function operates on single-precision floating point values, use\nfmod for double-precision floats.\n\n@param x the numerator.\n@param y the denominator. Must not be 0.\n@returns the remainder of `x / y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa fmod\n@sa truncf\n@sa modff\n@sa ceilf\n@sa floorf\n@sa roundf\n@sa lroundf",
-          "name": "fmodf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            },
-            {
-              "name": "y",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_fmodf"
-        },
-        "isinf": {
-          "doc": "Return whether the value is infinity.\n\n@param x double-precision floating point value.\n@returns non-zero if the value is infinity, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa isinff",
-          "name": "isinf",
-          "kind": "function",
-          "type": "int",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_isinf"
-        },
-        "isinff": {
-          "doc": "Return whether the value is infinity.\n\n@param x floating point value.\n@returns non-zero if the value is infinity, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa isinf",
-          "name": "isinff",
-          "kind": "function",
-          "type": "int",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_isinff"
-        },
-        "isnan": {
-          "doc": "Return whether the value is NaN.\n\n@param x double-precision floating point value.\n@returns non-zero if the value is NaN, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa isnanf",
-          "name": "isnan",
-          "kind": "function",
-          "type": "int",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_isnan"
-        },
-        "isnanf": {
-          "doc": "Return whether the value is NaN.\n\n@param x floating point value.\n@returns non-zero if the value is NaN, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa isnan",
-          "name": "isnanf",
-          "kind": "function",
-          "type": "int",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_isnanf"
-        },
-        "log": {
-          "doc": "Compute the natural logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on double-precision floating point values, use\nlogf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the natural logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa logf\n@sa log10\n@sa exp",
-          "name": "log",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_log"
-        },
-        "logf": {
-          "doc": "Compute the natural logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on single-precision floating point values, use\nlog for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the natural logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa log\n@sa expf",
-          "name": "logf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_logf"
-        },
-        "log10": {
-          "doc": "Compute the base-10 logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on double-precision floating point values, use\nlog10f for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa log10f\n@sa log\n@sa pow",
-          "name": "log10",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_log10"
-        },
-        "log10f": {
-          "doc": "Compute the base-10 logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on single-precision floating point values, use\nlog10 for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa log10\n@sa logf\n@sa powf",
-          "name": "log10f",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_log10f"
-        },
-        "modf": {
-          "doc": "Split `x` into integer and fractional parts\n\nThis function operates on double-precision floating point values, use\nmodff for single-precision floats.\n\n@param x floating point value.\n@param y output pointer to store the integer part of `x`.\n@returns the fractional part of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa modff\n@sa trunc\n@sa fmod",
-          "name": "modf",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            },
-            {
-              "name": "y",
-              "type": "double *"
-            }
-          ],
-          "sourceName": "SDL_modf"
-        },
-        "modff": {
-          "doc": "Split `x` into integer and fractional parts\n\nThis function operates on single-precision floating point values, use\nmodf for double-precision floats.\n\n@param x floating point value.\n@param y output pointer to store the integer part of `x`.\n@returns the fractional part of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa modf\n@sa truncf\n@sa fmodf",
-          "name": "modff",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            },
-            {
-              "name": "y",
-              "type": "float *"
-            }
-          ],
-          "sourceName": "SDL_modff"
-        },
-        "pow": {
-          "doc": "Raise `x` to the power `y`\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-INF <= z <= INF`\n\nIf `y` is the base of the natural logarithm (e), consider using exp\ninstead.\n\nThis function operates on double-precision floating point values, use\npowf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x the base.\n@param y the exponent.\n@returns `x` raised to the power `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa powf\n@sa exp\n@sa log",
-          "name": "pow",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            },
-            {
-              "name": "y",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_pow"
-        },
-        "powf": {
-          "doc": "Raise `x` to the power `y`\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-INF <= z <= INF`\n\nIf `y` is the base of the natural logarithm (e), consider using exp\ninstead.\n\nThis function operates on single-precision floating point values, use\npow for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x the base.\n@param y the exponent.\n@returns `x` raised to the power `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa pow\n@sa expf\n@sa logf",
-          "name": "powf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            },
-            {
-              "name": "y",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_powf"
-        },
-        "round": {
-          "doc": "Round `x` to the nearest integer.\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nroundf for single-precision floats. To get the result as an integer\ntype, use lround.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa roundf\n@sa lround\n@sa floor\n@sa ceil\n@sa trunc",
-          "name": "round",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_round"
-        },
-        "roundf": {
-          "doc": "Round `x` to the nearest integer.\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nround for double-precision floats. To get the result as an integer\ntype, use lroundf.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa round\n@sa lroundf\n@sa floorf\n@sa ceilf\n@sa truncf",
-          "name": "roundf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_roundf"
-        },
-        "lround": {
-          "doc": "Round `x` to the nearest integer representable as a long\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `MIN_LONG <= y <= MAX_LONG`\n\nThis function operates on double-precision floating point values, use\nlroundf for single-precision floats. To get the result as a\nfloating-point type, use round.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa lroundf\n@sa round\n@sa floor\n@sa ceil\n@sa trunc",
-          "name": "lround",
-          "kind": "function",
-          "type": "long",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_lround"
-        },
-        "lroundf": {
-          "doc": "Round `x` to the nearest integer representable as a long\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `MIN_LONG <= y <= MAX_LONG`\n\nThis function operates on single-precision floating point values, use\nlround for double-precision floats. To get the result as a\nfloating-point type, use roundf.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa lround\n@sa roundf\n@sa floorf\n@sa ceilf\n@sa truncf",
-          "name": "lroundf",
-          "kind": "function",
-          "type": "long",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_lroundf"
-        },
-        "scalbn": {
-          "doc": "Scale `x` by an integer power of two.\n\nMultiplies `x` by the `n`th power of the floating point radix (always 2).\n\nDomain: `-INF <= x <= INF`, `n` integer\n\nRange: `-INF <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nscalbnf for single-precision floats.\n\n@param x floating point value to be scaled.\n@param n integer exponent.\n@returns `x * 2^n`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa scalbnf\n@sa pow",
-          "name": "scalbn",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            },
-            {
-              "name": "n",
-              "type": "int"
-            }
-          ],
-          "sourceName": "SDL_scalbn"
-        },
-        "scalbnf": {
-          "doc": "Scale `x` by an integer power of two.\n\nMultiplies `x` by the `n`th power of the floating point radix (always 2).\n\nDomain: `-INF <= x <= INF`, `n` integer\n\nRange: `-INF <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nscalbn for double-precision floats.\n\n@param x floating point value to be scaled.\n@param n integer exponent.\n@returns `x * 2^n`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa scalbn\n@sa powf",
-          "name": "scalbnf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            },
-            {
-              "name": "n",
-              "type": "int"
-            }
-          ],
-          "sourceName": "SDL_scalbnf"
-        },
-        "sin": {
-          "doc": "Compute the sine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on double-precision floating point values, use\nsinf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns sine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa sinf\n@sa asin\n@sa cos",
-          "name": "sin",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_sin"
-        },
-        "sinf": {
-          "doc": "Compute the sine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on single-precision floating point values, use\nsin for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns sine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa sin\n@sa asinf\n@sa cosf",
-          "name": "sinf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_sinf"
-        },
-        "sqrt": {
-          "doc": "Compute the square root of `x`.\n\nDomain: `0 <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nsqrtf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than or equal to 0.\n@returns square root of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa sqrtf",
-          "name": "sqrt",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_sqrt"
-        },
-        "sqrtf": {
-          "doc": "Compute the square root of `x`.\n\nDomain: `0 <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nsqrt for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than or equal to 0.\n@returns square root of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa sqrt",
-          "name": "sqrtf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_sqrtf"
-        },
-        "tan": {
-          "doc": "Compute the tangent of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`\n\nThis function operates on double-precision floating point values, use\ntanf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns tangent of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa tanf\n@sa sin\n@sa cos\n@sa atan\n@sa atan2",
-          "name": "tan",
-          "kind": "function",
-          "type": "double",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "double"
-            }
-          ],
-          "sourceName": "SDL_tan"
-        },
-        "tanf": {
-          "doc": "Compute the tangent of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`\n\nThis function operates on single-precision floating point values, use\ntan for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns tangent of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa tan\n@sa sinf\n@sa cosf\n@sa atanf\n@sa atan2f",
-          "name": "tanf",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "x",
-              "type": "float"
-            }
-          ],
-          "sourceName": "SDL_tanf"
-        },
+        "acos": [
+          {
+            "doc": "Compute the arc cosine of `x`.\n\nThe definition of `y = acos(x)` is `x = cos(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `0 <= y <= Pi`\n\nThis function operates on double-precision floating point values, use\nacos for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc cosine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa acos\n@sa asin\n@sa cos",
+            "name": "acos",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_acos"
+          },
+          {
+            "doc": "Compute the arc cosine of `x`.\n\nThe definition of `y = acos(x)` is `x = cos(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `0 <= y <= Pi`\n\nThis function operates on single-precision floating point values, use\nacos for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc cosine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa acos\n@sa asin\n@sa cos",
+            "name": "acos",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_acosf"
+          }
+        ],
+        "asin": [
+          {
+            "doc": "Compute the arc sine of `x`.\n\nThe definition of `y = asin(x)` is `x = sin(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\nasin for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc sine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa asin\n@sa acos\n@sa sin",
+            "name": "asin",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_asin"
+          },
+          {
+            "doc": "Compute the arc sine of `x`.\n\nThe definition of `y = asin(x)` is `x = sin(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\nasin for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc sine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa asin\n@sa acos\n@sa sin",
+            "name": "asin",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_asinf"
+          }
+        ],
+        "atan": [
+          {
+            "doc": "Compute the arc tangent of `x`.\n\nThe definition of `y = atan(x)` is `x = tan(y)`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\natan for single-precision floats.\n\nTo calculate the arc tangent of y / x, use atan2.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc tangent of of `x` in radians, or 0 if `x = 0`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa atan\n@sa atan2\n@sa tan",
+            "name": "atan",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_atan"
+          },
+          {
+            "doc": "Compute the arc tangent of `x`.\n\nThe definition of `y = atan(x)` is `x = tan(y)`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\natan for dboule-precision floats.\n\nTo calculate the arc tangent of y / x, use atan2.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc tangent of of `x` in radians, or 0 if `x = 0`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa atan\n@sa atan2\n@sa tan",
+            "name": "atan",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_atanf"
+          }
+        ],
+        "atan2": [
+          {
+            "doc": "Compute the arc tangent of `y / x`, using the signs of x and y to adjust\nthe result's quadrant.\n\nThe definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant\nof z is determined based on the signs of x and y.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\natan2 for single-precision floats.\n\nTo calculate the arc tangent of a single value, use atan.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param y floating point value of the numerator (y coordinate).\n@param x floating point value of the denominator (x coordinate).\n@returns arc tangent of of `y / x` in radians, or, if `x = 0`, either\n         `-Pi/2`, `0`, or `Pi/2`, depending on the value of `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa atan2\n@sa atan\n@sa tan",
+            "name": "atan2",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "y",
+                "type": "double"
+              },
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_atan2"
+          },
+          {
+            "doc": "Compute the arc tangent of `y / x`, using the signs of x and y to adjust\nthe result's quadrant.\n\nThe definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant\nof z is determined based on the signs of x and y.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\natan2 for double-precision floats.\n\nTo calculate the arc tangent of a single value, use atan.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param y floating point value of the numerator (y coordinate).\n@param x floating point value of the denominator (x coordinate).\n@returns arc tangent of of `y / x` in radians, or, if `x = 0`, either\n         `-Pi/2`, `0`, or `Pi/2`, depending on the value of `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa atan2\n@sa atan\n@sa tan",
+            "name": "atan2",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "y",
+                "type": "float"
+              },
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_atan2f"
+          }
+        ],
+        "ceil": [
+          {
+            "doc": "Compute the ceiling of `x`.\n\nThe ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`\nrounded up to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nceil for single-precision floats.\n\n@param x floating point value.\n@returns the ceiling of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ceil\n@sa floor\n@sa trunc\n@sa round\n@sa lround",
+            "name": "ceil",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_ceil"
+          },
+          {
+            "doc": "Compute the ceiling of `x`.\n\nThe ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`\nrounded up to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nceil for double-precision floats.\n\n@param x floating point value.\n@returns the ceiling of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ceil\n@sa floor\n@sa trunc\n@sa round\n@sa lround",
+            "name": "ceil",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_ceilf"
+          }
+        ],
+        "copysign": [
+          {
+            "doc": "Copy the sign of one floating-point value to another.\n\nThe definition of copysign is that ``copysign(x, y) = abs(x) * sign(y)``.\n\nDomain: `-INF <= x <= INF`, ``-INF <= y <= f``\n\nRange: `-INF <= z <= INF`\n\nThis function operates on double-precision floating point values, use\ncopysign for single-precision floats.\n\n@param x floating point value to use as the magnitude.\n@param y floating point value to use as the sign.\n@returns the floating point value with the sign of y and the magnitude of\n         x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa copysign\n@sa abs",
+            "name": "copysign",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              },
+              {
+                "name": "y",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_copysign"
+          },
+          {
+            "doc": "Copy the sign of one floating-point value to another.\n\nThe definition of copysign is that ``copysign(x, y) = abs(x) * sign(y)``.\n\nDomain: `-INF <= x <= INF`, ``-INF <= y <= f``\n\nRange: `-INF <= z <= INF`\n\nThis function operates on single-precision floating point values, use\ncopysign for double-precision floats.\n\n@param x floating point value to use as the magnitude.\n@param y floating point value to use as the sign.\n@returns the floating point value with the sign of y and the magnitude of\n         x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa copysign\n@sa abs",
+            "name": "copysign",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              },
+              {
+                "name": "y",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_copysignf"
+          }
+        ],
+        "cos": [
+          {
+            "doc": "Compute the cosine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on double-precision floating point values, use\ncos for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns cosine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa cos\n@sa acos\n@sa sin",
+            "name": "cos",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_cos"
+          },
+          {
+            "doc": "Compute the cosine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on single-precision floating point values, use\ncos for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns cosine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa cos\n@sa acos\n@sa sin",
+            "name": "cos",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_cosf"
+          }
+        ],
+        "exp": [
+          {
+            "doc": "Compute the exponential of `x`.\n\nThe definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the\nnatural logarithm. The inverse is the natural logarithm, log.\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThe output will overflow if `exp(x)` is too large to be represented.\n\nThis function operates on double-precision floating point values, use\nexp for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns value of `e^x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa exp\n@sa log",
+            "name": "exp",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_exp"
+          },
+          {
+            "doc": "Compute the exponential of `x`.\n\nThe definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the\nnatural logarithm. The inverse is the natural logarithm, log.\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThe output will overflow if `exp(x)` is too large to be represented.\n\nThis function operates on single-precision floating point values, use\nexp for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns value of `e^x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa exp\n@sa log",
+            "name": "exp",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_expf"
+          }
+        ],
+        "floor": [
+          {
+            "doc": "Compute the floor of `x`.\n\nThe floor of `x` is the largest integer `y` such that `y > x`, i.e `x`\nrounded down to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nfloor for single-precision floats.\n\n@param x floating point value.\n@returns the floor of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa floor\n@sa ceil\n@sa trunc\n@sa round\n@sa lround",
+            "name": "floor",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_floor"
+          },
+          {
+            "doc": "Compute the floor of `x`.\n\nThe floor of `x` is the largest integer `y` such that `y > x`, i.e `x`\nrounded down to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nfloor for double-precision floats.\n\n@param x floating point value.\n@returns the floor of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa floor\n@sa ceil\n@sa trunc\n@sa round\n@sa lround",
+            "name": "floor",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_floorf"
+          }
+        ],
+        "trunc": [
+          {
+            "doc": "Truncate `x` to an integer.\n\nRounds `x` to the next closest integer to 0. This is equivalent to removing\nthe fractional part of `x`, leaving only the integer part.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\ntrunc for single-precision floats.\n\n@param x floating point value.\n@returns `x` truncated to an integer.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa trunc\n@sa fmod\n@sa ceil\n@sa floor\n@sa round\n@sa lround",
+            "name": "trunc",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_trunc"
+          },
+          {
+            "doc": "Truncate `x` to an integer.\n\nRounds `x` to the next closest integer to 0. This is equivalent to removing\nthe fractional part of `x`, leaving only the integer part.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\ntrunc for double-precision floats.\n\n@param x floating point value.\n@returns `x` truncated to an integer.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa trunc\n@sa fmod\n@sa ceil\n@sa floor\n@sa round\n@sa lround",
+            "name": "trunc",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_truncf"
+          }
+        ],
+        "fmod": [
+          {
+            "doc": "Return the floating-point remainder of `x / y`\n\nDivides `x` by `y`, and returns the remainder.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`, `y != 0`\n\nRange: `-y <= z <= y`\n\nThis function operates on double-precision floating point values, use\nfmod for single-precision floats.\n\n@param x the numerator.\n@param y the denominator. Must not be 0.\n@returns the remainder of `x / y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa fmod\n@sa modf\n@sa trunc\n@sa ceil\n@sa floor\n@sa round\n@sa lround",
+            "name": "fmod",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              },
+              {
+                "name": "y",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_fmod"
+          },
+          {
+            "doc": "Return the floating-point remainder of `x / y`\n\nDivides `x` by `y`, and returns the remainder.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`, `y != 0`\n\nRange: `-y <= z <= y`\n\nThis function operates on single-precision floating point values, use\nfmod for double-precision floats.\n\n@param x the numerator.\n@param y the denominator. Must not be 0.\n@returns the remainder of `x / y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa fmod\n@sa trunc\n@sa modf\n@sa ceil\n@sa floor\n@sa round\n@sa lround",
+            "name": "fmod",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              },
+              {
+                "name": "y",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_fmodf"
+          }
+        ],
+        "isinf": [
+          {
+            "doc": "Return whether the value is infinity.\n\n@param x double-precision floating point value.\n@returns non-zero if the value is infinity, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa isinf",
+            "name": "isinf",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_isinf"
+          },
+          {
+            "doc": "Return whether the value is infinity.\n\n@param x floating point value.\n@returns non-zero if the value is infinity, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa isinf",
+            "name": "isinf",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_isinff"
+          }
+        ],
+        "isnan": [
+          {
+            "doc": "Return whether the value is NaN.\n\n@param x double-precision floating point value.\n@returns non-zero if the value is NaN, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa isnan",
+            "name": "isnan",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_isnan"
+          },
+          {
+            "doc": "Return whether the value is NaN.\n\n@param x floating point value.\n@returns non-zero if the value is NaN, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa isnan",
+            "name": "isnan",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_isnanf"
+          }
+        ],
+        "log": [
+          {
+            "doc": "Compute the natural logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on double-precision floating point values, use\nlog for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the natural logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa log\n@sa log10\n@sa exp",
+            "name": "log",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_log"
+          },
+          {
+            "doc": "Compute the natural logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on single-precision floating point values, use\nlog for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the natural logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa log\n@sa exp",
+            "name": "log",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_logf"
+          }
+        ],
+        "log10": [
+          {
+            "doc": "Compute the base-10 logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on double-precision floating point values, use\nlog10 for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa log10\n@sa log\n@sa pow",
+            "name": "log10",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_log10"
+          },
+          {
+            "doc": "Compute the base-10 logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on single-precision floating point values, use\nlog10 for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa log10\n@sa log\n@sa pow",
+            "name": "log10",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_log10f"
+          }
+        ],
+        "modf": [
+          {
+            "doc": "Split `x` into integer and fractional parts\n\nThis function operates on double-precision floating point values, use\nmodf for single-precision floats.\n\n@param x floating point value.\n@param y output pointer to store the integer part of `x`.\n@returns the fractional part of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa modf\n@sa trunc\n@sa fmod",
+            "name": "modf",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              },
+              {
+                "name": "y",
+                "type": "double *"
+              }
+            ],
+            "sourceName": "SDL_modf"
+          },
+          {
+            "doc": "Split `x` into integer and fractional parts\n\nThis function operates on single-precision floating point values, use\nmodf for double-precision floats.\n\n@param x floating point value.\n@param y output pointer to store the integer part of `x`.\n@returns the fractional part of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa modf\n@sa trunc\n@sa fmod",
+            "name": "modf",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              },
+              {
+                "name": "y",
+                "type": "float *"
+              }
+            ],
+            "sourceName": "SDL_modff"
+          }
+        ],
+        "pow": [
+          {
+            "doc": "Raise `x` to the power `y`\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-INF <= z <= INF`\n\nIf `y` is the base of the natural logarithm (e), consider using exp\ninstead.\n\nThis function operates on double-precision floating point values, use\npow for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x the base.\n@param y the exponent.\n@returns `x` raised to the power `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa pow\n@sa exp\n@sa log",
+            "name": "pow",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              },
+              {
+                "name": "y",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_pow"
+          },
+          {
+            "doc": "Raise `x` to the power `y`\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-INF <= z <= INF`\n\nIf `y` is the base of the natural logarithm (e), consider using exp\ninstead.\n\nThis function operates on single-precision floating point values, use\npow for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x the base.\n@param y the exponent.\n@returns `x` raised to the power `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa pow\n@sa exp\n@sa log",
+            "name": "pow",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              },
+              {
+                "name": "y",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_powf"
+          }
+        ],
+        "round": [
+          {
+            "doc": "Round `x` to the nearest integer.\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nround for single-precision floats. To get the result as an integer\ntype, use lround.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa round\n@sa lround\n@sa floor\n@sa ceil\n@sa trunc",
+            "name": "round",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_round"
+          },
+          {
+            "doc": "Round `x` to the nearest integer.\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nround for double-precision floats. To get the result as an integer\ntype, use lround.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa round\n@sa lround\n@sa floor\n@sa ceil\n@sa trunc",
+            "name": "round",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_roundf"
+          }
+        ],
+        "lround": [
+          {
+            "doc": "Round `x` to the nearest integer representable as a long\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `MIN_LONG <= y <= MAX_LONG`\n\nThis function operates on double-precision floating point values, use\nlround for single-precision floats. To get the result as a\nfloating-point type, use round.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa lround\n@sa round\n@sa floor\n@sa ceil\n@sa trunc",
+            "name": "lround",
+            "kind": "function",
+            "type": "long",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_lround"
+          },
+          {
+            "doc": "Round `x` to the nearest integer representable as a long\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `MIN_LONG <= y <= MAX_LONG`\n\nThis function operates on single-precision floating point values, use\nlround for double-precision floats. To get the result as a\nfloating-point type, use round.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa lround\n@sa round\n@sa floor\n@sa ceil\n@sa trunc",
+            "name": "lround",
+            "kind": "function",
+            "type": "long",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_lroundf"
+          }
+        ],
+        "scalbn": [
+          {
+            "doc": "Scale `x` by an integer power of two.\n\nMultiplies `x` by the `n`th power of the floating point radix (always 2).\n\nDomain: `-INF <= x <= INF`, `n` integer\n\nRange: `-INF <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nscalbn for single-precision floats.\n\n@param x floating point value to be scaled.\n@param n integer exponent.\n@returns `x * 2^n`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa scalbn\n@sa pow",
+            "name": "scalbn",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              },
+              {
+                "name": "n",
+                "type": "int"
+              }
+            ],
+            "sourceName": "SDL_scalbn"
+          },
+          {
+            "doc": "Scale `x` by an integer power of two.\n\nMultiplies `x` by the `n`th power of the floating point radix (always 2).\n\nDomain: `-INF <= x <= INF`, `n` integer\n\nRange: `-INF <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nscalbn for double-precision floats.\n\n@param x floating point value to be scaled.\n@param n integer exponent.\n@returns `x * 2^n`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa scalbn\n@sa pow",
+            "name": "scalbn",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              },
+              {
+                "name": "n",
+                "type": "int"
+              }
+            ],
+            "sourceName": "SDL_scalbnf"
+          }
+        ],
+        "sin": [
+          {
+            "doc": "Compute the sine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on double-precision floating point values, use\nsin for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns sine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa sin\n@sa asin\n@sa cos",
+            "name": "sin",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_sin"
+          },
+          {
+            "doc": "Compute the sine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on single-precision floating point values, use\nsin for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns sine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa sin\n@sa asin\n@sa cos",
+            "name": "sin",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_sinf"
+          }
+        ],
+        "sqrt": [
+          {
+            "doc": "Compute the square root of `x`.\n\nDomain: `0 <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nsqrt for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than or equal to 0.\n@returns square root of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa sqrt",
+            "name": "sqrt",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_sqrt"
+          },
+          {
+            "doc": "Compute the square root of `x`.\n\nDomain: `0 <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nsqrt for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than or equal to 0.\n@returns square root of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa sqrt",
+            "name": "sqrt",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_sqrtf"
+          }
+        ],
+        "tan": [
+          {
+            "doc": "Compute the tangent of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`\n\nThis function operates on double-precision floating point values, use\ntan for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns tangent of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa tan\n@sa sin\n@sa cos\n@sa atan\n@sa atan2",
+            "name": "tan",
+            "kind": "function",
+            "type": "double",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "double"
+              }
+            ],
+            "sourceName": "SDL_tan"
+          },
+          {
+            "doc": "Compute the tangent of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`\n\nThis function operates on single-precision floating point values, use\ntan for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns tangent of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa tan\n@sa sin\n@sa cos\n@sa atan\n@sa atan2",
+            "name": "tan",
+            "kind": "function",
+            "type": "float",
+            "parameters": [
+              {
+                "name": "x",
+                "type": "float"
+              }
+            ],
+            "sourceName": "SDL_tanf"
+          }
+        ],
         "IConvBase": {
           "doc": "An opaque handle representing string encoding conversion state.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa IConvBase.IConvBase\n\n@cat resource\n\n@sa IConv\n@sa IConvRef",
           "name": "IConvBase",

@@ -1,7 +1,3 @@
-#include <SDL3pp/SDL3pp.h>
-
-using namespace std::chrono_literals;
-
 /**
  * @file 01_clear.cpp
  *
@@ -14,20 +10,26 @@ using namespace std::chrono_literals;
  * This code is public domain. Feel free to use it for any purpose!
  */
 
+#include <SDL3pp/SDL3pp.h>
+
 struct Main
 {
-  static constexpr SDL::Point windowSz = {640, 480};
-
-  SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window{"Test", windowSz};
-  SDL::Renderer renderer{window};
-
   static SDL::AppResult Init(Main** state, SDL::AppArgs args)
   {
     SDL::SetAppMetadata(
       "Example Renderer Clear", "1.0", "com.example.renderer-clear");
     return SDL::DefaultCreateClass(state, args);
   }
+
+  // Window size
+  static constexpr SDL::Point windowSz = {640, 480};
+
+  // Init library
+  SDL::SDL init{SDL::INIT_VIDEO};
+
+  // We will use this renderer to draw into this window every frame.
+  SDL::Window window{"examples/renderer/clear", windowSz};
+  SDL::Renderer renderer{window};
 
   Main()
   {
