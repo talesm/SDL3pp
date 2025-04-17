@@ -10337,12 +10337,6 @@
               "name": "texture",
               "doc": ""
             },
-            "surface": {
-              "kind": "var",
-              "type": "SurfaceRef",
-              "name": "surface",
-              "doc": ""
-            },
             "TextureLock": [
               {
                 "doc": "@sa TextureBase.Lock()",
@@ -10365,6 +10359,9 @@
                 "kind": "function",
                 "type": "",
                 "parameters": [],
+                "hints": {
+                  "default": true
+                },
                 "name": "TextureLock",
                 "doc": ""
               },
@@ -10412,15 +10409,6 @@
               "name": "operator=",
               "doc": ""
             },
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [],
-              "name": "operator bool",
-              "doc": ""
-            },
             "Unlock": {
               "doc": "Unlock a texture, uploading the changes to video memory, if needed.\n\n**Warning**: Please note that TextureBase.Lock() is intended to be\nwrite-only; it will not guarantee the previous contents of the texture will\nbe provided. You must fully initialize any area of a texture that you lock\nbefore unlocking it, as the pixels might otherwise be uninitialized memory.\n\nWhich is to say: locking and immediately unlocking a texture can result in\ncorrupted textures, depending on the renderer in use.\n\n@param texture a texture locked by TextureBase.Lock().\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TextureBase.Lock",
               "name": "Unlock",
@@ -10444,14 +10432,6 @@
               "immutable": true,
               "parameters": [],
               "name": "GetPitch",
-              "doc": ""
-            },
-            "GetFormat": {
-              "kind": "function",
-              "type": "PixelFormat",
-              "immutable": true,
-              "parameters": [],
-              "name": "GetFormat",
               "doc": ""
             }
           },

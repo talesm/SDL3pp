@@ -44445,7 +44445,7 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureLock.Unlock
    */
-  TextureLock Lock(OptionalRef<const SDL_Rect> rect) &;
+  TextureLock Lock(OptionalRef<const SDL_Rect> rect = {}) &;
 
   /**
    * Get the width in pixels.
@@ -44573,21 +44573,19 @@ struct Texture : TextureRef
 /**
  * Locks a Texture for access to its pixels
  */
-class TextureLock
+class TextureLock : public SurfaceBase
 {
   TextureRef texture;
-  SurfaceRef surface;
 
   /**
    * @sa TextureBase.Lock()
    */
   explicit TextureLock(TextureRef texture, OptionalRef<const SDL_Rect> rect)
     : texture(std::move(texture))
-    , surface(nullptr)
   {
     SDL_Surface* maybeLock;
     if (SDL_LockTextureToSurface(this->texture.get(), rect, &maybeLock)) {
-      surface = maybeLock;
+      release(maybeLock);
     } else {
       texture.release();
     }
@@ -44595,19 +44593,15 @@ class TextureLock
 
 public:
   /// default ctor
-  TextureLock()
-    : texture(nullptr)
-    , surface(nullptr)
-  {
-  }
+  constexpr TextureLock() = default;
 
   // Copy ctor
   TextureLock(const TextureLock& other) = delete;
 
   /// Move ctor
   TextureLock(TextureLock&& other)
-    : texture(other.texture.release())
-    , surface(other.surface.release())
+    : SurfaceBase(other.release())
+    , texture(other.texture.release())
   {
   }
 
@@ -44620,15 +44614,11 @@ public:
   /// Assignment operator
   TextureLock& operator=(TextureLock other)
   {
+    Unlock();
+    SurfaceBase::release(other.get());
     std::swap(texture, other.texture);
-    std::swap(surface, other.surface);
     return *this;
   }
-
-  /**
-   * Returns true if lock is active
-   */
-  constexpr operator bool() const { return bool(texture); }
 
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
@@ -44649,24 +44639,24 @@ public:
    */
   void Unlock()
   {
-    surface.release();
-    return SDL_UnlockTexture(texture.release());
+    if (texture) {
+      SurfaceBase::release();
+      SDL_UnlockTexture(texture.release());
+    }
   }
 
   /**
    * Get the pixels
    */
-  void* GetPixels() const { return surface->pixels; }
+  void* GetPixels() const { return get()->pixels; }
 
   /**
    * Get pitch (the number of bytes between the start of one row the next)
    */
-  int GetPitch() const { return surface->pitch; }
+  int GetPitch() const { return get()->pitch; }
 
-  /**
-   * Get the pixel format
-   */
-  PixelFormat GetFormat() const { return surface->format; }
+  /// @sa Unlock()
+  void reset() { Unlock(); }
 
   friend class TextureBase;
 };

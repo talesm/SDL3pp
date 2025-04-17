@@ -3588,16 +3588,12 @@ const transform = {
           kind: "forward"
         },
         "SDL_Texture": {
-          "name": "TextureLock",
-          "kind": "struct",
-          "entries": {
+          name: "TextureLock",
+          kind: "struct",
+          entries: {
             "texture": {
               kind: "var",
               type: "TextureRef"
-            },
-            "surface": {
-              kind: "var",
-              type: "SurfaceRef"
             },
             "TextureLock": [
               {
@@ -3619,7 +3615,8 @@ const transform = {
               {
                 kind: "function",
                 type: "",
-                parameters: []
+                parameters: [],
+                hints: { default: true },
               },
               {
                 kind: "function",
@@ -3658,13 +3655,6 @@ const transform = {
                 }
               ]
             },
-            "operator bool": {
-              kind: "function",
-              type: "",
-              constexpr: true,
-              immutable: true,
-              parameters: []
-            },
             "SDL_UnlockTexture": {
               name: "Unlock",
               static: false,
@@ -3682,12 +3672,6 @@ const transform = {
               immutable: true,
               parameters: []
             },
-            "GetFormat": {
-              kind: "function",
-              type: "PixelFormat",
-              immutable: true,
-              parameters: []
-            }
           }
         }
       },

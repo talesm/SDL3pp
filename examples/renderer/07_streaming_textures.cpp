@@ -41,43 +41,39 @@ struct Main
 
   SDL::AppResult Iterate()
   {
-    SDL::FRect dst_rect;
     const float now = SDL::ToSeconds(SDL::GetTicks());
 
     // we'll have some textures move around over a few seconds.
     const float direction = SDL::fmod(now, 2.0f) > 1.f ? 1.0f : -1.0f;
     const float scale = (SDL::fmod(now, 1.0f) - 0.5f) / 0.5f * direction;
 
-    // as you can see, rendering draws over what was drawn before it.
-    renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
-    renderer.RenderClear();                     // start with a blank canvas.
+    /* To update a streaming texture, you need to lock it first. This gets you
+       access to the pixels. Note that this is considered a _write-only_
+       operation: the buffer you get from locking might not actually have the
+       existing contents of the texture, and you have to write to every locked
+       pixel! */
 
-    int texture_width = texture.GetWidth();
-    int texture_height = texture.GetHeight();
-
-    /* Just draw the static texture a few times. You can think of it like a
-       stamp, there isn't a limit to the number of times you can draw with it.
+    /* The texture lock is a surface but at same time it
+     *
      */
+    if (SDL::TextureLock surface = texture.Lock()) {
+      surface.Fill(SDL::Color(0, 0, 0));
+      SDL::Rect r{0,
+                  int(((float)(textureSz.y * 0.9f)) * ((scale + 1.0f) / 2.0f)),
+                  textureSz.x,
+                  textureSz.y / 10};
+      /* make a strip of the surface green */
+      surface.FillRect(r, SDL::Color{0, 255, 0});
+    }
 
-    // top left
-    dst_rect.x = (100.0f * scale);
-    dst_rect.y = 0.0f;
-    dst_rect.w = (float)texture_width;
-    dst_rect.h = (float)texture_height;
-    renderer.RenderTexture(texture, std::nullopt, dst_rect);
+    // as you can see, rendering draws over what was drawn before it.
+    renderer.SetDrawColor(SDL::Color{66, 66, 66}); // gray
+    renderer.RenderClear();                        // start with a blank canvas.
 
-    //  center this one.
-    dst_rect.x = ((float)(windowSz.x - texture_width)) / 2.0f;
-    dst_rect.y = ((float)(windowSz.y - texture_height)) / 2.0f;
-    dst_rect.w = (float)texture_width;
-    dst_rect.h = (float)texture_height;
-    renderer.RenderTexture(texture, std::nullopt, dst_rect);
-
-    // bottom right
-    dst_rect.x = ((float)(windowSz.x - texture_width)) - (100.0f * scale);
-    dst_rect.y = (float)(windowSz.y - texture_height);
-    dst_rect.w = (float)texture_width;
-    dst_rect.h = (float)texture_height;
+    SDL::FRect dst_rect{(windowSz.x - textureSz.x) / 2.f,
+                        (windowSz.y - textureSz.y) / 2.f,
+                        float(textureSz.x),
+                        float(textureSz.y)};
     renderer.RenderTexture(texture, std::nullopt, dst_rect);
 
     renderer.Present();       // put it all on the screen!
