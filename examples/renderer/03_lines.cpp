@@ -4,7 +4,7 @@
  *
  * This code is public domain. Feel free to use it for any purpose!
  *
- * Originally from primitives.c on SDL's examples
+ * Originally from lines.c on SDL's examples
  */
 
 #include <SDL3pp/SDL3pp.h>

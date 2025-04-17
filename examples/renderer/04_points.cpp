@@ -1,10 +1,10 @@
 /*
- * This example creates an SDL window and renderer, and then draws some lines
+ * This example creates an SDL window and renderer, and then draws some points
  * to it every frame.
  *
  * This code is public domain. Feel free to use it for any purpose!
  *
- * Originally from primitives.c on SDL's examples
+ * Originally from points.c on SDL's examples
  */
 
 #include <SDL3pp/SDL3pp.h>
@@ -14,7 +14,7 @@ struct Main
   static SDL::AppResult Init(Main** state, SDL::AppArgs args)
   {
     SDL::SetAppMetadata(
-      "Example Renderer Lines", "1.0", "com.example.renderer-lines");
+      "Example Renderer Points", "1.0", "com.example.renderer-points");
     return SDL::DefaultCreateClass(state, args);
   }
 
@@ -25,7 +25,7 @@ struct Main
   SDL::SDL init{SDL::INIT_VIDEO};
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{"examples/renderer/lines", windowSz};
+  SDL::Window window{"examples/renderer/points", windowSz};
   SDL::Renderer renderer{window};
   std::chrono::nanoseconds last_time;
 
