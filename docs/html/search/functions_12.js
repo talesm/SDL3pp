@@ -7,7 +7,7 @@ var searchData=
   ['unlock_4',['unlock',['../structSDL_1_1MutexBase.html#a247229d6fa657623f83ce1cf17a42b7e',1,'SDL::MutexBase::Unlock()'],['../structSDL_1_1RWLockBase.html#aeef2423424cae5987e373988b7245460',1,'SDL::RWLockBase::Unlock()'],['../classSDL_1_1PropertiesLock.html#a7facb4cd33b4fa7ed49a93c22f247d19',1,'SDL::PropertiesLock::Unlock()'],['../classSDL_1_1TextureLock.html#a64d4299d0b3b140db84ad04e380d6044',1,'SDL::TextureLock::Unlock()'],['../classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807',1,'SDL::SurfaceLock::Unlock()']]],
   ['unsetenv_5funsafe_5',['unsetenv_unsafe',['../group__CategoryStdinc.html#ga7dc726179e2ae431d7db8164099e333a',1,'SDL']]],
   ['unsetvariable_6',['UnsetVariable',['../structSDL_1_1EnvironmentBase.html#afd24dd3d5bb7419270c24d660cc9eb35',1,'SDL::EnvironmentBase']]],
-  ['update_7',['update',['../structSDL_1_1TextureBase.html#ab29df3c4b0a0bc83a693588807fb4606',1,'SDL::TextureBase::Update()'],['../structSDL_1_1TextBase.html#a04dbd5a7a9e1228a008bb3f7f8ebcd58',1,'SDL::TextBase::Update()']]],
+  ['update_7',['update',['../structSDL_1_1TextureBase.html#ab29df3c4b0a0bc83a693588807fb4606',1,'SDL::TextureBase::Update()'],['../structSDL_1_1TextBase.html#a25df00d278f868155f0f9eda387e90bc',1,'SDL::TextBase::Update()']]],
   ['updatenv_8',['UpdateNV',['../structSDL_1_1TextureBase.html#ae0e0d5a9c0c911fed685483337d75368',1,'SDL::TextureBase']]],
   ['updatesurface_9',['UpdateSurface',['../structSDL_1_1WindowBase.html#a80915756e1491139291b1fa5f87d0ec4',1,'SDL::WindowBase']]],
   ['updatesurfacerects_10',['UpdateSurfaceRects',['../structSDL_1_1WindowBase.html#a4ed7d3cf09b1d3637eca7d5d25a96455',1,'SDL::WindowBase']]],

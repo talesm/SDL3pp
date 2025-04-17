@@ -13,7 +13,7 @@ var searchData=
   ['delay_10',['Delay',['../group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4',1,'SDL']]],
   ['delayed_20callback_11',['Delayed callback',['../callback.html#delayed-callback',1,'']]],
   ['delayprecise_12',['DelayPrecise',['../group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de',1,'SDL']]],
-  ['deletestring_13',['DeleteString',['../structSDL_1_1TextBase.html#a2298bafa4dc8bcb7cd97e01a04c65eef',1,'SDL::TextBase']]],
+  ['deletestring_13',['DeleteString',['../structSDL_1_1TextBase.html#a4512eb19292fd2d4d02598b22d7671f7',1,'SDL::TextBase']]],
   ['design_20notes_14',['Design notes',['../DesignNotes.html',1,'']]],
   ['destroysurface_15',['DestroySurface',['../structSDL_1_1WindowBase.html#a79ce3062d0dd8420339f7effddb378b9',1,'SDL::WindowBase']]],
   ['detach_16',['Detach',['../structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7',1,'SDL::ThreadRef']]],
@@ -40,8 +40,8 @@ var searchData=
   ['dll_20management_37',['Shared Object/DLL Management',['../group__CategorySharedObject.html',1,'']]],
   ['documentation_38',['Documentation',['../index.html#documentation',1,'']]],
   ['drawing_39',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
-  ['drawrenderer_40',['DrawRenderer',['../structSDL_1_1TextBase.html#a9b3d3291d03c75970aa64707650a539f',1,'SDL::TextBase']]],
-  ['drawsurface_41',['DrawSurface',['../structSDL_1_1TextBase.html#a6cf15bf42ad8c0f7b6ec0cc2ab38ba1c',1,'SDL::TextBase']]],
+  ['drawrenderer_40',['DrawRenderer',['../structSDL_1_1TextBase.html#afcd6ff63329cd59e506cdc9a66706fbd',1,'SDL::TextBase']]],
+  ['drawsurface_41',['DrawSurface',['../structSDL_1_1TextBase.html#a3d138e3d41c7457e9e51f93fe2e126a0',1,'SDL::TextBase']]],
   ['dropevent_42',['DropEvent',['../group__CategoryEvents.html#ga7307351e327d3797db8f1950f6dcc334',1,'SDL']]],
   ['duplicate_43',['Duplicate',['../group__CategorySurface.html#ga510ceed6c5bba1666c72a1de931c1a27',1,'SDL::SurfaceBase']]]
 ];

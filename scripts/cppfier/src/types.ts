@@ -43,6 +43,7 @@ export interface EntryHint {
   self?: string;
   super?: string;
   static?: boolean;
+  mayFail?: boolean;
 }
 
 export interface VersionTag {
@@ -199,7 +200,7 @@ export interface ApiEnumeration extends ApiEntryTransform {
   includeAfter?: string;
 }
 
-export type QuickTransform = "placeholder" | "immutable" | "ctor" | ApiEntryKind;
+export type QuickTransform = "immutable" | "ctor" | ApiEntryKind;
 
 export type ApiSubEntryTransformMap = Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>;
 

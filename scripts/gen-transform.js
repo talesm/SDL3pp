@@ -1049,7 +1049,7 @@ const transform = {
           {
             "kind": "function",
             "name": "InitSubSystem",
-            "type": "bool",
+            "type": "void",
             "template": [
               {
                 "type": "class",
@@ -1082,7 +1082,7 @@ const transform = {
           {
             "kind": "function",
             "name": "InitSubSystem",
-            "type": "bool",
+            "type": "void",
             "template": [
               {
                 "type": "class",
@@ -1309,7 +1309,7 @@ const transform = {
         "SDL_RunOnMainThread": {
           "kind": "function",
           "name": "RunOnMainThread",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "type": "MainThreadCB",
@@ -7587,8 +7587,9 @@ const transform = {
             },
             "TTF_OpenFontWithProperties": "ctor",
             "TTF_CopyFont": {
-              "immutable": true,
-              "type": "Font"
+              immutable: true,
+              type: "Font",
+              hints: { mayFail: true }
             },
             "TTF_GetFontProperties": "function",
             "TTF_GetFontGeneration": "immutable",
@@ -7636,23 +7637,25 @@ const transform = {
             "TTF_GetGlyphMetrics": "immutable",
             "TTF_GetGlyphKerning": {
               "immutable": true,
-              "type": "std::optional<int>",
+              "type": "int",
               "parameters": [
                 {},
                 {},
                 {}
-              ]
+              ],
+              hints: { mayFail: true }
             },
             "GetStringSize": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<Point>",
+              "type": "Point",
               "parameters": [
                 {
                   "name": "text",
                   "type": "std::string_view"
                 }
-              ]
+              ],
+              hints: { mayFail: true }
             },
             "TTF_GetStringSize": {
               "immutable": true,
@@ -7674,7 +7677,7 @@ const transform = {
             "GetStringSizeWrapped": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<Point>",
+              "type": "Point",
               "parameters": [
                 {
                   "name": "text",
@@ -8009,13 +8012,13 @@ const transform = {
             "GetColor": [
               {
                 "kind": "function",
-                "type": "std::optional<FColor>",
+                "type": "FColor",
                 "immutable": true,
                 "parameters": []
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "immutable": true,
                 "parameters": [
                   {
@@ -8026,7 +8029,7 @@ const transform = {
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "immutable": true,
                 "parameters": [
                   {
@@ -8050,14 +8053,14 @@ const transform = {
             "GetPosition": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<Point>",
+              "type": "Point",
               "parameters": []
             },
             "TTF_GetTextPosition": "immutable",
             "TTF_SetTextWrapWidth": "function",
             "TTF_GetTextWrapWidth": {
               "immutable": true,
-              "type": "std::optional<int>",
+              "type": "int",
               "parameters": []
             },
             "TTF_SetTextWrapWhitespaceVisible": "function",
@@ -8099,7 +8102,7 @@ const transform = {
             "TTF_DeleteTextString": "function",
             "GetSize": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },

@@ -296,9 +296,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MessageBoxColor
 <li><code>MESSAGEBOX_INFORMATION</code>: informational dialog</li>
 </ul>
 <p>This function should be called on the thread that created the parent window, or on the main thread if the messagebox has no parent. It will block execution of that thread until the user clicks a button or closes the messagebox.</p>
-<p>This function may be called at any time, even before <a class="el" href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e" title="Initialize the SDL library.">InitSubSystem()</a>. This makes it useful for reporting errors like a failure to create a renderer or OpenGL context.</p>
+<p>This function may be called at any time, even before <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a>. This makes it useful for reporting errors like a failure to create a renderer or OpenGL context.</p>
 <p>On X11, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> rolls its own dialog box with X11 primitives instead of a formal toolkit like GTK+ or Qt.</p>
-<p>Note that if <a class="el" href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e" title="Initialize the SDL library.">InitSubSystem()</a> would fail because there isn't any available video target, this function is likely to fail for the same reasons. If this is a concern, check the return value from this function and fall back to writing to stderr if you can.</p>
+<p>Note that if <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> would fail because there isn't any available video target, this function is likely to fail for the same reasons. If this is a concern, check the return value from this function and fall back to writing to stderr if you can.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">flags</td><td>an MessageBoxFlags value. </td></tr>

@@ -834,6 +834,274 @@ using StringParam = const char*;
 #endif // SDL3PP_ENABLE_STRING_PARAM
 
 /**
+ * @defgroup CategoryError Error Handling
+ *
+ * Simple error message routines for SDL.
+ *
+ * Most apps will interface with these APIs in exactly one function: when
+ * almost any SDL function call reports failure, you can get a human-readable
+ * string of the problem from GetError().
+ *
+ * These strings are maintained per-thread, and apps are welcome to set their
+ * own errors, which is popular when building libraries on top of SDL for
+ * other apps to consume. These strings are set by calling SDL_SetError().
+ *
+ * A common usage pattern is to have a function that returns true for success
+ * and false for failure, and do this when something fails:
+ *
+ * ```cpp
+ * if (something_went_wrong) {
+ *    return SDL::SetError("The thing broke in this specific way: {}", errcode);
+ * }
+ * ```
+ *
+ * It's also common to just return `false` in this case if the failing thing
+ * is known to call SetError(), so errors simply propagate through.
+ *
+ * @{
+ */
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SDL::SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @param message the error message
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa GetError
+ * @sa SetError
+ */
+inline bool SetErrorUnformatted(StringParam message)
+{
+  return SDL_SetError("%s", static_cast<const char*>(message));
+}
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @tparam ARGS the formatting parameters
+ * @param fmt a
+ * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+ * style message format string
+ * @param args additional parameters matching the `{}` tokens in the format
+ * string, if any.
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat formatted-string
+ *
+ * @sa formatted-string
+ * @sa ClearError
+ * @sa GetError
+ * @sa SetError
+ * @return false
+ */
+template<class... ARGS>
+inline bool SetError(std::string_view fmt, ARGS... args)
+{
+  return SetError(
+    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+}
+
+/**
+ * Set an error indicating that memory allocation failed.
+ *
+ * This function does not do any memory allocation.
+ *
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OutOfMemory() { return SDL_OutOfMemory(); }
+
+/**
+ * Retrieve a message about the last error that occurred on the current
+ * thread.
+ *
+ * It is possible for multiple errors to occur before calling GetError().
+ * Only the last error is returned.
+ *
+ * The message is only applicable when an SDL function has signaled an error.
+ * You must check the return values of SDL function calls to determine when to
+ * appropriately call GetError(). You should *not* use the results of
+ * GetError() to decide if an error has occurred! Sometimes SDL will set
+ * an error string even when reporting success.
+ *
+ * SDL will *not* clear the error string for successful API calls. You *must*
+ * check return values for failure cases before you can assume the error
+ * string applies.
+ *
+ * Error strings are set per-thread, so an error set in a different thread
+ * will not interfere with the current thread's operation.
+ *
+ * The returned value is a thread-local string which will remain valid until
+ * the current thread's error string is changed. The caller should make a copy
+ * if the value is needed after the next SDL API call.
+ *
+ * @returns a message with information about the specific error that occurred,
+ *          or an empty string if there hasn't been an error message set since
+ *          the last call to ClearError().
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa SetErrorUnformatted
+ */
+inline const char* GetError() { return SDL_GetError(); }
+
+/**
+ * An exception that returns GetError()
+ *
+ */
+struct Error : std::exception
+{
+  /**
+   * Default ctor.
+   */
+  Error() = default;
+
+  /**
+   * Returns the explanatory string.
+   */
+  const char* what() const noexcept final { return GetError(); }
+};
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the
+ * parameter is false it will throw Error.
+ *
+ * @param result the result returned
+ */
+constexpr void CheckError(bool result)
+{
+  if (!result) throw Error();
+}
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the
+ * parameter is false it will throw Error.
+ *
+ * @param result the result returned
+ */
+template<class T>
+constexpr T CheckError(T result)
+{
+  if (!result) throw Error();
+  return result;
+}
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the result
+ * parameter is equals to invalidValue it will throw Error.
+ *
+ * @param result       the result returned
+ * @param invalidValue the value that if equal to result indicates this is
+ *                     invalid.
+ */
+template<class T>
+constexpr T CheckError(T result, T invalidValue)
+{
+  if (result == invalidValue) throw Error();
+  return result;
+}
+
+/**
+ * Clear any previous error message for this thread.
+ *
+ * @returns true.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetError
+ * @sa SetErrorUnformatted
+ */
+inline bool ClearError() { return SDL_ClearError(); }
+
+#ifdef SDL3PP_DOC
+
+/**
+ * A macro to standardize error reporting on unsupported operations.
+ *
+ * This simply calls SetError() with a standardized error string, for
+ * convenience, consistency, and clarity.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_Unsupported() SDL_SetError("That operation is not supported")
+
+/**
+ * A macro to standardize error reporting on unsupported operations.
+ *
+ * This simply calls SetError() with a standardized error string, for
+ * convenience, consistency, and clarity.
+ *
+ * A common usage pattern inside SDL is this:
+ *
+ * ```c
+ * bool MyFunction(const char *str) {
+ *     if (!str) {
+ *         return SDL_InvalidParamError("str");  // returns false.
+ *     }
+ *     DoSomething(str);
+ *     return true;
+ * }
+ * ```
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_InvalidParamError(param)                                           \
+  SDL_SetError("Parameter '%s' is invalid", (param))
+
+#endif // SDL3PP_DOC
+
+/** @} */
+
+/**
  * @defgroup CategoryStdinc Standard Library Functionality
  *
  * SDL provides its own implementation of some of the most important C runtime
@@ -8139,274 +8407,6 @@ constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
 /// @}
 
 /**
- * @defgroup CategoryError Error Handling
- *
- * Simple error message routines for SDL.
- *
- * Most apps will interface with these APIs in exactly one function: when
- * almost any SDL function call reports failure, you can get a human-readable
- * string of the problem from GetError().
- *
- * These strings are maintained per-thread, and apps are welcome to set their
- * own errors, which is popular when building libraries on top of SDL for
- * other apps to consume. These strings are set by calling SDL_SetError().
- *
- * A common usage pattern is to have a function that returns true for success
- * and false for failure, and do this when something fails:
- *
- * ```cpp
- * if (something_went_wrong) {
- *    return SDL::SetError("The thing broke in this specific way: {}", errcode);
- * }
- * ```
- *
- * It's also common to just return `false` in this case if the failing thing
- * is known to call SetError(), so errors simply propagate through.
- *
- * @{
- */
-
-/**
- * Set the SDL error message for the current thread.
- *
- * Calling this function will replace any previous error message that was set.
- *
- * This function always returns false, since SDL frequently uses false to
- * signify a failing result, leading to this idiom:
- *
- * ```c
- * if (error_code) {
- *     return SDL::SetError("This operation has failed: {}", error_code);
- * }
- * ```
- *
- * @param message the error message
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa ClearError
- * @sa GetError
- * @sa SetError
- */
-inline bool SetErrorUnformatted(StringParam message)
-{
-  return SDL_SetError("%s", static_cast<const char*>(message));
-}
-
-/**
- * Set the SDL error message for the current thread.
- *
- * Calling this function will replace any previous error message that was set.
- *
- * This function always returns false, since SDL frequently uses false to
- * signify a failing result, leading to this idiom:
- *
- * ```c
- * if (error_code) {
- *     return SetError("This operation has failed: {}", error_code);
- * }
- * ```
- *
- * @tparam ARGS the formatting parameters
- * @param fmt a
- * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
- * style message format string
- * @param args additional parameters matching the `{}` tokens in the format
- * string, if any.
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat formatted-string
- *
- * @sa formatted-string
- * @sa ClearError
- * @sa GetError
- * @sa SetError
- * @return false
- */
-template<class... ARGS>
-inline bool SetError(std::string_view fmt, ARGS... args)
-{
-  return SetError(
-    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
-}
-
-/**
- * Set an error indicating that memory allocation failed.
- *
- * This function does not do any memory allocation.
- *
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OutOfMemory() { return SDL_OutOfMemory(); }
-
-/**
- * Retrieve a message about the last error that occurred on the current
- * thread.
- *
- * It is possible for multiple errors to occur before calling GetError().
- * Only the last error is returned.
- *
- * The message is only applicable when an SDL function has signaled an error.
- * You must check the return values of SDL function calls to determine when to
- * appropriately call GetError(). You should *not* use the results of
- * GetError() to decide if an error has occurred! Sometimes SDL will set
- * an error string even when reporting success.
- *
- * SDL will *not* clear the error string for successful API calls. You *must*
- * check return values for failure cases before you can assume the error
- * string applies.
- *
- * Error strings are set per-thread, so an error set in a different thread
- * will not interfere with the current thread's operation.
- *
- * The returned value is a thread-local string which will remain valid until
- * the current thread's error string is changed. The caller should make a copy
- * if the value is needed after the next SDL API call.
- *
- * @returns a message with information about the specific error that occurred,
- *          or an empty string if there hasn't been an error message set since
- *          the last call to ClearError().
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa ClearError
- * @sa SetErrorUnformatted
- */
-inline const char* GetError() { return SDL_GetError(); }
-
-/**
- * An exception that returns GetError()
- *
- */
-struct Error : std::exception
-{
-  /**
-   * Default ctor.
-   */
-  Error() = default;
-
-  /**
-   * Returns the explanatory string.
-   */
-  const char* what() const noexcept final { return GetError(); }
-};
-
-/**
- * Check and throw if returned value from SDL is an error.
- *
- * This should be called only for things that may set SetError(). If the
- * parameter is false it will throw Error.
- *
- * @param result the result returned
- */
-constexpr void CheckError(bool result)
-{
-  if (!result) throw Error();
-}
-
-/**
- * Check and throw if returned value from SDL is an error.
- *
- * This should be called only for things that may set SetError(). If the
- * parameter is false it will throw Error.
- *
- * @param result the result returned
- */
-template<class T>
-constexpr T CheckError(T result)
-{
-  if (!result) throw Error();
-  return result;
-}
-
-/**
- * Check and throw if returned value from SDL is an error.
- *
- * This should be called only for things that may set SetError(). If the result
- * parameter is equals to invalidValue it will throw Error.
- *
- * @param result       the result returned
- * @param invalidValue the value that if equal to result indicates this is
- *                     invalid.
- */
-template<class T>
-constexpr T CheckError(T result, T invalidValue)
-{
-  if (result == invalidValue) throw Error();
-  return result;
-}
-
-/**
- * Clear any previous error message for this thread.
- *
- * @returns true.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetError
- * @sa SetErrorUnformatted
- */
-inline bool ClearError() { return SDL_ClearError(); }
-
-#ifdef SDL3PP_DOC
-
-/**
- * A macro to standardize error reporting on unsupported operations.
- *
- * This simply calls SetError() with a standardized error string, for
- * convenience, consistency, and clarity.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_Unsupported() SDL_SetError("That operation is not supported")
-
-/**
- * A macro to standardize error reporting on unsupported operations.
- *
- * This simply calls SetError() with a standardized error string, for
- * convenience, consistency, and clarity.
- *
- * A common usage pattern inside SDL is this:
- *
- * ```c
- * bool MyFunction(const char *str) {
- *     if (!str) {
- *         return SDL_InvalidParamError("str");  // returns false.
- *     }
- *     DoSomething(str);
- *     return true;
- * }
- * ```
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_InvalidParamError(param)                                           \
-  SDL_SetError("Parameter '%s' is invalid", (param))
-
-#endif // SDL3PP_DOC
-
-/** @} */
-
-/**
  *
  * @defgroup CategoryFilesystem Filesystem Access
  *
@@ -15134,6 +15134,47 @@ inline void ResetLogOutputFunction()
 /// @}
 
 /**
+ * @defgroup CategoryMisc Miscellaneous
+ *
+ * SDL API functions that don't fit elsewhere.
+ *
+ * @{
+ */
+
+/**
+ * Open a URL/URI in the browser or other appropriate external application.
+ *
+ * Open a URL in a separate, system-provided application. How this works will
+ * vary wildly depending on the platform. This will likely launch what makes
+ * sense to handle a specific URL's protocol (a web browser for `http://`,
+ * etc), but it might also be able to launch file managers for directories and
+ * other things.
+ *
+ * What happens when you open a URL varies wildly as well: your game window
+ * may lose focus (and may or may not lose focus if your game was fullscreen
+ * or grabbing input at the time). On mobile devices, your app will likely
+ * move to the background or your process might be paused. Any given platform
+ * may or may not handle a given URL.
+ *
+ * If this is unimplemented (or simply unavailable) for a platform, this will
+ * fail with an error. A successful result does not mean the URL loaded, just
+ * that we launched _something_ to handle it (or at least believe we did).
+ *
+ * All this to say: this function can be useful, but you should definitely
+ * test it on every platform you target.
+ *
+ * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
+ *            local files, if supported.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
+
+/// @}
+
+/**
  * @defgroup CategoryPixels Pixel Formats and Conversion Routines
  *
  * SDL offers facilities for pixel management.
@@ -17780,3506 +17821,6 @@ inline PowerState GetPowerInfo(int* seconds, int* percent)
 {
   return SDL_GetPowerInfo(seconds, percent);
 }
-
-/// @}
-
-/**
- *
- * @defgroup CategoryScancode Keyboard Scancodes
- *
- * Defines keyboard scancodes.
- *
- * Please refer to the Best Keyboard Practices document for details on what
- * this information means and how best to use it.
- *
- * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
- *
- * @{
- */
-
-// Forward decl
-struct Keycode;
-
-/**
- * The SDL keyboard scancode representation.
- *
- * An SDL scancode is the physical representation of a key on the keyboard,
- * independent of language and keyboard mapping.
- *
- * Values of this type are used to represent keyboard keys, among other places
- * in the `scancode` field of the KeyboardEvent structure.
- *
- * The values in this enumeration are based on the USB usage page standard:
- * https://usb.org/sites/default/files/hut1_5.pdf
- *
- * @since This enum is available since SDL 3.2.0.
- */
-class Scancode
-{
-  SDL_Scancode m_scancode;
-
-public:
-  /**
-   * Wraps Scancode.
-   *
-   * @param scancode the value to be wrapped
-   */
-  constexpr Scancode(SDL_Scancode scancode = {})
-    : m_scancode(scancode)
-  {
-  }
-
-  // Get scan code from name
-  Scancode(StringParam name);
-
-  /**
-   * Default comparison operator
-   */
-  constexpr auto operator<=>(const Scancode& other) const = default;
-
-  /**
-   * Unwraps to the underlying Scancode.
-   *
-   * @returns the underlying Scancode.
-   */
-  constexpr operator SDL_Scancode() const { return m_scancode; }
-
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const
-  {
-    return m_scancode != SDL_SCANCODE_UNKNOWN;
-  }
-
-  // Set name
-  bool SetName(StringParam name);
-
-  // Get name
-  const char* GetName() const;
-};
-
-constexpr Scancode SCANCODE_UNKNOWN = SDL_SCANCODE_UNKNOWN; ///< UNKNOWN
-
-constexpr Scancode SCANCODE_A = SDL_SCANCODE_A; ///< A
-
-constexpr Scancode SCANCODE_B = SDL_SCANCODE_B; ///< B
-
-constexpr Scancode SCANCODE_C = SDL_SCANCODE_C; ///< C
-
-constexpr Scancode SCANCODE_D = SDL_SCANCODE_D; ///< D
-
-constexpr Scancode SCANCODE_E = SDL_SCANCODE_E; ///< E
-
-constexpr Scancode SCANCODE_F = SDL_SCANCODE_F; ///< F
-
-constexpr Scancode SCANCODE_G = SDL_SCANCODE_G; ///< G
-
-constexpr Scancode SCANCODE_H = SDL_SCANCODE_H; ///< H
-
-constexpr Scancode SCANCODE_I = SDL_SCANCODE_I; ///< I
-
-constexpr Scancode SCANCODE_J = SDL_SCANCODE_J; ///< J
-
-constexpr Scancode SCANCODE_K = SDL_SCANCODE_K; ///< K
-
-constexpr Scancode SCANCODE_L = SDL_SCANCODE_L; ///< L
-
-constexpr Scancode SCANCODE_M = SDL_SCANCODE_M; ///< M
-
-constexpr Scancode SCANCODE_N = SDL_SCANCODE_N; ///< N
-
-constexpr Scancode SCANCODE_O = SDL_SCANCODE_O; ///< O
-
-constexpr Scancode SCANCODE_P = SDL_SCANCODE_P; ///< P
-
-constexpr Scancode SCANCODE_Q = SDL_SCANCODE_Q; ///< Q
-
-constexpr Scancode SCANCODE_R = SDL_SCANCODE_R; ///< R
-
-constexpr Scancode SCANCODE_S = SDL_SCANCODE_S; ///< S
-
-constexpr Scancode SCANCODE_T = SDL_SCANCODE_T; ///< T
-
-constexpr Scancode SCANCODE_U = SDL_SCANCODE_U; ///< U
-
-constexpr Scancode SCANCODE_V = SDL_SCANCODE_V; ///< V
-
-constexpr Scancode SCANCODE_W = SDL_SCANCODE_W; ///< W
-
-constexpr Scancode SCANCODE_X = SDL_SCANCODE_X; ///< X
-
-constexpr Scancode SCANCODE_Y = SDL_SCANCODE_Y; ///< Y
-
-constexpr Scancode SCANCODE_Z = SDL_SCANCODE_Z; ///< Z
-
-constexpr Scancode SCANCODE_1 = SDL_SCANCODE_1; ///< 1
-
-constexpr Scancode SCANCODE_2 = SDL_SCANCODE_2; ///< 2
-
-constexpr Scancode SCANCODE_3 = SDL_SCANCODE_3; ///< 3
-
-constexpr Scancode SCANCODE_4 = SDL_SCANCODE_4; ///< 4
-
-constexpr Scancode SCANCODE_5 = SDL_SCANCODE_5; ///< 5
-
-constexpr Scancode SCANCODE_6 = SDL_SCANCODE_6; ///< 6
-
-constexpr Scancode SCANCODE_7 = SDL_SCANCODE_7; ///< 7
-
-constexpr Scancode SCANCODE_8 = SDL_SCANCODE_8; ///< 8
-
-constexpr Scancode SCANCODE_9 = SDL_SCANCODE_9; ///< 9
-
-constexpr Scancode SCANCODE_0 = SDL_SCANCODE_0; ///< 0
-
-constexpr Scancode SCANCODE_RETURN = SDL_SCANCODE_RETURN; ///< RETURN
-
-constexpr Scancode SCANCODE_ESCAPE = SDL_SCANCODE_ESCAPE; ///< ESCAPE
-
-constexpr Scancode SCANCODE_BACKSPACE = SDL_SCANCODE_BACKSPACE; ///< BACKSPACE
-
-constexpr Scancode SCANCODE_TAB = SDL_SCANCODE_TAB; ///< TAB
-
-constexpr Scancode SCANCODE_SPACE = SDL_SCANCODE_SPACE; ///< SPACE
-
-constexpr Scancode SCANCODE_MINUS = SDL_SCANCODE_MINUS; ///< MINUS
-
-constexpr Scancode SCANCODE_EQUALS = SDL_SCANCODE_EQUALS; ///< EQUALS
-
-constexpr Scancode SCANCODE_LEFTBRACKET =
-  SDL_SCANCODE_LEFTBRACKET; ///< LEFTBRACKET
-
-constexpr Scancode SCANCODE_RIGHTBRACKET =
-  SDL_SCANCODE_RIGHTBRACKET; ///< RIGHTBRACKET
-
-/**
- * Located at the lower left of the return key on ISO keyboards and at the right
- * end of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS
- * (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL
- * LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR
- * SIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a
- * German layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and
- * ASTERISK and MICRO SIGN in a French Windows layout.
- */
-constexpr Scancode SCANCODE_BACKSLASH = SDL_SCANCODE_BACKSLASH;
-
-/**
- * ISO USB keyboards actually use this code instead of 49 for the same key, but
- * all OSes I've seen treat the two codes identically.  So, as an implementor,
- * unless your keyboard generates both of those codes and your OS treats them
- * differently, you should generate SCANCODE_BACKSLASH instead of this code. As
- * a user, you should not rely on this code because SDL will never generate it
- * with most (all?) keyboards.
- */
-constexpr Scancode SCANCODE_NONUSHASH = SDL_SCANCODE_NONUSHASH;
-
-constexpr Scancode SCANCODE_SEMICOLON = SDL_SCANCODE_SEMICOLON; ///< SEMICOLON
-
-constexpr Scancode SCANCODE_APOSTROPHE =
-  SDL_SCANCODE_APOSTROPHE; ///< APOSTROPHE
-
-/**
- * Located in the top left corner (on both ANSI and ISO keyboards).  Produces
- * GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on
- * ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION
- * SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION
- * SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),
- * CIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO
- * keyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL
- * AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN
- * SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on
- * ANSI keyboards.
- */
-constexpr Scancode SCANCODE_GRAVE = SDL_SCANCODE_GRAVE;
-
-constexpr Scancode SCANCODE_COMMA = SDL_SCANCODE_COMMA; ///< COMMA
-
-constexpr Scancode SCANCODE_PERIOD = SDL_SCANCODE_PERIOD; ///< PERIOD
-
-constexpr Scancode SCANCODE_SLASH = SDL_SCANCODE_SLASH; ///< SLASH
-
-constexpr Scancode SCANCODE_CAPSLOCK = SDL_SCANCODE_CAPSLOCK; ///< CAPSLOCK
-
-constexpr Scancode SCANCODE_F1 = SDL_SCANCODE_F1; ///< F1
-
-constexpr Scancode SCANCODE_F2 = SDL_SCANCODE_F2; ///< F2
-
-constexpr Scancode SCANCODE_F3 = SDL_SCANCODE_F3; ///< F3
-
-constexpr Scancode SCANCODE_F4 = SDL_SCANCODE_F4; ///< F4
-
-constexpr Scancode SCANCODE_F5 = SDL_SCANCODE_F5; ///< F5
-
-constexpr Scancode SCANCODE_F6 = SDL_SCANCODE_F6; ///< F6
-
-constexpr Scancode SCANCODE_F7 = SDL_SCANCODE_F7; ///< F7
-
-constexpr Scancode SCANCODE_F8 = SDL_SCANCODE_F8; ///< F8
-
-constexpr Scancode SCANCODE_F9 = SDL_SCANCODE_F9; ///< F9
-
-constexpr Scancode SCANCODE_F10 = SDL_SCANCODE_F10; ///< F10
-
-constexpr Scancode SCANCODE_F11 = SDL_SCANCODE_F11; ///< F11
-
-constexpr Scancode SCANCODE_F12 = SDL_SCANCODE_F12; ///< F12
-
-constexpr Scancode SCANCODE_PRINTSCREEN =
-  SDL_SCANCODE_PRINTSCREEN; ///< PRINTSCREEN
-
-constexpr Scancode SCANCODE_SCROLLLOCK =
-  SDL_SCANCODE_SCROLLLOCK; ///< SCROLLLOCK
-
-constexpr Scancode SCANCODE_PAUSE = SDL_SCANCODE_PAUSE; ///< PAUSE
-
-/**
- * insert on PC, help on some Mac keyboards (but does send code 73, not 117)
- */
-constexpr Scancode SCANCODE_INSERT = SDL_SCANCODE_INSERT;
-
-constexpr Scancode SCANCODE_HOME = SDL_SCANCODE_HOME; ///< HOME
-
-constexpr Scancode SCANCODE_PAGEUP = SDL_SCANCODE_PAGEUP; ///< PAGEUP
-
-constexpr Scancode SCANCODE_DELETE = SDL_SCANCODE_DELETE; ///< DELETE
-
-constexpr Scancode SCANCODE_END = SDL_SCANCODE_END; ///< END
-
-constexpr Scancode SCANCODE_PAGEDOWN = SDL_SCANCODE_PAGEDOWN; ///< PAGEDOWN
-
-constexpr Scancode SCANCODE_RIGHT = SDL_SCANCODE_RIGHT; ///< RIGHT
-
-constexpr Scancode SCANCODE_LEFT = SDL_SCANCODE_LEFT; ///< LEFT
-
-constexpr Scancode SCANCODE_DOWN = SDL_SCANCODE_DOWN; ///< DOWN
-
-constexpr Scancode SCANCODE_UP = SDL_SCANCODE_UP; ///< UP
-
-/**
- * num lock on PC, clear on Mac keyboards
- */
-constexpr Scancode SCANCODE_NUMLOCKCLEAR = SDL_SCANCODE_NUMLOCKCLEAR;
-
-constexpr Scancode SCANCODE_KP_DIVIDE = SDL_SCANCODE_KP_DIVIDE; ///< KP_DIVIDE
-
-constexpr Scancode SCANCODE_KP_MULTIPLY =
-  SDL_SCANCODE_KP_MULTIPLY; ///< KP_MULTIPLY
-
-constexpr Scancode SCANCODE_KP_MINUS = SDL_SCANCODE_KP_MINUS; ///< KP_MINUS
-
-constexpr Scancode SCANCODE_KP_PLUS = SDL_SCANCODE_KP_PLUS; ///< KP_PLUS
-
-constexpr Scancode SCANCODE_KP_ENTER = SDL_SCANCODE_KP_ENTER; ///< KP_ENTER
-
-constexpr Scancode SCANCODE_KP_1 = SDL_SCANCODE_KP_1; ///< KP_1
-
-constexpr Scancode SCANCODE_KP_2 = SDL_SCANCODE_KP_2; ///< KP_2
-
-constexpr Scancode SCANCODE_KP_3 = SDL_SCANCODE_KP_3; ///< KP_3
-
-constexpr Scancode SCANCODE_KP_4 = SDL_SCANCODE_KP_4; ///< KP_4
-
-constexpr Scancode SCANCODE_KP_5 = SDL_SCANCODE_KP_5; ///< KP_5
-
-constexpr Scancode SCANCODE_KP_6 = SDL_SCANCODE_KP_6; ///< KP_6
-
-constexpr Scancode SCANCODE_KP_7 = SDL_SCANCODE_KP_7; ///< KP_7
-
-constexpr Scancode SCANCODE_KP_8 = SDL_SCANCODE_KP_8; ///< KP_8
-
-constexpr Scancode SCANCODE_KP_9 = SDL_SCANCODE_KP_9; ///< KP_9
-
-constexpr Scancode SCANCODE_KP_0 = SDL_SCANCODE_KP_0; ///< KP_0
-
-constexpr Scancode SCANCODE_KP_PERIOD = SDL_SCANCODE_KP_PERIOD; ///< KP_PERIOD
-
-/**
- * This is the additional key that ISO keyboards have over ANSI ones, located
- * between left shift and Y.  Produces GRAVE ACCENT and TILDE in a US or UK Mac
- * layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows
- * layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,
- * or French layout.
- */
-constexpr Scancode SCANCODE_NONUSBACKSLASH = SDL_SCANCODE_NONUSBACKSLASH;
-
-/**
- * windows contextual menu, compose
- */
-constexpr Scancode SCANCODE_APPLICATION = SDL_SCANCODE_APPLICATION;
-
-/**
- * The USB document says this is a status flag, not a physical key - but some
- * Mac keyboards do have a power key.
- */
-constexpr Scancode SCANCODE_POWER = SDL_SCANCODE_POWER;
-
-constexpr Scancode SCANCODE_KP_EQUALS = SDL_SCANCODE_KP_EQUALS; ///< KP_EQUALS
-
-constexpr Scancode SCANCODE_F13 = SDL_SCANCODE_F13; ///< F13
-
-constexpr Scancode SCANCODE_F14 = SDL_SCANCODE_F14; ///< F14
-
-constexpr Scancode SCANCODE_F15 = SDL_SCANCODE_F15; ///< F15
-
-constexpr Scancode SCANCODE_F16 = SDL_SCANCODE_F16; ///< F16
-
-constexpr Scancode SCANCODE_F17 = SDL_SCANCODE_F17; ///< F17
-
-constexpr Scancode SCANCODE_F18 = SDL_SCANCODE_F18; ///< F18
-
-constexpr Scancode SCANCODE_F19 = SDL_SCANCODE_F19; ///< F19
-
-constexpr Scancode SCANCODE_F20 = SDL_SCANCODE_F20; ///< F20
-
-constexpr Scancode SCANCODE_F21 = SDL_SCANCODE_F21; ///< F21
-
-constexpr Scancode SCANCODE_F22 = SDL_SCANCODE_F22; ///< F22
-
-constexpr Scancode SCANCODE_F23 = SDL_SCANCODE_F23; ///< F23
-
-constexpr Scancode SCANCODE_F24 = SDL_SCANCODE_F24; ///< F24
-
-constexpr Scancode SCANCODE_EXECUTE = SDL_SCANCODE_EXECUTE; ///< EXECUTE
-
-constexpr Scancode SCANCODE_HELP =
-  SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
-
-constexpr Scancode SCANCODE_MENU = SDL_SCANCODE_MENU; ///< Menu (show menu)
-
-constexpr Scancode SCANCODE_SELECT = SDL_SCANCODE_SELECT; ///< SELECT
-
-constexpr Scancode SCANCODE_STOP = SDL_SCANCODE_STOP; ///< AC Stop.
-
-constexpr Scancode SCANCODE_AGAIN = SDL_SCANCODE_AGAIN; ///< AC Redo/Repeat.
-
-constexpr Scancode SCANCODE_UNDO = SDL_SCANCODE_UNDO; ///< AC Undo.
-
-constexpr Scancode SCANCODE_CUT = SDL_SCANCODE_CUT; ///< AC Cut.
-
-constexpr Scancode SCANCODE_COPY = SDL_SCANCODE_COPY; ///< AC Copy.
-
-constexpr Scancode SCANCODE_PASTE = SDL_SCANCODE_PASTE; ///< AC Paste.
-
-constexpr Scancode SCANCODE_FIND = SDL_SCANCODE_FIND; ///< AC Find.
-
-constexpr Scancode SCANCODE_MUTE = SDL_SCANCODE_MUTE; ///< MUTE
-
-constexpr Scancode SCANCODE_VOLUMEUP = SDL_SCANCODE_VOLUMEUP; ///< VOLUMEUP
-
-constexpr Scancode SCANCODE_VOLUMEDOWN =
-  SDL_SCANCODE_VOLUMEDOWN; ///< VOLUMEDOWN
-
-constexpr Scancode SCANCODE_KP_COMMA = SDL_SCANCODE_KP_COMMA; ///< KP_COMMA
-
-constexpr Scancode SCANCODE_KP_EQUALSAS400 =
-  SDL_SCANCODE_KP_EQUALSAS400; ///< KP_EQUALSAS400
-
-/**
- * used on Asian keyboards, see footnotes in USB doc
- */
-constexpr Scancode SCANCODE_INTERNATIONAL1 = SDL_SCANCODE_INTERNATIONAL1;
-
-constexpr Scancode SCANCODE_INTERNATIONAL2 =
-  SDL_SCANCODE_INTERNATIONAL2; ///< INTERNATIONAL2
-
-constexpr Scancode SCANCODE_INTERNATIONAL3 =
-  SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
-
-constexpr Scancode SCANCODE_INTERNATIONAL4 =
-  SDL_SCANCODE_INTERNATIONAL4; ///< INTERNATIONAL4
-
-constexpr Scancode SCANCODE_INTERNATIONAL5 =
-  SDL_SCANCODE_INTERNATIONAL5; ///< INTERNATIONAL5
-
-constexpr Scancode SCANCODE_INTERNATIONAL6 =
-  SDL_SCANCODE_INTERNATIONAL6; ///< INTERNATIONAL6
-
-constexpr Scancode SCANCODE_INTERNATIONAL7 =
-  SDL_SCANCODE_INTERNATIONAL7; ///< INTERNATIONAL7
-
-constexpr Scancode SCANCODE_INTERNATIONAL8 =
-  SDL_SCANCODE_INTERNATIONAL8; ///< INTERNATIONAL8
-
-constexpr Scancode SCANCODE_INTERNATIONAL9 =
-  SDL_SCANCODE_INTERNATIONAL9; ///< INTERNATIONAL9
-
-constexpr Scancode SCANCODE_LANG1 =
-  SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
-
-constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion.
-
-constexpr Scancode SCANCODE_LANG3 = SDL_SCANCODE_LANG3; ///< Katakana.
-
-constexpr Scancode SCANCODE_LANG4 = SDL_SCANCODE_LANG4; ///< Hiragana.
-
-constexpr Scancode SCANCODE_LANG5 = SDL_SCANCODE_LANG5; ///< Zenkaku/Hankaku.
-
-constexpr Scancode SCANCODE_LANG6 = SDL_SCANCODE_LANG6; ///< reserved
-
-constexpr Scancode SCANCODE_LANG7 = SDL_SCANCODE_LANG7; ///< reserved
-
-constexpr Scancode SCANCODE_LANG8 = SDL_SCANCODE_LANG8; ///< reserved
-
-constexpr Scancode SCANCODE_LANG9 = SDL_SCANCODE_LANG9; ///< reserved
-
-constexpr Scancode SCANCODE_ALTERASE = SDL_SCANCODE_ALTERASE; ///< Erase-Eaze.
-
-constexpr Scancode SCANCODE_SYSREQ = SDL_SCANCODE_SYSREQ; ///< SYSREQ
-
-constexpr Scancode SCANCODE_CANCEL = SDL_SCANCODE_CANCEL; ///< AC Cancel.
-
-constexpr Scancode SCANCODE_CLEAR = SDL_SCANCODE_CLEAR; ///< CLEAR
-
-constexpr Scancode SCANCODE_PRIOR = SDL_SCANCODE_PRIOR; ///< PRIOR
-
-constexpr Scancode SCANCODE_RETURN2 = SDL_SCANCODE_RETURN2; ///< RETURN2
-
-constexpr Scancode SCANCODE_SEPARATOR = SDL_SCANCODE_SEPARATOR; ///< SEPARATOR
-
-constexpr Scancode SCANCODE_OUT = SDL_SCANCODE_OUT; ///< OUT
-
-constexpr Scancode SCANCODE_OPER = SDL_SCANCODE_OPER; ///< OPER
-
-constexpr Scancode SCANCODE_CLEARAGAIN =
-  SDL_SCANCODE_CLEARAGAIN; ///< CLEARAGAIN
-
-constexpr Scancode SCANCODE_CRSEL = SDL_SCANCODE_CRSEL; ///< CRSEL
-
-constexpr Scancode SCANCODE_EXSEL = SDL_SCANCODE_EXSEL; ///< EXSEL
-
-constexpr Scancode SCANCODE_KP_00 = SDL_SCANCODE_KP_00; ///< KP_00
-
-constexpr Scancode SCANCODE_KP_000 = SDL_SCANCODE_KP_000; ///< KP_000
-
-constexpr Scancode SCANCODE_THOUSANDSSEPARATOR =
-  SDL_SCANCODE_THOUSANDSSEPARATOR; ///< THOUSANDSSEPARATOR
-
-constexpr Scancode SCANCODE_DECIMALSEPARATOR =
-  SDL_SCANCODE_DECIMALSEPARATOR; ///< DECIMALSEPARATOR
-
-constexpr Scancode SCANCODE_CURRENCYUNIT =
-  SDL_SCANCODE_CURRENCYUNIT; ///< CURRENCYUNIT
-
-constexpr Scancode SCANCODE_CURRENCYSUBUNIT =
-  SDL_SCANCODE_CURRENCYSUBUNIT; ///< CURRENCYSUBUNIT
-
-constexpr Scancode SCANCODE_KP_LEFTPAREN =
-  SDL_SCANCODE_KP_LEFTPAREN; ///< KP_LEFTPAREN
-
-constexpr Scancode SCANCODE_KP_RIGHTPAREN =
-  SDL_SCANCODE_KP_RIGHTPAREN; ///< KP_RIGHTPAREN
-
-constexpr Scancode SCANCODE_KP_LEFTBRACE =
-  SDL_SCANCODE_KP_LEFTBRACE; ///< KP_LEFTBRACE
-
-constexpr Scancode SCANCODE_KP_RIGHTBRACE =
-  SDL_SCANCODE_KP_RIGHTBRACE; ///< KP_RIGHTBRACE
-
-constexpr Scancode SCANCODE_KP_TAB = SDL_SCANCODE_KP_TAB; ///< KP_TAB
-
-constexpr Scancode SCANCODE_KP_BACKSPACE =
-  SDL_SCANCODE_KP_BACKSPACE; ///< KP_BACKSPACE
-
-constexpr Scancode SCANCODE_KP_A = SDL_SCANCODE_KP_A; ///< KP_A
-
-constexpr Scancode SCANCODE_KP_B = SDL_SCANCODE_KP_B; ///< KP_B
-
-constexpr Scancode SCANCODE_KP_C = SDL_SCANCODE_KP_C; ///< KP_C
-
-constexpr Scancode SCANCODE_KP_D = SDL_SCANCODE_KP_D; ///< KP_D
-
-constexpr Scancode SCANCODE_KP_E = SDL_SCANCODE_KP_E; ///< KP_E
-
-constexpr Scancode SCANCODE_KP_F = SDL_SCANCODE_KP_F; ///< KP_F
-
-constexpr Scancode SCANCODE_KP_XOR = SDL_SCANCODE_KP_XOR; ///< KP_XOR
-
-constexpr Scancode SCANCODE_KP_POWER = SDL_SCANCODE_KP_POWER; ///< KP_POWER
-
-constexpr Scancode SCANCODE_KP_PERCENT =
-  SDL_SCANCODE_KP_PERCENT; ///< KP_PERCENT
-
-constexpr Scancode SCANCODE_KP_LESS = SDL_SCANCODE_KP_LESS; ///< KP_LESS
-
-constexpr Scancode SCANCODE_KP_GREATER =
-  SDL_SCANCODE_KP_GREATER; ///< KP_GREATER
-
-constexpr Scancode SCANCODE_KP_AMPERSAND =
-  SDL_SCANCODE_KP_AMPERSAND; ///< KP_AMPERSAND
-
-constexpr Scancode SCANCODE_KP_DBLAMPERSAND =
-  SDL_SCANCODE_KP_DBLAMPERSAND; ///< KP_DBLAMPERSAND
-
-constexpr Scancode SCANCODE_KP_VERTICALBAR =
-  SDL_SCANCODE_KP_VERTICALBAR; ///< KP_VERTICALBAR
-
-constexpr Scancode SCANCODE_KP_DBLVERTICALBAR =
-  SDL_SCANCODE_KP_DBLVERTICALBAR; ///< KP_DBLVERTICALBAR
-
-constexpr Scancode SCANCODE_KP_COLON = SDL_SCANCODE_KP_COLON; ///< KP_COLON
-
-constexpr Scancode SCANCODE_KP_HASH = SDL_SCANCODE_KP_HASH; ///< KP_HASH
-
-constexpr Scancode SCANCODE_KP_SPACE = SDL_SCANCODE_KP_SPACE; ///< KP_SPACE
-
-constexpr Scancode SCANCODE_KP_AT = SDL_SCANCODE_KP_AT; ///< KP_AT
-
-constexpr Scancode SCANCODE_KP_EXCLAM = SDL_SCANCODE_KP_EXCLAM; ///< KP_EXCLAM
-
-constexpr Scancode SCANCODE_KP_MEMSTORE =
-  SDL_SCANCODE_KP_MEMSTORE; ///< KP_MEMSTORE
-
-constexpr Scancode SCANCODE_KP_MEMRECALL =
-  SDL_SCANCODE_KP_MEMRECALL; ///< KP_MEMRECALL
-
-constexpr Scancode SCANCODE_KP_MEMCLEAR =
-  SDL_SCANCODE_KP_MEMCLEAR; ///< KP_MEMCLEAR
-
-constexpr Scancode SCANCODE_KP_MEMADD = SDL_SCANCODE_KP_MEMADD; ///< KP_MEMADD
-
-constexpr Scancode SCANCODE_KP_MEMSUBTRACT =
-  SDL_SCANCODE_KP_MEMSUBTRACT; ///< KP_MEMSUBTRACT
-
-constexpr Scancode SCANCODE_KP_MEMMULTIPLY =
-  SDL_SCANCODE_KP_MEMMULTIPLY; ///< KP_MEMMULTIPLY
-
-constexpr Scancode SCANCODE_KP_MEMDIVIDE =
-  SDL_SCANCODE_KP_MEMDIVIDE; ///< KP_MEMDIVIDE
-
-constexpr Scancode SCANCODE_KP_PLUSMINUS =
-  SDL_SCANCODE_KP_PLUSMINUS; ///< KP_PLUSMINUS
-
-constexpr Scancode SCANCODE_KP_CLEAR = SDL_SCANCODE_KP_CLEAR; ///< KP_CLEAR
-
-constexpr Scancode SCANCODE_KP_CLEARENTRY =
-  SDL_SCANCODE_KP_CLEARENTRY; ///< KP_CLEARENTRY
-
-constexpr Scancode SCANCODE_KP_BINARY = SDL_SCANCODE_KP_BINARY; ///< KP_BINARY
-
-constexpr Scancode SCANCODE_KP_OCTAL = SDL_SCANCODE_KP_OCTAL; ///< KP_OCTAL
-
-constexpr Scancode SCANCODE_KP_DECIMAL =
-  SDL_SCANCODE_KP_DECIMAL; ///< KP_DECIMAL
-
-constexpr Scancode SCANCODE_KP_HEXADECIMAL =
-  SDL_SCANCODE_KP_HEXADECIMAL; ///< KP_HEXADECIMAL
-
-constexpr Scancode SCANCODE_LCTRL = SDL_SCANCODE_LCTRL; ///< LCTRL
-
-constexpr Scancode SCANCODE_LSHIFT = SDL_SCANCODE_LSHIFT; ///< LSHIFT
-
-constexpr Scancode SCANCODE_LALT = SDL_SCANCODE_LALT; ///< alt, option
-
-/**
- * windows, command (apple), meta
- */
-constexpr Scancode SCANCODE_LGUI = SDL_SCANCODE_LGUI;
-
-constexpr Scancode SCANCODE_RCTRL = SDL_SCANCODE_RCTRL; ///< RCTRL
-
-constexpr Scancode SCANCODE_RSHIFT = SDL_SCANCODE_RSHIFT; ///< RSHIFT
-
-constexpr Scancode SCANCODE_RALT = SDL_SCANCODE_RALT; ///< alt gr, option
-
-/**
- * windows, command (apple), meta
- */
-constexpr Scancode SCANCODE_RGUI = SDL_SCANCODE_RGUI;
-
-/**
- * I'm not sure if this is really not covered by any of the above, but since
- * there's a special KMOD_MODE for it I'm adding it here.
- */
-constexpr Scancode SCANCODE_MODE = SDL_SCANCODE_MODE;
-
-constexpr Scancode SCANCODE_SLEEP = SDL_SCANCODE_SLEEP; ///< Sleep.
-
-constexpr Scancode SCANCODE_WAKE = SDL_SCANCODE_WAKE; ///< Wake.
-
-/**
- * Channel Increment.
- */
-constexpr Scancode SCANCODE_CHANNEL_INCREMENT = SDL_SCANCODE_CHANNEL_INCREMENT;
-
-/**
- * Channel Decrement.
- */
-constexpr Scancode SCANCODE_CHANNEL_DECREMENT = SDL_SCANCODE_CHANNEL_DECREMENT;
-
-constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play.
-
-constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause.
-
-constexpr Scancode SCANCODE_MEDIA_RECORD =
-  SDL_SCANCODE_MEDIA_RECORD; ///< Record.
-
-/**
- * Fast Forward.
- */
-constexpr Scancode SCANCODE_MEDIA_FAST_FORWARD =
-  SDL_SCANCODE_MEDIA_FAST_FORWARD;
-
-constexpr Scancode SCANCODE_MEDIA_REWIND =
-  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
-
-/**
- * Next Track.
- */
-constexpr Scancode SCANCODE_MEDIA_NEXT_TRACK = SDL_SCANCODE_MEDIA_NEXT_TRACK;
-
-/**
- * Previous Track.
- */
-constexpr Scancode SCANCODE_MEDIA_PREVIOUS_TRACK =
-  SDL_SCANCODE_MEDIA_PREVIOUS_TRACK;
-
-constexpr Scancode SCANCODE_MEDIA_STOP = SDL_SCANCODE_MEDIA_STOP; ///< Stop.
-
-constexpr Scancode SCANCODE_MEDIA_EJECT = SDL_SCANCODE_MEDIA_EJECT; ///< Eject.
-
-/**
- * Play / Pause.
- */
-constexpr Scancode SCANCODE_MEDIA_PLAY_PAUSE = SDL_SCANCODE_MEDIA_PLAY_PAUSE;
-
-constexpr Scancode SCANCODE_MEDIA_SELECT =
-  SDL_SCANCODE_MEDIA_SELECT; ///< MEDIA_SELECT
-
-constexpr Scancode SCANCODE_AC_NEW = SDL_SCANCODE_AC_NEW; ///< AC New.
-
-constexpr Scancode SCANCODE_AC_OPEN = SDL_SCANCODE_AC_OPEN; ///< AC Open.
-
-constexpr Scancode SCANCODE_AC_CLOSE = SDL_SCANCODE_AC_CLOSE; ///< AC Close.
-
-constexpr Scancode SCANCODE_AC_EXIT = SDL_SCANCODE_AC_EXIT; ///< AC Exit.
-
-constexpr Scancode SCANCODE_AC_SAVE = SDL_SCANCODE_AC_SAVE; ///< AC Save.
-
-constexpr Scancode SCANCODE_AC_PRINT = SDL_SCANCODE_AC_PRINT; ///< AC Print.
-
-/**
- * AC Properties.
- */
-constexpr Scancode SCANCODE_AC_PROPERTIES = SDL_SCANCODE_AC_PROPERTIES;
-
-constexpr Scancode SCANCODE_AC_SEARCH = SDL_SCANCODE_AC_SEARCH; ///< AC Search.
-
-constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home.
-
-constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back.
-
-constexpr Scancode SCANCODE_AC_FORWARD =
-  SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
-
-constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop.
-
-constexpr Scancode SCANCODE_AC_REFRESH =
-  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
-
-/**
- * AC Bookmarks.
- */
-constexpr Scancode SCANCODE_AC_BOOKMARKS = SDL_SCANCODE_AC_BOOKMARKS;
-
-/**
- * Usually situated below the display on phones and used as a multi-function
- * feature key for selecting a software defined function shown on the bottom
- * left of the display.
- */
-constexpr Scancode SCANCODE_SOFTLEFT = SDL_SCANCODE_SOFTLEFT;
-
-/**
- * Usually situated below the display on phones and used as a multi-function
- * feature key for selecting a software defined function shown on the bottom
- * right of the display.
- */
-constexpr Scancode SCANCODE_SOFTRIGHT = SDL_SCANCODE_SOFTRIGHT;
-
-/**
- * Used for accepting phone calls.
- */
-constexpr Scancode SCANCODE_CALL = SDL_SCANCODE_CALL;
-
-/**
- * Used for rejecting phone calls.
- */
-constexpr Scancode SCANCODE_ENDCALL = SDL_SCANCODE_ENDCALL;
-
-/**
- * 400-500 reserved for dynamic keycodes
- */
-constexpr Scancode SCANCODE_RESERVED = SDL_SCANCODE_RESERVED;
-
-/**
- * not a key, just marks the number of scancodes for array bounds
- */
-constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
-
-/// @}
-
-/**
- * @defgroup CategoryTime Date and Time
- *
- * SDL realtime clock and date/time routines.
- *
- * There are two data types that are used in this category: SDL_Time, which
- * represents the nanoseconds since a specific moment (an "epoch"), and
- * SDL_DateTime, which breaks time down into human-understandable components:
- * years, months, days, hours, etc.
- *
- * Much of the functionality is involved in converting those two types to
- * other useful forms.
- * @{
- */
-
-/**
- * A structure holding a calendar date and time broken down into its
- * components.
- *
- * @since This struct is available since SDL 3.2.0.
- */
-struct DateTime : SDL_DateTime
-{
-  /**
-   * Wraps DateTime.
-   *
-   * @param dateTime the value to be wrapped
-   */
-  constexpr DateTime(const SDL_DateTime& dateTime = {})
-    : SDL_DateTime(dateTime)
-  {
-  }
-
-  /**
-   * Constructs from its fields.
-   *
-   * @param year the value for year.
-   * @param month the value for month.
-   * @param day the value for day.
-   * @param hour the value for hour.
-   * @param minute the value for minute.
-   * @param second the value for second.
-   * @param nanosecond the value for nanosecond.
-   * @param day_of_week the value for day_of_week.
-   * @param utc_offset the value for utc_offset.
-   */
-  constexpr DateTime(int year,
-                     int month,
-                     int day,
-                     int hour,
-                     int minute,
-                     int second,
-                     int nanosecond,
-                     int day_of_week,
-                     int utc_offset)
-    : SDL_DateTime{year,
-                   month,
-                   day,
-                   hour,
-                   minute,
-                   second,
-                   nanosecond,
-                   day_of_week,
-                   utc_offset}
-  {
-  }
-
-  /**
-   * Converts an SDL_Time in nanoseconds since the epoch to a calendar time in
-   * the SDL_DateTime format.
-   *
-   * @param ticks the SDL_Time to be converted.
-   * @param localTime the resulting DateTime will be expressed in local time if
-   *        true, otherwise it will be in Universal Coordinated Time (UTC).
-   * @post true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  DateTime(Time ticks, bool localTime = true)
-    : SDL_DateTime(0)
-  {
-    SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
-  }
-
-  /**
-   * Default comparison operator
-   */
-  constexpr auto operator<=>(const DateTime& other) const = default;
-
-  /// Returns If valid
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const
-  {
-    return year != 0 || month != 0 || day != 0 || hour != 0 || minute != 0 ||
-           second != 0 || nanosecond != 0;
-  }
-
-  /**
-   * Get the year.
-   *
-   * @returns current year value.
-   */
-  constexpr int GetYear() const { return year; }
-
-  /**
-   * Set the year.
-   *
-   * @param newYear the new year value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetYear(int newYear)
-  {
-    year = newYear;
-    return *this;
-  }
-
-  /**
-   * Get the month.
-   *
-   * @returns current month value.
-   */
-  constexpr int GetMonth() const { return month; }
-
-  /**
-   * Set the month.
-   *
-   * @param newMonth the new month value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetMonth(int newMonth)
-  {
-    month = newMonth;
-    return *this;
-  }
-
-  /**
-   * Get the day.
-   *
-   * @returns current day value.
-   */
-  constexpr int GetDay() const { return day; }
-
-  /**
-   * Set the day.
-   *
-   * @param newDay the new day value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetDay(int newDay)
-  {
-    day = newDay;
-    return *this;
-  }
-
-  /**
-   * Get the hour.
-   *
-   * @returns current hour value.
-   */
-  constexpr int GetHour() const { return hour; }
-
-  /**
-   * Set the hour.
-   *
-   * @param newHour the new hour value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetHour(int newHour)
-  {
-    hour = newHour;
-    return *this;
-  }
-
-  /**
-   * Get the minute.
-   *
-   * @returns current minute value.
-   */
-  constexpr int GetMinute() const { return minute; }
-
-  /**
-   * Set the minute.
-   *
-   * @param newMinute the new minute value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetMinute(int newMinute)
-  {
-    minute = newMinute;
-    return *this;
-  }
-
-  /**
-   * Get the second.
-   *
-   * @returns current second value.
-   */
-  constexpr int GetSecond() const { return second; }
-
-  /**
-   * Set the second.
-   *
-   * @param newSecond the new second value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetSecond(int newSecond)
-  {
-    second = newSecond;
-    return *this;
-  }
-
-  /**
-   * Get the nanosecond.
-   *
-   * @returns current nanosecond value.
-   */
-  constexpr int GetNanosecond() const { return nanosecond; }
-
-  /**
-   * Set the nanosecond.
-   *
-   * @param newNanosecond the new nanosecond value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetNanosecond(int newNanosecond)
-  {
-    nanosecond = newNanosecond;
-    return *this;
-  }
-
-  /**
-   * Get the day_of_week.
-   *
-   * @returns current day_of_week value.
-   */
-  constexpr int GetDay_of_week() const { return day_of_week; }
-
-  /**
-   * Set the day_of_week.
-   *
-   * @param newDay_of_week the new day_of_week value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetDay_of_week(int newDay_of_week)
-  {
-    day_of_week = newDay_of_week;
-    return *this;
-  }
-
-  /**
-   * Get the utc_offset.
-   *
-   * @returns current utc_offset value.
-   */
-  constexpr int GetUtc_offset() const { return utc_offset; }
-
-  /**
-   * Set the utc_offset.
-   *
-   * @param newUtc_offset the new utc_offset value.
-   * @returns Reference to self.
-   */
-  constexpr DateTime& SetUtc_offset(int newUtc_offset)
-  {
-    utc_offset = newUtc_offset;
-    return *this;
-  }
-
-  /**
-   * Converts a calendar time to an SDL_Time in nanoseconds since the epoch.
-   *
-   * This function ignores the day_of_week member of the SDL_DateTime struct, so
-   * it may remain unset.
-   *
-   * @returns time on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  operator Time() const
-  {
-    if (SDL_Time t; SDL_DateTimeToTime(this, &t)) return Time::FromNS(t);
-    return {};
-  }
-};
-
-/**
- * The preferred date format of the current system locale.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa SDL_GetDateTimeLocalePreferences
- */
-using DateFormat = SDL_DateFormat;
-
-/**
- * Year/Month/Day.
- */
-constexpr DateFormat DATE_FORMAT_YYYYMMDD = SDL_DATE_FORMAT_YYYYMMDD;
-
-/**
- * Day/Month/Year.
- */
-constexpr DateFormat DATE_FORMAT_DDMMYYYY = SDL_DATE_FORMAT_DDMMYYYY;
-
-/**
- * Month/Day/Year.
- */
-constexpr DateFormat DATE_FORMAT_MMDDYYYY = SDL_DATE_FORMAT_MMDDYYYY;
-
-/**
- * The preferred time format of the current system locale.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa SDL_GetDateTimeLocalePreferences
- */
-using TimeFormat = SDL_TimeFormat;
-
-/**
- * 24 hour time
- */
-constexpr TimeFormat TIME_FORMAT_24HR = SDL_TIME_FORMAT_24HR;
-
-/**
- * 12 hour time
- */
-constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR;
-
-/**
- * Gets the current preferred date and time format for the system locale.
- *
- * This might be a "slow" call that has to query the operating system. It's
- * best to ask for this once and save the results. However, the preferred
- * formats can change, usually because the user has changed a system
- * preference outside of your program.
- *
- * @param dateFormat a pointer to the SDL_DateFormat to hold the returned date
- *                   format, may be NULL.
- * @param timeFormat a pointer to the SDL_TimeFormat to hold the returned time
- *                   format, may be NULL.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool GetDateTimeLocalePreferences(DateFormat* dateFormat,
-                                         TimeFormat* timeFormat)
-{
-  return SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat);
-}
-
-/**
- * Gets the current value of the system realtime clock in nanoseconds since
- * Jan 1, 1970 in Universal Coordinated Time (UTC).
- *
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline Time Time::Current()
-{
-  if (SDL_Time t; SDL_GetCurrentTime(&t)) return Time::FromNS(t);
-  return Time{};
-}
-
-/**
- * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
- * since January 1, 1601).
- *
- * This function fills in the two 32-bit values of the FILETIME structure.
- *
- * @param dwLowDateTime a pointer filled in with the low portion of the
- *                      Windows FILETIME value.
- * @param dwHighDateTime a pointer filled in with the high portion of the
- *                       Windows FILETIME value.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline void Time::ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const
-{
-  SDL_TimeToWindows(ToNS(), dwLowDateTime, dwHighDateTime);
-}
-
-/**
- * Converts a Windows FILETIME (100-nanosecond intervals since January 1,
- * 1601) to an SDL time.
- *
- * This function takes the two 32-bit values of the FILETIME structure as
- * parameters.
- *
- * @param dwLowDateTime the low portion of the Windows FILETIME value.
- * @param dwHighDateTime the high portion of the Windows FILETIME value.
- * @returns the converted SDL time.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
-{
-  return Time::FromNS(SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime));
-}
-
-/**
- * Get the number of days in a month for a given year.
- *
- * @param year the year.
- * @param month the month [1-12].
- * @returns the number of days in the requested month or -1 on failure; call
- *          SDL_GetError() for more information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline int GetDaysInMonth(int year, int month)
-{
-  return SDL_GetDaysInMonth(year, month);
-}
-
-/**
- * Get the day of year for a calendar date.
- *
- * @param year the year component of the date.
- * @param month the month component of the date.
- * @param day the day component of the date.
- * @returns the day of year [0-365] if the date is valid or -1 on failure;
- *          call SDL_GetError() for more information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline int GetDayOfYear(int year, int month, int day)
-{
-  return SDL_GetDayOfYear(year, month, day);
-}
-
-/**
- * Get the day of week for a calendar date.
- *
- * @param year the year component of the date.
- * @param month the month component of the date.
- * @param day the day component of the date.
- * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or
- *          -1 on failure; call SDL_GetError() for more information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline int GetDayOfWeek(int year, int month, int day)
-{
-  return SDL_GetDayOfWeek(year, month, day);
-}
-
-/// @}
-
-/**
- * @defgroup CategoryInit Initialization and Shutdown
- *
- * All SDL programs need to initialize the library before starting to work
- * with it.
- *
- * Almost everything can simply call SDL_Init() near startup, with a handful
- * of flags to specify subsystems to touch. These are here to make sure SDL
- * does not even attempt to touch low-level pieces of the operating system
- * that you don't intend to use. For example, you might be using SDL for video
- * and input but chose an external library for audio, and in this case you
- * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
- * external library has complete control.
- *
- * Most apps, when terminating, should call SDL_Quit(). This will clean up
- * (nearly) everything that SDL might have allocated, and crucially, it'll
- * make sure that the display's resolution is back to what the user expects if
- * you had previously changed it for your game.
- *
- * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
- * to fill in details about the program. This is completely optional, but it
- * helps in small ways (we can provide an About dialog box for the macOS menu,
- * we can name the app in the system's audio mixer, etc). Those that want to
- * provide a _lot_ of information should look at the more-detailed
- * SDL_SetAppMetadataProperty().
- *
- * @{
- */
-
-/**
- * @defgroup InitFlags Initialization flags
- *
- * @{
- */
-
-/**
- * Initialization flags for SDL
- *
- * These are the flags which may be passed to InitSubSystem(). You should
- * specify the subsystems which you will be using in your application.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa InitSubSystem
- * @sa InitFlagsExtra
- * @sa Quit
- * @sa QuitSubSystem
- * @sa WasInit
- */
-using InitFlags = Uint32;
-
-/**
- * Initialization flags for SDL satellite libraries
- *
- * Each satellite lib that needs initialization should extend this class and
- * provide an overload of InitSubSystem(), WasInit() and QuitSubSystem() with
- * a single parameter accepting this extended type.
- *
- * @sa InitFlags
- * @sa Init
- * @sa InitSubSystem
- */
-struct InitFlagsExtra
-{};
-
-constexpr InitFlags INIT_AUDIO =
-  SDL_INIT_AUDIO; ///< `INIT_AUDIO` implies `INIT_EVENTS`
-
-/**
- * `INIT_VIDEO` implies `INIT_EVENTS`, should be initialized on the main thread
- */
-constexpr InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
-
-/**
- * `INIT_JOYSTICK` implies `INIT_EVENTS`, should be initialized on the same
- * thread as INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD
- */
-constexpr InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
-
-constexpr InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC; ///< HAPTIC
-
-constexpr InitFlags INIT_GAMEPAD =
-  SDL_INIT_GAMEPAD; ///< `INIT_GAMEPAD` implies `INIT_JOYSTICK`
-
-constexpr InitFlags INIT_EVENTS = SDL_INIT_EVENTS; ///< EVENTS
-
-constexpr InitFlags INIT_SENSOR =
-  SDL_INIT_SENSOR; ///< `INIT_SENSOR` implies `INIT_EVENTS`
-
-constexpr InitFlags INIT_CAMERA =
-  SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
-
-/// @}
-
-/**
- * @name AppResult
- * App result for Main callback
- * @{
- */
-
-/**
- * Return values for optional main callbacks.
- *
- * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
- * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
- * success/failure to the operating system. What that means is
- * platform-dependent. On Unix, for example, on success, the process error
- * code will be zero, and on failure it will be 1. This interface doesn't
- * allow you to return specific exit codes, just whether there was an error
- * generally or not.
- *
- * Returning SDL_APP_CONTINUE from these functions will let the app continue
- * to run.
- *
- * See
- * [Main callbacks in
- * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
- * for complete details.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using AppResult = SDL_AppResult;
-
-/**
- * Value that requests that the app continue from the main callbacks.
- */
-constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
-
-/**
- * Value that requests termination with success from the main callbacks.
- */
-constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
-
-/**
- * Value that requests termination with error from the main callbacks.
- */
-constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
-
-/// @}
-
-/**
- * @name Callbacks for EnterAppMainCallbacks()
- *
- * @{
- */
-
-/**
- * Function pointer typedef for SDL_AppInit.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppInit directly.
- *
- * @param appstate a place where the app can optionally store a pointer for
- *                 future use.
- * @param argc the standard ANSI C main's argc; number of elements in `argv`.
- * @param argv the standard ANSI C main's argv; array of command line
- *             arguments.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppInit_func = SDL_AppInit_func;
-
-/**
- * Function pointer typedef for SDL_AppIterate.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppIterate directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppIterate_func = SDL_AppIterate_func;
-
-/**
- * Function pointer typedef for SDL_AppEvent.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param event the new event for the app to examine.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppEvent_func = SDL_AppEvent_func;
-
-/**
- * Function pointer typedef for SDL_AppQuit.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param result the result code that terminated the app (success or failure).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppQuit_func = SDL_AppQuit_func;
-
-/// @}
-
-/**
- * Initialize the SDL library.
- *
- * The class Init is probably what you are looking for, as it automatically
- * handles de-initialization.
- *
- * The file I/O (for example: IOStream) and threading (CreateThread)
- * subsystems are initialized by default. Message boxes
- * (ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
- *
- * Logging (such as Log) works without initialization, too.
- *
- * `flags` may be any of the following OR'd together:
- *
- * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_VIDEO`: video subsystem; automatically initializes the events
- *   subsystem, should be initialized on the main thread.
- * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
- *   events subsystem
- * - `INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
- *   joystick subsystem
- * - `INIT_EVENTS`: events subsystem
- * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
- *   events subsystem
- *
- * Subsystem initialization is ref-counted, you must call QuitSubSystem()
- * for each InitSubSystem() to correctly shutdown a subsystem manually (or
- * call Quit() to force shutdown). If a subsystem is already loaded then
- * this call will increase the ref-count and return.
- *
- * Consider reporting some basic metadata about your application before
- * calling Init, using either SetAppMetadata() or
- * SetAppMetadataProperty().
- *
- * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- * @sa InitSubSystem()
- * @sa Quit()
- * @sa SetMainReady()
- * @sa WasInit()
- */
-inline bool InitSubSystem(InitFlags flags) { return SDL_Init(flags); }
-
-/**
- * Initialize the SDL library.
- *
- * The class Init is probably what you are looking for, as it automatically
- * handles de-initialization.
- *
- * The file I/O (for example: IOStream) and threading (CreateThread)
- * subsystems are initialized by default. Message boxes
- * (ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
- *
- * Logging (such as Log) works without initialization, too.
- *
- * `flags` may be any of the following OR'd together:
- *
- * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_VIDEO`: video subsystem; automatically initializes the events
- *   subsystem, should be initialized on the main thread.
- * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
- *   events subsystem
- * - `INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
- *   joystick subsystem
- * - `INIT_EVENTS`: events subsystem
- * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
- *   events subsystem
- *
- * Subsystem initialization is ref-counted, you must call QuitSubSystem()
- * for each InitSubSystem() to correctly shutdown a subsystem manually (or
- * call Quit() to force shutdown). If a subsystem is already loaded then
- * this call will increase the ref-count and return.
- *
- * Consider reporting some basic metadata about your application before
- * calling Init, using either SetAppMetadata() or
- * SetAppMetadataProperty().
- *
- * @tparam FLAG0
- * @tparam FLAG1
- * @tparam FLAGS
- * @param flag0 subsystem initialization flags.
- * @param flag1 subsystem initialization flags.
- * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- * @sa InitSubSystem()
- * @sa Quit()
- * @sa SetMainReady()
- * @sa WasInit()
- */
-template<class FLAG0, class FLAG1, class... FLAGS>
-inline bool InitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
-{
-  if (InitSubSystem(flag0)) return InitSubSystem(flag1, flags...);
-  return false;
-}
-
-/**
- * Initialize the SDL library.
- *
- * The class Init is probably what you are looking for, as it automatically
- * handles de-initialization.
- *
- * The file I/O (for example: IOStream) and threading (CreateThread)
- * subsystems are initialized by default. Message boxes
- * (ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
- *
- * Logging (such as Log) works without initialization, too.
- *
- * `flags` may be any of the following OR'd together:
- *
- * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_VIDEO`: video subsystem; automatically initializes the events
- *   subsystem, should be initialized on the main thread.
- * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
- *   events subsystem
- * - `INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
- *   joystick subsystem
- * - `INIT_EVENTS`: events subsystem
- * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
- *   events subsystem
- *
- * Subsystem initialization is ref-counted, you must call QuitSubSystem()
- * for each InitSubSystem() to correctly shutdown a subsystem manually (or
- * call Quit() to force shutdown). If a subsystem is already loaded then
- * this call will increase the ref-count and return.
- *
- * Consider reporting some basic metadata about your application before
- * calling Init, using either SetAppMetadata() or
- * SetAppMetadataProperty().
- *
- * @tparam FLAG
- * @tparam FLAGS
- * @param flag0 subsystem initialization flags.
- * @param flag1 subsystem initialization flags.
- * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- * @sa InitSubSystem()
- * @sa Quit()
- * @sa SetMainReady()
- * @sa WasInit()
- */
-template<class FLAG, class... FLAGS>
-inline bool InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
-{
-  return InitSubSystem(flag0 | flag1, flags...);
-}
-
-/**
- * Shut down specific SDL subsystems.
- *
- * You still need to call Quit() even if you close all open subsystems with
- * QuitSubSystem().
- *
- * @param flags any of the flags used by Init(); see InitFlags for details.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa InitSubSystem()
- * @sa Quit()
- */
-inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
-
-/**
- * Shut down specific SDL subsystems.
- *
- * You still need to call Quit() even if you close all open subsystems with
- * QuitSubSystem().
- *
- * @tparam FLAG0
- * @tparam FLAG1
- * @tparam FLAGS
- * @param flag0 any of the flags used by Init(); see InitFlags and
- * InitFlagsExtra for details.
- * @param flag1 any of the flags used by Init(); see InitFlags and
- * InitFlagsExtra for details.
- * @param flags any of the flags used by Init(); see InitFlags and
- * InitFlagsExtra for details.
- */
-template<class FLAG0, class FLAG1, class... FLAGS>
-inline void QuitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
-{
-  if (!QuitSubSystem(flag0)) return;
-  QuitSubSystem(flag1, flags...);
-}
-
-/**
- * Shut down specific SDL subsystems.
- *
- * You still need to call Quit() even if you close all open subsystems with
- * QuitSubSystem().
- *
- * @tparam FLAG
- * @tparam FLAGS
- * @param flag0 any of the flags used by Init(); see InitFlags and
- * InitFlagsExtra for details.
- * @param flag1 any of the flags used by Init(); see InitFlags and
- * InitFlagsExtra for details.
- * @param flags any of the flags used by Init(); see InitFlags and
- * InitFlagsExtra for details.
- */
-template<class FLAG, class... FLAGS>
-inline void QuitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
-{
-  QuitSubSystem(flag0 | flag1, flags...);
-}
-
-/**
- * Check if all of the specified subsystems which are currently initialized.
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns true if all subsystems are currently initialized
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa InitSubSystem()
- */
-inline bool WasInit(InitFlags flags) { return SDL_WasInit(flags) == flags; }
-
-/**
- * Check if all of the specified subsystems which are currently initialized.
- *
- * @tparam FLAG0
- * @tparam FLAG1
- * @tparam FLAGS
- * @param flag0 flag to check
- * @param flag1 flag to check
- * @param flags flag to check
- * @returns true if all subsystems are currently initialized
- */
-template<class FLAG0, class FLAG1, class... FLAGS>
-inline bool WasInit(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
-{
-  if (WasInit(flag0)) return WasInit(flag1, flags...);
-  return false;
-}
-
-/**
- * Check if all of the specified subsystems which are currently initialized.
- *
- * @tparam FLAG
- * @tparam FLAGS
- * @param flag0 flag to check
- * @param flag1 flag to check
- * @param flags flag to check
- * @returns true if all subsystems are currently initialized
- */
-template<class FLAG, class... FLAGS>
-inline bool WasInit(FLAG flag0, FLAG flag1, FLAGS... flags)
-{
-  return WasInit(flag0 | flag1, flags...);
-}
-
-/**
- * Clean up all initialized subsystems.
- *
- * You should call this function even if you have already shutdown each
- * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
- * function even in the case of errors in initialization.
- *
- * You can use this function with atexit() to ensure that it is run when your
- * application is shutdown, but it is not wise to do this from a library or
- * other dynamically loaded code.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa QuitSubSystem()
- */
-inline void Quit() { return SDL_Quit(); }
-
-/**
- * Initialize the SDL library.
- *
- * Also init any subsystem passed as InitFlags
- *
- * This might be called multiple times, it keeps a ref count and calls SDL_Quit
- * only on the last one.
- *
- * The SubSystems are out of the refCount, as SDL itself already keep track
- * internally.
- */
-class SDL
-{
-  bool m_active = false;
-
-  bool updateActive(bool active);
-
-public:
-  /**
-   * Init given subsystems
-   *
-   * @param flags subsystem initialization flags.
-   * @post convertible to true on success or to false on failure; call
-   * GetError() for more information.
-   *
-   * This class must have only a single initialized instance at any given time,
-   * as it will call Quit() when goes out of scope.
-   */
-  template<class... FLAGS>
-  SDL(FLAGS... flags)
-  {
-    if (updateActive(true)) {
-      if (!InitSubSystem(flags...)) updateActive(false);
-    }
-  }
-
-  /**
-   * Default ctor
-   *
-   * Useful if you plan to create it afterwards
-   */
-  constexpr SDL() = default;
-
-  // Copy ctor
-  SDL(const SDL& other) = delete;
-
-  /// Move ctor
-  constexpr SDL(SDL&& other)
-    : m_active(other.m_active)
-  {
-    other.m_active = false;
-  }
-
-  // Dtor
-  ~SDL() { reset(); }
-
-  /// Assignment operator
-  SDL& operator=(SDL rhs)
-  {
-    std::swap(m_active, rhs.m_active);
-    return *this;
-  }
-
-  /**
-   * @brief release locking such as reset() does, but never calls SDL_Quit() or
-   * SDL_QuitSubSystem()
-   * @return false if there are still other locks, true if this was last one
-   *
-   * When this returns true it is safe to call Quit() directly
-   */
-  bool release()
-  {
-    bool wasActive = m_active;
-    if (wasActive) { updateActive(false); }
-    return wasActive;
-  }
-
-  /**
-   * @brief reset the value of this instance, acts like it was destroyed and
-   * then newly instantiated with empty ctor
-   * @return true if Quit() was called.
-   */
-  bool reset()
-  {
-    if (release()) Quit();
-    return false;
-  }
-
-  /// @brief returns true if active and has no errors
-  operator bool() const { return m_active; }
-};
-
-/**
- * Return whether this is the main thread.
- *
- * On Apple platforms, the main thread is the thread that runs your program's
- * main() entry point. On other platforms, the main thread is the one that
- * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
- * your program's main() entry point. If you are using the main callbacks,
- * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
- * main thread.
- *
- * @returns true if this thread is the main thread, or false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread()
- */
-inline bool IsMainThread() { return SDL_IsMainThread(); }
-
-/**
- * @name Callbacks for RunOnMainThread()
- * @{
- */
-
-/**
- * Callback run on the main thread.
- *
- * @param userdata an app-controlled pointer that is passed to the callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread()
- */
-using MainThreadCallback = SDL_MainThreadCallback;
-
-/**
- * @sa PropertiesRef.MainThreadCallback
- * @sa result-callback
- *
- * @cat result-callback
- *
- */
-using MainThreadCB = std::function<void()>;
-
-/// @}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param userdata a pointer that is passed to `callback`.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread()
- */
-inline bool RunOnMainThread(MainThreadCallback callback,
-                            void* userdata,
-                            bool wait_complete)
-{
-  return SDL_RunOnMainThread(callback, userdata, wait_complete);
-}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread()
- * @sa result-callback
- *
- * @cat result-callback
- */
-inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
-{
-  using Wrapper = CallbackWrapper<MainThreadCB>;
-  return RunOnMainThread(
-    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
-}
-
-/**
- * Specify basic metadata about your app.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left as NULL, if a specific
- * detail doesn't make sense for the app.
- *
- * This function should be called as early as possible, before SDL_Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
- *
- * Passing a NULL removes any previous metadata.
- *
- * This is a simplified interface for the most important information. You can
- * supply significantly more detailed metadata with
- * SDL_SetAppMetadataProperty().
- *
- * @param appname The name of the application ("My Game 2: Bad Guy's
- *                Revenge!").
- * @param appversion The version of the application ("1.0.0beta5" or a git
- *                   hash, or whatever makes sense).
- * @param appidentifier A unique string in reverse-domain format that
- *                      identifies this app ("com.example.mygame2").
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadataProperty()
- */
-inline bool SetAppMetadata(StringParam appname,
-                           StringParam appversion,
-                           StringParam appidentifier)
-{
-  return SDL_SetAppMetadata(appname, appversion, appidentifier);
-}
-
-/**
- * Specify metadata about your app through a set of properties.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left out, if a specific detail
- * doesn't make sense for the app.
- *
- * This function should be called as early as possible, before SDL_Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
- *
- * Once set, this metadata can be read using SDL_GetAppMetadataProperty().
- *
- * These are the supported properties:
- *
- * - `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the
- *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
- *   anywhere the OS shows the name of the application separately from window
- *   titles, such as volume control applets, etc. This defaults to "SDL
- *   Application".
- * - `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is
- *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
- *   2024" and a git hash are all valid options. This has no default.
- * - `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that
- *   identifies this app. This must be in reverse-domain format, like
- *   "com.example.mygame2". This string is used by desktop compositors to
- *   identify and group windows together, as well as match applications with
- *   associated desktop settings and icons. If you plan to package your
- *   application in a container such as Flatpak, the app ID should match the
- *   name of your Flatpak container as well. This has no default.
- * - `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the
- *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright
- *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
- *   to one line, don't paste a copy of a whole software license in here. This
- *   has no default.
- * - `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a
- *   product page, or a storefront, or even a GitHub repository, for user's
- *   further information This has no default.
- * - `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.
- *   Currently this string can be "game" for a video game, "mediaplayer" for a
- *   media player, or generically "application" if nothing else applies.
- *   Future versions of SDL might add new types. This defaults to
- *   "application".
- *
- * @param name the name of the metadata property to set.
- * @param value the value of the property, or NULL to remove that property.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetAppMetadataProperty()
- * @sa SetAppMetadata()
- */
-inline bool SetAppMetadataProperty(StringParam name, StringParam value)
-{
-  return SDL_SetAppMetadataProperty(name, value);
-}
-
-namespace prop::appMetaData {
-
-constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
-
-constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
-
-constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
-
-constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
-
-constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
-
-constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
-
-constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
-
-} // namespace prop::appMetaData
-
-/**
- * Get metadata about your app.
- *
- * This returns metadata previously set using SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
- * of available properties and their meanings.
- *
- * @param name the name of the metadata property to get.
- * @returns the current value of the metadata property, or the default if it
- *          is not set, NULL for properties with no default.
- *
- * @threadsafety It is safe to call this function from any thread, although
- *               the string returned is not protected and could potentially be
- *               freed if you call SDL_SetAppMetadataProperty() to set that
- *               property from another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_SetAppMetadata
- * @sa SDL_SetAppMetadataProperty
- */
-inline const char* GetAppMetadataProperty(StringParam name)
-{
-  return SDL_GetAppMetadataProperty(name);
-}
-
-#pragma region impl
-
-#ifndef SDL3PP_APPCLASS_LOG_PRIORITY
-/**
- * The default log priority for app class.
- */
-#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
-#endif // SDL3PP_APPCLASS_LOG_PRIORITY
-
-/**
- * Represents application parameters
- */
-using AppArgs = std::span<char const* const>;
-
-/**
- * @{
- *
- * Allocate and initialize state with new.
- *
- * If possible, pass the args to constructor, otherwise expects a default ctor;
- *
- * @tparam T the state class
- * @param state the state to initialize
- * @param args the program arguments
- * @return the app status
- */
-template<class T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
-{
-  static_assert(std::is_default_constructible_v<T>);
-  *state = new T{};
-  return APP_CONTINUE;
-}
-
-template<class T>
-  requires std::convertible_to<AppArgs, T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
-{
-  *state = new T{args};
-  return APP_CONTINUE;
-}
-/// @}
-
-/// @private
-template<class T>
-concept HasInitFunction = requires(T** state) {
-  { T::Init(state, AppArgs{}) } -> std::convertible_to<AppResult>;
-};
-
-/**
- * @{
- *
- * Init state with arguments.
- *
- * This will call T::Init() if available, otherwise it delegates to
- * DefaultCreateClass().
- *
- * @tparam T the state class
- * @param state the state to initialize
- * @param args the program arguments
- * @return the app status
- */
-template<class T>
-inline AppResult InitClass(T** state, AppArgs args)
-{
-  try {
-    return DefaultCreateClass(state, args);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-template<HasInitFunction T>
-inline AppResult InitClass(T** state, AppArgs args)
-{
-  *state = nullptr;
-  try {
-    AppResult result = T::Init(state, args);
-    if (*state == nullptr && result != APP_FAILURE) return APP_SUCCESS;
-    return result;
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-/// @}
-
-/// @private
-template<class T>
-concept HasIterateFunction = requires(T* state) { state->Iterate(); };
-
-/**
- * Iterate the state
- *
- * @tparam T the state class
- * @param state the state
- * @return the app status
- */
-template<HasIterateFunction T>
-inline AppResult IterateClass(T* state)
-{
-  try {
-    return state->Iterate();
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-/// @private
-template<class T>
-concept HasEventFunction =
-  requires(T* state, const SDL_Event& event) { state->Event(event); };
-
-/**
- * Default handle by finishing if QUIT is requested
- *
- * @tparam T the state class
- * @param state the state
- * @param event the event
- * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
- */
-template<class T>
-inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
-{
-  if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
-  return APP_CONTINUE;
-}
-
-/**
- * @{
- * Iterate the state
- *
- * @tparam T the state class
- * @param state the state
- * @param event the event to handle
- * @return the app status
- */
-template<class T>
-inline AppResult EventClass(T* state, const SDL_Event& event)
-{
-  try {
-    return DefaultEventClass(state, event);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-template<HasEventFunction T>
-inline AppResult EventClass(T* state, const SDL_Event& event)
-{
-  try {
-    return state->Event(event);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-/// @}
-
-/**
- * Destroy state with delete;
- *
- * @tparam T
- * @param state
- */
-template<class T>
-inline void DefaultClassDestroy(T* state)
-{
-  delete state;
-}
-
-/// @private
-template<class T>
-concept HasQuitFunction =
-  requires(T* state, AppResult result) { T::Quit(state, result); };
-
-/**
- * @{
- * Destroy state with given result
- *
- * This is responsible to destroy and deallocate the state. It tries to call
- * T::Quit() if available and delegates to it the duty of deleting. Otherwise it
- * calls delete directly.
- *
- * @tparam T the state class.
- * @param state the state to destroy.
- * @param result the app result.
- */
-template<class T>
-inline void QuitClass(T* state, AppResult result)
-{
-  DefaultClassDestroy(state);
-}
-
-template<HasQuitFunction T>
-inline void QuitClass(T* state, AppResult result)
-{
-  T::Quit(state, result);
-}
-/// @}
-
-/// @}
-
-inline bool SDL::updateActive(bool active)
-{
-  static std::atomic_bool currentlyInitd{false};
-  bool result = !currentlyInitd.exchange(active);
-  if (active && !result) {
-    SetErrorUnformatted(
-      "Can not initialize, there is already an active instance");
-  } else
-    m_active = active;
-  return result;
-}
-
-#pragma endregion
-
-/**
- *
- * @defgroup CategoryKeycode Keyboard Keycodes
- *
- * Defines constants which identify keyboard keys and modifiers.
- *
- * Please refer to the Best Keyboard Practices document for details on what
- * this information means and how best to use it.
- *
- * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
- *
- * @{
- */
-
-/**
- * Valid key modifiers (possibly OR'd together).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using Keymod = Uint16;
-
-/**
- * no modifier is applicable.
- */
-constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
-
-/**
- * the left Shift key is down.
- */
-constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
-
-/**
- * the right Shift key is down.
- */
-constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
-
-/**
- * the Level 5 Shift key is down.
- */
-constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
-
-/**
- * the left Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
-
-/**
- * the right Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
-
-/**
- * the left Alt key is down.
- */
-constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
-
-/**
- * the right Alt key is down.
- */
-constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
-
-/**
- * the left GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
-
-/**
- * the right GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
-
-/**
- * the Num Lock key (may be located on an extended keypad) is down.
- */
-constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
-
-/**
- * the Caps Lock key is down.
- */
-constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
-
-/**
- * the !AltGr key is down.
- */
-constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
-
-/**
- * the Scroll Lock key is down.
- */
-constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
-
-/**
- * Any Ctrl key is down.
- */
-constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
-
-/**
- * Any Shift key is down.
- */
-constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
-
-/**
- * Any Alt key is down.
- */
-constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
-
-/**
- * Any GUI key is down.
- */
-constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
-
-/**
- * The SDL virtual key representation.
- *
- * Values of this type are used to represent keyboard keys using the current
- * layout of the keyboard. These values include Unicode values representing
- * the unmodified character that would be generated by pressing the key, or an
- * `SDLK_*` constant for those keys that do not generate characters.
- *
- * A special exception is the number keys at the top of the keyboard which map
- * to SDLK_0...SDLK_9 on AZERTY layouts.
- *
- * Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
- * unicode code point.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-class Keycode
-{
-  SDL_Keycode m_keycode;
-
-public:
-  /**
-   * Wraps Keycode.
-   *
-   * @param keycode the value to be wrapped
-   */
-  constexpr Keycode(SDL_Keycode keycode = {})
-    : m_keycode(keycode)
-  {
-  }
-
-  /**
-   * Default comparison operator
-   */
-  constexpr auto operator<=>(const Keycode& other) const = default;
-
-  // Convert from scancode
-  explicit Keycode(Scancode scancode,
-                   Keymod modstate = 0,
-                   bool key_event = false);
-
-  // Create from key name
-  explicit Keycode(StringParam name);
-
-  /**
-   * Unwraps to the underlying Keycode.
-   *
-   * @returns the underlying Keycode.
-   */
-  constexpr operator SDL_Keycode() const { return m_keycode; }
-
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
-
-  /// Has Extended flag.
-  constexpr bool IsExtended() const { return m_keycode & SDLK_EXTENDED_MASK; }
-
-  /// Has Scancode flag.
-  constexpr bool IsScancode() const { return m_keycode & SDLK_SCANCODE_MASK; }
-
-  Scancode GetScancode(Keymod* modstate) const;
-
-  // Get name.
-  const char* GetName() const;
-};
-
-constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
-
-constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
-
-/**
- * Transform scancode to keycode
- *
- * @param x scancode
- * @return keycode
- */
-constexpr Keycode ScancodeToKeycode(Scancode x)
-{
-  return SDL_SCANCODE_TO_KEYCODE(x);
-}
-
-constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
-
-constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
-
-constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
-
-constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
-
-constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
-
-constexpr Keycode KEYCODE_SPACE = SDLK_SPACE; ///< ' '
-
-constexpr Keycode KEYCODE_EXCLAIM = SDLK_EXCLAIM; ///< '!'
-
-constexpr Keycode KEYCODE_DBLAPOSTROPHE = SDLK_DBLAPOSTROPHE; ///< '"'
-
-constexpr Keycode KEYCODE_HASH = SDLK_HASH; ///< '#'
-
-constexpr Keycode KEYCODE_DOLLAR = SDLK_DOLLAR; ///< '$'
-
-constexpr Keycode KEYCODE_PERCENT = SDLK_PERCENT; ///< '%'
-
-constexpr Keycode KEYCODE_AMPERSAND = SDLK_AMPERSAND; ///< '&'
-
-constexpr Keycode KEYCODE_APOSTROPHE = SDLK_APOSTROPHE; ///< '\''
-
-constexpr Keycode KEYCODE_LEFTPAREN = SDLK_LEFTPAREN; ///< '('
-
-constexpr Keycode KEYCODE_RIGHTPAREN = SDLK_RIGHTPAREN; ///< ')'
-
-constexpr Keycode KEYCODE_ASTERISK = SDLK_ASTERISK; ///< '*'
-
-constexpr Keycode KEYCODE_PLUS = SDLK_PLUS; ///< '+'
-
-constexpr Keycode KEYCODE_COMMA = SDLK_COMMA; ///< ','
-
-constexpr Keycode KEYCODE_MINUS = SDLK_MINUS; ///< '-'
-
-constexpr Keycode KEYCODE_PERIOD = SDLK_PERIOD; ///< '.'
-
-constexpr Keycode KEYCODE_SLASH = SDLK_SLASH; ///< '/'
-
-constexpr Keycode KEYCODE_0 = SDLK_0; ///< '0'
-
-constexpr Keycode KEYCODE_1 = SDLK_1; ///< '1'
-
-constexpr Keycode KEYCODE_2 = SDLK_2; ///< '2'
-
-constexpr Keycode KEYCODE_3 = SDLK_3; ///< '3'
-
-constexpr Keycode KEYCODE_4 = SDLK_4; ///< '4'
-
-constexpr Keycode KEYCODE_5 = SDLK_5; ///< '5'
-
-constexpr Keycode KEYCODE_6 = SDLK_6; ///< '6'
-
-constexpr Keycode KEYCODE_7 = SDLK_7; ///< '7'
-
-constexpr Keycode KEYCODE_8 = SDLK_8; ///< '8'
-
-constexpr Keycode KEYCODE_9 = SDLK_9; ///< '9'
-
-constexpr Keycode KEYCODE_COLON = SDLK_COLON; ///< ':'
-
-constexpr Keycode KEYCODE_SEMICOLON = SDLK_SEMICOLON; ///< ';'
-
-constexpr Keycode KEYCODE_LESS = SDLK_LESS; ///< '<'
-
-constexpr Keycode KEYCODE_EQUALS = SDLK_EQUALS; ///< '='
-
-constexpr Keycode KEYCODE_GREATER = SDLK_GREATER; ///< '>'
-
-constexpr Keycode KEYCODE_QUESTION = SDLK_QUESTION; ///< '?'
-
-constexpr Keycode KEYCODE_AT = SDLK_AT; ///< '@'
-
-constexpr Keycode KEYCODE_LEFTBRACKET = SDLK_LEFTBRACKET; ///< '['
-
-constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
-
-constexpr Keycode KEYCODE_RIGHTBRACKET = SDLK_RIGHTBRACKET; ///< ']'
-
-constexpr Keycode KEYCODE_CARET = SDLK_CARET; ///< '^'
-
-constexpr Keycode KEYCODE_UNDERSCORE = SDLK_UNDERSCORE; ///< '_'
-
-constexpr Keycode KEYCODE_GRAVE = SDLK_GRAVE; ///< '`'
-
-constexpr Keycode KEYCODE_A = SDLK_A; ///< 'a'
-
-constexpr Keycode KEYCODE_B = SDLK_B; ///< 'b'
-
-constexpr Keycode KEYCODE_C = SDLK_C; ///< 'c'
-
-constexpr Keycode KEYCODE_D = SDLK_D; ///< 'd'
-
-constexpr Keycode KEYCODE_E = SDLK_E; ///< 'e'
-
-constexpr Keycode KEYCODE_F = SDLK_F; ///< 'f'
-
-constexpr Keycode KEYCODE_G = SDLK_G; ///< 'g'
-
-constexpr Keycode KEYCODE_H = SDLK_H; ///< 'h'
-
-constexpr Keycode KEYCODE_I = SDLK_I; ///< 'i'
-
-constexpr Keycode KEYCODE_J = SDLK_J; ///< 'j'
-
-constexpr Keycode KEYCODE_K = SDLK_K; ///< 'k'
-
-constexpr Keycode KEYCODE_L = SDLK_L; ///< 'l'
-
-constexpr Keycode KEYCODE_M = SDLK_M; ///< 'm'
-
-constexpr Keycode KEYCODE_N = SDLK_N; ///< 'n'
-
-constexpr Keycode KEYCODE_O = SDLK_O; ///< 'o'
-
-constexpr Keycode KEYCODE_P = SDLK_P; ///< 'p'
-
-constexpr Keycode KEYCODE_Q = SDLK_Q; ///< 'q'
-
-constexpr Keycode KEYCODE_R = SDLK_R; ///< 'r'
-
-constexpr Keycode KEYCODE_S = SDLK_S; ///< 's'
-
-constexpr Keycode KEYCODE_T = SDLK_T; ///< 't'
-
-constexpr Keycode KEYCODE_U = SDLK_U; ///< 'u'
-
-constexpr Keycode KEYCODE_V = SDLK_V; ///< 'v'
-
-constexpr Keycode KEYCODE_W = SDLK_W; ///< 'w'
-
-constexpr Keycode KEYCODE_X = SDLK_X; ///< 'x'
-
-constexpr Keycode KEYCODE_Y = SDLK_Y; ///< 'y'
-
-constexpr Keycode KEYCODE_Z = SDLK_Z; ///< 'z'
-
-constexpr Keycode KEYCODE_LEFTBRACE = SDLK_LEFTBRACE; ///< '{'
-
-constexpr Keycode KEYCODE_PIPE = SDLK_PIPE; ///< '|'
-
-constexpr Keycode KEYCODE_RIGHTBRACE = SDLK_RIGHTBRACE; ///< '}'
-
-constexpr Keycode KEYCODE_TILDE = SDLK_TILDE; ///< '~'
-
-constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
-
-constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CAPSLOCK)
- */
-constexpr Keycode KEYCODE_CAPSLOCK = SDLK_CAPSLOCK;
-
-constexpr Keycode KEYCODE_F1 = SDLK_F1; ///< ScancodeToKeycode(SCANCODE_F1)
-
-constexpr Keycode KEYCODE_F2 = SDLK_F2; ///< ScancodeToKeycode(SCANCODE_F2)
-
-constexpr Keycode KEYCODE_F3 = SDLK_F3; ///< ScancodeToKeycode(SCANCODE_F3)
-
-constexpr Keycode KEYCODE_F4 = SDLK_F4; ///< ScancodeToKeycode(SCANCODE_F4)
-
-constexpr Keycode KEYCODE_F5 = SDLK_F5; ///< ScancodeToKeycode(SCANCODE_F5)
-
-constexpr Keycode KEYCODE_F6 = SDLK_F6; ///< ScancodeToKeycode(SCANCODE_F6)
-
-constexpr Keycode KEYCODE_F7 = SDLK_F7; ///< ScancodeToKeycode(SCANCODE_F7)
-
-constexpr Keycode KEYCODE_F8 = SDLK_F8; ///< ScancodeToKeycode(SCANCODE_F8)
-
-constexpr Keycode KEYCODE_F9 = SDLK_F9; ///< ScancodeToKeycode(SCANCODE_F9)
-
-constexpr Keycode KEYCODE_F10 = SDLK_F10; ///< ScancodeToKeycode(SCANCODE_F10)
-
-constexpr Keycode KEYCODE_F11 = SDLK_F11; ///< ScancodeToKeycode(SCANCODE_F11)
-
-constexpr Keycode KEYCODE_F12 = SDLK_F12; ///< ScancodeToKeycode(SCANCODE_F12)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRINTSCREEN)
- */
-constexpr Keycode KEYCODE_PRINTSCREEN = SDLK_PRINTSCREEN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SCROLLLOCK)
- */
-constexpr Keycode KEYCODE_SCROLLLOCK = SDLK_SCROLLLOCK;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAUSE)
- */
-constexpr Keycode KEYCODE_PAUSE = SDLK_PAUSE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_INSERT)
- */
-constexpr Keycode KEYCODE_INSERT = SDLK_INSERT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_HOME)
- */
-constexpr Keycode KEYCODE_HOME = SDLK_HOME;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEUP)
- */
-constexpr Keycode KEYCODE_PAGEUP = SDLK_PAGEUP;
-
-constexpr Keycode KEYCODE_END = SDLK_END; ///< ScancodeToKeycode(SCANCODE_END)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEDOWN)
- */
-constexpr Keycode KEYCODE_PAGEDOWN = SDLK_PAGEDOWN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RIGHT)
- */
-constexpr Keycode KEYCODE_RIGHT = SDLK_RIGHT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LEFT)
- */
-constexpr Keycode KEYCODE_LEFT = SDLK_LEFT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_DOWN)
- */
-constexpr Keycode KEYCODE_DOWN = SDLK_DOWN;
-
-constexpr Keycode KEYCODE_UP = SDLK_UP; ///< ScancodeToKeycode(SCANCODE_UP)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_NUMLOCKCLEAR)
- */
-constexpr Keycode KEYCODE_NUMLOCKCLEAR = SDLK_NUMLOCKCLEAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DIVIDE)
- */
-constexpr Keycode KEYCODE_KP_DIVIDE = SDLK_KP_DIVIDE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MULTIPLY)
- */
-constexpr Keycode KEYCODE_KP_MULTIPLY = SDLK_KP_MULTIPLY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MINUS)
- */
-constexpr Keycode KEYCODE_KP_MINUS = SDLK_KP_MINUS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUS)
- */
-constexpr Keycode KEYCODE_KP_PLUS = SDLK_KP_PLUS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_ENTER)
- */
-constexpr Keycode KEYCODE_KP_ENTER = SDLK_KP_ENTER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_1)
- */
-constexpr Keycode KEYCODE_KP_1 = SDLK_KP_1;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_2)
- */
-constexpr Keycode KEYCODE_KP_2 = SDLK_KP_2;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_3)
- */
-constexpr Keycode KEYCODE_KP_3 = SDLK_KP_3;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_4)
- */
-constexpr Keycode KEYCODE_KP_4 = SDLK_KP_4;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_5)
- */
-constexpr Keycode KEYCODE_KP_5 = SDLK_KP_5;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_6)
- */
-constexpr Keycode KEYCODE_KP_6 = SDLK_KP_6;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_7)
- */
-constexpr Keycode KEYCODE_KP_7 = SDLK_KP_7;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_8)
- */
-constexpr Keycode KEYCODE_KP_8 = SDLK_KP_8;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_9)
- */
-constexpr Keycode KEYCODE_KP_9 = SDLK_KP_9;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_0)
- */
-constexpr Keycode KEYCODE_KP_0 = SDLK_KP_0;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERIOD)
- */
-constexpr Keycode KEYCODE_KP_PERIOD = SDLK_KP_PERIOD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_APPLICATION)
- */
-constexpr Keycode KEYCODE_APPLICATION = SDLK_APPLICATION;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_POWER)
- */
-constexpr Keycode KEYCODE_POWER = SDLK_POWER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALS)
- */
-constexpr Keycode KEYCODE_KP_EQUALS = SDLK_KP_EQUALS;
-
-constexpr Keycode KEYCODE_F13 = SDLK_F13; ///< ScancodeToKeycode(SCANCODE_F13)
-
-constexpr Keycode KEYCODE_F14 = SDLK_F14; ///< ScancodeToKeycode(SCANCODE_F14)
-
-constexpr Keycode KEYCODE_F15 = SDLK_F15; ///< ScancodeToKeycode(SCANCODE_F15)
-
-constexpr Keycode KEYCODE_F16 = SDLK_F16; ///< ScancodeToKeycode(SCANCODE_F16)
-
-constexpr Keycode KEYCODE_F17 = SDLK_F17; ///< ScancodeToKeycode(SCANCODE_F17)
-
-constexpr Keycode KEYCODE_F18 = SDLK_F18; ///< ScancodeToKeycode(SCANCODE_F18)
-
-constexpr Keycode KEYCODE_F19 = SDLK_F19; ///< ScancodeToKeycode(SCANCODE_F19)
-
-constexpr Keycode KEYCODE_F20 = SDLK_F20; ///< ScancodeToKeycode(SCANCODE_F20)
-
-constexpr Keycode KEYCODE_F21 = SDLK_F21; ///< ScancodeToKeycode(SCANCODE_F21)
-
-constexpr Keycode KEYCODE_F22 = SDLK_F22; ///< ScancodeToKeycode(SCANCODE_F22)
-
-constexpr Keycode KEYCODE_F23 = SDLK_F23; ///< ScancodeToKeycode(SCANCODE_F23)
-
-constexpr Keycode KEYCODE_F24 = SDLK_F24; ///< ScancodeToKeycode(SCANCODE_F24)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXECUTE)
- */
-constexpr Keycode KEYCODE_EXECUTE = SDLK_EXECUTE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_HELP)
- */
-constexpr Keycode KEYCODE_HELP = SDLK_HELP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MENU)
- */
-constexpr Keycode KEYCODE_MENU = SDLK_MENU;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SELECT)
- */
-constexpr Keycode KEYCODE_SELECT = SDLK_SELECT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_STOP)
- */
-constexpr Keycode KEYCODE_STOP = SDLK_STOP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AGAIN)
- */
-constexpr Keycode KEYCODE_AGAIN = SDLK_AGAIN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_UNDO)
- */
-constexpr Keycode KEYCODE_UNDO = SDLK_UNDO;
-
-constexpr Keycode KEYCODE_CUT = SDLK_CUT; ///< ScancodeToKeycode(SCANCODE_CUT)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_COPY)
- */
-constexpr Keycode KEYCODE_COPY = SDLK_COPY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PASTE)
- */
-constexpr Keycode KEYCODE_PASTE = SDLK_PASTE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_FIND)
- */
-constexpr Keycode KEYCODE_FIND = SDLK_FIND;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MUTE)
- */
-constexpr Keycode KEYCODE_MUTE = SDLK_MUTE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEUP)
- */
-constexpr Keycode KEYCODE_VOLUMEUP = SDLK_VOLUMEUP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEDOWN)
- */
-constexpr Keycode KEYCODE_VOLUMEDOWN = SDLK_VOLUMEDOWN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COMMA)
- */
-constexpr Keycode KEYCODE_KP_COMMA = SDLK_KP_COMMA;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALSAS400)
- */
-constexpr Keycode KEYCODE_KP_EQUALSAS400 = SDLK_KP_EQUALSAS400;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_ALTERASE)
- */
-constexpr Keycode KEYCODE_ALTERASE = SDLK_ALTERASE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SYSREQ)
- */
-constexpr Keycode KEYCODE_SYSREQ = SDLK_SYSREQ;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CANCEL)
- */
-constexpr Keycode KEYCODE_CANCEL = SDLK_CANCEL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEAR)
- */
-constexpr Keycode KEYCODE_CLEAR = SDLK_CLEAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRIOR)
- */
-constexpr Keycode KEYCODE_PRIOR = SDLK_PRIOR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RETURN2)
- */
-constexpr Keycode KEYCODE_RETURN2 = SDLK_RETURN2;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SEPARATOR)
- */
-constexpr Keycode KEYCODE_SEPARATOR = SDLK_SEPARATOR;
-
-constexpr Keycode KEYCODE_OUT = SDLK_OUT; ///< ScancodeToKeycode(SCANCODE_OUT)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_OPER)
- */
-constexpr Keycode KEYCODE_OPER = SDLK_OPER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEARAGAIN)
- */
-constexpr Keycode KEYCODE_CLEARAGAIN = SDLK_CLEARAGAIN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CRSEL)
- */
-constexpr Keycode KEYCODE_CRSEL = SDLK_CRSEL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXSEL)
- */
-constexpr Keycode KEYCODE_EXSEL = SDLK_EXSEL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_00)
- */
-constexpr Keycode KEYCODE_KP_00 = SDLK_KP_00;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_000)
- */
-constexpr Keycode KEYCODE_KP_000 = SDLK_KP_000;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_THOUSANDSSEPARATOR)
- */
-constexpr Keycode KEYCODE_THOUSANDSSEPARATOR = SDLK_THOUSANDSSEPARATOR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_DECIMALSEPARATOR)
- */
-constexpr Keycode KEYCODE_DECIMALSEPARATOR = SDLK_DECIMALSEPARATOR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYUNIT)
- */
-constexpr Keycode KEYCODE_CURRENCYUNIT = SDLK_CURRENCYUNIT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYSUBUNIT)
- */
-constexpr Keycode KEYCODE_CURRENCYSUBUNIT = SDLK_CURRENCYSUBUNIT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTPAREN)
- */
-constexpr Keycode KEYCODE_KP_LEFTPAREN = SDLK_KP_LEFTPAREN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTPAREN)
- */
-constexpr Keycode KEYCODE_KP_RIGHTPAREN = SDLK_KP_RIGHTPAREN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTBRACE)
- */
-constexpr Keycode KEYCODE_KP_LEFTBRACE = SDLK_KP_LEFTBRACE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTBRACE)
- */
-constexpr Keycode KEYCODE_KP_RIGHTBRACE = SDLK_KP_RIGHTBRACE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_TAB)
- */
-constexpr Keycode KEYCODE_KP_TAB = SDLK_KP_TAB;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BACKSPACE)
- */
-constexpr Keycode KEYCODE_KP_BACKSPACE = SDLK_KP_BACKSPACE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_A)
- */
-constexpr Keycode KEYCODE_KP_A = SDLK_KP_A;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_B)
- */
-constexpr Keycode KEYCODE_KP_B = SDLK_KP_B;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_C)
- */
-constexpr Keycode KEYCODE_KP_C = SDLK_KP_C;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_D)
- */
-constexpr Keycode KEYCODE_KP_D = SDLK_KP_D;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_E)
- */
-constexpr Keycode KEYCODE_KP_E = SDLK_KP_E;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_F)
- */
-constexpr Keycode KEYCODE_KP_F = SDLK_KP_F;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_XOR)
- */
-constexpr Keycode KEYCODE_KP_XOR = SDLK_KP_XOR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_POWER)
- */
-constexpr Keycode KEYCODE_KP_POWER = SDLK_KP_POWER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERCENT)
- */
-constexpr Keycode KEYCODE_KP_PERCENT = SDLK_KP_PERCENT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LESS)
- */
-constexpr Keycode KEYCODE_KP_LESS = SDLK_KP_LESS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_GREATER)
- */
-constexpr Keycode KEYCODE_KP_GREATER = SDLK_KP_GREATER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AMPERSAND)
- */
-constexpr Keycode KEYCODE_KP_AMPERSAND = SDLK_KP_AMPERSAND;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLAMPERSAND)
- */
-constexpr Keycode KEYCODE_KP_DBLAMPERSAND = SDLK_KP_DBLAMPERSAND;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_VERTICALBAR)
- */
-constexpr Keycode KEYCODE_KP_VERTICALBAR = SDLK_KP_VERTICALBAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLVERTICALBAR)
- */
-constexpr Keycode KEYCODE_KP_DBLVERTICALBAR = SDLK_KP_DBLVERTICALBAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COLON)
- */
-constexpr Keycode KEYCODE_KP_COLON = SDLK_KP_COLON;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HASH)
- */
-constexpr Keycode KEYCODE_KP_HASH = SDLK_KP_HASH;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_SPACE)
- */
-constexpr Keycode KEYCODE_KP_SPACE = SDLK_KP_SPACE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AT)
- */
-constexpr Keycode KEYCODE_KP_AT = SDLK_KP_AT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EXCLAM)
- */
-constexpr Keycode KEYCODE_KP_EXCLAM = SDLK_KP_EXCLAM;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSTORE)
- */
-constexpr Keycode KEYCODE_KP_MEMSTORE = SDLK_KP_MEMSTORE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMRECALL)
- */
-constexpr Keycode KEYCODE_KP_MEMRECALL = SDLK_KP_MEMRECALL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMCLEAR)
- */
-constexpr Keycode KEYCODE_KP_MEMCLEAR = SDLK_KP_MEMCLEAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMADD)
- */
-constexpr Keycode KEYCODE_KP_MEMADD = SDLK_KP_MEMADD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSUBTRACT)
- */
-constexpr Keycode KEYCODE_KP_MEMSUBTRACT = SDLK_KP_MEMSUBTRACT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMMULTIPLY)
- */
-constexpr Keycode KEYCODE_KP_MEMMULTIPLY = SDLK_KP_MEMMULTIPLY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMDIVIDE)
- */
-constexpr Keycode KEYCODE_KP_MEMDIVIDE = SDLK_KP_MEMDIVIDE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUSMINUS)
- */
-constexpr Keycode KEYCODE_KP_PLUSMINUS = SDLK_KP_PLUSMINUS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEAR)
- */
-constexpr Keycode KEYCODE_KP_CLEAR = SDLK_KP_CLEAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEARENTRY)
- */
-constexpr Keycode KEYCODE_KP_CLEARENTRY = SDLK_KP_CLEARENTRY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BINARY)
- */
-constexpr Keycode KEYCODE_KP_BINARY = SDLK_KP_BINARY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_OCTAL)
- */
-constexpr Keycode KEYCODE_KP_OCTAL = SDLK_KP_OCTAL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DECIMAL)
- */
-constexpr Keycode KEYCODE_KP_DECIMAL = SDLK_KP_DECIMAL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HEXADECIMAL)
- */
-constexpr Keycode KEYCODE_KP_HEXADECIMAL = SDLK_KP_HEXADECIMAL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LCTRL)
- */
-constexpr Keycode KEYCODE_LCTRL = SDLK_LCTRL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LSHIFT)
- */
-constexpr Keycode KEYCODE_LSHIFT = SDLK_LSHIFT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LALT)
- */
-constexpr Keycode KEYCODE_LALT = SDLK_LALT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LGUI)
- */
-constexpr Keycode KEYCODE_LGUI = SDLK_LGUI;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RCTRL)
- */
-constexpr Keycode KEYCODE_RCTRL = SDLK_RCTRL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RSHIFT)
- */
-constexpr Keycode KEYCODE_RSHIFT = SDLK_RSHIFT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RALT)
- */
-constexpr Keycode KEYCODE_RALT = SDLK_RALT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RGUI)
- */
-constexpr Keycode KEYCODE_RGUI = SDLK_RGUI;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MODE)
- */
-constexpr Keycode KEYCODE_MODE = SDLK_MODE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SLEEP)
- */
-constexpr Keycode KEYCODE_SLEEP = SDLK_SLEEP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_WAKE)
- */
-constexpr Keycode KEYCODE_WAKE = SDLK_WAKE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_INCREMENT)
- */
-constexpr Keycode KEYCODE_CHANNEL_INCREMENT = SDLK_CHANNEL_INCREMENT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_DECREMENT)
- */
-constexpr Keycode KEYCODE_CHANNEL_DECREMENT = SDLK_CHANNEL_DECREMENT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY)
- */
-constexpr Keycode KEYCODE_MEDIA_PLAY = SDLK_MEDIA_PLAY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PAUSE)
- */
-constexpr Keycode KEYCODE_MEDIA_PAUSE = SDLK_MEDIA_PAUSE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_RECORD)
- */
-constexpr Keycode KEYCODE_MEDIA_RECORD = SDLK_MEDIA_RECORD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_FAST_FORWARD)
- */
-constexpr Keycode KEYCODE_MEDIA_FAST_FORWARD = SDLK_MEDIA_FAST_FORWARD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_REWIND)
- */
-constexpr Keycode KEYCODE_MEDIA_REWIND = SDLK_MEDIA_REWIND;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_NEXT_TRACK)
- */
-constexpr Keycode KEYCODE_MEDIA_NEXT_TRACK = SDLK_MEDIA_NEXT_TRACK;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PREVIOUS_TRACK)
- */
-constexpr Keycode KEYCODE_MEDIA_PREVIOUS_TRACK = SDLK_MEDIA_PREVIOUS_TRACK;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_STOP)
- */
-constexpr Keycode KEYCODE_MEDIA_STOP = SDLK_MEDIA_STOP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_EJECT)
- */
-constexpr Keycode KEYCODE_MEDIA_EJECT = SDLK_MEDIA_EJECT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY_PAUSE)
- */
-constexpr Keycode KEYCODE_MEDIA_PLAY_PAUSE = SDLK_MEDIA_PLAY_PAUSE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_SELECT)
- */
-constexpr Keycode KEYCODE_MEDIA_SELECT = SDLK_MEDIA_SELECT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_NEW)
- */
-constexpr Keycode KEYCODE_AC_NEW = SDLK_AC_NEW;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_OPEN)
- */
-constexpr Keycode KEYCODE_AC_OPEN = SDLK_AC_OPEN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_CLOSE)
- */
-constexpr Keycode KEYCODE_AC_CLOSE = SDLK_AC_CLOSE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_EXIT)
- */
-constexpr Keycode KEYCODE_AC_EXIT = SDLK_AC_EXIT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SAVE)
- */
-constexpr Keycode KEYCODE_AC_SAVE = SDLK_AC_SAVE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PRINT)
- */
-constexpr Keycode KEYCODE_AC_PRINT = SDLK_AC_PRINT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PROPERTIES)
- */
-constexpr Keycode KEYCODE_AC_PROPERTIES = SDLK_AC_PROPERTIES;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SEARCH)
- */
-constexpr Keycode KEYCODE_AC_SEARCH = SDLK_AC_SEARCH;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_HOME)
- */
-constexpr Keycode KEYCODE_AC_HOME = SDLK_AC_HOME;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BACK)
- */
-constexpr Keycode KEYCODE_AC_BACK = SDLK_AC_BACK;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_FORWARD)
- */
-constexpr Keycode KEYCODE_AC_FORWARD = SDLK_AC_FORWARD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_STOP)
- */
-constexpr Keycode KEYCODE_AC_STOP = SDLK_AC_STOP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_REFRESH)
- */
-constexpr Keycode KEYCODE_AC_REFRESH = SDLK_AC_REFRESH;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BOOKMARKS)
- */
-constexpr Keycode KEYCODE_AC_BOOKMARKS = SDLK_AC_BOOKMARKS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTLEFT)
- */
-constexpr Keycode KEYCODE_SOFTLEFT = SDLK_SOFTLEFT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTRIGHT)
- */
-constexpr Keycode KEYCODE_SOFTRIGHT = SDLK_SOFTRIGHT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CALL)
- */
-constexpr Keycode KEYCODE_CALL = SDLK_CALL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_ENDCALL)
- */
-constexpr Keycode KEYCODE_ENDCALL = SDLK_ENDCALL;
-
-constexpr Keycode KEYCODE_LEFT_TAB = SDLK_LEFT_TAB; ///< Extended key Left Tab
-
-/**
- * Extended key Level 5 Shift
- */
-constexpr Keycode KEYCODE_LEVEL5_SHIFT = SDLK_LEVEL5_SHIFT;
-
-/**
- * Extended key Multi-key Compose
- */
-constexpr Keycode KEYCODE_MULTI_KEY_COMPOSE = SDLK_MULTI_KEY_COMPOSE;
-
-constexpr Keycode KEYCODE_LMETA = SDLK_LMETA; ///< Extended key Left Meta
-
-constexpr Keycode KEYCODE_RMETA = SDLK_RMETA; ///< Extended key Right Meta
-
-constexpr Keycode KEYCODE_LHYPER = SDLK_LHYPER; ///< Extended key Left Hyper
-
-constexpr Keycode KEYCODE_RHYPER = SDLK_RHYPER; ///< Extended key Right Hyper
-
-/// @}
-
-/**
- * @defgroup CategoryMisc Miscellaneous
- *
- * SDL API functions that don't fit elsewhere.
- *
- * @{
- */
-
-/**
- * Open a URL/URI in the browser or other appropriate external application.
- *
- * Open a URL in a separate, system-provided application. How this works will
- * vary wildly depending on the platform. This will likely launch what makes
- * sense to handle a specific URL's protocol (a web browser for `http://`,
- * etc), but it might also be able to launch file managers for directories and
- * other things.
- *
- * What happens when you open a URL varies wildly as well: your game window
- * may lose focus (and may or may not lose focus if your game was fullscreen
- * or grabbing input at the time). On mobile devices, your app will likely
- * move to the background or your process might be paused. Any given platform
- * may or may not handle a given URL.
- *
- * If this is unimplemented (or simply unavailable) for a platform, this will
- * fail with an error. A successful result does not mean the URL loaded, just
- * that we launched _something_ to handle it (or at least believe we did).
- *
- * All this to say: this function can be useful, but you should definitely
- * test it on every platform you target.
- *
- * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
- *            local files, if supported.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
 
 /// @}
 
@@ -24285,6 +20826,1200 @@ constexpr Rect::operator FRect() const
 #pragma endregion impl
 
 /**
+ *
+ * @defgroup CategoryScancode Keyboard Scancodes
+ *
+ * Defines keyboard scancodes.
+ *
+ * Please refer to the Best Keyboard Practices document for details on what
+ * this information means and how best to use it.
+ *
+ * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
+ *
+ * @{
+ */
+
+// Forward decl
+struct Keycode;
+
+/**
+ * The SDL keyboard scancode representation.
+ *
+ * An SDL scancode is the physical representation of a key on the keyboard,
+ * independent of language and keyboard mapping.
+ *
+ * Values of this type are used to represent keyboard keys, among other places
+ * in the `scancode` field of the KeyboardEvent structure.
+ *
+ * The values in this enumeration are based on the USB usage page standard:
+ * https://usb.org/sites/default/files/hut1_5.pdf
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+class Scancode
+{
+  SDL_Scancode m_scancode;
+
+public:
+  /**
+   * Wraps Scancode.
+   *
+   * @param scancode the value to be wrapped
+   */
+  constexpr Scancode(SDL_Scancode scancode = {})
+    : m_scancode(scancode)
+  {
+  }
+
+  // Get scan code from name
+  Scancode(StringParam name);
+
+  /**
+   * Default comparison operator
+   */
+  constexpr auto operator<=>(const Scancode& other) const = default;
+
+  /**
+   * Unwraps to the underlying Scancode.
+   *
+   * @returns the underlying Scancode.
+   */
+  constexpr operator SDL_Scancode() const { return m_scancode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const
+  {
+    return m_scancode != SDL_SCANCODE_UNKNOWN;
+  }
+
+  // Set name
+  bool SetName(StringParam name);
+
+  // Get name
+  const char* GetName() const;
+};
+
+constexpr Scancode SCANCODE_UNKNOWN = SDL_SCANCODE_UNKNOWN; ///< UNKNOWN
+
+constexpr Scancode SCANCODE_A = SDL_SCANCODE_A; ///< A
+
+constexpr Scancode SCANCODE_B = SDL_SCANCODE_B; ///< B
+
+constexpr Scancode SCANCODE_C = SDL_SCANCODE_C; ///< C
+
+constexpr Scancode SCANCODE_D = SDL_SCANCODE_D; ///< D
+
+constexpr Scancode SCANCODE_E = SDL_SCANCODE_E; ///< E
+
+constexpr Scancode SCANCODE_F = SDL_SCANCODE_F; ///< F
+
+constexpr Scancode SCANCODE_G = SDL_SCANCODE_G; ///< G
+
+constexpr Scancode SCANCODE_H = SDL_SCANCODE_H; ///< H
+
+constexpr Scancode SCANCODE_I = SDL_SCANCODE_I; ///< I
+
+constexpr Scancode SCANCODE_J = SDL_SCANCODE_J; ///< J
+
+constexpr Scancode SCANCODE_K = SDL_SCANCODE_K; ///< K
+
+constexpr Scancode SCANCODE_L = SDL_SCANCODE_L; ///< L
+
+constexpr Scancode SCANCODE_M = SDL_SCANCODE_M; ///< M
+
+constexpr Scancode SCANCODE_N = SDL_SCANCODE_N; ///< N
+
+constexpr Scancode SCANCODE_O = SDL_SCANCODE_O; ///< O
+
+constexpr Scancode SCANCODE_P = SDL_SCANCODE_P; ///< P
+
+constexpr Scancode SCANCODE_Q = SDL_SCANCODE_Q; ///< Q
+
+constexpr Scancode SCANCODE_R = SDL_SCANCODE_R; ///< R
+
+constexpr Scancode SCANCODE_S = SDL_SCANCODE_S; ///< S
+
+constexpr Scancode SCANCODE_T = SDL_SCANCODE_T; ///< T
+
+constexpr Scancode SCANCODE_U = SDL_SCANCODE_U; ///< U
+
+constexpr Scancode SCANCODE_V = SDL_SCANCODE_V; ///< V
+
+constexpr Scancode SCANCODE_W = SDL_SCANCODE_W; ///< W
+
+constexpr Scancode SCANCODE_X = SDL_SCANCODE_X; ///< X
+
+constexpr Scancode SCANCODE_Y = SDL_SCANCODE_Y; ///< Y
+
+constexpr Scancode SCANCODE_Z = SDL_SCANCODE_Z; ///< Z
+
+constexpr Scancode SCANCODE_1 = SDL_SCANCODE_1; ///< 1
+
+constexpr Scancode SCANCODE_2 = SDL_SCANCODE_2; ///< 2
+
+constexpr Scancode SCANCODE_3 = SDL_SCANCODE_3; ///< 3
+
+constexpr Scancode SCANCODE_4 = SDL_SCANCODE_4; ///< 4
+
+constexpr Scancode SCANCODE_5 = SDL_SCANCODE_5; ///< 5
+
+constexpr Scancode SCANCODE_6 = SDL_SCANCODE_6; ///< 6
+
+constexpr Scancode SCANCODE_7 = SDL_SCANCODE_7; ///< 7
+
+constexpr Scancode SCANCODE_8 = SDL_SCANCODE_8; ///< 8
+
+constexpr Scancode SCANCODE_9 = SDL_SCANCODE_9; ///< 9
+
+constexpr Scancode SCANCODE_0 = SDL_SCANCODE_0; ///< 0
+
+constexpr Scancode SCANCODE_RETURN = SDL_SCANCODE_RETURN; ///< RETURN
+
+constexpr Scancode SCANCODE_ESCAPE = SDL_SCANCODE_ESCAPE; ///< ESCAPE
+
+constexpr Scancode SCANCODE_BACKSPACE = SDL_SCANCODE_BACKSPACE; ///< BACKSPACE
+
+constexpr Scancode SCANCODE_TAB = SDL_SCANCODE_TAB; ///< TAB
+
+constexpr Scancode SCANCODE_SPACE = SDL_SCANCODE_SPACE; ///< SPACE
+
+constexpr Scancode SCANCODE_MINUS = SDL_SCANCODE_MINUS; ///< MINUS
+
+constexpr Scancode SCANCODE_EQUALS = SDL_SCANCODE_EQUALS; ///< EQUALS
+
+constexpr Scancode SCANCODE_LEFTBRACKET =
+  SDL_SCANCODE_LEFTBRACKET; ///< LEFTBRACKET
+
+constexpr Scancode SCANCODE_RIGHTBRACKET =
+  SDL_SCANCODE_RIGHTBRACKET; ///< RIGHTBRACKET
+
+/**
+ * Located at the lower left of the return key on ISO keyboards and at the right
+ * end of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS
+ * (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL
+ * LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR
+ * SIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a
+ * German layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and
+ * ASTERISK and MICRO SIGN in a French Windows layout.
+ */
+constexpr Scancode SCANCODE_BACKSLASH = SDL_SCANCODE_BACKSLASH;
+
+/**
+ * ISO USB keyboards actually use this code instead of 49 for the same key, but
+ * all OSes I've seen treat the two codes identically.  So, as an implementor,
+ * unless your keyboard generates both of those codes and your OS treats them
+ * differently, you should generate SCANCODE_BACKSLASH instead of this code. As
+ * a user, you should not rely on this code because SDL will never generate it
+ * with most (all?) keyboards.
+ */
+constexpr Scancode SCANCODE_NONUSHASH = SDL_SCANCODE_NONUSHASH;
+
+constexpr Scancode SCANCODE_SEMICOLON = SDL_SCANCODE_SEMICOLON; ///< SEMICOLON
+
+constexpr Scancode SCANCODE_APOSTROPHE =
+  SDL_SCANCODE_APOSTROPHE; ///< APOSTROPHE
+
+/**
+ * Located in the top left corner (on both ANSI and ISO keyboards).  Produces
+ * GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on
+ * ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION
+ * SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION
+ * SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),
+ * CIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO
+ * keyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL
+ * AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN
+ * SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on
+ * ANSI keyboards.
+ */
+constexpr Scancode SCANCODE_GRAVE = SDL_SCANCODE_GRAVE;
+
+constexpr Scancode SCANCODE_COMMA = SDL_SCANCODE_COMMA; ///< COMMA
+
+constexpr Scancode SCANCODE_PERIOD = SDL_SCANCODE_PERIOD; ///< PERIOD
+
+constexpr Scancode SCANCODE_SLASH = SDL_SCANCODE_SLASH; ///< SLASH
+
+constexpr Scancode SCANCODE_CAPSLOCK = SDL_SCANCODE_CAPSLOCK; ///< CAPSLOCK
+
+constexpr Scancode SCANCODE_F1 = SDL_SCANCODE_F1; ///< F1
+
+constexpr Scancode SCANCODE_F2 = SDL_SCANCODE_F2; ///< F2
+
+constexpr Scancode SCANCODE_F3 = SDL_SCANCODE_F3; ///< F3
+
+constexpr Scancode SCANCODE_F4 = SDL_SCANCODE_F4; ///< F4
+
+constexpr Scancode SCANCODE_F5 = SDL_SCANCODE_F5; ///< F5
+
+constexpr Scancode SCANCODE_F6 = SDL_SCANCODE_F6; ///< F6
+
+constexpr Scancode SCANCODE_F7 = SDL_SCANCODE_F7; ///< F7
+
+constexpr Scancode SCANCODE_F8 = SDL_SCANCODE_F8; ///< F8
+
+constexpr Scancode SCANCODE_F9 = SDL_SCANCODE_F9; ///< F9
+
+constexpr Scancode SCANCODE_F10 = SDL_SCANCODE_F10; ///< F10
+
+constexpr Scancode SCANCODE_F11 = SDL_SCANCODE_F11; ///< F11
+
+constexpr Scancode SCANCODE_F12 = SDL_SCANCODE_F12; ///< F12
+
+constexpr Scancode SCANCODE_PRINTSCREEN =
+  SDL_SCANCODE_PRINTSCREEN; ///< PRINTSCREEN
+
+constexpr Scancode SCANCODE_SCROLLLOCK =
+  SDL_SCANCODE_SCROLLLOCK; ///< SCROLLLOCK
+
+constexpr Scancode SCANCODE_PAUSE = SDL_SCANCODE_PAUSE; ///< PAUSE
+
+/**
+ * insert on PC, help on some Mac keyboards (but does send code 73, not 117)
+ */
+constexpr Scancode SCANCODE_INSERT = SDL_SCANCODE_INSERT;
+
+constexpr Scancode SCANCODE_HOME = SDL_SCANCODE_HOME; ///< HOME
+
+constexpr Scancode SCANCODE_PAGEUP = SDL_SCANCODE_PAGEUP; ///< PAGEUP
+
+constexpr Scancode SCANCODE_DELETE = SDL_SCANCODE_DELETE; ///< DELETE
+
+constexpr Scancode SCANCODE_END = SDL_SCANCODE_END; ///< END
+
+constexpr Scancode SCANCODE_PAGEDOWN = SDL_SCANCODE_PAGEDOWN; ///< PAGEDOWN
+
+constexpr Scancode SCANCODE_RIGHT = SDL_SCANCODE_RIGHT; ///< RIGHT
+
+constexpr Scancode SCANCODE_LEFT = SDL_SCANCODE_LEFT; ///< LEFT
+
+constexpr Scancode SCANCODE_DOWN = SDL_SCANCODE_DOWN; ///< DOWN
+
+constexpr Scancode SCANCODE_UP = SDL_SCANCODE_UP; ///< UP
+
+/**
+ * num lock on PC, clear on Mac keyboards
+ */
+constexpr Scancode SCANCODE_NUMLOCKCLEAR = SDL_SCANCODE_NUMLOCKCLEAR;
+
+constexpr Scancode SCANCODE_KP_DIVIDE = SDL_SCANCODE_KP_DIVIDE; ///< KP_DIVIDE
+
+constexpr Scancode SCANCODE_KP_MULTIPLY =
+  SDL_SCANCODE_KP_MULTIPLY; ///< KP_MULTIPLY
+
+constexpr Scancode SCANCODE_KP_MINUS = SDL_SCANCODE_KP_MINUS; ///< KP_MINUS
+
+constexpr Scancode SCANCODE_KP_PLUS = SDL_SCANCODE_KP_PLUS; ///< KP_PLUS
+
+constexpr Scancode SCANCODE_KP_ENTER = SDL_SCANCODE_KP_ENTER; ///< KP_ENTER
+
+constexpr Scancode SCANCODE_KP_1 = SDL_SCANCODE_KP_1; ///< KP_1
+
+constexpr Scancode SCANCODE_KP_2 = SDL_SCANCODE_KP_2; ///< KP_2
+
+constexpr Scancode SCANCODE_KP_3 = SDL_SCANCODE_KP_3; ///< KP_3
+
+constexpr Scancode SCANCODE_KP_4 = SDL_SCANCODE_KP_4; ///< KP_4
+
+constexpr Scancode SCANCODE_KP_5 = SDL_SCANCODE_KP_5; ///< KP_5
+
+constexpr Scancode SCANCODE_KP_6 = SDL_SCANCODE_KP_6; ///< KP_6
+
+constexpr Scancode SCANCODE_KP_7 = SDL_SCANCODE_KP_7; ///< KP_7
+
+constexpr Scancode SCANCODE_KP_8 = SDL_SCANCODE_KP_8; ///< KP_8
+
+constexpr Scancode SCANCODE_KP_9 = SDL_SCANCODE_KP_9; ///< KP_9
+
+constexpr Scancode SCANCODE_KP_0 = SDL_SCANCODE_KP_0; ///< KP_0
+
+constexpr Scancode SCANCODE_KP_PERIOD = SDL_SCANCODE_KP_PERIOD; ///< KP_PERIOD
+
+/**
+ * This is the additional key that ISO keyboards have over ANSI ones, located
+ * between left shift and Y.  Produces GRAVE ACCENT and TILDE in a US or UK Mac
+ * layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows
+ * layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,
+ * or French layout.
+ */
+constexpr Scancode SCANCODE_NONUSBACKSLASH = SDL_SCANCODE_NONUSBACKSLASH;
+
+/**
+ * windows contextual menu, compose
+ */
+constexpr Scancode SCANCODE_APPLICATION = SDL_SCANCODE_APPLICATION;
+
+/**
+ * The USB document says this is a status flag, not a physical key - but some
+ * Mac keyboards do have a power key.
+ */
+constexpr Scancode SCANCODE_POWER = SDL_SCANCODE_POWER;
+
+constexpr Scancode SCANCODE_KP_EQUALS = SDL_SCANCODE_KP_EQUALS; ///< KP_EQUALS
+
+constexpr Scancode SCANCODE_F13 = SDL_SCANCODE_F13; ///< F13
+
+constexpr Scancode SCANCODE_F14 = SDL_SCANCODE_F14; ///< F14
+
+constexpr Scancode SCANCODE_F15 = SDL_SCANCODE_F15; ///< F15
+
+constexpr Scancode SCANCODE_F16 = SDL_SCANCODE_F16; ///< F16
+
+constexpr Scancode SCANCODE_F17 = SDL_SCANCODE_F17; ///< F17
+
+constexpr Scancode SCANCODE_F18 = SDL_SCANCODE_F18; ///< F18
+
+constexpr Scancode SCANCODE_F19 = SDL_SCANCODE_F19; ///< F19
+
+constexpr Scancode SCANCODE_F20 = SDL_SCANCODE_F20; ///< F20
+
+constexpr Scancode SCANCODE_F21 = SDL_SCANCODE_F21; ///< F21
+
+constexpr Scancode SCANCODE_F22 = SDL_SCANCODE_F22; ///< F22
+
+constexpr Scancode SCANCODE_F23 = SDL_SCANCODE_F23; ///< F23
+
+constexpr Scancode SCANCODE_F24 = SDL_SCANCODE_F24; ///< F24
+
+constexpr Scancode SCANCODE_EXECUTE = SDL_SCANCODE_EXECUTE; ///< EXECUTE
+
+constexpr Scancode SCANCODE_HELP =
+  SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
+
+constexpr Scancode SCANCODE_MENU = SDL_SCANCODE_MENU; ///< Menu (show menu)
+
+constexpr Scancode SCANCODE_SELECT = SDL_SCANCODE_SELECT; ///< SELECT
+
+constexpr Scancode SCANCODE_STOP = SDL_SCANCODE_STOP; ///< AC Stop.
+
+constexpr Scancode SCANCODE_AGAIN = SDL_SCANCODE_AGAIN; ///< AC Redo/Repeat.
+
+constexpr Scancode SCANCODE_UNDO = SDL_SCANCODE_UNDO; ///< AC Undo.
+
+constexpr Scancode SCANCODE_CUT = SDL_SCANCODE_CUT; ///< AC Cut.
+
+constexpr Scancode SCANCODE_COPY = SDL_SCANCODE_COPY; ///< AC Copy.
+
+constexpr Scancode SCANCODE_PASTE = SDL_SCANCODE_PASTE; ///< AC Paste.
+
+constexpr Scancode SCANCODE_FIND = SDL_SCANCODE_FIND; ///< AC Find.
+
+constexpr Scancode SCANCODE_MUTE = SDL_SCANCODE_MUTE; ///< MUTE
+
+constexpr Scancode SCANCODE_VOLUMEUP = SDL_SCANCODE_VOLUMEUP; ///< VOLUMEUP
+
+constexpr Scancode SCANCODE_VOLUMEDOWN =
+  SDL_SCANCODE_VOLUMEDOWN; ///< VOLUMEDOWN
+
+constexpr Scancode SCANCODE_KP_COMMA = SDL_SCANCODE_KP_COMMA; ///< KP_COMMA
+
+constexpr Scancode SCANCODE_KP_EQUALSAS400 =
+  SDL_SCANCODE_KP_EQUALSAS400; ///< KP_EQUALSAS400
+
+/**
+ * used on Asian keyboards, see footnotes in USB doc
+ */
+constexpr Scancode SCANCODE_INTERNATIONAL1 = SDL_SCANCODE_INTERNATIONAL1;
+
+constexpr Scancode SCANCODE_INTERNATIONAL2 =
+  SDL_SCANCODE_INTERNATIONAL2; ///< INTERNATIONAL2
+
+constexpr Scancode SCANCODE_INTERNATIONAL3 =
+  SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
+
+constexpr Scancode SCANCODE_INTERNATIONAL4 =
+  SDL_SCANCODE_INTERNATIONAL4; ///< INTERNATIONAL4
+
+constexpr Scancode SCANCODE_INTERNATIONAL5 =
+  SDL_SCANCODE_INTERNATIONAL5; ///< INTERNATIONAL5
+
+constexpr Scancode SCANCODE_INTERNATIONAL6 =
+  SDL_SCANCODE_INTERNATIONAL6; ///< INTERNATIONAL6
+
+constexpr Scancode SCANCODE_INTERNATIONAL7 =
+  SDL_SCANCODE_INTERNATIONAL7; ///< INTERNATIONAL7
+
+constexpr Scancode SCANCODE_INTERNATIONAL8 =
+  SDL_SCANCODE_INTERNATIONAL8; ///< INTERNATIONAL8
+
+constexpr Scancode SCANCODE_INTERNATIONAL9 =
+  SDL_SCANCODE_INTERNATIONAL9; ///< INTERNATIONAL9
+
+constexpr Scancode SCANCODE_LANG1 =
+  SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
+
+constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion.
+
+constexpr Scancode SCANCODE_LANG3 = SDL_SCANCODE_LANG3; ///< Katakana.
+
+constexpr Scancode SCANCODE_LANG4 = SDL_SCANCODE_LANG4; ///< Hiragana.
+
+constexpr Scancode SCANCODE_LANG5 = SDL_SCANCODE_LANG5; ///< Zenkaku/Hankaku.
+
+constexpr Scancode SCANCODE_LANG6 = SDL_SCANCODE_LANG6; ///< reserved
+
+constexpr Scancode SCANCODE_LANG7 = SDL_SCANCODE_LANG7; ///< reserved
+
+constexpr Scancode SCANCODE_LANG8 = SDL_SCANCODE_LANG8; ///< reserved
+
+constexpr Scancode SCANCODE_LANG9 = SDL_SCANCODE_LANG9; ///< reserved
+
+constexpr Scancode SCANCODE_ALTERASE = SDL_SCANCODE_ALTERASE; ///< Erase-Eaze.
+
+constexpr Scancode SCANCODE_SYSREQ = SDL_SCANCODE_SYSREQ; ///< SYSREQ
+
+constexpr Scancode SCANCODE_CANCEL = SDL_SCANCODE_CANCEL; ///< AC Cancel.
+
+constexpr Scancode SCANCODE_CLEAR = SDL_SCANCODE_CLEAR; ///< CLEAR
+
+constexpr Scancode SCANCODE_PRIOR = SDL_SCANCODE_PRIOR; ///< PRIOR
+
+constexpr Scancode SCANCODE_RETURN2 = SDL_SCANCODE_RETURN2; ///< RETURN2
+
+constexpr Scancode SCANCODE_SEPARATOR = SDL_SCANCODE_SEPARATOR; ///< SEPARATOR
+
+constexpr Scancode SCANCODE_OUT = SDL_SCANCODE_OUT; ///< OUT
+
+constexpr Scancode SCANCODE_OPER = SDL_SCANCODE_OPER; ///< OPER
+
+constexpr Scancode SCANCODE_CLEARAGAIN =
+  SDL_SCANCODE_CLEARAGAIN; ///< CLEARAGAIN
+
+constexpr Scancode SCANCODE_CRSEL = SDL_SCANCODE_CRSEL; ///< CRSEL
+
+constexpr Scancode SCANCODE_EXSEL = SDL_SCANCODE_EXSEL; ///< EXSEL
+
+constexpr Scancode SCANCODE_KP_00 = SDL_SCANCODE_KP_00; ///< KP_00
+
+constexpr Scancode SCANCODE_KP_000 = SDL_SCANCODE_KP_000; ///< KP_000
+
+constexpr Scancode SCANCODE_THOUSANDSSEPARATOR =
+  SDL_SCANCODE_THOUSANDSSEPARATOR; ///< THOUSANDSSEPARATOR
+
+constexpr Scancode SCANCODE_DECIMALSEPARATOR =
+  SDL_SCANCODE_DECIMALSEPARATOR; ///< DECIMALSEPARATOR
+
+constexpr Scancode SCANCODE_CURRENCYUNIT =
+  SDL_SCANCODE_CURRENCYUNIT; ///< CURRENCYUNIT
+
+constexpr Scancode SCANCODE_CURRENCYSUBUNIT =
+  SDL_SCANCODE_CURRENCYSUBUNIT; ///< CURRENCYSUBUNIT
+
+constexpr Scancode SCANCODE_KP_LEFTPAREN =
+  SDL_SCANCODE_KP_LEFTPAREN; ///< KP_LEFTPAREN
+
+constexpr Scancode SCANCODE_KP_RIGHTPAREN =
+  SDL_SCANCODE_KP_RIGHTPAREN; ///< KP_RIGHTPAREN
+
+constexpr Scancode SCANCODE_KP_LEFTBRACE =
+  SDL_SCANCODE_KP_LEFTBRACE; ///< KP_LEFTBRACE
+
+constexpr Scancode SCANCODE_KP_RIGHTBRACE =
+  SDL_SCANCODE_KP_RIGHTBRACE; ///< KP_RIGHTBRACE
+
+constexpr Scancode SCANCODE_KP_TAB = SDL_SCANCODE_KP_TAB; ///< KP_TAB
+
+constexpr Scancode SCANCODE_KP_BACKSPACE =
+  SDL_SCANCODE_KP_BACKSPACE; ///< KP_BACKSPACE
+
+constexpr Scancode SCANCODE_KP_A = SDL_SCANCODE_KP_A; ///< KP_A
+
+constexpr Scancode SCANCODE_KP_B = SDL_SCANCODE_KP_B; ///< KP_B
+
+constexpr Scancode SCANCODE_KP_C = SDL_SCANCODE_KP_C; ///< KP_C
+
+constexpr Scancode SCANCODE_KP_D = SDL_SCANCODE_KP_D; ///< KP_D
+
+constexpr Scancode SCANCODE_KP_E = SDL_SCANCODE_KP_E; ///< KP_E
+
+constexpr Scancode SCANCODE_KP_F = SDL_SCANCODE_KP_F; ///< KP_F
+
+constexpr Scancode SCANCODE_KP_XOR = SDL_SCANCODE_KP_XOR; ///< KP_XOR
+
+constexpr Scancode SCANCODE_KP_POWER = SDL_SCANCODE_KP_POWER; ///< KP_POWER
+
+constexpr Scancode SCANCODE_KP_PERCENT =
+  SDL_SCANCODE_KP_PERCENT; ///< KP_PERCENT
+
+constexpr Scancode SCANCODE_KP_LESS = SDL_SCANCODE_KP_LESS; ///< KP_LESS
+
+constexpr Scancode SCANCODE_KP_GREATER =
+  SDL_SCANCODE_KP_GREATER; ///< KP_GREATER
+
+constexpr Scancode SCANCODE_KP_AMPERSAND =
+  SDL_SCANCODE_KP_AMPERSAND; ///< KP_AMPERSAND
+
+constexpr Scancode SCANCODE_KP_DBLAMPERSAND =
+  SDL_SCANCODE_KP_DBLAMPERSAND; ///< KP_DBLAMPERSAND
+
+constexpr Scancode SCANCODE_KP_VERTICALBAR =
+  SDL_SCANCODE_KP_VERTICALBAR; ///< KP_VERTICALBAR
+
+constexpr Scancode SCANCODE_KP_DBLVERTICALBAR =
+  SDL_SCANCODE_KP_DBLVERTICALBAR; ///< KP_DBLVERTICALBAR
+
+constexpr Scancode SCANCODE_KP_COLON = SDL_SCANCODE_KP_COLON; ///< KP_COLON
+
+constexpr Scancode SCANCODE_KP_HASH = SDL_SCANCODE_KP_HASH; ///< KP_HASH
+
+constexpr Scancode SCANCODE_KP_SPACE = SDL_SCANCODE_KP_SPACE; ///< KP_SPACE
+
+constexpr Scancode SCANCODE_KP_AT = SDL_SCANCODE_KP_AT; ///< KP_AT
+
+constexpr Scancode SCANCODE_KP_EXCLAM = SDL_SCANCODE_KP_EXCLAM; ///< KP_EXCLAM
+
+constexpr Scancode SCANCODE_KP_MEMSTORE =
+  SDL_SCANCODE_KP_MEMSTORE; ///< KP_MEMSTORE
+
+constexpr Scancode SCANCODE_KP_MEMRECALL =
+  SDL_SCANCODE_KP_MEMRECALL; ///< KP_MEMRECALL
+
+constexpr Scancode SCANCODE_KP_MEMCLEAR =
+  SDL_SCANCODE_KP_MEMCLEAR; ///< KP_MEMCLEAR
+
+constexpr Scancode SCANCODE_KP_MEMADD = SDL_SCANCODE_KP_MEMADD; ///< KP_MEMADD
+
+constexpr Scancode SCANCODE_KP_MEMSUBTRACT =
+  SDL_SCANCODE_KP_MEMSUBTRACT; ///< KP_MEMSUBTRACT
+
+constexpr Scancode SCANCODE_KP_MEMMULTIPLY =
+  SDL_SCANCODE_KP_MEMMULTIPLY; ///< KP_MEMMULTIPLY
+
+constexpr Scancode SCANCODE_KP_MEMDIVIDE =
+  SDL_SCANCODE_KP_MEMDIVIDE; ///< KP_MEMDIVIDE
+
+constexpr Scancode SCANCODE_KP_PLUSMINUS =
+  SDL_SCANCODE_KP_PLUSMINUS; ///< KP_PLUSMINUS
+
+constexpr Scancode SCANCODE_KP_CLEAR = SDL_SCANCODE_KP_CLEAR; ///< KP_CLEAR
+
+constexpr Scancode SCANCODE_KP_CLEARENTRY =
+  SDL_SCANCODE_KP_CLEARENTRY; ///< KP_CLEARENTRY
+
+constexpr Scancode SCANCODE_KP_BINARY = SDL_SCANCODE_KP_BINARY; ///< KP_BINARY
+
+constexpr Scancode SCANCODE_KP_OCTAL = SDL_SCANCODE_KP_OCTAL; ///< KP_OCTAL
+
+constexpr Scancode SCANCODE_KP_DECIMAL =
+  SDL_SCANCODE_KP_DECIMAL; ///< KP_DECIMAL
+
+constexpr Scancode SCANCODE_KP_HEXADECIMAL =
+  SDL_SCANCODE_KP_HEXADECIMAL; ///< KP_HEXADECIMAL
+
+constexpr Scancode SCANCODE_LCTRL = SDL_SCANCODE_LCTRL; ///< LCTRL
+
+constexpr Scancode SCANCODE_LSHIFT = SDL_SCANCODE_LSHIFT; ///< LSHIFT
+
+constexpr Scancode SCANCODE_LALT = SDL_SCANCODE_LALT; ///< alt, option
+
+/**
+ * windows, command (apple), meta
+ */
+constexpr Scancode SCANCODE_LGUI = SDL_SCANCODE_LGUI;
+
+constexpr Scancode SCANCODE_RCTRL = SDL_SCANCODE_RCTRL; ///< RCTRL
+
+constexpr Scancode SCANCODE_RSHIFT = SDL_SCANCODE_RSHIFT; ///< RSHIFT
+
+constexpr Scancode SCANCODE_RALT = SDL_SCANCODE_RALT; ///< alt gr, option
+
+/**
+ * windows, command (apple), meta
+ */
+constexpr Scancode SCANCODE_RGUI = SDL_SCANCODE_RGUI;
+
+/**
+ * I'm not sure if this is really not covered by any of the above, but since
+ * there's a special KMOD_MODE for it I'm adding it here.
+ */
+constexpr Scancode SCANCODE_MODE = SDL_SCANCODE_MODE;
+
+constexpr Scancode SCANCODE_SLEEP = SDL_SCANCODE_SLEEP; ///< Sleep.
+
+constexpr Scancode SCANCODE_WAKE = SDL_SCANCODE_WAKE; ///< Wake.
+
+/**
+ * Channel Increment.
+ */
+constexpr Scancode SCANCODE_CHANNEL_INCREMENT = SDL_SCANCODE_CHANNEL_INCREMENT;
+
+/**
+ * Channel Decrement.
+ */
+constexpr Scancode SCANCODE_CHANNEL_DECREMENT = SDL_SCANCODE_CHANNEL_DECREMENT;
+
+constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play.
+
+constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause.
+
+constexpr Scancode SCANCODE_MEDIA_RECORD =
+  SDL_SCANCODE_MEDIA_RECORD; ///< Record.
+
+/**
+ * Fast Forward.
+ */
+constexpr Scancode SCANCODE_MEDIA_FAST_FORWARD =
+  SDL_SCANCODE_MEDIA_FAST_FORWARD;
+
+constexpr Scancode SCANCODE_MEDIA_REWIND =
+  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
+
+/**
+ * Next Track.
+ */
+constexpr Scancode SCANCODE_MEDIA_NEXT_TRACK = SDL_SCANCODE_MEDIA_NEXT_TRACK;
+
+/**
+ * Previous Track.
+ */
+constexpr Scancode SCANCODE_MEDIA_PREVIOUS_TRACK =
+  SDL_SCANCODE_MEDIA_PREVIOUS_TRACK;
+
+constexpr Scancode SCANCODE_MEDIA_STOP = SDL_SCANCODE_MEDIA_STOP; ///< Stop.
+
+constexpr Scancode SCANCODE_MEDIA_EJECT = SDL_SCANCODE_MEDIA_EJECT; ///< Eject.
+
+/**
+ * Play / Pause.
+ */
+constexpr Scancode SCANCODE_MEDIA_PLAY_PAUSE = SDL_SCANCODE_MEDIA_PLAY_PAUSE;
+
+constexpr Scancode SCANCODE_MEDIA_SELECT =
+  SDL_SCANCODE_MEDIA_SELECT; ///< MEDIA_SELECT
+
+constexpr Scancode SCANCODE_AC_NEW = SDL_SCANCODE_AC_NEW; ///< AC New.
+
+constexpr Scancode SCANCODE_AC_OPEN = SDL_SCANCODE_AC_OPEN; ///< AC Open.
+
+constexpr Scancode SCANCODE_AC_CLOSE = SDL_SCANCODE_AC_CLOSE; ///< AC Close.
+
+constexpr Scancode SCANCODE_AC_EXIT = SDL_SCANCODE_AC_EXIT; ///< AC Exit.
+
+constexpr Scancode SCANCODE_AC_SAVE = SDL_SCANCODE_AC_SAVE; ///< AC Save.
+
+constexpr Scancode SCANCODE_AC_PRINT = SDL_SCANCODE_AC_PRINT; ///< AC Print.
+
+/**
+ * AC Properties.
+ */
+constexpr Scancode SCANCODE_AC_PROPERTIES = SDL_SCANCODE_AC_PROPERTIES;
+
+constexpr Scancode SCANCODE_AC_SEARCH = SDL_SCANCODE_AC_SEARCH; ///< AC Search.
+
+constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home.
+
+constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back.
+
+constexpr Scancode SCANCODE_AC_FORWARD =
+  SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
+
+constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop.
+
+constexpr Scancode SCANCODE_AC_REFRESH =
+  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
+
+/**
+ * AC Bookmarks.
+ */
+constexpr Scancode SCANCODE_AC_BOOKMARKS = SDL_SCANCODE_AC_BOOKMARKS;
+
+/**
+ * Usually situated below the display on phones and used as a multi-function
+ * feature key for selecting a software defined function shown on the bottom
+ * left of the display.
+ */
+constexpr Scancode SCANCODE_SOFTLEFT = SDL_SCANCODE_SOFTLEFT;
+
+/**
+ * Usually situated below the display on phones and used as a multi-function
+ * feature key for selecting a software defined function shown on the bottom
+ * right of the display.
+ */
+constexpr Scancode SCANCODE_SOFTRIGHT = SDL_SCANCODE_SOFTRIGHT;
+
+/**
+ * Used for accepting phone calls.
+ */
+constexpr Scancode SCANCODE_CALL = SDL_SCANCODE_CALL;
+
+/**
+ * Used for rejecting phone calls.
+ */
+constexpr Scancode SCANCODE_ENDCALL = SDL_SCANCODE_ENDCALL;
+
+/**
+ * 400-500 reserved for dynamic keycodes
+ */
+constexpr Scancode SCANCODE_RESERVED = SDL_SCANCODE_RESERVED;
+
+/**
+ * not a key, just marks the number of scancodes for array bounds
+ */
+constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
+
+/// @}
+
+/**
+ * @defgroup CategoryTime Date and Time
+ *
+ * SDL realtime clock and date/time routines.
+ *
+ * There are two data types that are used in this category: SDL_Time, which
+ * represents the nanoseconds since a specific moment (an "epoch"), and
+ * SDL_DateTime, which breaks time down into human-understandable components:
+ * years, months, days, hours, etc.
+ *
+ * Much of the functionality is involved in converting those two types to
+ * other useful forms.
+ * @{
+ */
+
+/**
+ * A structure holding a calendar date and time broken down into its
+ * components.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+struct DateTime : SDL_DateTime
+{
+  /**
+   * Wraps DateTime.
+   *
+   * @param dateTime the value to be wrapped
+   */
+  constexpr DateTime(const SDL_DateTime& dateTime = {})
+    : SDL_DateTime(dateTime)
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param year the value for year.
+   * @param month the value for month.
+   * @param day the value for day.
+   * @param hour the value for hour.
+   * @param minute the value for minute.
+   * @param second the value for second.
+   * @param nanosecond the value for nanosecond.
+   * @param day_of_week the value for day_of_week.
+   * @param utc_offset the value for utc_offset.
+   */
+  constexpr DateTime(int year,
+                     int month,
+                     int day,
+                     int hour,
+                     int minute,
+                     int second,
+                     int nanosecond,
+                     int day_of_week,
+                     int utc_offset)
+    : SDL_DateTime{year,
+                   month,
+                   day,
+                   hour,
+                   minute,
+                   second,
+                   nanosecond,
+                   day_of_week,
+                   utc_offset}
+  {
+  }
+
+  /**
+   * Converts an SDL_Time in nanoseconds since the epoch to a calendar time in
+   * the SDL_DateTime format.
+   *
+   * @param ticks the SDL_Time to be converted.
+   * @param localTime the resulting DateTime will be expressed in local time if
+   *        true, otherwise it will be in Universal Coordinated Time (UTC).
+   * @post true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  DateTime(Time ticks, bool localTime = true)
+    : SDL_DateTime(0)
+  {
+    SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
+  }
+
+  /**
+   * Default comparison operator
+   */
+  constexpr auto operator<=>(const DateTime& other) const = default;
+
+  /// Returns If valid
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const
+  {
+    return year != 0 || month != 0 || day != 0 || hour != 0 || minute != 0 ||
+           second != 0 || nanosecond != 0;
+  }
+
+  /**
+   * Get the year.
+   *
+   * @returns current year value.
+   */
+  constexpr int GetYear() const { return year; }
+
+  /**
+   * Set the year.
+   *
+   * @param newYear the new year value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetYear(int newYear)
+  {
+    year = newYear;
+    return *this;
+  }
+
+  /**
+   * Get the month.
+   *
+   * @returns current month value.
+   */
+  constexpr int GetMonth() const { return month; }
+
+  /**
+   * Set the month.
+   *
+   * @param newMonth the new month value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetMonth(int newMonth)
+  {
+    month = newMonth;
+    return *this;
+  }
+
+  /**
+   * Get the day.
+   *
+   * @returns current day value.
+   */
+  constexpr int GetDay() const { return day; }
+
+  /**
+   * Set the day.
+   *
+   * @param newDay the new day value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetDay(int newDay)
+  {
+    day = newDay;
+    return *this;
+  }
+
+  /**
+   * Get the hour.
+   *
+   * @returns current hour value.
+   */
+  constexpr int GetHour() const { return hour; }
+
+  /**
+   * Set the hour.
+   *
+   * @param newHour the new hour value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetHour(int newHour)
+  {
+    hour = newHour;
+    return *this;
+  }
+
+  /**
+   * Get the minute.
+   *
+   * @returns current minute value.
+   */
+  constexpr int GetMinute() const { return minute; }
+
+  /**
+   * Set the minute.
+   *
+   * @param newMinute the new minute value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetMinute(int newMinute)
+  {
+    minute = newMinute;
+    return *this;
+  }
+
+  /**
+   * Get the second.
+   *
+   * @returns current second value.
+   */
+  constexpr int GetSecond() const { return second; }
+
+  /**
+   * Set the second.
+   *
+   * @param newSecond the new second value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetSecond(int newSecond)
+  {
+    second = newSecond;
+    return *this;
+  }
+
+  /**
+   * Get the nanosecond.
+   *
+   * @returns current nanosecond value.
+   */
+  constexpr int GetNanosecond() const { return nanosecond; }
+
+  /**
+   * Set the nanosecond.
+   *
+   * @param newNanosecond the new nanosecond value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetNanosecond(int newNanosecond)
+  {
+    nanosecond = newNanosecond;
+    return *this;
+  }
+
+  /**
+   * Get the day_of_week.
+   *
+   * @returns current day_of_week value.
+   */
+  constexpr int GetDay_of_week() const { return day_of_week; }
+
+  /**
+   * Set the day_of_week.
+   *
+   * @param newDay_of_week the new day_of_week value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetDay_of_week(int newDay_of_week)
+  {
+    day_of_week = newDay_of_week;
+    return *this;
+  }
+
+  /**
+   * Get the utc_offset.
+   *
+   * @returns current utc_offset value.
+   */
+  constexpr int GetUtc_offset() const { return utc_offset; }
+
+  /**
+   * Set the utc_offset.
+   *
+   * @param newUtc_offset the new utc_offset value.
+   * @returns Reference to self.
+   */
+  constexpr DateTime& SetUtc_offset(int newUtc_offset)
+  {
+    utc_offset = newUtc_offset;
+    return *this;
+  }
+
+  /**
+   * Converts a calendar time to an SDL_Time in nanoseconds since the epoch.
+   *
+   * This function ignores the day_of_week member of the SDL_DateTime struct, so
+   * it may remain unset.
+   *
+   * @returns time on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  operator Time() const
+  {
+    if (SDL_Time t; SDL_DateTimeToTime(this, &t)) return Time::FromNS(t);
+    return {};
+  }
+};
+
+/**
+ * The preferred date format of the current system locale.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetDateTimeLocalePreferences
+ */
+using DateFormat = SDL_DateFormat;
+
+/**
+ * Year/Month/Day.
+ */
+constexpr DateFormat DATE_FORMAT_YYYYMMDD = SDL_DATE_FORMAT_YYYYMMDD;
+
+/**
+ * Day/Month/Year.
+ */
+constexpr DateFormat DATE_FORMAT_DDMMYYYY = SDL_DATE_FORMAT_DDMMYYYY;
+
+/**
+ * Month/Day/Year.
+ */
+constexpr DateFormat DATE_FORMAT_MMDDYYYY = SDL_DATE_FORMAT_MMDDYYYY;
+
+/**
+ * The preferred time format of the current system locale.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetDateTimeLocalePreferences
+ */
+using TimeFormat = SDL_TimeFormat;
+
+/**
+ * 24 hour time
+ */
+constexpr TimeFormat TIME_FORMAT_24HR = SDL_TIME_FORMAT_24HR;
+
+/**
+ * 12 hour time
+ */
+constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR;
+
+/**
+ * Gets the current preferred date and time format for the system locale.
+ *
+ * This might be a "slow" call that has to query the operating system. It's
+ * best to ask for this once and save the results. However, the preferred
+ * formats can change, usually because the user has changed a system
+ * preference outside of your program.
+ *
+ * @param dateFormat a pointer to the SDL_DateFormat to hold the returned date
+ *                   format, may be NULL.
+ * @param timeFormat a pointer to the SDL_TimeFormat to hold the returned time
+ *                   format, may be NULL.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool GetDateTimeLocalePreferences(DateFormat* dateFormat,
+                                         TimeFormat* timeFormat)
+{
+  return SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat);
+}
+
+/**
+ * Gets the current value of the system realtime clock in nanoseconds since
+ * Jan 1, 1970 in Universal Coordinated Time (UTC).
+ *
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Time Time::Current()
+{
+  if (SDL_Time t; SDL_GetCurrentTime(&t)) return Time::FromNS(t);
+  return Time{};
+}
+
+/**
+ * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
+ * since January 1, 1601).
+ *
+ * This function fills in the two 32-bit values of the FILETIME structure.
+ *
+ * @param dwLowDateTime a pointer filled in with the low portion of the
+ *                      Windows FILETIME value.
+ * @param dwHighDateTime a pointer filled in with the high portion of the
+ *                       Windows FILETIME value.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void Time::ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const
+{
+  SDL_TimeToWindows(ToNS(), dwLowDateTime, dwHighDateTime);
+}
+
+/**
+ * Converts a Windows FILETIME (100-nanosecond intervals since January 1,
+ * 1601) to an SDL time.
+ *
+ * This function takes the two 32-bit values of the FILETIME structure as
+ * parameters.
+ *
+ * @param dwLowDateTime the low portion of the Windows FILETIME value.
+ * @param dwHighDateTime the high portion of the Windows FILETIME value.
+ * @returns the converted SDL time.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
+{
+  return Time::FromNS(SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime));
+}
+
+/**
+ * Get the number of days in a month for a given year.
+ *
+ * @param year the year.
+ * @param month the month [1-12].
+ * @returns the number of days in the requested month or -1 on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int GetDaysInMonth(int year, int month)
+{
+  return SDL_GetDaysInMonth(year, month);
+}
+
+/**
+ * Get the day of year for a calendar date.
+ *
+ * @param year the year component of the date.
+ * @param month the month component of the date.
+ * @param day the day component of the date.
+ * @returns the day of year [0-365] if the date is valid or -1 on failure;
+ *          call SDL_GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int GetDayOfYear(int year, int month, int day)
+{
+  return SDL_GetDayOfYear(year, month, day);
+}
+
+/**
+ * Get the day of week for a calendar date.
+ *
+ * @param year the year component of the date.
+ * @param month the month component of the date.
+ * @param day the day component of the date.
+ * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or
+ *          -1 on failure; call SDL_GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int GetDayOfWeek(int year, int month, int day)
+{
+  return SDL_GetDayOfWeek(year, month, day);
+}
+
+/// @}
+
+/**
  * @defgroup CategoryTimer Timer Support
  *
  * SDL provides time management functionality. It is useful for dealing with
@@ -24820,6 +22555,1123 @@ inline int GetVersion() { return SDL_GetVersion(); }
 inline const char* GetRevision() { return SDL_GetRevision(); }
 
 /// @}
+
+/**
+ * @defgroup CategoryInit Initialization and Shutdown
+ *
+ * All SDL programs need to initialize the library before starting to work
+ * with it.
+ *
+ * Almost everything can simply call SDL_Init() near startup, with a handful
+ * of flags to specify subsystems to touch. These are here to make sure SDL
+ * does not even attempt to touch low-level pieces of the operating system
+ * that you don't intend to use. For example, you might be using SDL for video
+ * and input but chose an external library for audio, and in this case you
+ * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
+ * external library has complete control.
+ *
+ * Most apps, when terminating, should call SDL_Quit(). This will clean up
+ * (nearly) everything that SDL might have allocated, and crucially, it'll
+ * make sure that the display's resolution is back to what the user expects if
+ * you had previously changed it for your game.
+ *
+ * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
+ * to fill in details about the program. This is completely optional, but it
+ * helps in small ways (we can provide an About dialog box for the macOS menu,
+ * we can name the app in the system's audio mixer, etc). Those that want to
+ * provide a _lot_ of information should look at the more-detailed
+ * SDL_SetAppMetadataProperty().
+ *
+ * @{
+ */
+
+/**
+ * @defgroup InitFlags Initialization flags
+ *
+ * @{
+ */
+
+/**
+ * Initialization flags for SDL
+ *
+ * These are the flags which may be passed to InitSubSystem(). You should
+ * specify the subsystems which you will be using in your application.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa InitSubSystem
+ * @sa InitFlagsExtra
+ * @sa Quit
+ * @sa QuitSubSystem
+ * @sa WasInit
+ */
+using InitFlags = Uint32;
+
+/**
+ * Initialization flags for SDL satellite libraries
+ *
+ * Each satellite lib that needs initialization should extend this class and
+ * provide an overload of InitSubSystem(), WasInit() and QuitSubSystem() with
+ * a single parameter accepting this extended type.
+ *
+ * @sa InitFlags
+ * @sa Init
+ * @sa InitSubSystem
+ */
+struct InitFlagsExtra
+{};
+
+constexpr InitFlags INIT_AUDIO =
+  SDL_INIT_AUDIO; ///< `INIT_AUDIO` implies `INIT_EVENTS`
+
+/**
+ * `INIT_VIDEO` implies `INIT_EVENTS`, should be initialized on the main thread
+ */
+constexpr InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
+
+/**
+ * `INIT_JOYSTICK` implies `INIT_EVENTS`, should be initialized on the same
+ * thread as INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD
+ */
+constexpr InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
+
+constexpr InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC; ///< HAPTIC
+
+constexpr InitFlags INIT_GAMEPAD =
+  SDL_INIT_GAMEPAD; ///< `INIT_GAMEPAD` implies `INIT_JOYSTICK`
+
+constexpr InitFlags INIT_EVENTS = SDL_INIT_EVENTS; ///< EVENTS
+
+constexpr InitFlags INIT_SENSOR =
+  SDL_INIT_SENSOR; ///< `INIT_SENSOR` implies `INIT_EVENTS`
+
+constexpr InitFlags INIT_CAMERA =
+  SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
+
+/// @}
+
+/**
+ * @name AppResult
+ * App result for Main callback
+ * @{
+ */
+
+/**
+ * Return values for optional main callbacks.
+ *
+ * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
+ * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
+ * success/failure to the operating system. What that means is
+ * platform-dependent. On Unix, for example, on success, the process error
+ * code will be zero, and on failure it will be 1. This interface doesn't
+ * allow you to return specific exit codes, just whether there was an error
+ * generally or not.
+ *
+ * Returning SDL_APP_CONTINUE from these functions will let the app continue
+ * to run.
+ *
+ * See
+ * [Main callbacks in
+ * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
+ * for complete details.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using AppResult = SDL_AppResult;
+
+/**
+ * Value that requests that the app continue from the main callbacks.
+ */
+constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
+
+/**
+ * Value that requests termination with success from the main callbacks.
+ */
+constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
+
+/**
+ * Value that requests termination with error from the main callbacks.
+ */
+constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+
+/// @}
+
+/**
+ * @name Callbacks for EnterAppMainCallbacks()
+ *
+ * @{
+ */
+
+/**
+ * Function pointer typedef for SDL_AppInit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppInit directly.
+ *
+ * @param appstate a place where the app can optionally store a pointer for
+ *                 future use.
+ * @param argc the standard ANSI C main's argc; number of elements in `argv`.
+ * @param argv the standard ANSI C main's argv; array of command line
+ *             arguments.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppInit_func = SDL_AppInit_func;
+
+/**
+ * Function pointer typedef for SDL_AppIterate.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppIterate directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppIterate_func = SDL_AppIterate_func;
+
+/**
+ * Function pointer typedef for SDL_AppEvent.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param event the new event for the app to examine.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppEvent_func = SDL_AppEvent_func;
+
+/**
+ * Function pointer typedef for SDL_AppQuit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param result the result code that terminated the app (success or failure).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppQuit_func = SDL_AppQuit_func;
+
+/// @}
+
+/**
+ * Initialize the SDL library.
+ *
+ * The class Init is probably what you are looking for, as it automatically
+ * handles de-initialization.
+ *
+ * The file I/O (for example: IOStreamBase.IOStreamBase) and threading
+ * (ThreadBase.ThreadBase) subsystems are initialized by default. Message boxes
+ * (ShowSimpleMessageBox) also attempt to work without initializing the
+ * video subsystem, in hopes of being useful in showing an error dialog when
+ * Init fails. You must specifically initialize other subsystems if you
+ * use them in your application.
+ *
+ * Logging (such as Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ *   events subsystem
+ * - `INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ *   joystick subsystem
+ * - `INIT_EVENTS`: events subsystem
+ * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
+ *   events subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem()
+ * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call Quit() to force shutdown). If a subsystem is already loaded then
+ * this call will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before
+ * calling InitSubSystem, using either SetAppMetadata() or
+ * SetAppMetadataProperty().
+ *
+ * @param flags subsystem initialization flags.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ * @sa InitSubSystem()
+ * @sa Quit()
+ * @sa SetMainReady()
+ * @sa WasInit()
+ */
+inline void InitSubSystem(InitFlags flags) { CheckError(SDL_Init(flags)); }
+
+/**
+ * Initialize the SDL library.
+ *
+ * The class Init is probably what you are looking for, as it automatically
+ * handles de-initialization.
+ *
+ * The file I/O (for example: IOStream) and threading (CreateThread)
+ * subsystems are initialized by default. Message boxes
+ * (ShowSimpleMessageBox) also attempt to work without initializing the
+ * video subsystem, in hopes of being useful in showing an error dialog when
+ * Init fails. You must specifically initialize other subsystems if you
+ * use them in your application.
+ *
+ * Logging (such as Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ *   events subsystem
+ * - `INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ *   joystick subsystem
+ * - `INIT_EVENTS`: events subsystem
+ * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
+ *   events subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem()
+ * for each InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call Quit() to force shutdown). If a subsystem is already loaded then
+ * this call will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before
+ * calling Init, using either SetAppMetadata() or
+ * SetAppMetadataProperty().
+ *
+ * @tparam FLAG0
+ * @tparam FLAG1
+ * @tparam FLAGS
+ * @param flag0 subsystem initialization flags.
+ * @param flag1 subsystem initialization flags.
+ * @param flags subsystem initialization flags.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ * @sa InitSubSystem()
+ * @sa Quit()
+ * @sa SetMainReady()
+ * @sa WasInit()
+ */
+template<class FLAG0, class FLAG1, class... FLAGS>
+inline void InitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
+{
+  InitSubSystem(flag0);
+  InitSubSystem(flag1, flags...);
+}
+
+/**
+ * Initialize the SDL library.
+ *
+ * The class Init is probably what you are looking for, as it automatically
+ * handles de-initialization.
+ *
+ * The file I/O (for example: IOStream) and threading (CreateThread)
+ * subsystems are initialized by default. Message boxes
+ * (ShowSimpleMessageBox) also attempt to work without initializing the
+ * video subsystem, in hopes of being useful in showing an error dialog when
+ * Init fails. You must specifically initialize other subsystems if you
+ * use them in your application.
+ *
+ * Logging (such as Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ *   events subsystem
+ * - `INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ *   joystick subsystem
+ * - `INIT_EVENTS`: events subsystem
+ * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
+ *   events subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem()
+ * for each InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call Quit() to force shutdown). If a subsystem is already loaded then
+ * this call will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before
+ * calling Init, using either SetAppMetadata() or
+ * SetAppMetadataProperty().
+ *
+ * @tparam FLAG
+ * @tparam FLAGS
+ * @param flag0 subsystem initialization flags.
+ * @param flag1 subsystem initialization flags.
+ * @param flags subsystem initialization flags.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ * @sa InitSubSystem()
+ * @sa Quit()
+ * @sa SetMainReady()
+ * @sa WasInit()
+ */
+template<class FLAG, class... FLAGS>
+inline void InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
+{
+  return InitSubSystem(flag0 | flag1, flags...);
+}
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
+ *
+ * @param flags any of the flags used by Init(); see InitFlags for details.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa InitSubSystem()
+ * @sa Quit()
+ */
+inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
+ *
+ * @tparam FLAG0
+ * @tparam FLAG1
+ * @tparam FLAGS
+ * @param flag0 any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ * @param flag1 any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ * @param flags any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ */
+template<class FLAG0, class FLAG1, class... FLAGS>
+inline void QuitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
+{
+  if (!QuitSubSystem(flag0)) return;
+  QuitSubSystem(flag1, flags...);
+}
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
+ *
+ * @tparam FLAG
+ * @tparam FLAGS
+ * @param flag0 any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ * @param flag1 any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ * @param flags any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ */
+template<class FLAG, class... FLAGS>
+inline void QuitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
+{
+  QuitSubSystem(flag0 | flag1, flags...);
+}
+
+/**
+ * Check if all of the specified subsystems which are currently initialized.
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @returns true if all subsystems are currently initialized
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa InitSubSystem()
+ */
+inline bool WasInit(InitFlags flags) { return SDL_WasInit(flags) == flags; }
+
+/**
+ * Check if all of the specified subsystems which are currently initialized.
+ *
+ * @tparam FLAG0
+ * @tparam FLAG1
+ * @tparam FLAGS
+ * @param flag0 flag to check
+ * @param flag1 flag to check
+ * @param flags flag to check
+ * @returns true if all subsystems are currently initialized
+ */
+template<class FLAG0, class FLAG1, class... FLAGS>
+inline bool WasInit(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
+{
+  if (WasInit(flag0)) return WasInit(flag1, flags...);
+  return false;
+}
+
+/**
+ * Check if all of the specified subsystems which are currently initialized.
+ *
+ * @tparam FLAG
+ * @tparam FLAGS
+ * @param flag0 flag to check
+ * @param flag1 flag to check
+ * @param flags flag to check
+ * @returns true if all subsystems are currently initialized
+ */
+template<class FLAG, class... FLAGS>
+inline bool WasInit(FLAG flag0, FLAG flag1, FLAGS... flags)
+{
+  return WasInit(flag0 | flag1, flags...);
+}
+
+/**
+ * Clean up all initialized subsystems.
+ *
+ * You should call this function even if you have already shutdown each
+ * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
+ * function even in the case of errors in initialization.
+ *
+ * You can use this function with atexit() to ensure that it is run when your
+ * application is shutdown, but it is not wise to do this from a library or
+ * other dynamically loaded code.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa QuitSubSystem()
+ */
+inline void Quit() { return SDL_Quit(); }
+
+/**
+ * Initialize the SDL library.
+ *
+ * Also init any subsystem passed as InitFlags
+ *
+ * This might be called multiple times, it keeps a ref count and calls SDL_Quit
+ * only on the last one.
+ *
+ * The SubSystems are out of the refCount, as SDL itself already keep track
+ * internally.
+ */
+class SDL
+{
+  bool m_active = false;
+
+  bool updateActive(bool active);
+
+public:
+  /**
+   * Init given subsystems
+   *
+   * @param flags subsystem initialization flags.
+   * @post convertible to true on success or to false on failure; call
+   * GetError() for more information.
+   *
+   * This class must have only a single initialized instance at any given time,
+   * as it will call Quit() when goes out of scope.
+   */
+  template<class... FLAGS>
+  SDL(FLAGS... flags)
+  {
+    if (updateActive(true)) {
+      try {
+        InitSubSystem(flags...);
+      } catch (...) {
+        updateActive(false);
+        throw;
+      }
+    }
+  }
+
+  /**
+   * Default ctor
+   *
+   * Useful if you plan to create it afterwards
+   */
+  constexpr SDL() = default;
+
+  // Copy ctor
+  SDL(const SDL& other) = delete;
+
+  /// Move ctor
+  constexpr SDL(SDL&& other)
+    : m_active(other.m_active)
+  {
+    other.m_active = false;
+  }
+
+  // Dtor
+  ~SDL() { reset(); }
+
+  /// Assignment operator
+  SDL& operator=(SDL rhs)
+  {
+    std::swap(m_active, rhs.m_active);
+    return *this;
+  }
+
+  /**
+   * @brief release locking such as reset() does, but never calls SDL_Quit() or
+   * SDL_QuitSubSystem()
+   * @return false if there are still other locks, true if this was last one
+   *
+   * When this returns true it is safe to call Quit() directly
+   */
+  bool release()
+  {
+    bool wasActive = m_active;
+    if (wasActive) { updateActive(false); }
+    return wasActive;
+  }
+
+  /**
+   * @brief reset the value of this instance, acts like it was destroyed and
+   * then newly instantiated with empty ctor
+   * @return true if Quit() was called.
+   */
+  bool reset()
+  {
+    if (release()) Quit();
+    return false;
+  }
+
+  /// @brief returns true if active and has no errors
+  operator bool() const { return m_active; }
+};
+
+/**
+ * Return whether this is the main thread.
+ *
+ * On Apple platforms, the main thread is the thread that runs your program's
+ * main() entry point. On other platforms, the main thread is the one that
+ * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
+ * your program's main() entry point. If you are using the main callbacks,
+ * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
+ * main thread.
+ *
+ * @returns true if this thread is the main thread, or false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread()
+ */
+inline bool IsMainThread() { return SDL_IsMainThread(); }
+
+/**
+ * @name Callbacks for RunOnMainThread()
+ * @{
+ */
+
+/**
+ * Callback run on the main thread.
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread()
+ */
+using MainThreadCallback = SDL_MainThreadCallback;
+
+/**
+ * @sa PropertiesRef.MainThreadCallback
+ * @sa result-callback
+ *
+ * @cat result-callback
+ *
+ */
+using MainThreadCB = std::function<void()>;
+
+/// @}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution
+ * on the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param userdata a pointer that is passed to `callback`.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread
+ */
+inline void RunOnMainThread(MainThreadCallback callback,
+                            void* userdata,
+                            bool wait_complete)
+{
+  CheckError(SDL_RunOnMainThread(callback, userdata, wait_complete));
+}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution
+ * on the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread()
+ * @sa result-callback
+ *
+ * @cat result-callback
+ */
+inline void RunOnMainThread(MainThreadCB callback, bool wait_complete)
+{
+  using Wrapper = CallbackWrapper<MainThreadCB>;
+  void* wrapped = Wrapper::Wrap(std::move(callback));
+  try {
+    RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
+  } catch (...) {
+    Wrapper::release(wrapped);
+    throw;
+  }
+}
+
+/**
+ * Specify basic metadata about your app.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left as nullptr, if a specific
+ * detail doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before InitSubSystem.
+ * Multiple calls to this function are allowed, but various state might not
+ * change once it has been set up with a previous call to this function.
+ *
+ * Passing a nullptr removes any previous metadata.
+ *
+ * This is a simplified interface for the most important information. You can
+ * supply significantly more detailed metadata with
+ * SetAppMetadataProperty().
+ *
+ * @param appname The name of the application ("My Game 2: Bad Guy's
+ *                Revenge!").
+ * @param appversion The version of the application ("1.0.0beta5" or a git
+ *                   hash, or whatever makes sense).
+ * @param appidentifier A unique string in reverse-domain format that
+ *                      identifies this app ("com.example.mygame2").
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadataProperty
+ */
+inline void SetAppMetadata(StringParam appname,
+                           StringParam appversion,
+                           StringParam appidentifier)
+{
+  CheckError(SDL_SetAppMetadata(appname, appversion, appidentifier));
+}
+
+/**
+ * Specify metadata about your app through a set of properties.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left out, if a specific detail
+ * doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before InitSubSystem.
+ * Multiple calls to this function are allowed, but various state might not
+ * change once it has been set up with a previous call to this function.
+ *
+ * Once set, this metadata can be read using GetAppMetadataProperty().
+ *
+ * These are the supported properties:
+ *
+ * - `prop::appMetaData.NAME_STRING`: The human-readable name of the
+ *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
+ *   anywhere the OS shows the name of the application separately from window
+ *   titles, such as volume control applets, etc. This defaults to "SDL
+ *   Application".
+ * - `prop::appMetaData.VERSION_STRING`: The version of the app that is
+ *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
+ *   2024" and a git hash are all valid options. This has no default.
+ * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that
+ *   identifies this app. This must be in reverse-domain format, like
+ *   "com.example.mygame2". This string is used by desktop compositors to
+ *   identify and group windows together, as well as match applications with
+ *   associated desktop settings and icons. If you plan to package your
+ *   application in a container such as Flatpak, the app ID should match the
+ *   name of your Flatpak container as well. This has no default.
+ * - `prop::appMetaData.CREATOR_STRING`: The human-readable name of the
+ *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
+ * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright
+ *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
+ *   to one line, don't paste a copy of a whole software license in here. This
+ *   has no default.
+ * - `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a
+ *   product page, or a storefront, or even a GitHub repository, for user's
+ *   further information This has no default.
+ * - `prop::appMetaData.TYPE_STRING`: The type of application this is.
+ *   Currently this string can be "game" for a video game, "mediaplayer" for a
+ *   media player, or generically "application" if nothing else applies.
+ *   Future versions of SDL might add new types. This defaults to
+ *   "application".
+ *
+ * @param name the name of the metadata property to set.
+ * @param value the value of the property, or nullptr to remove that property.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAppMetadataProperty
+ * @sa SetAppMetadata
+ */
+inline void SetAppMetadataProperty(StringParam name, StringParam value)
+{
+  CheckError(SDL_SetAppMetadataProperty(name, value));
+}
+
+namespace prop::appMetaData {
+
+constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
+
+constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
+
+constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
+
+constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
+
+constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
+
+constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
+
+constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
+
+} // namespace prop::appMetaData
+
+/**
+ * Get metadata about your app.
+ *
+ * This returns metadata previously set using SDL_SetAppMetadata() or
+ * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
+ * of available properties and their meanings.
+ *
+ * @param name the name of the metadata property to get.
+ * @returns the current value of the metadata property, or the default if it
+ *          is not set, NULL for properties with no default.
+ *
+ * @threadsafety It is safe to call this function from any thread, although
+ *               the string returned is not protected and could potentially be
+ *               freed if you call SDL_SetAppMetadataProperty() to set that
+ *               property from another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetAppMetadata
+ * @sa SDL_SetAppMetadataProperty
+ */
+inline const char* GetAppMetadataProperty(StringParam name)
+{
+  return SDL_GetAppMetadataProperty(name);
+}
+
+#pragma region impl
+
+#ifndef SDL3PP_APPCLASS_LOG_PRIORITY
+/**
+ * The default log priority for app class.
+ */
+#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
+#endif // SDL3PP_APPCLASS_LOG_PRIORITY
+
+/**
+ * Represents application parameters
+ */
+using AppArgs = std::span<char const* const>;
+
+/**
+ * @{
+ *
+ * Allocate and initialize state with new.
+ *
+ * If possible, pass the args to constructor, otherwise expects a default ctor;
+ *
+ * @tparam T the state class
+ * @param state the state to initialize
+ * @param args the program arguments
+ * @return the app status
+ */
+template<class T>
+inline AppResult DefaultCreateClass(T** state, AppArgs args)
+{
+  static_assert(std::is_default_constructible_v<T>);
+  *state = new T{};
+  return APP_CONTINUE;
+}
+
+template<class T>
+  requires std::convertible_to<AppArgs, T>
+inline AppResult DefaultCreateClass(T** state, AppArgs args)
+{
+  *state = new T{args};
+  return APP_CONTINUE;
+}
+/// @}
+
+/// @private
+template<class T>
+concept HasInitFunction = requires(T** state) {
+  { T::Init(state, AppArgs{}) } -> std::convertible_to<AppResult>;
+};
+
+/**
+ * @{
+ *
+ * Init state with arguments.
+ *
+ * This will call T::Init() if available, otherwise it delegates to
+ * DefaultCreateClass().
+ *
+ * @tparam T the state class
+ * @param state the state to initialize
+ * @param args the program arguments
+ * @return the app status
+ */
+template<class T>
+inline AppResult InitClass(T** state, AppArgs args)
+{
+  try {
+    return DefaultCreateClass(state, args);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+template<HasInitFunction T>
+inline AppResult InitClass(T** state, AppArgs args)
+{
+  *state = nullptr;
+  try {
+    AppResult result = T::Init(state, args);
+    if (*state == nullptr && result != APP_FAILURE) return APP_SUCCESS;
+    return result;
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+/// @}
+
+/// @private
+template<class T>
+concept HasIterateFunction = requires(T* state) { state->Iterate(); };
+
+/**
+ * Iterate the state
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @return the app status
+ */
+template<HasIterateFunction T>
+inline AppResult IterateClass(T* state)
+{
+  try {
+    return state->Iterate();
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+/// @private
+template<class T>
+concept HasEventFunction =
+  requires(T* state, const SDL_Event& event) { state->Event(event); };
+
+/**
+ * Default handle by finishing if QUIT is requested
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @param event the event
+ * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
+ */
+template<class T>
+inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
+{
+  if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
+  return APP_CONTINUE;
+}
+
+/**
+ * @{
+ * Iterate the state
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @param event the event to handle
+ * @return the app status
+ */
+template<class T>
+inline AppResult EventClass(T* state, const SDL_Event& event)
+{
+  try {
+    return DefaultEventClass(state, event);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+template<HasEventFunction T>
+inline AppResult EventClass(T* state, const SDL_Event& event)
+{
+  try {
+    return state->Event(event);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+/// @}
+
+/**
+ * Destroy state with delete;
+ *
+ * @tparam T
+ * @param state
+ */
+template<class T>
+inline void DefaultClassDestroy(T* state)
+{
+  delete state;
+}
+
+/// @private
+template<class T>
+concept HasQuitFunction =
+  requires(T* state, AppResult result) { T::Quit(state, result); };
+
+/**
+ * @{
+ * Destroy state with given result
+ *
+ * This is responsible to destroy and deallocate the state. It tries to call
+ * T::Quit() if available and delegates to it the duty of deleting. Otherwise it
+ * calls delete directly.
+ *
+ * @tparam T the state class.
+ * @param state the state to destroy.
+ * @param result the app result.
+ */
+template<class T>
+inline void QuitClass(T* state, AppResult result)
+{
+  DefaultClassDestroy(state);
+}
+
+template<HasQuitFunction T>
+inline void QuitClass(T* state, AppResult result)
+{
+  T::Quit(state, result);
+}
+/// @}
+
+/// @}
+
+inline bool SDL::updateActive(bool active)
+{
+  static std::atomic_bool currentlyInitd{false};
+  bool result = !currentlyInitd.exchange(active);
+  if (active && !result) {
+    SetErrorUnformatted(
+      "Can not initialize, there is already an active instance");
+  } else
+    m_active = active;
+  return result;
+}
+
+#pragma endregion
 
 /**
  * @defgroup CategoryIOStream I/O Streams
@@ -26390,6 +25242,1157 @@ inline bool SaveFile(StringParam file, std::string_view str)
 /// @}
 
 #pragma endregion impl
+
+/**
+ *
+ * @defgroup CategoryKeycode Keyboard Keycodes
+ *
+ * Defines constants which identify keyboard keys and modifiers.
+ *
+ * Please refer to the Best Keyboard Practices document for details on what
+ * this information means and how best to use it.
+ *
+ * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
+ *
+ * @{
+ */
+
+/**
+ * Valid key modifiers (possibly OR'd together).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using Keymod = Uint16;
+
+/**
+ * no modifier is applicable.
+ */
+constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
+
+/**
+ * the left Shift key is down.
+ */
+constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
+
+/**
+ * the right Shift key is down.
+ */
+constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
+
+/**
+ * the Level 5 Shift key is down.
+ */
+constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
+
+/**
+ * the left Ctrl (Control) key is down.
+ */
+constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
+
+/**
+ * the right Ctrl (Control) key is down.
+ */
+constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
+
+/**
+ * the left Alt key is down.
+ */
+constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
+
+/**
+ * the right Alt key is down.
+ */
+constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
+
+/**
+ * the left GUI key (often the Windows key) is down.
+ */
+constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
+
+/**
+ * the right GUI key (often the Windows key) is down.
+ */
+constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
+
+/**
+ * the Num Lock key (may be located on an extended keypad) is down.
+ */
+constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
+
+/**
+ * the Caps Lock key is down.
+ */
+constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
+
+/**
+ * the !AltGr key is down.
+ */
+constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
+
+/**
+ * the Scroll Lock key is down.
+ */
+constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
+
+/**
+ * Any Ctrl key is down.
+ */
+constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
+
+/**
+ * Any Shift key is down.
+ */
+constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
+
+/**
+ * Any Alt key is down.
+ */
+constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
+
+/**
+ * Any GUI key is down.
+ */
+constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
+
+/**
+ * The SDL virtual key representation.
+ *
+ * Values of this type are used to represent keyboard keys using the current
+ * layout of the keyboard. These values include Unicode values representing
+ * the unmodified character that would be generated by pressing the key, or an
+ * `SDLK_*` constant for those keys that do not generate characters.
+ *
+ * A special exception is the number keys at the top of the keyboard which map
+ * to SDLK_0...SDLK_9 on AZERTY layouts.
+ *
+ * Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
+ * unicode code point.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+class Keycode
+{
+  SDL_Keycode m_keycode;
+
+public:
+  /**
+   * Wraps Keycode.
+   *
+   * @param keycode the value to be wrapped
+   */
+  constexpr Keycode(SDL_Keycode keycode = {})
+    : m_keycode(keycode)
+  {
+  }
+
+  /**
+   * Default comparison operator
+   */
+  constexpr auto operator<=>(const Keycode& other) const = default;
+
+  // Convert from scancode
+  explicit Keycode(Scancode scancode,
+                   Keymod modstate = 0,
+                   bool key_event = false);
+
+  // Create from key name
+  explicit Keycode(StringParam name);
+
+  /**
+   * Unwraps to the underlying Keycode.
+   *
+   * @returns the underlying Keycode.
+   */
+  constexpr operator SDL_Keycode() const { return m_keycode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
+
+  /// Has Extended flag.
+  constexpr bool IsExtended() const { return m_keycode & SDLK_EXTENDED_MASK; }
+
+  /// Has Scancode flag.
+  constexpr bool IsScancode() const { return m_keycode & SDLK_SCANCODE_MASK; }
+
+  Scancode GetScancode(Keymod* modstate) const;
+
+  // Get name.
+  const char* GetName() const;
+};
+
+constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
+
+constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
+
+/**
+ * Transform scancode to keycode
+ *
+ * @param x scancode
+ * @return keycode
+ */
+constexpr Keycode ScancodeToKeycode(Scancode x)
+{
+  return SDL_SCANCODE_TO_KEYCODE(x);
+}
+
+constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
+
+constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
+
+constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
+
+constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
+
+constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
+
+constexpr Keycode KEYCODE_SPACE = SDLK_SPACE; ///< ' '
+
+constexpr Keycode KEYCODE_EXCLAIM = SDLK_EXCLAIM; ///< '!'
+
+constexpr Keycode KEYCODE_DBLAPOSTROPHE = SDLK_DBLAPOSTROPHE; ///< '"'
+
+constexpr Keycode KEYCODE_HASH = SDLK_HASH; ///< '#'
+
+constexpr Keycode KEYCODE_DOLLAR = SDLK_DOLLAR; ///< '$'
+
+constexpr Keycode KEYCODE_PERCENT = SDLK_PERCENT; ///< '%'
+
+constexpr Keycode KEYCODE_AMPERSAND = SDLK_AMPERSAND; ///< '&'
+
+constexpr Keycode KEYCODE_APOSTROPHE = SDLK_APOSTROPHE; ///< '\''
+
+constexpr Keycode KEYCODE_LEFTPAREN = SDLK_LEFTPAREN; ///< '('
+
+constexpr Keycode KEYCODE_RIGHTPAREN = SDLK_RIGHTPAREN; ///< ')'
+
+constexpr Keycode KEYCODE_ASTERISK = SDLK_ASTERISK; ///< '*'
+
+constexpr Keycode KEYCODE_PLUS = SDLK_PLUS; ///< '+'
+
+constexpr Keycode KEYCODE_COMMA = SDLK_COMMA; ///< ','
+
+constexpr Keycode KEYCODE_MINUS = SDLK_MINUS; ///< '-'
+
+constexpr Keycode KEYCODE_PERIOD = SDLK_PERIOD; ///< '.'
+
+constexpr Keycode KEYCODE_SLASH = SDLK_SLASH; ///< '/'
+
+constexpr Keycode KEYCODE_0 = SDLK_0; ///< '0'
+
+constexpr Keycode KEYCODE_1 = SDLK_1; ///< '1'
+
+constexpr Keycode KEYCODE_2 = SDLK_2; ///< '2'
+
+constexpr Keycode KEYCODE_3 = SDLK_3; ///< '3'
+
+constexpr Keycode KEYCODE_4 = SDLK_4; ///< '4'
+
+constexpr Keycode KEYCODE_5 = SDLK_5; ///< '5'
+
+constexpr Keycode KEYCODE_6 = SDLK_6; ///< '6'
+
+constexpr Keycode KEYCODE_7 = SDLK_7; ///< '7'
+
+constexpr Keycode KEYCODE_8 = SDLK_8; ///< '8'
+
+constexpr Keycode KEYCODE_9 = SDLK_9; ///< '9'
+
+constexpr Keycode KEYCODE_COLON = SDLK_COLON; ///< ':'
+
+constexpr Keycode KEYCODE_SEMICOLON = SDLK_SEMICOLON; ///< ';'
+
+constexpr Keycode KEYCODE_LESS = SDLK_LESS; ///< '<'
+
+constexpr Keycode KEYCODE_EQUALS = SDLK_EQUALS; ///< '='
+
+constexpr Keycode KEYCODE_GREATER = SDLK_GREATER; ///< '>'
+
+constexpr Keycode KEYCODE_QUESTION = SDLK_QUESTION; ///< '?'
+
+constexpr Keycode KEYCODE_AT = SDLK_AT; ///< '@'
+
+constexpr Keycode KEYCODE_LEFTBRACKET = SDLK_LEFTBRACKET; ///< '['
+
+constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
+
+constexpr Keycode KEYCODE_RIGHTBRACKET = SDLK_RIGHTBRACKET; ///< ']'
+
+constexpr Keycode KEYCODE_CARET = SDLK_CARET; ///< '^'
+
+constexpr Keycode KEYCODE_UNDERSCORE = SDLK_UNDERSCORE; ///< '_'
+
+constexpr Keycode KEYCODE_GRAVE = SDLK_GRAVE; ///< '`'
+
+constexpr Keycode KEYCODE_A = SDLK_A; ///< 'a'
+
+constexpr Keycode KEYCODE_B = SDLK_B; ///< 'b'
+
+constexpr Keycode KEYCODE_C = SDLK_C; ///< 'c'
+
+constexpr Keycode KEYCODE_D = SDLK_D; ///< 'd'
+
+constexpr Keycode KEYCODE_E = SDLK_E; ///< 'e'
+
+constexpr Keycode KEYCODE_F = SDLK_F; ///< 'f'
+
+constexpr Keycode KEYCODE_G = SDLK_G; ///< 'g'
+
+constexpr Keycode KEYCODE_H = SDLK_H; ///< 'h'
+
+constexpr Keycode KEYCODE_I = SDLK_I; ///< 'i'
+
+constexpr Keycode KEYCODE_J = SDLK_J; ///< 'j'
+
+constexpr Keycode KEYCODE_K = SDLK_K; ///< 'k'
+
+constexpr Keycode KEYCODE_L = SDLK_L; ///< 'l'
+
+constexpr Keycode KEYCODE_M = SDLK_M; ///< 'm'
+
+constexpr Keycode KEYCODE_N = SDLK_N; ///< 'n'
+
+constexpr Keycode KEYCODE_O = SDLK_O; ///< 'o'
+
+constexpr Keycode KEYCODE_P = SDLK_P; ///< 'p'
+
+constexpr Keycode KEYCODE_Q = SDLK_Q; ///< 'q'
+
+constexpr Keycode KEYCODE_R = SDLK_R; ///< 'r'
+
+constexpr Keycode KEYCODE_S = SDLK_S; ///< 's'
+
+constexpr Keycode KEYCODE_T = SDLK_T; ///< 't'
+
+constexpr Keycode KEYCODE_U = SDLK_U; ///< 'u'
+
+constexpr Keycode KEYCODE_V = SDLK_V; ///< 'v'
+
+constexpr Keycode KEYCODE_W = SDLK_W; ///< 'w'
+
+constexpr Keycode KEYCODE_X = SDLK_X; ///< 'x'
+
+constexpr Keycode KEYCODE_Y = SDLK_Y; ///< 'y'
+
+constexpr Keycode KEYCODE_Z = SDLK_Z; ///< 'z'
+
+constexpr Keycode KEYCODE_LEFTBRACE = SDLK_LEFTBRACE; ///< '{'
+
+constexpr Keycode KEYCODE_PIPE = SDLK_PIPE; ///< '|'
+
+constexpr Keycode KEYCODE_RIGHTBRACE = SDLK_RIGHTBRACE; ///< '}'
+
+constexpr Keycode KEYCODE_TILDE = SDLK_TILDE; ///< '~'
+
+constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
+
+constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CAPSLOCK)
+ */
+constexpr Keycode KEYCODE_CAPSLOCK = SDLK_CAPSLOCK;
+
+constexpr Keycode KEYCODE_F1 = SDLK_F1; ///< ScancodeToKeycode(SCANCODE_F1)
+
+constexpr Keycode KEYCODE_F2 = SDLK_F2; ///< ScancodeToKeycode(SCANCODE_F2)
+
+constexpr Keycode KEYCODE_F3 = SDLK_F3; ///< ScancodeToKeycode(SCANCODE_F3)
+
+constexpr Keycode KEYCODE_F4 = SDLK_F4; ///< ScancodeToKeycode(SCANCODE_F4)
+
+constexpr Keycode KEYCODE_F5 = SDLK_F5; ///< ScancodeToKeycode(SCANCODE_F5)
+
+constexpr Keycode KEYCODE_F6 = SDLK_F6; ///< ScancodeToKeycode(SCANCODE_F6)
+
+constexpr Keycode KEYCODE_F7 = SDLK_F7; ///< ScancodeToKeycode(SCANCODE_F7)
+
+constexpr Keycode KEYCODE_F8 = SDLK_F8; ///< ScancodeToKeycode(SCANCODE_F8)
+
+constexpr Keycode KEYCODE_F9 = SDLK_F9; ///< ScancodeToKeycode(SCANCODE_F9)
+
+constexpr Keycode KEYCODE_F10 = SDLK_F10; ///< ScancodeToKeycode(SCANCODE_F10)
+
+constexpr Keycode KEYCODE_F11 = SDLK_F11; ///< ScancodeToKeycode(SCANCODE_F11)
+
+constexpr Keycode KEYCODE_F12 = SDLK_F12; ///< ScancodeToKeycode(SCANCODE_F12)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRINTSCREEN)
+ */
+constexpr Keycode KEYCODE_PRINTSCREEN = SDLK_PRINTSCREEN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SCROLLLOCK)
+ */
+constexpr Keycode KEYCODE_SCROLLLOCK = SDLK_SCROLLLOCK;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAUSE)
+ */
+constexpr Keycode KEYCODE_PAUSE = SDLK_PAUSE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_INSERT)
+ */
+constexpr Keycode KEYCODE_INSERT = SDLK_INSERT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_HOME)
+ */
+constexpr Keycode KEYCODE_HOME = SDLK_HOME;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEUP)
+ */
+constexpr Keycode KEYCODE_PAGEUP = SDLK_PAGEUP;
+
+constexpr Keycode KEYCODE_END = SDLK_END; ///< ScancodeToKeycode(SCANCODE_END)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEDOWN)
+ */
+constexpr Keycode KEYCODE_PAGEDOWN = SDLK_PAGEDOWN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RIGHT)
+ */
+constexpr Keycode KEYCODE_RIGHT = SDLK_RIGHT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LEFT)
+ */
+constexpr Keycode KEYCODE_LEFT = SDLK_LEFT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_DOWN)
+ */
+constexpr Keycode KEYCODE_DOWN = SDLK_DOWN;
+
+constexpr Keycode KEYCODE_UP = SDLK_UP; ///< ScancodeToKeycode(SCANCODE_UP)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_NUMLOCKCLEAR)
+ */
+constexpr Keycode KEYCODE_NUMLOCKCLEAR = SDLK_NUMLOCKCLEAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DIVIDE)
+ */
+constexpr Keycode KEYCODE_KP_DIVIDE = SDLK_KP_DIVIDE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MULTIPLY)
+ */
+constexpr Keycode KEYCODE_KP_MULTIPLY = SDLK_KP_MULTIPLY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MINUS)
+ */
+constexpr Keycode KEYCODE_KP_MINUS = SDLK_KP_MINUS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUS)
+ */
+constexpr Keycode KEYCODE_KP_PLUS = SDLK_KP_PLUS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_ENTER)
+ */
+constexpr Keycode KEYCODE_KP_ENTER = SDLK_KP_ENTER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_1)
+ */
+constexpr Keycode KEYCODE_KP_1 = SDLK_KP_1;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_2)
+ */
+constexpr Keycode KEYCODE_KP_2 = SDLK_KP_2;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_3)
+ */
+constexpr Keycode KEYCODE_KP_3 = SDLK_KP_3;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_4)
+ */
+constexpr Keycode KEYCODE_KP_4 = SDLK_KP_4;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_5)
+ */
+constexpr Keycode KEYCODE_KP_5 = SDLK_KP_5;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_6)
+ */
+constexpr Keycode KEYCODE_KP_6 = SDLK_KP_6;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_7)
+ */
+constexpr Keycode KEYCODE_KP_7 = SDLK_KP_7;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_8)
+ */
+constexpr Keycode KEYCODE_KP_8 = SDLK_KP_8;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_9)
+ */
+constexpr Keycode KEYCODE_KP_9 = SDLK_KP_9;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_0)
+ */
+constexpr Keycode KEYCODE_KP_0 = SDLK_KP_0;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERIOD)
+ */
+constexpr Keycode KEYCODE_KP_PERIOD = SDLK_KP_PERIOD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_APPLICATION)
+ */
+constexpr Keycode KEYCODE_APPLICATION = SDLK_APPLICATION;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_POWER)
+ */
+constexpr Keycode KEYCODE_POWER = SDLK_POWER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALS)
+ */
+constexpr Keycode KEYCODE_KP_EQUALS = SDLK_KP_EQUALS;
+
+constexpr Keycode KEYCODE_F13 = SDLK_F13; ///< ScancodeToKeycode(SCANCODE_F13)
+
+constexpr Keycode KEYCODE_F14 = SDLK_F14; ///< ScancodeToKeycode(SCANCODE_F14)
+
+constexpr Keycode KEYCODE_F15 = SDLK_F15; ///< ScancodeToKeycode(SCANCODE_F15)
+
+constexpr Keycode KEYCODE_F16 = SDLK_F16; ///< ScancodeToKeycode(SCANCODE_F16)
+
+constexpr Keycode KEYCODE_F17 = SDLK_F17; ///< ScancodeToKeycode(SCANCODE_F17)
+
+constexpr Keycode KEYCODE_F18 = SDLK_F18; ///< ScancodeToKeycode(SCANCODE_F18)
+
+constexpr Keycode KEYCODE_F19 = SDLK_F19; ///< ScancodeToKeycode(SCANCODE_F19)
+
+constexpr Keycode KEYCODE_F20 = SDLK_F20; ///< ScancodeToKeycode(SCANCODE_F20)
+
+constexpr Keycode KEYCODE_F21 = SDLK_F21; ///< ScancodeToKeycode(SCANCODE_F21)
+
+constexpr Keycode KEYCODE_F22 = SDLK_F22; ///< ScancodeToKeycode(SCANCODE_F22)
+
+constexpr Keycode KEYCODE_F23 = SDLK_F23; ///< ScancodeToKeycode(SCANCODE_F23)
+
+constexpr Keycode KEYCODE_F24 = SDLK_F24; ///< ScancodeToKeycode(SCANCODE_F24)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXECUTE)
+ */
+constexpr Keycode KEYCODE_EXECUTE = SDLK_EXECUTE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_HELP)
+ */
+constexpr Keycode KEYCODE_HELP = SDLK_HELP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MENU)
+ */
+constexpr Keycode KEYCODE_MENU = SDLK_MENU;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SELECT)
+ */
+constexpr Keycode KEYCODE_SELECT = SDLK_SELECT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_STOP)
+ */
+constexpr Keycode KEYCODE_STOP = SDLK_STOP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AGAIN)
+ */
+constexpr Keycode KEYCODE_AGAIN = SDLK_AGAIN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_UNDO)
+ */
+constexpr Keycode KEYCODE_UNDO = SDLK_UNDO;
+
+constexpr Keycode KEYCODE_CUT = SDLK_CUT; ///< ScancodeToKeycode(SCANCODE_CUT)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_COPY)
+ */
+constexpr Keycode KEYCODE_COPY = SDLK_COPY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PASTE)
+ */
+constexpr Keycode KEYCODE_PASTE = SDLK_PASTE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_FIND)
+ */
+constexpr Keycode KEYCODE_FIND = SDLK_FIND;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MUTE)
+ */
+constexpr Keycode KEYCODE_MUTE = SDLK_MUTE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEUP)
+ */
+constexpr Keycode KEYCODE_VOLUMEUP = SDLK_VOLUMEUP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEDOWN)
+ */
+constexpr Keycode KEYCODE_VOLUMEDOWN = SDLK_VOLUMEDOWN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COMMA)
+ */
+constexpr Keycode KEYCODE_KP_COMMA = SDLK_KP_COMMA;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALSAS400)
+ */
+constexpr Keycode KEYCODE_KP_EQUALSAS400 = SDLK_KP_EQUALSAS400;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_ALTERASE)
+ */
+constexpr Keycode KEYCODE_ALTERASE = SDLK_ALTERASE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SYSREQ)
+ */
+constexpr Keycode KEYCODE_SYSREQ = SDLK_SYSREQ;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CANCEL)
+ */
+constexpr Keycode KEYCODE_CANCEL = SDLK_CANCEL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEAR)
+ */
+constexpr Keycode KEYCODE_CLEAR = SDLK_CLEAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRIOR)
+ */
+constexpr Keycode KEYCODE_PRIOR = SDLK_PRIOR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RETURN2)
+ */
+constexpr Keycode KEYCODE_RETURN2 = SDLK_RETURN2;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SEPARATOR)
+ */
+constexpr Keycode KEYCODE_SEPARATOR = SDLK_SEPARATOR;
+
+constexpr Keycode KEYCODE_OUT = SDLK_OUT; ///< ScancodeToKeycode(SCANCODE_OUT)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_OPER)
+ */
+constexpr Keycode KEYCODE_OPER = SDLK_OPER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEARAGAIN)
+ */
+constexpr Keycode KEYCODE_CLEARAGAIN = SDLK_CLEARAGAIN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CRSEL)
+ */
+constexpr Keycode KEYCODE_CRSEL = SDLK_CRSEL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXSEL)
+ */
+constexpr Keycode KEYCODE_EXSEL = SDLK_EXSEL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_00)
+ */
+constexpr Keycode KEYCODE_KP_00 = SDLK_KP_00;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_000)
+ */
+constexpr Keycode KEYCODE_KP_000 = SDLK_KP_000;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_THOUSANDSSEPARATOR)
+ */
+constexpr Keycode KEYCODE_THOUSANDSSEPARATOR = SDLK_THOUSANDSSEPARATOR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_DECIMALSEPARATOR)
+ */
+constexpr Keycode KEYCODE_DECIMALSEPARATOR = SDLK_DECIMALSEPARATOR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYUNIT)
+ */
+constexpr Keycode KEYCODE_CURRENCYUNIT = SDLK_CURRENCYUNIT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYSUBUNIT)
+ */
+constexpr Keycode KEYCODE_CURRENCYSUBUNIT = SDLK_CURRENCYSUBUNIT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTPAREN)
+ */
+constexpr Keycode KEYCODE_KP_LEFTPAREN = SDLK_KP_LEFTPAREN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTPAREN)
+ */
+constexpr Keycode KEYCODE_KP_RIGHTPAREN = SDLK_KP_RIGHTPAREN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTBRACE)
+ */
+constexpr Keycode KEYCODE_KP_LEFTBRACE = SDLK_KP_LEFTBRACE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTBRACE)
+ */
+constexpr Keycode KEYCODE_KP_RIGHTBRACE = SDLK_KP_RIGHTBRACE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_TAB)
+ */
+constexpr Keycode KEYCODE_KP_TAB = SDLK_KP_TAB;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BACKSPACE)
+ */
+constexpr Keycode KEYCODE_KP_BACKSPACE = SDLK_KP_BACKSPACE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_A)
+ */
+constexpr Keycode KEYCODE_KP_A = SDLK_KP_A;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_B)
+ */
+constexpr Keycode KEYCODE_KP_B = SDLK_KP_B;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_C)
+ */
+constexpr Keycode KEYCODE_KP_C = SDLK_KP_C;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_D)
+ */
+constexpr Keycode KEYCODE_KP_D = SDLK_KP_D;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_E)
+ */
+constexpr Keycode KEYCODE_KP_E = SDLK_KP_E;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_F)
+ */
+constexpr Keycode KEYCODE_KP_F = SDLK_KP_F;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_XOR)
+ */
+constexpr Keycode KEYCODE_KP_XOR = SDLK_KP_XOR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_POWER)
+ */
+constexpr Keycode KEYCODE_KP_POWER = SDLK_KP_POWER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERCENT)
+ */
+constexpr Keycode KEYCODE_KP_PERCENT = SDLK_KP_PERCENT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LESS)
+ */
+constexpr Keycode KEYCODE_KP_LESS = SDLK_KP_LESS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_GREATER)
+ */
+constexpr Keycode KEYCODE_KP_GREATER = SDLK_KP_GREATER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AMPERSAND)
+ */
+constexpr Keycode KEYCODE_KP_AMPERSAND = SDLK_KP_AMPERSAND;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLAMPERSAND)
+ */
+constexpr Keycode KEYCODE_KP_DBLAMPERSAND = SDLK_KP_DBLAMPERSAND;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_VERTICALBAR)
+ */
+constexpr Keycode KEYCODE_KP_VERTICALBAR = SDLK_KP_VERTICALBAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLVERTICALBAR)
+ */
+constexpr Keycode KEYCODE_KP_DBLVERTICALBAR = SDLK_KP_DBLVERTICALBAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COLON)
+ */
+constexpr Keycode KEYCODE_KP_COLON = SDLK_KP_COLON;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HASH)
+ */
+constexpr Keycode KEYCODE_KP_HASH = SDLK_KP_HASH;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_SPACE)
+ */
+constexpr Keycode KEYCODE_KP_SPACE = SDLK_KP_SPACE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AT)
+ */
+constexpr Keycode KEYCODE_KP_AT = SDLK_KP_AT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EXCLAM)
+ */
+constexpr Keycode KEYCODE_KP_EXCLAM = SDLK_KP_EXCLAM;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSTORE)
+ */
+constexpr Keycode KEYCODE_KP_MEMSTORE = SDLK_KP_MEMSTORE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMRECALL)
+ */
+constexpr Keycode KEYCODE_KP_MEMRECALL = SDLK_KP_MEMRECALL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMCLEAR)
+ */
+constexpr Keycode KEYCODE_KP_MEMCLEAR = SDLK_KP_MEMCLEAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMADD)
+ */
+constexpr Keycode KEYCODE_KP_MEMADD = SDLK_KP_MEMADD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSUBTRACT)
+ */
+constexpr Keycode KEYCODE_KP_MEMSUBTRACT = SDLK_KP_MEMSUBTRACT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMMULTIPLY)
+ */
+constexpr Keycode KEYCODE_KP_MEMMULTIPLY = SDLK_KP_MEMMULTIPLY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMDIVIDE)
+ */
+constexpr Keycode KEYCODE_KP_MEMDIVIDE = SDLK_KP_MEMDIVIDE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUSMINUS)
+ */
+constexpr Keycode KEYCODE_KP_PLUSMINUS = SDLK_KP_PLUSMINUS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEAR)
+ */
+constexpr Keycode KEYCODE_KP_CLEAR = SDLK_KP_CLEAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEARENTRY)
+ */
+constexpr Keycode KEYCODE_KP_CLEARENTRY = SDLK_KP_CLEARENTRY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BINARY)
+ */
+constexpr Keycode KEYCODE_KP_BINARY = SDLK_KP_BINARY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_OCTAL)
+ */
+constexpr Keycode KEYCODE_KP_OCTAL = SDLK_KP_OCTAL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DECIMAL)
+ */
+constexpr Keycode KEYCODE_KP_DECIMAL = SDLK_KP_DECIMAL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HEXADECIMAL)
+ */
+constexpr Keycode KEYCODE_KP_HEXADECIMAL = SDLK_KP_HEXADECIMAL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LCTRL)
+ */
+constexpr Keycode KEYCODE_LCTRL = SDLK_LCTRL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LSHIFT)
+ */
+constexpr Keycode KEYCODE_LSHIFT = SDLK_LSHIFT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LALT)
+ */
+constexpr Keycode KEYCODE_LALT = SDLK_LALT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LGUI)
+ */
+constexpr Keycode KEYCODE_LGUI = SDLK_LGUI;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RCTRL)
+ */
+constexpr Keycode KEYCODE_RCTRL = SDLK_RCTRL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RSHIFT)
+ */
+constexpr Keycode KEYCODE_RSHIFT = SDLK_RSHIFT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RALT)
+ */
+constexpr Keycode KEYCODE_RALT = SDLK_RALT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RGUI)
+ */
+constexpr Keycode KEYCODE_RGUI = SDLK_RGUI;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MODE)
+ */
+constexpr Keycode KEYCODE_MODE = SDLK_MODE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SLEEP)
+ */
+constexpr Keycode KEYCODE_SLEEP = SDLK_SLEEP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_WAKE)
+ */
+constexpr Keycode KEYCODE_WAKE = SDLK_WAKE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_INCREMENT)
+ */
+constexpr Keycode KEYCODE_CHANNEL_INCREMENT = SDLK_CHANNEL_INCREMENT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_DECREMENT)
+ */
+constexpr Keycode KEYCODE_CHANNEL_DECREMENT = SDLK_CHANNEL_DECREMENT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY)
+ */
+constexpr Keycode KEYCODE_MEDIA_PLAY = SDLK_MEDIA_PLAY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PAUSE)
+ */
+constexpr Keycode KEYCODE_MEDIA_PAUSE = SDLK_MEDIA_PAUSE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_RECORD)
+ */
+constexpr Keycode KEYCODE_MEDIA_RECORD = SDLK_MEDIA_RECORD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_FAST_FORWARD)
+ */
+constexpr Keycode KEYCODE_MEDIA_FAST_FORWARD = SDLK_MEDIA_FAST_FORWARD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_REWIND)
+ */
+constexpr Keycode KEYCODE_MEDIA_REWIND = SDLK_MEDIA_REWIND;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_NEXT_TRACK)
+ */
+constexpr Keycode KEYCODE_MEDIA_NEXT_TRACK = SDLK_MEDIA_NEXT_TRACK;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PREVIOUS_TRACK)
+ */
+constexpr Keycode KEYCODE_MEDIA_PREVIOUS_TRACK = SDLK_MEDIA_PREVIOUS_TRACK;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_STOP)
+ */
+constexpr Keycode KEYCODE_MEDIA_STOP = SDLK_MEDIA_STOP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_EJECT)
+ */
+constexpr Keycode KEYCODE_MEDIA_EJECT = SDLK_MEDIA_EJECT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY_PAUSE)
+ */
+constexpr Keycode KEYCODE_MEDIA_PLAY_PAUSE = SDLK_MEDIA_PLAY_PAUSE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_SELECT)
+ */
+constexpr Keycode KEYCODE_MEDIA_SELECT = SDLK_MEDIA_SELECT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_NEW)
+ */
+constexpr Keycode KEYCODE_AC_NEW = SDLK_AC_NEW;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_OPEN)
+ */
+constexpr Keycode KEYCODE_AC_OPEN = SDLK_AC_OPEN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_CLOSE)
+ */
+constexpr Keycode KEYCODE_AC_CLOSE = SDLK_AC_CLOSE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_EXIT)
+ */
+constexpr Keycode KEYCODE_AC_EXIT = SDLK_AC_EXIT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SAVE)
+ */
+constexpr Keycode KEYCODE_AC_SAVE = SDLK_AC_SAVE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PRINT)
+ */
+constexpr Keycode KEYCODE_AC_PRINT = SDLK_AC_PRINT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PROPERTIES)
+ */
+constexpr Keycode KEYCODE_AC_PROPERTIES = SDLK_AC_PROPERTIES;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SEARCH)
+ */
+constexpr Keycode KEYCODE_AC_SEARCH = SDLK_AC_SEARCH;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_HOME)
+ */
+constexpr Keycode KEYCODE_AC_HOME = SDLK_AC_HOME;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BACK)
+ */
+constexpr Keycode KEYCODE_AC_BACK = SDLK_AC_BACK;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_FORWARD)
+ */
+constexpr Keycode KEYCODE_AC_FORWARD = SDLK_AC_FORWARD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_STOP)
+ */
+constexpr Keycode KEYCODE_AC_STOP = SDLK_AC_STOP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_REFRESH)
+ */
+constexpr Keycode KEYCODE_AC_REFRESH = SDLK_AC_REFRESH;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BOOKMARKS)
+ */
+constexpr Keycode KEYCODE_AC_BOOKMARKS = SDLK_AC_BOOKMARKS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTLEFT)
+ */
+constexpr Keycode KEYCODE_SOFTLEFT = SDLK_SOFTLEFT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTRIGHT)
+ */
+constexpr Keycode KEYCODE_SOFTRIGHT = SDLK_SOFTRIGHT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CALL)
+ */
+constexpr Keycode KEYCODE_CALL = SDLK_CALL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_ENDCALL)
+ */
+constexpr Keycode KEYCODE_ENDCALL = SDLK_ENDCALL;
+
+constexpr Keycode KEYCODE_LEFT_TAB = SDLK_LEFT_TAB; ///< Extended key Left Tab
+
+/**
+ * Extended key Level 5 Shift
+ */
+constexpr Keycode KEYCODE_LEVEL5_SHIFT = SDLK_LEVEL5_SHIFT;
+
+/**
+ * Extended key Multi-key Compose
+ */
+constexpr Keycode KEYCODE_MULTI_KEY_COMPOSE = SDLK_MULTI_KEY_COMPOSE;
+
+constexpr Keycode KEYCODE_LMETA = SDLK_LMETA; ///< Extended key Left Meta
+
+constexpr Keycode KEYCODE_RMETA = SDLK_RMETA; ///< Extended key Right Meta
+
+constexpr Keycode KEYCODE_LHYPER = SDLK_LHYPER; ///< Extended key Left Hyper
+
+constexpr Keycode KEYCODE_RHYPER = SDLK_RHYPER; ///< Extended key Right Hyper
+
+/// @}
 
 /**
  *
@@ -48086,8 +48089,7 @@ struct FontBase : Resource<TTF_Font*>
    * This updates any TextBase objects using this font.
    *
    * @param fallback the font to add as a fallback.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created
    *               both fonts.
@@ -48097,9 +48099,9 @@ struct FontBase : Resource<TTF_Font*>
    * @sa FontBase.ClearFallbacks
    * @sa FontBase.RemoveFallback
    */
-  bool AddFallback(FontBase& fallback)
+  void AddFallback(FontBase& fallback)
   {
-    return TTF_AddFallbackFont(get(), fallback.get());
+    CheckError(TTF_AddFallbackFont(get(), fallback.get()));
   }
 
   /**
@@ -48145,8 +48147,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param ptsize the new point size.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48155,7 +48156,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetSize
    */
-  bool SetSize(float ptsize) { return TTF_SetFontSize(get(), ptsize); }
+  void SetSize(float ptsize) { CheckError(TTF_SetFontSize(get(), ptsize)); }
 
   /**
    * Set font size dynamically with target resolutions, in dots per inch.
@@ -48166,8 +48167,7 @@ struct FontBase : Resource<TTF_Font*>
    * @param ptsize the new point size.
    * @param hdpi the target horizontal DPI.
    * @param vdpi the target vertical DPI.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48177,9 +48177,9 @@ struct FontBase : Resource<TTF_Font*>
    * @sa FontBase.GetSize
    * @sa TTF_GetFontSizeDPI
    */
-  bool SetSizeDPI(float ptsize, int hdpi, int vdpi)
+  void SetSizeDPI(float ptsize, int hdpi, int vdpi)
   {
-    return TTF_SetFontSizeDPI(get(), ptsize, hdpi, vdpi);
+    CheckError(TTF_SetFontSizeDPI(get(), ptsize, hdpi, vdpi));
   }
 
   /**
@@ -48203,8 +48203,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param hdpi a pointer filled in with the target horizontal DPI.
    * @param vdpi a pointer filled in with the target vertical DPI.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48213,9 +48212,9 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.SetSizeDPI
    */
-  bool GetDPI(int* hdpi, int* vdpi) const
+  void GetDPI(int* hdpi, int* vdpi) const
   {
-    return TTF_GetFontDPI(get(), hdpi, vdpi);
+    CheckError(TTF_GetFontDPI(get(), hdpi, vdpi));
   }
 
   /**
@@ -48275,8 +48274,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param outline positive outline value, 0 to default.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48285,7 +48283,10 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetOutline
    */
-  bool SetOutline(int outline) { return TTF_SetFontOutline(get(), outline); }
+  void SetOutline(int outline)
+  {
+    CheckError(TTF_SetFontOutline(get(), outline));
+  }
 
   /**
    * Query a font's current outline.
@@ -48371,8 +48372,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param enabled true to enable SDF, false to disable.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48381,7 +48381,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetSDF
    */
-  bool SetSDF(bool enabled) { return TTF_SetFontSDF(get(), enabled); }
+  void SetSDF(bool enabled) { CheckError(TTF_SetFontSDF(get(), enabled)); }
 
   /**
    * Query whether Signed Distance Field rendering is enabled for a font.
@@ -48624,17 +48624,16 @@ struct FontBase : Resource<TTF_Font*>
    * This updates any TextBase objects using this font.
    *
    * @param direction the new direction for text to flow.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetDirection(Direction direction)
+  void SetDirection(Direction direction)
   {
-    return TTF_SetFontDirection(get(), direction);
+    CheckError(TTF_SetFontDirection(get(), direction));
   }
 
   /**
@@ -48660,8 +48659,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param script an
    * [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48670,7 +48668,10 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa StringToTag
    */
-  bool SetScript(Uint32 script) { return TTF_SetFontScript(get(), script); }
+  void SetScript(Uint32 script)
+  {
+    CheckError(TTF_SetFontScript(get(), script));
+  }
 
   /**
    * Get the script used for text shaping a font.
@@ -48715,17 +48716,16 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param language_bcp47 a null-terminated string containing the desired
    *                       language's BCP47 code. Or null to reset the value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetLanguage(StringParam language_bcp47)
+  void SetLanguage(StringParam language_bcp47)
   {
-    return TTF_SetFontLanguage(get(), language_bcp47);
+    CheckError(TTF_SetFontLanguage(get(), language_bcp47));
   }
 
   /**
@@ -48803,22 +48803,21 @@ struct FontBase : Resource<TTF_Font*>
    *             from the bottom edge of its bounding box.
    * @param advance a pointer filled in with the distance to the next glyph from
    *                the left edge of this glyph's bounding box.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetGlyphMetrics(Uint32 ch,
+  void GetGlyphMetrics(Uint32 ch,
                        int* minx,
                        int* maxx,
                        int* miny,
                        int* maxy,
                        int* advance) const
   {
-    return TTF_GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance);
+    CheckError(TTF_GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance));
   }
 
   /**
@@ -48826,18 +48825,18 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param previous_ch the previous codepoint.
    * @param ch the current codepoint.
-   * @returns the kerning size between the two glyphs, in pixels, on success or
-   *          false on failure; call GetError() for more information.
+   * @returns the kerning size between the two glyphs, in pixels.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<int> GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
+  int GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
   {
     if (int r; TTF_GetGlyphKerning(get(), previous_ch, ch, &r)) return r;
-    return std::nullopt;
+    throw Error();
   }
 
   /**
@@ -48847,18 +48846,19 @@ struct FontBase : Resource<TTF_Font*>
    * specified string will take to fully render.
    *
    * @param text text to calculate, in UTF-8 encoding.
-   * @returns return a Point with the width, height on success or std::nullopt
-   *          on failure; call GetError() for more information.
+   * @returns return a Point with the width, height.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<Point> GetStringSize(std::string_view text) const
+  Point GetStringSize(std::string_view text) const
   {
-    if (Point p; GetStringSize(text, &p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetStringSize(text, &p.x, &p.y);
+    return p;
   }
 
   /**
@@ -48870,17 +48870,16 @@ struct FontBase : Resource<TTF_Font*>
    * @param text text to calculate, in UTF-8 encoding.
    * @param w will be filled with width, in pixels, on return.
    * @param h will be filled with height, in pixels, on return.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetStringSize(std::string_view text, int* w, int* h) const
+  void GetStringSize(std::string_view text, int* w, int* h) const
   {
-    return TTF_GetStringSize(get(), text.data(), text.size(), w, h);
+    CheckError(TTF_GetStringSize(get(), text.data(), text.size(), w, h));
   }
 
   /**
@@ -48896,19 +48895,19 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param text text to calculate, in UTF-8 encoding.
    * @param wrap_width the maximum width or 0 to wrap on newline characters.
-   * @returns return a Point with the width, height on success or std::nullopt
-   *          on failure; call GetError() for more information.
+   * @returns return a Point with the width, height on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<Point> GetStringSizeWrapped(std::string_view text,
-                                            int wrap_width) const
+  Point GetStringSizeWrapped(std::string_view text, int wrap_width) const
   {
-    if (Point p; GetStringSizeWrapped(text, wrap_width, &p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetStringSizeWrapped(text, wrap_width, &p.x, &p.y);
+    return p;
   }
 
   /**
@@ -48926,21 +48925,20 @@ struct FontBase : Resource<TTF_Font*>
    * @param wrap_width the maximum width or 0 to wrap on newline characters.
    * @param w will be filled with width, in pixels, on return.
    * @param h will be filled with height, in pixels, on return.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetStringSizeWrapped(std::string_view text,
+  void GetStringSizeWrapped(std::string_view text,
                             int wrap_width,
                             int* w,
                             int* h) const
   {
-    return TTF_GetStringSizeWrapped(
-      get(), text.data(), text.size(), wrap_width, w, h);
+    CheckError(TTF_GetStringSizeWrapped(
+      get(), text.data(), text.size(), wrap_width, w, h));
   }
 
   /**
@@ -48958,25 +48956,24 @@ struct FontBase : Resource<TTF_Font*>
    *                       string that will fit, may be nullptr.
    * @param measured_length a pointer filled in with the length, in bytes, of
    *                        the string that will fit, may be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool MeasureString(std::string_view text,
+  void MeasureString(std::string_view text,
                      int max_width,
                      int* measured_width,
                      size_t* measured_length) const
   {
-    return TTF_MeasureString(get(),
-                             text.data(),
-                             text.size(),
-                             max_width,
-                             measured_width,
-                             measured_length);
+    CheckError(TTF_MeasureString(get(),
+                                 text.data(),
+                                 text.size(),
+                                 max_width,
+                                 measured_width,
+                                 measured_length));
   }
 
   /**
@@ -49542,14 +49539,13 @@ struct Font : FontRef
  * call should be paired with a matching QuitSubSystem(TtfInitFlag) call.
  *
  * @param _ An INIT_TTF value;
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa QuitSubSystem(TtfInitFlag)
  */
-inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
+inline void InitSubSystem(TtfInitFlag _) { CheckError(TTF_Init()); }
 
 /**
  * A text engine used to create text objects.
@@ -49904,8 +49900,7 @@ struct TextBase : Resource<TTF_Text*>
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
    * @param surface the surface to draw on.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -49915,9 +49910,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa CreateSurfaceTextEngine
    * @sa TextBase.TextBase
    */
-  bool DrawSurface(Point p, SurfaceRef surface) const
+  void DrawSurface(Point p, SurfaceRef surface) const
   {
-    return TTF_DrawSurfaceText(get(), p.x, p.y, surface.get());
+    CheckError(TTF_DrawSurfaceText(get(), p.x, p.y, surface.get()));
   }
 
   /**
@@ -49929,8 +49924,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -49940,9 +49934,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa CreateRendererTextEngine
    * @sa TextBase.TextBase
    */
-  bool DrawRenderer(FPoint p) const
+  void DrawRenderer(FPoint p) const
   {
-    return TTF_DrawRendererText(get(), p.x, p.y);
+    CheckError(TTF_DrawRendererText(get(), p.x, p.y));
   }
 
   /**
@@ -50016,8 +50010,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param engine the text engine to use for drawing.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50026,9 +50019,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.GetEngine
    */
-  bool SetEngine(TextEngineBase& engine)
+  void SetEngine(TextEngineBase& engine)
   {
-    return TTF_SetTextEngine(get(), engine.get());
+    CheckError(TTF_SetTextEngine(get(), engine.get()));
   }
 
   /**
@@ -50090,17 +50083,16 @@ struct TextBase : Resource<TTF_Text*>
    * built with HarfBuzz support.
    *
    * @param direction the new direction for text to flow.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetDirection(Direction direction)
+  void SetDirection(Direction direction)
   {
-    return TTF_SetTextDirection(get(), direction);
+    CheckError(TTF_SetTextDirection(get(), direction));
   }
 
   /**
@@ -50124,8 +50116,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param script an [ISO 15924
    * code](https://unicode.org/iso15924/iso15924-codes.html).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50134,7 +50125,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa StringToTag
    */
-  bool SetScript(Uint32 script) { return TTF_SetTextScript(get(), script); }
+  void SetScript(Uint32 script)
+  {
+    CheckError(TTF_SetTextScript(get(), script));
+  }
 
   /**
    * Get the script used for text shaping a text object.
@@ -50160,9 +50154,8 @@ struct TextBase : Resource<TTF_Text*>
    *
    * The default text color is white (255, 255, 255, 255).
    *
-   * @param c the color value in the range of 0-255.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param c the color values in the range of 0-255.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50172,7 +50165,10 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.GetColor(Color*)
    * @sa TextBase.SetColor(FColor)
    */
-  bool SetColor(Color c) { return TTF_SetTextColor(get(), c.r, c.g, c.b, c.a); }
+  void SetColor(Color c)
+  {
+    CheckError(TTF_SetTextColor(get(), c.r, c.g, c.b, c.a));
+  }
 
   /**
    * Set the color of a text object.
@@ -50180,8 +50176,7 @@ struct TextBase : Resource<TTF_Text*>
    * The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).
    *
    * @param c the color value, normally in the range of 0-1.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50191,26 +50186,27 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.GetColor(FColor*)
    * @sa TextBase.SetColor(Color)
    */
-  bool SetColor(FColor c)
+  void SetColor(FColor c)
   {
-    return TTF_SetTextColorFloat(get(), c.r, c.g, c.b, c.a);
+    CheckError(TTF_SetTextColorFloat(get(), c.r, c.g, c.b, c.a));
   }
 
   /**
    * Get the color of a text object.
    *
-   * @return The color in the range of 0-1 or std::nullopt on failure; call
-   * GetError() for more information.
+   * @return The color in the range of 0-1 on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @sa SetColor(FColor)
    */
-  std::optional<FColor> GetColor() const
+  FColor GetColor() const
   {
-    if (FColor c; GetColor(&c)) return c;
-    return std::nullopt;
+    FColor c;
+    GetColor(&c);
+    return c;
   }
 
   /**
@@ -50218,8 +50214,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param c a pointer filled in with red color value in the range of 0-255,
    *          __must__ not be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50228,10 +50223,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(Color)
    */
-  bool GetColor(Color* c) const
+  void GetColor(Color* c) const
   {
     SDL_assert_paranoid(c != nullptr);
-    return GetColor(&c->r, &c->g, &c->b, &c->a);
+    GetColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -50239,8 +50234,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param c a pointer filled in with red color value in the range of 0-1,
    *          __must__ not be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50249,10 +50243,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(FColor)
    */
-  bool GetColor(FColor* c) const
+  void GetColor(FColor* c) const
   {
     SDL_assert_paranoid(c != nullptr);
-    return GetColor(&c->r, &c->g, &c->b, &c->a);
+    GetColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -50266,8 +50260,7 @@ struct TextBase : Resource<TTF_Text*>
    *          0-255, may be nullptr.
    * @param a a pointer filled in with the alpha value in the range of 0-255,
    *          may be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50276,9 +50269,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(Color)
    */
-  bool GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+  void GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
   {
-    return TTF_GetTextColor(get(), r, g, b, a);
+    CheckError(TTF_GetTextColor(get(), r, g, b, a));
   }
 
   /**
@@ -50292,8 +50285,7 @@ struct TextBase : Resource<TTF_Text*>
    *          range of 0-1, may be nullptr.
    * @param a a pointer filled in with the alpha value in the range of 0-1, may
    *          be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50302,9 +50294,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(FColor)
    */
-  bool GetColor(float* r, float* g, float* b, float* a) const
+  void GetColor(float* r, float* g, float* b, float* a) const
   {
-    return TTF_GetTextColorFloat(get(), r, g, b, a);
+    CheckError(TTF_GetTextColorFloat(get(), r, g, b, a));
   }
 
   /**
@@ -50330,8 +50322,8 @@ struct TextBase : Resource<TTF_Text*>
    * Get the position of a text object.
    *
    * @returns a Point with the offset of the upper left corner of this text in
-   *          pixels or std::nullopt on failure; call GetError() for more
-   *          information.
+   *          pixels on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50340,10 +50332,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetPosition()
    */
-  std::optional<Point> GetPosition() const
+  Point GetPosition() const
   {
-    if (Point p; GetPosition(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetPosition(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -50375,8 +50368,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param wrap_width the maximum width in pixels, 0 to wrap on newline
    *                   characters.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50385,17 +50377,17 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.GetWrapWidth
    */
-  bool SetWrapWidth(int wrap_width)
+  void SetWrapWidth(int wrap_width)
   {
-    return TTF_SetTextWrapWidth(get(), wrap_width);
+    CheckError(TTF_SetTextWrapWidth(get(), wrap_width));
   }
 
   /**
    * Get whether wrapping is enabled on a text object.
    *
    * @returns an int with the maximum width in pixels or 0 if the text is being
-   *          wrapped on newline characters on success or std::nullopt on
-   *          failure; call GetError() for more information.
+   *          wrapped on newline characters on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50404,10 +50396,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetWrapWidth
    */
-  std::optional<int> GetWrapWidth() const
+  int GetWrapWidth() const
   {
-    if (int w; TTF_GetTextWrapWidth(get(), &w)) return w;
-    return std::nullopt;
+    int w;
+    CheckError(TTF_GetTextWrapWidth(get(), &w));
+    return w;
   }
 
   /**
@@ -50422,8 +50415,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param visible true to show whitespace when wrapping text, false to hide
    *                it.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50432,9 +50424,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.IsWrapWhitespaceVisible
    */
-  bool SetWrapWhitespaceVisible(bool visible)
+  void SetWrapWhitespaceVisible(bool visible)
   {
-    return TTF_SetTextWrapWhitespaceVisible(get(), visible);
+    CheckError(TTF_SetTextWrapWhitespaceVisible(get(), visible));
   }
 
   /**
@@ -50461,8 +50453,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param string the UTF-8 text to use.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50473,9 +50464,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.DeleteString
    * @sa TextBase.InsertString
    */
-  bool SetString(std::string_view string)
+  void SetString(std::string_view string)
   {
-    return TTF_SetTextString(get(), string.data(), string.size());
+    CheckError(TTF_SetTextString(get(), string.data(), string.size()));
   }
 
   /**
@@ -50488,8 +50479,7 @@ struct TextBase : Resource<TTF_Text*>
    *               this does not do UTF-8 validation, so you should only insert
    *               at UTF-8 sequence boundaries.
    * @param string the UTF-8 text to insert.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50500,9 +50490,10 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.DeleteString
    * @sa TextBase.SetString
    */
-  bool InsertString(int offset, std::string_view string)
+  void InsertString(int offset, std::string_view string)
   {
-    return TTF_InsertTextString(get(), offset, string.data(), string.size());
+    CheckError(
+      TTF_InsertTextString(get(), offset, string.data(), string.size()));
   }
 
   /**
@@ -50511,8 +50502,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param string the UTF-8 text to insert.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50523,9 +50513,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.InsertString
    * @sa TextBase.SetString
    */
-  bool AppendString(std::string_view string)
+  void AppendString(std::string_view string)
   {
-    return TTF_AppendTextString(get(), string.data(), string.size());
+    CheckError(TTF_AppendTextString(get(), string.data(), string.size()));
   }
 
   /**
@@ -50539,8 +50529,7 @@ struct TextBase : Resource<TTF_Text*>
    *               at UTF-8 sequence boundaries.
    * @param length the length of text to delete, in bytes, or -1 for the
    *               remainder of the string.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50551,9 +50540,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.InsertString
    * @sa TextBase.SetString
    */
-  bool DeleteString(int offset, int length = -1)
+  void DeleteString(int offset, int length = -1)
   {
-    return TTF_DeleteTextString(get(), offset, length);
+    CheckError(TTF_DeleteTextString(get(), offset, length));
   }
 
   /**
@@ -50572,10 +50561,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @see GetSize(int*,int*) if might want only one of the coordinates
    */
-  std::optional<Point> GetSize() const
+  Point GetSize() const
   {
-    if (Point p; GetSize(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetSize(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -50588,8 +50578,7 @@ struct TextBase : Resource<TTF_Text*>
    *          nullptr.
    * @param h a pointer filled in with the height of the text, in pixels, may be
    *          nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50598,7 +50587,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @see GetSize() if you need both coordinates.
    */
-  bool GetSize(int* w, int* h) const { return TTF_GetTextSize(get(), w, h); }
+  void GetSize(int* w, int* h) const
+  {
+    CheckError(TTF_GetTextSize(get(), w, h));
+  }
 
   /**
    * Get the substring of a text object that surrounds a text offset.
@@ -50612,17 +50604,16 @@ struct TextBase : Resource<TTF_Text*>
    * @param offset a byte offset into the text string.
    * @param substring a pointer filled in with the substring containing the
    *                  offset.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubString(int offset, SubString* substring) const
+  void GetSubString(int offset, SubString* substring) const
   {
-    return TTF_GetTextSubString(get(), offset, substring);
+    CheckError(TTF_GetTextSubString(get(), offset, substring));
   }
 
   /**
@@ -50663,17 +50654,16 @@ struct TextBase : Resource<TTF_Text*>
    * @param line a zero-based line index, in the range [0 .. text->num_lines-1].
    * @param substring a pointer filled in with the substring containing the
    *                  offset.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubStringForLine(int line, SubString* substring) const
+  void GetSubStringForLine(int line, SubString* substring) const
   {
-    return TTF_GetTextSubStringForLine(get(), line, substring);
+    CheckError(TTF_GetTextSubStringForLine(get(), line, substring));
   }
 
   /**
@@ -50739,17 +50729,16 @@ struct TextBase : Resource<TTF_Text*>
    *          outside the bounds of the text area.
    * @param substring a pointer filled in with the closest substring of text to
    *                  the given point.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubStringForPoint(Point p, SubString* substring) const
+  void GetSubStringForPoint(Point p, SubString* substring) const
   {
-    return TTF_GetTextSubStringForPoint(get(), p.x, p.y, substring);
+    CheckError(TTF_GetTextSubStringForPoint(get(), p.x, p.y, substring));
   }
 
   /**
@@ -50760,18 +50749,17 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param substring the SubString to query.
    * @param previous a pointer filled in with the previous substring.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetPreviousSubString(const SubString& substring,
+  void GetPreviousSubString(const SubString& substring,
                             SubString* previous) const
   {
-    return TTF_GetPreviousTextSubString(get(), &substring, previous);
+    CheckError(TTF_GetPreviousTextSubString(get(), &substring, previous));
   }
 
   /**
@@ -50782,17 +50770,16 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param substring the SubString to query.
    * @param next a pointer filled in with the next substring.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetNextSubString(const SubString& substring, SubString* next) const
+  void GetNextSubString(const SubString& substring, SubString* next) const
   {
-    return TTF_GetNextTextSubString(get(), &substring, next);
+    CheckError(TTF_GetNextTextSubString(get(), &substring, next));
   }
 
   /**
@@ -50802,15 +50789,14 @@ struct TextBase : Resource<TTF_Text*>
    * rendered, but you can call this if you need more control over the timing of
    * when the layout and text engine representation are updated.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool Update() { return TTF_UpdateText(get()); }
+  void Update() { CheckError(TTF_UpdateText(get())); }
 
   /**
    * A copy of the UTF-8 string that this text object represents, useful for
@@ -51188,32 +51174,30 @@ inline int WasInit(TtfInitFlag _) { return TTF_WasInit(); }
 
 inline SubStringIterator TextBase::begin() const
 {
-  if (SubStringIterator it{get()}; GetSubString(0, &it.m_subString)) return it;
-  return {};
+  SubStringIterator it{get()};
+  GetSubString(0, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::end() const
 {
-  if (SubStringIterator it{get()}; GetSubString(INT_MAX, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubString(INT_MAX, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::GetSubStringForLine(int line) const
 {
-  if (SubStringIterator it{get()}; GetSubStringForLine(line, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubStringForLine(line, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::GetSubStringForPoint(Point p) const
 {
-  if (SubStringIterator it{get()}; GetSubStringForPoint(p, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubStringForPoint(p, &it.m_subString);
+  return it;
 }
 
 #pragma endregion impl

@@ -1214,6 +1214,19 @@ function transformEntry(sourceEntry, context) {
     case 'function':
       targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
+      const m = /@returns (.*) on success/.exec(targetEntry.doc ?? "");
+      if (m) {
+        targetEntry.hints = { mayFail: true };
+        const returnIndexBegin = m.index;
+        const returnIndexEnd = targetEntry.doc.indexOf("\n\n", returnIndexBegin);
+        const throwString = "@throws Error on failure.";
+        if (sourceEntry.type === "bool") {
+          targetEntry.type = "void";
+          targetEntry.doc = `${targetEntry.doc.slice(0, returnIndexBegin)}${throwString}${targetEntry.doc.slice(returnIndexEnd)}`;
+        } else {
+          targetEntry.doc = `${targetEntry.doc.slice(0, returnIndexBegin)}@returns ${m[1]} on success.\n${throwString}${targetEntry.doc.slice(returnIndexEnd)}`;
+        }
+      }
       break;
     case "def":
       targetEntry.parameters = sourceEntry.parameters;

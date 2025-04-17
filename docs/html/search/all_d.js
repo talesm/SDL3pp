@@ -32,7 +32,7 @@ var searchData=
   ['matrixcoefficients_29',['MatrixCoefficients',['../group__CategoryPixels.html#gab21170cc89744e8d42089515cb258320',1,'SDL']]],
   ['max_30',['max',['../group__CategoryStdinc.html#ga74fda1cb69f4e000dc8a42aba05136a0',1,'SDL']]],
   ['maximize_31',['Maximize',['../structSDL_1_1WindowBase.html#a66e73a5f69d7768805b8ab098eb9a43f',1,'SDL::WindowBase']]],
-  ['measurestring_32',['MeasureString',['../structSDL_1_1FontBase.html#a5f4c7766db61c7741b285431e354092a',1,'SDL::FontBase']]],
+  ['measurestring_32',['MeasureString',['../structSDL_1_1FontBase.html#a9d2625f8807e14f9277f729f4819ca52',1,'SDL::FontBase']]],
   ['memcmp_33',['memcmp',['../group__CategoryStdinc.html#ga1713911979192a927ee8202ad4ed478b',1,'SDL']]],
   ['memcpy_34',['memcpy',['../group__CategoryStdinc.html#gafe27508f0dcd3fb7902725b46f1c7e15',1,'SDL']]],
   ['memmove_35',['memmove',['../group__CategoryStdinc.html#ga166c29b5162d190b0002720452a5ef43',1,'SDL']]],

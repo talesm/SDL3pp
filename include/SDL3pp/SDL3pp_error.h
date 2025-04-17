@@ -6,7 +6,7 @@
 #include <string>
 #include <string_view>
 #include <SDL3/SDL_error.h>
-#include "SDL3pp_stdinc.h"
+#include "SDL3pp_stringParam.h"
 
 namespace SDL {
 

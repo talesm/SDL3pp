@@ -7,13 +7,13 @@ var searchData=
   ['defaulteventclass_4',['DefaultEventClass',['../group__CategoryInit.html#gaa96159d38c2548461aec892f0fed66f2',1,'SDL']]],
   ['delay_5',['Delay',['../group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4',1,'SDL']]],
   ['delayprecise_6',['DelayPrecise',['../group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de',1,'SDL']]],
-  ['deletestring_7',['DeleteString',['../structSDL_1_1TextBase.html#a2298bafa4dc8bcb7cd97e01a04c65eef',1,'SDL::TextBase']]],
+  ['deletestring_7',['DeleteString',['../structSDL_1_1TextBase.html#a4512eb19292fd2d4d02598b22d7671f7',1,'SDL::TextBase']]],
   ['destroysurface_8',['DestroySurface',['../structSDL_1_1WindowBase.html#a79ce3062d0dd8420339f7effddb378b9',1,'SDL::WindowBase']]],
   ['detach_9',['Detach',['../structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7',1,'SDL::ThreadRef']]],
   ['detachedresource_10',['DetachedResource',['../structSDL_1_1DetachedResource.html#aa3eb758009be4ebfd667b8fba835ce30',1,'SDL::DetachedResource']]],
   ['disablescreensaver_11',['DisableScreenSaver',['../group__CategoryVideo.html#ga13f5c7a04ece8b15a167476f84cd8975',1,'SDL']]],
   ['display_12',['Display',['../classSDL_1_1Display.html#af1e8f5ef744bed565850c79c0b97b67e',1,'SDL::Display']]],
-  ['drawrenderer_13',['DrawRenderer',['../structSDL_1_1TextBase.html#a9b3d3291d03c75970aa64707650a539f',1,'SDL::TextBase']]],
-  ['drawsurface_14',['DrawSurface',['../structSDL_1_1TextBase.html#a6cf15bf42ad8c0f7b6ec0cc2ab38ba1c',1,'SDL::TextBase']]],
+  ['drawrenderer_13',['DrawRenderer',['../structSDL_1_1TextBase.html#afcd6ff63329cd59e506cdc9a66706fbd',1,'SDL::TextBase']]],
+  ['drawsurface_14',['DrawSurface',['../structSDL_1_1TextBase.html#a3d138e3d41c7457e9e51f93fe2e126a0',1,'SDL::TextBase']]],
   ['duplicate_15',['Duplicate',['../group__CategorySurface.html#ga510ceed6c5bba1666c72a1de931c1a27',1,'SDL::SurfaceBase']]]
 ];
