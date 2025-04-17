@@ -502,7 +502,52 @@ const transform = {
               "name": "args"
             }
           ]
-        }
+        },
+        "SDL_GetError": [{
+          name: "Error",
+          kind: "struct",
+          type: "std::exception",
+          entries: {
+            "Error": {
+              kind: "function",
+              type: "",
+              parameters: [],
+              doc: "Default ctor.",
+              hints: { default: true }
+            },
+            "what": {
+              kind: "function",
+              type: "const char *",
+              immutable: true,
+              parameters: [],
+              doc: "Returns the explanatory string.",
+              hints: { body: "return GetError();" }
+            }
+          }
+        }, {
+          name: "CheckError",
+          kind: "function",
+          type: "void",
+          constexpr: true,
+          parameters: [{ type: "bool", name: "result" }]
+        }, {
+          name: "CheckError",
+          kind: "function",
+          type: "T",
+          constexpr: true,
+          template: [{ type: "class", name: "T" }],
+          parameters: [{ type: "T", name: "result" }]
+        }, {
+          name: "CheckError",
+          kind: "function",
+          type: "T",
+          constexpr: true,
+          template: [{ type: "class", name: "T" }],
+          parameters: [
+            { type: "T", name: "result" },
+            { type: "T", name: "invalidValue" },
+          ]
+        }],
       },
       transform: {
         "SDL_SetError": {

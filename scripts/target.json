@@ -3434,6 +3434,92 @@
           "parameters": [],
           "sourceName": "SDL_GetError"
         },
+        "Error": {
+          "name": "Error",
+          "kind": "struct",
+          "type": "std::exception",
+          "entries": {
+            "Error": {
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "doc": "Default ctor.",
+              "hints": {
+                "default": true
+              },
+              "name": "Error"
+            },
+            "what": {
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "parameters": [],
+              "doc": "Returns the explanatory string.",
+              "hints": {
+                "body": "return GetError();"
+              },
+              "name": "what"
+            }
+          },
+          "doc": ""
+        },
+        "CheckError": [
+          {
+            "name": "CheckError",
+            "kind": "function",
+            "type": "void",
+            "constexpr": true,
+            "parameters": [
+              {
+                "type": "bool",
+                "name": "result"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "name": "CheckError",
+            "kind": "function",
+            "type": "T",
+            "constexpr": true,
+            "template": [
+              {
+                "type": "class",
+                "name": "T"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "T",
+                "name": "result"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "name": "CheckError",
+            "kind": "function",
+            "type": "T",
+            "constexpr": true,
+            "template": [
+              {
+                "type": "class",
+                "name": "T"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "T",
+                "name": "result"
+              },
+              {
+                "type": "T",
+                "name": "invalidValue"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "ClearError": {
           "doc": "Clear any previous error message for this thread.\n\n@returns true.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetError\n@sa SetErrorUnformatted",
           "name": "ClearError",

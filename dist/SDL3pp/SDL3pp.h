@@ -5,6 +5,7 @@
 #include <atomic>
 #include <chrono>
 #include <concepts>
+#include <exception>
 #include <format>
 #include <functional>
 #include <memory>
@@ -8153,9 +8154,9 @@ constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
  * A common usage pattern is to have a function that returns true for success
  * and false for failure, and do this when something fails:
  *
- * ```c
+ * ```cpp
  * if (something_went_wrong) {
- *    return SetError("The thing broke in this specific way: %d", errcode);
+ *    return SDL::SetError("The thing broke in this specific way: {}", errcode);
  * }
  * ```
  *
@@ -8175,7 +8176,7 @@ constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
  *
  * ```c
  * if (error_code) {
- *     return SetError("This operation has failed: {}", error_code);
+ *     return SDL::SetError("This operation has failed: {}", error_code);
  * }
  * ```
  *
@@ -8250,7 +8251,7 @@ inline bool SetError(std::string_view fmt, ARGS... args)
 inline bool OutOfMemory() { return SDL_OutOfMemory(); }
 
 /**
- * @brief Retrieve a message about the last error that occurred on the current
+ * Retrieve a message about the last error that occurred on the current
  * thread.
  *
  * It is possible for multiple errors to occur before calling GetError().
@@ -8273,24 +8274,92 @@ inline bool OutOfMemory() { return SDL_OutOfMemory(); }
  * the current thread's error string is changed. The caller should make a copy
  * if the value is needed after the next SDL API call.
  *
- * @return a message with information about the specific error that occurred,
+ * @returns a message with information about the specific error that occurred,
  *          or an empty string if there hasn't been an error message set since
  *          the last call to ClearError().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
- * @sa ClearError()
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa SetErrorUnformatted
  */
 inline const char* GetError() { return SDL_GetError(); }
 
 /**
- * @brief Clear any previous error message for this thread.
+ * An exception that returns GetError()
+ *
+ */
+struct Error : std::exception
+{
+  /**
+   * Default ctor.
+   */
+  Error() = default;
+
+  /**
+   * Returns the explanatory string.
+   */
+  const char* what() const noexcept final { return GetError(); }
+};
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the
+ * parameter is false it will throw Error.
+ *
+ * @param result the result returned
+ */
+constexpr void CheckError(bool result)
+{
+  if (!result) throw Error();
+}
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the
+ * parameter is false it will throw Error.
+ *
+ * @param result the result returned
+ */
+template<class T>
+constexpr T CheckError(T result)
+{
+  if (!result) throw Error();
+  return result;
+}
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the result
+ * parameter is equals to invalidValue it will throw Error.
+ *
+ * @param result       the result returned
+ * @param invalidValue the value that if equal to result indicates this is
+ *                     invalid.
+ */
+template<class T>
+constexpr T CheckError(T result, T invalidValue)
+{
+  if (result == invalidValue) throw Error();
+  return result;
+}
+
+/**
+ * Clear any previous error message for this thread.
  *
  * @returns true.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
- * @sa GetError()
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetError
+ * @sa SetErrorUnformatted
  */
 inline bool ClearError() { return SDL_ClearError(); }
 
@@ -8299,7 +8368,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 /**
  * A macro to standardize error reporting on unsupported operations.
  *
- * This simply calls SDL_SetError() with a standardized error string, for
+ * This simply calls SetError() with a standardized error string, for
  * convenience, consistency, and clarity.
  *
  * @threadsafety It is safe to call this macro from any thread.
@@ -8311,7 +8380,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 /**
  * A macro to standardize error reporting on unsupported operations.
  *
- * This simply calls SDL_SetError() with a standardized error string, for
+ * This simply calls SetError() with a standardized error string, for
  * convenience, consistency, and clarity.
  *
  * A common usage pattern inside SDL is this:

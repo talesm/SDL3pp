@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['iconv_0',['iconv',['../structSDL_1_1IConv.html#aa59ed68c1499ef372936ceabf0b76910',1,'SDL::IConv::IConv(SDL_iconv_data_t *resource={})'],['../structSDL_1_1IConv.html#a23ab357175ef70aba7d87e5e919b471a',1,'SDL::IConv::IConv(IConv &amp;&amp;other)=default'],['../structSDL_1_1IConvBase.html#a7e63be073d2212672ec0e007f181a3c9',1,'SDL::IConvBase::iconv()']]],
+  ['iconv_0',['iconv',['../structSDL_1_1IConv.html#a23ab357175ef70aba7d87e5e919b471a',1,'SDL::IConv::IConv()'],['../structSDL_1_1IConvBase.html#a7e63be073d2212672ec0e007f181a3c9',1,'SDL::IConvBase::iconv()'],['../structSDL_1_1IConv.html#aa59ed68c1499ef372936ceabf0b76910',1,'SDL::IConv::IConv()']]],
   ['iconv_5fstring_1',['iconv_string',['../group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a',1,'SDL']]],
   ['iconvbase_2',['iconvbase',['../structSDL_1_1IConvRef.html#a439b8c48902e8bf4a98ee8505d800f28',1,'SDL::IConvRef::IConvBase()'],['../structSDL_1_1IConvBase.html#a439b8c48902e8bf4a98ee8505d800f28',1,'SDL::IConvBase::IConvBase()']]],
   ['iconvref_3',['iconvref',['../structSDL_1_1IConvRef.html#a4cf6627b23a7b24a7b7dfda30e8426a7',1,'SDL::IConvRef::IConvRef(const IConvRef &amp;other)'],['../structSDL_1_1IConvRef.html#a11021d2d81ac3a04b5e83ca3c3a24088',1,'SDL::IConvRef::IConvRef(IConvRef &amp;&amp;other)'],['../structSDL_1_1IConv.html#a4cf6627b23a7b24a7b7dfda30e8426a7',1,'SDL::IConv::IConvRef(const IConvRef &amp;other)'],['../structSDL_1_1IConv.html#a11021d2d81ac3a04b5e83ca3c3a24088',1,'SDL::IConv::IConvRef(IConvRef &amp;&amp;other)']]],
