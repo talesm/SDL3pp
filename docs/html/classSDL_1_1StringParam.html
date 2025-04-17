@@ -116,9 +116,12 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StringParam</b> 
 <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> &amp;&amp;)=default</td></tr>
 <tr class="memdesc:a2dd33ca4f17279b9c3e023d5b04ca4e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment. <br /></td></tr>
 <tr class="separator:a2dd33ca4f17279b9c3e023d5b04ca4e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abefff7ab6d94176b8c34d2fc7dfb3409" id="r_abefff7ab6d94176b8c34d2fc7dfb3409"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1StringParam.html#abefff7ab6d94176b8c34d2fc7dfb3409">operator const char *</a> () const</td></tr>
-<tr class="memdesc:abefff7ab6d94176b8c34d2fc7dfb3409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to a null terminated C string.  <br /></td></tr>
-<tr class="separator:abefff7ab6d94176b8c34d2fc7dfb3409"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a026cec9d953235f6ab8e6c274de221fc" id="r_a026cec9d953235f6ab8e6c274de221fc"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1StringParam.html#a026cec9d953235f6ab8e6c274de221fc">c_str</a> () const</td></tr>
+<tr class="memdesc:a026cec9d953235f6ab8e6c274de221fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to a null terminated C string.  <br /></td></tr>
+<tr class="separator:a026cec9d953235f6ab8e6c274de221fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcfbe22af7cb922152b94c7e3f67e9ae" id="r_afcfbe22af7cb922152b94c7e3f67e9ae"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1StringParam.html#afcfbe22af7cb922152b94c7e3f67e9ae">operator const char *</a> () const</td></tr>
+<tr class="memdesc:afcfbe22af7cb922152b94c7e3f67e9ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to a null terminated C string.  <br /></td></tr>
+<tr class="separator:afcfbe22af7cb922152b94c7e3f67e9ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This wraps std::string and std::string_view to the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s C interfaces.</p>
@@ -257,8 +260,8 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StringParam</b> 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="abefff7ab6d94176b8c34d2fc7dfb3409" name="abefff7ab6d94176b8c34d2fc7dfb3409"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abefff7ab6d94176b8c34d2fc7dfb3409">&#9670;&#160;</a></span>operator const char *()</h2>
+<a id="a026cec9d953235f6ab8e6c274de221fc" name="a026cec9d953235f6ab8e6c274de221fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a026cec9d953235f6ab8e6c274de221fc">&#9670;&#160;</a></span>c_str()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,7 +270,7 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StringParam</b> 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL::StringParam::operator const char * </td>
+          <td class="memname">constexpr const char * SDL::StringParam::c_str </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -275,7 +278,33 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StringParam</b> 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the C string representation. We guarantee it to be null terminated unless the objects it was constructed from are corrupted. </dd></dl>
+
+</div>
+</div>
+<a id="afcfbe22af7cb922152b94c7e3f67e9ae" name="afcfbe22af7cb922152b94c7e3f67e9ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcfbe22af7cb922152b94c7e3f67e9ae">&#9670;&#160;</a></span>operator const char *()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::StringParam::operator const char * </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

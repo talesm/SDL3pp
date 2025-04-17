@@ -25,6 +25,7 @@
     "SDL_timer.h",
     "SDL_time.h",
     "SDL_filesystem.h",
+    "SDL_storage.h",
     "SDL_iostream.h",
     "SDL_platform.h",
     "SDL_cpuinfo.h",

@@ -21938,6 +21938,397 @@
         }
       }
     },
+    "SDL_storage.h": {
+      "name": "SDL_storage.h",
+      "doc": "# CategoryStorage\n\nThe storage API is a high-level API designed to abstract away the\nportability issues that come up when using something lower-level (in SDL's\ncase, this sits on top of the [Filesystem](CategoryFilesystem) and\n[IOStream](CategoryIOStream) subsystems). It is significantly more\nrestrictive than a typical filesystem API, for a number of reasons:\n\n1. **What to Access:** A common pitfall with existing filesystem APIs is\nthe assumption that all storage is monolithic. However, many other\nplatforms (game consoles in particular) are more strict about what _type_\nof filesystem is being accessed; for example, game content and user data\nare usually two separate storage devices with entirely different\ncharacteristics (and possibly different low-level APIs altogether!).\n\n2. **How to Access:** Another common mistake is applications assuming that\nall storage is universally writeable - again, many platforms treat game\ncontent and user data as two separate storage devices, and only user data\nis writeable while game content is read-only.\n\n3. **When to Access:** The most common portability issue with filesystem\naccess is _timing_ - you cannot always assume that the storage device is\nalways accessible all of the time, nor can you assume that there are no\nlimits to how long you have access to a particular device.\n\nConsider the following example:\n\n```c\nvoid ReadGameData(void)\n{\n    extern char** fileNames;\n    extern size_t numFiles;\n    for (size_t i = 0; i < numFiles; i += 1) {\n        FILE *data = fopen(fileNames[i], \"rwb\");\n        if (data == NULL) {\n            // Something bad happened!\n        } else {\n            // A bunch of stuff happens here\n            fclose(data);\n        }\n    }\n}\n\nvoid ReadSave(void)\n{\n    FILE *save = fopen(\"saves/save0.sav\", \"rb\");\n    if (save == NULL) {\n        // Something bad happened!\n    } else {\n        // A bunch of stuff happens here\n        fclose(save);\n    }\n}\n\nvoid WriteSave(void)\n{\n    FILE *save = fopen(\"saves/save0.sav\", \"wb\");\n    if (save == NULL) {\n        // Something bad happened!\n    } else {\n        // A bunch of stuff happens here\n        fclose(save);\n    }\n}\n```\n\nGoing over the bullet points again:\n\n1. **What to Access:** This code accesses a global filesystem; game data\nand saves are all presumed to be in the current working directory (which\nmay or may not be the game's installation folder!).\n\n2. **How to Access:** This code assumes that content paths are writeable,\nand that save data is also writeable despite being in the same location as\nthe game data.\n\n3. **When to Access:** This code assumes that they can be called at any\ntime, since the filesystem is always accessible and has no limits on how\nlong the filesystem is being accessed.\n\nDue to these assumptions, the filesystem code is not portable and will fail\nunder these common scenarios:\n\n- The game is installed on a device that is read-only, both content loading\n  and game saves will fail or crash outright\n- Game/User storage is not implicitly mounted, so no files will be found\n  for either scenario when a platform requires explicitly mounting\n  filesystems\n- Save data may not be safe since the I/O is not being flushed or\n  validated, so an error occurring elsewhere in the program may result in\n  missing/corrupted save data\n\nWhen using SDL_Storage, these types of problems are virtually impossible to\ntrip over:\n\n```c\nvoid ReadGameData(void)\n{\n    extern char** fileNames;\n    extern size_t numFiles;\n\n    SDL_Storage *title = SDL_OpenTitleStorage(NULL, 0);\n    if (title == NULL) {\n        // Something bad happened!\n    }\n    while (!SDL_StorageReady(title)) {\n        SDL_Delay(1);\n    }\n\n    for (size_t i = 0; i < numFiles; i += 1) {\n        void* dst;\n        Uint64 dstLen = 0;\n\n        if (SDL_GetStorageFileSize(title, fileNames[i], &dstLen) && dstLen > 0) {\n            dst = SDL_malloc(dstLen);\n            if (SDL_ReadStorageFile(title, fileNames[i], dst, dstLen)) {\n                // A bunch of stuff happens here\n            } else {\n                // Something bad happened!\n            }\n            SDL_free(dst);\n        } else {\n            // Something bad happened!\n        }\n    }\n\n    SDL_CloseStorage(title);\n}\n\nvoid ReadSave(void)\n{\n    SDL_Storage *user = SDL_OpenUserStorage(\"libsdl\", \"Storage Example\", 0);\n    if (user == NULL) {\n        // Something bad happened!\n    }\n    while (!SDL_StorageReady(user)) {\n        SDL_Delay(1);\n    }\n\n    Uint64 saveLen = 0;\n    if (SDL_GetStorageFileSize(user, \"save0.sav\", &saveLen) && saveLen > 0) {\n        void* dst = SDL_malloc(saveLen);\n        if (SDL_ReadStorageFile(user, \"save0.sav\", dst, saveLen)) {\n            // A bunch of stuff happens here\n        } else {\n            // Something bad happened!\n        }\n        SDL_free(dst);\n    } else {\n        // Something bad happened!\n    }\n\n    SDL_CloseStorage(user);\n}\n\nvoid WriteSave(void)\n{\n    SDL_Storage *user = SDL_OpenUserStorage(\"libsdl\", \"Storage Example\", 0);\n    if (user == NULL) {\n        // Something bad happened!\n    }\n    while (!SDL_StorageReady(user)) {\n        SDL_Delay(1);\n    }\n\n    extern void *saveData; // A bunch of stuff happened here...\n    extern Uint64 saveLen;\n    if (!SDL_WriteStorageFile(user, \"save0.sav\", saveData, saveLen)) {\n        // Something bad happened!\n    }\n\n    SDL_CloseStorage(user);\n}\n```\n\nNote the improvements that SDL_Storage makes:\n\n1. **What to Access:** This code explicitly reads from a title or user\nstorage device based on the context of the function.\n\n2. **How to Access:** This code explicitly uses either a read or write\nfunction based on the context of the function.\n\n3. **When to Access:** This code explicitly opens the device when it needs\nto, and closes it when it is finished working with the filesystem.\n\nThe result is an application that is significantly more robust against the\nincreasing demands of platforms and their filesystems!\n\nA publicly available example of an SDL_Storage backend is the\n[Steam Cloud](https://partner.steamgames.com/doc/features/cloud)\nbackend - you can initialize Steamworks when starting the program, and then\nSDL will recognize that Steamworks is initialized and automatically use\nISteamRemoteStorage when the application opens user storage. More\nimportantly, when you _open_ storage it knows to begin a \"batch\" of\nfilesystem operations, and when you _close_ storage it knows to end and\nflush the batch. This is used by Steam to support\n[Dynamic Cloud Sync](https://steamcommunity.com/groups/steamworks/announcements/detail/3142949576401813670)\n; users can save data on one PC, put the device to sleep, and then continue\nplaying on another PC (and vice versa) with the save data fully\nsynchronized across all devices, allowing for a seamless experience without\nhaving to do full restarts of the program.\n\n## Notes on valid paths\n\nAll paths in the Storage API use Unix-style path separators ('/'). Using a\ndifferent path separator will not work, even if the underlying platform\nwould otherwise accept it. This is to keep code using the Storage API\nportable between platforms and Storage implementations and simplify app\ncode.\n\nPaths with relative directories (\".\" and \"..\") are forbidden by the Storage\nAPI.\n\nAll valid UTF-8 strings (discounting the NULL terminator character and the\n'/' path separator) are usable for filenames, however, an underlying\nStorage implementation may not support particularly strange sequences and\nrefuse to create files with those names, etc.",
+      "entries": {
+        "SDL_StorageInterface": {
+          "doc": "Function interface for SDL_Storage.\n\nApps that want to supply a custom implementation of SDL_Storage will fill\nin all the functions in this struct, and then pass it to SDL_OpenStorage to\ncreate a custom SDL_Storage object.\n\nIt is not usually necessary to do this; SDL provides standard\nimplementations for many things you might expect to do with an SDL_Storage.\n\nThis structure should be initialized using SDL_INIT_INTERFACE()\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_INIT_INTERFACE",
+          "name": "SDL_StorageInterface",
+          "kind": "struct",
+          "entries": {
+            "version": {
+              "doc": "",
+              "name": "version",
+              "kind": "var",
+              "type": "Uint32"
+            },
+            "path": {
+              "doc": "",
+              "name": "path",
+              "kind": "var",
+              "type": "const char *"
+            },
+            "callback": {
+              "doc": "",
+              "name": "callback",
+              "kind": "var",
+              "type": "const char SDL_EnumerateDirectoryCallback"
+            },
+            "callback_userdata": {
+              "doc": "",
+              "name": "callback_userdata",
+              "kind": "var",
+              "type": "const char SDL_EnumerateDirectoryCallback void *"
+            },
+            "info": {
+              "doc": "",
+              "name": "info",
+              "kind": "var",
+              "type": "SDL_PathInfo"
+            },
+            "destination": {
+              "doc": "",
+              "name": "destination",
+              "kind": "var",
+              "type": "const char void *"
+            },
+            "length": {
+              "doc": "",
+              "name": "length",
+              "kind": "var",
+              "type": "const char const void Uint64"
+            },
+            "source": {
+              "doc": "",
+              "name": "source",
+              "kind": "var",
+              "type": "const char const void *"
+            },
+            "oldpath": {
+              "doc": "",
+              "name": "oldpath",
+              "kind": "var",
+              "type": "const char *"
+            },
+            "newpath": {
+              "doc": "",
+              "name": "newpath",
+              "kind": "var",
+              "type": "const char const char *"
+            }
+          }
+        },
+        "SDL_Storage": {
+          "doc": "An abstract interface for filesystem access.\n\nThis is an opaque datatype. One can create this object using standard SDL\nfunctions like SDL_OpenTitleStorage or SDL_OpenUserStorage, etc, or create\nan object with a custom implementation using SDL_OpenStorage.\n\n\\since This struct is available since SDL 3.2.0.",
+          "name": "SDL_Storage",
+          "kind": "alias",
+          "type": "struct SDL_Storage"
+        },
+        "SDL_OpenTitleStorage": {
+          "doc": "Opens up a read-only container for the application's filesystem.\n\n\\param override a path to override the backend's default title root.\n\\param props a property list that may contain backend-specific information.\n\\returns a title storage container on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CloseStorage\n\\sa SDL_GetStorageFileSize\n\\sa SDL_OpenUserStorage\n\\sa SDL_ReadStorageFile",
+          "name": "SDL_OpenTitleStorage",
+          "kind": "function",
+          "type": "SDL_Storage *",
+          "parameters": [
+            {
+              "name": "override",
+              "type": "const char *"
+            },
+            {
+              "name": "props",
+              "type": "SDL_PropertiesID"
+            }
+          ]
+        },
+        "SDL_OpenUserStorage": {
+          "doc": "Opens up a container for a user's unique read/write filesystem.\n\nWhile title storage can generally be kept open throughout runtime, user\nstorage should only be opened when the client is ready to read/write files.\nThis allows the backend to properly batch file operations and flush them\nwhen the container has been closed; ensuring safe and optimal save I/O.\n\n\\param org the name of your organization.\n\\param app the name of your application.\n\\param props a property list that may contain backend-specific information.\n\\returns a user storage container on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CloseStorage\n\\sa SDL_GetStorageFileSize\n\\sa SDL_GetStorageSpaceRemaining\n\\sa SDL_OpenTitleStorage\n\\sa SDL_ReadStorageFile\n\\sa SDL_StorageReady\n\\sa SDL_WriteStorageFile",
+          "name": "SDL_OpenUserStorage",
+          "kind": "function",
+          "type": "SDL_Storage *",
+          "parameters": [
+            {
+              "name": "org",
+              "type": "const char *"
+            },
+            {
+              "name": "app",
+              "type": "const char *"
+            },
+            {
+              "name": "props",
+              "type": "SDL_PropertiesID"
+            }
+          ]
+        },
+        "SDL_OpenFileStorage": {
+          "doc": "Opens up a container for local filesystem storage.\n\nThis is provided for development and tools. Portable applications should\nuse SDL_OpenTitleStorage() for access to game data and\nSDL_OpenUserStorage() for access to user data.\n\n\\param path the base path prepended to all storage paths, or NULL for no\n            base path.\n\\returns a filesystem storage container on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CloseStorage\n\\sa SDL_GetStorageFileSize\n\\sa SDL_GetStorageSpaceRemaining\n\\sa SDL_OpenTitleStorage\n\\sa SDL_OpenUserStorage\n\\sa SDL_ReadStorageFile\n\\sa SDL_WriteStorageFile",
+          "name": "SDL_OpenFileStorage",
+          "kind": "function",
+          "type": "SDL_Storage *",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_OpenStorage": {
+          "doc": "Opens up a container using a client-provided storage interface.\n\nApplications do not need to use this function unless they are providing\ntheir own SDL_Storage implementation. If you just need an SDL_Storage, you\nshould use the built-in implementations in SDL, like SDL_OpenTitleStorage()\nor SDL_OpenUserStorage().\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n\\param iface the interface that implements this storage, initialized using\n             SDL_INIT_INTERFACE().\n\\param userdata the pointer that will be passed to the interface functions.\n\\returns a storage container on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CloseStorage\n\\sa SDL_GetStorageFileSize\n\\sa SDL_GetStorageSpaceRemaining\n\\sa SDL_INIT_INTERFACE\n\\sa SDL_ReadStorageFile\n\\sa SDL_StorageReady\n\\sa SDL_WriteStorageFile",
+          "name": "SDL_OpenStorage",
+          "kind": "function",
+          "type": "SDL_Storage *",
+          "parameters": [
+            {
+              "name": "iface",
+              "type": "const SDL_StorageInterface *"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_CloseStorage": {
+          "doc": "Closes and frees a storage container.\n\n\\param storage a storage container to close.\n\\returns true if the container was freed with no errors, false otherwise;\n         call SDL_GetError() for more information. Even if the function\n         returns an error, the container data will be freed; the error is\n         only for informational purposes.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenFileStorage\n\\sa SDL_OpenStorage\n\\sa SDL_OpenTitleStorage\n\\sa SDL_OpenUserStorage",
+          "name": "SDL_CloseStorage",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            }
+          ]
+        },
+        "SDL_StorageReady": {
+          "doc": "Checks if the storage container is ready to use.\n\nThis function should be called in regular intervals until it returns true -\nhowever, it is not recommended to spinwait on this call, as the backend may\ndepend on a synchronous message loop. You might instead poll this in your\ngame's main loop while processing events and drawing a loading screen.\n\n\\param storage a storage container to query.\n\\returns true if the container is ready, false otherwise.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_StorageReady",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            }
+          ]
+        },
+        "SDL_GetStorageFileSize": {
+          "doc": "Query the size of a file within a storage container.\n\n\\param storage a storage container to query.\n\\param path the relative path of the file to query.\n\\param length a pointer to be filled with the file's length.\n\\returns true if the file could be queried or false on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ReadStorageFile\n\\sa SDL_StorageReady",
+          "name": "SDL_GetStorageFileSize",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "path",
+              "type": "const char *"
+            },
+            {
+              "name": "length",
+              "type": "Uint64 *"
+            }
+          ]
+        },
+        "SDL_ReadStorageFile": {
+          "doc": "Synchronously read a file from a storage container into a client-provided\nbuffer.\n\nThe value of `length` must match the length of the file exactly; call\nSDL_GetStorageFileSize() to get this value. This behavior may be relaxed in\na future release.\n\n\\param storage a storage container to read from.\n\\param path the relative path of the file to read.\n\\param destination a client-provided buffer to read the file into.\n\\param length the length of the destination buffer.\n\\returns true if the file was read or false on failure; call SDL_GetError()\n         for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetStorageFileSize\n\\sa SDL_StorageReady\n\\sa SDL_WriteStorageFile",
+          "name": "SDL_ReadStorageFile",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "path",
+              "type": "const char *"
+            },
+            {
+              "name": "destination",
+              "type": "void *"
+            },
+            {
+              "name": "length",
+              "type": "Uint64"
+            }
+          ]
+        },
+        "SDL_WriteStorageFile": {
+          "doc": "Synchronously write a file from client memory into a storage container.\n\n\\param storage a storage container to write to.\n\\param path the relative path of the file to write.\n\\param source a client-provided buffer to write from.\n\\param length the length of the source buffer.\n\\returns true if the file was written or false on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetStorageSpaceRemaining\n\\sa SDL_ReadStorageFile\n\\sa SDL_StorageReady",
+          "name": "SDL_WriteStorageFile",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "path",
+              "type": "const char *"
+            },
+            {
+              "name": "source",
+              "type": "const void *"
+            },
+            {
+              "name": "length",
+              "type": "Uint64"
+            }
+          ]
+        },
+        "SDL_CreateStorageDirectory": {
+          "doc": "Create a directory in a writable storage container.\n\n\\param storage a storage container.\n\\param path the path of the directory to create.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_StorageReady",
+          "name": "SDL_CreateStorageDirectory",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "path",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_EnumerateStorageDirectory": {
+          "doc": "Enumerate a directory in a storage container through a callback function.\n\nThis function provides every directory entry through an app-provided\ncallback, called once for each directory entry, until all results have been\nprovided or the callback returns either SDL_ENUM_SUCCESS or\nSDL_ENUM_FAILURE.\n\nThis will return false if there was a system problem in general, or if a\ncallback returns SDL_ENUM_FAILURE. A successful return means a callback\nreturned SDL_ENUM_SUCCESS to halt enumeration, or all directory entries\nwere enumerated.\n\nIf `path` is NULL, this is treated as a request to enumerate the root of\nthe storage container's tree. An empty string also works for this.\n\n\\param storage a storage container.\n\\param path the path of the directory to enumerate, or NULL for the root.\n\\param callback a function that is called for each entry in the directory.\n\\param userdata a pointer that is passed to `callback`.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_StorageReady",
+          "name": "SDL_EnumerateStorageDirectory",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "path",
+              "type": "const char *"
+            },
+            {
+              "name": "callback",
+              "type": "SDL_EnumerateDirectoryCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_RemoveStoragePath": {
+          "doc": "Remove a file or an empty directory in a writable storage container.\n\n\\param storage a storage container.\n\\param path the path of the directory to enumerate.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_StorageReady",
+          "name": "SDL_RemoveStoragePath",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "path",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_RenameStoragePath": {
+          "doc": "Rename a file or directory in a writable storage container.\n\n\\param storage a storage container.\n\\param oldpath the old path.\n\\param newpath the new path.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_StorageReady",
+          "name": "SDL_RenameStoragePath",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "oldpath",
+              "type": "const char *"
+            },
+            {
+              "name": "newpath",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_CopyStorageFile": {
+          "doc": "Copy a file in a writable storage container.\n\n\\param storage a storage container.\n\\param oldpath the old path.\n\\param newpath the new path.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_StorageReady",
+          "name": "SDL_CopyStorageFile",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "oldpath",
+              "type": "const char *"
+            },
+            {
+              "name": "newpath",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_GetStoragePathInfo": {
+          "doc": "Get information about a filesystem path in a storage container.\n\n\\param storage a storage container.\n\\param path the path to query.\n\\param info a pointer filled in with information about the path, or NULL to\n            check for the existence of a file.\n\\returns true on success or false if the file doesn't exist, or another\n         failure; call SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_StorageReady",
+          "name": "SDL_GetStoragePathInfo",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "path",
+              "type": "const char *"
+            },
+            {
+              "name": "info",
+              "type": "SDL_PathInfo *"
+            }
+          ]
+        },
+        "SDL_GetStorageSpaceRemaining": {
+          "doc": "Queries the remaining space in a storage container.\n\n\\param storage a storage container to query.\n\\returns the amount of remaining space, in bytes.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_StorageReady\n\\sa SDL_WriteStorageFile",
+          "name": "SDL_GetStorageSpaceRemaining",
+          "kind": "function",
+          "type": "Uint64",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            }
+          ]
+        },
+        "SDL_GlobStorageDirectory": {
+          "doc": "Enumerate a directory tree, filtered by pattern, and return a list.\n\nFiles are filtered out if they don't match the string in `pattern`, which\nmay contain wildcard characters `*` (match everything) and `?` (match one\ncharacter). If pattern is NULL, no filtering is done and all results are\nreturned. Subdirectories are permitted, and are specified with a path\nseparator of '/'. Wildcard characters `*` and `?` never match a path\nseparator.\n\n`flags` may be set to SDL_GLOB_CASEINSENSITIVE to make the pattern matching\ncase-insensitive.\n\nThe returned array is always NULL-terminated, for your iterating\nconvenience, but if `count` is non-NULL, on return it will contain the\nnumber of items in the array, not counting the NULL terminator.\n\nIf `path` is NULL, this is treated as a request to enumerate the root of\nthe storage container's tree. An empty string also works for this.\n\n\\param storage a storage container.\n\\param path the path of the directory to enumerate, or NULL for the root.\n\\param pattern the pattern that files in the directory must match. Can be\n               NULL.\n\\param flags `SDL_GLOB_*` bitflags that affect this search.\n\\param count on return, will be set to the number of items in the returned\n             array. Can be NULL.\n\\returns an array of strings on success or NULL on failure; call\n         SDL_GetError() for more information. The caller should pass the\n         returned pointer to SDL_free when done with it. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n\\threadsafety It is safe to call this function from any thread, assuming\n              the `storage` object is thread-safe.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GlobStorageDirectory",
+          "kind": "function",
+          "type": "char **",
+          "parameters": [
+            {
+              "name": "storage",
+              "type": "SDL_Storage *"
+            },
+            {
+              "name": "path",
+              "type": "const char *"
+            },
+            {
+              "name": "pattern",
+              "type": "const char *"
+            },
+            {
+              "name": "flags",
+              "type": "SDL_GlobFlags"
+            },
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ]
+        }
+      }
+    },
     "SDL_iostream.h": {
       "name": "SDL_iostream.h",
       "doc": "# CategoryIOStream\n\nSDL provides an abstract interface for reading and writing data streams. It\noffers implementations for files, memory, etc, and the app can provide\ntheir own implementations, too.\n\nSDL_IOStream is not related to the standard C++ iostream class, other than\nboth are abstract interfaces to read/write data.",
