@@ -261,7 +261,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind the scenes for apps using the optional main callbacks. Apps that want to use this should just implement SDL_AppEvent directly.</p>
+<p>These are used by EnterAppMainCallbacks. This mechanism operates behind the scenes for apps using the optional main callbacks. Apps that want to use this should just implement SDL_AppEvent directly.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">appstate</td><td>an optional pointer, provided by the app in SDL_AppInit. </td></tr>
@@ -269,7 +269,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to terminate with success, SDL_APP_CONTINUE to continue.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>APP_FAILURE to terminate with an error, APP_SUCCESS to terminate with success, APP_CONTINUE to continue.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -285,7 +285,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind the scenes for apps using the optional main callbacks. Apps that want to use this should just implement SDL_AppInit directly.</p>
+<p>These are used by EnterAppMainCallbacks. This mechanism operates behind the scenes for apps using the optional main callbacks. Apps that want to use this should just implement SDL_AppInit directly.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">appstate</td><td>a place where the app can optionally store a pointer for future use. </td></tr>
@@ -294,7 +294,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to terminate with success, SDL_APP_CONTINUE to continue.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>APP_FAILURE to terminate with an error, APP_SUCCESS to terminate with success, APP_CONTINUE to continue.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -310,14 +310,14 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind the scenes for apps using the optional main callbacks. Apps that want to use this should just implement SDL_AppIterate directly.</p>
+<p>These are used by EnterAppMainCallbacks. This mechanism operates behind the scenes for apps using the optional main callbacks. Apps that want to use this should just implement SDL_AppIterate directly.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">appstate</td><td>an optional pointer, provided by the app in SDL_AppInit. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to terminate with success, SDL_APP_CONTINUE to continue.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>APP_FAILURE to terminate with an error, APP_SUCCESS to terminate with success, APP_CONTINUE to continue.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -333,7 +333,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind the scenes for apps using the optional main callbacks. Apps that want to use this should just implement SDL_AppEvent directly.</p>
+<p>These are used by EnterAppMainCallbacks. This mechanism operates behind the scenes for apps using the optional main callbacks. Apps that want to use this should just implement SDL_AppEvent directly.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">appstate</td><td>an optional pointer, provided by the app in SDL_AppInit. </td></tr>
@@ -356,8 +356,8 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit, SDL_AppEvent, or SDL_AppIterate will terminate the program and report success/failure to the operating system. What that means is platform-dependent. On Unix, for example, on success, the process error code will be zero, and on failure it will be 1. This interface doesn't allow you to return specific exit codes, just whether there was an error generally or not.</p>
-<p>Returning SDL_APP_CONTINUE from these functions will let the app continue to run.</p>
+<p>Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit, SDL_AppEvent, or SDL_AppIterate will terminate the program and report success/failure to the operating system. What that means is platform-dependent. On Unix, for example, on success, the process error code will be zero, and on failure it will be 1. This interface doesn't allow you to return specific exit codes, just whether there was an error generally or not.</p>
+<p>Returning APP_CONTINUE from these functions will let the app continue to run.</p>
 <p>See <a href="https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3">Main callbacks in SDL3</a> for complete details.</p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
@@ -381,7 +381,7 @@ constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a2951444
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaa84158dc51ac29c236db85acbfc03784" title="Call a function on the main thread during event processing.">RunOnMainThread()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaa84158dc51ac29c236db85acbfc03784" title="Call a function on the main thread during event processing.">RunOnMainThread</a> </dd></dl>
 
 </div>
 </div>
@@ -624,19 +624,19 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This returns metadata previously set using SDL_SetAppMetadata() or SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list of available properties and their meanings.</p>
+<p>This returns metadata previously set using <a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> or <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a>. See <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a> for the list of available properties and their meanings.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the metadata property to get. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current value of the metadata property, or the default if it is not set, NULL for properties with no default.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, although the string returned is not protected and could potentially be freed if you call SDL_SetAppMetadataProperty() to set that property from another thread.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the current value of the metadata property, or the default if it is not set, nullptr for properties with no default.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, although the string returned is not protected and could potentially be freed if you call <a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a> to set that property from another thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetAppMetadata </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata</a> </dd>
 <dd>
-SDL_SetAppMetadataProperty </dd></dl>
+<a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty</a> </dd></dl>
 
 </div>
 </div>
@@ -935,17 +935,15 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga0ca4fb3d93b283cfeea6386f118727c8" title="Specify basic metadata about your app.">SetAppMetadata</a> </dd>
 <dd>
-<a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a> </dd>
+<a class="el" href="group__CategoryInit.html#gab0d2f85a26b787140f899a0a641aa9b5" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty</a> </dd>
 <dd>
-<a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> </dd>
+<a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit</a> </dd>
 <dd>
-<a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> </dd>
+<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of SDL_Init() when not using SDL_main() as an entry point.">SetMainReady</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMain.html#ga2e0a74019d194d53475e74a803e5afa9" title="Circumvent failure of SDL_Init() when not using SDL_main() as an entry point.">SetMainReady()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit()</a> </dd></dl>
+<a class="el" href="group__CategoryInit.html#gaa17083ba3ec421956acec4075284b453" title="Check if all of the specified subsystems which are currently initialized.">WasInit</a> </dd></dl>
 
 </div>
 </div>
@@ -971,11 +969,11 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>On Apple platforms, the main thread is the thread that runs your program's main() entry point. On other platforms, the main thread is the one that calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs your program's main() entry point. If you are using the main callbacks, SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.</p>
+<p>On Apple platforms, the main thread is the thread that runs your program's main() entry point. On other platforms, the main thread is the one that calls InitSubSystem(INIT_VIDEO), which should usually be the one that runs your program's main() entry point. If you are using the main callbacks, SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if this thread is the main thread, or false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaa84158dc51ac29c236db85acbfc03784" title="Call a function on the main thread during event processing.">RunOnMainThread()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaa84158dc51ac29c236db85acbfc03784" title="Call a function on the main thread during event processing.">RunOnMainThread</a> </dd></dl>
 
 </div>
 </div>
@@ -1042,12 +1040,12 @@ template&lt;HasIterateFunction T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>You should call this function even if you have already shutdown each initialized subsystem with SDL_QuitSubSystem(). It is safe to call this function even in the case of errors in initialization.</p>
+<p>You should call this function even if you have already shutdown each initialized subsystem with <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a>. It is safe to call this function even in the case of errors in initialization.</p>
 <p>You can use this function with atexit() to ensure that it is run when your application is shutdown, but it is not wise to do this from a library or other dynamically loaded code.</p>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>Init() </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem</a> </dd>
 <dd>
-<a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a> </dd></dl>
+<a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem</a> </dd></dl>
 
 </div>
 </div>
@@ -1250,14 +1248,14 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 <p>You still need to call <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> even if you close all open subsystems with <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">flags</td><td>any of the flags used by Init(); see InitFlags for details.</td></tr>
+    <tr><td class="paramname">flags</td><td>any of the flags used by <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a>; see InitFlags for details.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem</a> </dd>
 <dd>
-<a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> </dd></dl>
+<a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit</a> </dd></dl>
 
 </div>
 </div>
@@ -1660,15 +1658,15 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">flags</td><td>any of the flags used by SDL_Init(); see SDL_Init for details. </td></tr>
+    <tr><td class="paramname">flags</td><td>any of the flags used by <a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a>; see InitSubSystem for details. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if all subsystems are currently initialized </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if all subsystems are currently initialized</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>Init() </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem</a> </dd>
 <dd>
-<a class="el" href="group__CategoryInit.html#ga42d4baeeaf5a4b4076dfbf82cebba481" title="Initialize the SDL library.">InitSubSystem()</a> </dd></dl>
+SDL_InitSubSystem </dd></dl>
 
 </div>
 </div>

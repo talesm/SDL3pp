@@ -117,7 +117,7 @@ constexpr InitFlags INIT_CAMERA =
 /**
  * Return values for optional main callbacks.
  *
- * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
+ * Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit,
  * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
  * success/failure to the operating system. What that means is
  * platform-dependent. On Unix, for example, on success, the process error
@@ -125,7 +125,7 @@ constexpr InitFlags INIT_CAMERA =
  * allow you to return specific exit codes, just whether there was an error
  * generally or not.
  *
- * Returning SDL_APP_CONTINUE from these functions will let the app continue
+ * Returning APP_CONTINUE from these functions will let the app continue
  * to run.
  *
  * See
@@ -163,7 +163,7 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 /**
  * Function pointer typedef for SDL_AppInit.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppInit directly.
  *
@@ -172,8 +172,8 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
  * @param argc the standard ANSI C main's argc; number of elements in `argv`.
  * @param argv the standard ANSI C main's argv; array of command line
  *             arguments.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
+ *          terminate with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -182,13 +182,13 @@ using AppInit_func = SDL_AppInit_func;
 /**
  * Function pointer typedef for SDL_AppIterate.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppIterate directly.
  *
  * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
+ *          terminate with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -197,14 +197,14 @@ using AppIterate_func = SDL_AppIterate_func;
 /**
  * Function pointer typedef for SDL_AppEvent.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppEvent directly.
  *
  * @param appstate an optional pointer, provided by the app in SDL_AppInit.
  * @param event the new event for the app to examine.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
+ *          terminate with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -213,7 +213,7 @@ using AppEvent_func = SDL_AppEvent_func;
 /**
  * Function pointer typedef for SDL_AppQuit.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppEvent directly.
  *
@@ -274,12 +274,11 @@ using AppQuit_func = SDL_AppQuit_func;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- * @sa InitSubSystem()
- * @sa Quit()
- * @sa SetMainReady()
- * @sa WasInit()
+ * @sa SetAppMetadata
+ * @sa SetAppMetadataProperty
+ * @sa Quit
+ * @sa SetMainReady
+ * @sa WasInit
  */
 inline void InitSubSystem(InitFlags flags) { CheckError(SDL_Init(flags)); }
 
@@ -421,14 +420,15 @@ inline void InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
  * You still need to call Quit() even if you close all open subsystems with
  * QuitSubSystem().
  *
- * @param flags any of the flags used by Init(); see InitFlags for details.
+ * @param flags any of the flags used by InitSubSystem(); see InitFlags for
+ * details.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa InitSubSystem()
- * @sa Quit()
+ * @sa InitSubSystem
+ * @sa Quit
  */
-inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
+inline void QuitSubSystem(InitFlags flags) { SDL_QuitSubSystem(flags); }
 
 /**
  * Shut down specific SDL subsystems.
@@ -477,12 +477,14 @@ inline void QuitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
 /**
  * Check if all of the specified subsystems which are currently initialized.
  *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @param flags any of the flags used by InitSubSystem(); see InitSubSystem for
+ *              details.
  * @returns true if all subsystems are currently initialized
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Init()
- * @sa InitSubSystem()
+ * @sa InitSubSystem
+ * @sa SDL_InitSubSystem
  */
 inline bool WasInit(InitFlags flags) { return SDL_WasInit(flags) == flags; }
 
@@ -524,7 +526,7 @@ inline bool WasInit(FLAG flag0, FLAG flag1, FLAGS... flags)
  * Clean up all initialized subsystems.
  *
  * You should call this function even if you have already shutdown each
- * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
+ * initialized subsystem with QuitSubSystem(). It is safe to call this
  * function even in the case of errors in initialization.
  *
  * You can use this function with atexit() to ensure that it is run when your
@@ -533,10 +535,10 @@ inline bool WasInit(FLAG flag0, FLAG flag1, FLAGS... flags)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Init()
- * @sa QuitSubSystem()
+ * @sa InitSubSystem
+ * @sa QuitSubSystem
  */
-inline void Quit() { return SDL_Quit(); }
+inline void Quit() { SDL_Quit(); }
 
 /**
  * Initialize the SDL library.
@@ -640,7 +642,7 @@ public:
  *
  * On Apple platforms, the main thread is the thread that runs your program's
  * main() entry point. On other platforms, the main thread is the one that
- * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
+ * calls InitSubSystem(INIT_VIDEO), which should usually be the one that runs
  * your program's main() entry point. If you are using the main callbacks,
  * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
  * main thread.
@@ -651,7 +653,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RunOnMainThread()
+ * @sa RunOnMainThread
  */
 inline bool IsMainThread() { return SDL_IsMainThread(); }
 
@@ -667,7 +669,7 @@ inline bool IsMainThread() { return SDL_IsMainThread(); }
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa RunOnMainThread()
+ * @sa RunOnMainThread
  */
 using MainThreadCallback = SDL_MainThreadCallback;
 
@@ -877,23 +879,23 @@ constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
 /**
  * Get metadata about your app.
  *
- * This returns metadata previously set using SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
+ * This returns metadata previously set using SetAppMetadata() or
+ * SetAppMetadataProperty(). See SetAppMetadataProperty() for the list
  * of available properties and their meanings.
  *
  * @param name the name of the metadata property to get.
  * @returns the current value of the metadata property, or the default if it
- *          is not set, NULL for properties with no default.
+ *          is not set, nullptr for properties with no default.
  *
  * @threadsafety It is safe to call this function from any thread, although
  *               the string returned is not protected and could potentially be
- *               freed if you call SDL_SetAppMetadataProperty() to set that
+ *               freed if you call SetAppMetadataProperty() to set that
  *               property from another thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetAppMetadata
- * @sa SDL_SetAppMetadataProperty
+ * @sa SetAppMetadata
+ * @sa SetAppMetadataProperty
  */
 inline const char* GetAppMetadataProperty(StringParam name)
 {
