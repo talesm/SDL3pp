@@ -47940,15 +47940,15 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param file path to font file.
    * @param ptsize point size to use for the newly-opened font.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(StringParam file, float ptsize)
-    : Resource(TTF_OpenFont(file, ptsize))
+    : Resource(CheckError(TTF_OpenFont(file, ptsize)))
   {
   }
 
@@ -47961,15 +47961,15 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param src an IOStreamBase to provide a font file's data.
    * @param ptsize point size to use for the newly-opened font.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(IOStreamBase& src, float ptsize)
-    : Resource(TTF_OpenFontIO(src.get(), false, ptsize))
+    : Resource(CheckError(TTF_OpenFontIO(src.get(), false, ptsize)))
   {
   }
 
@@ -48007,15 +48007,15 @@ struct FontBase : Resource<TTF_Font*>
    *   the new font.
    *
    * @param props the properties to use.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(PropertiesBase& props)
-    : Resource(TTF_OpenFontWithProperties(props.get()))
+    : Resource(CheckError(TTF_OpenFontWithProperties(props.get())))
   {
   }
 
@@ -48025,8 +48025,8 @@ struct FontBase : Resource<TTF_Font*>
    * The copy will be distinct from the original, but will share the font file
    * and have the same size and style as the original.
    *
-   * @returns a valid Font, or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns a valid Font on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               original font.
@@ -48049,14 +48049,17 @@ struct FontBase : Resource<TTF_Font*>
    * - `prop::Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
    *   when setting the font outline, defaults to 0.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  PropertiesRef GetProperties() { return TTF_GetFontProperties(get()); }
+  PropertiesRef GetProperties()
+  {
+    return CheckError(TTF_GetFontProperties(get()));
+  }
 
   /**
    * Get the font generation.
@@ -49980,6 +49983,8 @@ struct TextBase : Resource<TTF_Text*>
    *               font and text engine.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextRef.reset
    */
   TextBase(TextEngineBase& engine, FontRef font, std::string_view text)
     : Resource(
@@ -49990,15 +49995,18 @@ struct TextBase : Resource<TTF_Text*>
   /**
    * Get the properties associated with a text object.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  PropertiesRef GetProperties() const { return TTF_GetTextProperties(get()); }
+  PropertiesRef GetProperties() const
+  {
+    return CheckError(TTF_GetTextProperties(get()));
+  }
 
   /**
    * Set the text engine used by a text object.
@@ -50023,8 +50031,8 @@ struct TextBase : Resource<TTF_Text*>
   /**
    * Get the text engine used by a text object.
    *
-   * @returns the TextEngineBase used by the text on success or nullptr on
-   * failure; call GetError() for more information.
+   * @returns the TextEngineBase used by the text on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50033,7 +50041,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetEngine
    */
-  TextEngineRef GetEngine() const { return TTF_GetTextEngine(get()); }
+  TextEngineRef GetEngine() const
+  {
+    return CheckError(TTF_GetTextEngine(get()));
+  }
 
   /**
    * Set the font used by a text object.
@@ -50060,8 +50071,8 @@ struct TextBase : Resource<TTF_Text*>
   /**
    * Get the font used by a text object.
    *
-   * @returns the FontBase used by the text on success or nullptr on failure;
-   * call GetError() for more information.
+   * @returns the FontBase used by the text on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50070,7 +50081,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetFont
    */
-  FontRef GetFont() const { return TTF_GetTextFont(get()); }
+  FontRef GetFont() const { return CheckError(TTF_GetTextFont(get())); }
 
   /**
    * Set the direction to be used for text shaping a text object.

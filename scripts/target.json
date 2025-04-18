@@ -40435,7 +40435,7 @@
             },
             "FontBase": [
               {
-                "doc": "Create a font from a file, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nWhen done with the returned FontBase, use FontRef.reset() to dispose of it.\n\n@param file path to font file.\n@param ptsize point size to use for the newly-opened font.\n@post a valid FontBase, or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
+                "doc": "Create a font from a file, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nWhen done with the returned FontBase, use FontRef.reset() to dispose of it.\n\n@param file path to font file.\n@param ptsize point size to use for the newly-opened font.\n@post a valid FontBase on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
                 "name": "FontBase",
                 "kind": "function",
                 "type": "",
@@ -40449,10 +40449,13 @@
                     "type": "float"
                   }
                 ],
-                "sourceName": "TTF_OpenFont"
+                "sourceName": "TTF_OpenFont",
+                "hints": {
+                  "mayFail": true
+                }
               },
               {
-                "doc": "Create a font from an IOStreamBase, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should keep `src` open until the font is closed.\n\nWhen done with the returned FontBase, use FontRef.reset() to dispose of it.\n\n@param src an IOStreamBase to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@post a valid FontBase, or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
+                "doc": "Create a font from an IOStreamBase, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should keep `src` open until the font is closed.\n\nWhen done with the returned FontBase, use FontRef.reset() to dispose of it.\n\n@param src an IOStreamBase to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@post a valid FontBase on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
                 "name": "FontBase",
                 "kind": "function",
                 "type": "",
@@ -40466,10 +40469,13 @@
                     "type": "float"
                   }
                 ],
-                "sourceName": "TTF_OpenFontIO"
+                "sourceName": "TTF_OpenFontIO",
+                "hints": {
+                  "mayFail": true
+                }
               },
               {
-                "doc": "Create a font with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an\n  IOStreamBase isn't being used. This is required if\n  `prop::Font.CREATE_IOSTREAM_POINTER` and\n  `prop::Font.CREATE_EXISTING_FONT` aren't set.\n- `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamBase containing the\n  font to be opened. This should not be closed until the font is closed.\n  This is required if `prop::Font.CREATE_FILENAME_STRING` and\n  `prop::Font.CREATE_EXISTING_FONT` aren't set.\n- `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream\n  for the beginning of the font, defaults to 0.\n- `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the\n  font should also close the associated IOStreamBase.\n- `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon\n  fonts will have several sizes embedded in the file, so the point size\n  becomes the index of choosing which size. If the value is too high, the\n  last indexed size will be the default.\n- `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the\n  font contains multiple font faces.\n- `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use\n  for font rendering, defaults to\n  `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.\n- `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for\n  font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`\n  if set, or 72 otherwise.\n- `prop::Font.CREATE_EXISTING_FONT`: an optional FontBase that, if set,\n  will be used as the font data source and the initial size and style of\n  the new font.\n\n@param props the properties to use.\n@post a valid FontBase, or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
+                "doc": "Create a font with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an\n  IOStreamBase isn't being used. This is required if\n  `prop::Font.CREATE_IOSTREAM_POINTER` and\n  `prop::Font.CREATE_EXISTING_FONT` aren't set.\n- `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamBase containing the\n  font to be opened. This should not be closed until the font is closed.\n  This is required if `prop::Font.CREATE_FILENAME_STRING` and\n  `prop::Font.CREATE_EXISTING_FONT` aren't set.\n- `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream\n  for the beginning of the font, defaults to 0.\n- `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the\n  font should also close the associated IOStreamBase.\n- `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon\n  fonts will have several sizes embedded in the file, so the point size\n  becomes the index of choosing which size. If the value is too high, the\n  last indexed size will be the default.\n- `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the\n  font contains multiple font faces.\n- `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use\n  for font rendering, defaults to\n  `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.\n- `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for\n  font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`\n  if set, or 72 otherwise.\n- `prop::Font.CREATE_EXISTING_FONT`: an optional FontBase that, if set,\n  will be used as the font data source and the initial size and style of\n  the new font.\n\n@param props the properties to use.\n@post a valid FontBase on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
                 "name": "FontBase",
                 "kind": "function",
                 "type": "",
@@ -40479,20 +40485,23 @@
                     "type": "PropertiesBase &"
                   }
                 ],
-                "sourceName": "TTF_OpenFontWithProperties"
+                "sourceName": "TTF_OpenFontWithProperties",
+                "hints": {
+                  "mayFail": true
+                }
               }
             ],
             "Copy": {
-              "doc": "Create a copy of an existing font.\n\nThe copy will be distinct from the original, but will share the font file\nand have the same size and style as the original.\n\nWhen done with the returned FontBase, use FontRef.reset() to dispose of it.\n\n@returns a valid FontBase, or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              original font.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
+              "doc": "Create a copy of an existing font.\n\nThe copy will be distinct from the original, but will share the font file\nand have the same size and style as the original.\n\nWhen done with the returned FontBase, use FontRef.reset() to dispose of it.\n\n@returns a valid FontBase on success.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              original font.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
               "name": "Copy",
               "kind": "function",
               "type": "Font",
               "parameters": [],
               "sourceName": "TTF_CopyFont",
-              "immutable": true,
               "hints": {
                 "mayFail": true
               },
+              "immutable": true,
               "proto": true
             },
             "GetProperties": {
@@ -42050,12 +42059,12 @@
           "type": "Font",
           "parameters": [],
           "sourceName": "TTF_CopyFont",
-          "immutable": true,
           "hints": {
             "self": "get()",
             "super": "Resource",
             "mayFail": true
-          }
+          },
+          "immutable": true
         },
         "SDL_FONT_WEIGHT_THIN": {
           "doc": "Thin (100) named font weight value",

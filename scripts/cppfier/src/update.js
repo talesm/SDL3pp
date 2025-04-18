@@ -514,7 +514,7 @@ function generateBody(entry, prefix) {
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
   const internalCallStr = `${sourceName}(${paramStr})`;
-  const callStr = hint.mayFail ? `CheckError(${internalCallStr})` : internalCallStr;
+  const callStr = hint?.mayFail ? `CheckError(${internalCallStr})` : internalCallStr;
   if (!entry.type) {
     const superStr = hint?.super ?? "T";
     return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;

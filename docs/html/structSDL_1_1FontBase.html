@@ -419,7 +419,13 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontBase.html" title="The internal structure containing font information.">FontBase</a>, or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontBase.html" title="The internal structure containing font information.">FontBase</a> on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
@@ -466,7 +472,13 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontBase.html" title="The internal structure containing font information.">FontBase</a>, or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontBase.html" title="The internal structure containing font information.">FontBase</a> on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
@@ -513,7 +525,13 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontBase.html" title="The internal structure containing font information.">FontBase</a>, or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a valid <a class="el" href="structSDL_1_1FontBase.html" title="The internal structure containing font information.">FontBase</a> on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
@@ -1266,7 +1284,13 @@ Static Public Member Functions</h2></td></tr>
 <li><code>prop::Font.OUTLINE_LINE_JOIN_NUMBER</code>: The FT_Stroker_LineJoin value used when setting the font outline, defaults to <code>FT_STROKER_LINEJOIN_ROUND</code>.</li>
 <li><code>prop::Font.OUTLINE_MITER_LIMIT_NUMBER</code>: The FT_Fixed miter limit used when setting the font outline, defaults to 0.</li>
 </ul>
-<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
