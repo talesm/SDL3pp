@@ -187,7 +187,6 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @cat resource
  *
- * @sa CreateProperties()
  * @sa Properties.Properties
  * @sa Properties
  * @sa PropertiesRef
@@ -205,16 +204,15 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * property that already exists on `dst` will be overwritten.
    *
    * @param dst the destination properties.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool CopyPropertiesTo(PropertiesBase& dst) const
+  void CopyPropertiesTo(PropertiesBase& dst) const
   {
-    return SDL_CopyProperties(get(), dst.get());
+    CheckError(SDL_CopyProperties(get(), dst.get()));
   }
 
   /**
@@ -229,8 +227,8 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * or want to guarantee that properties being queried aren't freed in another
    * thread.
    *
-   * @returns PropertiesLock on success or false on failure; call GetError() for
-   *          more information.
+   * @returns PropertiesLock on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -255,8 +253,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * @param name the name of the property to modify.
    * @param value the new value of the property, or NULL to delete the property.
    * @param cleanup the function to call when this property is deleted.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -265,15 +262,15 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * @cat result-callback
    *
    */
-  bool SetPointerWithCleanup(StringParam name,
+  void SetPointerWithCleanup(StringParam name,
                              void* value,
                              CleanupPropertyCB cleanup)
   {
     using Wrapper = CallbackWrapper<CleanupPropertyCB>;
-    return SetPointerWithCleanup(std::move(name),
-                                 value,
-                                 &Wrapper::CallOnce,
-                                 Wrapper::Wrap(std::move(cleanup)));
+    SetPointerWithCleanup(std::move(name),
+                          value,
+                          &Wrapper::CallOnce,
+                          Wrapper::Wrap(std::move(cleanup)));
   }
 
   /**
@@ -294,8 +291,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * @param cleanup the function to call when this property is deleted, or
    *                nullptr if no cleanup is necessary.
    * @param userdata a pointer that is passed to the cleanup function.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -305,13 +301,13 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * @sa PropertiesBase.SetPointer
    * @sa CleanupPropertyCallback
    */
-  bool SetPointerWithCleanup(StringParam name,
+  void SetPointerWithCleanup(StringParam name,
                              void* value,
                              CleanupPropertyCallback cleanup,
                              void* userdata)
   {
-    return SDL_SetPointerPropertyWithCleanup(
-      get(), name, value, cleanup, userdata);
+    CheckError(
+      SDL_SetPointerPropertyWithCleanup(get(), name, value, cleanup, userdata));
   }
 
   /**
@@ -320,8 +316,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
    *              property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -335,9 +330,9 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * @sa PropertiesBase.SetPointerWithCleanup
    * @sa PropertiesBase.SetString
    */
-  bool SetPointer(StringParam name, void* value)
+  void SetPointer(StringParam name, void* value)
   {
-    return SDL_SetPointerProperty(get(), name, value);
+    CheckError(SDL_SetPointerProperty(get(), name, value));
   }
 
   /**
@@ -349,8 +344,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
    *              property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -358,9 +352,9 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @sa PropertiesBase.GetString
    */
-  bool SetString(StringParam name, StringParam value)
+  void SetString(StringParam name, StringParam value)
   {
-    return SDL_SetStringProperty(get(), name, value);
+    CheckError(SDL_SetStringProperty(get(), name, value));
   }
 
   /**
@@ -368,8 +362,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -377,9 +370,9 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @sa PropertiesBase.GetNumber
    */
-  bool SetNumber(StringParam name, Sint64 value)
+  void SetNumber(StringParam name, Sint64 value)
   {
-    return SDL_SetNumberProperty(get(), name, value);
+    CheckError(SDL_SetNumberProperty(get(), name, value));
   }
 
   /**
@@ -387,8 +380,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -396,9 +388,9 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @sa PropertiesBase.GetFloat
    */
-  bool SetFloat(StringParam name, float value)
+  void SetFloat(StringParam name, float value)
   {
-    return SDL_SetFloatProperty(get(), name, value);
+    CheckError(SDL_SetFloatProperty(get(), name, value));
   }
 
   /**
@@ -406,8 +398,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -415,13 +406,13 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @sa PropertiesBase.GetBoolean
    */
-  bool SetBoolean(StringParam name, bool value)
+  void SetBoolean(StringParam name, bool value)
   {
-    return SDL_SetBooleanProperty(get(), name, value);
+    CheckError(SDL_SetBooleanProperty(get(), name, value));
   }
 
   /**
-   * Return whether a property exists.
+   * Return whether a property exists in a group of properties.
    *
    * @param name the name of the property to query.
    * @returns true if the property exists, or false if it doesn't.
@@ -615,28 +606,26 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * Clear a property from a group of properties.
    *
    * @param name the name of the property to clear.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Clear(StringParam name) { return SDL_ClearProperty(get(), name); }
+  void Clear(StringParam name) { CheckError(SDL_ClearProperty(get(), name)); }
 
   /**
    * Enumerate the properties contained in a group of properties.
    *
-   * @param outputIter an output iterator to be assigned to each property name
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param outputIter an output iterator to be assigned to each property name.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    */
   template<std::output_iterator<const char*> IT>
-  bool Enumerate(IT outputIter) const
+  void Enumerate(IT outputIter) const
   {
-    return Enumerate(
+    Enumerate(
       [&outputIter](auto props, const char name) { *outputIter++ = name; });
   }
 
@@ -647,8 +636,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * properties. The properties are locked during enumeration.
    *
    * @param callback the function to call for each property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -656,7 +644,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @sa immediate-callback
    */
-  bool Enumerate(EnumeratePropertiesCB callback) const;
+  void Enumerate(EnumeratePropertiesCB callback) const;
 
   /**
    * Enumerate the properties contained in a group of properties.
@@ -666,16 +654,15 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @param callback the function to call for each property.
    * @param userdata a pointer that is passed to `callback`.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
+  void Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
   {
-    return SDL_EnumerateProperties(get(), callback, userdata);
+    CheckError(SDL_EnumerateProperties(get(), callback, userdata));
   }
 
   /**
@@ -781,8 +768,8 @@ struct Properties : PropertiesRef
    *
    * All properties are automatically destroyed when Quit() is called.
    *
-   * @post an ID for a new group of properties, or 0 on failure; call
-   *          GetError() for more information.
+   * @post an ID for a new group of properties
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -791,7 +778,7 @@ struct Properties : PropertiesRef
    * @sa PropertiesRef.reset
    */
   Properties()
-    : Properties(SDL_CreateProperties())
+    : Properties(CheckError(SDL_CreateProperties()))
   {
   }
 
@@ -864,7 +851,7 @@ public:
    *
    * @sa PropertiesBase.Lock
    */
-  void Unlock() { return SDL_UnlockProperties(properties.release()); }
+  void Unlock() { SDL_UnlockProperties(properties.release()); }
 
   friend class PropertiesBase;
 };
@@ -872,12 +859,21 @@ public:
 /**
  * Get the global SDL properties.
  *
- * @returns a valid property ID on success or 0 on failure; call
- *          GetError() for more information.
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetGlobalProperties() { return SDL_GetGlobalProperties(); }
+inline PropertiesRef GetGlobalProperties()
+{
+  return CheckError(SDL_GetGlobalProperties());
+}
+
+inline PropertiesLock PropertiesBase::Lock() &
+{
+  CheckError(SDL_LockProperties(get()));
+  return PropertiesLock{get()};
+}
 
 /**
  * Create a group of properties.
@@ -901,7 +897,7 @@ inline Properties CreateProperties()
 #pragma region impl
 /// @}
 
-inline bool PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
+inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
 {
   return Enumerate(
     [](void* userdata, SDL_PropertiesID props, const char* name) {
@@ -914,14 +910,8 @@ inline bool PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
 inline Uint64 PropertiesBase::GetCount() const
 {
   Uint64 count = 0;
-  if (Enumerate([&](auto, const char*) { count++; })) { return count; }
-  return 0;
-}
-
-inline PropertiesLock PropertiesBase::Lock() &
-{
-  if (SDL_LockProperties(get())) return PropertiesLock{get()};
-  return {};
+  Enumerate([&](auto, const char*) { count++; });
+  return count;
 }
 
 #pragma endregion impl

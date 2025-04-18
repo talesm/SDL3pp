@@ -111,6 +111,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga72ccc4e98aaf7b3e08b7951a65a9f2ce" id="r_ga72ccc4e98aaf7b3e08b7951a65a9f2ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Properties.html">Properties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce">SDL::CreateProperties</a> ()</td></tr>
 <tr class="memdesc:ga72ccc4e98aaf7b3e08b7951a65a9f2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a group of properties.  <br /></td></tr>
 <tr class="separator:ga72ccc4e98aaf7b3e08b7951a65a9f2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8852fd31498c37c8a4434b81e56ba636" id="r_ga8852fd31498c37c8a4434b81e56ba636"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1PropertiesLock.html">PropertiesLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga8852fd31498c37c8a4434b81e56ba636">SDL::PropertiesBase::Lock</a> () &amp;</td></tr>
+<tr class="memdesc:ga8852fd31498c37c8a4434b81e56ba636"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock a group of properties.  <br /></td></tr>
+<tr class="separator:ga8852fd31498c37c8a4434b81e56ba636"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -154,13 +157,13 @@ constexpr <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9eb
 <p>All properties are part of a property group (<a class="el" href="structSDL_1_1PropertiesBase.html" title="Wrap properties id.">PropertiesBase</a>). A property group can be created with the <a class="el" href="group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce" title="Create a group of properties.">CreateProperties()</a> function or by simply instantiating <a class="el" href="structSDL_1_1Properties.html">Properties</a>. It can be destroyed with the <a class="el" href="structSDL_1_1PropertiesRef.html#a1f20ac4b4a713d7303f7bc8676e49d63" title="Destroy a group of properties.">PropertiesRef.reset()</a>, but the <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> destructor probably will do what you want to, automatically.</p>
 <p><a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> can be added to and retrieved from a property group through the following functions:</p>
 <ul>
-<li><a class="el" href="structSDL_1_1PropertiesBase.html#aa8901e573942292ac950a28e6a923602" title="Set a pointer property in a group of properties.">PropertiesBase.SetPointer()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#ab708c3a58849424c30c1097003eb21bb" title="Get a pointer property from a group of properties.">PropertiesBase.GetPointer()</a> operate on <code>void*</code> pointer types.</li>
-<li><a class="el" href="structSDL_1_1PropertiesBase.html#a11efb50eda7b30d333ba54e964f65f32" title="Set a string property in a group of properties.">PropertiesBase.SetString()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a1cfd25ddd502f12ed7a5fe491f88e482" title="Get a string property from a group of properties.">PropertiesBase.GetString()</a> operate on string types.</li>
-<li><a class="el" href="structSDL_1_1PropertiesBase.html#aedbd91a81d3fac279e64c1ece0d307f8" title="Set an integer property in a group of properties.">PropertiesBase.SetNumber()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a989322e293e273ab4755f149788628a1" title="Get a number property from a group of properties.">PropertiesBase.GetNumber()</a> operate on signed 64-bit integer types.</li>
-<li><a class="el" href="structSDL_1_1PropertiesBase.html#ad9ecac03537226a44368a67bff381575" title="Set a floating point property in a group of properties.">PropertiesBase.SetFloat()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a6c468bd4c22b2c3a6b82296e3e11d376" title="Get a floating point property from a group of properties.">PropertiesBase.GetFloat()</a> operate on floating point types.</li>
-<li><a class="el" href="structSDL_1_1PropertiesBase.html#a48dfab812190ccfe6c29fd008bba287a" title="Set a boolean property in a group of properties.">PropertiesBase.SetBoolean()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#ac1e685674a87213ee2e05520a288e16d" title="Get a boolean property from a group of properties.">PropertiesBase.GetBoolean()</a> operate on boolean types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#a39a43da5cdbe74f030b93baed19e0bf0" title="Set a pointer property in a group of properties.">PropertiesBase.SetPointer()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#ab708c3a58849424c30c1097003eb21bb" title="Get a pointer property from a group of properties.">PropertiesBase.GetPointer()</a> operate on <code>void*</code> pointer types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#a6c4ae0adfd8ff4644b05ec64032fe9c5" title="Set a string property in a group of properties.">PropertiesBase.SetString()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a1cfd25ddd502f12ed7a5fe491f88e482" title="Get a string property from a group of properties.">PropertiesBase.GetString()</a> operate on string types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#a82658ee2a088ca4a9d479a7722180624" title="Set an integer property in a group of properties.">PropertiesBase.SetNumber()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a989322e293e273ab4755f149788628a1" title="Get a number property from a group of properties.">PropertiesBase.GetNumber()</a> operate on signed 64-bit integer types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#a2a751b68bfbde99ce5414599ec29c218" title="Set a floating point property in a group of properties.">PropertiesBase.SetFloat()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a6c468bd4c22b2c3a6b82296e3e11d376" title="Get a floating point property from a group of properties.">PropertiesBase.GetFloat()</a> operate on floating point types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#a4f3927fe49f56f7fae521251ae69339c" title="Set a boolean property in a group of properties.">PropertiesBase.SetBoolean()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#ac1e685674a87213ee2e05520a288e16d" title="Get a boolean property from a group of properties.">PropertiesBase.GetBoolean()</a> operate on boolean types.</li>
 </ul>
-<p><a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> can be removed from a group by using <a class="el" href="structSDL_1_1PropertiesBase.html#a117c60b04192cb4b202ddb3ce9a3194a" title="Clear a property from a group of properties.">PropertiesBase.Clear()</a>. </p>
+<p><a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> can be removed from a group by using <a class="el" href="structSDL_1_1PropertiesBase.html#a213c25ad9497978a7e65dfd812fc4fdf" title="Clear a property from a group of properties.">PropertiesBase.Clear()</a>. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="gac68e366c86f4169ac6f6928589c0c4a8" name="gac68e366c86f4169ac6f6928589c0c4a8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gac68e366c86f4169ac6f6928589c0c4a8">&#9670;&#160;</a></span>CleanupPropertyCallback</h2>
@@ -175,7 +178,7 @@ constexpr <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9eb
 </div><div class="memdoc">
 <p>This should release any resources associated with <code>value</code> that are no longer needed.</p>
 <p>This callback is set per-property. Different properties in the same group can have different cleanup callbacks.</p>
-<p>This callback will be called <em>during</em> <a class="el" href="structSDL_1_1PropertiesBase.html#ad4b34dd4b100658348ab06da0436b101" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup</a> if the function fails for any reason.</p>
+<p>This callback will be called <em>during</em> <a class="el" href="structSDL_1_1PropertiesBase.html#a5e9cb5bd6efd7320de97b72f3f279b9c" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup</a> if the function fails for any reason.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">userdata</td><td>an app-defined pointer passed to the callback. </td></tr>
@@ -185,7 +188,7 @@ constexpr <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9eb
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This callback may fire without any locks held; if this is a concern, the app should provide its own locking.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#ad4b34dd4b100658348ab06da0436b101" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a5e9cb5bd6efd7320de97b72f3f279b9c" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup</a> </dd></dl>
 
 </div>
 </div>
@@ -202,7 +205,7 @@ constexpr <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9eb
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryProperties.html#gac68e366c86f4169ac6f6928589c0c4a8" title="A callback used to free resources when a property is deleted.">CleanupPropertyCallback</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1PropertiesBase.html#ad4b34dd4b100658348ab06da0436b101" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup()</a> </dd>
+<a class="el" href="structSDL_1_1PropertiesBase.html#a5e9cb5bd6efd7320de97b72f3f279b9c" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup()</a> </dd>
 <dd>
 result-callback</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#result-callback">Result callback</a> </dd></dl>
@@ -220,7 +223,7 @@ result-callback</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This callback is called from <a class="el" href="structSDL_1_1PropertiesBase.html#aa3f603f7ac2b970e88a921a8f82efb00" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate()</a>, and is called once per property in the set.</p>
+<p>This callback is called from <a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate()</a>, and is called once per property in the set.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">userdata</td><td>an app-defined pointer passed to the callback. </td></tr>
@@ -229,9 +232,9 @@ result-callback</dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section user"><dt>Thread safety:</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#aa3f603f7ac2b970e88a921a8f82efb00" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate</a> holds a lock on <code>props</code> during this callback.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate</a> holds a lock on <code>props</code> during this callback.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#aa3f603f7ac2b970e88a921a8f82efb00" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate</a> </dd></dl>
 
 </div>
 </div>
@@ -246,10 +249,10 @@ result-callback</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This callback is called from <a class="el" href="structSDL_1_1PropertiesBase.html#aa3f603f7ac2b970e88a921a8f82efb00" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a>, and is called once per property in the set.</p>
+<p>This callback is called from <a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a>, and is called once per property in the set.</p>
 <dl class="section see"><dt>See also</dt><dd>EnumeratePropertyCallback </dd>
 <dd>
-<a class="el" href="structSDL_1_1PropertiesBase.html#aa3f603f7ac2b970e88a921a8f82efb00" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a> </dd>
+<a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a> </dd>
 <dd>
 immediate-callback</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#immediate-callback">Immediate callback</a> </dd></dl>
@@ -324,8 +327,51 @@ immediate-callback</dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga8852fd31498c37c8a4434b81e56ba636" name="ga8852fd31498c37c8a4434b81e56ba636"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8852fd31498c37c8a4434b81e56ba636">&#9670;&#160;</a></span>Lock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1PropertiesLock.html">PropertiesLock</a> SDL::PropertiesBase::Lock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Obtain a multi-threaded lock for these properties. Other threads will wait while trying to lock these properties until they are unlocked. <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> must be unlocked before they are destroyed.</p>
+<p>The lock is automatically taken when setting individual properties, this function is only needed when you want to set several properties atomically or want to guarantee that properties being queried aren't freed in another thread.</p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classSDL_1_1PropertiesLock.html" title="Wrap the lock state for PropertiesBase.">PropertiesLock</a> on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PropertiesLock.html#a7facb4cd33b4fa7ed49a93c22f247d19" title="Unlock a group of properties.">PropertiesLock.Unlock</a> </dd></dl>
 
 </div>
 </div>

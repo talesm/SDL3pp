@@ -2814,6 +2814,7 @@ const transform = {
       }
     },
     "SDL_properties.h": {
+      enableException: true,
       includeAfter: {
         "__begin": [
           { "name": "PropertyType" },
@@ -2928,14 +2929,15 @@ const transform = {
               "immutable": true
             },
             "SDL_LockProperties": {
-              "type": "PropertiesLock",
-              "reference": 1
+              type: "PropertiesLock",
+              proto: true,
+              reference: 1
             },
             "SetPointerWithCleanup": {
-              "kind": "function",
-              "static": false,
-              "type": "bool",
-              "parameters": [
+              kind: "function",
+              static: false,
+              type: "void",
+              parameters: [
                 {
                   "type": "StringParam",
                   "name": "name"
@@ -3015,30 +3017,31 @@ const transform = {
             },
             "Enumerate": [
               {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "template": [
+                kind: "function",
+                type: "void",
+                immutable: true,
+                template: [
                   {
-                    "type": "std::output_iterator<const char *>",
-                    "name": "IT"
+                    type: "std::output_iterator<const char *>",
+                    name: "IT"
                   }
                 ],
-                "parameters": [
+                parameters: [
                   {
-                    "type": "IT",
-                    "name": "outputIter"
+                    type: "IT",
+                    name: "outputIter"
                   }
                 ]
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
+                kind: "function",
+                type: "void",
+                immutable: true,
+                proto: true,
+                parameters: [
                   {
-                    "type": "EnumeratePropertiesCB",
-                    "name": "callback"
+                    type: "EnumeratePropertiesCB",
+                    name: "callback"
                   }
                 ]
               }
