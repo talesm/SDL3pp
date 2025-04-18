@@ -7280,6 +7280,7 @@ const transform = {
       ignoreEntries: [
         "IMG_LoadBMP_IO"
       ],
+      enableException: true,
       includeAfter: {
         "__begin": {
           "name": "SDL3PP_ENABLE_IMAGE"

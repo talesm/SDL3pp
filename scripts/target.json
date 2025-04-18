@@ -39534,10 +39534,10 @@
         },
         "SaveAVIF": [
           {
-            "doc": "Save an SurfaceBase into a AVIF image file.\n\nIf the file already exists, it will be overwritten.\n\n@param surface the SDL surface to save.\n@param file path on the filesystem to write new file to.\n@param quality the desired quality, ranging between 0 (lowest) and 100\n               (highest).\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SaveAVIF",
+            "doc": "Save an SurfaceBase into a AVIF image file.\n\nIf the file already exists, it will be overwritten.\n\n@param surface the SDL surface to save.\n@param file path on the filesystem to write new file to.\n@param quality the desired quality, ranging between 0 (lowest) and 100\n               (highest).\n@throws Error on failure.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SaveAVIF",
             "name": "SaveAVIF",
             "kind": "function",
-            "type": "bool",
+            "type": "void",
             "parameters": [
               {
                 "name": "surface",
@@ -39552,13 +39552,16 @@
                 "type": "int"
               }
             ],
-            "sourceName": "IMG_SaveAVIF"
+            "sourceName": "IMG_SaveAVIF",
+            "hints": {
+              "mayFail": true
+            }
           },
           {
-            "doc": "Save an SurfaceBase into AVIF image data, via an IOStreamBase.\n\nIf you just want to save to a filename, you can use SaveAVIF() instead.\n\nIf `closeio` is true, `dst` will be closed before returning, whether this\nfunction succeeds or not.\n\n@param surface the SDL surface to save.\n@param dst the IOStreamBase to save the image data to.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param quality the desired quality, ranging between 0 (lowest) and 100\n               (highest).\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SaveAVIF",
+            "doc": "Save an SurfaceBase into AVIF image data, via an IOStreamBase.\n\nIf you just want to save to a filename, you can use SaveAVIF() instead.\n\nIf `closeio` is true, `dst` will be closed before returning, whether this\nfunction succeeds or not.\n\n@param surface the SDL surface to save.\n@param dst the IOStreamBase to save the image data to.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param quality the desired quality, ranging between 0 (lowest) and 100\n               (highest).\n@throws Error on failure.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SaveAVIF",
             "name": "SaveAVIF",
             "kind": "function",
-            "type": "bool",
+            "type": "void",
             "parameters": [
               {
                 "name": "surface",
@@ -39573,15 +39576,18 @@
                 "type": "int"
               }
             ],
-            "sourceName": "IMG_SaveAVIF_IO"
+            "sourceName": "IMG_SaveAVIF_IO",
+            "hints": {
+              "mayFail": true
+            }
           }
         ],
         "SavePNG": [
           {
-            "doc": "Save an SurfaceBase into a PNG image file.\n\nIf the file already exists, it will be overwritten.\n\n@param surface the SDL surface to save.\n@param file path on the filesystem to write new file to.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SavePNG",
+            "doc": "Save an SurfaceBase into a PNG image file.\n\nIf the file already exists, it will be overwritten.\n\n@param surface the SDL surface to save.\n@param file path on the filesystem to write new file to.\n@throws Error on failure.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SavePNG",
             "name": "SavePNG",
             "kind": "function",
-            "type": "bool",
+            "type": "void",
             "parameters": [
               {
                 "name": "surface",
@@ -39592,13 +39598,16 @@
                 "type": "StringParam"
               }
             ],
-            "sourceName": "IMG_SavePNG"
+            "sourceName": "IMG_SavePNG",
+            "hints": {
+              "mayFail": true
+            }
           },
           {
-            "doc": "Save an SurfaceBase into PNG image data, via an IOStreamBase.\n\nIf you just want to save to a filename, you can use SavePNG() instead.\n\nIf `closeio` is true, `dst` will be closed before returning, whether this\nfunction succeeds or not.\n\n@param surface the SDL surface to save.\n@param dst the IOStreamBase to save the image data to.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SavePNG",
+            "doc": "Save an SurfaceBase into PNG image data, via an IOStreamBase.\n\nIf you just want to save to a filename, you can use SavePNG() instead.\n\nIf `closeio` is true, `dst` will be closed before returning, whether this\nfunction succeeds or not.\n\n@param surface the SDL surface to save.\n@param dst the IOStreamBase to save the image data to.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@throws Error on failure.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SavePNG",
             "name": "SavePNG",
             "kind": "function",
-            "type": "bool",
+            "type": "void",
             "parameters": [
               {
                 "name": "surface",
@@ -39609,15 +39618,18 @@
                 "type": "IOStreamBase &"
               }
             ],
-            "sourceName": "IMG_SavePNG_IO"
+            "sourceName": "IMG_SavePNG_IO",
+            "hints": {
+              "mayFail": true
+            }
           }
         ],
         "SaveJPG": [
           {
-            "doc": "Save an SurfaceBase into a JPEG image file.\n\nIf the file already exists, it will be overwritten.\n\n@param surface the SDL surface to save.\n@param file path on the filesystem to write new file to.\n@param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;\n               100] is Highest quality.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SaveJPG",
+            "doc": "Save an SurfaceBase into a JPEG image file.\n\nIf the file already exists, it will be overwritten.\n\n@param surface the SDL surface to save.\n@param file path on the filesystem to write new file to.\n@param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;\n               100] is Highest quality.\n@throws Error on failure.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SaveJPG",
             "name": "SaveJPG",
             "kind": "function",
-            "type": "bool",
+            "type": "void",
             "parameters": [
               {
                 "name": "surface",
@@ -39632,13 +39644,16 @@
                 "type": "int"
               }
             ],
-            "sourceName": "IMG_SaveJPG"
+            "sourceName": "IMG_SaveJPG",
+            "hints": {
+              "mayFail": true
+            }
           },
           {
-            "doc": "Save an SurfaceBase into JPEG image data, via an IOStreamBase.\n\nIf you just want to save to a filename, you can use SaveJPG() instead.\n\nIf `closeio` is true, `dst` will be closed before returning, whether this\nfunction succeeds or not.\n\n@param surface the SDL surface to save.\n@param dst the IOStreamBase to save the image data to.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;\n               100] is Highest quality.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SaveJPG",
+            "doc": "Save an SurfaceBase into JPEG image data, via an IOStreamBase.\n\nIf you just want to save to a filename, you can use SaveJPG() instead.\n\nIf `closeio` is true, `dst` will be closed before returning, whether this\nfunction succeeds or not.\n\n@param surface the SDL surface to save.\n@param dst the IOStreamBase to save the image data to.\n@param closeio true to close/free the IOStreamBase before returning, false\n               to leave it open.\n@param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;\n               100] is Highest quality.\n@throws Error on failure.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa SaveJPG",
             "name": "SaveJPG",
             "kind": "function",
-            "type": "bool",
+            "type": "void",
             "parameters": [
               {
                 "name": "surface",
@@ -39653,7 +39668,10 @@
                 "type": "int"
               }
             ],
-            "sourceName": "IMG_SaveJPG_IO"
+            "sourceName": "IMG_SaveJPG_IO",
+            "hints": {
+              "mayFail": true
+            }
           }
         ],
         "AnimationBase": {
