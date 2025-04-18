@@ -102,6 +102,7 @@ export interface ApiFileTransform {
   wrappers?: Dict<ApiWrapper>;
   namespacesMap?: StringMap;
   definitionPrefix?: string;
+  enableException?: boolean;
 }
 
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;

@@ -6,7 +6,7 @@ var searchData=
   ['addalternateimage_3',['AddAlternateImage',['../structSDL_1_1SurfaceBase.html#ad3279e4161dcd77078c3ec6f57dc5a43',1,'SDL::SurfaceBase']]],
   ['addeventwatch_4',['addeventwatch',['../group__CategoryEvents.html#ga9471cdb876c63ac0ecf6b8a2649ac39e',1,'SDL::AddEventWatch(EventFilterCB filter)'],['../group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e',1,'SDL::AddEventWatch(EventFilter filter, void *userdata)']]],
   ['addfallback_5',['AddFallback',['../structSDL_1_1FontBase.html#a2c1c29aef54bfcf70f736100a747fc5e',1,'SDL::FontBase']]],
-  ['addhintcallback_6',['AddHintCallback',['../group__CategoryHints.html#ga293a8f14c58c606a6238906426dec936',1,'SDL']]],
+  ['addhintcallback_6',['AddHintCallback',['../group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c',1,'SDL']]],
   ['addtimer_7',['addtimer',['../group__CategoryTimer.html#ga4605aebef3c001d56891a33e116e0201',1,'SDL::AddTimer(std::chrono::nanoseconds interval, TimerCB callback)'],['../group__CategoryTimer.html#ga02d8e0fb2964e4869f7f7df72fb4641d',1,'SDL::AddTimer(std::chrono::nanoseconds interval, NSTimerCallback callback, void *userdata)'],['../group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5',1,'SDL::AddTimer(std::chrono::milliseconds interval, TimerCallback callback, void *userdata)']]],
   ['addvulkanrendersemaphores_8',['AddVulkanRenderSemaphores',['../group__CategoryRender.html#gae0a3ed82279ee237450c52b3d616ab2a',1,'SDL']]],
   ['aligned_5falloc_9',['aligned_alloc',['../group__CategoryStdinc.html#gae3c9f70ddeadaecb2afeee2b3be34733',1,'SDL']]],

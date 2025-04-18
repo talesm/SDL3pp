@@ -1024,6 +1024,7 @@ const transform = {
       }
     },
     "SDL_hints.h": {
+      enableException: true,
       enumerations: {
         "SDL_HintPriority": {
           prefix: "SDL_HINT_",
@@ -1037,6 +1038,7 @@ const transform = {
     },
     "SDL_init.h": {
       ignoreEntries: ["SDL_InitSubSystem"],
+      enableException: true,
       namespacesMap: {
         "SDL_PROP_APP_METADATA_": "prop::appMetaData",
       },
@@ -7573,6 +7575,7 @@ const transform = {
         "TTF_DestroyRendererTextEngine",
         "TTF_DestroyGPUTextEngine"
       ],
+      enableException: true,
       resources: {
         "TTF_Font": {
           entries: {

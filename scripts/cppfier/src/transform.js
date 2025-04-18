@@ -50,6 +50,7 @@ function transformApi(config) {
   // Step 2: Transform Files
   for (const [sourceName, sourceFile] of Object.entries(source.files)) {
     const fileConfig = fileTransformMap[sourceName];
+    context.enableException = !!fileConfig.enableException;
     const targetName = fileConfig.name || transformIncludeName(sourceName, context);
     system.log(`Transforming api ${sourceName} => ${targetName}`);
 
@@ -117,6 +118,8 @@ class ApiContext {
 
     /** @type {Dict<ApiType>} */
     this.types = {};
+
+    this.enableException = false;
   }
 
   /**
@@ -1215,7 +1218,7 @@ function transformEntry(sourceEntry, context) {
       targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
       const m = /@returns (.*) on success/.exec(targetEntry.doc ?? "");
-      if (m) {
+      if (context.enableException && m) {
         targetEntry.hints = { mayFail: true };
         const returnIndexBegin = m.index;
         const returnIndexEnd = targetEntry.doc.indexOf("\n\n", returnIndexBegin);
