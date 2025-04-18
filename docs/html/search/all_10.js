@@ -143,7 +143,7 @@ var searchData=
   ['powerstate_5fno_5fbattery_140',['POWERSTATE_NO_BATTERY',['../group__CategoryPower.html#ga49d768ccd9bac62ac317afc4b04fb4a8',1,'SDL']]],
   ['powerstate_5fon_5fbattery_141',['POWERSTATE_ON_BATTERY',['../group__CategoryPower.html#ga1bc24c65645e030f4e96f30003ea0cbd',1,'SDL']]],
   ['powerstate_5funknown_142',['POWERSTATE_UNKNOWN',['../group__CategoryPower.html#ga25c407edb7134d9bed51897ffde972ec',1,'SDL']]],
-  ['premultiplyalpha_143',['premultiplyalpha',['../structSDL_1_1SurfaceBase.html#ab9c52e01d01067354a6be2c81b31c184',1,'SDL::SurfaceBase::PremultiplyAlpha()'],['../group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5',1,'SDL::PremultiplyAlpha()']]],
+  ['premultiplyalpha_143',['premultiplyalpha',['../structSDL_1_1SurfaceBase.html#a97d5cbddf468c0cf89dd6af59801b95b',1,'SDL::SurfaceBase::PremultiplyAlpha()'],['../group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4',1,'SDL::PremultiplyAlpha()']]],
   ['present_144',['Present',['../structSDL_1_1RendererBase.html#ad0cda5a0dd3a96a6a3bfa7b3e5486364',1,'SDL::RendererBase']]],
   ['primitives_145',['Thread Synchronization Primitives',['../group__CategoryMutex.html',1,'']]],
   ['print_146',['print',['../structSDL_1_1IOStreamBase.html#aa9aae1323e3428a0033d8f77c0513f4e',1,'SDL::IOStreamBase']]],

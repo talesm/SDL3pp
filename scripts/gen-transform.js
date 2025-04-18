@@ -2508,6 +2508,7 @@ const transform = {
         "SDL_AppEvent",
         "SDL_AppQuit"
       ],
+      enableException: false,
       includeAfter: {
         "__begin": [
           {
@@ -5347,6 +5348,7 @@ const transform = {
       }
     },
     "SDL_surface.h": {
+      enableException: true,
       includeAfter: {
         "__begin": {
           name: "SurfaceLock",
@@ -5539,7 +5541,7 @@ const transform = {
             "SDL_SurfaceHasRLE": "immutable",
             "SetColorKey": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "Color",
@@ -5559,7 +5561,7 @@ const transform = {
             },
             "ClearColorKey": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: []
             },
             "SDL_SurfaceHasColorKey": "immutable",
@@ -5567,13 +5569,13 @@ const transform = {
               {
                 kind: "function",
                 immutable: true,
-                type: "std::optional<Color>",
+                type: "Color",
                 parameters: []
               },
               {
                 kind: "function",
                 immutable: true,
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
                     type: "Color *",
@@ -5589,12 +5591,12 @@ const transform = {
             "SDL_GetSurfaceAlphaMod": {
               kind: "function",
               immutable: true,
-              type: "std::optional<Uint8>",
+              type: "Uint8",
               parameters: [{}]
             },
             "SetColorAndAlphaMod": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [{
                 type: "Color",
                 name: "color"
@@ -5603,7 +5605,7 @@ const transform = {
             "GetColorAndAlphaMod": {
               kind: "function",
               immutable: true,
-              type: "std::optional<Color>",
+              type: "Color",
               parameters: []
             },
             "SDL_SetSurfaceBlendMode": "function",
@@ -5626,7 +5628,7 @@ const transform = {
             },
             "ResetClipRect": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: []
             },
             "SDL_GetSurfaceClipRect": {
@@ -5677,7 +5679,7 @@ const transform = {
             Fill: [
               {
                 kind: "function",
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
                     type: "SDL_Color",
@@ -5687,7 +5689,7 @@ const transform = {
               },
               {
                 kind: "function",
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
                     type: "Uint32",
@@ -5698,7 +5700,7 @@ const transform = {
             ],
             "FillRect": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "const SDL_Rect &",
@@ -5710,13 +5712,10 @@ const transform = {
                 }
               ]
             },
-            "SDL_FillSurfaceRect": {
-              kind: "function",
-              name: "FillRect"
-            },
+            "SDL_FillSurfaceRect": "function",
             "FillRects": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "SpanRef<const SDL_Rect>",
@@ -5730,10 +5729,8 @@ const transform = {
             },
             "SDL_FillSurfaceRects": {
               kind: "function",
-              name: "FillRects",
               parameters: [
                 {
-                  type: "SDL_Surface *"
                 },
                 {
                   type: "SpanRef<const SDL_Rect>",
@@ -5747,8 +5744,7 @@ const transform = {
             },
             "Blit": {
               kind: "function",
-              name: "Blit",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "const SurfaceBase &",
@@ -5766,7 +5762,6 @@ const transform = {
             },
             "SDL_BlitSurface": {
               kind: "function",
-              name: "Blit",
               parameters: [
                 {
                   name: "this"
@@ -5787,7 +5782,6 @@ const transform = {
             },
             "SDL_BlitSurfaceUnchecked": {
               kind: "function",
-              name: "BlitUnchecked",
               parameters: [
                 {
                   name: "this"
@@ -5808,7 +5802,6 @@ const transform = {
             },
             "SDL_BlitSurfaceScaled": {
               kind: "function",
-              name: "BlitScaled",
               parameters: [
                 {
                   name: "this"
@@ -5833,7 +5826,6 @@ const transform = {
             },
             "SDL_BlitSurfaceUncheckedScaled": {
               kind: "function",
-              name: "BlitUncheckedScaled",
               parameters: [
                 {
                   name: "this"
@@ -5939,7 +5931,7 @@ const transform = {
             "Blit9Grid": {
               kind: "function",
               name: "Blit9Grid",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "const SurfaceBase &",
@@ -6042,31 +6034,23 @@ const transform = {
                 kind: "function",
                 name: "ReadPixel",
                 immutable: true,
-                type: "std::optional<Color>",
+                type: "Color",
                 parameters: [
                   {
-                    type: "int",
-                    name: "x"
+                    type: "const SDL_Point &",
+                    name: "p"
                   },
-                  {
-                    type: "int",
-                    name: "y"
-                  }
                 ]
               },
               {
                 kind: "function",
                 name: "ReadPixel",
                 immutable: true,
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
-                    type: "int",
-                    name: "x"
-                  },
-                  {
-                    type: "int",
-                    name: "y"
+                    type: "const SDL_Point &",
+                    name: "p"
                   },
                   {
                     type: "SDL_Color *",
@@ -6078,15 +6062,11 @@ const transform = {
                 kind: "function",
                 name: "ReadPixel",
                 immutable: true,
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
-                    type: "int",
-                    name: "x"
-                  },
-                  {
-                    type: "int",
-                    name: "y"
+                    type: "const SDL_Point &",
+                    name: "p"
                   },
                   {
                     type: "SDL_FColor *",
@@ -6098,58 +6078,87 @@ const transform = {
             "SDL_ReadSurfacePixel": {
               kind: "function",
               name: "ReadPixel",
-              immutable: true
+              immutable: true,
+              parameters: [
+                {},
+                {
+                  type: "const SDL_Point &",
+                  name: "p"
+                },
+                {
+                  type: "Uint8 *",
+                  name: "r"
+                },
+                {
+                  type: "Uint8 *",
+                  name: "g"
+                },
+                {
+                  type: "Uint8 *",
+                  name: "b"
+                },
+                {
+                  type: "Uint8 *",
+                  name: "a"
+                }
+              ]
             },
             "SDL_ReadSurfacePixelFloat": {
               kind: "function",
               name: "ReadPixel",
-              immutable: true
+              immutable: true,
+              parameters: [
+                {},
+                {
+                  type: "const SDL_Point &",
+                  name: "p"
+                },
+                {
+                  type: "float *",
+                  name: "r"
+                },
+                {
+                  type: "float *",
+                  name: "g"
+                },
+                {
+                  type: "float *",
+                  name: "b"
+                },
+                {
+                  type: "float *",
+                  name: "a"
+                }
+              ]
             },
-            "WritePixel": [
-              {
-                kind: "function",
-                type: "bool",
-                parameters: [
-                  {
-                    type: "int",
-                    name: "x"
-                  },
-                  {
-                    type: "int",
-                    name: "y"
-                  },
-                  {
-                    type: "SDL_Color",
-                    name: "c"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "bool",
-                parameters: [
-                  {
-                    type: "int",
-                    name: "x"
-                  },
-                  {
-                    type: "int",
-                    name: "y"
-                  },
-                  {
-                    type: "SDL_FColor",
-                    name: "c"
-                  }
-                ]
-              }
-            ],
             "SDL_WriteSurfacePixel": {
               kind: "function",
-              name: "WritePixel"
+              parameters: [
+                {},
+                {
+                  type: "const SDL_Point &",
+                  name: "p"
+                },
+                {
+                  type: "SDL_Color",
+                  name: "c"
+                }
+              ]
             },
             "SDL_WriteSurfacePixelFloat": {
               kind: "function",
-              name: "WritePixel"
+              name: "WritePixel",
+              parameters: [
+                {},
+                {
+                  type: "const SDL_Point &",
+                  name: "p"
+                },
+                {
+                  type: "SDL_FColor",
+                  name: "c"
+                }
+              ]
             },
             "GetWidth": {
               kind: "function",

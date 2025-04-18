@@ -3,7 +3,7 @@ var searchData=
   ['abs_0',['abs',['../group__CategoryStdinc.html#gac002154c442e2a92fb84a60c454cecf8',1,'SDL::abs(float x)'],['../group__CategoryStdinc.html#gadd53991e26e130aa47ac47f23f187ac3',1,'SDL::abs(double x)'],['../group__CategoryStdinc.html#gab188f3aa930df339c851b95bf2c4030b',1,'SDL::abs(int x)']]],
   ['acos_1',['acos',['../group__CategoryStdinc.html#ga8cb5c957259b2c7dea56281b8a8e0b2e',1,'SDL::acos(float x)'],['../group__CategoryStdinc.html#ga9f6543d319422a6044570b59cc6377b4',1,'SDL::acos(double x)']]],
   ['add_2',['Add',['../classSDL_1_1AtomicInt.html#a353e1c3c6d3665e1c10e4ae31b4eed7b',1,'SDL::AtomicInt']]],
-  ['addalternateimage_3',['AddAlternateImage',['../structSDL_1_1SurfaceBase.html#ad3279e4161dcd77078c3ec6f57dc5a43',1,'SDL::SurfaceBase']]],
+  ['addalternateimage_3',['AddAlternateImage',['../structSDL_1_1SurfaceBase.html#a755a93948913328699833eefe3026340',1,'SDL::SurfaceBase']]],
   ['addeventwatch_4',['addeventwatch',['../group__CategoryEvents.html#ga9471cdb876c63ac0ecf6b8a2649ac39e',1,'SDL::AddEventWatch(EventFilterCB filter)'],['../group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e',1,'SDL::AddEventWatch(EventFilter filter, void *userdata)']]],
   ['addfallback_5',['AddFallback',['../structSDL_1_1FontBase.html#a2c1c29aef54bfcf70f736100a747fc5e',1,'SDL::FontBase']]],
   ['addhintcallback_6',['AddHintCallback',['../group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c',1,'SDL']]],
