@@ -29,9 +29,9 @@ struct Main
   SDL::Renderer renderer{window};
   std::array<SDL::FPoint, 500> points;
 
+  // This function runs once at startup.
   Main()
   {
-    if (!renderer) throw std::runtime_error{SDL::GetError()};
     // set up some random points
     for (auto& point : points) {
       point.x = (SDL_randf() * 440.0f) + 100.0f;

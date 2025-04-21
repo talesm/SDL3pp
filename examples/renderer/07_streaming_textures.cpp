@@ -33,12 +33,6 @@ struct Main
                        SDL::TEXTUREACCESS_STREAMING,
                        textureSz};
 
-  // This function runs once at startup.
-  Main()
-  {
-    if (!renderer || !texture) throw std::runtime_error{SDL::GetError()};
-  }
-
   SDL::AppResult Iterate()
   {
     const float now = SDL::ToSeconds(SDL::GetTicks());

@@ -202,8 +202,8 @@ struct CursorBase : Resource<SDL_Cursor*>
    *              mouse x position, in the range of 0 to `w` - 1.
    * @param hot_y the y-axis offset from the top of the cursor image to the
    *              mouse y position, in the range of 0 to `h` - 1.
-   * @post a new cursor with the specified parameters on success or nullptr on
-   *          failure; call GetError() for more information.
+   * @post a new cursor with the specified parameters on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -220,7 +220,7 @@ struct CursorBase : Resource<SDL_Cursor*>
              int h,
              int hot_x,
              int hot_y)
-    : Resource(SDL_CreateCursor(data, mask, w, h, hot_x, hot_y))
+    : Resource(CheckError(SDL_CreateCursor(data, mask, w, h, hot_x, hot_y)))
   {
   }
 
@@ -240,8 +240,8 @@ struct CursorBase : Resource<SDL_Cursor*>
    * @param surface an SurfaceBase structure representing the cursor image.
    * @param hot_x the x position of the cursor hot spot.
    * @param hot_y the y position of the cursor hot spot.
-   * @post the new cursor on success or nullptr on failure; call GetError()
-   *          for more information.
+   * @post the new cursor on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -253,7 +253,7 @@ struct CursorBase : Resource<SDL_Cursor*>
    * @sa SetCursor
    */
   CursorBase(SurfaceBase& surface, int hot_x, int hot_y)
-    : Resource(SDL_CreateColorCursor(surface.get(), hot_x, hot_y))
+    : Resource(CheckError(SDL_CreateColorCursor(surface.get(), hot_x, hot_y)))
   {
   }
 
@@ -261,8 +261,8 @@ struct CursorBase : Resource<SDL_Cursor*>
    * Create a system cursor.
    *
    * @param id an SystemCursor enum value.
-   * @post a cursor on success or nullptr on failure; call GetError() for
-   *          more information.
+   * @post a cursor on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -271,7 +271,7 @@ struct CursorBase : Resource<SDL_Cursor*>
    * @sa CursorRef.reset
    */
   CursorBase(SystemCursor id)
-    : Resource(SDL_CreateSystemCursor(id))
+    : Resource(CheckError(SDL_CreateSystemCursor(id)))
   {
   }
 };
@@ -472,9 +472,8 @@ inline bool HasMouse() { return SDL_HasMouse(); }
  * You should wait for input from a device before you consider it actively in
  * use.
  *
- * @returns a 0 terminated array of mouse instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ * @returns a 0 terminated array of mouse instance IDs.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -486,8 +485,7 @@ inline bool HasMouse() { return SDL_HasMouse(); }
 inline OwnArray<MouseID> GetMice()
 {
   int count;
-  auto data = SDL_GetMice(&count);
-  if (!data) return {};
+  auto data = CheckError(SDL_GetMice(&count));
   return OwnArray<MouseID>{data, size_t(count)};
 }
 
@@ -497,8 +495,8 @@ inline OwnArray<MouseID> GetMice()
  * This function returns "" if the mouse doesn't have a name.
  *
  * @param instance_id the mouse instance ID.
- * @returns the name of the selected mouse, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the name of the selected mouse.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -508,7 +506,7 @@ inline OwnArray<MouseID> GetMice()
  */
 inline const char* GetMouseNameForID(MouseID instance_id)
 {
-  return SDL_GetMouseNameForID(instance_id);
+  return CheckError(SDL_GetMouseNameForID(instance_id));
 }
 
 /**
@@ -674,8 +672,7 @@ inline void WindowBase::WarpMouse(float x, float y)
  *
  * @param x the x coordinate.
  * @param y the y coordinate.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -683,7 +680,10 @@ inline void WindowBase::WarpMouse(float x, float y)
  *
  * @sa WindowBase.WarpMouse
  */
-inline bool WarpMouse(float x, float y) { return SDL_WarpMouseGlobal(x, y); }
+inline void WarpMouse(float x, float y)
+{
+  CheckError(SDL_WarpMouseGlobal(x, y));
+}
 
 /**
  * Set relative mouse mode for a window.
@@ -701,8 +701,7 @@ inline bool WarpMouse(float x, float y) { return SDL_WarpMouseGlobal(x, y); }
  * This function will flush any pending mouse motion for this window.
  *
  * @param enabled true to enable relative mode, false to disable.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -710,9 +709,9 @@ inline bool WarpMouse(float x, float y) { return SDL_WarpMouseGlobal(x, y); }
  *
  * @sa WindowBase.GetRelativeMouseMode
  */
-inline bool WindowBase::SetRelativeMouseMode(bool enabled)
+inline void WindowBase::SetRelativeMouseMode(bool enabled)
 {
-  return SDL_SetWindowRelativeMouseMode(get(), enabled);
+  CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
 }
 
 /**
@@ -768,8 +767,7 @@ inline bool WindowBase::GetRelativeMouseMode() const
  * `SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.
  *
  * @param enabled true to enable capturing, false to disable.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -777,7 +775,10 @@ inline bool WindowBase::GetRelativeMouseMode() const
  *
  * @sa GetGlobalMouseState
  */
-inline bool CaptureMouse(bool enabled) { return SDL_CaptureMouse(enabled); }
+inline void CaptureMouse(bool enabled)
+{
+  CheckError(SDL_CaptureMouse(enabled));
+}
 
 /**
  * Set the active cursor.
@@ -788,8 +789,7 @@ inline bool CaptureMouse(bool enabled) { return SDL_CaptureMouse(enabled); }
  * this is desired for any reason.
  *
  * @param cursor a cursor to make active.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -797,9 +797,9 @@ inline bool CaptureMouse(bool enabled) { return SDL_CaptureMouse(enabled); }
  *
  * @sa GetCursor
  */
-inline bool SetCursor(CursorBase& cursor)
+inline void SetCursor(CursorBase& cursor)
 {
-  return SDL_SetCursor(cursor.get());
+  CheckError(SDL_SetCursor(cursor.get()));
 }
 
 /**
@@ -824,20 +824,22 @@ inline CursorRef GetCursor() { return SDL_GetCursor(); }
  * You do not have to call CursorRef.reset() on the return value, but it is
  * safe to do so.
  *
- * @returns the default cursor on success or nullptr on failuree; call
- *          GetError() for more information.
+ * @returns the default cursor on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline CursorRef GetDefaultCursor() { return SDL_GetDefaultCursor(); }
+inline CursorRef GetDefaultCursor()
+{
+  return CheckError(SDL_GetDefaultCursor());
+}
 
 /**
  * Show the cursor.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -846,13 +848,12 @@ inline CursorRef GetDefaultCursor() { return SDL_GetDefaultCursor(); }
  * @sa CursorVisible
  * @sa HideCursor
  */
-inline bool ShowCursor() { return SDL_ShowCursor(); }
+inline void ShowCursor() { CheckError(SDL_ShowCursor()); }
 
 /**
  * Hide the cursor.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -861,7 +862,7 @@ inline bool ShowCursor() { return SDL_ShowCursor(); }
  * @sa CursorVisible
  * @sa ShowCursor
  */
-inline bool HideCursor() { return SDL_HideCursor(); }
+inline void HideCursor() { CheckError(SDL_HideCursor()); }
 
 /**
  * Return whether the cursor is currently being shown.

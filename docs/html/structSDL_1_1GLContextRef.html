@@ -126,9 +126,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~GLContextRef</b
 <tr class="memitem:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextBase" id="r_a65e0e76fc8043319de3efbf16bc6cb10"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextBase.html#a65e0e76fc8043319de3efbf16bc6cb10">GLContextBase</a> (<a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a> &amp;window)</td></tr>
 <tr class="memdesc:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenGL context for an OpenGL window, and make it current.  <br /></td></tr>
 <tr class="separator:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab69ebc9018b487f3cabcda3863ac4ee8 inherit pub_methods_structSDL_1_1GLContextBase" id="r_ab69ebc9018b487f3cabcda3863ac4ee8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextBase.html#ab69ebc9018b487f3cabcda3863ac4ee8">MakeCurrent</a> (<a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a> &amp;window)</td></tr>
-<tr class="memdesc:ab69ebc9018b487f3cabcda3863ac4ee8 inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up an OpenGL context for rendering into an OpenGL window.  <br /></td></tr>
-<tr class="separator:ab69ebc9018b487f3cabcda3863ac4ee8 inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe7815071638a42310da00c82c3b272e inherit pub_methods_structSDL_1_1GLContextBase" id="r_abe7815071638a42310da00c82c3b272e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextBase.html#abe7815071638a42310da00c82c3b272e">MakeCurrent</a> (<a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a> &amp;window)</td></tr>
+<tr class="memdesc:abe7815071638a42310da00c82c3b272e inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up an OpenGL context for rendering into an OpenGL window.  <br /></td></tr>
+<tr class="separator:abe7815071638a42310da00c82c3b272e inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1GLContextBase" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -242,12 +242,18 @@ constexpr SDL_GLContextState *&#160;</td><td class="memItemRight" valign="bottom
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the OpenGL context associated with <code>window</code> or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the OpenGL context associated with <code>window</code>. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GLContextRef.html#a13a18df930691adc57124ff4eb145232" title="Delete an OpenGL context.">GLContextRef.reset</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1GLContextBase.html#ab69ebc9018b487f3cabcda3863ac4ee8" title="Set up an OpenGL context for rendering into an OpenGL window.">GLContextBase.MakeCurrent</a> </dd></dl>
+<a class="el" href="structSDL_1_1GLContextBase.html#abe7815071638a42310da00c82c3b272e" title="Set up an OpenGL context for rendering into an OpenGL window.">GLContextBase.MakeCurrent</a> </dd></dl>
 
 </div>
 </div>

@@ -28,11 +28,6 @@ struct Main
   SDL::Window window{"examples/renderer/lines", windowSz};
   SDL::Renderer renderer{window};
 
-  Main()
-  {
-    if (!renderer) throw std::runtime_error{SDL::GetError()};
-  }
-
   SDL::AppResult Iterate()
   {
     /* Lines (line segments, really) are drawn in terms of points: a set of

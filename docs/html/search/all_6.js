@@ -15,7 +15,7 @@ var searchData=
   ['fillrects_12',['fillrects',['../structSDL_1_1SurfaceBase.html#a82f9255f72a2f846ead75add4e9580e2',1,'SDL::SurfaceBase::FillRects(SpanRef&lt; const SDL_Rect &gt; rects, Uint32 color)'],['../structSDL_1_1SurfaceBase.html#aae1f6be68ac6c412f50c8b167f4e1ac4',1,'SDL::SurfaceBase::FillRects(SpanRef&lt; const SDL_Rect &gt; rects, SDL_Color color)']]],
   ['filterevents_13',['filterevents',['../group__CategoryEvents.html#ga012ee46224020dd32156f124d75d3a38',1,'SDL::FilterEvents(EventFilterCB filter)'],['../group__CategoryEvents.html#gabde9f79506e24c465a9286266880be76',1,'SDL::FilterEvents(EventFilter filter, void *userdata)']]],
   ['flags_14',['Initialization flags',['../group__InitFlags.html',1,'']]],
-  ['flash_15',['Flash',['../structSDL_1_1WindowBase.html#a5f1b72516db2cdaf78bc5569c81b99b4',1,'SDL::WindowBase']]],
+  ['flash_15',['Flash',['../structSDL_1_1WindowBase.html#aea105862ae2d88ad61acfc5df3a3fdcc',1,'SDL::WindowBase']]],
   ['flash_5fbriefly_16',['FLASH_BRIEFLY',['../group__CategoryVideo.html#ga5300ed7d3b064ac57a032fd77e5c991c',1,'SDL']]],
   ['flash_5fcancel_17',['FLASH_CANCEL',['../group__CategoryVideo.html#ga0e8f6b061211271ad47b892ce73628e9',1,'SDL']]],
   ['flash_5funtil_5ffocused_18',['FLASH_UNTIL_FOCUSED',['../group__CategoryVideo.html#gaba81c5903c233d712d3172801e907441',1,'SDL']]],

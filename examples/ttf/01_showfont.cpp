@@ -20,11 +20,6 @@ struct Main
   static constexpr int testQualityCount = 2;
   SDL::Color testColor{0, 0, 0};
 
-  Main()
-  {
-    if (!renderer) throw std::runtime_error{SDL::GetError()};
-  }
-
   SDL::AppResult Iterate()
   {
     renderer.SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});

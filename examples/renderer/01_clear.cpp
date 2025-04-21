@@ -31,11 +31,6 @@ struct Main
   SDL::Window window{"examples/renderer/clear", windowSz};
   SDL::Renderer renderer{window};
 
-  Main()
-  {
-    if (!renderer) throw std::runtime_error{SDL::GetError()};
-  }
-
   SDL::AppResult Iterate()
   {
     // convert from milliseconds to seconds.

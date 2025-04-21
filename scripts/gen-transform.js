@@ -1603,6 +1603,7 @@ const transform = {
       }
     },
     "SDL_keyboard.h": {
+      enableException: true,
       namespacesMap: {
         "SDL_PROP_TEXTINPUT_": "prop::TextInput"
       },
@@ -1633,33 +1634,26 @@ const transform = {
           "name": "Keycode::Keycode"
         },
         "SDL_StartTextInput": {
-          "name": "WindowBase::StartTextInput",
-          "type": "bool"
+          name: "WindowBase::StartTextInput",
         },
         "SDL_StartTextInputWithProperties": {
-          "name": "WindowBase::StartTextInput",
-          "type": "bool"
+          name: "WindowBase::StartTextInput",
         },
         "SDL_TextInputActive": {
-          "name": "WindowBase::IsTextInputActive",
-          "immutable": true,
-          "type": "bool"
+          name: "WindowBase::IsTextInputActive",
+          immutable: true,
         },
         "SDL_StopTextInput": {
-          "name": "WindowBase::StopTextInput",
-          "type": "bool"
+          name: "WindowBase::StopTextInput",
         },
         "SDL_ClearComposition": {
-          "name": "WindowBase::ClearComposition",
-          "type": "bool"
+          name: "WindowBase::ClearComposition",
         },
         "SDL_SetTextInputArea": {
-          "name": "WindowBase::SetTextInputArea",
-          "type": "bool"
+          name: "WindowBase::SetTextInputArea",
         },
         "SDL_GetTextInputArea": {
-          "name": "WindowBase::GetTextInputArea",
-          "type": "bool"
+          name: "WindowBase::GetTextInputArea",
         },
         "SDL_ScreenKeyboardShown": {
           name: "WindowBase::IsScreenKeyboardShown",
@@ -2599,6 +2593,7 @@ const transform = {
       }
     },
     "SDL_mouse.h": {
+      enableException: true,
       enumerations: {
         "SDL_SystemCursor": {
           prefix: "SDL_SYSTEM_CURSOR_",
@@ -6587,6 +6582,7 @@ const transform = {
       }
     },
     "SDL_video.h": {
+      enableException: true,
       includeAfter: {
         "__begin": [
           {
@@ -6852,7 +6848,7 @@ const transform = {
             "SDL_SetWindowIcon": "function",
             "SetRect": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "type": "Rect",
@@ -6862,7 +6858,7 @@ const transform = {
             },
             "GetRect": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "immutable": true,
               "parameters": []
             },
@@ -6877,7 +6873,7 @@ const transform = {
             },
             "GetPosition": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
@@ -6893,14 +6889,14 @@ const transform = {
             },
             "GetSize": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
             "SDL_GetWindowSize": "immutable",
             "SDL_GetWindowSafeArea": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "immutable": true,
               "parameters": []
             },
@@ -6909,7 +6905,7 @@ const transform = {
             "SDL_GetWindowBordersSize": "immutable",
             "GetSizeInPixels": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
@@ -6950,7 +6946,7 @@ const transform = {
             "SDL_SetWindowSurfaceVSync": "function",
             "SDL_GetWindowSurfaceVSync": {
               "immutable": true,
-              "type": "std::optional<int>",
+              "type": "int",
               "parameters": []
             },
             "SDL_UpdateWindowSurface": {
@@ -6998,7 +6994,7 @@ const transform = {
             },
             "SetHitTest": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "callback",
@@ -7081,13 +7077,13 @@ const transform = {
             "SDL_GetDisplayName": "immutable",
             "SDL_GetDisplayBounds": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": [],
               "immutable": true
             },
             "SDL_GetDisplayUsableBounds": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": [],
               "immutable": true
             },
@@ -7113,7 +7109,7 @@ const transform = {
               "kind": "function",
               "name": "GetClosestFullscreenMode",
               "immutable": true,
-              "type": "std::optional<DisplayMode>",
+              "type": "DisplayMode",
               "parameters": [
                 {},
                 {},

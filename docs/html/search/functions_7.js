@@ -27,6 +27,6 @@ var searchData=
   ['hassse41_24',['HasSSE41',['../group__CategoryCPUInfo.html#ga45e24e4d10d49ae3e58f29442d669492',1,'SDL']]],
   ['hassse42_25',['HasSSE42',['../group__CategoryCPUInfo.html#ga2d8283115443720d4e331571ef79aa9a',1,'SDL']]],
   ['hassurface_26',['HasSurface',['../structSDL_1_1WindowBase.html#aff856522495fae0879ab8fdc71cdf09d',1,'SDL::WindowBase']]],
-  ['hide_27',['Hide',['../structSDL_1_1WindowBase.html#a42193ba37a3d440ff487defcb6fe05f5',1,'SDL::WindowBase']]],
-  ['hidecursor_28',['HideCursor',['../group__CategoryMouse.html#ga71aabff2b5f5d5777a5ae027e34f76a9',1,'SDL']]]
+  ['hide_27',['Hide',['../structSDL_1_1WindowBase.html#a7622ac74097d8da590653b0bc553546f',1,'SDL::WindowBase']]],
+  ['hidecursor_28',['HideCursor',['../group__CategoryMouse.html#gaf0f9b4279e667e985373bed9f896385e',1,'SDL']]]
 ];

@@ -28,12 +28,6 @@ struct Main
   SDL::Window window{"examples/renderer/rectangles", windowSz};
   SDL::Renderer renderer{window};
 
-  // This function runs once at startup.
-  Main()
-  {
-    if (!renderer) throw std::runtime_error{SDL::GetError()};
-  }
-
   SDL::AppResult Iterate()
   {
     std::array<SDL::FRect, 16> rects;

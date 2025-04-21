@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['raise_0',['Raise',['../structSDL_1_1WindowBase.html#aff6db4818fc32cd0e594839295900bf8',1,'SDL::WindowBase']]],
+  ['raise_0',['Raise',['../structSDL_1_1WindowBase.html#a588c742fb48671f2227f48755f360ecf',1,'SDL::WindowBase']]],
   ['rand_1',['rand',['../group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7',1,'SDL::rand()'],['../classSDL_1_1Random.html#ad5771bdda506ab8688534d7300c3e644',1,'SDL::Random::rand()']]],
   ['rand_5fbits_2',['rand_bits',['../group__CategoryStdinc.html#gae6517052066ab937273e6a89c7d1eca8',1,'SDL::rand_bits()'],['../classSDL_1_1Random.html#ab111c38ff6274e4e74a299bb843a3591',1,'SDL::Random::rand_bits()']]],
   ['randf_3',['randf',['../group__CategoryStdinc.html#gaab0a933463eebe63f34b3acec7e96c6e',1,'SDL::randf()'],['../classSDL_1_1Random.html#a32f2952323afd4757c825260dee2e806',1,'SDL::Random::randf()']]],
@@ -118,7 +118,7 @@ var searchData=
   ['resource_3c_20ttf_5ffont_20_2a_20_3e_115',['Resource&lt; TTF_Font * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['resource_3c_20ttf_5ftext_20_2a_20_3e_116',['Resource&lt; TTF_Text * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['resource_3c_20ttf_5ftextengine_20_2a_20_3e_117',['Resource&lt; TTF_TextEngine * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
-  ['restore_118',['Restore',['../structSDL_1_1WindowBase.html#a45c6d32f9d52e0b50d58e44bb3788818',1,'SDL::WindowBase']]],
+  ['restore_118',['Restore',['../structSDL_1_1WindowBase.html#a6361b5e2364e1e294f2a46105971e86a',1,'SDL::WindowBase']]],
   ['result_20callback_119',['result callback',['../callback.html#result-callback',1,'Result callback'],['../todo.html#_todo000005',1,'Result callback']]],
   ['round_120',['round',['../group__CategoryStdinc.html#ga58af56b2a9898c045c8ec62ec531c8e5',1,'SDL::round(double x)'],['../group__CategoryStdinc.html#ga7cf5cc4c422423a6f36915a012c13046',1,'SDL::round(float x)']]],
   ['routines_121',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],

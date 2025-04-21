@@ -5259,20 +5259,26 @@
               "sourceName": "SDL_GetDisplays"
             },
             "GetPrimary": {
-              "doc": "Return the primary display.\n\n@returns the instance ID of the primary display on success or 0 on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetAll",
+              "doc": "Return the primary display.\n\n@returns the instance ID of the primary display on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetAll",
               "name": "GetPrimary",
               "kind": "function",
               "type": "Display",
               "parameters": [],
-              "sourceName": "SDL_GetPrimaryDisplay"
+              "sourceName": "SDL_GetPrimaryDisplay",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetProperties": {
-              "doc": "Get the properties associated with a display.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR\n  headroom above the SDR white point. This is for informational and\n  diagnostic purposes only, as not all platforms provide this information\n  at the display level.\n\nOn KMS/DRM:\n\n- `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the \"panel\n  orientation\" property for the display in degrees of clockwise rotation.\n  Note that this is provided only as a hint, and the application is\n  responsible for any coordinate transformations needed to conform to the\n  requested display orientation.\n\n@returns a valid property ID on success or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Get the properties associated with a display.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR\n  headroom above the SDR white point. This is for informational and\n  diagnostic purposes only, as not all platforms provide this information\n  at the display level.\n\nOn KMS/DRM:\n\n- `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the \"panel\n  orientation\" property for the display in degrees of clockwise rotation.\n  Note that this is provided only as a hint, and the application is\n  responsible for any coordinate transformations needed to conform to the\n  requested display orientation.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
               "kind": "function",
               "type": "PropertiesRef",
               "parameters": [],
               "sourceName": "SDL_GetDisplayProperties",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetName": {
@@ -5285,21 +5291,27 @@
               "immutable": true
             },
             "GetBounds": {
-              "doc": "Get the desktop area represented by a display.\n\nThe primary display is often located at (0,0), but may be placed at a\ndifferent location depending on monitor layout.\n\n@param displayID the instance ID of the display to query.\n@param rect the Rect structure filled in with the display bounds.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetUsableBounds\n@sa Display.GetAll",
+              "doc": "Get the desktop area represented by a display.\n\nThe primary display is often located at (0,0), but may be placed at a\ndifferent location depending on monitor layout.\n\n@param displayID the instance ID of the display to query.\n@param rect the Rect structure filled in with the display bounds.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetUsableBounds\n@sa Display.GetAll",
               "name": "GetBounds",
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": [],
               "sourceName": "SDL_GetDisplayBounds",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetUsableBounds": {
-              "doc": "Get the usable desktop area represented by a display, in screen\ncoordinates.\n\nThis is the same area as Display.GetBounds() reports, but with portions\nreserved by the system removed. For example, on Apple's macOS, this\nsubtracts the area occupied by the menu bar and dock.\n\nSetting a window to be fullscreen generally bypasses these unusable areas,\nso these are good guidelines for the maximum space available to a\nnon-fullscreen window.\n\n@param displayID the instance ID of the display to query.\n@param rect the Rect structure filled in with the display bounds.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetBounds\n@sa Display.GetAll",
+              "doc": "Get the usable desktop area represented by a display, in screen\ncoordinates.\n\nThis is the same area as Display.GetBounds() reports, but with portions\nreserved by the system removed. For example, on Apple's macOS, this\nsubtracts the area occupied by the menu bar and dock.\n\nSetting a window to be fullscreen generally bypasses these unusable areas,\nso these are good guidelines for the maximum space available to a\nnon-fullscreen window.\n\n@param displayID the instance ID of the display to query.\n@param rect the Rect structure filled in with the display bounds.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetBounds\n@sa Display.GetAll",
               "name": "GetUsableBounds",
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": [],
               "sourceName": "SDL_GetDisplayUsableBounds",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetNaturalOrientation": {
@@ -5339,10 +5351,10 @@
               "immutable": true
             },
             "GetClosestFullscreenMode": {
-              "doc": "Get the closest match to the requested display mode.\n\nThe available display modes are scanned and `closest` is filled in with the\nclosest mode matching the requested mode and returned. The mode format and\nrefresh rate default to the desktop mode if they are set to 0. The modes\nare scanned with size being first priority, format being second priority,\nand finally checking the refresh rate. If all the available modes are too\nsmall, then false is returned.\n\n@param w the width in pixels of the desired display mode.\n@param h the height in pixels of the desired display mode.\n@param refresh_rate the refresh rate of the desired display mode, or 0.0f\n                    for the desktop refresh rate.\n@param include_high_density_modes boolean to include high density modes in\n                                  the search.\n@param closest a pointer filled in with the closest display mode equal to\n               or larger than the desired mode.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetAll\n@sa Display.GetFullscreenModes",
+              "doc": "Get the closest match to the requested display mode.\n\nThe available display modes are scanned and `closest` is filled in with the\nclosest mode matching the requested mode and returned. The mode format and\nrefresh rate default to the desktop mode if they are set to 0. The modes\nare scanned with size being first priority, format being second priority,\nand finally checking the refresh rate. If all the available modes are too\nsmall, then false is returned.\n\n@param w the width in pixels of the desired display mode.\n@param h the height in pixels of the desired display mode.\n@param refresh_rate the refresh rate of the desired display mode, or 0.0f\n                    for the desktop refresh rate.\n@param include_high_density_modes boolean to include high density modes in\n                                  the search.\n@param closest a pointer filled in with the closest display mode equal to\n               or larger than the desired mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetAll\n@sa Display.GetFullscreenModes",
               "name": "GetClosestFullscreenMode",
               "kind": "function",
-              "type": "std::optional<DisplayMode>",
+              "type": "DisplayMode",
               "parameters": [
                 {
                   "name": "w",
@@ -5362,6 +5374,9 @@
                 }
               ],
               "sourceName": "SDL_GetClosestFullscreenDisplayMode",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetDesktopMode": {
@@ -5573,17 +5588,20 @@
               "immutable": true
             },
             "SetFullscreenMode": {
-              "doc": "Set the display mode to use when a window is visible and fullscreen.\n\nThis only affects the display mode used when the window is fullscreen. To\nchange the window size when the window is not fullscreen, use\nWindowBase.SetSize().\n\nIf the window is currently in the fullscreen state, this request is\nasynchronous on some windowing systems and the new mode dimensions may not\nbe applied immediately upon the return of this function. If an immediate\nchange is required, call WindowBase.Sync() to block until the changes have\ntaken effect.\n\nWhen the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode\ndimensions.\n\n@param mode a pointer to the display mode to use, which can be nullptr for\n            borderless fullscreen desktop mode, or one of the fullscreen\n            modes returned by Display.GetFullscreenModes() to set an\n            exclusive fullscreen mode.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFullscreenMode\n@sa WindowBase.SetFullscreen\n@sa WindowBase.Sync",
+              "doc": "Set the display mode to use when a window is visible and fullscreen.\n\nThis only affects the display mode used when the window is fullscreen. To\nchange the window size when the window is not fullscreen, use\nWindowBase.SetSize().\n\nIf the window is currently in the fullscreen state, this request is\nasynchronous on some windowing systems and the new mode dimensions may not\nbe applied immediately upon the return of this function. If an immediate\nchange is required, call WindowBase.Sync() to block until the changes have\ntaken effect.\n\nWhen the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode\ndimensions.\n\n@param mode a pointer to the display mode to use, which can be nullptr for\n            borderless fullscreen desktop mode, or one of the fullscreen\n            modes returned by Display.GetFullscreenModes() to set an\n            exclusive fullscreen mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFullscreenMode\n@sa WindowBase.SetFullscreen\n@sa WindowBase.Sync",
               "name": "SetFullscreenMode",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "mode",
                   "type": "OptionalRef<const DisplayMode>"
                 }
               ],
-              "sourceName": "SDL_SetWindowFullscreenMode"
+              "sourceName": "SDL_SetWindowFullscreenMode",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetFullscreenMode": {
               "doc": "Query the display mode to use when a window is visible at fullscreen.\n\n@returns a pointer to the exclusive fullscreen mode to use or nullptr for\n         borderless fullscreen desktop mode.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetFullscreenMode\n@sa WindowBase.SetFullscreen",
@@ -5595,7 +5613,7 @@
               "immutable": true
             },
             "GetICCProfile": {
-              "doc": "Get the raw ICC profile data for the screen the window is currently on.\n\n@param size the size of the ICC profile.\n@returns the raw ICC profile data on success or nullptr on failure; call\n         GetError() for more information. This should be freed with\n         free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Get the raw ICC profile data for the screen the window is currently on.\n\n@param size the size of the ICC profile.\n@returns the raw ICC profile data on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetICCProfile",
               "kind": "function",
               "type": "OwnPtr<void>",
@@ -5606,43 +5624,58 @@
                 }
               ],
               "sourceName": "SDL_GetWindowICCProfile",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetPixelFormat": {
-              "doc": "Get the pixel format associated with the window.\n\n@returns the pixel format of the window on success or\n         PIXELFORMAT_UNKNOWN on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Get the pixel format associated with the window.\n\n@returns the pixel format of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetPixelFormat",
               "kind": "function",
               "type": "PixelFormat",
               "parameters": [],
               "sourceName": "SDL_GetWindowPixelFormat",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetID": {
-              "doc": "Get the numeric ID of a window.\n\nThe numeric ID is what WindowEvent references, and is necessary to map\nthese events to specific WindowBase objects.\n\n@returns the ID of the window on success or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowRef.FromID",
+              "doc": "Get the numeric ID of a window.\n\nThe numeric ID is what WindowEvent references, and is necessary to map\nthese events to specific WindowBase objects.\n\n@returns the ID of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowRef.FromID",
               "name": "GetID",
               "kind": "function",
               "type": "WindowID",
               "parameters": [],
               "sourceName": "SDL_GetWindowID",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetParent": {
-              "doc": "Get parent of a window.\n\n@returns the parent of the window on success or nullptr if the window has no\n         parent.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.WindowBase",
+              "doc": "Get parent of a window.\n\n@returns the parent of the window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.WindowBase",
               "name": "GetParent",
               "kind": "function",
               "type": "WindowRef",
               "parameters": [],
               "sourceName": "SDL_GetWindowParent",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true,
               "proto": true
             },
             "GetProperties": {
-              "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when GL_SwapWindow is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  assocated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@returns a valid property ID on success or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Get the properties associated with a window.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Window.SHAPE_POINTER`: the surface associated with a shaped\n  window\n- `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR\n  headroom above the SDR white point. This property can change dynamically\n  when EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the\n  COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the\n  SDR white level in scRGB colorspace, and on Apple platforms this is\n  always 1.0 for EDR content. This property can change dynamically when\n  EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nOn Android:\n\n- `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated\n  with the window\n- `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn iOS:\n\n- `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  UIWindow associated with the window\n- `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  associated with metal views on the window\n- `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's\n  framebuffer object. It must be bound when rendering to the screen using\n  OpenGL.\n- `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's\n  renderbuffer object. It must be bound when GL_SwapWindow is called.\n- `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL\n  view's resolve framebuffer, when MSAA is used.\n\nOn KMS/DRM:\n\n- `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated\n  with the window (e.g. the X in /dev/dri/cardX)\n- `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the\n  window\n- `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated\n  with the window\n\nOn macOS:\n\n- `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`\n  NSWindow associated with the window\n- `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag\n  assocated with metal views on the window\n\nOn OpenVR:\n\n- `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the\n  associated overlay window.\n\nOn Vivante:\n\n- `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType\n  associated with the window\n- `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType\n  associated with the window\n- `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with\n  the window\n\nOn Windows:\n\n- `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window\n- `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window\n- `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with\n  the window\n\nOn Wayland:\n\nNote: The `xdg_*` window objects do not internally persist across window\nshow/hide calls. They will be null if the window is hidden and must be\nqueried each time it is shown.\n\n- `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with\n  the window\n- `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with\n  the window\n- `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated\n  with the window\n- `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window\n  associated with the window\n- `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated\n  with the window\n- `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role\n  associated with the window\n- 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export\n  handle associated with the window\n- `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role\n  associated with the window\n- `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner\n  associated with the window, in popup mode\n\nOn X11:\n\n- `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with\n  the window\n- `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with\n  the window\n- `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the\n  window\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
               "kind": "function",
               "type": "PropertiesRef",
               "parameters": [],
               "sourceName": "SDL_GetWindowProperties",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetFlags": {
@@ -5655,17 +5688,20 @@
               "immutable": true
             },
             "SetTitle": {
-              "doc": "Set the title of a window.\n\nThis string is expected to be in UTF-8 encoding.\n\n@param title the desired window title in UTF-8 format.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetTitle",
+              "doc": "Set the title of a window.\n\nThis string is expected to be in UTF-8 encoding.\n\n@param title the desired window title in UTF-8 format.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetTitle",
               "name": "SetTitle",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "title",
                   "type": "StringParam"
                 }
               ],
-              "sourceName": "SDL_SetWindowTitle"
+              "sourceName": "SDL_SetWindowTitle",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetTitle": {
               "doc": "Get the title of a window.\n\n@returns the title of the window in UTF-8 format or \"\" if there is no\n         title.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTitle",
@@ -5677,21 +5713,24 @@
               "immutable": true
             },
             "SetIcon": {
-              "doc": "Set the icon for a window.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param icon an SurfaceBase structure containing the icon for the window.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Set the icon for a window.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param icon an SurfaceBase structure containing the icon for the window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "SetIcon",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "icon",
                   "type": "SurfaceBase &"
                 }
               ],
-              "sourceName": "SDL_SetWindowIcon"
+              "sourceName": "SDL_SetWindowIcon",
+              "hints": {
+                "mayFail": true
+              }
             },
             "SetRect": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "type": "Rect",
@@ -5703,17 +5742,17 @@
             },
             "GetRect": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "immutable": true,
               "parameters": [],
               "name": "GetRect",
               "doc": ""
             },
             "SetPosition": {
-              "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nWindowBase.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window position changes, an EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to reposition.\n@param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetPosition\n@sa WindowBase.Sync",
+              "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nWindowBase.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window position changes, an EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to reposition.\n@param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetPosition\n@sa WindowBase.Sync",
               "name": "SetPosition",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "p",
@@ -5721,22 +5760,25 @@
                 }
               ],
               "sourceName": "SDL_SetWindowPosition",
+              "hints": {
+                "mayFail": true
+              },
               "static": false
             },
             "GetPosition": [
               {
                 "kind": "function",
-                "type": "std::optional<Point>",
+                "type": "Point",
                 "immutable": true,
                 "parameters": [],
                 "name": "GetPosition",
                 "doc": ""
               },
               {
-                "doc": "Get the position of a window.\n\nThis is the current position of the window as last reported by the\nwindowing system.\n\nIf you do not need the value for one of the positions a nullptr may be passed\nin the `x` or `y` parameter.\n\n@param x a pointer filled in with the x position of the window, may be\n         nullptr.\n@param y a pointer filled in with the y position of the window, may be\n         nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetPosition",
+                "doc": "Get the position of a window.\n\nThis is the current position of the window as last reported by the\nwindowing system.\n\nIf you do not need the value for one of the positions a nullptr may be passed\nin the `x` or `y` parameter.\n\n@param x a pointer filled in with the x position of the window, may be\n         nullptr.\n@param y a pointer filled in with the y position of the window, may be\n         nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetPosition",
                 "name": "GetPosition",
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "name": "x",
@@ -5748,14 +5790,17 @@
                   }
                 ],
                 "sourceName": "SDL_GetWindowPosition",
+                "hints": {
+                  "mayFail": true
+                },
                 "immutable": true
               }
             ],
             "SetSize": {
-              "doc": "Request that the size of a window's client area be set.\n\nIf the window is in a fullscreen or maximized state, this request has no\neffect.\n\nTo change the exclusive fullscreen mode of a window, use\nWindowBase.SetFullscreenMode().\n\nOn some windowing systems, this request is asynchronous and the new window\nsize may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact size requested, as some windowing systems can restrict\nthe window size in certain scenarios (e.g. constraining the size of the\ncontent area to remain within the usable desktop bounds). Additionally, as\nthis is just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param w the width of the window, must be > 0.\n@param h the height of the window, must be > 0.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSize\n@sa WindowBase.SetFullscreenMode\n@sa WindowBase.Sync",
+              "doc": "Request that the size of a window's client area be set.\n\nIf the window is in a fullscreen or maximized state, this request has no\neffect.\n\nTo change the exclusive fullscreen mode of a window, use\nWindowBase.SetFullscreenMode().\n\nOn some windowing systems, this request is asynchronous and the new window\nsize may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact size requested, as some windowing systems can restrict\nthe window size in certain scenarios (e.g. constraining the size of the\ncontent area to remain within the usable desktop bounds). Additionally, as\nthis is just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param w the width of the window, must be > 0.\n@param h the height of the window, must be > 0.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSize\n@sa WindowBase.SetFullscreenMode\n@sa WindowBase.Sync",
               "name": "SetSize",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "p",
@@ -5763,22 +5808,25 @@
                 }
               ],
               "sourceName": "SDL_SetWindowSize",
+              "hints": {
+                "mayFail": true
+              },
               "static": false
             },
             "GetSize": [
               {
                 "kind": "function",
-                "type": "std::optional<Point>",
+                "type": "Point",
                 "immutable": true,
                 "parameters": [],
                 "name": "GetSize",
                 "doc": ""
               },
               {
-                "doc": "Get the size of a window's client area.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use WindowBase.GetSizeInPixels()\nor RendererBase.GetOutputSize() to get the real client area size in pixels.\n\n@param w a pointer filled in with the width of the window, may be nullptr.\n@param h a pointer filled in with the height of the window, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.GetOutputSize\n@sa WindowBase.GetSizeInPixels\n@sa WindowBase.SetSize",
+                "doc": "Get the size of a window's client area.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use WindowBase.GetSizeInPixels()\nor RendererBase.GetOutputSize() to get the real client area size in pixels.\n\n@param w a pointer filled in with the width of the window, may be nullptr.\n@param h a pointer filled in with the height of the window, may be nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererBase.GetOutputSize\n@sa WindowBase.GetSizeInPixels\n@sa WindowBase.SetSize",
                 "name": "GetSize",
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "name": "w",
@@ -5790,23 +5838,29 @@
                   }
                 ],
                 "sourceName": "SDL_GetWindowSize",
+                "hints": {
+                  "mayFail": true
+                },
                 "immutable": true
               }
             ],
             "GetSafeArea": {
-              "doc": "Get the safe area for this window.\n\nSome devices have portions of the screen which are partially obscured or\nnot interactive, possibly due to on-screen controls, curved edges, camera\nnotches, TV overscan, etc. This function provides the area of the window\nwhich is safe to have interactable content. You should continue rendering\ninto the rest of the window, but it should not contain visually important\nor interactible content.\n\n@param window the window to query.\n@param rect a pointer filled in with the client area that is safe for\n            interactive content.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Get the safe area for this window.\n\nSome devices have portions of the screen which are partially obscured or\nnot interactive, possibly due to on-screen controls, curved edges, camera\nnotches, TV overscan, etc. This function provides the area of the window\nwhich is safe to have interactable content. You should continue rendering\ninto the rest of the window, but it should not contain visually important\nor interactible content.\n\n@param window the window to query.\n@param rect a pointer filled in with the client area that is safe for\n            interactive content.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetSafeArea",
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": [],
               "sourceName": "SDL_GetWindowSafeArea",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "SetAspectRatio": {
-              "doc": "Request that the aspect ratio of a window's client area be set.\n\nThe aspect ratio is the ratio of width divided by height, e.g. 2560x1600\nwould be 1.6. Larger aspect ratios are wider and smaller aspect ratios are\nnarrower.\n\nIf, at the time of this request, the window in a fixed-size state, such as\nmaximized or fullscreen, the request will be deferred until the window\nexits this state and becomes resizable again.\n\nOn some windowing systems, this request is asynchronous and the new window\naspect ratio may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact aspect ratio requested, as some windowing systems can\nrestrict the window size in certain scenarios (e.g. constraining the size\nof the content area to remain within the usable desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param min_aspect the minimum aspect ratio of the window, or 0.0f for no\n                  limit.\n@param max_aspect the maximum aspect ratio of the window, or 0.0f for no\n                  limit.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetAspectRatio\n@sa WindowBase.Sync",
+              "doc": "Request that the aspect ratio of a window's client area be set.\n\nThe aspect ratio is the ratio of width divided by height, e.g. 2560x1600\nwould be 1.6. Larger aspect ratios are wider and smaller aspect ratios are\nnarrower.\n\nIf, at the time of this request, the window in a fixed-size state, such as\nmaximized or fullscreen, the request will be deferred until the window\nexits this state and becomes resizable again.\n\nOn some windowing systems, this request is asynchronous and the new window\naspect ratio may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact aspect ratio requested, as some windowing systems can\nrestrict the window size in certain scenarios (e.g. constraining the size\nof the content area to remain within the usable desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param min_aspect the minimum aspect ratio of the window, or 0.0f for no\n                  limit.\n@param max_aspect the maximum aspect ratio of the window, or 0.0f for no\n                  limit.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetAspectRatio\n@sa WindowBase.Sync",
               "name": "SetAspectRatio",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "min_aspect",
@@ -5817,13 +5871,16 @@
                   "type": "float"
                 }
               ],
-              "sourceName": "SDL_SetWindowAspectRatio"
+              "sourceName": "SDL_SetWindowAspectRatio",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetAspectRatio": {
-              "doc": "Get the size of a window's client area.\n\n@param min_aspect a pointer filled in with the minimum aspect ratio of the\n                  window, may be nullptr.\n@param max_aspect a pointer filled in with the maximum aspect ratio of the\n                  window, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetAspectRatio",
+              "doc": "Get the size of a window's client area.\n\n@param min_aspect a pointer filled in with the minimum aspect ratio of the\n                  window, may be nullptr.\n@param max_aspect a pointer filled in with the maximum aspect ratio of the\n                  window, may be nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetAspectRatio",
               "name": "GetAspectRatio",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "min_aspect",
@@ -5835,13 +5892,16 @@
                 }
               ],
               "sourceName": "SDL_GetWindowAspectRatio",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetBordersSize": {
-              "doc": "Get the size of a window's borders (decorations) around the client area.\n\nNote: If this function fails (returns false), the size values will be\ninitialized to 0, 0, 0, 0 (if a non-nullptr pointer is provided), as if the\nwindow in question was borderless.\n\nNote: This function may fail on systems where the window has not yet been\ndecorated by the display server (for example, immediately after calling\nWindowBase.WindowBase). It is recommended that you wait at least until the\nwindow has been presented and composited, so that the window system has a\nchance to decorate the window and provide the border dimensions to SDL.\n\nThis function also returns false if getting the information is not\nsupported.\n\n              (decorations) from.\n@param top pointer to variable for storing the size of the top border; nullptr\n           is permitted.\n@param left pointer to variable for storing the size of the left border;\n            nullptr is permitted.\n@param bottom pointer to variable for storing the size of the bottom\n              border; nullptr is permitted.\n@param right pointer to variable for storing the size of the right border;\n             nullptr is permitted.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSize",
+              "doc": "Get the size of a window's borders (decorations) around the client area.\n\nNote: If this function fails (returns false), the size values will be\ninitialized to 0, 0, 0, 0 (if a non-nullptr pointer is provided), as if the\nwindow in question was borderless.\n\nNote: This function may fail on systems where the window has not yet been\ndecorated by the display server (for example, immediately after calling\nWindowBase.WindowBase). It is recommended that you wait at least until the\nwindow has been presented and composited, so that the window system has a\nchance to decorate the window and provide the border dimensions to SDL.\n\nThis function also returns false if getting the information is not\nsupported.\n\n              (decorations) from.\n@param top pointer to variable for storing the size of the top border; nullptr\n           is permitted.\n@param left pointer to variable for storing the size of the left border;\n            nullptr is permitted.\n@param bottom pointer to variable for storing the size of the bottom\n              border; nullptr is permitted.\n@param right pointer to variable for storing the size of the right border;\n             nullptr is permitted.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSize",
               "name": "GetBordersSize",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "top",
@@ -5861,22 +5921,25 @@
                 }
               ],
               "sourceName": "SDL_GetWindowBordersSize",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "GetSizeInPixels": [
               {
                 "kind": "function",
-                "type": "std::optional<Point>",
+                "type": "Point",
                 "immutable": true,
                 "parameters": [],
                 "name": "GetSizeInPixels",
                 "doc": ""
               },
               {
-                "doc": "Get the size of a window's client area, in pixels.\n\n@param w a pointer to variable for storing the width in pixels, may be\n         nullptr.\n@param h a pointer to variable for storing the height in pixels, may be\n         nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.WindowBase\n@sa WindowBase.GetSize",
+                "doc": "Get the size of a window's client area, in pixels.\n\n@param w a pointer to variable for storing the width in pixels, may be\n         nullptr.\n@param h a pointer to variable for storing the height in pixels, may be\n         nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.WindowBase\n@sa WindowBase.GetSize",
                 "name": "GetSizeInPixels",
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "name": "w",
@@ -5888,14 +5951,17 @@
                   }
                 ],
                 "sourceName": "SDL_GetWindowSizeInPixels",
+                "hints": {
+                  "mayFail": true
+                },
                 "immutable": true
               }
             ],
             "SetMinimumSize": {
-              "doc": "Set the minimum size of a window's client area.\n\n@param window the window to change.\n@param min_w the minimum width of the window, or 0 for no limit.\n@param min_h the minimum height of the window, or 0 for no limit.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMinimumSize\n@sa WindowBase.SetMaximumSize",
+              "doc": "Set the minimum size of a window's client area.\n\n@param window the window to change.\n@param min_w the minimum width of the window, or 0 for no limit.\n@param min_h the minimum height of the window, or 0 for no limit.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMinimumSize\n@sa WindowBase.SetMaximumSize",
               "name": "SetMinimumSize",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "p",
@@ -5903,13 +5969,16 @@
                 }
               ],
               "sourceName": "SDL_SetWindowMinimumSize",
+              "hints": {
+                "mayFail": true
+              },
               "static": false
             },
             "GetMinimumSize": {
-              "doc": "Get the minimum size of a window's client area.\n\n@param w a pointer filled in with the minimum width of the window, may be\n         nullptr.\n@param h a pointer filled in with the minimum height of the window, may be\n         nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMaximumSize\n@sa WindowBase.SetMinimumSize",
+              "doc": "Get the minimum size of a window's client area.\n\n@param w a pointer filled in with the minimum width of the window, may be\n         nullptr.\n@param h a pointer filled in with the minimum height of the window, may be\n         nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMaximumSize\n@sa WindowBase.SetMinimumSize",
               "name": "GetMinimumSize",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "w",
@@ -5921,13 +5990,16 @@
                 }
               ],
               "sourceName": "SDL_GetWindowMinimumSize",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "SetMaximumSize": {
-              "doc": "Set the maximum size of a window's client area.\n\n@param window the window to change.\n@param max_w the maximum width of the window, or 0 for no limit.\n@param max_h the maximum height of the window, or 0 for no limit.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMaximumSize\n@sa WindowBase.SetMinimumSize",
+              "doc": "Set the maximum size of a window's client area.\n\n@param window the window to change.\n@param max_w the maximum width of the window, or 0 for no limit.\n@param max_h the maximum height of the window, or 0 for no limit.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMaximumSize\n@sa WindowBase.SetMinimumSize",
               "name": "SetMaximumSize",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "p",
@@ -5935,13 +6007,16 @@
                 }
               ],
               "sourceName": "SDL_SetWindowMaximumSize",
+              "hints": {
+                "mayFail": true
+              },
               "static": false
             },
             "GetMaximumSize": {
-              "doc": "Get the maximum size of a window's client area.\n\n@param w a pointer filled in with the maximum width of the window, may be\n         nullptr.\n@param h a pointer filled in with the maximum height of the window, may be\n         nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMinimumSize\n@sa WindowBase.SetMaximumSize",
+              "doc": "Get the maximum size of a window's client area.\n\n@param w a pointer filled in with the maximum width of the window, may be\n         nullptr.\n@param h a pointer filled in with the maximum height of the window, may be\n         nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMinimumSize\n@sa WindowBase.SetMaximumSize",
               "name": "GetMaximumSize",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "w",
@@ -5953,115 +6028,151 @@
                 }
               ],
               "sourceName": "SDL_GetWindowMaximumSize",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "SetBordered": {
-              "doc": "Set the border state of a window.\n\nThis will add or remove the window's `WINDOW_BORDERLESS` flag and add\nor remove the border from the actual window. This is a no-op if the\nwindow's border already matches the requested state.\n\nYou can't change the border state of a fullscreen window.\n\n@param bordered false to remove border, true to add border.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFlags",
+              "doc": "Set the border state of a window.\n\nThis will add or remove the window's `WINDOW_BORDERLESS` flag and add\nor remove the border from the actual window. This is a no-op if the\nwindow's border already matches the requested state.\n\nYou can't change the border state of a fullscreen window.\n\n@param bordered false to remove border, true to add border.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFlags",
               "name": "SetBordered",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "bordered",
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_SetWindowBordered"
+              "sourceName": "SDL_SetWindowBordered",
+              "hints": {
+                "mayFail": true
+              }
             },
             "SetResizable": {
-              "doc": "Set the user-resizable state of a window.\n\nThis will add or remove the window's `WINDOW_RESIZABLE` flag and\nallow/disallow user resizing of the window. This is a no-op if the window's\nresizable state already matches the requested state.\n\nYou can't change the resizable state of a fullscreen window.\n\n@param resizable true to allow resizing, false to disallow.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFlags",
+              "doc": "Set the user-resizable state of a window.\n\nThis will add or remove the window's `WINDOW_RESIZABLE` flag and\nallow/disallow user resizing of the window. This is a no-op if the window's\nresizable state already matches the requested state.\n\nYou can't change the resizable state of a fullscreen window.\n\n@param resizable true to allow resizing, false to disallow.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFlags",
               "name": "SetResizable",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "resizable",
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_SetWindowResizable"
+              "sourceName": "SDL_SetWindowResizable",
+              "hints": {
+                "mayFail": true
+              }
             },
             "SetAlwaysOnTop": {
-              "doc": "Set the window to always be above the others.\n\nThis will add or remove the window's `WINDOW_ALWAYS_ON_TOP` flag. This\nwill bring the window to the front and keep the window above the rest.\n\n@param on_top true to set the window always on top, false to disable.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFlags",
+              "doc": "Set the window to always be above the others.\n\nThis will add or remove the window's `WINDOW_ALWAYS_ON_TOP` flag. This\nwill bring the window to the front and keep the window above the rest.\n\n@param on_top true to set the window always on top, false to disable.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFlags",
               "name": "SetAlwaysOnTop",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "on_top",
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_SetWindowAlwaysOnTop"
+              "sourceName": "SDL_SetWindowAlwaysOnTop",
+              "hints": {
+                "mayFail": true
+              }
             },
             "Show": {
-              "doc": "Show a window.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Hide\n@sa WindowBase.Raise",
+              "doc": "Show a window.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Hide\n@sa WindowBase.Raise",
               "name": "Show",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_ShowWindow"
+              "sourceName": "SDL_ShowWindow",
+              "hints": {
+                "mayFail": true
+              }
             },
             "Hide": {
-              "doc": "Hide a window.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Show\n@sa WINDOW_HIDDEN",
+              "doc": "Hide a window.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Show\n@sa WINDOW_HIDDEN",
               "name": "Hide",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_HideWindow"
+              "sourceName": "SDL_HideWindow",
+              "hints": {
+                "mayFail": true
+              }
             },
             "Raise": {
-              "doc": "Request that a window be raised above other windows and gain the input\nfocus.\n\nThe result of this request is subject to desktop window manager policy,\nparticularly if raising the requested window would result in stealing focus\nfrom another application. If the window is successfully raised and gains\ninput focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and\nthe window will have the WINDOW_INPUT_FOCUS flag set.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Request that a window be raised above other windows and gain the input\nfocus.\n\nThe result of this request is subject to desktop window manager policy,\nparticularly if raising the requested window would result in stealing focus\nfrom another application. If the window is successfully raised and gains\ninput focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and\nthe window will have the WINDOW_INPUT_FOCUS flag set.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "Raise",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_RaiseWindow"
+              "sourceName": "SDL_RaiseWindow",
+              "hints": {
+                "mayFail": true
+              }
             },
             "Maximize": {
-              "doc": "Request that the window be made as large as possible.\n\nNon-resizable windows can't be maximized. The window must have the\nWINDOW_RESIZABLE flag set, or this will have no effect.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_MAXIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\nWhen maximizing a window, whether the constraints set via\nWindowBase.SetMaximumSize() are honored depends on the policy of the window\nmanager. Win32 and macOS enforce the constraints when maximizing, while X11\nand Wayland window managers may vary.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Minimize\n@sa WindowBase.Restore\n@sa WindowBase.Sync",
+              "doc": "Request that the window be made as large as possible.\n\nNon-resizable windows can't be maximized. The window must have the\nWINDOW_RESIZABLE flag set, or this will have no effect.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_MAXIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\nWhen maximizing a window, whether the constraints set via\nWindowBase.SetMaximumSize() are honored depends on the policy of the window\nmanager. Win32 and macOS enforce the constraints when maximizing, while X11\nand Wayland window managers may vary.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Minimize\n@sa WindowBase.Restore\n@sa WindowBase.Sync",
               "name": "Maximize",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_MaximizeWindow"
+              "sourceName": "SDL_MaximizeWindow",
+              "hints": {
+                "mayFail": true
+              }
             },
             "Minimize": {
-              "doc": "Request that the window be minimized to an iconic representation.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have been applied immediately upon the return of this\nfunction. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_MINIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Maximize\n@sa WindowBase.Restore\n@sa WindowBase.Sync",
+              "doc": "Request that the window be minimized to an iconic representation.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have been applied immediately upon the return of this\nfunction. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_MINIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Maximize\n@sa WindowBase.Restore\n@sa WindowBase.Sync",
               "name": "Minimize",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_MinimizeWindow"
+              "sourceName": "SDL_MinimizeWindow",
+              "hints": {
+                "mayFail": true
+              }
             },
             "Restore": {
-              "doc": "Request that the size and position of a minimized or maximized window be\nrestored.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_RESTORED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Maximize\n@sa WindowBase.Minimize\n@sa WindowBase.Sync",
+              "doc": "Request that the size and position of a minimized or maximized window be\nrestored.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call WindowBase.Sync() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_RESTORED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.Maximize\n@sa WindowBase.Minimize\n@sa WindowBase.Sync",
               "name": "Restore",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_RestoreWindow"
+              "sourceName": "SDL_RestoreWindow",
+              "hints": {
+                "mayFail": true
+              }
             },
             "SetFullscreen": {
-              "doc": "Request that the window's fullscreen state be changed.\n\nBy default a window in fullscreen state uses borderless fullscreen desktop\nmode, but a specific exclusive display mode can be set using\nWindowBase.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\nfullscreen state may not have have been applied immediately upon the return\nof this function. If an immediate change is required, call WindowBase.Sync()\nto block until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or\nEVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this\nis just a request, it can be denied by the windowing system.\n\n@param fullscreen true for fullscreen mode, false for windowed mode.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFullscreenMode\n@sa WindowBase.SetFullscreenMode\n@sa WindowBase.Sync\n@sa WINDOW_FULLSCREEN",
+              "doc": "Request that the window's fullscreen state be changed.\n\nBy default a window in fullscreen state uses borderless fullscreen desktop\nmode, but a specific exclusive display mode can be set using\nWindowBase.SetFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\nfullscreen state may not have have been applied immediately upon the return\nof this function. If an immediate change is required, call WindowBase.Sync()\nto block until the changes have taken effect.\n\nWhen the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or\nEVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this\nis just a request, it can be denied by the windowing system.\n\n@param fullscreen true for fullscreen mode, false for windowed mode.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetFullscreenMode\n@sa WindowBase.SetFullscreenMode\n@sa WindowBase.Sync\n@sa WINDOW_FULLSCREEN",
               "name": "SetFullscreen",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "fullscreen",
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_SetWindowFullscreen"
+              "sourceName": "SDL_SetWindowFullscreen",
+              "hints": {
+                "mayFail": true
+              }
             },
             "Sync": {
-              "doc": "Block until any pending window state is finalized.\n\nOn asynchronous windowing systems, this acts as a synchronization barrier\nfor pending window state. It will attempt to wait until any pending window\nstate has been applied and is guaranteed to return within finite time. Note\nthat for how long it can potentially block depends on the underlying window\nsystem, as window state changes may involve somewhat lengthy animations\nthat must complete before the window is in its final requested state.\n\nOn windowing systems where changes are immediate, this does nothing.\n\n              applied.\n@returns true on success or false if the operation timed out before the\n         window was in the requested state.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetSize\n@sa WindowBase.SetPosition\n@sa WindowBase.SetFullscreen\n@sa WindowBase.Minimize\n@sa WindowBase.Maximize\n@sa WindowBase.Restore\n@sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS",
+              "doc": "Block until any pending window state is finalized.\n\nOn asynchronous windowing systems, this acts as a synchronization barrier\nfor pending window state. It will attempt to wait until any pending window\nstate has been applied and is guaranteed to return within finite time. Note\nthat for how long it can potentially block depends on the underlying window\nsystem, as window state changes may involve somewhat lengthy animations\nthat must complete before the window is in its final requested state.\n\nOn windowing systems where changes are immediate, this does nothing.\n\n              applied.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetSize\n@sa WindowBase.SetPosition\n@sa WindowBase.SetFullscreen\n@sa WindowBase.Minimize\n@sa WindowBase.Maximize\n@sa WindowBase.Restore\n@sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS",
               "name": "Sync",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_SyncWindow"
+              "sourceName": "SDL_SyncWindow",
+              "hints": {
+                "mayFail": true
+              }
             },
             "HasSurface": {
               "doc": "Return whether the window has a surface associated with it.\n\n@returns true if there is a surface associated with the window, or false\n         otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurface",
@@ -6081,81 +6192,102 @@
               "sourceName": "SDL_GetWindowSurface"
             },
             "SetSurfaceVSync": {
-              "doc": "Toggle VSync for the window surface.\n\nWhen a window surface is created, vsync defaults to\nSDL_WINDOW_SURFACE_VSYNC_DISABLED.\n\nThe `vsync` parameter can be 1 to synchronize present with every vertical\nrefresh, 2 to synchronize present with every second vertical refresh, etc.,\nSDL_WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),\nor SDL_WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is\nsupported by every driver, so you should check the return value to see\nwhether the requested setting is supported.\n\n@param vsync the vertical refresh sync interval.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurfaceVSync",
+              "doc": "Toggle VSync for the window surface.\n\nWhen a window surface is created, vsync defaults to\nSDL_WINDOW_SURFACE_VSYNC_DISABLED.\n\nThe `vsync` parameter can be 1 to synchronize present with every vertical\nrefresh, 2 to synchronize present with every second vertical refresh, etc.,\nSDL_WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),\nor SDL_WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is\nsupported by every driver, so you should check the return value to see\nwhether the requested setting is supported.\n\n@param vsync the vertical refresh sync interval.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurfaceVSync",
               "name": "SetSurfaceVSync",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "vsync",
                   "type": "int"
                 }
               ],
-              "sourceName": "SDL_SetWindowSurfaceVSync"
+              "sourceName": "SDL_SetWindowSurfaceVSync",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetSurfaceVSync": {
-              "doc": "Get VSync for the window surface.\n\n@param window the window to query.\n@param vsync an int filled with the current vertical refresh sync interval.\n             See WindowBase.SetSurfaceVSync() for the meaning of the value.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetSurfaceVSync",
+              "doc": "Get VSync for the window surface.\n\n@param window the window to query.\n@param vsync an int filled with the current vertical refresh sync interval.\n             See WindowBase.SetSurfaceVSync() for the meaning of the value.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetSurfaceVSync",
               "name": "GetSurfaceVSync",
               "kind": "function",
-              "type": "std::optional<int>",
+              "type": "int",
               "parameters": [],
               "sourceName": "SDL_GetWindowSurfaceVSync",
+              "hints": {
+                "mayFail": true
+              },
               "immutable": true
             },
             "UpdateSurface": {
-              "doc": "Copy the window surface to the screen.\n\nThis is the function you use to reflect any changes to the surface on the\nscreen.\n\nThis function is equivalent to the SDL 1.2 API SDL_Flip().\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurface\n@sa WindowBase.UpdateSurfaceRects",
+              "doc": "Copy the window surface to the screen.\n\nThis is the function you use to reflect any changes to the surface on the\nscreen.\n\nThis function is equivalent to the SDL 1.2 API SDL_Flip().\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurface\n@sa WindowBase.UpdateSurfaceRects",
               "name": "UpdateSurface",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_UpdateWindowSurface"
+              "sourceName": "SDL_UpdateWindowSurface",
+              "hints": {
+                "mayFail": true
+              }
             },
             "UpdateSurfaceRects": {
-              "doc": "Copy areas of the window surface to the screen.\n\nThis is the function you use to reflect changes to portions of the surface\non the screen.\n\nThis function is equivalent to the SDL 1.2 API SDL_UpdateRects().\n\nNote that this function will update _at least_ the rectangles specified,\nbut this is only intended as an optimization; in practice, this might\nupdate more of the screen (or all of the screen!), depending on what method\nSDL uses to send pixels to the system.\n\n@param rects an array of Rect structures representing areas of the\n             surface to copy, in pixels.\n@param numrects the number of rectangles.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurface\n@sa WindowBase.UpdateSurface",
+              "doc": "Copy areas of the window surface to the screen.\n\nThis is the function you use to reflect changes to portions of the surface\non the screen.\n\nThis function is equivalent to the SDL 1.2 API SDL_UpdateRects().\n\nNote that this function will update _at least_ the rectangles specified,\nbut this is only intended as an optimization; in practice, this might\nupdate more of the screen (or all of the screen!), depending on what method\nSDL uses to send pixels to the system.\n\n@param rects an array of Rect structures representing areas of the\n             surface to copy, in pixels.\n@param numrects the number of rectangles.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurface\n@sa WindowBase.UpdateSurface",
               "name": "UpdateSurfaceRects",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "rects",
                   "type": "SpanRef<const SDL_Rect>"
                 }
               ],
-              "sourceName": "SDL_UpdateWindowSurfaceRects"
+              "sourceName": "SDL_UpdateWindowSurfaceRects",
+              "hints": {
+                "mayFail": true
+              }
             },
             "DestroySurface": {
-              "doc": "Destroy the surface associated with the window.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurface\n@sa WindowBase.HasSurface",
+              "doc": "Destroy the surface associated with the window.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetSurface\n@sa WindowBase.HasSurface",
               "name": "DestroySurface",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
-              "sourceName": "SDL_DestroyWindowSurface"
+              "sourceName": "SDL_DestroyWindowSurface",
+              "hints": {
+                "mayFail": true
+              }
             },
             "SetKeyboardGrab": {
-              "doc": "Set a window's keyboard grab mode.\n\nKeyboard grab enables capture of system keyboard shortcuts like Alt+Tab or\nthe Meta/Super key. Note that not all system keyboard shortcuts can be\ncaptured by applications (one example is Ctrl+Alt+Del on Windows).\n\nThis is primarily intended for specialized applications such as VNC clients\nor VM frontends. Normal games should not use keyboard grab.\n\nWhen keyboard grab is enabled, SDL will continue to handle Alt+Tab when the\nwindow is full-screen to ensure the user is not trapped in your\napplication. If you have a custom keyboard shortcut to exit fullscreen\nmode, you may suppress this behavior with\n`SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED`.\n\nIf the caller enables a grab while another window is currently grabbed, the\nother window loses its grab in favor of the caller's window.\n\n@param grabbed this is true to grab keyboard, and false to release.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetKeyboardGrab\n@sa WindowBase.SetMouseGrab",
+              "doc": "Set a window's keyboard grab mode.\n\nKeyboard grab enables capture of system keyboard shortcuts like Alt+Tab or\nthe Meta/Super key. Note that not all system keyboard shortcuts can be\ncaptured by applications (one example is Ctrl+Alt+Del on Windows).\n\nThis is primarily intended for specialized applications such as VNC clients\nor VM frontends. Normal games should not use keyboard grab.\n\nWhen keyboard grab is enabled, SDL will continue to handle Alt+Tab when the\nwindow is full-screen to ensure the user is not trapped in your\napplication. If you have a custom keyboard shortcut to exit fullscreen\nmode, you may suppress this behavior with\n`SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED`.\n\nIf the caller enables a grab while another window is currently grabbed, the\nother window loses its grab in favor of the caller's window.\n\n@param grabbed this is true to grab keyboard, and false to release.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetKeyboardGrab\n@sa WindowBase.SetMouseGrab",
               "name": "SetKeyboardGrab",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "grabbed",
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_SetWindowKeyboardGrab"
+              "sourceName": "SDL_SetWindowKeyboardGrab",
+              "hints": {
+                "mayFail": true
+              }
             },
             "SetMouseGrab": {
-              "doc": "Set a window's mouse grab mode.\n\nMouse grab confines the mouse cursor to the window.\n\n@param grabbed this is true to grab mouse, and false to release.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMouseRect\n@sa WindowBase.SetMouseRect\n@sa WindowBase.SetMouseGrab\n@sa WindowBase.SetKeyboardGrab",
+              "doc": "Set a window's mouse grab mode.\n\nMouse grab confines the mouse cursor to the window.\n\n@param grabbed this is true to grab mouse, and false to release.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMouseRect\n@sa WindowBase.SetMouseRect\n@sa WindowBase.SetMouseGrab\n@sa WindowBase.SetKeyboardGrab",
               "name": "SetMouseGrab",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "grabbed",
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_SetWindowMouseGrab"
+              "sourceName": "SDL_SetWindowMouseGrab",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetKeyboardGrab": {
               "doc": "Get a window's keyboard grab mode.\n\n@returns true if keyboard is grabbed, and false otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetKeyboardGrab",
@@ -6176,17 +6308,20 @@
               "immutable": true
             },
             "SetMouseRect": {
-              "doc": "Confines the cursor to the specified area of a window.\n\nNote that this does NOT grab the cursor, it only defines the area a cursor\nis restricted to when the window has mouse focus.\n\n@param rect a rectangle area in window-relative coordinates. If nullptr the\n            barrier for the specified window will be destroyed.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMouseRect\n@sa WindowBase.GetMouseGrab\n@sa WindowBase.SetMouseGrab",
+              "doc": "Confines the cursor to the specified area of a window.\n\nNote that this does NOT grab the cursor, it only defines the area a cursor\nis restricted to when the window has mouse focus.\n\n@param rect a rectangle area in window-relative coordinates. If nullptr the\n            barrier for the specified window will be destroyed.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetMouseRect\n@sa WindowBase.GetMouseGrab\n@sa WindowBase.SetMouseGrab",
               "name": "SetMouseRect",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "rect",
                   "type": "const SDL_Rect &"
                 }
               ],
-              "sourceName": "SDL_SetWindowMouseRect"
+              "sourceName": "SDL_SetWindowMouseRect",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetMouseRect": {
               "doc": "Get the mouse confinement rectangle of a window.\n\n@returns a pointer to the mouse confinement rectangle of a window, or nullptr\n         if there isn't one.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetMouseRect\n@sa WindowBase.GetMouseGrab\n@sa WindowBase.SetMouseGrab",
@@ -6198,17 +6333,20 @@
               "immutable": true
             },
             "SetOpacity": {
-              "doc": "Set the opacity for a window.\n\nThe parameter `opacity` will be clamped internally between 0.0f\n(transparent) and 1.0f (opaque).\n\nThis function also returns false if setting the opacity isn't supported.\n\n@param opacity the opacity value (0.0f - transparent, 1.0f - opaque).\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetOpacity",
+              "doc": "Set the opacity for a window.\n\nThe parameter `opacity` will be clamped internally between 0.0f\n(transparent) and 1.0f (opaque).\n\nThis function also returns false if setting the opacity isn't supported.\n\n@param opacity the opacity value (0.0f - transparent, 1.0f - opaque).\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetOpacity",
               "name": "SetOpacity",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "opacity",
                   "type": "float"
                 }
               ],
-              "sourceName": "SDL_SetWindowOpacity"
+              "sourceName": "SDL_SetWindowOpacity",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetOpacity": {
               "doc": "Get the opacity of a window.\n\nIf transparency isn't supported on this platform, opacity will be returned\nas 1.0f without error.\n\n@returns the opacity, (0.0f - transparent, 1.0f - opaque), or -1.0f on\n         failure; call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetOpacity",
@@ -6220,49 +6358,58 @@
               "immutable": true
             },
             "SetParent": {
-              "doc": "Set the window as a child of a parent window.\n\nIf the window is already the child of an existing window, it will be\nreparented to the new owner. Setting the parent window to nullptr unparents\nthe window and removes child window status.\n\nIf a parent window is hidden or destroyed, the operation will be\nrecursively applied to child windows. Child windows hidden with the parent\nthat did not have their hidden status explicitly set will be restored when\nthe parent is shown.\n\nAttempting to set the parent of a window that is currently in the modal\nstate will fail. Use WindowBase.SetModal() to cancel the modal status before\nattempting to change the parent.\n\nPopup windows cannot change parents and attempts to do so will fail.\n\nSetting a parent window that is currently the sibling or descendent of the\nchild window results in undefined behavior.\n\n@param parent the new parent window for the child window.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetModal",
+              "doc": "Set the window as a child of a parent window.\n\nIf the window is already the child of an existing window, it will be\nreparented to the new owner. Setting the parent window to nullptr unparents\nthe window and removes child window status.\n\nIf a parent window is hidden or destroyed, the operation will be\nrecursively applied to child windows. Child windows hidden with the parent\nthat did not have their hidden status explicitly set will be restored when\nthe parent is shown.\n\nAttempting to set the parent of a window that is currently in the modal\nstate will fail. Use WindowBase.SetModal() to cancel the modal status before\nattempting to change the parent.\n\nPopup windows cannot change parents and attempts to do so will fail.\n\nSetting a parent window that is currently the sibling or descendent of the\nchild window results in undefined behavior.\n\n@param parent the new parent window for the child window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetModal",
               "name": "SetParent",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "parent",
                   "type": "OptionalWindow"
                 }
               ],
-              "sourceName": "SDL_SetWindowParent"
+              "sourceName": "SDL_SetWindowParent",
+              "hints": {
+                "mayFail": true
+              }
             },
             "SetModal": {
-              "doc": "Toggle the state of the window as modal.\n\nTo enable modal status on a window, the window must currently be the child\nwindow of a parent, or toggling modal status on will fail.\n\n@param modal true to toggle modal status on, false to toggle it off.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetParent\n@sa WINDOW_MODAL",
+              "doc": "Toggle the state of the window as modal.\n\nTo enable modal status on a window, the window must currently be the child\nwindow of a parent, or toggling modal status on will fail.\n\n@param modal true to toggle modal status on, false to toggle it off.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetParent\n@sa WINDOW_MODAL",
               "name": "SetModal",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "modal",
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_SetWindowModal"
+              "sourceName": "SDL_SetWindowModal",
+              "hints": {
+                "mayFail": true
+              }
             },
             "SetFocusable": {
-              "doc": "Set whether the window may have input focus.\n\n@param focusable true to allow input focus, false to not allow input focus.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Set whether the window may have input focus.\n\n@param focusable true to allow input focus, false to not allow input focus.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "SetFocusable",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "focusable",
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_SetWindowFocusable"
+              "sourceName": "SDL_SetWindowFocusable",
+              "hints": {
+                "mayFail": true
+              }
             },
             "ShowSystemMenu": {
-              "doc": "Display the system-level window menu.\n\nThis default window menu is provided by the system and on some platforms\nprovides functionality for setting or changing privileged state on the\nwindow, such as moving it between workspaces or displays, or toggling the\nalways-on-top property.\n\nOn platforms or desktops where this is unsupported, this function does\nnothing.\n\n@param window the window for which the menu will be displayed.\n@param x the x coordinate of the menu, relative to the origin (top-left) of\n         the client area.\n@param y the y coordinate of the menu, relative to the origin (top-left) of\n         the client area.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Display the system-level window menu.\n\nThis default window menu is provided by the system and on some platforms\nprovides functionality for setting or changing privileged state on the\nwindow, such as moving it between workspaces or displays, or toggling the\nalways-on-top property.\n\nOn platforms or desktops where this is unsupported, this function does\nnothing.\n\n@param window the window for which the menu will be displayed.\n@param x the x coordinate of the menu, relative to the origin (top-left) of\n         the client area.\n@param y the y coordinate of the menu, relative to the origin (top-left) of\n         the client area.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "ShowSystemMenu",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "p",
@@ -6270,12 +6417,15 @@
                 }
               ],
               "sourceName": "SDL_ShowWindowSystemMenu",
+              "hints": {
+                "mayFail": true
+              },
               "static": false
             },
             "SetHitTest": [
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "name": "callback",
@@ -6286,10 +6436,10 @@
                 "doc": ""
               },
               {
-                "doc": "Provide a callback that decides if a window region has special properties.\n\nNormally windows are dragged and resized by decorations provided by the\nsystem window manager (a title bar, borders, etc), but for some apps, it\nmakes sense to drag them from somewhere else inside the window itself; for\nexample, one might have a borderless window that wants to be draggable from\nany part, or simulate its own title bar, etc.\n\nThis function lets the app provide a callback that designates pieces of a\ngiven window as special. This callback is run during event processing if we\nneed to tell the OS to treat a region of the window specially; the use of\nthis callback is known as \"hit testing.\"\n\nMouse input may not be delivered to your application if it is within a\nspecial area; the OS will often apply that input to moving the window or\nresizing the window and not deliver it to the application.\n\nSpecifying nullptr for a callback disables hit-testing. Hit-testing is\ndisabled by default.\n\nPlatforms that don't support this functionality will return false\nunconditionally, even if you're attempting to disable hit-testing.\n\nYour callback may fire at any time, and its firing does not indicate any\nspecific behavior (for example, on Windows, this certainly might fire when\nthe OS is deciding whether to drag your window, but it fires for lots of\nother reasons, too, some unrelated to anything you probably care about _and\nwhen the mouse isn't actually at the location it is testing_). Since this\ncan fire at any time, you should try to keep your callback efficient,\ndevoid of allocations, etc.\n\n@param callback the function to call when doing a hit-test.\n@param callback_data an app-defined void pointer passed to **callback**.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+                "doc": "Provide a callback that decides if a window region has special properties.\n\nNormally windows are dragged and resized by decorations provided by the\nsystem window manager (a title bar, borders, etc), but for some apps, it\nmakes sense to drag them from somewhere else inside the window itself; for\nexample, one might have a borderless window that wants to be draggable from\nany part, or simulate its own title bar, etc.\n\nThis function lets the app provide a callback that designates pieces of a\ngiven window as special. This callback is run during event processing if we\nneed to tell the OS to treat a region of the window specially; the use of\nthis callback is known as \"hit testing.\"\n\nMouse input may not be delivered to your application if it is within a\nspecial area; the OS will often apply that input to moving the window or\nresizing the window and not deliver it to the application.\n\nSpecifying nullptr for a callback disables hit-testing. Hit-testing is\ndisabled by default.\n\nPlatforms that don't support this functionality will return false\nunconditionally, even if you're attempting to disable hit-testing.\n\nYour callback may fire at any time, and its firing does not indicate any\nspecific behavior (for example, on Windows, this certainly might fire when\nthe OS is deciding whether to drag your window, but it fires for lots of\nother reasons, too, some unrelated to anything you probably care about _and\nwhen the mouse isn't actually at the location it is testing_). Since this\ncan fire at any time, you should try to keep your callback efficient,\ndevoid of allocations, etc.\n\n@param callback the function to call when doing a hit-test.\n@param callback_data an app-defined void pointer passed to **callback**.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
                 "name": "SetHitTest",
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "name": "callback",
@@ -6300,34 +6450,43 @@
                     "type": "void *"
                   }
                 ],
-                "sourceName": "SDL_SetWindowHitTest"
+                "sourceName": "SDL_SetWindowHitTest",
+                "hints": {
+                  "mayFail": true
+                }
               }
             ],
             "SetShape": {
-              "doc": "Set the shape of a transparent window.\n\nThis sets the alpha channel of a transparent window and any fully\ntransparent areas are also transparent to mouse clicks. If you are using\nsomething besides the SDL render API, then you are responsible for drawing\nthe alpha channel of the window to match the shape alpha channel to get\nconsistent cross-platform results.\n\nThe shape is copied inside this function, so you can free it afterwards. If\nyour shape surface changes, you should call WindowBase.SetShape() again to\nupdate the window. This is an expensive operation, so should be done\nsparingly.\n\nThe window must have been created with the WINDOW_TRANSPARENT flag.\n\n@param shape the surface representing the shape of the window, or nullptr to\n             remove any current shape.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Set the shape of a transparent window.\n\nThis sets the alpha channel of a transparent window and any fully\ntransparent areas are also transparent to mouse clicks. If you are using\nsomething besides the SDL render API, then you are responsible for drawing\nthe alpha channel of the window to match the shape alpha channel to get\nconsistent cross-platform results.\n\nThe shape is copied inside this function, so you can free it afterwards. If\nyour shape surface changes, you should call WindowBase.SetShape() again to\nupdate the window. This is an expensive operation, so should be done\nsparingly.\n\nThe window must have been created with the WINDOW_TRANSPARENT flag.\n\n@param shape the surface representing the shape of the window, or nullptr to\n             remove any current shape.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "SetShape",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "shape",
                   "type": "SurfaceBase &"
                 }
               ],
-              "sourceName": "SDL_SetWindowShape"
+              "sourceName": "SDL_SetWindowShape",
+              "hints": {
+                "mayFail": true
+              }
             },
             "Flash": {
-              "doc": "Request a window to demand attention from the user.\n\n@param operation the operation to perform.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "doc": "Request a window to demand attention from the user.\n\n@param operation the operation to perform.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "Flash",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "operation",
                   "type": "FlashOperation"
                 }
               ],
-              "sourceName": "SDL_FlashWindow"
+              "sourceName": "SDL_FlashWindow",
+              "hints": {
+                "mayFail": true
+              }
             },
             "GetRenderer": {
               "doc": "",
@@ -6344,16 +6503,19 @@
                 "doc": "",
                 "name": "StartTextInput",
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [],
                 "sourceName": "SDL_StartTextInput",
+                "hints": {
+                  "mayFail": true
+                },
                 "proto": true
               },
               {
                 "doc": "",
                 "name": "StartTextInput",
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "name": "props",
@@ -6361,6 +6523,9 @@
                   }
                 ],
                 "sourceName": "SDL_StartTextInputWithProperties",
+                "hints": {
+                  "mayFail": true
+                },
                 "proto": true
               }
             ],
@@ -6378,25 +6543,31 @@
               "doc": "",
               "name": "StopTextInput",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
               "sourceName": "SDL_StopTextInput",
+              "hints": {
+                "mayFail": true
+              },
               "proto": true
             },
             "ClearComposition": {
               "doc": "",
               "name": "ClearComposition",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [],
               "sourceName": "SDL_ClearComposition",
+              "hints": {
+                "mayFail": true
+              },
               "proto": true
             },
             "SetTextInputArea": {
               "doc": "",
               "name": "SetTextInputArea",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "rect",
@@ -6408,13 +6579,16 @@
                 }
               ],
               "sourceName": "SDL_SetTextInputArea",
+              "hints": {
+                "mayFail": true
+              },
               "proto": true
             },
             "GetTextInputArea": {
               "doc": "",
               "name": "GetTextInputArea",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "rect",
@@ -6426,6 +6600,9 @@
                 }
               ],
               "sourceName": "SDL_GetTextInputArea",
+              "hints": {
+                "mayFail": true
+              },
               "proto": true
             },
             "IsScreenKeyboardShown": {
@@ -6460,7 +6637,7 @@
               "doc": "",
               "name": "SetRelativeMouseMode",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "enabled",
@@ -6468,6 +6645,9 @@
                 }
               ],
               "sourceName": "SDL_SetWindowRelativeMouseMode",
+              "hints": {
+                "mayFail": true
+              },
               "proto": true
             },
             "GetRelativeMouseMode": {
@@ -6794,10 +6974,10 @@
               "sourceName": "SDL_GL_CreateContext"
             },
             "MakeCurrent": {
-              "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextBase.GLContextBase",
+              "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextBase.GLContextBase",
               "name": "MakeCurrent",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "window",
@@ -6805,6 +6985,9 @@
                 }
               ],
               "sourceName": "SDL_GL_MakeCurrent",
+              "hints": {
+                "mayFail": true
+              },
               "static": false
             }
           },
@@ -8128,11 +8311,12 @@
           "type": "WindowRef",
           "parameters": [],
           "sourceName": "SDL_GetWindowParent",
-          "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Resource"
-          }
+            "super": "Resource",
+            "mayFail": true
+          },
+          "immutable": true
         },
         "SDL_WINDOW_SURFACE_VSYNC_DISABLED": {
           "doc": "",
@@ -8167,33 +8351,42 @@
           "sourceName": "SDL_ScreenSaverEnabled"
         },
         "EnableScreenSaver": {
-          "doc": "Allow the screen to be blanked by a screen saver.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DisableScreenSaver\n@sa ScreenSaverEnabled",
+          "doc": "Allow the screen to be blanked by a screen saver.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DisableScreenSaver\n@sa ScreenSaverEnabled",
           "name": "EnableScreenSaver",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [],
-          "sourceName": "SDL_EnableScreenSaver"
+          "sourceName": "SDL_EnableScreenSaver",
+          "hints": {
+            "mayFail": true
+          }
         },
         "DisableScreenSaver": {
-          "doc": "Prevent the screen from being blanked by a screen saver.\n\nIf you disable the screensaver, it is automatically re-enabled when SDL\nquits.\n\nThe screensaver is disabled by default, but this may by changed by\nSDL_HINT_VIDEO_ALLOW_SCREENSAVER.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EnableScreenSaver\n@sa ScreenSaverEnabled",
+          "doc": "Prevent the screen from being blanked by a screen saver.\n\nIf you disable the screensaver, it is automatically re-enabled when SDL\nquits.\n\nThe screensaver is disabled by default, but this may by changed by\nSDL_HINT_VIDEO_ALLOW_SCREENSAVER.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EnableScreenSaver\n@sa ScreenSaverEnabled",
           "name": "DisableScreenSaver",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [],
-          "sourceName": "SDL_DisableScreenSaver"
+          "sourceName": "SDL_DisableScreenSaver",
+          "hints": {
+            "mayFail": true
+          }
         },
         "GL_LoadLibrary": {
-          "doc": "Dynamically load an OpenGL library.\n\nThis should be done after initializing the video driver, but before\ncreating any OpenGL windows. If no OpenGL library is loaded, the default\nlibrary will be loaded upon creation of the first OpenGL window.\n\nIf you do this, you need to retrieve all of the GL functions used in your\nprogram from the dynamic library using GL_GetProcAddress().\n\n@param path the platform dependent OpenGL library name, or nullptr to open the\n            default OpenGL library.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetProcAddress\n@sa GL_UnloadLibrary",
+          "doc": "Dynamically load an OpenGL library.\n\nThis should be done after initializing the video driver, but before\ncreating any OpenGL windows. If no OpenGL library is loaded, the default\nlibrary will be loaded upon creation of the first OpenGL window.\n\nIf you do this, you need to retrieve all of the GL functions used in your\nprogram from the dynamic library using GL_GetProcAddress().\n\n@param path the platform dependent OpenGL library name, or nullptr to open the\n            default OpenGL library.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetProcAddress\n@sa GL_UnloadLibrary",
           "name": "GL_LoadLibrary",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "path",
               "type": "StringParam"
             }
           ],
-          "sourceName": "SDL_GL_LoadLibrary"
+          "sourceName": "SDL_GL_LoadLibrary",
+          "hints": {
+            "mayFail": true
+          }
         },
         "GL_GetProcAddress": {
           "doc": "Get an OpenGL function by name.\n\nIf the GL library is loaded at runtime with GL_LoadLibrary(), then all\nGL functions must be retrieved this way. Usually this is used to retrieve\nfunction pointers to OpenGL extensions.\n\nThere are some quirks to looking up OpenGL functions that require some\nextra care from the application. If you code carefully, you can handle\nthese quirks without any platform-specific code, though:\n\n- On Windows, function pointers are specific to the current GL context;\n  this means you need to have created a GL context and made it current\n  before calling GL_GetProcAddress(). If you recreate your context or\n  create a second context, you should assume that any existing function\n  pointers aren't valid to use with it. This is (currently) a\n  Windows-specific limitation, and in practice lots of drivers don't suffer\n  this limitation, but it is still the way the wgl API is documented to\n  work and you should expect crashes if you don't respect it. Store a copy\n  of the function pointers that comes and goes with context lifespan.\n- On X11, function pointers returned by this function are valid for any\n  context, and can even be looked up before a context is created at all.\n  This means that, for at least some common OpenGL implementations, if you\n  look up a function that doesn't exist, you'll get a non-nullptr result that\n  is _NOT_ safe to call. You must always make sure the function is actually\n  available for a given GL context before calling it, by checking for the\n  existence of the appropriate extension with GL_ExtensionSupported(),\n  or verifying that the version of OpenGL you're using offers the function\n  as core functionality.\n- Some OpenGL drivers, on all platforms, *will* return nullptr if a function\n  isn't supported, but you can't count on this behavior. Check for\n  extensions you use, and if you get a nullptr anyway, act as if that\n  extension wasn't available. This is probably a bug in the driver, but you\n  can code defensively for this scenario anyhow.\n- Just because you're on Linux/Unix, don't assume you'll be using X11.\n  Next-gen display servers are waiting to replace it, and may or may not\n  make the same promises about function pointers.\n- OpenGL function pointers must be declared `APIENTRY` as in the example\n  code. This will ensure the proper calling convention is followed on\n  platforms where this matters (Win32) thereby avoiding stack corruption.\n\n@param proc the name of an OpenGL function.\n@returns a pointer to the named OpenGL function. The returned pointer\n         should be cast to the appropriate function signature.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ExtensionSupported\n@sa GL_LoadLibrary\n@sa GL_UnloadLibrary",
@@ -8251,10 +8444,10 @@
           "sourceName": "SDL_GL_ResetAttributes"
         },
         "GL_SetAttribute": {
-          "doc": "Set an OpenGL window attribute before window creation.\n\nThis function sets the OpenGL attribute `attr` to `value`. The requested\nattributes should be set before creating an OpenGL window. You should use\nGL_GetAttribute() to check the values after creating the OpenGL\ncontext, since the values obtained can differ from the requested ones.\n\n@param attr an GLAttr enum value specifying the OpenGL attribute to\n            set.\n@param value the desired value for the attribute.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetAttribute\n@sa GL_ResetAttributes",
+          "doc": "Set an OpenGL window attribute before window creation.\n\nThis function sets the OpenGL attribute `attr` to `value`. The requested\nattributes should be set before creating an OpenGL window. You should use\nGL_GetAttribute() to check the values after creating the OpenGL\ncontext, since the values obtained can differ from the requested ones.\n\n@param attr an GLAttr enum value specifying the OpenGL attribute to\n            set.\n@param value the desired value for the attribute.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetAttribute\n@sa GL_ResetAttributes",
           "name": "GL_SetAttribute",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "attr",
@@ -8265,13 +8458,16 @@
               "type": "int"
             }
           ],
-          "sourceName": "SDL_GL_SetAttribute"
+          "sourceName": "SDL_GL_SetAttribute",
+          "hints": {
+            "mayFail": true
+          }
         },
         "GL_GetAttribute": {
-          "doc": "Get the actual value for an attribute from the current context.\n\n@param attr an GLAttr enum value specifying the OpenGL attribute to\n            get.\n@param value a pointer filled in with the current value of `attr`.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ResetAttributes\n@sa GL_SetAttribute",
+          "doc": "Get the actual value for an attribute from the current context.\n\n@param attr an GLAttr enum value specifying the OpenGL attribute to\n            get.\n@param value a pointer filled in with the current value of `attr`.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ResetAttributes\n@sa GL_SetAttribute",
           "name": "GL_GetAttribute",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "attr",
@@ -8282,15 +8478,21 @@
               "type": "int *"
             }
           ],
-          "sourceName": "SDL_GL_GetAttribute"
+          "sourceName": "SDL_GL_GetAttribute",
+          "hints": {
+            "mayFail": true
+          }
         },
         "GL_GetCurrentWindow": {
-          "doc": "Get the currently active OpenGL window.\n\n@returns the currently active OpenGL window on success or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Get the currently active OpenGL window.\n\n@returns the currently active OpenGL window on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GL_GetCurrentWindow",
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
-          "sourceName": "SDL_GL_GetCurrentWindow"
+          "sourceName": "SDL_GL_GetCurrentWindow",
+          "hints": {
+            "mayFail": true
+          }
         },
         "GL_GetCurrentContext": {
           "doc": "Get the currently active OpenGL context.\n\n@returns the currently active OpenGL context or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextBase.MakeCurrent",
@@ -8355,43 +8557,52 @@
           "sourceName": "SDL_EGL_SetAttributeCallbacks"
         },
         "GL_SetSwapInterval": {
-          "doc": "Set the swap interval for the current OpenGL context.\n\nSome systems allow specifying -1 for the interval, to enable adaptive\nvsync. Adaptive vsync works the same as vsync, but if you've already missed\nthe vertical retrace for a given frame, it swaps buffers immediately, which\nmight be less jarring for the user during occasional framerate drops. If an\napplication requests adaptive vsync and the system does not support it,\nthis function will fail and return false. In such a case, you should\nprobably retry the call with 1 for the interval.\n\nAdaptive vsync is implemented for some glX drivers with\nGLX_EXT_swap_control_tear, and for some Windows drivers with\nWGL_EXT_swap_control_tear.\n\nRead more on the Khronos wiki:\nhttps://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync\n\n@param interval 0 for immediate updates, 1 for updates synchronized with\n                the vertical retrace, -1 for adaptive vsync.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetSwapInterval",
+          "doc": "Set the swap interval for the current OpenGL context.\n\nSome systems allow specifying -1 for the interval, to enable adaptive\nvsync. Adaptive vsync works the same as vsync, but if you've already missed\nthe vertical retrace for a given frame, it swaps buffers immediately, which\nmight be less jarring for the user during occasional framerate drops. If an\napplication requests adaptive vsync and the system does not support it,\nthis function will fail and return false. In such a case, you should\nprobably retry the call with 1 for the interval.\n\nAdaptive vsync is implemented for some glX drivers with\nGLX_EXT_swap_control_tear, and for some Windows drivers with\nWGL_EXT_swap_control_tear.\n\nRead more on the Khronos wiki:\nhttps://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync\n\n@param interval 0 for immediate updates, 1 for updates synchronized with\n                the vertical retrace, -1 for adaptive vsync.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetSwapInterval",
           "name": "GL_SetSwapInterval",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "interval",
               "type": "int"
             }
           ],
-          "sourceName": "SDL_GL_SetSwapInterval"
+          "sourceName": "SDL_GL_SetSwapInterval",
+          "hints": {
+            "mayFail": true
+          }
         },
         "GL_GetSwapInterval": {
-          "doc": "Get the swap interval for the current OpenGL context.\n\nIf the system can't determine the swap interval, or there isn't a valid\ncurrent context, this function will set *interval to 0 as a safe default.\n\n@param interval output interval value. 0 if there is no vertical retrace\n                synchronization, 1 if the buffer swap is synchronized with\n                the vertical retrace, and -1 if late swaps happen\n                immediately instead of waiting for the next retrace.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_SetSwapInterval",
+          "doc": "Get the swap interval for the current OpenGL context.\n\nIf the system can't determine the swap interval, or there isn't a valid\ncurrent context, this function will set *interval to 0 as a safe default.\n\n@param interval output interval value. 0 if there is no vertical retrace\n                synchronization, 1 if the buffer swap is synchronized with\n                the vertical retrace, and -1 if late swaps happen\n                immediately instead of waiting for the next retrace.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_SetSwapInterval",
           "name": "GL_GetSwapInterval",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "interval",
               "type": "int *"
             }
           ],
-          "sourceName": "SDL_GL_GetSwapInterval"
+          "sourceName": "SDL_GL_GetSwapInterval",
+          "hints": {
+            "mayFail": true
+          }
         },
         "GL_SwapWindow": {
-          "doc": "Update a window with OpenGL rendering.\n\nThis is used with double-buffered OpenGL contexts, which are the default.\n\nOn macOS, make sure you bind 0 to the draw framebuffer before swapping the\nwindow, otherwise nothing will happen. If you aren't using\nglBindFramebuffer(), this is the default and you won't have to do anything\nextra.\n\n@param window the window to change.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Update a window with OpenGL rendering.\n\nThis is used with double-buffered OpenGL contexts, which are the default.\n\nOn macOS, make sure you bind 0 to the draw framebuffer before swapping the\nwindow, otherwise nothing will happen. If you aren't using\nglBindFramebuffer(), this is the default and you won't have to do anything\nextra.\n\n@param window the window to change.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GL_SwapWindow",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "window",
               "type": "WindowBase &"
             }
           ],
-          "sourceName": "SDL_GL_SwapWindow"
+          "sourceName": "SDL_GL_SwapWindow",
+          "hints": {
+            "mayFail": true
+          }
         }
       }
     },
@@ -20441,10 +20652,10 @@
           }
         },
         "Scancode::SetName": {
-          "doc": "Set a human-readable name for a scancode.\n\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode.GetName",
+          "doc": "Set a human-readable name for a scancode.\n\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode.GetName",
           "name": "Scancode::SetName",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "name",
@@ -20453,7 +20664,8 @@
           ],
           "sourceName": "SDL_SetScancodeName",
           "hints": {
-            "self": "m_scancode"
+            "self": "m_scancode",
+            "mayFail": true
           }
         },
         "Scancode::GetName": {
@@ -20498,22 +20710,23 @@
         },
         "WindowBase::StartTextInput": [
           {
-            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase.StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput\n@sa WindowBase.IsTextInputActive",
+            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase.StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput\n@sa WindowBase.IsTextInputActive",
             "name": "WindowBase::StartTextInput",
             "kind": "function",
-            "type": "bool",
+            "type": "void",
             "parameters": [],
             "sourceName": "SDL_StartTextInput",
             "hints": {
               "self": "get()",
-              "super": "Resource"
+              "super": "Resource",
+              "mayFail": true
             }
           },
           {
-            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase.StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `prop::TextInput.TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput\n@sa WindowBase.IsTextInputActive",
+            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase.StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `prop::TextInput.TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param props the properties to use.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput\n@sa WindowBase.IsTextInputActive",
             "name": "WindowBase::StartTextInput",
             "kind": "function",
-            "type": "bool",
+            "type": "void",
             "parameters": [
               {
                 "name": "props",
@@ -20523,7 +20736,8 @@
             "sourceName": "SDL_StartTextInputWithProperties",
             "hints": {
               "self": "get()",
-              "super": "Resource"
+              "super": "Resource",
+              "mayFail": true
             }
           }
         ],
@@ -20711,34 +20925,36 @@
           }
         },
         "WindowBase::StopTextInput": {
-          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase.StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput",
+          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase.StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput",
           "name": "WindowBase::StopTextInput",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [],
           "sourceName": "SDL_StopTextInput",
           "hints": {
             "self": "get()",
-            "super": "Resource"
+            "super": "Resource",
+            "mayFail": true
           }
         },
         "WindowBase::ClearComposition": {
-          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput",
+          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput\n@sa WindowBase.StopTextInput",
           "name": "WindowBase::ClearComposition",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [],
           "sourceName": "SDL_ClearComposition",
           "hints": {
             "self": "get()",
-            "super": "Resource"
+            "super": "Resource",
+            "mayFail": true
           }
         },
         "WindowBase::SetTextInputArea": {
-          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetTextInputArea\n@sa WindowBase.StartTextInput",
+          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetTextInputArea\n@sa WindowBase.StartTextInput",
           "name": "WindowBase::SetTextInputArea",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "rect",
@@ -20752,14 +20968,15 @@
           "sourceName": "SDL_SetTextInputArea",
           "hints": {
             "self": "get()",
-            "super": "Resource"
+            "super": "Resource",
+            "mayFail": true
           }
         },
         "WindowBase::GetTextInputArea": {
-          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase.SetTextInputArea().\n\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea",
+          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase.SetTextInputArea().\n\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.SetTextInputArea",
           "name": "WindowBase::GetTextInputArea",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "rect",
@@ -20773,7 +20990,8 @@
           "sourceName": "SDL_GetTextInputArea",
           "hints": {
             "self": "get()",
-            "super": "Resource"
+            "super": "Resource",
+            "mayFail": true
           }
         },
         "HasScreenKeyboardSupport": {
@@ -23577,7 +23795,7 @@
               "doc": "",
               "name": "SetName",
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "name",
@@ -23585,6 +23803,9 @@
                 }
               ],
               "sourceName": "SDL_SetScancodeName",
+              "hints": {
+                "mayFail": true
+              },
               "proto": true
             },
             "GetName": {
@@ -25808,7 +26029,7 @@
             },
             "CursorBase": [
               {
-                "doc": "Create a cursor using the specified bitmap data and mask (in MSB format).\n\n`mask` has to be in MSB (Most Significant Bit) format.\n\nThe cursor width (`w`) must be a multiple of 8 bits.\n\nThe cursor is created in black and white according to the following:\n\n- data=0, mask=1: white\n- data=1, mask=1: black\n- data=0, mask=0: transparent\n- data=1, mask=0: inverted color if possible, black if not.\n\nCursors created with this function must be freed with CursorRef.reset().\n\nIf you want to have a color cursor, or create your cursor from an\nSurfaceBase, you should use CursorBase.CursorBase(). Alternately, you can\nhide the cursor and draw your own as part of your game's rendering, but it\nwill be bound to the framerate.\n\nAlso, CursorBase.CursorBase() is available, which provides several\nreadily-available system cursors to pick from.\n\n@param data the color value for each pixel of the cursor.\n@param mask the mask value for each pixel of the cursor.\n@param w the width of the cursor.\n@param h the height of the cursor.\n@param hot_x the x-axis offset from the left of the cursor image to the\n             mouse x position, in the range of 0 to `w` - 1.\n@param hot_y the y-axis offset from the top of the cursor image to the\n             mouse y position, in the range of 0 to `h` - 1.\n@post a new cursor with the specified parameters on success or nullptr on\n         failure; call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorBase.CursorBase\n@sa CursorBase.CursorBase\n@sa CursorRef.reset\n@sa SetCursor",
+                "doc": "Create a cursor using the specified bitmap data and mask (in MSB format).\n\n`mask` has to be in MSB (Most Significant Bit) format.\n\nThe cursor width (`w`) must be a multiple of 8 bits.\n\nThe cursor is created in black and white according to the following:\n\n- data=0, mask=1: white\n- data=1, mask=1: black\n- data=0, mask=0: transparent\n- data=1, mask=0: inverted color if possible, black if not.\n\nCursors created with this function must be freed with CursorRef.reset().\n\nIf you want to have a color cursor, or create your cursor from an\nSurfaceBase, you should use CursorBase.CursorBase(). Alternately, you can\nhide the cursor and draw your own as part of your game's rendering, but it\nwill be bound to the framerate.\n\nAlso, CursorBase.CursorBase() is available, which provides several\nreadily-available system cursors to pick from.\n\n@param data the color value for each pixel of the cursor.\n@param mask the mask value for each pixel of the cursor.\n@param w the width of the cursor.\n@param h the height of the cursor.\n@param hot_x the x-axis offset from the left of the cursor image to the\n             mouse x position, in the range of 0 to `w` - 1.\n@param hot_y the y-axis offset from the top of the cursor image to the\n             mouse y position, in the range of 0 to `h` - 1.\n@post a new cursor with the specified parameters on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorBase.CursorBase\n@sa CursorBase.CursorBase\n@sa CursorRef.reset\n@sa SetCursor",
                 "name": "CursorBase",
                 "kind": "function",
                 "type": "",
@@ -25839,10 +26060,13 @@
                   }
                 ],
                 "sourceName": "SDL_CreateCursor",
+                "hints": {
+                  "mayFail": true
+                },
                 "proto": false
               },
               {
-                "doc": "Create a color cursor.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param surface an SurfaceBase structure representing the cursor image.\n@param hot_x the x position of the cursor hot spot.\n@param hot_y the y position of the cursor hot spot.\n@post the new cursor on success or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorBase.CursorBase\n@sa CursorBase.CursorBase\n@sa CursorRef.reset\n@sa SetCursor",
+                "doc": "Create a color cursor.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param surface an SurfaceBase structure representing the cursor image.\n@param hot_x the x position of the cursor hot spot.\n@param hot_y the y position of the cursor hot spot.\n@post the new cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorBase.CursorBase\n@sa CursorBase.CursorBase\n@sa CursorRef.reset\n@sa SetCursor",
                 "name": "CursorBase",
                 "kind": "function",
                 "type": "",
@@ -25860,10 +26084,13 @@
                     "type": "int"
                   }
                 ],
-                "sourceName": "SDL_CreateColorCursor"
+                "sourceName": "SDL_CreateColorCursor",
+                "hints": {
+                  "mayFail": true
+                }
               },
               {
-                "doc": "Create a system cursor.\n\n@param id an SystemCursor enum value.\n@post a cursor on success or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorRef.reset",
+                "doc": "Create a system cursor.\n\n@param id an SystemCursor enum value.\n@post a cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorRef.reset",
                 "name": "CursorBase",
                 "kind": "function",
                 "type": "",
@@ -25873,7 +26100,10 @@
                     "type": "SystemCursor"
                   }
                 ],
-                "sourceName": "SDL_CreateSystemCursor"
+                "sourceName": "SDL_CreateSystemCursor",
+                "hints": {
+                  "mayFail": true
+                }
               }
             ]
           },
@@ -26322,10 +26552,10 @@
           }
         },
         "WarpMouse": {
-          "doc": "Move the mouse to the given position in global screen space.\n\nThis function generates a mouse motion event.\n\nA failure of this function usually means that it is unsupported by a\nplatform.\n\nNote that this function will appear to succeed, but not actually move the\nmouse when used over Microsoft Remote Desktop.\n\n@param x the x coordinate.\n@param y the y coordinate.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.WarpMouse",
+          "doc": "Move the mouse to the given position in global screen space.\n\nThis function generates a mouse motion event.\n\nA failure of this function usually means that it is unsupported by a\nplatform.\n\nNote that this function will appear to succeed, but not actually move the\nmouse when used over Microsoft Remote Desktop.\n\n@param x the x coordinate.\n@param y the y coordinate.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.WarpMouse",
           "name": "WarpMouse",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "x",
@@ -26336,13 +26566,16 @@
               "type": "float"
             }
           ],
-          "sourceName": "SDL_WarpMouseGlobal"
+          "sourceName": "SDL_WarpMouseGlobal",
+          "hints": {
+            "mayFail": true
+          }
         },
         "WindowBase::SetRelativeMouseMode": {
-          "doc": "Set relative mouse mode for a window.\n\nWhile the window has focus and relative mouse mode is enabled, the cursor\nis hidden, the mouse position is constrained to the window, and SDL will\nreport continuous relative mouse motion even if the mouse is at the edge of\nthe window.\n\nIf you'd like to keep the mouse position fixed while in relative mode you\ncan use WindowBase.SetMouseRect(). If you'd like the cursor to be at a\nspecific location when relative mode ends, you should use\nWindowBase.WarpMouse() before disabling relative mode.\n\nThis function will flush any pending mouse motion for this window.\n\n@param enabled true to enable relative mode, false to disable.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetRelativeMouseMode",
+          "doc": "Set relative mouse mode for a window.\n\nWhile the window has focus and relative mouse mode is enabled, the cursor\nis hidden, the mouse position is constrained to the window, and SDL will\nreport continuous relative mouse motion even if the mouse is at the edge of\nthe window.\n\nIf you'd like to keep the mouse position fixed while in relative mode you\ncan use WindowBase.SetMouseRect(). If you'd like the cursor to be at a\nspecific location when relative mode ends, you should use\nWindowBase.WarpMouse() before disabling relative mode.\n\nThis function will flush any pending mouse motion for this window.\n\n@param enabled true to enable relative mode, false to disable.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.GetRelativeMouseMode",
           "name": "WindowBase::SetRelativeMouseMode",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "enabled",
@@ -26352,7 +26585,8 @@
           "sourceName": "SDL_SetWindowRelativeMouseMode",
           "hints": {
             "self": "get()",
-            "super": "Resource"
+            "super": "Resource",
+            "mayFail": true
           }
         },
         "WindowBase::GetRelativeMouseMode": {
@@ -26369,30 +26603,36 @@
           }
         },
         "CaptureMouse": {
-          "doc": "Capture the mouse and to track input outside an SDL window.\n\nCapturing enables your app to obtain mouse events globally, instead of just\nwithin your window. Not all video targets support this function. When\ncapturing is enabled, the current window will get all mouse events, but\nunlike relative mode, no change is made to the cursor and it is not\nrestrained to your window.\n\nThis function may also deny mouse input to other windows--both those in\nyour application and others on the system--so you should use this function\nsparingly, and in small bursts. For example, you might want to track the\nmouse while the user is dragging something, until the user releases a mouse\nbutton. It is not recommended that you capture the mouse for long periods\nof time, such as the entire time your app is running. For that, you should\nprobably use WindowBase.SetRelativeMouseMode() or WindowBase.SetMouseGrab(),\ndepending on your goals.\n\nWhile captured, mouse events still report coordinates relative to the\ncurrent (foreground) window, but those coordinates may be outside the\nbounds of the window (including negative values). Capturing is only allowed\nfor the foreground window. If the window loses focus while capturing, the\ncapture will be disabled automatically.\n\nWhile capturing is enabled, the current window will have the\n`WINDOW_MOUSE_CAPTURE` flag set.\n\nPlease note that SDL will attempt to \"auto capture\" the mouse while the\nuser is pressing a button; this is to try and make mouse behavior more\nconsistent between platforms, and deal with the common case of a user\ndragging the mouse outside of the window. This means that if you are\ncalling CaptureMouse() only to deal with this situation, you do not\nhave to (although it is safe to do so). If this causes problems for your\napp, you can disable auto capture by setting the\n`SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.\n\n@param enabled true to enable capturing, false to disable.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetGlobalMouseState",
+          "doc": "Capture the mouse and to track input outside an SDL window.\n\nCapturing enables your app to obtain mouse events globally, instead of just\nwithin your window. Not all video targets support this function. When\ncapturing is enabled, the current window will get all mouse events, but\nunlike relative mode, no change is made to the cursor and it is not\nrestrained to your window.\n\nThis function may also deny mouse input to other windows--both those in\nyour application and others on the system--so you should use this function\nsparingly, and in small bursts. For example, you might want to track the\nmouse while the user is dragging something, until the user releases a mouse\nbutton. It is not recommended that you capture the mouse for long periods\nof time, such as the entire time your app is running. For that, you should\nprobably use WindowBase.SetRelativeMouseMode() or WindowBase.SetMouseGrab(),\ndepending on your goals.\n\nWhile captured, mouse events still report coordinates relative to the\ncurrent (foreground) window, but those coordinates may be outside the\nbounds of the window (including negative values). Capturing is only allowed\nfor the foreground window. If the window loses focus while capturing, the\ncapture will be disabled automatically.\n\nWhile capturing is enabled, the current window will have the\n`WINDOW_MOUSE_CAPTURE` flag set.\n\nPlease note that SDL will attempt to \"auto capture\" the mouse while the\nuser is pressing a button; this is to try and make mouse behavior more\nconsistent between platforms, and deal with the common case of a user\ndragging the mouse outside of the window. This means that if you are\ncalling CaptureMouse() only to deal with this situation, you do not\nhave to (although it is safe to do so). If this causes problems for your\napp, you can disable auto capture by setting the\n`SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.\n\n@param enabled true to enable capturing, false to disable.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetGlobalMouseState",
           "name": "CaptureMouse",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "enabled",
               "type": "bool"
             }
           ],
-          "sourceName": "SDL_CaptureMouse"
+          "sourceName": "SDL_CaptureMouse",
+          "hints": {
+            "mayFail": true
+          }
         },
         "SetCursor": {
-          "doc": "Set the active cursor.\n\nThis function sets the currently active cursor to the specified one. If the\ncursor is currently visible, the change will be immediately represented on\nthe display. SetCursor(nullptr) can be used to force cursor redraw, if\nthis is desired for any reason.\n\n@param cursor a cursor to make active.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetCursor",
+          "doc": "Set the active cursor.\n\nThis function sets the currently active cursor to the specified one. If the\ncursor is currently visible, the change will be immediately represented on\nthe display. SetCursor(nullptr) can be used to force cursor redraw, if\nthis is desired for any reason.\n\n@param cursor a cursor to make active.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetCursor",
           "name": "SetCursor",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "cursor",
               "type": "CursorBase &"
             }
           ],
-          "sourceName": "SDL_SetCursor"
+          "sourceName": "SDL_SetCursor",
+          "hints": {
+            "mayFail": true
+          }
         },
         "GetCursor": {
           "doc": "Get the active cursor.\n\nThis function returns a pointer to the current cursor which is owned by the\nlibrary. It is not necessary to free the cursor with CursorRef.reset().\n\n@returns the active cursor or nullptr if there is no mouse.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetCursor",
@@ -26403,28 +26643,37 @@
           "sourceName": "SDL_GetCursor"
         },
         "GetDefaultCursor": {
-          "doc": "Get the default cursor.\n\nYou do not have to call CursorRef.reset() on the return value, but it is\nsafe to do so.\n\n@returns the default cursor on success or nullptr on failuree; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Get the default cursor.\n\nYou do not have to call CursorRef.reset() on the return value, but it is\nsafe to do so.\n\n@returns the default cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetDefaultCursor",
           "kind": "function",
           "type": "CursorRef",
           "parameters": [],
-          "sourceName": "SDL_GetDefaultCursor"
+          "sourceName": "SDL_GetDefaultCursor",
+          "hints": {
+            "mayFail": true
+          }
         },
         "ShowCursor": {
-          "doc": "Show the cursor.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorVisible\n@sa HideCursor",
+          "doc": "Show the cursor.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorVisible\n@sa HideCursor",
           "name": "ShowCursor",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [],
-          "sourceName": "SDL_ShowCursor"
+          "sourceName": "SDL_ShowCursor",
+          "hints": {
+            "mayFail": true
+          }
         },
         "HideCursor": {
-          "doc": "Hide the cursor.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorVisible\n@sa ShowCursor",
+          "doc": "Hide the cursor.\n\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorVisible\n@sa ShowCursor",
           "name": "HideCursor",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [],
-          "sourceName": "SDL_HideCursor"
+          "sourceName": "SDL_HideCursor",
+          "hints": {
+            "mayFail": true
+          }
         },
         "CursorVisible": {
           "doc": "Return whether the cursor is currently being shown.\n\n@returns `true` if the cursor is being shown, or `false` if the cursor is\n         hidden.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HideCursor\n@sa ShowCursor",

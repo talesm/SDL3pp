@@ -5,7 +5,7 @@ var searchData=
   ['fillrect_2',['fillrect',['../structSDL_1_1SurfaceBase.html#a8e13db690f5668d591c5bb56eaa8d218',1,'SDL::SurfaceBase::FillRect(const SDL_Rect &amp;rect, SDL_Color color)'],['../structSDL_1_1SurfaceBase.html#a88860c4771f7f7f15a463311ad5f8f0e',1,'SDL::SurfaceBase::FillRect(const SDL_Rect &amp;rect, Uint32 color)']]],
   ['fillrects_3',['fillrects',['../structSDL_1_1SurfaceBase.html#aae1f6be68ac6c412f50c8b167f4e1ac4',1,'SDL::SurfaceBase::FillRects(SpanRef&lt; const SDL_Rect &gt; rects, SDL_Color color)'],['../structSDL_1_1SurfaceBase.html#a82f9255f72a2f846ead75add4e9580e2',1,'SDL::SurfaceBase::FillRects(SpanRef&lt; const SDL_Rect &gt; rects, Uint32 color)']]],
   ['filterevents_4',['filterevents',['../group__CategoryEvents.html#gabde9f79506e24c465a9286266880be76',1,'SDL::FilterEvents(EventFilter filter, void *userdata)'],['../group__CategoryEvents.html#ga012ee46224020dd32156f124d75d3a38',1,'SDL::FilterEvents(EventFilterCB filter)']]],
-  ['flash_5',['Flash',['../structSDL_1_1WindowBase.html#a5f1b72516db2cdaf78bc5569c81b99b4',1,'SDL::WindowBase']]],
+  ['flash_5',['Flash',['../structSDL_1_1WindowBase.html#aea105862ae2d88ad61acfc5df3a3fdcc',1,'SDL::WindowBase']]],
   ['flip_6',['Flip',['../structSDL_1_1SurfaceBase.html#aef1e4c036d4c187887798da3be3583cd',1,'SDL::SurfaceBase']]],
   ['floor_7',['floor',['../group__CategoryStdinc.html#ga93fb9063f992d37b5163a32f0e952998',1,'SDL::floor(float x)'],['../group__CategoryStdinc.html#gaa5d99939c5dffc37035e51300236316a',1,'SDL::floor(double x)']]],
   ['flush_8',['flush',['../structSDL_1_1RendererBase.html#a044f22d030e9e6a75f1cfed6dbcf45c4',1,'SDL::RendererBase::Flush()'],['../structSDL_1_1IOStreamBase.html#ac7214df19f1d2477f30bd9ba97e164d4',1,'SDL::IOStreamBase::Flush()']]],
