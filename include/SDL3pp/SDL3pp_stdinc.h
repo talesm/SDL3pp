@@ -216,17 +216,32 @@ constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 using Seconds = std::chrono::duration<float>;
 
 /**
+ * Duration in Nanoseconds (Sint64).
+ */
+using Nanoseconds = std::chrono::nanoseconds;
+
+/**
  * Converts a time duration to seconds (float).
  */
-constexpr float ToSeconds(std::chrono::duration<float> duration)
-{
-  return duration.count();
-}
+constexpr float ToSeconds(Seconds duration) { return duration.count(); }
 
 /**
  * Converts a float to seconds representation.
  */
 constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
+
+/**
+ * Converts a time duration to nanoseconds (Sint64);
+ */
+constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
+{
+  return duration.count();
+}
+
+/**
+ * Converts a Sint64 to nanoseconds representation.
+ */
+constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
 
 /**
  * SDL times are signed, 64-bit integers representing nanoseconds since the

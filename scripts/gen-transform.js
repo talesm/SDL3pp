@@ -4796,12 +4796,17 @@ const transform = {
           type: "std::chrono::duration<float>",
           doc: "Duration in seconds (float)."
         }, {
+          kind: "alias",
+          name: "Nanoseconds",
+          type: "std::chrono::nanoseconds",
+          doc: "Duration in Nanoseconds (Uint64)."
+        }, {
           kind: "function",
           name: "ToSeconds",
           type: "float",
           constexpr: true,
           parameters: [{
-            type: "std::chrono::duration<float>",
+            type: "Seconds",
             name: "duration"
           }],
           doc: "Converts a time duration to seconds (float)."
@@ -4812,6 +4817,26 @@ const transform = {
           constexpr: true,
           parameters: [{
             type: "float",
+            name: "duration"
+          }],
+          doc: "Converts a float to seconds representation."
+        }, {
+          kind: "function",
+          name: "ToNS",
+          type: "Sint64",
+          constexpr: true,
+          parameters: [{
+            type: "std::chrono::nanoseconds",
+            name: "duration"
+          }],
+          doc: "Converts a time duration to seconds (float)."
+        }, {
+          kind: "function",
+          name: "FromNS",
+          type: "Nanoseconds",
+          constexpr: true,
+          parameters: [{
+            type: "Sint64",
             name: "duration"
           }],
           doc: "Converts a float to seconds representation."

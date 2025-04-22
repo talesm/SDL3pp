@@ -35742,6 +35742,12 @@
           "type": "std::chrono::duration<float>",
           "doc": "Duration in seconds (float)."
         },
+        "Nanoseconds": {
+          "kind": "alias",
+          "name": "Nanoseconds",
+          "type": "std::chrono::nanoseconds",
+          "doc": "Duration in Nanoseconds (Uint64)."
+        },
         "ToSeconds": {
           "kind": "function",
           "name": "ToSeconds",
@@ -35749,7 +35755,7 @@
           "constexpr": true,
           "parameters": [
             {
-              "type": "std::chrono::duration<float>",
+              "type": "Seconds",
               "name": "duration"
             }
           ],
@@ -35763,6 +35769,32 @@
           "parameters": [
             {
               "type": "float",
+              "name": "duration"
+            }
+          ],
+          "doc": "Converts a float to seconds representation."
+        },
+        "ToNS": {
+          "kind": "function",
+          "name": "ToNS",
+          "type": "Sint64",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "std::chrono::nanoseconds",
+              "name": "duration"
+            }
+          ],
+          "doc": "Converts a time duration to seconds (float)."
+        },
+        "FromNS": {
+          "kind": "function",
+          "name": "FromNS",
+          "type": "Nanoseconds",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Sint64",
               "name": "duration"
             }
           ],
