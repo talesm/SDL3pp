@@ -280,9 +280,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ga6e24d1ff0875920626de2811e254c0f8" id="r_ga6e24d1ff0875920626de2811e254c0f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga6e24d1ff0875920626de2811e254c0f8">RenderGeometryRaw</a> (<a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a> texture, const float *xy, int xy_stride, const <a class="el" href="structSDL_1_1FColor.html">FColor</a> *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)</td></tr>
 <tr class="memdesc:ga6e24d1ff0875920626de2811e254c0f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex arrays <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="structSDL_1_1TextureBase.html#a27cc9872ea2262b329c43d5bcbf02cb3" title="Set an additional color value multiplied into render copy operations.">TextureBase.SetColorMod</a> and <a class="el" href="structSDL_1_1TextureBase.html#a042892568386935899dda5d596759379" title="Set an additional alpha value multiplied into render copy operations.">TextureBase.SetAlphaMod</a> are ignored).  <br /></td></tr>
 <tr class="separator:ga6e24d1ff0875920626de2811e254c0f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9970895102b718c4b54f23ed70826b3" id="r_ad9970895102b718c4b54f23ed70826b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#ad9970895102b718c4b54f23ed70826b3">RenderReadPixels</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect) const</td></tr>
-<tr class="memdesc:ad9970895102b718c4b54f23ed70826b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read pixels from the current rendering target.  <br /></td></tr>
-<tr class="separator:ad9970895102b718c4b54f23ed70826b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98b5bd2de241578f8279336eca3c6f5a" id="r_a98b5bd2de241578f8279336eca3c6f5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a98b5bd2de241578f8279336eca3c6f5a">ReadPixels</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect={}) const</td></tr>
+<tr class="memdesc:a98b5bd2de241578f8279336eca3c6f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read pixels from the current rendering target.  <br /></td></tr>
+<tr class="separator:a98b5bd2de241578f8279336eca3c6f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e775356c7cde688e0cb62afc6cd8d13" id="r_a9e775356c7cde688e0cb62afc6cd8d13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a9e775356c7cde688e0cb62afc6cd8d13">Present</a> ()</td></tr>
 <tr class="memdesc:a9e775356c7cde688e0cb62afc6cd8d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the screen with any rendering performed since the previous call.  <br /></td></tr>
 <tr class="separator:a9e775356c7cde688e0cb62afc6cd8d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1827,6 +1827,50 @@ constexpr SDL_Renderer *&#160;</td><td class="memItemRight" valign="bottom"><b>o
 
 </div>
 </div>
+<a id="a98b5bd2de241578f8279336eca3c6f5a" name="a98b5bd2de241578f8279336eca3c6f5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98b5bd2de241578f8279336eca3c6f5a">&#9670;&#160;</a></span>ReadPixels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::RendererBase::ReadPixels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt;&#160;</td>
+          <td class="paramname"><em>rect</em> = <code>{}</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The returned surface contains pixels inside the desired area clipped to the current viewport, and should be freed with <a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c" title="Free a surface.">SurfaceRef.reset()</a>.</p>
+<p>Note that this returns the actual pixels on the screen, so if you are using logical presentation you should use <a class="el" href="structSDL_1_1RendererBase.html#a096a5b40b234d38d68e1b96c57b8fc4f" title="Get the final presentation rectangle for rendering.">RendererBase.GetLogicalPresentationRect()</a> to get the area containing your content.</p>
+<p><b>WARNING</b>: This is a very slow operation, and should not be used frequently. If you're using this on the main rendering target, it should be called after rendering and before <a class="el" href="structSDL_1_1RendererBase.html#a9e775356c7cde688e0cb62afc6cd8d13" title="Update the screen with any rendering performed since the previous call.">RendererBase.Present()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the area to read, which will be clipped to the current viewport, or nullptr for the entire viewport. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
 <a id="a5fe744f529f7677146812fb2deaf3596" name="a5fe744f529f7677146812fb2deaf3596"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5fe744f529f7677146812fb2deaf3596">&#9670;&#160;</a></span>RenderClear()</h2>
 
@@ -2348,50 +2392,6 @@ template&lt;class... ARGS&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a29093e5793d2d9390ca53ddbe1fe9ec1" title="Draw a point on the current rendering target at subpixel precision.">RendererBase.RenderPoint</a> </dd></dl>
-
-</div>
-</div>
-<a id="ad9970895102b718c4b54f23ed70826b3" name="ad9970895102b718c4b54f23ed70826b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9970895102b718c4b54f23ed70826b3">&#9670;&#160;</a></span>RenderReadPixels()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::RendererBase::RenderReadPixels </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt;&#160;</td>
-          <td class="paramname"><em>rect</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The returned surface contains pixels inside the desired area clipped to the current viewport, and should be freed with <a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c" title="Free a surface.">SurfaceRef.reset()</a>.</p>
-<p>Note that this returns the actual pixels on the screen, so if you are using logical presentation you should use <a class="el" href="structSDL_1_1RendererBase.html#a096a5b40b234d38d68e1b96c57b8fc4f" title="Get the final presentation rectangle for rendering.">RendererBase.GetLogicalPresentationRect()</a> to get the area containing your content.</p>
-<p><b>WARNING</b>: This is a very slow operation, and should not be used frequently. If you're using this on the main rendering target, it should be called after rendering and before <a class="el" href="structSDL_1_1RendererBase.html#a9e775356c7cde688e0cb62afc6cd8d13" title="Update the screen with any rendering performed since the previous call.">RendererBase.Present()</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rect</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the area to read, which will be clipped to the current viewport, or nullptr for the entire viewport. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

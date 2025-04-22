@@ -71,7 +71,10 @@ struct Point : SDL_Point
   /**
    * Default comparison operator
    */
-  constexpr auto operator<=>(const Point& other) const = default;
+  constexpr bool operator==(const Point& other) const
+  {
+    return x == other.x && y == other.y;
+  }
 
   /**
    * Check if valid.
@@ -491,7 +494,10 @@ struct FPoint : SDL_FPoint
   /**
    * Default comparison operator
    */
-  constexpr auto operator<=>(const FPoint& other) const = default;
+  constexpr bool operator==(const FPoint& other) const
+  {
+    return x == other.x && y == other.y;
+  }
 
   /**
    * Check if valid.

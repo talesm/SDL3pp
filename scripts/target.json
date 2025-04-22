@@ -9856,15 +9856,16 @@
               "static": false,
               "proto": true
             },
-            "RenderReadPixels": {
+            "ReadPixels": {
               "doc": "Read pixels from the current rendering target.\n\nThe returned surface contains pixels inside the desired area clipped to the\ncurrent viewport, and should be freed with SurfaceRef.reset().\n\nNote that this returns the actual pixels on the screen, so if you are using\nlogical presentation you should use RendererBase.GetLogicalPresentationRect()\nto get the area containing your content.\n\n**WARNING**: This is a very slow operation, and should not be used\nfrequently. If you're using this on the main rendering target, it should be\ncalled after rendering and before RendererBase.Present().\n\n@param renderer the rendering context.\n@param rect an Rect structure representing the area to read, which will\n            be clipped to the current viewport, or nullptr for the entire\n            viewport.\n@returns a new SurfaceBase on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "RenderReadPixels",
+              "name": "ReadPixels",
               "kind": "function",
               "type": "Surface",
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "default": "{}"
                 }
               ],
               "sourceName": "SDL_RenderReadPixels",
@@ -15614,10 +15615,10 @@
                 "doc": ""
               }
             ],
-            "operator<=>": {
+            "operator==": {
               "kind": "function",
-              "name": "operator<=>",
-              "type": "auto",
+              "name": "operator==",
+              "type": "bool",
               "constexpr": true,
               "immutable": true,
               "parameters": [
@@ -15772,10 +15773,10 @@
                 }
               }
             ],
-            "operator<=>": {
+            "operator==": {
               "kind": "function",
-              "name": "operator<=>",
-              "type": "auto",
+              "name": "operator==",
+              "type": "bool",
               "constexpr": true,
               "immutable": true,
               "parameters": [

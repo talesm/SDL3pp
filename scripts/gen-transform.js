@@ -3145,7 +3145,6 @@ const transform = {
       wrappers: {
         "SDL_Point": {
           attribute: "p",
-          ordered: true,
           entries: {
             "Point": {
               kind: "function",
@@ -3177,7 +3176,6 @@ const transform = {
         },
         "SDL_FPoint": {
           attribute: "p",
-          ordered: true,
           entries: {
             "SDL_PointInRectFloat": {
               kind: "function",
@@ -4342,12 +4340,14 @@ const transform = {
               ]
             },
             "SDL_RenderReadPixels": {
-              "immutable": true,
-              "type": "Surface",
-              "parameters": [
+              name: "ReadPixels",
+              immutable: true,
+              type: "Surface",
+              parameters: [
                 {
-                  "name": "rect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  name: "rect",
+                  type: "OptionalRef<const SDL_Rect>",
+                  default: "{}",
                 }
               ]
             },

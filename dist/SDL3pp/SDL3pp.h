@@ -18803,7 +18803,10 @@ struct Point : SDL_Point
   /**
    * Default comparison operator
    */
-  constexpr auto operator<=>(const Point& other) const = default;
+  constexpr bool operator==(const Point& other) const
+  {
+    return x == other.x && y == other.y;
+  }
 
   /**
    * Check if valid.
@@ -19223,7 +19226,10 @@ struct FPoint : SDL_FPoint
   /**
    * Default comparison operator
    */
-  constexpr auto operator<=>(const FPoint& other) const = default;
+  constexpr bool operator==(const FPoint& other) const
+  {
+    return x == other.x && y == other.y;
+  }
 
   /**
    * Check if valid.
@@ -43211,7 +43217,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Surface RenderReadPixels(OptionalRef<const SDL_Rect> rect) const
+  Surface ReadPixels(OptionalRef<const SDL_Rect> rect = {}) const
   {
     return Surface(CheckError(SDL_RenderReadPixels(get(), rect)));
   }

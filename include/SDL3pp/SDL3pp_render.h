@@ -1678,7 +1678,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Surface RenderReadPixels(OptionalRef<const SDL_Rect> rect) const
+  Surface ReadPixels(OptionalRef<const SDL_Rect> rect = {}) const
   {
     return Surface(CheckError(SDL_RenderReadPixels(get(), rect)));
   }
