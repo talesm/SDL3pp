@@ -44,27 +44,17 @@ using MessageBoxFlags = Uint32;
 constexpr MessageBoxFlags MESSAGEBOX_ERROR =
   SDL_MESSAGEBOX_ERROR; ///< error dialog
 
-/**
- * warning dialog
- */
-constexpr MessageBoxFlags MESSAGEBOX_WARNING = SDL_MESSAGEBOX_WARNING;
+constexpr MessageBoxFlags MESSAGEBOX_WARNING =
+  SDL_MESSAGEBOX_WARNING; ///< warning dialog
 
-/**
- * informational dialog
- */
-constexpr MessageBoxFlags MESSAGEBOX_INFORMATION = SDL_MESSAGEBOX_INFORMATION;
+constexpr MessageBoxFlags MESSAGEBOX_INFORMATION =
+  SDL_MESSAGEBOX_INFORMATION; ///< informational dialog
 
-/**
- * buttons placed left to right
- */
 constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT =
-  SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT;
+  SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT; ///< buttons placed left to right
 
-/**
- * buttons placed right to left
- */
 constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT =
-  SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT;
+  SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT; ///< buttons placed right to left
 
 /// @}
 
@@ -80,17 +70,13 @@ constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT =
  */
 using MessageBoxButtonFlags = Uint32;
 
-/**
- * Marks the default button when return is hit
- */
 constexpr MessageBoxButtonFlags MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT =
-  SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;
+  SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT; ///< Marks the default button when
+                                           ///< return is hit
 
-/**
- * Marks the default button when escape is hit
- */
 constexpr MessageBoxButtonFlags MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT =
-  SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT;
+  SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT; ///< Marks the default button when
+                                           ///< escape is hit
 
 /// @}
 
@@ -134,11 +120,8 @@ constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_BACKGROUND =
 constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_SELECTED =
   SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED; ///< BUTTON_SELECTED
 
-/**
- * Count
- */
 constexpr MessageBoxColorType MESSAGEBOX_COLOR_COUNT =
-  SDL_MESSAGEBOX_COLOR_COUNT;
+  SDL_MESSAGEBOX_COLOR_COUNT; ///< Count
 
 /// @}
 
@@ -217,14 +200,16 @@ struct MessageBox : SDL_MessageBoxData
    *
    * @param buttonid the pointer to which user id of hit button should be
    *                 copied.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa ShowSimpleMessageBox
    */
-  bool Show(int* buttonid) const { return SDL_ShowMessageBox(this, buttonid); }
+  void Show(int* buttonid) const
+  {
+    CheckError(SDL_ShowMessageBox(this, buttonid));
+  }
 
   /**
    * Get the flags.
@@ -389,19 +374,18 @@ struct MessageBox : SDL_MessageBoxData
  * @param title UTF-8 title text.
  * @param message UTF-8 message text.
  * @param window the parent window, or nullptr for no parent.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MessageBox.Show
  */
-inline bool ShowSimpleMessageBox(MessageBoxFlags flags,
+inline void ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,
                                  StringParam message,
                                  OptionalWindow window)
 {
-  return SDL_ShowSimpleMessageBox(flags, title, message, window.get());
+  CheckError(SDL_ShowSimpleMessageBox(flags, title, message, window.get()));
 }
 
 /// @}

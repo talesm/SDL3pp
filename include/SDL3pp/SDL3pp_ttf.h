@@ -400,15 +400,15 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param file path to font file.
    * @param ptsize point size to use for the newly-opened font.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(StringParam file, float ptsize)
-    : Resource(TTF_OpenFont(file, ptsize))
+    : Resource(CheckError(TTF_OpenFont(file, ptsize)))
   {
   }
 
@@ -421,15 +421,15 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param src an IOStreamBase to provide a font file's data.
    * @param ptsize point size to use for the newly-opened font.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(IOStreamBase& src, float ptsize)
-    : Resource(TTF_OpenFontIO(src.get(), false, ptsize))
+    : Resource(CheckError(TTF_OpenFontIO(src.get(), false, ptsize)))
   {
   }
 
@@ -467,15 +467,15 @@ struct FontBase : Resource<TTF_Font*>
    *   the new font.
    *
    * @param props the properties to use.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(PropertiesBase& props)
-    : Resource(TTF_OpenFontWithProperties(props.get()))
+    : Resource(CheckError(TTF_OpenFontWithProperties(props.get())))
   {
   }
 
@@ -485,8 +485,8 @@ struct FontBase : Resource<TTF_Font*>
    * The copy will be distinct from the original, but will share the font file
    * and have the same size and style as the original.
    *
-   * @returns a valid Font, or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns a valid Font on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               original font.
@@ -509,14 +509,17 @@ struct FontBase : Resource<TTF_Font*>
    * - `prop::Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
    *   when setting the font outline, defaults to 0.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  PropertiesRef GetProperties() { return TTF_GetFontProperties(get()); }
+  PropertiesRef GetProperties()
+  {
+    return CheckError(TTF_GetFontProperties(get()));
+  }
 
   /**
    * Get the font generation.
@@ -545,8 +548,7 @@ struct FontBase : Resource<TTF_Font*>
    * This updates any TextBase objects using this font.
    *
    * @param fallback the font to add as a fallback.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created
    *               both fonts.
@@ -556,9 +558,9 @@ struct FontBase : Resource<TTF_Font*>
    * @sa FontBase.ClearFallbacks
    * @sa FontBase.RemoveFallback
    */
-  bool AddFallback(FontBase& fallback)
+  void AddFallback(FontBase& fallback)
   {
-    return TTF_AddFallbackFont(get(), fallback.get());
+    CheckError(TTF_AddFallbackFont(get(), fallback.get()));
   }
 
   /**
@@ -604,8 +606,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param ptsize the new point size.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -614,7 +615,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetSize
    */
-  bool SetSize(float ptsize) { return TTF_SetFontSize(get(), ptsize); }
+  void SetSize(float ptsize) { CheckError(TTF_SetFontSize(get(), ptsize)); }
 
   /**
    * Set font size dynamically with target resolutions, in dots per inch.
@@ -625,8 +626,7 @@ struct FontBase : Resource<TTF_Font*>
    * @param ptsize the new point size.
    * @param hdpi the target horizontal DPI.
    * @param vdpi the target vertical DPI.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -636,9 +636,9 @@ struct FontBase : Resource<TTF_Font*>
    * @sa FontBase.GetSize
    * @sa TTF_GetFontSizeDPI
    */
-  bool SetSizeDPI(float ptsize, int hdpi, int vdpi)
+  void SetSizeDPI(float ptsize, int hdpi, int vdpi)
   {
-    return TTF_SetFontSizeDPI(get(), ptsize, hdpi, vdpi);
+    CheckError(TTF_SetFontSizeDPI(get(), ptsize, hdpi, vdpi));
   }
 
   /**
@@ -662,8 +662,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param hdpi a pointer filled in with the target horizontal DPI.
    * @param vdpi a pointer filled in with the target vertical DPI.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -672,9 +671,9 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.SetSizeDPI
    */
-  bool GetDPI(int* hdpi, int* vdpi) const
+  void GetDPI(int* hdpi, int* vdpi) const
   {
-    return TTF_GetFontDPI(get(), hdpi, vdpi);
+    CheckError(TTF_GetFontDPI(get(), hdpi, vdpi));
   }
 
   /**
@@ -734,8 +733,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param outline positive outline value, 0 to default.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -744,7 +742,10 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetOutline
    */
-  bool SetOutline(int outline) { return TTF_SetFontOutline(get(), outline); }
+  void SetOutline(int outline)
+  {
+    CheckError(TTF_SetFontOutline(get(), outline));
+  }
 
   /**
    * Query a font's current outline.
@@ -830,8 +831,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param enabled true to enable SDF, false to disable.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -840,7 +840,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetSDF
    */
-  bool SetSDF(bool enabled) { return TTF_SetFontSDF(get(), enabled); }
+  void SetSDF(bool enabled) { CheckError(TTF_SetFontSDF(get(), enabled)); }
 
   /**
    * Query whether Signed Distance Field rendering is enabled for a font.
@@ -1083,17 +1083,16 @@ struct FontBase : Resource<TTF_Font*>
    * This updates any TextBase objects using this font.
    *
    * @param direction the new direction for text to flow.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetDirection(Direction direction)
+  void SetDirection(Direction direction)
   {
-    return TTF_SetFontDirection(get(), direction);
+    CheckError(TTF_SetFontDirection(get(), direction));
   }
 
   /**
@@ -1119,8 +1118,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param script an
    * [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -1129,7 +1127,10 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa StringToTag
    */
-  bool SetScript(Uint32 script) { return TTF_SetFontScript(get(), script); }
+  void SetScript(Uint32 script)
+  {
+    CheckError(TTF_SetFontScript(get(), script));
+  }
 
   /**
    * Get the script used for text shaping a font.
@@ -1174,17 +1175,16 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param language_bcp47 a null-terminated string containing the desired
    *                       language's BCP47 code. Or null to reset the value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetLanguage(StringParam language_bcp47)
+  void SetLanguage(StringParam language_bcp47)
   {
-    return TTF_SetFontLanguage(get(), language_bcp47);
+    CheckError(TTF_SetFontLanguage(get(), language_bcp47));
   }
 
   /**
@@ -1262,22 +1262,21 @@ struct FontBase : Resource<TTF_Font*>
    *             from the bottom edge of its bounding box.
    * @param advance a pointer filled in with the distance to the next glyph from
    *                the left edge of this glyph's bounding box.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetGlyphMetrics(Uint32 ch,
+  void GetGlyphMetrics(Uint32 ch,
                        int* minx,
                        int* maxx,
                        int* miny,
                        int* maxy,
                        int* advance) const
   {
-    return TTF_GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance);
+    CheckError(TTF_GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance));
   }
 
   /**
@@ -1285,18 +1284,18 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param previous_ch the previous codepoint.
    * @param ch the current codepoint.
-   * @returns the kerning size between the two glyphs, in pixels, on success or
-   *          false on failure; call GetError() for more information.
+   * @returns the kerning size between the two glyphs, in pixels.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<int> GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
+  int GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
   {
     if (int r; TTF_GetGlyphKerning(get(), previous_ch, ch, &r)) return r;
-    return std::nullopt;
+    throw Error();
   }
 
   /**
@@ -1306,18 +1305,19 @@ struct FontBase : Resource<TTF_Font*>
    * specified string will take to fully render.
    *
    * @param text text to calculate, in UTF-8 encoding.
-   * @returns return a Point with the width, height on success or std::nullopt
-   *          on failure; call GetError() for more information.
+   * @returns return a Point with the width, height.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<Point> GetStringSize(std::string_view text) const
+  Point GetStringSize(std::string_view text) const
   {
-    if (Point p; GetStringSize(text, &p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetStringSize(text, &p.x, &p.y);
+    return p;
   }
 
   /**
@@ -1329,17 +1329,16 @@ struct FontBase : Resource<TTF_Font*>
    * @param text text to calculate, in UTF-8 encoding.
    * @param w will be filled with width, in pixels, on return.
    * @param h will be filled with height, in pixels, on return.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetStringSize(std::string_view text, int* w, int* h) const
+  void GetStringSize(std::string_view text, int* w, int* h) const
   {
-    return TTF_GetStringSize(get(), text.data(), text.size(), w, h);
+    CheckError(TTF_GetStringSize(get(), text.data(), text.size(), w, h));
   }
 
   /**
@@ -1355,19 +1354,19 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param text text to calculate, in UTF-8 encoding.
    * @param wrap_width the maximum width or 0 to wrap on newline characters.
-   * @returns return a Point with the width, height on success or std::nullopt
-   *          on failure; call GetError() for more information.
+   * @returns return a Point with the width, height on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<Point> GetStringSizeWrapped(std::string_view text,
-                                            int wrap_width) const
+  Point GetStringSizeWrapped(std::string_view text, int wrap_width) const
   {
-    if (Point p; GetStringSizeWrapped(text, wrap_width, &p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetStringSizeWrapped(text, wrap_width, &p.x, &p.y);
+    return p;
   }
 
   /**
@@ -1385,21 +1384,20 @@ struct FontBase : Resource<TTF_Font*>
    * @param wrap_width the maximum width or 0 to wrap on newline characters.
    * @param w will be filled with width, in pixels, on return.
    * @param h will be filled with height, in pixels, on return.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetStringSizeWrapped(std::string_view text,
+  void GetStringSizeWrapped(std::string_view text,
                             int wrap_width,
                             int* w,
                             int* h) const
   {
-    return TTF_GetStringSizeWrapped(
-      get(), text.data(), text.size(), wrap_width, w, h);
+    CheckError(TTF_GetStringSizeWrapped(
+      get(), text.data(), text.size(), wrap_width, w, h));
   }
 
   /**
@@ -1417,25 +1415,24 @@ struct FontBase : Resource<TTF_Font*>
    *                       string that will fit, may be nullptr.
    * @param measured_length a pointer filled in with the length, in bytes, of
    *                        the string that will fit, may be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool MeasureString(std::string_view text,
+  void MeasureString(std::string_view text,
                      int max_width,
                      int* measured_width,
                      size_t* measured_length) const
   {
-    return TTF_MeasureString(get(),
-                             text.data(),
-                             text.size(),
-                             max_width,
-                             measured_width,
-                             measured_length);
+    CheckError(TTF_MeasureString(get(),
+                                 text.data(),
+                                 text.size(),
+                                 max_width,
+                                 measured_width,
+                                 measured_length));
   }
 
   /**
@@ -2001,14 +1998,13 @@ struct Font : FontRef
  * call should be paired with a matching QuitSubSystem(TtfInitFlag) call.
  *
  * @param _ An INIT_TTF value;
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa QuitSubSystem(TtfInitFlag)
  */
-inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
+inline void InitSubSystem(TtfInitFlag _) { CheckError(TTF_Init()); }
 
 /**
  * A text engine used to create text objects.
@@ -2363,8 +2359,7 @@ struct TextBase : Resource<TTF_Text*>
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
    * @param surface the surface to draw on.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2374,9 +2369,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa CreateSurfaceTextEngine
    * @sa TextBase.TextBase
    */
-  bool DrawSurface(Point p, SurfaceRef surface) const
+  void DrawSurface(Point p, SurfaceRef surface) const
   {
-    return TTF_DrawSurfaceText(get(), p.x, p.y, surface.get());
+    CheckError(TTF_DrawSurfaceText(get(), p.x, p.y, surface.get()));
   }
 
   /**
@@ -2388,8 +2383,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2399,9 +2393,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa CreateRendererTextEngine
    * @sa TextBase.TextBase
    */
-  bool DrawRenderer(FPoint p) const
+  void DrawRenderer(FPoint p) const
   {
-    return TTF_DrawRendererText(get(), p.x, p.y);
+    CheckError(TTF_DrawRendererText(get(), p.x, p.y));
   }
 
   /**
@@ -2449,6 +2443,8 @@ struct TextBase : Resource<TTF_Text*>
    *               font and text engine.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextRef.reset
    */
   TextBase(TextEngineBase& engine, FontRef font, std::string_view text)
     : Resource(
@@ -2459,15 +2455,18 @@ struct TextBase : Resource<TTF_Text*>
   /**
    * Get the properties associated with a text object.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  PropertiesRef GetProperties() const { return TTF_GetTextProperties(get()); }
+  PropertiesRef GetProperties() const
+  {
+    return CheckError(TTF_GetTextProperties(get()));
+  }
 
   /**
    * Set the text engine used by a text object.
@@ -2475,8 +2474,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param engine the text engine to use for drawing.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2485,16 +2483,16 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.GetEngine
    */
-  bool SetEngine(TextEngineBase& engine)
+  void SetEngine(TextEngineBase& engine)
   {
-    return TTF_SetTextEngine(get(), engine.get());
+    CheckError(TTF_SetTextEngine(get(), engine.get()));
   }
 
   /**
    * Get the text engine used by a text object.
    *
-   * @returns the TextEngineBase used by the text on success or nullptr on
-   * failure; call GetError() for more information.
+   * @returns the TextEngineBase used by the text on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2503,7 +2501,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetEngine
    */
-  TextEngineRef GetEngine() const { return TTF_GetTextEngine(get()); }
+  TextEngineRef GetEngine() const
+  {
+    return CheckError(TTF_GetTextEngine(get()));
+  }
 
   /**
    * Set the font used by a text object.
@@ -2530,8 +2531,8 @@ struct TextBase : Resource<TTF_Text*>
   /**
    * Get the font used by a text object.
    *
-   * @returns the FontBase used by the text on success or nullptr on failure;
-   * call GetError() for more information.
+   * @returns the FontBase used by the text on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2540,7 +2541,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetFont
    */
-  FontRef GetFont() const { return TTF_GetTextFont(get()); }
+  FontRef GetFont() const { return CheckError(TTF_GetTextFont(get())); }
 
   /**
    * Set the direction to be used for text shaping a text object.
@@ -2549,17 +2550,16 @@ struct TextBase : Resource<TTF_Text*>
    * built with HarfBuzz support.
    *
    * @param direction the new direction for text to flow.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetDirection(Direction direction)
+  void SetDirection(Direction direction)
   {
-    return TTF_SetTextDirection(get(), direction);
+    CheckError(TTF_SetTextDirection(get(), direction));
   }
 
   /**
@@ -2583,8 +2583,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param script an [ISO 15924
    * code](https://unicode.org/iso15924/iso15924-codes.html).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2593,7 +2592,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa StringToTag
    */
-  bool SetScript(Uint32 script) { return TTF_SetTextScript(get(), script); }
+  void SetScript(Uint32 script)
+  {
+    CheckError(TTF_SetTextScript(get(), script));
+  }
 
   /**
    * Get the script used for text shaping a text object.
@@ -2619,9 +2621,8 @@ struct TextBase : Resource<TTF_Text*>
    *
    * The default text color is white (255, 255, 255, 255).
    *
-   * @param c the color value in the range of 0-255.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param c the color values in the range of 0-255.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2631,7 +2632,10 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.GetColor(Color*)
    * @sa TextBase.SetColor(FColor)
    */
-  bool SetColor(Color c) { return TTF_SetTextColor(get(), c.r, c.g, c.b, c.a); }
+  void SetColor(Color c)
+  {
+    CheckError(TTF_SetTextColor(get(), c.r, c.g, c.b, c.a));
+  }
 
   /**
    * Set the color of a text object.
@@ -2639,8 +2643,7 @@ struct TextBase : Resource<TTF_Text*>
    * The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).
    *
    * @param c the color value, normally in the range of 0-1.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2650,26 +2653,27 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.GetColor(FColor*)
    * @sa TextBase.SetColor(Color)
    */
-  bool SetColor(FColor c)
+  void SetColor(FColor c)
   {
-    return TTF_SetTextColorFloat(get(), c.r, c.g, c.b, c.a);
+    CheckError(TTF_SetTextColorFloat(get(), c.r, c.g, c.b, c.a));
   }
 
   /**
    * Get the color of a text object.
    *
-   * @return The color in the range of 0-1 or std::nullopt on failure; call
-   * GetError() for more information.
+   * @return The color in the range of 0-1 on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @sa SetColor(FColor)
    */
-  std::optional<FColor> GetColor() const
+  FColor GetColor() const
   {
-    if (FColor c; GetColor(&c)) return c;
-    return std::nullopt;
+    FColor c;
+    GetColor(&c);
+    return c;
   }
 
   /**
@@ -2677,8 +2681,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param c a pointer filled in with red color value in the range of 0-255,
    *          __must__ not be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2687,10 +2690,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(Color)
    */
-  bool GetColor(Color* c) const
+  void GetColor(Color* c) const
   {
     SDL_assert_paranoid(c != nullptr);
-    return GetColor(&c->r, &c->g, &c->b, &c->a);
+    GetColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -2698,8 +2701,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param c a pointer filled in with red color value in the range of 0-1,
    *          __must__ not be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2708,10 +2710,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(FColor)
    */
-  bool GetColor(FColor* c) const
+  void GetColor(FColor* c) const
   {
     SDL_assert_paranoid(c != nullptr);
-    return GetColor(&c->r, &c->g, &c->b, &c->a);
+    GetColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -2725,8 +2727,7 @@ struct TextBase : Resource<TTF_Text*>
    *          0-255, may be nullptr.
    * @param a a pointer filled in with the alpha value in the range of 0-255,
    *          may be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2735,9 +2736,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(Color)
    */
-  bool GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+  void GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
   {
-    return TTF_GetTextColor(get(), r, g, b, a);
+    CheckError(TTF_GetTextColor(get(), r, g, b, a));
   }
 
   /**
@@ -2751,8 +2752,7 @@ struct TextBase : Resource<TTF_Text*>
    *          range of 0-1, may be nullptr.
    * @param a a pointer filled in with the alpha value in the range of 0-1, may
    *          be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2761,9 +2761,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(FColor)
    */
-  bool GetColor(float* r, float* g, float* b, float* a) const
+  void GetColor(float* r, float* g, float* b, float* a) const
   {
-    return TTF_GetTextColorFloat(get(), r, g, b, a);
+    CheckError(TTF_GetTextColorFloat(get(), r, g, b, a));
   }
 
   /**
@@ -2789,8 +2789,8 @@ struct TextBase : Resource<TTF_Text*>
    * Get the position of a text object.
    *
    * @returns a Point with the offset of the upper left corner of this text in
-   *          pixels or std::nullopt on failure; call GetError() for more
-   *          information.
+   *          pixels on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2799,10 +2799,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetPosition()
    */
-  std::optional<Point> GetPosition() const
+  Point GetPosition() const
   {
-    if (Point p; GetPosition(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetPosition(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -2834,8 +2835,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param wrap_width the maximum width in pixels, 0 to wrap on newline
    *                   characters.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2844,17 +2844,17 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.GetWrapWidth
    */
-  bool SetWrapWidth(int wrap_width)
+  void SetWrapWidth(int wrap_width)
   {
-    return TTF_SetTextWrapWidth(get(), wrap_width);
+    CheckError(TTF_SetTextWrapWidth(get(), wrap_width));
   }
 
   /**
    * Get whether wrapping is enabled on a text object.
    *
    * @returns an int with the maximum width in pixels or 0 if the text is being
-   *          wrapped on newline characters on success or std::nullopt on
-   *          failure; call GetError() for more information.
+   *          wrapped on newline characters on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2863,10 +2863,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetWrapWidth
    */
-  std::optional<int> GetWrapWidth() const
+  int GetWrapWidth() const
   {
-    if (int w; TTF_GetTextWrapWidth(get(), &w)) return w;
-    return std::nullopt;
+    int w;
+    CheckError(TTF_GetTextWrapWidth(get(), &w));
+    return w;
   }
 
   /**
@@ -2881,8 +2882,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param visible true to show whitespace when wrapping text, false to hide
    *                it.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2891,9 +2891,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.IsWrapWhitespaceVisible
    */
-  bool SetWrapWhitespaceVisible(bool visible)
+  void SetWrapWhitespaceVisible(bool visible)
   {
-    return TTF_SetTextWrapWhitespaceVisible(get(), visible);
+    CheckError(TTF_SetTextWrapWhitespaceVisible(get(), visible));
   }
 
   /**
@@ -2920,8 +2920,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param string the UTF-8 text to use.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2932,9 +2931,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.DeleteString
    * @sa TextBase.InsertString
    */
-  bool SetString(std::string_view string)
+  void SetString(std::string_view string)
   {
-    return TTF_SetTextString(get(), string.data(), string.size());
+    CheckError(TTF_SetTextString(get(), string.data(), string.size()));
   }
 
   /**
@@ -2947,8 +2946,7 @@ struct TextBase : Resource<TTF_Text*>
    *               this does not do UTF-8 validation, so you should only insert
    *               at UTF-8 sequence boundaries.
    * @param string the UTF-8 text to insert.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2959,9 +2957,10 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.DeleteString
    * @sa TextBase.SetString
    */
-  bool InsertString(int offset, std::string_view string)
+  void InsertString(int offset, std::string_view string)
   {
-    return TTF_InsertTextString(get(), offset, string.data(), string.size());
+    CheckError(
+      TTF_InsertTextString(get(), offset, string.data(), string.size()));
   }
 
   /**
@@ -2970,8 +2969,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param string the UTF-8 text to insert.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2982,9 +2980,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.InsertString
    * @sa TextBase.SetString
    */
-  bool AppendString(std::string_view string)
+  void AppendString(std::string_view string)
   {
-    return TTF_AppendTextString(get(), string.data(), string.size());
+    CheckError(TTF_AppendTextString(get(), string.data(), string.size()));
   }
 
   /**
@@ -2998,8 +2996,7 @@ struct TextBase : Resource<TTF_Text*>
    *               at UTF-8 sequence boundaries.
    * @param length the length of text to delete, in bytes, or -1 for the
    *               remainder of the string.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -3010,9 +3007,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.InsertString
    * @sa TextBase.SetString
    */
-  bool DeleteString(int offset, int length = -1)
+  void DeleteString(int offset, int length = -1)
   {
-    return TTF_DeleteTextString(get(), offset, length);
+    CheckError(TTF_DeleteTextString(get(), offset, length));
   }
 
   /**
@@ -3031,10 +3028,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @see GetSize(int*,int*) if might want only one of the coordinates
    */
-  std::optional<Point> GetSize() const
+  Point GetSize() const
   {
-    if (Point p; GetSize(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetSize(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -3047,8 +3045,7 @@ struct TextBase : Resource<TTF_Text*>
    *          nullptr.
    * @param h a pointer filled in with the height of the text, in pixels, may be
    *          nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -3057,7 +3054,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @see GetSize() if you need both coordinates.
    */
-  bool GetSize(int* w, int* h) const { return TTF_GetTextSize(get(), w, h); }
+  void GetSize(int* w, int* h) const
+  {
+    CheckError(TTF_GetTextSize(get(), w, h));
+  }
 
   /**
    * Get the substring of a text object that surrounds a text offset.
@@ -3071,17 +3071,16 @@ struct TextBase : Resource<TTF_Text*>
    * @param offset a byte offset into the text string.
    * @param substring a pointer filled in with the substring containing the
    *                  offset.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubString(int offset, SubString* substring) const
+  void GetSubString(int offset, SubString* substring) const
   {
-    return TTF_GetTextSubString(get(), offset, substring);
+    CheckError(TTF_GetTextSubString(get(), offset, substring));
   }
 
   /**
@@ -3122,17 +3121,16 @@ struct TextBase : Resource<TTF_Text*>
    * @param line a zero-based line index, in the range [0 .. text->num_lines-1].
    * @param substring a pointer filled in with the substring containing the
    *                  offset.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubStringForLine(int line, SubString* substring) const
+  void GetSubStringForLine(int line, SubString* substring) const
   {
-    return TTF_GetTextSubStringForLine(get(), line, substring);
+    CheckError(TTF_GetTextSubStringForLine(get(), line, substring));
   }
 
   /**
@@ -3198,17 +3196,16 @@ struct TextBase : Resource<TTF_Text*>
    *          outside the bounds of the text area.
    * @param substring a pointer filled in with the closest substring of text to
    *                  the given point.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubStringForPoint(Point p, SubString* substring) const
+  void GetSubStringForPoint(Point p, SubString* substring) const
   {
-    return TTF_GetTextSubStringForPoint(get(), p.x, p.y, substring);
+    CheckError(TTF_GetTextSubStringForPoint(get(), p.x, p.y, substring));
   }
 
   /**
@@ -3219,18 +3216,17 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param substring the SubString to query.
    * @param previous a pointer filled in with the previous substring.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetPreviousSubString(const SubString& substring,
+  void GetPreviousSubString(const SubString& substring,
                             SubString* previous) const
   {
-    return TTF_GetPreviousTextSubString(get(), &substring, previous);
+    CheckError(TTF_GetPreviousTextSubString(get(), &substring, previous));
   }
 
   /**
@@ -3241,17 +3237,16 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param substring the SubString to query.
    * @param next a pointer filled in with the next substring.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetNextSubString(const SubString& substring, SubString* next) const
+  void GetNextSubString(const SubString& substring, SubString* next) const
   {
-    return TTF_GetNextTextSubString(get(), &substring, next);
+    CheckError(TTF_GetNextTextSubString(get(), &substring, next));
   }
 
   /**
@@ -3261,15 +3256,14 @@ struct TextBase : Resource<TTF_Text*>
    * rendered, but you can call this if you need more control over the timing of
    * when the layout and text engine representation are updated.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool Update() { return TTF_UpdateText(get()); }
+  void Update() { CheckError(TTF_UpdateText(get())); }
 
   /**
    * A copy of the UTF-8 string that this text object represents, useful for
@@ -3647,32 +3641,30 @@ inline int WasInit(TtfInitFlag _) { return TTF_WasInit(); }
 
 inline SubStringIterator TextBase::begin() const
 {
-  if (SubStringIterator it{get()}; GetSubString(0, &it.m_subString)) return it;
-  return {};
+  SubStringIterator it{get()};
+  GetSubString(0, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::end() const
 {
-  if (SubStringIterator it{get()}; GetSubString(INT_MAX, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubString(INT_MAX, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::GetSubStringForLine(int line) const
 {
-  if (SubStringIterator it{get()}; GetSubStringForLine(line, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubStringForLine(line, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::GetSubStringForPoint(Point p) const
 {
-  if (SubStringIterator it{get()}; GetSubStringForPoint(p, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubStringForPoint(p, &it.m_subString);
+  return it;
 }
 
 #pragma endregion impl

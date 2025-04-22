@@ -1,4 +1,3 @@
-
 #ifndef SDL3PP_MISC_H_
 #define SDL3PP_MISC_H_
 
@@ -40,12 +39,11 @@ namespace SDL {
  *
  * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
  *            local files, if supported.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
+inline void OpenURL(StringParam url) { CheckError(SDL_OpenURL(url)); }
 
 /// @}
 

@@ -115,7 +115,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   using Resource::Resource;
 
   /**
-   * Use this function to create a new SDL_IOStream structure for reading from
+   * Use this function to create a new IOStreamBase structure for reading from
    * and/or writing to a named file.
    *
    * The `mode` string is treated roughly the same as in a call to the C
@@ -374,8 +374,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   /**
    * Get the properties associated with an IOStreamBase.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -383,7 +383,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    */
   PropertiesRef GetProperties() const
   {
-    return PropertiesRef{SDL_GetIOProperties(get())};
+    return CheckError(SDL_GetIOProperties(get()));
   }
 
   /**
@@ -408,15 +408,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   /**
    * Use this function to get the size of the data stream in an IOStreamBase.
    *
-   * @returns the size of the data stream in the IOStreamBase on success or a
-   *          negative error code on failure; call GetError() for more
-   *          information.
+   * @returns the size of the data stream in the IOStreamBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sint64 GetSize() const { return SDL_GetIOSize(get()); }
+  Sint64 GetSize() const
+  {
+    auto size = SDL_GetIOSize(get());
+    if (size < 0) throw Error{};
+    return size;
+  }
 
   /**
    * Seek within an IOStreamBase data stream.
@@ -671,8 +675,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * Normally this isn't necessary but if the stream is a pipe or socket it
    * guarantees that any pending data is sent.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -681,7 +684,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa IOStreamBase.IOStreamBase
    * @sa IOStreamBase.Write
    */
-  bool Flush() { return SDL_FlushIO(get()); }
+  void Flush() { CheckError(SDL_FlushIO(get())); }
 
   /**
    * Load all the data from an SDL data stream.
@@ -690,8 +693,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * convenience. This extra byte is not included in the value reported via
    * `datasize`.
    *
-   * @returns the data or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns the data in bytes
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -705,7 +708,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
     size_t datasize = 0;
     auto data =
       static_cast<std::byte*>(SDL_LoadFile_IO(get(), &datasize, false));
-    return OwnArray<std::byte>{data, datasize};
+    return OwnArray<std::byte>{CheckError(data), datasize};
   }
 
   /**
@@ -713,8 +716,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @param data the data to be written. If datasize is 0, may be nullptr or a
    *             invalid pointer.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -724,7 +726,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa IOStreamBase.LoadFile
    */
   template<class U>
-  bool SaveFile(std::span<U> data)
+  void SaveFile(std::span<U> data)
   {
     return SaveFile(data.data(), data.size_bytes());
   }
@@ -734,8 +736,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @param str the data to be written. If datasize is 0, may be nullptr or a
    *            invalid pointer.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -744,7 +745,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa SaveFile
    * @sa IOStreamBase.LoadFile
    */
-  bool SaveFile(std::string_view str)
+  void SaveFile(std::string_view str)
   {
     return SaveFile(str.data(), str.size());
   }
@@ -755,8 +756,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @param data the data to be written. If datasize is 0, may be nullptr or a
    *             invalid pointer.
    * @param datasize the number of bytes to be written.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -765,9 +765,9 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa SaveFile
    * @sa IOStreamBase.LoadFile
    */
-  bool SaveFile(const void* data, size_t datasize)
+  void SaveFile(const void* data, size_t datasize)
   {
-    return SDL_SaveFile_IO(get(), data, datasize, false);
+    CheckError(SDL_SaveFile_IO(get(), data, datasize, false));
   }
 
   /**
@@ -778,15 +778,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on success or false on failure or EOF; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU8(Uint8* value) { return SDL_ReadU8(get(), value); }
+  Uint8 ReadU8()
+  {
+    Uint8 value;
+    CheckError(SDL_ReadU8(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read a signed byte from an IOStreamBase.
@@ -796,15 +800,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS8(Sint8* value) { return SDL_ReadS8(get(), value); }
+  Sint8 ReadS8()
+  {
+    Sint8 value;
+    CheckError(SDL_ReadS8(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 16 bits of little-endian data from an
@@ -818,15 +826,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU16LE(Uint16* value) { return SDL_ReadU16LE(get(), value); }
+  Uint16 ReadU16LE()
+  {
+    Uint16 value;
+    CheckError(SDL_ReadU16LE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 16 bits of little-endian data from an
@@ -840,15 +852,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS16LE(Sint16* value) { return SDL_ReadS16LE(get(), value); }
+  Sint16 ReadS16LE()
+  {
+    Sint16 value;
+    CheckError(SDL_ReadS16LE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 16 bits of big-endian data from an IOStreamBase
@@ -862,15 +878,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU16BE(Uint16* value) { return SDL_ReadU16BE(get(), value); }
+  Uint16 ReadU16BE()
+  {
+    Uint16 value;
+    CheckError(SDL_ReadU16BE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 16 bits of big-endian data from an IOStreamBase
@@ -884,15 +904,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS16BE(Sint16* value) { return SDL_ReadS16BE(get(), value); }
+  Sint16 ReadS16BE()
+  {
+    Sint16 value;
+    CheckError(SDL_ReadS16BE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 32 bits of little-endian data from an
@@ -906,15 +930,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU32LE(Uint32* value) { return SDL_ReadU32LE(get(), value); }
+  Uint32 ReadU32LE()
+  {
+    Uint32 value;
+    CheckError(SDL_ReadU32LE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 32 bits of little-endian data from an
@@ -928,15 +956,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS32LE(Sint32* value) { return SDL_ReadS32LE(get(), value); }
+  Sint32 ReadS32LE()
+  {
+    Sint32 value;
+    CheckError(SDL_ReadS32LE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 32 bits of big-endian data from an IOStreamBase
@@ -950,15 +982,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU32BE(Uint32* value) { return SDL_ReadU32BE(get(), value); }
+  Uint32 ReadU32BE()
+  {
+    Uint32 value;
+    CheckError(SDL_ReadU32BE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 32 bits of big-endian data from an IOStreamBase
@@ -972,15 +1008,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS32BE(Sint32* value) { return SDL_ReadS32BE(get(), value); }
+  Sint32 ReadS32BE()
+  {
+    Sint32 value;
+    CheckError(SDL_ReadS32BE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 64 bits of little-endian data from an
@@ -994,15 +1034,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU64LE(Uint64* value) { return SDL_ReadU64LE(get(), value); }
+  Uint64 ReadU64LE()
+  {
+    Uint64 value;
+    CheckError(SDL_ReadU64LE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 64 bits of little-endian data from an
@@ -1016,15 +1060,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS64LE(Sint64* value) { return SDL_ReadS64LE(get(), value); }
+  Sint64 ReadS64LE()
+  {
+    Sint64 value;
+    CheckError(SDL_ReadS64LE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 64 bits of big-endian data from an IOStreamBase
@@ -1038,15 +1086,19 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadU64BE(Uint64* value) { return SDL_ReadU64BE(get(), value); }
+  Uint64 ReadU64BE()
+  {
+    Uint64 value;
+    CheckError(SDL_ReadU64BE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to read 64 bits of big-endian data from an IOStreamBase
@@ -1060,41 +1112,43 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @returns the data read on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadS64BE(Sint64* value) { return SDL_ReadS64BE(get(), value); }
+  Sint64 ReadS64BE()
+  {
+    Sint64 value;
+    CheckError(SDL_ReadS64BE(get(), &value));
+    return value;
+  }
 
   /**
    * Use this function to write a byte to an IOStreamBase.
    *
    * @param value the byte value to write.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU8(Uint8 value) { return SDL_WriteU8(get(), value); }
+  void WriteU8(Uint8 value) { CheckError(SDL_WriteU8(get(), value)); }
 
   /**
    * Use this function to write a signed byte to an IOStreamBase.
    *
    * @param value the byte value to write.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS8(Sint8 value) { return SDL_WriteS8(get(), value); }
+  void WriteS8(Sint8 value) { CheckError(SDL_WriteS8(get(), value)); }
 
   /**
    * Use this function to write 16 bits in native format to an IOStreamBase as
@@ -1105,14 +1159,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU16LE(Uint16 value) { return SDL_WriteU16LE(get(), value); }
+  void WriteU16LE(Uint16 value) { CheckError(SDL_WriteU16LE(get(), value)); }
 
   /**
    * Use this function to write 16 bits in native format to an IOStreamBase as
@@ -1123,14 +1176,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS16LE(Sint16 value) { return SDL_WriteS16LE(get(), value); }
+  void WriteS16LE(Sint16 value) { CheckError(SDL_WriteS16LE(get(), value)); }
 
   /**
    * Use this function to write 16 bits in native format to an IOStreamBase as
@@ -1140,14 +1192,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU16BE(Uint16 value) { return SDL_WriteU16BE(get(), value); }
+  void WriteU16BE(Uint16 value) { CheckError(SDL_WriteU16BE(get(), value)); }
 
   /**
    * Use this function to write 16 bits in native format to an IOStreamBase as
@@ -1157,14 +1208,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS16BE(Sint16 value) { return SDL_WriteS16BE(get(), value); }
+  void WriteS16BE(Sint16 value) { CheckError(SDL_WriteS16BE(get(), value)); }
 
   /**
    * Use this function to write 32 bits in native format to an IOStreamBase as
@@ -1175,14 +1225,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU32LE(Uint32 value) { return SDL_WriteU32LE(get(), value); }
+  void WriteU32LE(Uint32 value) { CheckError(SDL_WriteU32LE(get(), value)); }
 
   /**
    * Use this function to write 32 bits in native format to an IOStreamBase as
@@ -1193,14 +1242,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS32LE(Sint32 value) { return SDL_WriteS32LE(get(), value); }
+  void WriteS32LE(Sint32 value) { CheckError(SDL_WriteS32LE(get(), value)); }
 
   /**
    * Use this function to write 32 bits in native format to an IOStreamBase as
@@ -1210,14 +1258,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU32BE(Uint32 value) { return SDL_WriteU32BE(get(), value); }
+  void WriteU32BE(Uint32 value) { CheckError(SDL_WriteU32BE(get(), value)); }
 
   /**
    * Use this function to write 32 bits in native format to an IOStreamBase as
@@ -1227,14 +1274,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS32BE(Sint32 value) { return SDL_WriteS32BE(get(), value); }
+  void WriteS32BE(Sint32 value) { CheckError(SDL_WriteS32BE(get(), value)); }
 
   /**
    * Use this function to write 64 bits in native format to an IOStreamBase as
@@ -1245,14 +1291,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU64LE(Uint64 value) { return SDL_WriteU64LE(get(), value); }
+  void WriteU64LE(Uint64 value) { CheckError(SDL_WriteU64LE(get(), value)); }
 
   /**
    * Use this function to write 64 bits in native format to an IOStreamBase as
@@ -1263,14 +1308,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS64LE(Sint64 value) { return SDL_WriteS64LE(get(), value); }
+  void WriteS64LE(Sint64 value) { CheckError(SDL_WriteS64LE(get(), value)); }
 
   /**
    * Use this function to write 64 bits in native format to an IOStreamBase as
@@ -1280,14 +1324,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteU64BE(Uint64 value) { return SDL_WriteU64BE(get(), value); }
+  void WriteU64BE(Uint64 value) { CheckError(SDL_WriteU64BE(get(), value)); }
 
   /**
    * Use this function to write 64 bits in native format to an IOStreamBase as
@@ -1297,14 +1340,13 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * specifies native format, and the data written will be in big-endian format.
    *
    * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool WriteS64BE(Sint64 value) { return SDL_WriteS64BE(get(), value); }
+  void WriteS64BE(Sint64 value) { CheckError(SDL_WriteS64BE(get(), value)); }
 };
 
 /**
@@ -1370,8 +1412,7 @@ struct IOStreamRef : IOStreamBase
    * time and makes the system and your app operate less efficiently, so do so
    * sparingly.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -1379,9 +1420,9 @@ struct IOStreamRef : IOStreamBase
    *
    * @sa IOStreamBase.IOStreamBase
    */
-  bool reset(SDL_IOStream* newResource = {})
+  void reset(SDL_IOStream* newResource = {})
   {
-    return SDL_CloseIO(release(newResource));
+    CheckError(SDL_CloseIO(release(newResource)));
   }
 
   /**
@@ -1405,8 +1446,7 @@ struct IOStreamRef : IOStreamBase
    * time and makes the system and your app operate less efficiently, so do so
    * sparingly.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -1414,7 +1454,7 @@ struct IOStreamRef : IOStreamBase
    *
    * @sa IOStreamBase.IOStreamBase
    */
-  bool Close() { return reset(); }
+  void Close() { reset(); }
 };
 
 /**
@@ -1506,7 +1546,7 @@ inline OwnArray<std::byte> LoadFile(StringParam file)
 {
   size_t datasize = 0;
   auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
-  return OwnArray<std::byte>{data, datasize};
+  return OwnArray<std::byte>{CheckError(data), datasize};
 }
 
 /**
@@ -1516,8 +1556,7 @@ inline OwnArray<std::byte> LoadFile(StringParam file)
  * @param data the data to be written. If datasize is 0, may be nullptr or a
  *             invalid pointer.
  * @param datasize the number of bytes to be written.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -1526,9 +1565,9 @@ inline OwnArray<std::byte> LoadFile(StringParam file)
  * @sa IOStreamBase.SaveFile
  * @sa LoadFile
  */
-inline bool SaveFile(StringParam file, const void* data, size_t datasize)
+inline void SaveFile(StringParam file, const void* data, size_t datasize)
 {
-  return SDL_SaveFile(file, data, datasize);
+  CheckError(SDL_SaveFile(file, data, datasize));
 }
 
 /**
@@ -1547,7 +1586,7 @@ inline bool SaveFile(StringParam file, const void* data, size_t datasize)
  * @sa LoadFile
  */
 template<class T>
-inline bool SaveFile(StringParam file, std::span<T> data)
+inline void SaveFile(StringParam file, std::span<T> data)
 {
   return SaveFile(file, data.data(), data.size_bytes());
 }
@@ -1567,7 +1606,7 @@ inline bool SaveFile(StringParam file, std::span<T> data)
  * @sa IOStreamBase.SaveFile
  * @sa LoadFile
  */
-inline bool SaveFile(StringParam file, std::string_view str)
+inline void SaveFile(StringParam file, std::string_view str)
 {
   return SaveFile(std::move(file), str.data(), str.size());
 }

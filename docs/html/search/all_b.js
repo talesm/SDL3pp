@@ -269,7 +269,7 @@ var searchData=
   ['keymod_266',['Keymod',['../group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c',1,'SDL']]],
   ['keytype_267',['KeyType',['../structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e',1,'SDL::KeyValueWrapper']]],
   ['keyvaluewrapper_268',['KeyValueWrapper',['../structSDL_1_1KeyValueWrapper.html',1,'SDL']]],
-  ['kill_269',['Kill',['../structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6',1,'SDL::ProcessBase']]],
+  ['kill_269',['Kill',['../structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca',1,'SDL::ProcessBase']]],
   ['kmod_5falt_270',['KMOD_ALT',['../group__CategoryKeycode.html#gabbb4960394f39cbcd1c04b3e03194280',1,'SDL']]],
   ['kmod_5fcaps_271',['KMOD_CAPS',['../group__CategoryKeycode.html#gaeecc88d39b5918e0c303baf69da0b4a6',1,'SDL']]],
   ['kmod_5fctrl_272',['KMOD_CTRL',['../group__CategoryKeycode.html#gabbb01e1d9c52f404263f5bd22bbb0d50',1,'SDL']]],

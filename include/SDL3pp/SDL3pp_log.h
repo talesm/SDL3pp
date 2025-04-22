@@ -546,21 +546,20 @@ constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM; ///< CUSTOM
  * "WARNING: ".
  *
  * @param priority the LogPriority to modify.
- * @param prefix the prefix to use for that log priority, or NULL to use no
+ * @param prefix the prefix to use for that log priority, or nullptr to use no
  *               prefix.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LogCategory::SetLogPriorities()
- * @sa LogCategory::SetLogPriority()
+ * @sa LogCategory.SetLogPriorities
+ * @sa LogCategory.SetLogPriority
  */
-inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
+inline void SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
 {
-  return SDL_SetLogPriorityPrefix(priority, prefix);
+  CheckError(SDL_SetLogPriorityPrefix(priority, prefix));
 }
 
 /**

@@ -204,112 +204,37 @@ inline void GDKSuspendComplete() { return SDL_GDKSuspendComplete(); }
 
 /// @}
 
-#ifdef SDL3PP_MAIN_USE_THIS_CLASS
-template<class T>
-concept AppClass = requires(T& app, const Event& event) {
-  { app.Iterate() } -> std::convertible_to<AppResult>;
-  { app.Event(event) } -> std::convertible_to<AppResult>;
-};
-
-template<class T>
-concept AppClassWithEmptyInit = AppClass<T> && requires(T& app) {
-  { app.Init() } -> std::convertible_to<AppResult>;
-};
-
-template<class T>
-concept AppClassWithFullInit =
-  AppClass<T> && requires(T& app, int argc, char** argv) {
-    { app.Init(argc, argv) } -> std::convertible_to<AppResult>;
-  };
-
-template<class T>
-concept AppClassWithQuit = AppClass<T> && requires(T& app, AppResult result) {
-  { app.Quit(result) };
-};
-
-namespace detail {
-
-inline AppResult AppInit(AppClass auto& app, int argc, char** argv)
-{
-  return APP_CONTINUE;
-}
-inline AppResult AppInit(AppClassWithEmptyInit auto& app, int argc, char** argv)
-{
-  return app.Init();
-}
-inline AppResult AppInit(AppClassWithFullInit auto& app, int argc, char** argv)
-{
-  return app.Init(argc, argv);
-}
-
-inline void AppQuit(AppClass auto& app, AppResult) {}
-inline void AppQuit(AppClassWithQuit auto& app, AppResult result)
-{
-  app.Quit(result);
-}
-
-} // namespace detail
-
-#endif // SDL3PP_MAIN_USE_THIS_CLASS
-
 } // namespace SDL
 
 #ifdef SDL3PP_MAIN_USE_THIS_CLASS
 
-static_assert(SDL::AppClass<SDL3PP_MAIN_USE_THIS_CLASS>,
+static_assert(SDL::HasIterateFunction<SDL3PP_MAIN_USE_THIS_CLASS>,
               "Main class not compatible");
 
 #define SDL3PP_APP_CLASS SDL3PP_MAIN_USE_THIS_CLASS
 
 inline SDL::AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
-  try {
-    auto* state = new SDL3PP_APP_CLASS{argc, argv};
-    *appstate = state;
-    return SDL::detail::AppInit(*state, argc, argv);
-  } catch (std::exception& e) {
-    SDL::Log("Fatal Error: {}", e.what());
-  } catch (...) {
-  }
-  return SDL::APP_FAILURE;
+  return SDL::InitClass(reinterpret_cast<SDL3PP_APP_CLASS**>(appstate),
+                        SDL::AppArgs{argv, size_t(argc)});
 }
 
 inline SDL::AppResult SDL_AppIterate(void* appstate)
 {
-  try {
-    auto* state = static_cast<SDL3PP_APP_CLASS*>(appstate);
-    return state->Iterate();
-  } catch (std::exception& e) {
-    SDL::Log("Fatal Error: {}", e.what());
-  } catch (...) {
-  }
-  return SDL::APP_FAILURE;
+  return SDL::IterateClass(static_cast<SDL3PP_APP_CLASS*>(appstate));
 }
 
 inline SDL::AppResult SDL_AppEvent(void* appstate, SDL::Event* event)
 {
-  try {
-    auto* state = static_cast<SDL3PP_APP_CLASS*>(appstate);
-    return state->Event(*event);
-  } catch (std::exception& e) {
-    SDL::Log("Fatal Error: {}", e.what());
-  } catch (...) {
-  }
-  return SDL::APP_FAILURE;
+  return SDL::EventClass(static_cast<SDL3PP_APP_CLASS*>(appstate), *event);
 }
 
 inline void SDL_AppQuit(void* appstate, SDL::AppResult result)
 {
-  try {
-    auto* state = static_cast<SDL3PP_APP_CLASS*>(appstate);
-    if (state != nullptr) SDL::detail::AppQuit(*state, result);
-    delete state;
-  } catch (std::exception& e) {
-    SDL::Log("Fatal Error: {}", e.what());
-  } catch (...) {
-  }
+  SDL::QuitClass(static_cast<SDL3PP_APP_CLASS*>(appstate), result);
 }
 #undef SDL3PP_APP_CLASS
+
 #endif // SDL3PP_MAIN_USE_THIS_CLASS
 
 #endif /* SDL3PP_MAIN_H_ */

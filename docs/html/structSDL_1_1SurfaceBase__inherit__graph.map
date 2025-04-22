@@ -1,9 +1,11 @@
 <map id="SDL::SurfaceBase" name="SDL::SurfaceBase">
-<area shape="rect" id="Node000001" title="A collection of pixels used in software blitting." alt="" coords="15,93,151,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1SurfaceRef.html" title="Handle to a non owned surface." alt="" coords="19,167,146,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1Surface.html" title="Handle to an owned surface." alt="" coords="31,240,135,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
+<area shape="rect" id="Node000001" title="A collection of pixels used in software blitting." alt="" coords="78,93,214,119"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1SurfaceRef.html" title="Handle to a non owned surface." alt="" coords="5,167,132,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="125,130,83,168,80,164,122,126"/>
+<area shape="rect" id="Node000005" href="$classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels." alt="" coords="157,167,290,192"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="170,126,212,164,209,168,167,130"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="69,5,223,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,59,149,93,143,93,143,59"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Surface.html" title="Handle to an owned surface." alt="" coords="17,240,121,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="71,206,71,240,66,240,66,206"/>
 </map>

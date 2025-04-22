@@ -129,9 +129,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~MutexRef</b> ()
 <tr class="memitem:ab02ccb2a0939bdb4ec88f96c13df13b3 inherit pub_methods_structSDL_1_1MutexBase" id="r_ab02ccb2a0939bdb4ec88f96c13df13b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexBase.html#ab02ccb2a0939bdb4ec88f96c13df13b3">Lock</a> ()</td></tr>
 <tr class="memdesc:ab02ccb2a0939bdb4ec88f96c13df13b3 inherit pub_methods_structSDL_1_1MutexBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the mutex.  <br /></td></tr>
 <tr class="separator:ab02ccb2a0939bdb4ec88f96c13df13b3 inherit pub_methods_structSDL_1_1MutexBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c6a2265b8f0062383e8b8bc4d8f4412 inherit pub_methods_structSDL_1_1MutexBase" id="r_a8c6a2265b8f0062383e8b8bc4d8f4412"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexBase.html#a8c6a2265b8f0062383e8b8bc4d8f4412">TryLock</a> ()</td></tr>
-<tr class="memdesc:a8c6a2265b8f0062383e8b8bc4d8f4412 inherit pub_methods_structSDL_1_1MutexBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a mutex without blocking.  <br /></td></tr>
-<tr class="separator:a8c6a2265b8f0062383e8b8bc4d8f4412 inherit pub_methods_structSDL_1_1MutexBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56d2e57a3b919b65637b8b295fa1fc8 inherit pub_methods_structSDL_1_1MutexBase" id="r_aa56d2e57a3b919b65637b8b295fa1fc8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexBase.html#aa56d2e57a3b919b65637b8b295fa1fc8">TryLock</a> ()</td></tr>
+<tr class="memdesc:aa56d2e57a3b919b65637b8b295fa1fc8 inherit pub_methods_structSDL_1_1MutexBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a mutex without blocking.  <br /></td></tr>
+<tr class="separator:aa56d2e57a3b919b65637b8b295fa1fc8 inherit pub_methods_structSDL_1_1MutexBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a247229d6fa657623f83ce1cf17a42b7e inherit pub_methods_structSDL_1_1MutexBase" id="r_a247229d6fa657623f83ce1cf17a42b7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1MutexBase.html#a247229d6fa657623f83ce1cf17a42b7e">Unlock</a> ()</td></tr>
 <tr class="memdesc:a247229d6fa657623f83ce1cf17a42b7e inherit pub_methods_structSDL_1_1MutexBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the mutex.  <br /></td></tr>
 <tr class="separator:a247229d6fa657623f83ce1cf17a42b7e inherit pub_methods_structSDL_1_1MutexBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,13 +240,13 @@ constexpr SDL_Mutex *&#160;</td><td class="memItemRight" valign="bottom"><b>oper
 </table>
 </div><div class="memdoc">
 <p>All newly-created mutexes begin in the <em>unlocked</em> state.</p>
-<p>Calls to <a class="el" href="structSDL_1_1MutexBase.html#ab02ccb2a0939bdb4ec88f96c13df13b3" title="Lock the mutex.">MutexBase.Lock()</a> will not return while the mutex is locked by another thread. See <a class="el" href="structSDL_1_1MutexBase.html#a8c6a2265b8f0062383e8b8bc4d8f4412" title="Try to lock a mutex without blocking.">MutexBase.TryLock()</a> to attempt to lock without blocking.</p>
+<p>Calls to <a class="el" href="structSDL_1_1MutexBase.html#ab02ccb2a0939bdb4ec88f96c13df13b3" title="Lock the mutex.">MutexBase.Lock()</a> will not return while the mutex is locked by another thread. See <a class="el" href="structSDL_1_1MutexBase.html#aa56d2e57a3b919b65637b8b295fa1fc8" title="Try to lock a mutex without blocking.">MutexBase.TryLock()</a> to attempt to lock without blocking.</p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> mutexes are reentrant.</p>
 <dl class="section post"><dt>Postcondition</dt><dd>the initialized and unlocked mutex or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MutexBase.html#ab02ccb2a0939bdb4ec88f96c13df13b3" title="Lock the mutex.">MutexBase.Lock</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1MutexBase.html#a8c6a2265b8f0062383e8b8bc4d8f4412" title="Try to lock a mutex without blocking.">MutexBase.TryLock</a> </dd>
+<a class="el" href="structSDL_1_1MutexBase.html#aa56d2e57a3b919b65637b8b295fa1fc8" title="Try to lock a mutex without blocking.">MutexBase.TryLock</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1MutexBase.html#a247229d6fa657623f83ce1cf17a42b7e" title="Unlock the mutex.">MutexBase.Unlock</a> </dd></dl>
 

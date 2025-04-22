@@ -273,7 +273,13 @@ constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a new cursor with the specified parameters on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a new cursor with the specified parameters on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorBase.html#ab713b50b78e0c0a5d6aafdb72a4249f3" title="Create a cursor using the specified bitmap data and mask (in MSB format).">CursorBase.CursorBase</a> </dd>
@@ -282,7 +288,7 @@ constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <dd>
 <a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e" title="Free a previously-created cursor.">CursorRef.reset</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMouse.html#gaa470ca3d6123483f91015d521f748178" title="Set the active cursor.">SetCursor</a> </dd></dl>
+<a class="el" href="group__CategoryMouse.html#gae120fdb2322a643f2564c367cb17e1bc" title="Set the active cursor.">SetCursor</a> </dd></dl>
 
 </div>
 </div>
@@ -334,7 +340,13 @@ constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new cursor on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the new cursor on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorBase.html#ab713b50b78e0c0a5d6aafdb72a4249f3" title="Create a cursor using the specified bitmap data and mask (in MSB format).">CursorBase.CursorBase</a> </dd>
@@ -343,7 +355,7 @@ constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <dd>
 <a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e" title="Free a previously-created cursor.">CursorRef.reset</a> </dd>
 <dd>
-<a class="el" href="group__CategoryMouse.html#gaa470ca3d6123483f91015d521f748178" title="Set the active cursor.">SetCursor</a> </dd></dl>
+<a class="el" href="group__CategoryMouse.html#gae120fdb2322a643f2564c367cb17e1bc" title="Set the active cursor.">SetCursor</a> </dd></dl>
 
 </div>
 </div>
@@ -376,7 +388,13 @@ constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a cursor on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a cursor on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e" title="Free a previously-created cursor.">CursorRef.reset</a> </dd></dl>

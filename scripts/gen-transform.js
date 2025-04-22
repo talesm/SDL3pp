@@ -502,7 +502,68 @@ const transform = {
               "name": "args"
             }
           ]
-        }
+        },
+        "SDL_GetError": [{
+          name: "Error",
+          kind: "struct",
+          type: "std::exception",
+          entries: {
+            "m_message": {
+              kind: "var",
+              type: "std::string"
+            },
+            "Error": [{
+              kind: "function",
+              type: "",
+              parameters: [],
+              doc: "Default ctor.",
+              hints: { init: ["m_message(SDL_GetError())"] }
+            }, {
+              kind: "function",
+              type: "",
+              parameters: [{ type: "std::string", name: "message" }],
+              hints: { init: ["m_message(std::move(message))"] }
+            }],
+            "what": {
+              kind: "function",
+              type: "const char *",
+              immutable: true,
+              parameters: [],
+              doc: "Returns the explanatory string.",
+              hints: { body: "return GetError();" }
+            },
+            "str": {
+              kind: "function",
+              type: "const std::string &",
+              immutable: true,
+              constexpr: true,
+              parameters: []
+            }
+          }
+        }, {
+          name: "CheckError",
+          kind: "function",
+          type: "void",
+          constexpr: true,
+          parameters: [{ type: "bool", name: "result" }]
+        }, {
+          name: "CheckError",
+          kind: "function",
+          type: "T",
+          constexpr: true,
+          template: [{ type: "class", name: "T" }],
+          parameters: [{ type: "T", name: "result" }]
+        }, {
+          name: "CheckError",
+          kind: "function",
+          type: "T",
+          constexpr: true,
+          template: [{ type: "class", name: "T" }],
+          parameters: [
+            { type: "T", name: "result" },
+            { type: "T", name: "invalidValue" },
+          ]
+        }],
       },
       transform: {
         "SDL_SetError": {
@@ -626,7 +687,7 @@ const transform = {
         "SDL_WaitEvent": {
           "kind": "function",
           "name": "WaitEvent",
-          "type": "std::optional<Event>",
+          "type": "Event",
           "parameters": []
         },
         "SDL_WaitEventTimeout": [
@@ -671,7 +732,7 @@ const transform = {
         "SDL_PushEvent": {
           "kind": "function",
           "name": "PushEvent",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "type": "const Event &",
@@ -878,7 +939,7 @@ const transform = {
         "SDL_EnumerateDirectory": [{
           name: "EnumerateDirectory",
           kind: "function",
-          type: "bool",
+          type: "void",
           parameters: [
             {
               name: "path",
@@ -979,6 +1040,7 @@ const transform = {
       }
     },
     "SDL_hints.h": {
+      enableException: true,
       enumerations: {
         "SDL_HintPriority": {
           prefix: "SDL_HINT_",
@@ -992,6 +1054,7 @@ const transform = {
     },
     "SDL_init.h": {
       ignoreEntries: ["SDL_InitSubSystem"],
+      enableException: true,
       namespacesMap: {
         "SDL_PROP_APP_METADATA_": "prop::appMetaData",
       },
@@ -1004,7 +1067,7 @@ const transform = {
           {
             "kind": "function",
             "name": "InitSubSystem",
-            "type": "bool",
+            "type": "void",
             "template": [
               {
                 "type": "class",
@@ -1037,7 +1100,7 @@ const transform = {
           {
             "kind": "function",
             "name": "InitSubSystem",
-            "type": "bool",
+            "type": "void",
             "template": [
               {
                 "type": "class",
@@ -1264,7 +1327,7 @@ const transform = {
         "SDL_RunOnMainThread": {
           "kind": "function",
           "name": "RunOnMainThread",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "type": "MainThreadCB",
@@ -1320,16 +1383,16 @@ const transform = {
         },
         "SDL_SaveFile": [
           {
-            "kind": "function",
-            "name": "SaveFile",
-            "type": "bool",
-            "template": [
+            kind: "function",
+            name: "SaveFile",
+            type: "void",
+            template: [
               {
                 "type": "class",
                 "name": "T"
               }
             ],
-            "parameters": [
+            parameters: [
               {
                 "type": "StringParam",
                 "name": "file"
@@ -1341,10 +1404,10 @@ const transform = {
             ]
           },
           {
-            "kind": "function",
-            "name": "SaveFile",
-            "type": "bool",
-            "parameters": [
+            kind: "function",
+            name: "SaveFile",
+            type: "void",
+            parameters: [
               {
                 "type": "StringParam",
                 "name": "file"
@@ -1366,7 +1429,6 @@ const transform = {
             "SDL_IOFromDynamicMem": {
               "name": "IOStreamBase",
               "type": "",
-              "static": false,
               "parameters": [
                 "IOFromDynamicMem_CtorTag"
               ]
@@ -1473,7 +1535,7 @@ const transform = {
             "SaveFile": [
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "template": [
                   {
                     "type": "class",
@@ -1489,7 +1551,7 @@ const transform = {
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "type": "std::string_view",
@@ -1506,20 +1568,62 @@ const transform = {
                 {}
               ]
             },
-            "SDL_ReadU8": "function",
-            "SDL_ReadS8": "function",
-            "SDL_ReadU16LE": "function",
-            "SDL_ReadS16LE": "function",
-            "SDL_ReadU16BE": "function",
-            "SDL_ReadS16BE": "function",
-            "SDL_ReadU32LE": "function",
-            "SDL_ReadS32LE": "function",
-            "SDL_ReadU32BE": "function",
-            "SDL_ReadS32BE": "function",
-            "SDL_ReadU64LE": "function",
-            "SDL_ReadS64LE": "function",
-            "SDL_ReadU64BE": "function",
-            "SDL_ReadS64BE": "function",
+            "SDL_ReadU8": {
+              type: "Uint8",
+              parameters: []
+            },
+            "SDL_ReadS8": {
+              type: "Sint8",
+              parameters: []
+            },
+            "SDL_ReadU16LE": {
+              type: "Uint16",
+              parameters: []
+            },
+            "SDL_ReadS16LE": {
+              type: "Sint16",
+              parameters: []
+            },
+            "SDL_ReadU16BE": {
+              type: "Uint16",
+              parameters: []
+            },
+            "SDL_ReadS16BE": {
+              type: "Sint16",
+              parameters: []
+            },
+            "SDL_ReadU32LE": {
+              type: "Uint32",
+              parameters: []
+            },
+            "SDL_ReadS32LE": {
+              type: "Sint32",
+              parameters: []
+            },
+            "SDL_ReadU32BE": {
+              type: "Uint32",
+              parameters: []
+            },
+            "SDL_ReadS32BE": {
+              type: "Sint32",
+              parameters: []
+            },
+            "SDL_ReadU64LE": {
+              type: "Uint64",
+              parameters: []
+            },
+            "SDL_ReadS64LE": {
+              type: "Sint64",
+              parameters: []
+            },
+            "SDL_ReadU64BE": {
+              type: "Uint64",
+              parameters: []
+            },
+            "SDL_ReadS64BE": {
+              type: "Sint64",
+              parameters: []
+            },
             "SDL_WriteU8": "function",
             "SDL_WriteS8": "function",
             "SDL_WriteU16LE": "function",
@@ -1549,6 +1653,7 @@ const transform = {
         },
         "SDL_CloseIO": {
           name: "IOStreamRef.Close",
+          type: "void",
           static: false,
           parameters: [],
           hints: { body: "return reset();" }
@@ -1556,6 +1661,7 @@ const transform = {
       }
     },
     "SDL_keyboard.h": {
+      enableException: true,
       namespacesMap: {
         "SDL_PROP_TEXTINPUT_": "prop::TextInput"
       },
@@ -1586,33 +1692,26 @@ const transform = {
           "name": "Keycode::Keycode"
         },
         "SDL_StartTextInput": {
-          "name": "WindowBase::StartTextInput",
-          "type": "bool"
+          name: "WindowBase::StartTextInput",
         },
         "SDL_StartTextInputWithProperties": {
-          "name": "WindowBase::StartTextInput",
-          "type": "bool"
+          name: "WindowBase::StartTextInput",
         },
         "SDL_TextInputActive": {
-          "name": "WindowBase::IsTextInputActive",
-          "immutable": true,
-          "type": "bool"
+          name: "WindowBase::IsTextInputActive",
+          immutable: true,
         },
         "SDL_StopTextInput": {
-          "name": "WindowBase::StopTextInput",
-          "type": "bool"
+          name: "WindowBase::StopTextInput",
         },
         "SDL_ClearComposition": {
-          "name": "WindowBase::ClearComposition",
-          "type": "bool"
+          name: "WindowBase::ClearComposition",
         },
         "SDL_SetTextInputArea": {
-          "name": "WindowBase::SetTextInputArea",
-          "type": "bool"
+          name: "WindowBase::SetTextInputArea",
         },
         "SDL_GetTextInputArea": {
-          "name": "WindowBase::GetTextInputArea",
-          "type": "bool"
+          name: "WindowBase::GetTextInputArea",
         },
         "SDL_ScreenKeyboardShown": {
           name: "WindowBase::IsScreenKeyboardShown",
@@ -2384,7 +2483,7 @@ const transform = {
               ]
             },
             "SDL_SetPaletteColors": {
-              "parameters": [
+              parameters: [
                 {},
                 {
                   name: "colors",
@@ -2461,6 +2560,7 @@ const transform = {
         "SDL_AppEvent",
         "SDL_AppQuit"
       ],
+      enableException: false,
       includeAfter: {
         "__begin": [
           {
@@ -2551,6 +2651,7 @@ const transform = {
       }
     },
     "SDL_mouse.h": {
+      enableException: true,
       enumerations: {
         "SDL_SystemCursor": {
           prefix: "SDL_SYSTEM_CURSOR_",
@@ -2767,6 +2868,7 @@ const transform = {
       }
     },
     "SDL_properties.h": {
+      enableException: true,
       includeAfter: {
         "__begin": [
           { "name": "PropertyType" },
@@ -2881,14 +2983,15 @@ const transform = {
               "immutable": true
             },
             "SDL_LockProperties": {
-              "type": "PropertiesLock",
-              "reference": 1
+              type: "PropertiesLock",
+              proto: true,
+              reference: 1
             },
             "SetPointerWithCleanup": {
-              "kind": "function",
-              "static": false,
-              "type": "bool",
-              "parameters": [
+              kind: "function",
+              static: false,
+              type: "void",
+              parameters: [
                 {
                   "type": "StringParam",
                   "name": "name"
@@ -2968,30 +3071,31 @@ const transform = {
             },
             "Enumerate": [
               {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "template": [
+                kind: "function",
+                type: "void",
+                immutable: true,
+                template: [
                   {
-                    "type": "std::output_iterator<const char *>",
-                    "name": "IT"
+                    type: "std::output_iterator<const char *>",
+                    name: "IT"
                   }
                 ],
-                "parameters": [
+                parameters: [
                   {
-                    "type": "IT",
-                    "name": "outputIter"
+                    type: "IT",
+                    name: "outputIter"
                   }
                 ]
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
+                kind: "function",
+                type: "void",
+                immutable: true,
+                proto: true,
+                parameters: [
                   {
-                    "type": "EnumeratePropertiesCB",
-                    "name": "callback"
+                    type: "EnumeratePropertiesCB",
+                    name: "callback"
                   }
                 ]
               }
@@ -3040,75 +3144,76 @@ const transform = {
       },
       wrappers: {
         "SDL_Point": {
-          "attribute": "p",
-          "ordered": true,
-          "entries": {
+          attribute: "p",
+          entries: {
             "Point": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
+              kind: "function",
+              type: "",
+              constexpr: true,
+              explicit: true,
+              parameters: [
                 {
-                  "type": "const SDL_FPoint &",
-                  "name": "p"
+                  type: "const SDL_FPoint &",
+                  name: "p"
                 }
               ]
             },
             "SDL_PointInRect": {
-              "kind": "function",
-              "name": "IsInRect",
-              "constexpr": true,
-              "parameters": [
+              kind: "function",
+              name: "IsInRect",
+              constexpr: true,
+              proto: true,
+              parameters: [
                 {
-                  "name": "this"
+                  name: "this"
                 },
                 {
-                  "type": "const Rect &"
+                  type: "const Rect &"
                 }
               ]
             }
           }
         },
         "SDL_FPoint": {
-          "attribute": "p",
-          "ordered": true,
-          "entries": {
+          attribute: "p",
+          entries: {
             "SDL_PointInRectFloat": {
-              "kind": "function",
-              "name": "IsInRect",
-              "constexpr": true,
-              "parameters": [
+              kind: "function",
+              name: "IsInRect",
+              constexpr: true,
+              proto: true,
+              parameters: [
                 {
-                  "name": "this"
+                  name: "this"
                 },
                 {
-                  "type": "const FRect &"
+                  type: "const FRect &"
                 }
               ]
             }
           }
         },
         "SDL_Rect": {
-          "attribute": "r",
-          "entries": {
+          attribute: "r",
+          entries: {
             "Rect": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
+              kind: "function",
+              type: "",
+              parameters: [
                 {
-                  "name": "corner",
-                  "type": "const SDL_Point &"
+                  name: "corner",
+                  type: "const SDL_Point &"
                 },
                 {
-                  "name": "size",
-                  "type": "const SDL_Point &"
+                  name: "size",
+                  type: "const SDL_Point &"
                 }
               ]
             },
             "SDL_GetRectEnclosingPoints": {
-              "type": "std::optional<Rect>",
-              "parameters": [
+              type: "Rect",
+              static: true,
+              parameters: [
                 {
                   "type": "SpanRef<const SDL_Point>",
                   "name": "points"
@@ -3122,10 +3227,11 @@ const transform = {
             },
             "FromCenter": [
               {
-                "kind": "function",
-                "name": "FromCenter",
-                "type": "Rect",
-                "parameters": [
+                kind: "function",
+                name: "FromCenter",
+                static: true,
+                type: "Rect",
+                parameters: [
                   {
                     "name": "cx",
                     "type": "int"
@@ -3145,10 +3251,11 @@ const transform = {
                 ]
               },
               {
-                "kind": "function",
-                "name": "FromCenter",
-                "type": "Rect",
-                "parameters": [
+                kind: "function",
+                name: "FromCenter",
+                static: true,
+                type: "Rect",
+                parameters: [
                   {
                     "name": "center",
                     "type": "const Point &"
@@ -3162,10 +3269,11 @@ const transform = {
             ],
             "FromCorners": [
               {
-                "kind": "function",
-                "name": "FromCorners",
-                "type": "Rect",
-                "parameters": [
+                kind: "function",
+                name: "FromCorners",
+                static: true,
+                type: "Rect",
+                parameters: [
                   {
                     "name": "x1",
                     "type": "int"
@@ -3185,10 +3293,10 @@ const transform = {
                 ]
               },
               {
-                "kind": "function",
-                "name": "FromCorners",
-                "type": "Rect",
-                "parameters": [
+                kind: "function",
+                name: "FromCorners",
+                type: "Rect",
+                parameters: [
                   {
                     "name": "p1",
                     "type": "const Point &"
@@ -3313,7 +3421,7 @@ const transform = {
             },
             "SDL_GetRectUnion": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "immutable": true,
               "parameters": [
                 {
@@ -3346,8 +3454,8 @@ const transform = {
               ]
             },
             "SDL_GetRectEnclosingPointsFloat": {
-              "type": "std::optional<FRect>",
-              "parameters": [
+              type: "FRect",
+              parameters: [
                 {
                   "type": "SpanRef<const SDL_FPoint>",
                   "name": "points"
@@ -3543,7 +3651,7 @@ const transform = {
             },
             "SDL_GetRectIntersectionFloat": {
               "kind": "function",
-              "type": "std::optional<FRect>",
+              "type": "FRect",
               "immutable": true,
               "parameters": [
                 {
@@ -3558,7 +3666,7 @@ const transform = {
             },
             "SDL_GetRectUnionFloat": {
               "kind": "function",
-              "type": "std::optional<FRect>",
+              "type": "FRect",
               "immutable": true,
               "parameters": [
                 {
@@ -3576,6 +3684,7 @@ const transform = {
       }
     },
     "SDL_render.h": {
+      enableException: true,
       ignoreEntries: [
         "SDL_LockTextureToSurface",
         "SDL_RenderDebugTextFormat",
@@ -3588,16 +3697,12 @@ const transform = {
           kind: "forward"
         },
         "SDL_Texture": {
-          "name": "TextureLock",
-          "kind": "struct",
-          "entries": {
+          name: "TextureLock",
+          kind: "struct",
+          entries: {
             "texture": {
               kind: "var",
               type: "TextureRef"
-            },
-            "surface": {
-              kind: "var",
-              type: "SurfaceRef"
             },
             "TextureLock": [
               {
@@ -3619,7 +3724,8 @@ const transform = {
               {
                 kind: "function",
                 type: "",
-                parameters: []
+                parameters: [],
+                hints: { default: true },
               },
               {
                 kind: "function",
@@ -3658,13 +3764,6 @@ const transform = {
                 }
               ]
             },
-            "operator bool": {
-              kind: "function",
-              type: "",
-              constexpr: true,
-              immutable: true,
-              parameters: []
-            },
             "SDL_UnlockTexture": {
               name: "Unlock",
               static: false,
@@ -3682,12 +3781,6 @@ const transform = {
               immutable: true,
               parameters: []
             },
-            "GetFormat": {
-              kind: "function",
-              type: "PixelFormat",
-              immutable: true,
-              parameters: []
-            }
           }
         }
       },
@@ -3714,7 +3807,7 @@ const transform = {
             "SDL_GetRendererName": "immutable",
             "GetOutputSize": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
@@ -3725,7 +3818,7 @@ const transform = {
             },
             "GetCurrentOutputSize": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
@@ -3737,7 +3830,7 @@ const transform = {
             "SDL_GetRendererProperties": "immutable",
             "ResetTarget": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": []
             },
             "SDL_SetRenderTarget": {
@@ -3769,7 +3862,7 @@ const transform = {
             },
             "GetLogicalPresentation": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "type": "SDL_Point *",
@@ -3788,12 +3881,12 @@ const transform = {
             "SDL_GetRenderLogicalPresentationRect": {
               "immutable": true,
               "name": "GetLogicalPresentationRect",
-              "type": "std::optional<FRect>",
+              "type": "FRect",
               "parameters": []
             },
             "SDL_RenderCoordinatesFromWindow": {
               "kind": "function",
-              "type": "std::optional<FPoint>",
+              "type": "FPoint",
               "immutable": true,
               "parameters": [
                 {
@@ -3804,7 +3897,7 @@ const transform = {
             },
             "SDL_RenderCoordinatesToWindow": {
               "kind": "function",
-              "type": "std::optional<FPoint>",
+              "type": "FPoint",
               "immutable": true,
               "parameters": [
                 {
@@ -3816,7 +3909,7 @@ const transform = {
             "SDL_ConvertEventToRenderCoordinates": "immutable",
             "ResetViewport": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": []
             },
             "SDL_SetRenderViewport": {
@@ -3832,7 +3925,7 @@ const transform = {
             "SDL_GetRenderViewport": {
               "name": "GetViewport",
               "immutable": true,
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": []
             },
             "SDL_RenderViewportSet": {
@@ -3842,12 +3935,12 @@ const transform = {
             "SDL_GetRenderSafeArea": {
               "name": "GetSafeArea",
               "immutable": true,
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": []
             },
             "ResetClipRect": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": []
             },
             "SDL_SetRenderClipRect": {
@@ -3863,7 +3956,7 @@ const transform = {
             "SDL_GetRenderClipRect": {
               "name": "GetClipRect",
               "immutable": true,
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": []
             },
             "SDL_RenderClipEnabled": {
@@ -3883,7 +3976,7 @@ const transform = {
             "GetScale": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<FPoint>",
+              "type": "FPoint",
               "parameters": []
             },
             "SDL_GetRenderScale": {
@@ -3914,13 +4007,13 @@ const transform = {
               {
                 "kind": "function",
                 "immutable": true,
-                "type": "std::optional<FColor>",
+                "type": "FColor",
                 "parameters": []
               },
               {
                 "kind": "function",
                 "immutable": true,
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "type": "SDL_Color *",
@@ -3931,7 +4024,7 @@ const transform = {
               {
                 "kind": "function",
                 "immutable": true,
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "type": "SDL_FColor *",
@@ -3954,7 +4047,7 @@ const transform = {
             "SDL_GetRenderColorScale": {
               "name": "GetColorScale",
               "immutable": true,
-              "type": "std::optional<float>",
+              "type": "float",
               "parameters": []
             },
             "SDL_SetRenderDrawBlendMode": {
@@ -3963,7 +4056,7 @@ const transform = {
             "SDL_GetRenderDrawBlendMode": {
               "name": "GetDrawBlendMode",
               "immutable": true,
-              "type": "std::optional<BlendMode>",
+              "type": "BlendMode",
               "parameters": []
             },
             "SDL_RenderClear": "function",
@@ -4247,12 +4340,14 @@ const transform = {
               ]
             },
             "SDL_RenderReadPixels": {
-              "immutable": true,
-              "type": "Surface",
-              "parameters": [
+              name: "ReadPixels",
+              immutable: true,
+              type: "Surface",
+              parameters: [
                 {
-                  "name": "rect",
-                  "type": "OptionalRef<const SDL_Rect>"
+                  name: "rect",
+                  type: "OptionalRef<const SDL_Rect>",
+                  default: "{}",
                 }
               ]
             },
@@ -4266,14 +4361,14 @@ const transform = {
               "name": "SetVSync"
             },
             "SDL_GetRenderVSync": {
-              "kind": "function",
-              "name": "GetVSync",
-              "type": "std::optional<int>",
-              "immutable": true,
-              "parameters": []
+              kind: "function",
+              name: "GetVSync",
+              type: "int",
+              immutable: true,
+              parameters: []
             },
             "SDL_RenderDebugText": {
-              "parameters": [
+              parameters: [
                 {
                   "name": "this"
                 },
@@ -4288,15 +4383,15 @@ const transform = {
               ]
             },
             "RenderDebugTextFormat": {
-              "kind": "function",
-              "type": "bool",
-              "template": [
+              kind: "function",
+              type: "void",
+              template: [
                 {
                   "type": "class...",
                   "name": "ARGS"
                 }
               ],
-              "parameters": [
+              parameters: [
                 {
                   "type": "FPoint",
                   "name": "p"
@@ -4345,7 +4440,27 @@ const transform = {
                 }
               ]
             }],
-            "SDL_CreateTexture": "ctor",
+            "SDL_CreateTexture": {
+              name: "ctor",
+              parameters: [
+                {
+                  name: "renderer",
+                  type: "RendererBase &"
+                },
+                {
+                  name: "format",
+                  type: "PixelFormat"
+                },
+                {
+                  name: "access",
+                  type: "TextureAccess"
+                },
+                {
+                  name: "size",
+                  type: "const SDL_Point &"
+                }
+              ]
+            },
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
             "SDL_GetTextureProperties": "immutable",
@@ -4353,11 +4468,11 @@ const transform = {
               "name": "GetRenderer",
               "immutable": true
             },
-            "SetColorAndAlphaMod": [
+            "SetMod": [
               {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
+                kind: "function",
+                type: "void",
+                parameters: [
                   {
                     "type": "Color",
                     "name": "c"
@@ -4365,9 +4480,9 @@ const transform = {
                 ]
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
+                kind: "function",
+                type: "void",
+                parameters: [
                   {
                     "type": "FColor",
                     "name": "c"
@@ -4375,32 +4490,32 @@ const transform = {
                 ]
               }
             ],
-            "GetColorAndAlphaMod": [
+            "GetMod": [
               {
-                "kind": "function",
-                "type": "std::optional<FColor>",
-                "immutable": true,
-                "parameters": []
+                kind: "function",
+                type: "FColor",
+                immutable: true,
+                parameters: []
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
+                kind: "function",
+                type: "void",
+                immutable: true,
+                parameters: [
                   {
-                    "type": "Color *",
-                    "name": "c"
+                    type: "Color *",
+                    name: "c"
                   }
                 ]
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
+                kind: "function",
+                type: "void",
+                immutable: true,
+                parameters: [
                   {
-                    "type": "FColor *",
-                    "name": "c"
+                    type: "FColor *",
+                    name: "c"
                   }
                 ]
               }
@@ -4414,7 +4529,7 @@ const transform = {
             "GetAlphaMod": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<float>",
+              "type": "float",
               "parameters": []
             },
             "SDL_GetTextureAlphaMod": "immutable",
@@ -4423,14 +4538,14 @@ const transform = {
             "SDL_GetTextureBlendMode": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<BlendMode>",
+              "type": "BlendMode",
               "parameters": []
             },
             "SDL_SetTextureScaleMode": "function",
             "SDL_GetTextureScaleMode": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<ScaleMode>",
+              "type": "ScaleMode",
               "parameters": []
             },
             "SDL_UpdateTexture": {
@@ -4674,6 +4789,78 @@ const transform = {
           }
         }
       },
+      includeBefore: {
+        "SDL_Time": [{
+          kind: "alias",
+          name: "Seconds",
+          type: "std::chrono::duration<float>",
+          doc: "Duration in seconds (float)."
+        }, {
+          kind: "alias",
+          name: "Nanoseconds",
+          type: "std::chrono::nanoseconds",
+          doc: "Duration in Nanoseconds (Uint64)."
+        }, {
+          kind: "function",
+          name: "ToSeconds",
+          type: "float",
+          constexpr: true,
+          parameters: [{
+            type: "Seconds",
+            name: "duration"
+          }],
+          doc: "Converts a time duration to seconds (float)."
+        }, {
+          kind: "function",
+          name: "FromSeconds",
+          type: "Seconds",
+          constexpr: true,
+          parameters: [{
+            type: "float",
+            name: "duration"
+          }],
+          doc: "Converts a float to seconds representation."
+        }, {
+          kind: "function",
+          name: "ToNS",
+          type: "Sint64",
+          constexpr: true,
+          parameters: [{
+            type: "std::chrono::nanoseconds",
+            name: "duration"
+          }],
+          doc: "Converts a time duration to seconds (float)."
+        }, {
+          kind: "function",
+          name: "FromNS",
+          type: "Nanoseconds",
+          constexpr: true,
+          parameters: [{
+            type: "Sint64",
+            name: "duration"
+          }],
+          doc: "Converts a float to seconds representation."
+        }, {
+          kind: "function",
+          name: "Time.ToSeconds",
+          type: "float",
+          constexpr: true,
+          immutable: true,
+          parameters: [],
+          doc: "Converts a time to seconds (float) since epoch."
+        }, {
+          kind: "function",
+          name: "Time.FromSeconds",
+          type: "Time",
+          constexpr: true,
+          static: true,
+          parameters: [{
+            type: "float",
+            name: "interval"
+          }],
+          doc: "Converts a time to seconds (float) since epoch."
+        }],
+      },
       resources: {
         "SDL_Environment": {
           entries: {
@@ -4703,9 +4890,9 @@ const transform = {
       },
       transform: {
         "SDL_Time": {
-          "kind": "struct",
-          "type": "",
-          "entries": {
+          kind: "struct",
+          type: "",
+          entries: {
             "m_value": {
               "kind": "var",
               "type": "std::chrono::nanoseconds"
@@ -4780,6 +4967,8 @@ const transform = {
             "ToPosix": {},
             "FromWindows": {},
             "ToWindows": {},
+            "ToSeconds": {},
+            "FromSeconds": {},
             "operator+=": {
               "kind": "function",
               "type": "Time &",
@@ -5084,7 +5273,42 @@ const transform = {
           "kind": "var",
           "type": "Uint32",
           "constexpr": true
-        }
+        },
+        "SDL_PI_D": {
+          kind: "var",
+          constexpr: true,
+          type: "double",
+        },
+        "SDL_PI_F": {
+          kind: "var",
+          constexpr: true,
+          type: "float",
+        },
+        "SDL_acosf": { name: "acos" },
+        "SDL_asinf": { name: "asin" },
+        "SDL_atanf": { name: "atan" },
+        "SDL_atan2f": { name: "atan2" },
+        "SDL_ceilf": { name: "ceil" },
+        "SDL_copysignf": { name: "copysign" },
+        "SDL_cosf": { name: "cos" },
+        "SDL_expf": { name: "exp" },
+        "SDL_fabs": { name: "abs" },
+        "SDL_fabsf": { name: "abs" },
+        "SDL_floorf": { name: "floor" },
+        "SDL_truncf": { name: "trunc" },
+        "SDL_fmodf": { name: "fmod" },
+        "SDL_isinff": { name: "isinf" },
+        "SDL_isnanf": { name: "isnan" },
+        "SDL_logf": { name: "log" },
+        "SDL_log10f": { name: "log10" },
+        "SDL_modff": { name: "modf" },
+        "SDL_powf": { name: "pow" },
+        "SDL_roundf": { name: "round" },
+        "SDL_lroundf": { name: "lround" },
+        "SDL_scalbnf": { name: "scalbn" },
+        "SDL_sinf": { name: "sin" },
+        "SDL_sqrtf": { name: "sqrt" },
+        "SDL_tanf": { name: "tan" },
       }
     },
     "SDL_storage.h": {
@@ -5134,7 +5358,7 @@ const transform = {
             "SDL_ReadStorageFile": "immutable",
             "WriteFile": [{
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   name: "path",
@@ -5147,7 +5371,7 @@ const transform = {
               ]
             }, {
               kind: "function",
-              type: "bool",
+              type: "void",
               template: [{
                 type: "class",
                 name: "T"
@@ -5163,7 +5387,7 @@ const transform = {
                 }
               ]
             }],
-            "SDL_WriteStorageFile": "function",
+            "SDL_WriteStorageFile": { type: "void" },
             "SDL_CreateStorageDirectory": "function",
             "EnumerateDirectory": [{
               kind: "function",
@@ -5176,7 +5400,7 @@ const transform = {
               ]
             }, {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   name: "path",
@@ -5219,6 +5443,7 @@ const transform = {
       }
     },
     "SDL_surface.h": {
+      enableException: true,
       includeAfter: {
         "__begin": {
           name: "SurfaceLock",
@@ -5337,8 +5562,40 @@ const transform = {
                 name: "src"
               }],
             }],
-            "SDL_CreateSurface": "ctor",
-            "SDL_CreateSurfaceFrom": "ctor",
+            "SDL_CreateSurface": {
+              name: "ctor",
+              parameters: [
+                {
+                  name: "size",
+                  type: "const SDL_Point &"
+                },
+                {
+                  name: "format",
+                  type: "PixelFormat"
+                }
+              ]
+            },
+            "SDL_CreateSurfaceFrom": {
+              name: "ctor",
+              parameters: [
+                {
+                  name: "size",
+                  type: "const SDL_Point &"
+                },
+                {
+                  name: "format",
+                  type: "PixelFormat"
+                },
+                {
+                  name: "pixels",
+                  type: "void *"
+                },
+                {
+                  name: "pitch",
+                  type: "int"
+                }
+              ]
+            },
             "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",
             "SDL_GetSurfaceColorspace": "immutable",
@@ -5379,7 +5636,7 @@ const transform = {
             "SDL_SurfaceHasRLE": "immutable",
             "SetColorKey": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "Color",
@@ -5399,7 +5656,7 @@ const transform = {
             },
             "ClearColorKey": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: []
             },
             "SDL_SurfaceHasColorKey": "immutable",
@@ -5407,13 +5664,13 @@ const transform = {
               {
                 kind: "function",
                 immutable: true,
-                type: "std::optional<Color>",
+                type: "Color",
                 parameters: []
               },
               {
                 kind: "function",
                 immutable: true,
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
                     type: "Color *",
@@ -5429,21 +5686,21 @@ const transform = {
             "SDL_GetSurfaceAlphaMod": {
               kind: "function",
               immutable: true,
-              type: "std::optional<Uint8>",
+              type: "Uint8",
               parameters: [{}]
             },
-            "SetColorAndAlphaMod": {
+            "SetMod": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [{
                 type: "Color",
                 name: "color"
               }]
             },
-            "GetColorAndAlphaMod": {
+            "GetMod": {
               kind: "function",
               immutable: true,
-              type: "std::optional<Color>",
+              type: "Color",
               parameters: []
             },
             "SDL_SetSurfaceBlendMode": "function",
@@ -5466,7 +5723,7 @@ const transform = {
             },
             "ResetClipRect": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: []
             },
             "SDL_GetSurfaceClipRect": {
@@ -5517,7 +5774,7 @@ const transform = {
             Fill: [
               {
                 kind: "function",
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
                     type: "SDL_Color",
@@ -5527,7 +5784,7 @@ const transform = {
               },
               {
                 kind: "function",
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
                     type: "Uint32",
@@ -5538,7 +5795,7 @@ const transform = {
             ],
             "FillRect": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "const SDL_Rect &",
@@ -5550,13 +5807,10 @@ const transform = {
                 }
               ]
             },
-            "SDL_FillSurfaceRect": {
-              kind: "function",
-              name: "FillRect"
-            },
+            "SDL_FillSurfaceRect": "function",
             "FillRects": {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "SpanRef<const SDL_Rect>",
@@ -5570,10 +5824,8 @@ const transform = {
             },
             "SDL_FillSurfaceRects": {
               kind: "function",
-              name: "FillRects",
               parameters: [
                 {
-                  type: "SDL_Surface *"
                 },
                 {
                   type: "SpanRef<const SDL_Rect>",
@@ -5587,8 +5839,7 @@ const transform = {
             },
             "Blit": {
               kind: "function",
-              name: "Blit",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "const SurfaceBase &",
@@ -5606,7 +5857,6 @@ const transform = {
             },
             "SDL_BlitSurface": {
               kind: "function",
-              name: "Blit",
               parameters: [
                 {
                   name: "this"
@@ -5627,7 +5877,6 @@ const transform = {
             },
             "SDL_BlitSurfaceUnchecked": {
               kind: "function",
-              name: "BlitUnchecked",
               parameters: [
                 {
                   name: "this"
@@ -5648,7 +5897,6 @@ const transform = {
             },
             "SDL_BlitSurfaceScaled": {
               kind: "function",
-              name: "BlitScaled",
               parameters: [
                 {
                   name: "this"
@@ -5673,7 +5921,6 @@ const transform = {
             },
             "SDL_BlitSurfaceUncheckedScaled": {
               kind: "function",
-              name: "BlitUncheckedScaled",
               parameters: [
                 {
                   name: "this"
@@ -5779,7 +6026,7 @@ const transform = {
             "Blit9Grid": {
               kind: "function",
               name: "Blit9Grid",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   type: "const SurfaceBase &",
@@ -5882,31 +6129,23 @@ const transform = {
                 kind: "function",
                 name: "ReadPixel",
                 immutable: true,
-                type: "std::optional<Color>",
+                type: "Color",
                 parameters: [
                   {
-                    type: "int",
-                    name: "x"
+                    type: "const SDL_Point &",
+                    name: "p"
                   },
-                  {
-                    type: "int",
-                    name: "y"
-                  }
                 ]
               },
               {
                 kind: "function",
                 name: "ReadPixel",
                 immutable: true,
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
-                    type: "int",
-                    name: "x"
-                  },
-                  {
-                    type: "int",
-                    name: "y"
+                    type: "const SDL_Point &",
+                    name: "p"
                   },
                   {
                     type: "SDL_Color *",
@@ -5918,15 +6157,11 @@ const transform = {
                 kind: "function",
                 name: "ReadPixel",
                 immutable: true,
-                type: "bool",
+                type: "void",
                 parameters: [
                   {
-                    type: "int",
-                    name: "x"
-                  },
-                  {
-                    type: "int",
-                    name: "y"
+                    type: "const SDL_Point &",
+                    name: "p"
                   },
                   {
                     type: "SDL_FColor *",
@@ -5938,58 +6173,87 @@ const transform = {
             "SDL_ReadSurfacePixel": {
               kind: "function",
               name: "ReadPixel",
-              immutable: true
+              immutable: true,
+              parameters: [
+                {},
+                {
+                  type: "const SDL_Point &",
+                  name: "p"
+                },
+                {
+                  type: "Uint8 *",
+                  name: "r"
+                },
+                {
+                  type: "Uint8 *",
+                  name: "g"
+                },
+                {
+                  type: "Uint8 *",
+                  name: "b"
+                },
+                {
+                  type: "Uint8 *",
+                  name: "a"
+                }
+              ]
             },
             "SDL_ReadSurfacePixelFloat": {
               kind: "function",
               name: "ReadPixel",
-              immutable: true
+              immutable: true,
+              parameters: [
+                {},
+                {
+                  type: "const SDL_Point &",
+                  name: "p"
+                },
+                {
+                  type: "float *",
+                  name: "r"
+                },
+                {
+                  type: "float *",
+                  name: "g"
+                },
+                {
+                  type: "float *",
+                  name: "b"
+                },
+                {
+                  type: "float *",
+                  name: "a"
+                }
+              ]
             },
-            "WritePixel": [
-              {
-                kind: "function",
-                type: "bool",
-                parameters: [
-                  {
-                    type: "int",
-                    name: "x"
-                  },
-                  {
-                    type: "int",
-                    name: "y"
-                  },
-                  {
-                    type: "SDL_Color",
-                    name: "c"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "bool",
-                parameters: [
-                  {
-                    type: "int",
-                    name: "x"
-                  },
-                  {
-                    type: "int",
-                    name: "y"
-                  },
-                  {
-                    type: "SDL_FColor",
-                    name: "c"
-                  }
-                ]
-              }
-            ],
             "SDL_WriteSurfacePixel": {
               kind: "function",
-              name: "WritePixel"
+              parameters: [
+                {},
+                {
+                  type: "const SDL_Point &",
+                  name: "p"
+                },
+                {
+                  type: "SDL_Color",
+                  name: "c"
+                }
+              ]
             },
             "SDL_WriteSurfacePixelFloat": {
               kind: "function",
-              name: "WritePixel"
+              name: "WritePixel",
+              parameters: [
+                {},
+                {
+                  type: "const SDL_Point &",
+                  name: "p"
+                },
+                {
+                  type: "SDL_FColor",
+                  name: "c"
+                }
+              ]
             },
             "GetWidth": {
               kind: "function",
@@ -6163,6 +6427,8 @@ const transform = {
     "SDL_timer.h": {
       ignoreEntries: [
         "SDL_GetTicks",
+        "SDL_TimerCallback",
+        "SDL_AddTimer",
         "SDL_DelayNS",
         "SDL_MS_PER_SECOND",
         "SDL_US_PER_SECOND",
@@ -6175,15 +6441,11 @@ const transform = {
         "SDL_NS_TO_US"
       ],
       includeAfter: {
-        "SDL_TimerCallback": [
-          {
-            "name": "NSTimerCallback"
-          },
-          {
-            "kind": "alias",
-            "name": "TimerCB"
-          }
-        ],
+        "SDL_NSTimerCallback":
+        {
+          "kind": "alias",
+          "name": "TimerCB"
+        },
         "SDL_AddTimerNS": {
           "kind": "function",
           "name": "AddTimer",
@@ -6242,36 +6504,25 @@ const transform = {
             }
           ]
         },
-        "SDL_AddTimer": {
-          "parameters": [
-            {
-              "type": "std::chrono::milliseconds",
-              "name": "interval"
-            },
-            {
-              "type": "TimerCallback",
-              "name": "callback"
-            },
-            {
-              "type": "void *",
-              "name": "userdata"
-            }
-          ]
+        "SDL_NSTimerCallback": {
+          name: "TimerCallback",
+          type: "SDL_NSTimerCallback",
+          kind: "alias"
         },
         "SDL_AddTimerNS": {
-          "name": "AddTimer",
-          "parameters": [
+          name: "AddTimer",
+          parameters: [
             {
-              "type": "std::chrono::nanoseconds",
-              "name": "interval"
+              type: "std::chrono::nanoseconds",
+              name: "interval"
             },
             {
-              "type": "NSTimerCallback",
-              "name": "callback"
+              type: "TimerCallback",
+              name: "callback"
             },
             {
-              "type": "void *",
-              "name": "userdata"
+              type: "void *",
+              name: "userdata"
             }
           ]
         }
@@ -6418,6 +6669,7 @@ const transform = {
       }
     },
     "SDL_video.h": {
+      enableException: true,
       includeAfter: {
         "__begin": [
           {
@@ -6683,7 +6935,7 @@ const transform = {
             "SDL_SetWindowIcon": "function",
             "SetRect": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "type": "Rect",
@@ -6693,7 +6945,7 @@ const transform = {
             },
             "GetRect": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "immutable": true,
               "parameters": []
             },
@@ -6708,7 +6960,7 @@ const transform = {
             },
             "GetPosition": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
@@ -6724,14 +6976,14 @@ const transform = {
             },
             "GetSize": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
             "SDL_GetWindowSize": "immutable",
             "SDL_GetWindowSafeArea": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "immutable": true,
               "parameters": []
             },
@@ -6740,7 +6992,7 @@ const transform = {
             "SDL_GetWindowBordersSize": "immutable",
             "GetSizeInPixels": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
@@ -6781,7 +7033,7 @@ const transform = {
             "SDL_SetWindowSurfaceVSync": "function",
             "SDL_GetWindowSurfaceVSync": {
               "immutable": true,
-              "type": "std::optional<int>",
+              "type": "int",
               "parameters": []
             },
             "SDL_UpdateWindowSurface": {
@@ -6829,7 +7081,7 @@ const transform = {
             },
             "SetHitTest": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "name": "callback",
@@ -6912,13 +7164,13 @@ const transform = {
             "SDL_GetDisplayName": "immutable",
             "SDL_GetDisplayBounds": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": [],
               "immutable": true
             },
             "SDL_GetDisplayUsableBounds": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": [],
               "immutable": true
             },
@@ -6944,7 +7196,7 @@ const transform = {
               "kind": "function",
               "name": "GetClosestFullscreenMode",
               "immutable": true,
-              "type": "std::optional<DisplayMode>",
+              "type": "DisplayMode",
               "parameters": [
                 {},
                 {},
@@ -7120,6 +7372,7 @@ const transform = {
       ignoreEntries: [
         "IMG_LoadBMP_IO"
       ],
+      enableException: true,
       includeAfter: {
         "__begin": {
           "name": "SDL3PP_ENABLE_IMAGE"
@@ -7418,6 +7671,7 @@ const transform = {
         "TTF_DestroyRendererTextEngine",
         "TTF_DestroyGPUTextEngine"
       ],
+      enableException: true,
       resources: {
         "TTF_Font": {
           entries: {
@@ -7432,8 +7686,9 @@ const transform = {
             },
             "TTF_OpenFontWithProperties": "ctor",
             "TTF_CopyFont": {
-              "immutable": true,
-              "type": "Font"
+              immutable: true,
+              type: "Font",
+              hints: { mayFail: true }
             },
             "TTF_GetFontProperties": "function",
             "TTF_GetFontGeneration": "immutable",
@@ -7481,23 +7736,25 @@ const transform = {
             "TTF_GetGlyphMetrics": "immutable",
             "TTF_GetGlyphKerning": {
               "immutable": true,
-              "type": "std::optional<int>",
+              "type": "int",
               "parameters": [
                 {},
                 {},
                 {}
-              ]
+              ],
+              hints: { mayFail: true }
             },
             "GetStringSize": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<Point>",
+              "type": "Point",
               "parameters": [
                 {
                   "name": "text",
                   "type": "std::string_view"
                 }
-              ]
+              ],
+              hints: { mayFail: true }
             },
             "TTF_GetStringSize": {
               "immutable": true,
@@ -7519,7 +7776,7 @@ const transform = {
             "GetStringSizeWrapped": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<Point>",
+              "type": "Point",
               "parameters": [
                 {
                   "name": "text",
@@ -7854,13 +8111,13 @@ const transform = {
             "GetColor": [
               {
                 "kind": "function",
-                "type": "std::optional<FColor>",
+                "type": "FColor",
                 "immutable": true,
                 "parameters": []
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "immutable": true,
                 "parameters": [
                   {
@@ -7871,7 +8128,7 @@ const transform = {
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "immutable": true,
                 "parameters": [
                   {
@@ -7895,14 +8152,14 @@ const transform = {
             "GetPosition": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<Point>",
+              "type": "Point",
               "parameters": []
             },
             "TTF_GetTextPosition": "immutable",
             "TTF_SetTextWrapWidth": "function",
             "TTF_GetTextWrapWidth": {
               "immutable": true,
-              "type": "std::optional<int>",
+              "type": "int",
               "parameters": []
             },
             "TTF_SetTextWrapWhitespaceVisible": "function",
@@ -7944,7 +8201,7 @@ const transform = {
             "TTF_DeleteTextString": "function",
             "GetSize": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },

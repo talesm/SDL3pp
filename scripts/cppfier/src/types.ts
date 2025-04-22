@@ -43,6 +43,7 @@ export interface EntryHint {
   self?: string;
   super?: string;
   static?: boolean;
+  mayFail?: boolean;
 }
 
 export interface VersionTag {
@@ -93,6 +94,7 @@ export interface ApiFileTransform {
   name?: string;
   doc?: string;
   ignoreEntries?: string[];
+  includeBefore?: ApiEntryTransformMap;
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
@@ -100,6 +102,7 @@ export interface ApiFileTransform {
   wrappers?: Dict<ApiWrapper>;
   namespacesMap?: StringMap;
   definitionPrefix?: string;
+  enableException?: boolean;
 }
 
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
@@ -198,7 +201,7 @@ export interface ApiEnumeration extends ApiEntryTransform {
   includeAfter?: string;
 }
 
-export type QuickTransform = "placeholder" | "immutable" | "ctor" | ApiEntryKind;
+export type QuickTransform = "immutable" | "ctor" | ApiEntryKind;
 
 export type ApiSubEntryTransformMap = Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>;
 

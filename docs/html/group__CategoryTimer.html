@@ -85,12 +85,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga598490e641c8e0a73532bd8c866b6146" id="r_ga598490e641c8e0a73532bd8c866b6146"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">SDL::TimerID</a> = SDL_TimerID</td></tr>
 <tr class="memdesc:ga598490e641c8e0a73532bd8c866b6146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of the timer ID type.  <br /></td></tr>
 <tr class="separator:ga598490e641c8e0a73532bd8c866b6146"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga054530d467e48c18551e46f4348353ea" id="r_ga054530d467e48c18551e46f4348353ea"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea">SDL::TimerCallback</a> = SDL_TimerCallback</td></tr>
-<tr class="memdesc:ga054530d467e48c18551e46f4348353ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the millisecond timer callback function.  <br /></td></tr>
-<tr class="separator:ga054530d467e48c18551e46f4348353ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5c24a754891c79147a2cdf992384cbf8" id="r_ga5c24a754891c79147a2cdf992384cbf8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga5c24a754891c79147a2cdf992384cbf8">SDL::NSTimerCallback</a> = SDL_NSTimerCallback</td></tr>
-<tr class="memdesc:ga5c24a754891c79147a2cdf992384cbf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the nanosecond timer callback function.  <br /></td></tr>
-<tr class="separator:ga5c24a754891c79147a2cdf992384cbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8e76a11451307f2a1dd5cd8b1a4008d3" id="r_ga8e76a11451307f2a1dd5cd8b1a4008d3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">SDL::TimerCallback</a> = SDL_NSTimerCallback</td></tr>
+<tr class="memdesc:ga8e76a11451307f2a1dd5cd8b1a4008d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the nanosecond timer callback function.  <br /></td></tr>
+<tr class="separator:ga8e76a11451307f2a1dd5cd8b1a4008d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga418a6ee007995b046629a7f12a797c53" id="r_ga418a6ee007995b046629a7f12a797c53"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">SDL::TimerCB</a> = std::function&lt; std::chrono::nanoseconds(<a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>, std::chrono::nanoseconds)&gt;</td></tr>
 <tr class="memdesc:ga418a6ee007995b046629a7f12a797c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the nanosecond timer callback function.  <br /></td></tr>
 <tr class="separator:ga418a6ee007995b046629a7f12a797c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,18 +109,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga34db37a7f8654034eb6ad62e88a2e2de" id="r_ga34db37a7f8654034eb6ad62e88a2e2de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de">SDL::DelayPrecise</a> (std::chrono::nanoseconds duration)</td></tr>
 <tr class="memdesc:ga34db37a7f8654034eb6ad62e88a2e2de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait a specified duration before returning.  <br /></td></tr>
 <tr class="separator:ga34db37a7f8654034eb6ad62e88a2e2de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga20856cc59994a8ecf066d73490d67bb5" id="r_ga20856cc59994a8ecf066d73490d67bb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5">SDL::AddTimer</a> (std::chrono::milliseconds interval, <a class="el" href="group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea">TimerCallback</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:ga20856cc59994a8ecf066d73490d67bb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a callback function at a future time.  <br /></td></tr>
-<tr class="separator:ga20856cc59994a8ecf066d73490d67bb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga02d8e0fb2964e4869f7f7df72fb4641d" id="r_ga02d8e0fb2964e4869f7f7df72fb4641d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga02d8e0fb2964e4869f7f7df72fb4641d">SDL::AddTimer</a> (std::chrono::nanoseconds interval, <a class="el" href="group__CategoryTimer.html#ga5c24a754891c79147a2cdf992384cbf8">NSTimerCallback</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:ga02d8e0fb2964e4869f7f7df72fb4641d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a callback function at a future time.  <br /></td></tr>
-<tr class="separator:ga02d8e0fb2964e4869f7f7df72fb4641d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2a4d27f17a6668eb347a8bfb7cbb7a65" id="r_ga2a4d27f17a6668eb347a8bfb7cbb7a65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">SDL::AddTimer</a> (std::chrono::nanoseconds interval, <a class="el" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">TimerCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:ga2a4d27f17a6668eb347a8bfb7cbb7a65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a callback function at a future time.  <br /></td></tr>
+<tr class="separator:ga2a4d27f17a6668eb347a8bfb7cbb7a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4605aebef3c001d56891a33e116e0201" id="r_ga4605aebef3c001d56891a33e116e0201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga4605aebef3c001d56891a33e116e0201">SDL::AddTimer</a> (std::chrono::nanoseconds interval, <a class="el" href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">TimerCB</a> callback)</td></tr>
 <tr class="memdesc:ga4605aebef3c001d56891a33e116e0201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a callback function at a future time.  <br /></td></tr>
 <tr class="separator:ga4605aebef3c001d56891a33e116e0201"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga316ad0cf487c0d9ca4fa27c1c23ee2cf" id="r_ga316ad0cf487c0d9ca4fa27c1c23ee2cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga316ad0cf487c0d9ca4fa27c1c23ee2cf">SDL::RemoveTimer</a> (<a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> id)</td></tr>
-<tr class="memdesc:ga316ad0cf487c0d9ca4fa27c1c23ee2cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a timer created with <a class="el" href="group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5" title="Call a callback function at a future time.">AddTimer()</a>.  <br /></td></tr>
-<tr class="separator:ga316ad0cf487c0d9ca4fa27c1c23ee2cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga764c5af8d93b59d3e435db5cb44c8379" id="r_ga764c5af8d93b59d3e435db5cb44c8379"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379">SDL::RemoveTimer</a> (<a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> id)</td></tr>
+<tr class="memdesc:ga764c5af8d93b59d3e435db5cb44c8379"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a timer created with <a class="el" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65" title="Call a callback function at a future time.">AddTimer()</a>.  <br /></td></tr>
+<tr class="separator:ga764c5af8d93b59d3e435db5cb44c8379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada9d792477503fe89dade93666a5df44" id="r_gada9d792477503fe89dade93666a5df44"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">SDL::Time::FromPosix</a> (Sint64 time)</td></tr>
 <tr class="memdesc:gada9d792477503fe89dade93666a5df44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert seconds to nanoseconds.  <br /></td></tr>
 <tr class="separator:gada9d792477503fe89dade93666a5df44"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,23 +128,23 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>It is useful for dealing with (usually) small durations of time.</p>
 <p>This is not to be confused with <em>calendar time</em> management, which is provided by <a class="el" href="group__CategoryTime.html">CategoryTime</a>.</p>
-<p>This category covers measuring time elapsed (<a class="el" href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e" title="Get the time elapsed since SDL library initialization.">GetTicks()</a>, <a class="el" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861" title="Get the current value of the high resolution counter.">GetPerformanceCounter()</a>), putting a thread to sleep for a certain amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing a callback function after a certain amount of time has elapsed (<a class="el" href="group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5" title="Call a callback function at a future time.">AddTimer()</a>, etc). </p>
+<p>This category covers measuring time elapsed (<a class="el" href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e" title="Get the time elapsed since SDL library initialization.">GetTicks()</a>, <a class="el" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861" title="Get the current value of the high resolution counter.">GetPerformanceCounter()</a>), putting a thread to sleep for a certain amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing a callback function after a certain amount of time has elapsed (<a class="el" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65" title="Call a callback function at a future time.">AddTimer()</a>, etc). </p>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga5c24a754891c79147a2cdf992384cbf8" name="ga5c24a754891c79147a2cdf992384cbf8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5c24a754891c79147a2cdf992384cbf8">&#9670;&#160;</a></span>NSTimerCallback</h2>
+<a id="ga8e76a11451307f2a1dd5cd8b1a4008d3" name="ga8e76a11451307f2a1dd5cd8b1a4008d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8e76a11451307f2a1dd5cd8b1a4008d3">&#9670;&#160;</a></span>TimerCallback</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryTimer.html#ga5c24a754891c79147a2cdf992384cbf8">SDL::NSTimerCallback</a> = typedef SDL_NSTimerCallback</td>
+          <td class="memname">using <a class="el" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">SDL::TimerCallback</a> = typedef SDL_NSTimerCallback</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>The callback function is passed the current timer interval and returns the next timer interval, in nanoseconds. If the returned value is the same as the one passed in, the periodic alarm continues, otherwise a new alarm is scheduled. If the callback returns 0, the periodic alarm is canceled and will be removed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">userdata</td><td>an arbitrary pointer provided by the app through <a class="el" href="group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5" title="Call a callback function at a future time.">AddTimer()</a>, for its own use. </td></tr>
+    <tr><td class="paramname">userdata</td><td>an arbitrary pointer provided by the app through <a class="el" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65" title="Call a callback function at a future time.">AddTimer()</a>, for its own use. </td></tr>
     <tr><td class="paramname">timerID</td><td>the current timer being processed. </td></tr>
     <tr><td class="paramname">interval</td><td>the current callback time interval. </td></tr>
   </table>
@@ -159,34 +153,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>the new callback time interval, or 0 to disable further runs of the callback.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> may call this callback at any time from a background thread; the application is responsible for locking resources the callback touches that need to be protected.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5" title="Call a callback function at a future time.">AddTimer()</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga054530d467e48c18551e46f4348353ea" name="ga054530d467e48c18551e46f4348353ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga054530d467e48c18551e46f4348353ea">&#9670;&#160;</a></span>TimerCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea">SDL::TimerCallback</a> = typedef SDL_TimerCallback</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The callback function is passed the current timer interval and returns the next timer interval, in milliseconds. If the returned value is the same as the one passed in, the periodic alarm continues, otherwise a new alarm is scheduled. If the callback returns 0, the periodic alarm is canceled and will be removed.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">userdata</td><td>an arbitrary pointer provided by the app through SDL_AddTimer, for its own use. </td></tr>
-    <tr><td class="paramname">timerID</td><td>the current timer being processed. </td></tr>
-    <tr><td class="paramname">interval</td><td>the current callback time interval. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the new callback time interval, or 0 to disable further runs of the callback.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> may call this callback at any time from a background thread; the application is responsible for locking resources the callback touches that need to be protected.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5" title="Call a callback function at a future time.">AddTimer()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65" title="Call a callback function at a future time.">AddTimer</a> </dd></dl>
 
 </div>
 </div>
@@ -235,66 +202,8 @@ AddTimer(TimerCB) </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga20856cc59994a8ecf066d73490d67bb5" name="ga20856cc59994a8ecf066d73490d67bb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga20856cc59994a8ecf066d73490d67bb5">&#9670;&#160;</a></span>AddTimer() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> SDL::AddTimer </td>
-          <td>(</td>
-          <td class="paramtype">std::chrono::milliseconds&#160;</td>
-          <td class="paramname"><em>interval</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea">TimerCallback</a>&#160;</td>
-          <td class="paramname"><em>callback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>userdata</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The callback function is passed the current timer interval and the user supplied parameter from the <a class="el" href="group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5" title="Call a callback function at a future time.">AddTimer()</a> call and should return the next timer interval. If the value returned from the callback is 0, the timer is canceled and will be removed.</p>
-<p>The callback is run on a separate thread, and for short timeouts can potentially be called before this function returns.</p>
-<p>Timers take into account the amount of time it took to execute the callback. For example, if the callback took 250 ms to execute and returned 1000 (ms), the timer would only wait another 750 ms before its next iteration.</p>
-<p>Timing may be inexact due to OS scheduling. Be sure to note the current time with GetTicksNS() or <a class="el" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861" title="Get the current value of the high resolution counter.">GetPerformanceCounter()</a> in case your callback needs to adjust for variances.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">interval</td><td>the timer delay, in milliseconds, passed to <code>callback</code>. </td></tr>
-    <tr><td class="paramname">callback</td><td>the TimerCallback function to call when the specified <code>interval</code> elapses. </td></tr>
-    <tr><td class="paramname">userdata</td><td>a pointer that is passed to <code>callback</code>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a timer ID or 0 on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTimer.html#ga316ad0cf487c0d9ca4fa27c1c23ee2cf" title="Remove a timer created with AddTimer().">RemoveTimer()</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga02d8e0fb2964e4869f7f7df72fb4641d" name="ga02d8e0fb2964e4869f7f7df72fb4641d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga02d8e0fb2964e4869f7f7df72fb4641d">&#9670;&#160;</a></span>AddTimer() <span class="overload">[2/3]</span></h2>
+<a id="ga2a4d27f17a6668eb347a8bfb7cbb7a65" name="ga2a4d27f17a6668eb347a8bfb7cbb7a65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2a4d27f17a6668eb347a8bfb7cbb7a65">&#9670;&#160;</a></span>AddTimer() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -311,7 +220,7 @@ AddTimer(TimerCB) </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryTimer.html#ga5c24a754891c79147a2cdf992384cbf8">NSTimerCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">TimerCallback</a>&#160;</td>
           <td class="paramname"><em>callback</em>, </td>
         </tr>
         <tr>
@@ -332,10 +241,10 @@ AddTimer(TimerCB) </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The callback function is passed the current timer interval and the user supplied parameter from the AddTimerNS() call and should return the next timer interval. If the value returned from the callback is 0, the timer is canceled and will be removed.</p>
+<p>The callback function is passed the current timer interval and the user supplied parameter from the <a class="el" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65" title="Call a callback function at a future time.">AddTimer()</a> call and should return the next timer interval. If the value returned from the callback is 0, the timer is canceled and will be removed.</p>
 <p>The callback is run on a separate thread, and for short timeouts can potentially be called before this function returns.</p>
 <p>Timers take into account the amount of time it took to execute the callback. For example, if the callback took 250 ns to execute and returned 1000 (ns), the timer would only wait another 750 ns before its next iteration.</p>
-<p>Timing may be inexact due to OS scheduling. Be sure to note the current time with GetTicksNS() or <a class="el" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861" title="Get the current value of the high resolution counter.">GetPerformanceCounter()</a> in case your callback needs to adjust for variances.</p>
+<p>Timing may be inexact due to OS scheduling. Be sure to note the current time with <a class="el" href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e" title="Get the time elapsed since SDL library initialization.">GetTicks()</a> or <a class="el" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861" title="Get the current value of the high resolution counter.">GetPerformanceCounter()</a> in case your callback needs to adjust for variances.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">interval</td><td>the timer delay, in std::chrono::nanoseconds, passed to <code>callback</code>. </td></tr>
@@ -344,15 +253,21 @@ AddTimer(TimerCB) </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a timer ID or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a timer ID. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTimer.html#ga316ad0cf487c0d9ca4fa27c1c23ee2cf" title="Remove a timer created with AddTimer().">RemoveTimer()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379" title="Remove a timer created with AddTimer().">RemoveTimer</a> </dd></dl>
 
 </div>
 </div>
 <a id="ga4605aebef3c001d56891a33e116e0201" name="ga4605aebef3c001d56891a33e116e0201"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4605aebef3c001d56891a33e116e0201">&#9670;&#160;</a></span>AddTimer() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4605aebef3c001d56891a33e116e0201">&#9670;&#160;</a></span>AddTimer() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -395,13 +310,19 @@ AddTimer(TimerCB) </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a timer ID or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a timer ID. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>listener-callback </dd>
 <dd>
-<a class="el" href="group__CategoryTimer.html#ga316ad0cf487c0d9ca4fa27c1c23ee2cf" title="Remove a timer created with AddTimer().">RemoveTimer()</a> </dd></dl>
+<a class="el" href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379" title="Remove a timer created with AddTimer().">RemoveTimer()</a> </dd></dl>
 
 </div>
 </div>
@@ -601,8 +522,8 @@ DelayNS() </dd></dl>
 
 </div>
 </div>
-<a id="ga316ad0cf487c0d9ca4fa27c1c23ee2cf" name="ga316ad0cf487c0d9ca4fa27c1c23ee2cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga316ad0cf487c0d9ca4fa27c1c23ee2cf">&#9670;&#160;</a></span>RemoveTimer()</h2>
+<a id="ga764c5af8d93b59d3e435db5cb44c8379" name="ga764c5af8d93b59d3e435db5cb44c8379"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga764c5af8d93b59d3e435db5cb44c8379">&#9670;&#160;</a></span>RemoveTimer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -611,7 +532,7 @@ DelayNS() </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::RemoveTimer </td>
+          <td class="memname">void SDL::RemoveTimer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>&#160;</td>
           <td class="paramname"><em>id</em></td><td>)</td>
@@ -630,10 +551,15 @@ DelayNS() </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5" title="Call a callback function at a future time.">AddTimer()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65" title="Call a callback function at a future time.">AddTimer</a> </dd></dl>
 
 </div>
 </div>

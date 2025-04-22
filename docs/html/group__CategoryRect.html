@@ -71,7 +71,8 @@ $(function() {
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Rectangle Functions<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a></div></div></div>
 </div><!--header-->
 <div class="contents">
@@ -93,8 +94,92 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html">SDL::FRect</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A rectangle, with the origin at the upper left (using floats).  <a href="structSDL_1_1FRect.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga04f161ee799e6e7358b9c39dce73d47e" id="r_ga04f161ee799e6e7358b9c39dce73d47e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga04f161ee799e6e7358b9c39dce73d47e">SDL::Point::IsInRect</a> (const <a class="el" href="structSDL_1_1Rect.html">Rect</a> &amp;r) const</td></tr>
+<tr class="memdesc:ga04f161ee799e6e7358b9c39dce73d47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a point resides inside a rectangle.  <br /></td></tr>
+<tr class="separator:ga04f161ee799e6e7358b9c39dce73d47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga841de9b06a5c167bb849c20f216ca7bf" id="r_ga841de9b06a5c167bb849c20f216ca7bf"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRect.html#ga841de9b06a5c167bb849c20f216ca7bf">SDL::FPoint::IsInRect</a> (const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;r) const</td></tr>
+<tr class="memdesc:ga841de9b06a5c167bb849c20f216ca7bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a point resides inside a floating point rectangle.  <br /></td></tr>
+<tr class="separator:ga841de9b06a5c167bb849c20f216ca7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga841de9b06a5c167bb849c20f216ca7bf" name="ga841de9b06a5c167bb849c20f216ca7bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga841de9b06a5c167bb849c20f216ca7bf">&#9670;&#160;</a></span>IsInRect() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::FPoint::IsInRect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td>
+          <td class="paramname"><em>r</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A point is considered part of a rectangle if both <code>p</code> and <code>r</code> are not NULL, and <code>p</code>'s x and y coordinates are &gt;= to the rectangle's top left corner, and &lt;= the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0) and (0,1) as "inside" and (0,2) as not.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>the rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if this is contained by <code>r</code>, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga04f161ee799e6e7358b9c39dce73d47e" name="ga04f161ee799e6e7358b9c39dce73d47e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga04f161ee799e6e7358b9c39dce73d47e">&#9670;&#160;</a></span>IsInRect() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool SDL::Point::IsInRect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1Rect.html">Rect</a> &amp;&#160;</td>
+          <td class="paramname"><em>r</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A point is considered part of a rectangle if both <code>p</code> and <code>r</code> are not NULL, and <code>p</code>'s x and y coordinates are &gt;= to the rectangle's top left corner, and &lt; the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0) as "inside" and (0,1) as not.</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> itself).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>the rectangle to test. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if this is contained by <code>r</code>, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

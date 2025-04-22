@@ -141,7 +141,13 @@ language, generically"). Language strings are never nullptr, except to terminate
 <p>The returned list of locales are in the order of the user's preference. For example, a German citizen that is fluent in US English and knows enough Japanese to navigate around Tokyo might have a list like: { "de", "en_US", "jp", nullptr }. Someone from England might prefer British English (where "color" is spelled "colour", etc), but will settle for anything like it: { "en_GB", "en", nullptr }.</p>
 <p>This function returns nullptr on error, including when the platform does not supply this information at all.</p>
 <p>This might be a "slow" call that has to query the operating system. It's best to ask for this once and save the results. However, this list can change, usually because the user has changed a system preference outside of your program; <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send an EVENT_LOCALE_CHANGED event in this case, if possible, and you can call this function again to get an updated copy of preferred locales.</p>
-<dl class="section return"><dt>Returns</dt><dd>a nullptr terminated array of locale pointers, or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. This is a single allocation that should be freed with <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a> when it is no longer needed.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a nullptr terminated array of locale pointers on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>

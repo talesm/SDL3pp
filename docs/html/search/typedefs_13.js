@@ -12,7 +12,7 @@ var searchData=
   ['threadpriority_9',['ThreadPriority',['../group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5',1,'SDL']]],
   ['threadstate_10',['ThreadState',['../group__CategoryThread.html#ga6f7a148f3f241be0fcf98e738225514d',1,'SDL']]],
   ['timeformat_11',['TimeFormat',['../group__CategoryTime.html#ga054c5288c34a7c6a75fedada33d3e161',1,'SDL']]],
-  ['timercallback_12',['TimerCallback',['../group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea',1,'SDL']]],
+  ['timercallback_12',['TimerCallback',['../group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3',1,'SDL']]],
   ['timercb_13',['TimerCB',['../group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
   ['timerid_14',['TimerID',['../group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146',1,'SDL']]],
   ['tlsdestructorcallback_15',['TLSDestructorCallback',['../group__CategoryThread.html#ga40949cd90f28bc3e1326cd3fbf727345',1,'SDL']]],

@@ -9,11 +9,6 @@ int main()
     std::cout << "No environment\n";
     return 1;
   }
-  auto variables = appEnv.GetVariables();
-  if (!variables) {
-    std::cout << "No variables\n";
-    return 1;
-  }
-  for (auto variable : variables) std::cout << variable << '\n';
+  for (auto variable : appEnv.GetVariables()) std::cout << variable << '\n';
   return 0;
 }

@@ -142,9 +142,9 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==<
 <tr class="memitem:a0f524858c615d8ec4b455d89e9cf7c2c" id="r_a0f524858c615d8ec4b455d89e9cf7c2c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PixelFormat.html#a0f524858c615d8ec4b455d89e9cf7c2c">GetName</a> () const</td></tr>
 <tr class="memdesc:a0f524858c615d8ec4b455d89e9cf7c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the human readable name of a pixel format.  <br /></td></tr>
 <tr class="separator:a0f524858c615d8ec4b455d89e9cf7c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abba3ab09ade332b130c4592b0a8669fa" id="r_abba3ab09ade332b130c4592b0a8669fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PixelFormat.html#abba3ab09ade332b130c4592b0a8669fa">GetMasks</a> (int *bpp, Uint32 *Rmask, Uint32 *Gmask, Uint32 *Bmask, Uint32 *Amask) const</td></tr>
-<tr class="memdesc:abba3ab09ade332b130c4592b0a8669fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert one of the enumerated pixel formats to a bpp value and RGBA masks.  <br /></td></tr>
-<tr class="separator:abba3ab09ade332b130c4592b0a8669fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af36f1368725701942a356fc9f8388efe" id="r_af36f1368725701942a356fc9f8388efe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PixelFormat.html#af36f1368725701942a356fc9f8388efe">GetMasks</a> (int *bpp, Uint32 *Rmask, Uint32 *Gmask, Uint32 *Bmask, Uint32 *Amask) const</td></tr>
+<tr class="memdesc:af36f1368725701942a356fc9f8388efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert one of the enumerated pixel formats to a bpp value and RGBA masks.  <br /></td></tr>
+<tr class="separator:af36f1368725701942a356fc9f8388efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21558986fed65bb09d029a9f05a3df41" id="r_a21558986fed65bb09d029a9f05a3df41"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41">GetDetails</a> () const</td></tr>
 <tr class="memdesc:a21558986fed65bb09d029a9f05a3df41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an PixelFormatDetails structure corresponding to a pixel format.  <br /></td></tr>
 <tr class="separator:a21558986fed65bb09d029a9f05a3df41"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -347,7 +347,7 @@ PixelFormats </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> value corresponding to the format masks, or PIXELFORMAT_UNKNOWN if there isn't a match.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#abba3ab09ade332b130c4592b0a8669fa" title="Convert one of the enumerated pixel formats to a bpp value and RGBA masks.">PixelFormat.GetMasks</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#af36f1368725701942a356fc9f8388efe" title="Convert one of the enumerated pixel formats to a bpp value and RGBA masks.">PixelFormat.GetMasks</a> </dd></dl>
 
 </div>
 </div>
@@ -523,8 +523,8 @@ PixelFormats </dd></dl>
 
 </div>
 </div>
-<a id="abba3ab09ade332b130c4592b0a8669fa" name="abba3ab09ade332b130c4592b0a8669fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abba3ab09ade332b130c4592b0a8669fa">&#9670;&#160;</a></span>GetMasks()</h2>
+<a id="af36f1368725701942a356fc9f8388efe" name="af36f1368725701942a356fc9f8388efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af36f1368725701942a356fc9f8388efe">&#9670;&#160;</a></span>GetMasks()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -533,7 +533,7 @@ PixelFormats </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::PixelFormat::GetMasks </td>
+          <td class="memname">void SDL::PixelFormat::GetMasks </td>
           <td>(</td>
           <td class="paramtype">int *&#160;</td>
           <td class="paramname"><em>bpp</em>, </td>
@@ -584,7 +584,12 @@ PixelFormats </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#adf3c56b25390fc768df4519096b5288d" title="Convert a bpp value and RGBA masks to an enumerated pixel format.">PixelFormat.ForMasks</a> </dd></dl>

@@ -1318,18 +1318,17 @@ inline std::optional<Event> PollEvent()
  *
  * @param event the Event structure to be filled in with the next event
  *              from the queue, or nullptr.
- * @returns true on success or false if there was an error while waiting for
- *          events; call GetError() for more information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa PushEvent()
- * @sa WaitEventTimeout()
+ * @sa PollEvent
+ * @sa PushEvent
+ * @sa WaitEventTimeout
  */
-inline bool WaitEvent(Event* event) { return SDL_WaitEvent(event); }
+inline void WaitEvent(Event* event) { CheckError(SDL_WaitEvent(event)); }
 
 /**
  * Wait indefinitely for the next available event.
@@ -1339,8 +1338,8 @@ inline bool WaitEvent(Event* event) { return SDL_WaitEvent(event); }
  * As this function may implicitly call PumpEvents(), you can only call
  * this function in the thread that initialized the video subsystem.
  *
- * @returns Event on success or std::nullopt if there was an error while waiting
- * for events; call GetError() for more information.
+ * @returns Event on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -1350,10 +1349,11 @@ inline bool WaitEvent(Event* event) { return SDL_WaitEvent(event); }
  * @sa PushEvent()
  * @sa WaitEventTimeout()
  */
-inline std::optional<Event> WaitEvent()
+inline Event WaitEvent()
 {
-  if (Event event; WaitEvent(&event)) return event;
-  return std::nullopt;
+  Event event;
+  WaitEvent(&event);
+  return event;
 }
 
 /**
@@ -1488,32 +1488,30 @@ inline std::optional<Event> WaitEventTimeout(
  * Not only can events be read from the queue, but the user can also push
  * their own events onto it. `event` is a pointer to the event structure you
  * wish to push onto the queue. The event is copied into the queue, and the
- * caller may dispose of the memory pointed to after SDL_PushEvent() returns.
+ * caller may dispose of the memory pointed to after PushEvent() returns.
  *
  * Note: Pushing device input events onto the queue doesn't modify the state
  * of the device within SDL.
  *
- * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
- * the event filter but events added with SDL_PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through
+ * the event filter but events added with PeepEvents() do not.
  *
- * For pushing application-specific events, please use SDL_RegisterEvents() to
+ * For pushing application-specific events, please use RegisterEvents() to
  * get an event type that does not conflict with other code that also wants
  * its own custom event types.
  *
- * @param event the SDL_Event to be added to the queue.
- * @returns true on success, false if the event was filtered or on failure;
- *          call GetError() for more information. A common reason for
- *          error is the event queue being full.
+ * @param event the Event to be added to the queue.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PeepEvents()
- * @sa PollEvent()
- * @sa RegisterEvents()
+ * @sa PeepEvents
+ * @sa PollEvent
+ * @sa RegisterEvents
  */
-inline bool PushEvent(Event* event) { return SDL_PushEvent(event); }
+inline void PushEvent(Event* event) { CheckError(SDL_PushEvent(event)); }
 
 /**
  * Add an event to the event queue.
@@ -1522,34 +1520,32 @@ inline bool PushEvent(Event* event) { return SDL_PushEvent(event); }
  * Not only can events be read from the queue, but the user can also push
  * their own events onto it. `event` is a pointer to the event structure you
  * wish to push onto the queue. The event is copied into the queue, and the
- * caller may dispose of the memory pointed to after SDL_PushEvent() returns.
+ * caller may dispose of the memory pointed to after PushEvent() returns.
  *
  * Note: Pushing device input events onto the queue doesn't modify the state
  * of the device within SDL.
  *
- * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
- * the event filter but events added with SDL_PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through
+ * the event filter but events added with PeepEvents() do not.
  *
- * For pushing application-specific events, please use SDL_RegisterEvents() to
+ * For pushing application-specific events, please use RegisterEvents() to
  * get an event type that does not conflict with other code that also wants
  * its own custom event types.
  *
- * @param event the SDL_Event to be added to the queue.
- * @returns true on success, false if the event was filtered or on failure;
- *          call GetError() for more information. A common reason for
- *          error is the event queue being full.
+ * @param event the Event to be added to the queue.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PeepEvents()
- * @sa PollEvent()
- * @sa RegisterEvents()
+ * @sa PeepEvents
+ * @sa PollEvent
+ * @sa RegisterEvents
  */
-inline bool PushEvent(const Event& event)
+inline void PushEvent(const Event& event)
 {
-  return PushEvent(const_cast<Event*>(&event));
+  PushEvent(const_cast<Event*>(&event));
 }
 
 /**
@@ -1725,17 +1721,17 @@ inline void SetEventFilter(EventFilterCB filter = {})
  * @param filter the current callback function will be stored here.
  * @param userdata the pointer that is passed to the current event filter will
  *                 be stored here.
- * @returns true on success or false if there is no event filter set.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetEventFilter()
+ * @sa SetEventFilter
  */
-inline bool GetEventFilter(EventFilter* filter, void** userdata)
+inline void GetEventFilter(EventFilter* filter, void** userdata)
 {
-  return SDL_GetEventFilter(filter, userdata);
+  CheckError(SDL_GetEventFilter(filter, userdata));
 }
 
 /**
@@ -1796,19 +1792,18 @@ inline bool EventWatchAuxCallback(void* userdata, Event* event)
  *
  * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RemoveEventWatch()
- * @sa SetEventFilter()
+ * @sa RemoveEventWatch
+ * @sa SetEventFilter
  */
-inline bool AddEventWatch(EventFilter filter, void* userdata)
+inline void AddEventWatch(EventFilter filter, void* userdata)
 {
-  return SDL_AddEventWatch(filter, userdata);
+  CheckError(SDL_AddEventWatch(filter, userdata));
 }
 
 /**
@@ -1831,7 +1826,8 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  *
  * @param filter an EventFilterCB to call when an event happens.
  * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
- * success or false on failure; call GetError() for more information.
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1851,7 +1847,7 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
   auto cb = Wrapper::Wrap(std::move(filter));
   if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
     delete cb;
-    return EventWatchHandle{nullptr};
+    throw Error{};
   }
 
   static std::atomic_size_t lastId = 0;
@@ -2006,7 +2002,8 @@ inline Uint32 RegisterEvents(int numevents)
  * Get window associated with an event.
  *
  * @param event an event containing a `windowID`.
- * @returns the associated window on success or nullptr if there is none.
+ * @returns the associated window on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2018,7 +2015,7 @@ inline Uint32 RegisterEvents(int numevents)
  */
 inline WindowRef GetWindowFromEvent(const Event& event)
 {
-  return SDL_GetWindowFromEvent(&event);
+  return CheckError(SDL_GetWindowFromEvent(&event));
 }
 
 /// @}

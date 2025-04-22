@@ -134,9 +134,9 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> 
 constexpr <a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int index) const</td></tr>
 <tr class="memdesc:ad6582caa95f3cdb4b2b3f2971ddc3dc3 inherit pub_methods_structSDL_1_1PaletteBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index color. <br /></td></tr>
 <tr class="separator:ad6582caa95f3cdb4b2b3f2971ddc3dc3 inherit pub_methods_structSDL_1_1PaletteBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a182050cc70648a53ecb79beadcf22d6e inherit pub_methods_structSDL_1_1PaletteBase" id="r_a182050cc70648a53ecb79beadcf22d6e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#a182050cc70648a53ecb79beadcf22d6e">SetColors</a> (std::span&lt; const SDL_Color &gt; colors, int firstcolor=0)</td></tr>
-<tr class="memdesc:a182050cc70648a53ecb79beadcf22d6e inherit pub_methods_structSDL_1_1PaletteBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a range of colors in a palette.  <br /></td></tr>
-<tr class="separator:a182050cc70648a53ecb79beadcf22d6e inherit pub_methods_structSDL_1_1PaletteBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae556f9a5758248f5e8af10d40b647105 inherit pub_methods_structSDL_1_1PaletteBase" id="r_ae556f9a5758248f5e8af10d40b647105"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#ae556f9a5758248f5e8af10d40b647105">SetColors</a> (std::span&lt; const SDL_Color &gt; colors, int firstcolor=0)</td></tr>
+<tr class="memdesc:ae556f9a5758248f5e8af10d40b647105 inherit pub_methods_structSDL_1_1PaletteBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a range of colors in a palette.  <br /></td></tr>
+<tr class="separator:ae556f9a5758248f5e8af10d40b647105 inherit pub_methods_structSDL_1_1PaletteBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27d288a2a74d6a3ef57070f67e14b59b inherit pub_methods_structSDL_1_1PaletteBase" id="r_a27d288a2a74d6a3ef57070f67e14b59b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#a27d288a2a74d6a3ef57070f67e14b59b">SetColors</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const SDL_Color &gt; colors, int firstcolor=0)</td></tr>
 <tr class="memdesc:a27d288a2a74d6a3ef57070f67e14b59b inherit pub_methods_structSDL_1_1PaletteBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a range of colors in a palette.  <br /></td></tr>
 <tr class="separator:a27d288a2a74d6a3ef57070f67e14b59b inherit pub_methods_structSDL_1_1PaletteBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,12 +252,18 @@ constexpr SDL_Palette *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>this represents a new <a class="el" href="structSDL_1_1Palette.html" title="Handle to an owned palette.">Palette</a> structure convertible to true on success or converts to false on failure (e.g. if there wasn't enough memory); call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a new <a class="el" href="structSDL_1_1Palette.html" title="Handle to an owned palette.">Palette</a> structure on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#a182050cc70648a53ecb79beadcf22d6e" title="Set a range of colors in a palette.">PaletteBase.SetColors</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#ae556f9a5758248f5e8af10d40b647105" title="Set a range of colors in a palette.">PaletteBase.SetColors</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceBase.html#ab531f62c2f705d502c456c15c4060c06" title="Set the palette used by a surface.">SurfaceBase.SetPalette</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceBase.html#ab7ad5d277d1f6e997eaf5fdbc5a306e7" title="Set the palette used by a surface.">SurfaceBase.SetPalette</a> </dd></dl>
 
 </div>
 </div>

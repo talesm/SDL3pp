@@ -5,7 +5,7 @@ SCENARIO("Locking surface")
 {
   GIVEN("A surface")
   {
-    SDL::Surface surface{400, 400, SDL_PIXELFORMAT_RGBA32};
+    SDL::Surface surface{{400, 400}, SDL_PIXELFORMAT_RGBA32};
     REQUIRE(surface);
     WHEN("Check if must lock")
     {

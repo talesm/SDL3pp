@@ -150,8 +150,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * LoadBMP(StringParam).
    *
    * @param file a path on the filesystem to load an image from.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new Surface with loaded contents on success.
+   * @throws Error on failure.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
@@ -165,8 +165,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * LoadBMP(IOStreamBase&).
    *
    * @param src an IOStreamBase to load an image from.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new Surface with loaded contents on success.
+   * @throws Error on failure.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
@@ -178,18 +178,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * The pixels of the new surface are initialized to zero.
    *
-   * @param width the width of the surface.
-   * @param height the height of the surface.
+   * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new SurfaceBase structure that is created.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  SurfaceBase(int width, int height, PixelFormat format)
-    : Resource(SDL_CreateSurface(width, height, format))
+  SurfaceBase(const SDL_Point& size, PixelFormat format)
+    : Resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
   {
   }
 
@@ -206,24 +205,23 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * You may pass nullptr for pixels and 0 for pitch to create a surface that
    * you will fill in with valid values later.
    *
-   * @param width the width of the surface.
-   * @param height the height of the surface.
+   * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new SurfaceBase structure that is created.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  SurfaceBase(int width,
-              int height,
+  SurfaceBase(const SDL_Point& size,
               PixelFormat format,
               void* pixels,
               int pitch)
-    : Resource(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch))
+    : Resource(CheckError(
+        SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
   {
   }
 
@@ -264,16 +262,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * interpreted in color operations.
    *
    * @param colorspace a Colorspace value describing the surface colorspace.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetColorspace()
+   * @sa SurfaceBase.GetColorspace
    */
-  bool SetColorspace(Colorspace colorspace)
+  void SetColorspace(Colorspace colorspace)
   {
-    return SDL_SetSurfaceColorspace(get(), colorspace);
+    CheckError(SDL_SetSurfaceColorspace(get(), colorspace));
   }
 
   /**
@@ -320,9 +319,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * A single palette can be shared with many surfaces.
    *
-   * @param palette the Palette to use.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param palette the PaletteBase structure to use.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -331,16 +329,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @sa PaletteBase.PaletteBase
    * @sa SurfaceBase.GetPalette
    */
-  bool SetPalette(PaletteBase& palette)
+  void SetPalette(PaletteBase& palette)
   {
-    return SDL_SetSurfacePalette(get(), palette.get());
+    CheckError(SDL_SetSurfacePalette(get(), palette.get()));
   }
 
   /**
    * Get the palette used by a surface.
    *
-   * @returns a pointer to the palette used by the surface, or NULL if there is
-   *          no palette used.
+   * @returns a pointer to the palette used by the surface, or nullptr if there
+   *          is no palette used.
    */
   PaletteRef GetPalette() const { return SDL_GetSurfacePalette(get()); }
 
@@ -357,8 +355,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @param image an alternate SurfaceBase to associate with this
    *              surface.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -368,9 +365,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @sa SurfaceBase.GetImages
    * @sa SurfaceBase.HasAlternateImages
    */
-  bool AddAlternateImage(SurfaceBase& image)
+  void AddAlternateImage(SurfaceBase& image)
   {
-    return SDL_AddSurfaceAlternateImage(get(), image.get());
+    CheckError(SDL_AddSurfaceAlternateImage(get(), image.get()));
   }
 
   /**
@@ -449,8 +446,10 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * evaluates to false, then you can read and write to the surface at any time,
    * and the pixel format of the surface will not change.
    *
-   * @returns SurfaceLock object that converts to true on success or false on
-   * failure; call GetError() for more information.
+   * @returns SurfaceLock object on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -466,10 +465,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * the surface must be locked before directly accessing the pixels.
    *
    * @param enabled true to enable RLE acceleration, false to disable it.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.Blit
+   * @sa SurfaceBase.Lock
+   * @sa SurfaceLock.Unlock
    */
-  bool SetRLE(bool enabled) { return SDL_SetSurfaceRLE(get(), enabled); }
+  void SetRLE(bool enabled) { CheckError(SDL_SetSurfaceRLE(get(), enabled)); }
 
   /**
    * Returns whether the surface is RLE enabled.
@@ -489,8 +495,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * SDL_MapRGB().
    *
    * @param key the transparent pixel color.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -498,7 +503,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @sa SetRLE()
    * @sa HasColorKey()
    */
-  bool SetColorKey(Color key) { return SetColorKey(MapColor(key)); }
+  void SetColorKey(Color key) { SetColorKey(MapColor(key)); }
 
   /**
    * Set the color key (transparent pixel) in a surface.
@@ -508,21 +513,22 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * considered transparent, and therefore not rendered.
    *
    * It is a pixel of the format used by the surface, as generated by
-   * SDL_MapRGB().
+   * MapRGB().
    *
    * @param key the transparent pixel or std::nullopt to disable it.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetColorKey()
-   * @sa SetRLE()
-   * @sa HasColorKey()
+   * @sa SurfaceBase.GetColorKey
+   * @sa SurfaceBase.SetRLE
+   * @sa SurfaceBase.HasColorKey
    */
-  bool SetColorKey(std::optional<Uint32> key)
+  void SetColorKey(std::optional<Uint32> key)
   {
-    return SDL_SetSurfaceColorKey(get(), key.has_value(), key.value_or(0));
+    CheckError(SDL_SetSurfaceColorKey(get(), key.has_value(), key.value_or(0)));
   }
 
   /**
@@ -532,10 +538,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * a blit. For example, one can use this to specify that cyan pixels should be
    * considered transparent, and therefore not rendered.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    */
-  bool ClearColorKey() { return SDL_SetSurfaceColorKey(get(), false, 0); }
+  void ClearColorKey() { CheckError(SDL_SetSurfaceColorKey(get(), false, 0)); }
 
   /**
    * Returns whether the surface has a color key.
@@ -554,16 +559,18 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * std::nullopt.
    *
    * @returns the color key as Color or std::nullopt if it does not have one.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SetColorKey()
    * @sa HasColorKey()
    */
-  std::optional<Color> GetColorKey() const
+  Color GetColorKey() const
   {
-    if (Color color; GetColorKey(&color)) return color;
-    return std::nullopt;
+    Color color;
+    GetColorKey(&color);
+    return color;
   }
 
   /**
@@ -575,43 +582,43 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * If the surface doesn't have color key enabled this function returns false.
    *
    * @param key a pointer filled in with the transparent pixel.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SetColorKey()
    * @sa HasColorKey()
    */
-  bool GetColorKey(Color* key) const
+  void GetColorKey(Color* key) const
   {
-    if (Uint32 color; GetColorKey(&color)) {
-      *key = GetFormat().Get(color, GetPalette());
-      return true;
-    }
-    return false;
+    Uint32 color;
+    GetColorKey(&color);
+    *key = GetFormat().Get(color, GetPalette());
   }
 
   /**
    * Get the color key (transparent pixel) for a surface.
    *
    * The color key is a pixel of the format used by the surface, as generated by
-   * SDL_MapRGB().
+   * MapRGB().
    *
    * If the surface doesn't have color key enabled this function returns false.
    *
    * @param key a pointer filled in with the transparent pixel.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SetColorKey()
-   * @sa HasColorKey()
+   * @sa SurfaceBase.SetColorKey
+   * @sa SurfaceBase.HasColorKey
    */
-  bool GetColorKey(Uint32* key) const
+  void GetColorKey(Uint32* key) const
   {
-    return SDL_GetSurfaceColorKey(get(), key);
+    CheckError(SDL_GetSurfaceColorKey(get(), key));
   }
 
   /**
@@ -626,12 +633,18 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param r the red color value multiplied into blit operations.
    * @param g the green color value multiplied into blit operations.
    * @param b the blue color value multiplied into blit operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.GetColorMod
+   * @sa SurfaceBase.SetAlphaMod
    */
-  bool SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
   {
-    return SDL_SetSurfaceColorMod(get(), r, g, b);
+    CheckError(SDL_SetSurfaceColorMod(get(), r, g, b));
   }
 
   /**
@@ -640,12 +653,18 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param r a pointer filled in with the current red color value.
    * @param g a pointer filled in with the current green color value.
    * @param b a pointer filled in with the current blue color value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.GetAlphaMod
+   * @sa SurfaceBase.SetColorMod
    */
-  bool GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
   {
-    return SDL_GetSurfaceColorMod(get(), r, g, b);
+    CheckError(SDL_GetSurfaceColorMod(get(), r, g, b));
   }
 
   /**
@@ -657,21 +676,37 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * `srcA = srcA * (alpha / 255)`
    *
    * @param alpha the alpha value multiplied into blit operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.GetAlphaMod
+   * @sa SurfaceBase.SetColorMod
    */
-  bool SetAlphaMod(Uint8 alpha) { return SDL_SetSurfaceAlphaMod(get(), alpha); }
+  void SetAlphaMod(Uint8 alpha)
+  {
+    CheckError(SDL_SetSurfaceAlphaMod(get(), alpha));
+  }
 
   /**
    * Get the additional alpha value used in blit operations.
    *
-   * @returns alpha on success or std::nullopt on failure; call GetError()
-   * for more information.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.GetColorMod
+   * @sa SurfaceBase.SetAlphaMod
    */
-  std::optional<Uint8> GetAlphaMod() const
+  Uint8 GetAlphaMod() const
   {
-    if (Uint8 alpha; SDL_GetSurfaceAlphaMod(get(), &alpha)) return alpha;
-    return std::nullopt;
+    Uint8 alpha;
+    CheckError(SDL_GetSurfaceAlphaMod(get(), &alpha));
+    return alpha;
   }
 
   /**
@@ -686,12 +721,12 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * `srcA = srcA * (alpha / 255)`
    *
    * @param color the color to be multiplied in blit operations
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    */
-  bool SetColorAndAlphaMod(Color color)
+  void SetMod(Color color)
   {
-    return SetColorMod(color.r, color.g, color.b) && SetAlphaMod(color.a);
+    SetColorMod(color.r, color.g, color.b);
+    SetAlphaMod(color.a);
   }
 
   /**
@@ -701,13 +736,12 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @returns a Color containing RGBA value on success or std::nullopt on
    * failure; call GetError() for more information.
    */
-  std::optional<Color> GetColorAndAlphaMod() const
+  Color GetMod() const
   {
-    if (Color c;
-        GetColorMod(&c.r, &c.g, &c.b) && SDL_GetSurfaceAlphaMod(get(), &c.a)) {
-      return c;
-    }
-    return std::nullopt;
+    Color c;
+    GetColorMod(&c.r, &c.g, &c.b);
+    c.a = GetAlphaMod();
+    return c;
   }
 
   /**
@@ -715,19 +749,20 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * To copy a surface to another surface (or texture) without blending with the
    * existing data, the blendmode of the SOURCE surface should be set to
-   * `SDL_BLENDMODE_NONE`.
+   * `BLENDMODE_NONE`.
    *
-   * @param blendMode the SDL_BlendMode to use for blit blending.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param blendMode the BlendMode to use for blit blending.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetBlendMode()
+   * @sa SurfaceBase.GetBlendMode
    */
-  bool SetBlendMode(BlendMode blendMode)
+  void SetBlendMode(BlendMode blendMode)
   {
-    return SDL_SetSurfaceBlendMode(get(), blendMode);
+    CheckError(SDL_SetSurfaceBlendMode(get(), blendMode));
   }
 
   /**
@@ -770,11 +805,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
   /**
    * Disable the clipping rectangle for a surface.
    *
-   * @returns true if clips was reset successfully
-   *
    * @sa SetClipRect()
    */
-  bool ResetClipRect() { return SDL_SetSurfaceClipRect(get(), nullptr); }
+  void ResetClipRect() { SDL_SetSurfaceClipRect(get(), nullptr); }
 
   /**
    * Get the clipping rectangle for a surface.
@@ -796,12 +829,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Flip a surface vertically or horizontally.
    *
    * @param flip the direction to flip.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Flip(FlipMode flip) { return SDL_FlipSurface(get(), flip); }
+  void Flip(FlipMode flip) { CheckError(SDL_FlipSurface(get(), flip)); }
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -903,14 +937,15 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @param linear true to convert from sRGB to linear space for the alpha
    *               multiplication, false to do multiplication in sRGB space.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool PremultiplyAlpha(bool linear)
+  void PremultiplyAlpha(bool linear)
   {
-    return SDL_PremultiplySurfaceAlpha(get(), linear);
+    CheckError(SDL_PremultiplySurfaceAlpha(get(), linear));
   }
 
   // TODO SDL_ConvertSurfaceAndColorspace
@@ -924,218 +959,146 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * otherwise the color is assumed to be in the colorspace of the surface.
    *
    * @param color the color of the pixel, normally in the range 0-1.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Clear(SDL_FColor color)
+  void Clear(SDL_FColor color)
   {
-    return SDL_ClearSurface(get(), color.r, color.g, color.b, color.a);
+    CheckError(SDL_ClearSurface(get(), color.r, color.g, color.b, color.a));
+  }
+
+  /**
+   * Perform a fast fill of a rectangle with a specific color.
+   *
+   * If there is a clip rectangle set on the destination (set via
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * intersection of the clip rectangle and `rect`.
+   *
+   * @param color the color to fill with.
+   * @throws Error on failure.
+   */
+  void Fill(SDL_Color color) { return Fill(MapColor(color)); }
+
+  /**
+   * Perform a fast fill of a rectangle with a specific color.
+   *
+   * `color` should be a pixel of the format used by the surface, and can be
+   * generated by MapRGB() or MapRGBA(). If the color value contains an
+   * alpha component then the destination is simply filled with that alpha
+   * information, no blending takes place.
+   *
+   * If there is a clip rectangle set on the destination (set via
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * intersection of the clip rectangle and `rect`.
+   *
+   * @param color the color to fill with.
+   * @throws Error on failure.
+   */
+  void Fill(Uint32 color)
+  {
+    CheckError(SDL_FillSurfaceRect(get(), nullptr, color));
+  }
+
+  /**
+   * Perform a fast fill of a rectangle with a specific color.
+   *
+   * If there is a clip rectangle set on the destination (set via
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * intersection of the clip rectangle and `rect`.
+   *
+   * @param rect the SDL_Rect structure representing the rectangle to fill.
+   * @param color the color to fill with.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.FillRects
+   */
+  void FillRect(const SDL_Rect& rect, SDL_Color color)
+  {
+    FillRect(rect, MapColor(color));
   }
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
+   * generated by MapRGB() or MapRGBA(). If the color value contains an
    * alpha component then the destination is simply filled with that alpha
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
-   * the clip rectangle.
-   *
-   * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool Fill(SDL_Color color) { return Fill(MapColor(color)); }
-
-  /**
-   * Perform a fast fill of a rectangle with a specific color.
-   *
-   * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
-   * alpha component then the destination is simply filled with that alpha
-   * information, no blending takes place.
-   *
-   * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
-   * the clip rectangle.
-   *
-   * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool Fill(Uint32 color) { return SDL_FillSurfaceRect(get(), nullptr, color); }
-
-  /**
-   * Perform a fast fill of a rectangle with a specific color.
-   *
-   * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rect the SDL_Rect structure representing the rectangle to fill.
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.FillRects
    */
-  bool FillRect(const SDL_Rect& rect, SDL_Color color)
+  void FillRect(const SDL_Rect& rect, Uint32 color)
   {
-    return FillRect(rect, MapColor(color));
-  }
-
-  /**
-   * Perform a fast fill of a rectangle with a specific color.
-   *
-   * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
-   * alpha component then the destination is simply filled with that alpha
-   * information, no blending takes place.
-   *
-   * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
-   * intersection of the clip rectangle and `rect`.
-   *
-   * @param rect the SDL_Rect structure representing the rectangle to fill.
-   * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool FillRect(const SDL_Rect& rect, Uint32 color)
-  {
-    return SDL_FillSurfaceRect(get(), &rect, color);
+    CheckError(SDL_FillSurfaceRect(get(), &rect, color));
   }
 
   /**
    * Perform a fast fill of a set of rectangles with a specific color.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rects an array of SDL_Rects representing the rectangles to fill.
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa FillRect()
    */
-  bool FillRects(SpanRef<const SDL_Rect> rects, SDL_Color color)
+  void FillRects(SpanRef<const SDL_Rect> rects, SDL_Color color)
   {
-    return FillRects(rects, MapColor(color));
+    FillRects(rects, MapColor(color));
   }
 
   /**
    * Perform a fast fill of a set of rectangles with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
+   * generated by MapRGB() or MapRGBA(). If the color value contains an
    * alpha component then the destination is simply filled with that alpha
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rects an array of SDL_Rects representing the rectangles to fill.
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa FillRect()
+   * @sa SurfaceBase.FillRect
    */
-  bool FillRects(SpanRef<const SDL_Rect> rects, Uint32 color)
+  void FillRects(SpanRef<const SDL_Rect> rects, Uint32 color)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_UINT32);
-    return SDL_FillSurfaceRects(get(), rects.data(), rects.size(), color);
-  }
-
-  /**
-   * Performs a fast blit from the source surface to the destination surface
-   * with clipping.
-   *
-   * If either `srcrect` or `dstrect` are NULL, the entire surface (`src` or
-   * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
-   *
-   * The final blit rectangles are saved in `srcrect` and `dstrect` after all
-   * clipping is performed.
-   *
-   * The blit function should not be called on a locked surface.
-   *
-   * The blit semantics for surfaces with and without blending and colorkey are
-   * defined as follows:
-   *
-   * ```
-   *    RGBA->RGB:
-   *      Source surface blend mode set to SDL_BLENDMODE_BLEND:
-   *       alpha-blend (using the source alpha-channel and per-surface alpha)
-   *       SDL_SRCCOLORKEY ignored.
-   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
-   *       copy RGB.
-   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
-   *       RGB values of the source color key, ignoring alpha in the
-   *       comparison.
-   *
-   *   RGB->RGBA:
-   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
-   *       alpha-blend (using the source per-surface alpha)
-   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
-   *       copy RGB, set destination alpha to source per-surface alpha value.
-   *     both:
-   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
-   *       source color key.
-   *
-   *   RGBA->RGBA:
-   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
-   *       alpha-blend (using the source alpha-channel and per-surface alpha)
-   *       SDL_SRCCOLORKEY ignored.
-   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
-   *       copy all of RGBA to the destination.
-   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
-   *       RGB values of the source color key, ignoring alpha in the
-   *       comparison.
-   *
-   *   RGB->RGB:
-   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
-   *       alpha-blend (using the source per-surface alpha)
-   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
-   *       copy RGB.
-   *     both:
-   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
-   *       source color key.
-   * ```
-   *
-   * @param src the SDL_Surface structure to be copied from.
-   * @param srcrect the SDL_Rect structure representing the rectangle to be
-   *                copied, or NULL to copy the entire surface.
-   * @param dstpos  the SDL_Point structure representing the x and y position in
-   *                the destination surface, or NULL for (0,0). The width and
-   *                height are ignored, and are copied from `srcrect`. If you
-   *                want a specific width and height, you should use
-   *                SDL_BlitSurfaceScaled().
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety The same destination surface should not be used from two
-   *               threads at once. It is safe to use the same source surface
-   *               from multiple threads.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa BlitScaled()
-   */
-  bool Blit(const SurfaceBase& src,
-            OptionalRef<const SDL_Rect> srcrect,
-            const SDL_Point& dstpos)
-  {
-    return Blit(src, srcrect, Rect{dstpos, {}});
+    CheckError(SDL_FillSurfaceRects(get(), rects.data(), rects.size(), color));
   }
 
   /**
@@ -1196,13 +1159,12 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, or NULL to copy the entire surface.
-   * @param dstrect the SDL_Point structure representing the x and y position in
+   * @param dstpos  the SDL_Point structure representing the x and y position in
    *                the destination surface, or NULL for (0,0). The width and
    *                height are ignored, and are copied from `srcrect`. If you
    *                want a specific width and height, you should use
    *                SurfaceBase.BlitScaled().
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -1211,11 +1173,90 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.BlitScaled
    */
-  bool Blit(const SurfaceBase& src,
+  void Blit(const SurfaceBase& src,
+            OptionalRef<const SDL_Rect> srcrect,
+            const SDL_Point& dstpos)
+  {
+    Blit(src, srcrect, Rect{dstpos, {}});
+  }
+
+  /**
+   * Performs a fast blit from the source surface to the destination surface
+   * with clipping.
+   *
+   * If either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or
+   * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
+   *
+   * The final blit rectangles are saved in `srcrect` and `dstrect` after all
+   * clipping is performed.
+   *
+   * The blit function should not be called on a locked surface.
+   *
+   * The blit semantics for surfaces with and without blending and colorkey are
+   * defined as follows:
+   *
+   * ```
+   *    RGBA->RGB:
+   *      Source surface blend mode set to BLENDMODE_BLEND:
+   *       alpha-blend (using the source alpha-channel and per-surface alpha)
+   *       SDL_SRCCOLORKEY ignored.
+   *     Source surface blend mode set to BLENDMODE_NONE:
+   *       copy RGB.
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       RGB values of the source color key, ignoring alpha in the
+   *       comparison.
+   *
+   *   RGB->RGBA:
+   *     Source surface blend mode set to BLENDMODE_BLEND:
+   *       alpha-blend (using the source per-surface alpha)
+   *     Source surface blend mode set to BLENDMODE_NONE:
+   *       copy RGB, set destination alpha to source per-surface alpha value.
+   *     both:
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       source color key.
+   *
+   *   RGBA->RGBA:
+   *     Source surface blend mode set to BLENDMODE_BLEND:
+   *       alpha-blend (using the source alpha-channel and per-surface alpha)
+   *       SDL_SRCCOLORKEY ignored.
+   *     Source surface blend mode set to BLENDMODE_NONE:
+   *       copy all of RGBA to the destination.
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       RGB values of the source color key, ignoring alpha in the
+   *       comparison.
+   *
+   *   RGB->RGB:
+   *     Source surface blend mode set to BLENDMODE_BLEND:
+   *       alpha-blend (using the source per-surface alpha)
+   *     Source surface blend mode set to BLENDMODE_NONE:
+   *       copy RGB.
+   *     both:
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       source color key.
+   * ```
+   *
+   * @param src the SDL_Surface structure to be copied from.
+   * @param srcrect the SDL_Rect structure representing the rectangle to be
+   *                copied, or NULL to copy the entire surface.
+   * @param dstrect the SDL_Rect structure representing the x and y position in
+   *                the destination surface, or NULL for (0,0). The width and
+   *                height are ignored, and are copied from `srcrect`. If you
+   *                want a specific width and height, you should use
+   *                SurfaceBase.BlitScaled().
+   * @throws Error on failure.
+   *
+   * @threadsafety Only one thread should be using the `src` and `dst` surfaces
+   *               at any given time.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.BlitScaled
+   */
+  void Blit(const SurfaceBase& src,
             OptionalRef<const SDL_Rect> srcrect,
             OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurface(src.get(), srcrect, get(), dstrect);
+    CheckError(SDL_BlitSurface(src.get(), srcrect, get(), dstrect));
   }
 
   /**
@@ -1228,9 +1269,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, may not be NULL.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
-   *                the destination surface, may not be NULL.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *                the destination surface, may not be nullptr.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -1239,11 +1279,11 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool BlitUnchecked(const SurfaceBase& src,
+  void BlitUnchecked(const SurfaceBase& src,
                      const SDL_Rect& srcrect,
                      const SDL_Rect& dstrect)
   {
-    return SDL_BlitSurfaceUnchecked(src.get(), &srcrect, get(), &dstrect);
+    CheckError(SDL_BlitSurfaceUnchecked(src.get(), &srcrect, get(), &dstrect));
   }
 
   /**
@@ -1257,8 +1297,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *                the destination surface, or nullptr to fill the entire
    *                destination surface.
    * @param scaleMode the ScaleMode to be used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -1267,12 +1306,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool BlitScaled(const SurfaceBase& src,
+  void BlitScaled(const SurfaceBase& src,
                   OptionalRef<const SDL_Rect> srcrect,
                   OptionalRef<const SDL_Rect> dstrect,
                   ScaleMode scaleMode)
   {
-    return SDL_BlitSurfaceScaled(src.get(), srcrect, get(), dstrect, scaleMode);
+    CheckError(
+      SDL_BlitSurfaceScaled(src.get(), srcrect, get(), dstrect, scaleMode));
   }
 
   /**
@@ -1287,8 +1327,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, may not be nullptr.
    * @param scaleMode the ScaleMode to be used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -1297,13 +1336,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.BlitScaled
    */
-  bool BlitUncheckedScaled(const SurfaceBase& src,
+  void BlitUncheckedScaled(const SurfaceBase& src,
                            const SDL_Rect& srcrect,
                            const SDL_Rect& dstrect,
                            ScaleMode scaleMode)
   {
-    return SDL_BlitSurfaceScaled(
-      src.get(), &srcrect, get(), &dstrect, scaleMode);
+    CheckError(
+      SDL_BlitSurfaceScaled(src.get(), &srcrect, get(), &dstrect, scaleMode));
   }
 
 #if SDL_VERSION_ATLEAST(3, 2, 4)
@@ -1317,8 +1356,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, may not be nullptr.
    * @param scaleMode the ScaleMode to be used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -1327,12 +1365,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.BlitScaled
    */
-  bool Stretch(const SurfaceBase& src,
+  void Stretch(const SurfaceBase& src,
                const SDL_Rect& srcrect,
                const SDL_Rect& dstrect,
                ScaleMode scaleMode)
   {
-    return SDL_StretchSurface(src.get(), &srcrect, get(), &dstrect, scaleMode);
+    CheckError(
+      SDL_StretchSurface(src.get(), &srcrect, get(), &dstrect, scaleMode));
   }
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 4)
@@ -1350,8 +1389,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, or nullptr to fill the entire
    *                surface.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -1360,11 +1398,11 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool BlitTiled(const SurfaceBase& src,
+  void BlitTiled(const SurfaceBase& src,
                  OptionalRef<const SDL_Rect> srcrect,
                  OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurfaceTiled(src.get(), srcrect, get(), dstrect);
+    CheckError(SDL_BlitSurfaceTiled(src.get(), srcrect, get(), dstrect));
   }
 
   /**
@@ -1383,9 +1421,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param scaleMode scale algorithm to be used.
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, or nullptr to fill the entire
-   * surface.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *                surface.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -1394,14 +1431,14 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool BlitTiledWithScale(const SurfaceBase& src,
+  void BlitTiledWithScale(const SurfaceBase& src,
                           OptionalRef<const SDL_Rect> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
                           OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurfaceTiledWithScale(
-      src.get(), srcrect, scale, scaleMode, get(), dstrect);
+    CheckError(SDL_BlitSurfaceTiledWithScale(
+      src.get(), srcrect, scale, scaleMode, get(), dstrect));
   }
 
   /**
@@ -1415,27 +1452,26 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * then stretched into place to cover the remaining destination rectangle.
    *
    * @param src the SDL_Surface structure to be copied from.
+   * @param srcrect the Rect structure representing the rectangle to be used
+   *                for the 9-grid, or nullptr to use the entire surface.
    * @param left_width the width, in pixels, of the left corners in `srcrect`.
    * @param right_width the width, in pixels, of the right corners in `srcrect`.
    * @param top_height the height, in pixels, of the top corners in `srcrect`.
    * @param bottom_height the height, in pixels, of the bottom corners in
    *                      `srcrect`.
-   * @param dstrect the SDL_Rect structure representing the target rectangle in
-   *                the destination surface, or NULL to fill the entire surface.
-   * @param srcrect the SDL_Rect structure representing the rectangle to be used
-   *                for the 9-grid, or NULL to use the entire surface.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @param dstrect the Rect structure representing the target rectangle in
+   *                the destination surface, or nullptr to fill the entire
+   * surface.
+   * @throws Error on failure.
    *
-   * @threadsafety The same destination surface should not be used from two
-   *               threads at once. It is safe to use the same source surface
-   *               from multiple threads.
+   * @threadsafety Only one thread should be using the `src` and `dst` surfaces
+   *               at any given time.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Blit()
+   * @sa SurfaceBase.Blit
    */
-  bool Blit9Grid(const SurfaceBase& src,
+  void Blit9Grid(const SurfaceBase& src,
                  OptionalRef<const SDL_Rect> srcrect,
                  int left_width,
                  int right_width,
@@ -1443,15 +1479,15 @@ struct SurfaceBase : Resource<SDL_Surface*>
                  int bottom_height,
                  OptionalRef<const SDL_Rect> dstrect)
   {
-    return Blit9GridWithScale(src,
-                              srcrect,
-                              left_width,
-                              right_width,
-                              top_height,
-                              bottom_height,
-                              0.0,
-                              SDL_SCALEMODE_NEAREST,
-                              dstrect);
+    Blit9GridWithScale(src,
+                       srcrect,
+                       left_width,
+                       right_width,
+                       top_height,
+                       bottom_height,
+                       0.0,
+                       SDL_SCALEMODE_NEAREST,
+                       dstrect);
   }
 
   /**
@@ -1477,9 +1513,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param scaleMode scale algorithm to be used.
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, or nullptr to fill the entire
-   *                surface.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * surface.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -1488,7 +1523,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool Blit9GridWithScale(const SurfaceBase& src,
+  void Blit9GridWithScale(const SurfaceBase& src,
                           OptionalRef<const SDL_Rect> srcrect,
                           int left_width,
                           int right_width,
@@ -1498,16 +1533,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
                           SDL_ScaleMode scaleMode,
                           OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurface9Grid(src.get(),
-                                srcrect,
-                                left_width,
-                                right_width,
-                                top_height,
-                                bottom_height,
-                                scale,
-                                scaleMode,
-                                get(),
-                                dstrect);
+    CheckError(SDL_BlitSurface9Grid(src.get(),
+                                    srcrect,
+                                    left_width,
+                                    right_width,
+                                    top_height,
+                                    bottom_height,
+                                    scale,
+                                    scaleMode,
+                                    get(),
+                                    dstrect));
   }
 
   /**
@@ -1600,15 +1635,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
-   * @returns color  on success or std::nullopt on failure; call GetError() for
-   * more information.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @returns color on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    */
-  std::optional<Color> ReadPixel(int x, int y) const
+  Color ReadPixel(const SDL_Point& p) const
   {
-    if (Color c; ReadPixel(x, y, &c)) return c;
-    return std::nullopt;
+    Color c;
+    ReadPixel(p, &c);
+    return c;
   }
 
   /**
@@ -1618,16 +1655,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param c a color pointer to be filled with the color information. Must not
-   *          be NULL.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *          be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    */
-  bool ReadPixel(int x, int y, SDL_Color* c) const
+  void ReadPixel(const SDL_Point& p, SDL_Color* c) const
   {
-    return ReadPixel(x, y, &c->r, &c->g, &c->b, &c->a);
+    ReadPixel(p, &c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -1636,16 +1673,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param c a color pointer to be filled with the color information. Must not
-   *          be NULL.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *          be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    */
-  bool ReadPixel(int x, int y, SDL_FColor* c) const
+  void ReadPixel(const SDL_Point& p, SDL_FColor* c) const
   {
-    return ReadPixel(x, y, &c->r, &c->g, &c->b, &c->a);
+    return ReadPixel(p, &c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -1654,27 +1691,31 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
+   * Like GetRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
-   * @param r a pointer filled in with the red channel, 0-255, or NULL to ignore
-   *          this channel.
-   * @param g a pointer filled in with the green channel, 0-255, or NULL to
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+   * ignore this channel.
+   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
    *          ignore this channel.
-   * @param b a pointer filled in with the blue channel, 0-255, or NULL to
+   * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
    *          ignore this channel.
-   * @param a a pointer filled in with the alpha channel, 0-255, or NULL to
+   * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
    *          ignore this channel.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadPixel(int x, int y, Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+  void ReadPixel(const SDL_Point& p,
+                 Uint8* r,
+                 Uint8* g,
+                 Uint8* b,
+                 Uint8* a) const
   {
-    return SDL_ReadSurfacePixel(get(), x, y, r, g, b, a);
+    CheckError(SDL_ReadSurfacePixel(get(), p.x, p.y, r, g, b, a));
   }
 
   /**
@@ -1683,40 +1724,50 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param r a pointer filled in with the red channel, normally in the range
-   *          0-1, or NULL to ignore this channel.
+   *          0-1, or nullptr to ignore this channel.
    * @param g a pointer filled in with the green channel, normally in the range
-   *          0-1, or NULL to ignore this channel.
+   *          0-1, or nullptr to ignore this channel.
    * @param b a pointer filled in with the blue channel, normally in the range
-   *          0-1, or NULL to ignore this channel.
+   *          0-1, or nullptr to ignore this channel.
    * @param a a pointer filled in with the alpha channel, normally in the range
-   *          0-1, or NULL to ignore this channel.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *          0-1, or nullptr to ignore this channel.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
-  bool ReadPixel(int x, int y, float* r, float* g, float* b, float* a) const
+  void ReadPixel(const SDL_Point& p,
+                 float* r,
+                 float* g,
+                 float* b,
+                 float* a) const
   {
-    return SDL_ReadSurfacePixelFloat(get(), x, y, r, g, b, a);
+    CheckError(SDL_ReadSurfacePixelFloat(get(), p.x, p.y, r, g, b, a));
   }
 
   /**
-   * This function prioritizes correctness over speed: it is suitable for
-   * unit tests, but is not intended for use in a game engine.
+   * Writes a single pixel to a surface.
    *
-   * Like MapRGBA(), this uses the entire 0..255 range when converting color
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like MapRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param c the color values, 0-255.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
-  bool WritePixel(int x, int y, SDL_Color c)
+  void WritePixel(const SDL_Point& p, SDL_Color c)
   {
-    return WritePixel(x, y, c.r, c.g, c.b, c.a);
+    CheckError(SDL_WriteSurfacePixel(get(), p.x, p.y, c.r, c.g, c.b, c.a));
   }
 
   /**
@@ -1725,56 +1776,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param c the color values, normally in the range 0-1.
-   * @returns true on success or false on failure; call GetError() for
-   * more information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
-  bool WritePixel(int x, int y, SDL_FColor c)
+  void WritePixel(const SDL_Point& p, SDL_FColor c)
   {
-    return WritePixel(x, y, c.r, c.g, c.b, c.a);
-  }
-
-  /**
-   * This function prioritizes correctness over speed: it is suitable for
-   * unit tests, but is not intended for use in a game engine.
-   *
-   * Like MapRGBA(), this uses the entire 0..255 range when converting color
-   * components from pixel formats with less than 8 bits per RGB component.
-   *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
-   * @param r the red channel value, 0-255.
-   * @param g the green channel value, 0-255.
-   * @param b the blue channel value, 0-255.
-   * @param a the alpha channel value, 0-255.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool WritePixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-  {
-    return SDL_WriteSurfacePixel(get(), x, y, r, g, b, a);
-  }
-
-  /**
-   * Writes a single pixel to a surface.
-   *
-   * This function prioritizes correctness over speed: it is suitable for unit
-   * tests, but is not intended for use in a game engine.
-   *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
-   * @param r the red channel value, normally in the range 0-1.
-   * @param g the green channel value, normally in the range 0-1.
-   * @param b the blue channel value, normally in the range 0-1.
-   * @param a the alpha channel value, normally in the range 0-1.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool WritePixel(int x, int y, float r, float g, float b, float a)
-  {
-    return SDL_WriteSurfacePixelFloat(get(), x, y, r, g, b, a);
+    CheckError(SDL_WriteSurfacePixelFloat(get(), p.x, p.y, c.r, c.g, c.b, c.a));
   }
 
   /**
@@ -2037,8 +2049,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @param surface the SurfaceBase structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -2046,9 +2057,9 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @sa LoadBMP
  */
-inline bool SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
+inline void SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
 {
-  return SDL_SaveBMP_IO(surface.get(), dst.get(), false);
+  CheckError(SDL_SaveBMP_IO(surface.get(), dst.get(), false));
 }
 
 /**
@@ -2062,8 +2073,7 @@ inline bool SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
  *
  * @param surface the SurfaceBase structure containing the image to be saved.
  * @param file a file to save to.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -2071,9 +2081,9 @@ inline bool SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
  *
  * @sa LoadBMP
  */
-inline bool SaveBMP(SurfaceBase& surface, StringParam file)
+inline void SaveBMP(SurfaceBase& surface, StringParam file)
 {
-  return SDL_SaveBMP(surface.get(), file);
+  CheckError(SDL_SaveBMP(surface.get(), file));
 }
 
 inline Surface SurfaceBase::Duplicate() const
@@ -2113,8 +2123,7 @@ inline Surface SurfaceBase::Convert(PixelFormat format,
  * @param dst_format an PixelFormat value of the `dst` pixels format.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety The same destination pixels should not be used from two
  *               threads at once. It is safe to use the same source pixels
@@ -2124,7 +2133,7 @@ inline Surface SurfaceBase::Convert(PixelFormat format,
  *
  * @sa ConvertPixelsAndColorspace
  */
-inline bool ConvertPixels(int width,
+inline void ConvertPixels(int width,
                           int height,
                           PixelFormat src_format,
                           const void* src,
@@ -2133,8 +2142,8 @@ inline bool ConvertPixels(int width,
                           void* dst,
                           int dst_pitch)
 {
-  return SDL_ConvertPixels(
-    width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch);
+  CheckError(SDL_ConvertPixels(
+    width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch));
 }
 
 /**
@@ -2157,8 +2166,7 @@ inline bool ConvertPixels(int width,
  *                       properties, or 0.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety The same destination pixels should not be used from two
  *               threads at once. It is safe to use the same source pixels
@@ -2168,7 +2176,7 @@ inline bool ConvertPixels(int width,
  *
  * @sa ConvertPixels
  */
-inline bool ConvertPixelsAndColorspace(int width,
+inline void ConvertPixelsAndColorspace(int width,
                                        int height,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
@@ -2181,18 +2189,18 @@ inline bool ConvertPixelsAndColorspace(int width,
                                        void* dst,
                                        int dst_pitch)
 {
-  return SDL_ConvertPixelsAndColorspace(width,
-                                        height,
-                                        src_format,
-                                        src_colorspace,
-                                        src_properties.get(),
-                                        src,
-                                        src_pitch,
-                                        dst_format,
-                                        dst_colorspace,
-                                        dst_properties.get(),
-                                        dst,
-                                        dst_pitch);
+  CheckError(SDL_ConvertPixelsAndColorspace(width,
+                                            height,
+                                            src_format,
+                                            src_colorspace,
+                                            src_properties.get(),
+                                            src,
+                                            src_pitch,
+                                            dst_format,
+                                            dst_colorspace,
+                                            dst_properties.get(),
+                                            dst,
+                                            dst_pitch));
 }
 
 /**
@@ -2210,8 +2218,7 @@ inline bool ConvertPixelsAndColorspace(int width,
  * @param dst_pitch the pitch of the destination pixels, in bytes.
  * @param linear true to convert from sRGB to linear space for the alpha
  *               multiplication, false to do multiplication in sRGB space.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety The same destination pixels should not be used from two
  *               threads at once. It is safe to use the same source pixels
@@ -2219,7 +2226,7 @@ inline bool ConvertPixelsAndColorspace(int width,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool PremultiplyAlpha(int width,
+inline void PremultiplyAlpha(int width,
                              int height,
                              PixelFormat src_format,
                              const void* src,
@@ -2229,15 +2236,15 @@ inline bool PremultiplyAlpha(int width,
                              int dst_pitch,
                              bool linear)
 {
-  return SDL_PremultiplyAlpha(width,
-                              height,
-                              src_format,
-                              src,
-                              src_pitch,
-                              dst_format,
-                              dst,
-                              dst_pitch,
-                              linear);
+  CheckError(SDL_PremultiplyAlpha(width,
+                                  height,
+                                  src_format,
+                                  src,
+                                  src_pitch,
+                                  dst_format,
+                                  dst,
+                                  dst_pitch,
+                                  linear));
 }
 
 /// @}
