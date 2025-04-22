@@ -2187,22 +2187,22 @@ inline Animation LoadWEBPAnimation(IOStreamBase& src)
 /// @}
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(IMG_Load(file))
+  : Resource(CheckError(IMG_Load(file)))
 {
 }
 
 inline SurfaceBase::SurfaceBase(IOStreamBase& src)
-  : Resource(IMG_Load_IO(src.get(), false))
+  : Resource(CheckError(IMG_Load_IO(src.get(), false)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
-  : Resource(IMG_LoadTexture(renderer.get(), file))
+  : Resource(CheckError(IMG_LoadTexture(renderer.get(), file)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
-  : Resource(IMG_LoadTexture_IO(renderer.get(), src.get(), false))
+  : Resource(CheckError(IMG_LoadTexture_IO(renderer.get(), src.get(), false)))
 {
 }
 
@@ -2215,22 +2215,22 @@ inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
 namespace SDL {
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(SDL_LoadBMP(file))
+  : Resource(CheckError(SDL_LoadBMP(file)))
 {
 }
 
 inline SurfaceBase::SurfaceBase(IOStreamBase& src)
-  : Resource(SDL_LoadBMP_IO(src.get(), false))
+  : Resource(CheckError(SDL_LoadBMP_IO(src.get(), false)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
-  : Resource(LoadTextureBMP(renderer, file).release())
+  : Resource(CheckError(LoadTextureBMP(renderer, file).release()))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
-  : Resource(LoadTextureBMP(renderer, src).release())
+  : Resource(CheckError(LoadTextureBMP(renderer, src).release()))
 {
 }
 

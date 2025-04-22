@@ -7,22 +7,10 @@ using namespace std::chrono_literals;
 int main(int argc, char** argv)
 {
   SDL::SDL init(SDL::INIT_VIDEO);
-  if (!init) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
-  if (!window) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
 
   SDL::Texture characterTexture{renderer, "assets/smiley.png"};
-  if (!characterTexture) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
   SDL::FRect characterRect(SDL::FPoint(WINDOW_SZ) / 2 - SDL::FPoint{64, 64},
                            {128, 128});
 

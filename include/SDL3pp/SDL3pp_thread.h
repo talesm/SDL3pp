@@ -56,8 +56,8 @@ using ThreadID = SDL_ThreadID;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadBase.GetTLS
- * @sa ThreadBase.SetTLS
+ * @sa GetTLS
+ * @sa SetTLS
  */
 using TLSID = AtomicInt;
 
@@ -83,15 +83,15 @@ using ThreadFunction = SDL_ThreadFunction;
 using ThreadCB = std::function<int()>;
 
 /**
- * The callback used to cleanup data passed to ThreadBase.SetTLS.
+ * The callback used to cleanup data passed to SetTLS.
  *
  * This is called when a thread exits, to allow an app to free any resources.
  *
- * @param value a pointer previously handed to ThreadBase.SetTLS.
+ * @param value a pointer previously handed to SetTLS.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadBase.SetTLS
+ * @sa SetTLS
  */
 using TLSDestructorCallback = SDL_TLSDestructorCallback;
 
@@ -177,9 +177,8 @@ struct ThreadBase : Resource<SDL_Thread*>
    *
    * @param fn the ThreadFunction function to call in the new thread.
    * @param name the name of the thread.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *       new thread could not be created; call GetError() for more
-   *       information.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -212,9 +211,8 @@ struct ThreadBase : Resource<SDL_Thread*>
    * @param fn the ThreadFunction function to call in the new thread.
    * @param name the name of the thread.
    * @param data a pointer that is passed to `fn`.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *       new thread could not be created; call GetError() for more
-   *       information.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -222,7 +220,7 @@ struct ThreadBase : Resource<SDL_Thread*>
    * @sa ThreadBase.Wait
    */
   ThreadBase(ThreadFunction fn, StringParam name, void* data)
-    : Resource(SDL_CreateThread(fn, name, data))
+    : Resource(CheckError(SDL_CreateThread(fn, name, data)))
   {
   }
 
@@ -281,9 +279,8 @@ struct ThreadBase : Resource<SDL_Thread*>
    * and let the macros hide the details.
    *
    * @param props the properties to use.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *          new thread could not be created; call GetError() for more
-   *          information.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -291,7 +288,7 @@ struct ThreadBase : Resource<SDL_Thread*>
    * @sa ThreadBase.Wait
    */
   ThreadBase(PropertiesBase& props)
-    : Resource(SDL_CreateThreadWithProperties(props.get()))
+    : Resource(CheckError(SDL_CreateThreadWithProperties(props.get())))
   {
   }
 
@@ -329,14 +326,13 @@ struct ThreadBase : Resource<SDL_Thread*>
    * an administrator account. Be prepared for this to fail.
    *
    * @param priority the ThreadPriority to set.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static bool SetCurrentPriority(ThreadPriority priority)
+  static void SetCurrentPriority(ThreadPriority priority)
   {
-    return SDL_SetCurrentThreadPriority(priority);
+    CheckError(SDL_SetCurrentThreadPriority(priority));
   }
 
   /**
@@ -605,8 +601,7 @@ inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
  * @param value the value to associate with the ID for the current thread.
  * @param destructor a function called when the thread exits, to free the
  *                   value, may be nullptr.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -614,11 +609,11 @@ inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
  *
  * @sa GetTLS
  */
-inline bool SetTLS(TLSID* id,
+inline void SetTLS(TLSID* id,
                    const void* value,
                    TLSDestructorCallback destructor)
 {
-  return SDL_SetTLS(*id, value, destructor);
+  CheckError(SDL_SetTLS(*id, value, destructor));
 }
 
 /**

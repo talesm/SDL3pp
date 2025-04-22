@@ -122,9 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af9ce8bbcdb2d145f24a4d64163dc9f4b" id="r_af9ce8bbcdb2d145f24a4d64163dc9f4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#af9ce8bbcdb2d145f24a4d64163dc9f4b">GetOutput</a> ()</td></tr>
 <tr class="memdesc:af9ce8bbcdb2d145f24a4d64163dc9f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> associated with process standard output.  <br /></td></tr>
 <tr class="separator:af9ce8bbcdb2d145f24a4d64163dc9f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c62a55736fcf7c5a9b05bd5d2d774c6" id="r_a0c62a55736fcf7c5a9b05bd5d2d774c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6">Kill</a> (bool force)</td></tr>
-<tr class="memdesc:a0c62a55736fcf7c5a9b05bd5d2d774c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a process.  <br /></td></tr>
-<tr class="separator:a0c62a55736fcf7c5a9b05bd5d2d774c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b7bb3005445057ec3f2b2aa47fb0ca" id="r_a50b7bb3005445057ec3f2b2aa47fb0ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca">Kill</a> (bool force)</td></tr>
+<tr class="memdesc:a50b7bb3005445057ec3f2b2aa47fb0ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a process.  <br /></td></tr>
+<tr class="separator:a50b7bb3005445057ec3f2b2aa47fb0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2f8588e8601701823e04684c8e96e01" id="r_ae2f8588e8601701823e04684c8e96e01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#ae2f8588e8601701823e04684c8e96e01">Wait</a> (bool block, int *exitcode)</td></tr>
 <tr class="memdesc:ae2f8588e8601701823e04684c8e96e01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a process to finish.  <br /></td></tr>
 <tr class="separator:ae2f8588e8601701823e04684c8e96e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -256,7 +256,13 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the newly created and running process, or nullptr if the process couldn't be created.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the newly created and running process. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd>
@@ -269,7 +275,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#af9ce8bbcdb2d145f24a4d64163dc9f4b" title="Get the IOStreamBase associated with process standard output.">ProcessBase.GetOutput</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6" title="Stop a process.">ProcessBase.Kill</a> </dd>
+<a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca" title="Stop a process.">ProcessBase.Kill</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#ae2f8588e8601701823e04684c8e96e01" title="Wait for a process to finish.">ProcessBase.Wait</a> </dd>
 <dd>
@@ -320,7 +326,13 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the newly created and running process, or nullptr if the process couldn't be created.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the newly created and running process. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd>
@@ -333,7 +345,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#af9ce8bbcdb2d145f24a4d64163dc9f4b" title="Get the IOStreamBase associated with process standard output.">ProcessBase.GetOutput</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6" title="Stop a process.">ProcessBase.Kill</a> </dd>
+<a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca" title="Stop a process.">ProcessBase.Kill</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#ae2f8588e8601701823e04684c8e96e01" title="Wait for a process to finish.">ProcessBase.Wait</a> </dd></dl>
 
@@ -440,15 +452,21 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <li><code>prop::process.STDERR_POINTER</code>: a non-blocking <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> that can be used to read error output from the process, if it was created with <code>prop::process.CREATE_STDERR_NUMBER</code> set to <code>PROCESS_STDIO_APP</code>.</li>
 <li><code>prop::process.BACKGROUND_BOOLEAN</code>: true if the process is running in the background.</li>
 </ul>
-<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd></dl>
 
 </div>
 </div>
-<a id="a0c62a55736fcf7c5a9b05bd5d2d774c6" name="a0c62a55736fcf7c5a9b05bd5d2d774c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c62a55736fcf7c5a9b05bd5d2d774c6">&#9670;&#160;</a></span>Kill()</h2>
+<a id="a50b7bb3005445057ec3f2b2aa47fb0ca" name="a50b7bb3005445057ec3f2b2aa47fb0ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50b7bb3005445057ec3f2b2aa47fb0ca">&#9670;&#160;</a></span>Kill()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -457,7 +475,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::ProcessBase::Kill </td>
+          <td class="memname">void SDL::ProcessBase::Kill </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>force</em></td><td>)</td>
@@ -476,7 +494,12 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd>
@@ -521,7 +544,13 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the data or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the data on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd></dl>
@@ -619,7 +648,7 @@ template&lt;class T &gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6" title="Stop a process.">ProcessBase.Kill</a> </dd>
+<a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca" title="Stop a process.">ProcessBase.Kill</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#a43d0ca6bf60894daeb0d56cc0f6f8b97" title="Destroy a previously created process object.">ProcessRef.reset</a> </dd></dl>
 

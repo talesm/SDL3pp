@@ -109,12 +109,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a39564e7e083f62e6cac9e5dcc551a7ec" id="r_a39564e7e083f62e6cac9e5dcc551a7ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockBase.html#a39564e7e083f62e6cac9e5dcc551a7ec">LockForWriting</a> ()</td></tr>
 <tr class="memdesc:a39564e7e083f62e6cac9e5dcc551a7ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the read/write lock for <em>write</em> operations.  <br /></td></tr>
 <tr class="separator:a39564e7e083f62e6cac9e5dcc551a7ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8111d1e96fb6c4fcc205ab856f27b1d4" id="r_a8111d1e96fb6c4fcc205ab856f27b1d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockBase.html#a8111d1e96fb6c4fcc205ab856f27b1d4">TryLockForReading</a> ()</td></tr>
-<tr class="memdesc:a8111d1e96fb6c4fcc205ab856f27b1d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a read/write lock <em>for reading</em> without blocking.  <br /></td></tr>
-<tr class="separator:a8111d1e96fb6c4fcc205ab856f27b1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2915498093b329332f47d9f754d35324" id="r_a2915498093b329332f47d9f754d35324"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockBase.html#a2915498093b329332f47d9f754d35324">TryLockForWriting</a> ()</td></tr>
-<tr class="memdesc:a2915498093b329332f47d9f754d35324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a read/write lock <em>for writing</em> without blocking.  <br /></td></tr>
-<tr class="separator:a2915498093b329332f47d9f754d35324"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c77b3116f75fda17aad835c1ad1fbb8" id="r_a2c77b3116f75fda17aad835c1ad1fbb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockBase.html#a2c77b3116f75fda17aad835c1ad1fbb8">TryLockForReading</a> ()</td></tr>
+<tr class="memdesc:a2c77b3116f75fda17aad835c1ad1fbb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a read/write lock <em>for reading</em> without blocking.  <br /></td></tr>
+<tr class="separator:a2c77b3116f75fda17aad835c1ad1fbb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e8d005af95c5a5f5c13b00b21baee9f" id="r_a3e8d005af95c5a5f5c13b00b21baee9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockBase.html#a3e8d005af95c5a5f5c13b00b21baee9f">TryLockForWriting</a> ()</td></tr>
+<tr class="memdesc:a3e8d005af95c5a5f5c13b00b21baee9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to lock a read/write lock <em>for writing</em> without blocking.  <br /></td></tr>
+<tr class="separator:a3e8d005af95c5a5f5c13b00b21baee9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeef2423424cae5987e373988b7245460" id="r_aeef2423424cae5987e373988b7245460"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockBase.html#aeef2423424cae5987e373988b7245460">Unlock</a> ()</td></tr>
 <tr class="memdesc:aeef2423424cae5987e373988b7245460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the read/write lock.  <br /></td></tr>
 <tr class="separator:aeef2423424cae5987e373988b7245460"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,7 +229,7 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <p>A read/write lock is useful for situations where you have multiple threads trying to access a resource that is rarely updated. All threads requesting a read-only lock will be allowed to run in parallel; if a thread requests a write lock, it will be provided exclusive access. This makes it safe for multiple threads to use a resource at the same time if they promise not to change it, and when it has to be changed, the rwlock will serve as a gateway to make sure those changes can be made safely.</p>
 <p>In the right situation, a rwlock can be more efficient than a mutex, which only lets a single thread proceed at a time, even if it won't be modifying the data.</p>
 <p>All newly-created read/write locks begin in the <em>unlocked</em> state.</p>
-<p>Calls to <a class="el" href="structSDL_1_1RWLockBase.html#ac692280e73cd0224ce175c1adc7af2fe" title="Lock the read/write lock for read only operations.">RWLockBase.LockForReading()</a> and <a class="el" href="structSDL_1_1RWLockBase.html#a39564e7e083f62e6cac9e5dcc551a7ec" title="Lock the read/write lock for write operations.">RWLockBase.LockForWriting</a> will not return while the rwlock is locked <em>for writing</em> by another thread. See <a class="el" href="structSDL_1_1RWLockBase.html#a8111d1e96fb6c4fcc205ab856f27b1d4" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading()</a> and <a class="el" href="structSDL_1_1RWLockBase.html#a2915498093b329332f47d9f754d35324" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting()</a> to attempt to lock without blocking.</p>
+<p>Calls to <a class="el" href="structSDL_1_1RWLockBase.html#ac692280e73cd0224ce175c1adc7af2fe" title="Lock the read/write lock for read only operations.">RWLockBase.LockForReading()</a> and <a class="el" href="structSDL_1_1RWLockBase.html#a39564e7e083f62e6cac9e5dcc551a7ec" title="Lock the read/write lock for write operations.">RWLockBase.LockForWriting</a> will not return while the rwlock is locked <em>for writing</em> by another thread. See <a class="el" href="structSDL_1_1RWLockBase.html#a2c77b3116f75fda17aad835c1ad1fbb8" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading()</a> and <a class="el" href="structSDL_1_1RWLockBase.html#a3e8d005af95c5a5f5c13b00b21baee9f" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting()</a> to attempt to lock without blocking.</p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> read/write locks are only recursive for read-only locks! They are not guaranteed to be fair, or provide access in a FIFO manner! They are not guaranteed to favor writers. You may not lock a rwlock for both read-only and write access at the same time from the same thread (so you can't promote your read-only lock to a write lock without unlocking first).</p>
 <dl class="section post"><dt>Postcondition</dt><dd>the initialized and unlocked read/write lock or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -237,9 +237,9 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <dd>
 <a class="el" href="structSDL_1_1RWLockBase.html#a39564e7e083f62e6cac9e5dcc551a7ec" title="Lock the read/write lock for write operations.">RWLockBase.LockForWriting</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockBase.html#a8111d1e96fb6c4fcc205ab856f27b1d4" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading</a> </dd>
+<a class="el" href="structSDL_1_1RWLockBase.html#a2c77b3116f75fda17aad835c1ad1fbb8" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockBase.html#a2915498093b329332f47d9f754d35324" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting</a> </dd>
+<a class="el" href="structSDL_1_1RWLockBase.html#a3e8d005af95c5a5f5c13b00b21baee9f" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RWLockBase.html#aeef2423424cae5987e373988b7245460" title="Unlock the read/write lock.">RWLockBase.Unlock</a> </dd></dl>
 
@@ -276,7 +276,7 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockBase.html#a39564e7e083f62e6cac9e5dcc551a7ec" title="Lock the read/write lock for write operations.">RWLockBase.LockForWriting</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockBase.html#a8111d1e96fb6c4fcc205ab856f27b1d4" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading</a> </dd>
+<a class="el" href="structSDL_1_1RWLockBase.html#a2c77b3116f75fda17aad835c1ad1fbb8" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RWLockBase.html#aeef2423424cae5987e373988b7245460" title="Unlock the read/write lock.">RWLockBase.Unlock</a> </dd></dl>
 
@@ -311,14 +311,14 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockBase.html#ac692280e73cd0224ce175c1adc7af2fe" title="Lock the read/write lock for read only operations.">RWLockBase.LockForReading</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockBase.html#a2915498093b329332f47d9f754d35324" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting</a> </dd>
+<a class="el" href="structSDL_1_1RWLockBase.html#a3e8d005af95c5a5f5c13b00b21baee9f" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RWLockBase.html#aeef2423424cae5987e373988b7245460" title="Unlock the read/write lock.">RWLockBase.Unlock</a> </dd></dl>
 
 </div>
 </div>
-<a id="a8111d1e96fb6c4fcc205ab856f27b1d4" name="a8111d1e96fb6c4fcc205ab856f27b1d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8111d1e96fb6c4fcc205ab856f27b1d4">&#9670;&#160;</a></span>TryLockForReading()</h2>
+<a id="a2c77b3116f75fda17aad835c1ad1fbb8" name="a2c77b3116f75fda17aad835c1ad1fbb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c77b3116f75fda17aad835c1ad1fbb8">&#9670;&#160;</a></span>TryLockForReading()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -327,7 +327,7 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::RWLockBase::TryLockForReading </td>
+          <td class="memname">void SDL::RWLockBase::TryLockForReading </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -343,18 +343,23 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <p>This technique is useful if you need access to a resource but don't want to wait for it, and will return to it to try again later.</p>
 <p>Trying to lock for read-only access can succeed if other threads are holding read-only locks, as this won't prevent access.</p>
 <p>This function returns true if passed a nullptr rwlock.</p>
-<dl class="section return"><dt>Returns</dt><dd>true on success, false if the lock would block.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockBase.html#ac692280e73cd0224ce175c1adc7af2fe" title="Lock the read/write lock for read only operations.">RWLockBase.LockForReading</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockBase.html#a2915498093b329332f47d9f754d35324" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting</a> </dd>
+<a class="el" href="structSDL_1_1RWLockBase.html#a3e8d005af95c5a5f5c13b00b21baee9f" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RWLockBase.html#aeef2423424cae5987e373988b7245460" title="Unlock the read/write lock.">RWLockBase.Unlock</a> </dd></dl>
 
 </div>
 </div>
-<a id="a2915498093b329332f47d9f754d35324" name="a2915498093b329332f47d9f754d35324"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2915498093b329332f47d9f754d35324">&#9670;&#160;</a></span>TryLockForWriting()</h2>
+<a id="a3e8d005af95c5a5f5c13b00b21baee9f" name="a3e8d005af95c5a5f5c13b00b21baee9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e8d005af95c5a5f5c13b00b21baee9f">&#9670;&#160;</a></span>TryLockForWriting()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -363,7 +368,7 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::RWLockBase::TryLockForWriting </td>
+          <td class="memname">void SDL::RWLockBase::TryLockForWriting </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -380,11 +385,16 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <p>It is illegal for the owning thread to lock an already-locked rwlock for writing (read-only may be locked recursively, writing can not). Doing so results in undefined behavior.</p>
 <p>It is illegal to request a write lock from a thread that already holds a read-only lock. Doing so results in undefined behavior. Unlock the read-only lock before requesting a write lock.</p>
 <p>This function returns true if passed a nullptr rwlock.</p>
-<dl class="section return"><dt>Returns</dt><dd>true on success, false if the lock would block.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockBase.html#a39564e7e083f62e6cac9e5dcc551a7ec" title="Lock the read/write lock for write operations.">RWLockBase.LockForWriting</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockBase.html#a8111d1e96fb6c4fcc205ab856f27b1d4" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading</a> </dd>
+<a class="el" href="structSDL_1_1RWLockBase.html#a2c77b3116f75fda17aad835c1ad1fbb8" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RWLockBase.html#aeef2423424cae5987e373988b7245460" title="Unlock the read/write lock.">RWLockBase.Unlock</a> </dd></dl>
 
@@ -421,9 +431,9 @@ rwlock").</p>
 <dd>
 <a class="el" href="structSDL_1_1RWLockBase.html#a39564e7e083f62e6cac9e5dcc551a7ec" title="Lock the read/write lock for write operations.">RWLockBase.LockForWriting</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockBase.html#a8111d1e96fb6c4fcc205ab856f27b1d4" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading</a> </dd>
+<a class="el" href="structSDL_1_1RWLockBase.html#a2c77b3116f75fda17aad835c1ad1fbb8" title="Try to lock a read/write lock for reading without blocking.">RWLockBase.TryLockForReading</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1RWLockBase.html#a2915498093b329332f47d9f754d35324" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting</a> </dd></dl>
+<a class="el" href="structSDL_1_1RWLockBase.html#a3e8d005af95c5a5f5c13b00b21baee9f" title="Try to lock a read/write lock for writing without blocking.">RWLockBase.TryLockForWriting</a> </dd></dl>
 
 </div>
 </div>

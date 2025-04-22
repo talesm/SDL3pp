@@ -1,25 +1,4 @@
 var searchData=
 [
-  ['textdata_0',['TextData',['../group__CategorySDLTTF.html#gacdab2afd1ce45f6a6326400051ce4779',1,'SDL']]],
-  ['texteditingcandidatesevent_1',['TextEditingCandidatesEvent',['../group__CategoryEvents.html#gaa26d4fc42ea136ac94ddc5d5f9d2698b',1,'SDL']]],
-  ['texteditingevent_2',['TextEditingEvent',['../group__CategoryEvents.html#ga928bb11f8839819f01e2b1e866795e8d',1,'SDL']]],
-  ['textinputevent_3',['TextInputEvent',['../group__CategoryEvents.html#gadacb00f1879039f4af337c81ac3a575c',1,'SDL']]],
-  ['textinputtype_4',['TextInputType',['../group__CategoryKeyboard.html#ga93d4f8c994f8efd07519354c0e06443d',1,'SDL']]],
-  ['textureaccess_5',['TextureAccess',['../group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56',1,'SDL']]],
-  ['threadcb_6',['ThreadCB',['../group__CategoryThread.html#ga770353c17c77d7b8d9be568b8c0d5e13',1,'SDL']]],
-  ['threadfunction_7',['ThreadFunction',['../group__CategoryThread.html#gadba78156436b2ebd2964937c09368291',1,'SDL']]],
-  ['threadid_8',['ThreadID',['../group__CategoryThread.html#gab321ed96bc6b128e8cced2d7fc9c67ea',1,'SDL']]],
-  ['threadpriority_9',['ThreadPriority',['../group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5',1,'SDL']]],
-  ['threadstate_10',['ThreadState',['../group__CategoryThread.html#ga6f7a148f3f241be0fcf98e738225514d',1,'SDL']]],
-  ['timeformat_11',['TimeFormat',['../group__CategoryTime.html#ga054c5288c34a7c6a75fedada33d3e161',1,'SDL']]],
-  ['timercallback_12',['TimerCallback',['../group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea',1,'SDL']]],
-  ['timercb_13',['TimerCB',['../group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
-  ['timerid_14',['TimerID',['../group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146',1,'SDL']]],
-  ['tlsdestructorcallback_15',['TLSDestructorCallback',['../group__CategoryThread.html#ga40949cd90f28bc3e1326cd3fbf727345',1,'SDL']]],
-  ['tlsid_16',['TLSID',['../group__CategoryThread.html#ga81de0ba54c6c2f2147b1a0b9ff7521ac',1,'SDL']]],
-  ['touchfingerevent_17',['TouchFingerEvent',['../group__CategoryEvents.html#ga4e1360399f8cfe47ae4efacbdcf59040',1,'SDL']]],
-  ['transfercharacteristics_18',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]],
-  ['traycallback_19',['TrayCallback',['../group__CategoryTray.html#gadc1822495fb3688687bf1d837d3cce20',1,'SDL']]],
-  ['traycb_20',['TrayCB',['../group__CategoryTray.html#gafa724f0f9ab6ed6c855bc2f8fa8738d0',1,'SDL']]],
-  ['trayentryflags_21',['TrayEntryFlags',['../group__CategoryTray.html#gae3f0fe92d36aa87cc4f5f720c5064c4b',1,'SDL']]]
+  ['userevent_0',['UserEvent',['../group__CategoryEvents.html#ga9523397a5d659447d2161f638046880a',1,'SDL']]]
 ];

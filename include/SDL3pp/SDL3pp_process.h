@@ -143,8 +143,8 @@ struct ProcessBase : Resource<SDL_Process*>
    *                   from the process's standard output, false for the process
    *                   to have no input and inherit the application's standard
    *                   output.
-   * @post the newly created and running process, or nullptr if the process
-   *          couldn't be created.
+   * @post the newly created and running process.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -160,7 +160,7 @@ struct ProcessBase : Resource<SDL_Process*>
    * @sa ProcessRef.reset
    */
   ProcessBase(const char* const* args, bool pipe_stdio)
-    : Resource(SDL_CreateProcess(args, pipe_stdio))
+    : Resource(CheckError(SDL_CreateProcess(args, pipe_stdio)))
   {
   }
 
@@ -209,8 +209,8 @@ struct ProcessBase : Resource<SDL_Process*>
    * use ProcessBase.Wait() instead.
    *
    * @param props the properties to use.
-   * @post the newly created and running process, or nullptr if the process
-   *          couldn't be created.
+   * @post the newly created and running process.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -225,7 +225,7 @@ struct ProcessBase : Resource<SDL_Process*>
    * @sa ProcessBase.Wait
    */
   ProcessBase(PropertiesBase& props)
-    : Resource(SDL_CreateProcessWithProperties(props.get()))
+    : Resource(CheckError(SDL_CreateProcessWithProperties(props.get())))
   {
   }
 
@@ -247,8 +247,8 @@ struct ProcessBase : Resource<SDL_Process*>
    * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in
    *   the background.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -258,7 +258,7 @@ struct ProcessBase : Resource<SDL_Process*>
    */
   PropertiesRef GetProperties() const
   {
-    return SDL_GetProcessProperties(get());
+    return CheckError(SDL_GetProcessProperties(get()));
   }
 
   /**
@@ -276,8 +276,8 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @param exitcode a pointer filled in with the process exit code if the
    *                 process has exited, may be nullptr.
-   * @returns the data or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns the data on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -290,8 +290,7 @@ struct ProcessBase : Resource<SDL_Process*>
     size_t size = 0;
     auto data =
       static_cast<std::byte*>(SDL_ReadProcess(get(), &size, exitcode));
-    if (!data) return {};
-    return OwnArray<std::byte>(data, size);
+    return OwnArray<std::byte>(CheckError(data), size);
   }
 
   /**
@@ -383,8 +382,7 @@ struct ProcessBase : Resource<SDL_Process*>
    *              the process gracefully first as terminating a process may
    *              leave it with half-written data or in some other unstable
    *              state.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -395,7 +393,7 @@ struct ProcessBase : Resource<SDL_Process*>
    * @sa ProcessBase.Wait
    * @sa ProcessRef.reset
    */
-  bool Kill(bool force) { return SDL_KillProcess(get(), force); }
+  void Kill(bool force) { CheckError(SDL_KillProcess(get(), force)); }
 
   /**
    * Wait for a process to finish.

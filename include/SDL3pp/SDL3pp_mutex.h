@@ -144,14 +144,14 @@ struct MutexBase : Resource<SDL_Mutex*>
    *
    * This function returns true if passed a nullptr mutex.
    *
-   * @returns true on success, false if the mutex would block.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MutexBase.Lock
    * @sa MutexBase.Unlock
    */
-  bool TryLock() { return SDL_TryLockMutex(get()); }
+  void TryLock() { CheckError(SDL_TryLockMutex(get())); }
 
   /**
    * Unlock the mutex.
@@ -427,7 +427,7 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * This function returns true if passed a nullptr rwlock.
    *
-   * @returns true on success, false if the lock would block.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -435,7 +435,7 @@ struct RWLockBase : Resource<SDL_RWLock*>
    * @sa RWLockBase.TryLockForWriting
    * @sa RWLockBase.Unlock
    */
-  bool TryLockForReading() { return SDL_TryLockRWLockForReading(get()); }
+  void TryLockForReading() { CheckError(SDL_TryLockRWLockForReading(get())); }
 
   /**
    * Try to lock a read/write lock _for writing_ without blocking.
@@ -456,7 +456,7 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * This function returns true if passed a nullptr rwlock.
    *
-   * @returns true on success, false if the lock would block.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -464,7 +464,7 @@ struct RWLockBase : Resource<SDL_RWLock*>
    * @sa RWLockBase.TryLockForReading
    * @sa RWLockBase.Unlock
    */
-  bool TryLockForWriting() { return SDL_TryLockRWLockForWriting(get()); }
+  void TryLockForWriting() { CheckError(SDL_TryLockRWLockForWriting(get())); }
 
   /**
    * Unlock the read/write lock.

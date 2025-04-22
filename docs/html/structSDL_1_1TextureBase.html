@@ -334,8 +334,14 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>LoadTexture(StringParam) </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaa875626708fbf7fa5ad03a4c72b97319" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererBase&amp;, StringParam)</a> </dd></dl>
 
 </div>
 </div>
@@ -380,10 +386,16 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a> </dd>
+<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd>LoadTexture(RendererBase&amp;StringParam) </dd>
 <dd>
-<a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a> </dd></dl>
+<a class="el" href="group__CategoryRender.html#ga629c9bc766766e63273385f9ed926e97" title="Load a BMP texture from a file.">LoadTextureBMP(RendererBase&amp;, StringParam)</a> </dd></dl>
 
 </div>
 </div>

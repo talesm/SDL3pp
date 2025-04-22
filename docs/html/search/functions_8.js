@@ -35,7 +35,7 @@ var searchData=
   ['isico_32',['isICO',['../group__CategorySDLImage.html#gafc024e106a3fea1a06b2016a1ba3280c',1,'SDL']]],
   ['isindexed_33',['IsIndexed',['../classSDL_1_1PixelFormat.html#a4f8f7eaf74ce047ad7177e3021b9019b',1,'SDL::PixelFormat']]],
   ['isinf_34',['isinf',['../group__CategoryStdinc.html#gab688d31019c357f1b5c24ce2fcc598cb',1,'SDL::isinf(float x)'],['../group__CategoryStdinc.html#ga918f0e70e6e67f724c445eba4b514a21',1,'SDL::isinf(double x)']]],
-  ['isinrect_35',['isinrect',['../structSDL_1_1FPoint.html#a841de9b06a5c167bb849c20f216ca7bf',1,'SDL::FPoint::IsInRect()'],['../structSDL_1_1Point.html#a04f161ee799e6e7358b9c39dce73d47e',1,'SDL::Point::IsInRect()']]],
+  ['isinrect_35',['isinrect',['../group__CategoryRect.html#ga841de9b06a5c167bb849c20f216ca7bf',1,'SDL::FPoint::IsInRect()'],['../group__CategoryRect.html#ga04f161ee799e6e7358b9c39dce73d47e',1,'SDL::Point::IsInRect()']]],
   ['isjpg_36',['isJPG',['../group__CategorySDLImage.html#gabaa6b132928d34d5a6e3e4b23dd7a557',1,'SDL']]],
   ['isjxl_37',['isJXL',['../group__CategorySDLImage.html#gae5576b3783151824ad3073c9d39c22bc',1,'SDL']]],
   ['islbm_38',['isLBM',['../group__CategorySDLImage.html#ga2ee23f320d5992b27b27859eddd20078',1,'SDL']]],

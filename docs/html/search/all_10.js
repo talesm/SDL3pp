@@ -171,5 +171,5 @@ var searchData=
   ['propertytype_168',['PropertyType',['../group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f',1,'SDL']]],
   ['ptrdeleter_169',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]],
   ['pumpevents_170',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
-  ['pushevent_171',['pushevent',['../group__CategoryEvents.html#gad4b7289dcacfa19eb1f868a42b9c1e69',1,'SDL::PushEvent(const Event &amp;event)'],['../group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576',1,'SDL::PushEvent(Event *event)']]]
+  ['pushevent_171',['pushevent',['../group__CategoryEvents.html#ga09dbb5157cd6a2c4ee0e3b586df8cdf2',1,'SDL::PushEvent(const Event &amp;event)'],['../group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f',1,'SDL::PushEvent(Event *event)']]]
 ];

@@ -26,7 +26,7 @@ var searchData=
   ['flip_5fvertical_23',['FLIP_VERTICAL',['../group__CategorySurface.html#ga12eade56d263c052589ed58c274021f2',1,'SDL']]],
   ['flipmode_24',['FlipMode',['../group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b',1,'SDL']]],
   ['floor_25',['floor',['../group__CategoryStdinc.html#gaa5d99939c5dffc37035e51300236316a',1,'SDL::floor(double x)'],['../group__CategoryStdinc.html#ga93fb9063f992d37b5163a32f0e952998',1,'SDL::floor(float x)']]],
-  ['flush_26',['flush',['../structSDL_1_1IOStreamBase.html#ac7214df19f1d2477f30bd9ba97e164d4',1,'SDL::IOStreamBase::Flush()'],['../structSDL_1_1RendererBase.html#a354cddc17bb2495794a5e57f7a9f3840',1,'SDL::RendererBase::Flush()']]],
+  ['flush_26',['flush',['../structSDL_1_1IOStreamBase.html#a86dfb5c7ea703f3b11ee9fcff35b7fc4',1,'SDL::IOStreamBase::Flush()'],['../structSDL_1_1RendererBase.html#a354cddc17bb2495794a5e57f7a9f3840',1,'SDL::RendererBase::Flush()']]],
   ['flushevent_27',['FlushEvent',['../group__CategoryEvents.html#ga08a52473aefe0861b7086df44ad5907c',1,'SDL']]],
   ['flushevents_28',['FlushEvents',['../group__CategoryEvents.html#ga53ff6baf78e15cfe2140a599b6f7ee95',1,'SDL']]],
   ['fmod_29',['fmod',['../group__CategoryStdinc.html#gafcd6b0192bc061852ef8ef56272bf98d',1,'SDL::fmod(double x, double y)'],['../group__CategoryStdinc.html#gabcca080a3eb842e163500d93841db224',1,'SDL::fmod(float x, float y)']]],

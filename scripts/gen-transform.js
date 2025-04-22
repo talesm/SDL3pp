@@ -671,7 +671,7 @@ const transform = {
         "SDL_WaitEvent": {
           "kind": "function",
           "name": "WaitEvent",
-          "type": "std::optional<Event>",
+          "type": "Event",
           "parameters": []
         },
         "SDL_WaitEventTimeout": [
@@ -716,7 +716,7 @@ const transform = {
         "SDL_PushEvent": {
           "kind": "function",
           "name": "PushEvent",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "type": "const Event &",
@@ -923,7 +923,7 @@ const transform = {
         "SDL_EnumerateDirectory": [{
           name: "EnumerateDirectory",
           kind: "function",
-          type: "bool",
+          type: "void",
           parameters: [
             {
               name: "path",
@@ -1367,16 +1367,16 @@ const transform = {
         },
         "SDL_SaveFile": [
           {
-            "kind": "function",
-            "name": "SaveFile",
-            "type": "bool",
-            "template": [
+            kind: "function",
+            name: "SaveFile",
+            type: "void",
+            template: [
               {
                 "type": "class",
                 "name": "T"
               }
             ],
-            "parameters": [
+            parameters: [
               {
                 "type": "StringParam",
                 "name": "file"
@@ -1388,10 +1388,10 @@ const transform = {
             ]
           },
           {
-            "kind": "function",
-            "name": "SaveFile",
-            "type": "bool",
-            "parameters": [
+            kind: "function",
+            name: "SaveFile",
+            type: "void",
+            parameters: [
               {
                 "type": "StringParam",
                 "name": "file"
@@ -1413,7 +1413,6 @@ const transform = {
             "SDL_IOFromDynamicMem": {
               "name": "IOStreamBase",
               "type": "",
-              "static": false,
               "parameters": [
                 "IOFromDynamicMem_CtorTag"
               ]
@@ -1520,7 +1519,7 @@ const transform = {
             "SaveFile": [
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "template": [
                   {
                     "type": "class",
@@ -1536,7 +1535,7 @@ const transform = {
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "type": "std::string_view",
@@ -1553,20 +1552,62 @@ const transform = {
                 {}
               ]
             },
-            "SDL_ReadU8": "function",
-            "SDL_ReadS8": "function",
-            "SDL_ReadU16LE": "function",
-            "SDL_ReadS16LE": "function",
-            "SDL_ReadU16BE": "function",
-            "SDL_ReadS16BE": "function",
-            "SDL_ReadU32LE": "function",
-            "SDL_ReadS32LE": "function",
-            "SDL_ReadU32BE": "function",
-            "SDL_ReadS32BE": "function",
-            "SDL_ReadU64LE": "function",
-            "SDL_ReadS64LE": "function",
-            "SDL_ReadU64BE": "function",
-            "SDL_ReadS64BE": "function",
+            "SDL_ReadU8": {
+              type: "Uint8",
+              parameters: []
+            },
+            "SDL_ReadS8": {
+              type: "Sint8",
+              parameters: []
+            },
+            "SDL_ReadU16LE": {
+              type: "Uint16",
+              parameters: []
+            },
+            "SDL_ReadS16LE": {
+              type: "Sint16",
+              parameters: []
+            },
+            "SDL_ReadU16BE": {
+              type: "Uint16",
+              parameters: []
+            },
+            "SDL_ReadS16BE": {
+              type: "Sint16",
+              parameters: []
+            },
+            "SDL_ReadU32LE": {
+              type: "Uint32",
+              parameters: []
+            },
+            "SDL_ReadS32LE": {
+              type: "Sint32",
+              parameters: []
+            },
+            "SDL_ReadU32BE": {
+              type: "Uint32",
+              parameters: []
+            },
+            "SDL_ReadS32BE": {
+              type: "Sint32",
+              parameters: []
+            },
+            "SDL_ReadU64LE": {
+              type: "Uint64",
+              parameters: []
+            },
+            "SDL_ReadS64LE": {
+              type: "Sint64",
+              parameters: []
+            },
+            "SDL_ReadU64BE": {
+              type: "Uint64",
+              parameters: []
+            },
+            "SDL_ReadS64BE": {
+              type: "Sint64",
+              parameters: []
+            },
             "SDL_WriteU8": "function",
             "SDL_WriteS8": "function",
             "SDL_WriteU16LE": "function",
@@ -1596,6 +1637,7 @@ const transform = {
         },
         "SDL_CloseIO": {
           name: "IOStreamRef.Close",
+          type: "void",
           static: false,
           parameters: [],
           hints: { body: "return reset();" }
@@ -2425,7 +2467,7 @@ const transform = {
               ]
             },
             "SDL_SetPaletteColors": {
-              "parameters": [
+              parameters: [
                 {},
                 {
                   name: "colors",
@@ -3086,75 +3128,78 @@ const transform = {
       },
       wrappers: {
         "SDL_Point": {
-          "attribute": "p",
-          "ordered": true,
-          "entries": {
+          attribute: "p",
+          ordered: true,
+          entries: {
             "Point": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
+              kind: "function",
+              type: "",
+              constexpr: true,
+              explicit: true,
+              parameters: [
                 {
-                  "type": "const SDL_FPoint &",
-                  "name": "p"
+                  type: "const SDL_FPoint &",
+                  name: "p"
                 }
               ]
             },
             "SDL_PointInRect": {
-              "kind": "function",
-              "name": "IsInRect",
-              "constexpr": true,
-              "parameters": [
+              kind: "function",
+              name: "IsInRect",
+              constexpr: true,
+              proto: true,
+              parameters: [
                 {
-                  "name": "this"
+                  name: "this"
                 },
                 {
-                  "type": "const Rect &"
+                  type: "const Rect &"
                 }
               ]
             }
           }
         },
         "SDL_FPoint": {
-          "attribute": "p",
-          "ordered": true,
-          "entries": {
+          attribute: "p",
+          ordered: true,
+          entries: {
             "SDL_PointInRectFloat": {
-              "kind": "function",
-              "name": "IsInRect",
-              "constexpr": true,
-              "parameters": [
+              kind: "function",
+              name: "IsInRect",
+              constexpr: true,
+              proto: true,
+              parameters: [
                 {
-                  "name": "this"
+                  name: "this"
                 },
                 {
-                  "type": "const FRect &"
+                  type: "const FRect &"
                 }
               ]
             }
           }
         },
         "SDL_Rect": {
-          "attribute": "r",
-          "entries": {
+          attribute: "r",
+          entries: {
             "Rect": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
+              kind: "function",
+              type: "",
+              parameters: [
                 {
-                  "name": "corner",
-                  "type": "const SDL_Point &"
+                  name: "corner",
+                  type: "const SDL_Point &"
                 },
                 {
-                  "name": "size",
-                  "type": "const SDL_Point &"
+                  name: "size",
+                  type: "const SDL_Point &"
                 }
               ]
             },
             "SDL_GetRectEnclosingPoints": {
-              "type": "std::optional<Rect>",
-              "parameters": [
+              type: "Rect",
+              static: true,
+              parameters: [
                 {
                   "type": "SpanRef<const SDL_Point>",
                   "name": "points"
@@ -3168,10 +3213,11 @@ const transform = {
             },
             "FromCenter": [
               {
-                "kind": "function",
-                "name": "FromCenter",
-                "type": "Rect",
-                "parameters": [
+                kind: "function",
+                name: "FromCenter",
+                static: true,
+                type: "Rect",
+                parameters: [
                   {
                     "name": "cx",
                     "type": "int"
@@ -3191,10 +3237,11 @@ const transform = {
                 ]
               },
               {
-                "kind": "function",
-                "name": "FromCenter",
-                "type": "Rect",
-                "parameters": [
+                kind: "function",
+                name: "FromCenter",
+                static: true,
+                type: "Rect",
+                parameters: [
                   {
                     "name": "center",
                     "type": "const Point &"
@@ -3208,10 +3255,11 @@ const transform = {
             ],
             "FromCorners": [
               {
-                "kind": "function",
-                "name": "FromCorners",
-                "type": "Rect",
-                "parameters": [
+                kind: "function",
+                name: "FromCorners",
+                static: true,
+                type: "Rect",
+                parameters: [
                   {
                     "name": "x1",
                     "type": "int"
@@ -3231,10 +3279,10 @@ const transform = {
                 ]
               },
               {
-                "kind": "function",
-                "name": "FromCorners",
-                "type": "Rect",
-                "parameters": [
+                kind: "function",
+                name: "FromCorners",
+                type: "Rect",
+                parameters: [
                   {
                     "name": "p1",
                     "type": "const Point &"
@@ -3359,7 +3407,7 @@ const transform = {
             },
             "SDL_GetRectUnion": {
               "kind": "function",
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "immutable": true,
               "parameters": [
                 {
@@ -3392,8 +3440,8 @@ const transform = {
               ]
             },
             "SDL_GetRectEnclosingPointsFloat": {
-              "type": "std::optional<FRect>",
-              "parameters": [
+              type: "FRect",
+              parameters: [
                 {
                   "type": "SpanRef<const SDL_FPoint>",
                   "name": "points"
@@ -3589,7 +3637,7 @@ const transform = {
             },
             "SDL_GetRectIntersectionFloat": {
               "kind": "function",
-              "type": "std::optional<FRect>",
+              "type": "FRect",
               "immutable": true,
               "parameters": [
                 {
@@ -3604,7 +3652,7 @@ const transform = {
             },
             "SDL_GetRectUnionFloat": {
               "kind": "function",
-              "type": "std::optional<FRect>",
+              "type": "FRect",
               "immutable": true,
               "parameters": [
                 {
@@ -5259,7 +5307,7 @@ const transform = {
             "SDL_ReadStorageFile": "immutable",
             "WriteFile": [{
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   name: "path",
@@ -5272,7 +5320,7 @@ const transform = {
               ]
             }, {
               kind: "function",
-              type: "bool",
+              type: "void",
               template: [{
                 type: "class",
                 name: "T"
@@ -5288,7 +5336,7 @@ const transform = {
                 }
               ]
             }],
-            "SDL_WriteStorageFile": "function",
+            "SDL_WriteStorageFile": { type: "void" },
             "SDL_CreateStorageDirectory": "function",
             "EnumerateDirectory": [{
               kind: "function",
@@ -5301,7 +5349,7 @@ const transform = {
               ]
             }, {
               kind: "function",
-              type: "bool",
+              type: "void",
               parameters: [
                 {
                   name: "path",
@@ -6328,6 +6376,8 @@ const transform = {
     "SDL_timer.h": {
       ignoreEntries: [
         "SDL_GetTicks",
+        "SDL_TimerCallback",
+        "SDL_AddTimer",
         "SDL_DelayNS",
         "SDL_MS_PER_SECOND",
         "SDL_US_PER_SECOND",
@@ -6340,15 +6390,11 @@ const transform = {
         "SDL_NS_TO_US"
       ],
       includeAfter: {
-        "SDL_TimerCallback": [
-          {
-            "name": "NSTimerCallback"
-          },
-          {
-            "kind": "alias",
-            "name": "TimerCB"
-          }
-        ],
+        "SDL_NSTimerCallback":
+        {
+          "kind": "alias",
+          "name": "TimerCB"
+        },
         "SDL_AddTimerNS": {
           "kind": "function",
           "name": "AddTimer",
@@ -6407,36 +6453,25 @@ const transform = {
             }
           ]
         },
-        "SDL_AddTimer": {
-          "parameters": [
-            {
-              "type": "std::chrono::milliseconds",
-              "name": "interval"
-            },
-            {
-              "type": "TimerCallback",
-              "name": "callback"
-            },
-            {
-              "type": "void *",
-              "name": "userdata"
-            }
-          ]
+        "SDL_NSTimerCallback": {
+          name: "TimerCallback",
+          type: "SDL_NSTimerCallback",
+          kind: "alias"
         },
         "SDL_AddTimerNS": {
-          "name": "AddTimer",
-          "parameters": [
+          name: "AddTimer",
+          parameters: [
             {
-              "type": "std::chrono::nanoseconds",
-              "name": "interval"
+              type: "std::chrono::nanoseconds",
+              name: "interval"
             },
             {
-              "type": "NSTimerCallback",
-              "name": "callback"
+              type: "TimerCallback",
+              name: "callback"
             },
             {
-              "type": "void *",
-              "name": "userdata"
+              type: "void *",
+              name: "userdata"
             }
           ]
         }

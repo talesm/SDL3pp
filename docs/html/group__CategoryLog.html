@@ -98,9 +98,9 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga7adeb60e84e26978b54b1105c989408e" id="r_ga7adeb60e84e26978b54b1105c989408e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga7adeb60e84e26978b54b1105c989408e">SDL::SetLogPriorityPrefix</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> prefix)</td></tr>
-<tr class="memdesc:ga7adeb60e84e26978b54b1105c989408e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text prepended to log messages of a given priority.  <br /></td></tr>
-<tr class="separator:ga7adeb60e84e26978b54b1105c989408e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga17098e2107cc8038245aa234ab84aba4" id="r_ga17098e2107cc8038245aa234ab84aba4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga17098e2107cc8038245aa234ab84aba4">SDL::SetLogPriorityPrefix</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> prefix)</td></tr>
+<tr class="memdesc:ga17098e2107cc8038245aa234ab84aba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text prepended to log messages of a given priority.  <br /></td></tr>
+<tr class="separator:ga17098e2107cc8038245aa234ab84aba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga844718b13c9d5fb87fabfd339217199a" id="r_ga844718b13c9d5fb87fabfd339217199a"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
 <tr class="memitem:ga844718b13c9d5fb87fabfd339217199a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a">SDL::Log</a> (std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
 <tr class="memdesc:ga844718b13c9d5fb87fabfd339217199a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.  <br /></td></tr>
@@ -686,8 +686,8 @@ template&lt;class... ARGS&gt; </div>
 
 </div>
 </div>
-<a id="ga7adeb60e84e26978b54b1105c989408e" name="ga7adeb60e84e26978b54b1105c989408e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7adeb60e84e26978b54b1105c989408e">&#9670;&#160;</a></span>SetLogPriorityPrefix()</h2>
+<a id="ga17098e2107cc8038245aa234ab84aba4" name="ga17098e2107cc8038245aa234ab84aba4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga17098e2107cc8038245aa234ab84aba4">&#9670;&#160;</a></span>SetLogPriorityPrefix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -696,7 +696,7 @@ template&lt;class... ARGS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::SetLogPriorityPrefix </td>
+          <td class="memname">void SDL::SetLogPriorityPrefix </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
           <td class="paramname"><em>priority</em>, </td>
@@ -723,16 +723,21 @@ template&lt;class... ARGS&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">priority</td><td>the LogPriority to modify. </td></tr>
-    <tr><td class="paramname">prefix</td><td>the prefix to use for that log priority, or NULL to use no prefix. </td></tr>
+    <tr><td class="paramname">prefix</td><td>the prefix to use for that log priority, or nullptr to use no prefix. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1LogCategory.html#aea4bbac0bfee6260e24ced6bd5502b47" title="Set the priority of all log categories.">LogCategory::SetLogPriorities()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1LogCategory.html#aea4bbac0bfee6260e24ced6bd5502b47" title="Set the priority of all log categories.">LogCategory.SetLogPriorities</a> </dd>
 <dd>
-<a class="el" href="classSDL_1_1LogCategory.html#a011df65f656938057462aeb5ed7e2b91" title="Set the priority of a particular log category.">LogCategory::SetLogPriority()</a> </dd></dl>
+<a class="el" href="classSDL_1_1LogCategory.html#a011df65f656938057462aeb5ed7e2b91" title="Set the priority of a particular log category.">LogCategory.SetLogPriority</a> </dd></dl>
 
 </div>
 </div>

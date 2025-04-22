@@ -2007,10 +2007,10 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param renderer the rendering context.
    * @param file a path on the filesystem to load an image from.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the new Texture with loaded contents on success.
+   * @throws Error on failure.
    *
-   * @sa LoadTexture(StringParam)
+   * @sa LoadTexture(RendererBase&, StringParam)
    */
   TextureBase(RendererBase& renderer, StringParam file);
 
@@ -2022,11 +2022,11 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param renderer the rendering context.
    * @param src an IOStreamBase to load an image from.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the new Texture with loaded contents on success.
+   * @throws Error on failure.
    *
-   * @sa LoadSurface(StringParam)
-   * @sa LoadBMP(StringParam)
+   * @sa LoadTexture(RendererBase&StringParam)
+   * @sa LoadTextureBMP(RendererBase&, StringParam)
    */
   TextureBase(RendererBase& renderer, IOStream& src);
 

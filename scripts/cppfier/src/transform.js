@@ -50,7 +50,7 @@ function transformApi(config) {
   // Step 2: Transform Files
   for (const [sourceName, sourceFile] of Object.entries(source.files)) {
     const fileConfig = fileTransformMap[sourceName];
-    context.enableException = !!fileConfig.enableException;
+    context.enableException = fileConfig.enableException !== false;
     const targetName = fileConfig.name || transformIncludeName(sourceName, context);
     system.log(`Transforming api ${sourceName} => ${targetName}`);
 
@@ -593,11 +593,44 @@ function expandResources(sourceEntries, file, context) {
     };
     file.transform[sourceName] = entry;
 
-    const freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free]) ?? scanFreeFunction(sourceEntries, uniqueName, pointerType);
+    let freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free]) ?? scanFreeFunction(sourceEntries, uniqueName, pointerType);
     const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
-    if (freeFunction && !file.transform[freeFunction.name]) {
-      context.nameMap[freeFunction.name] = refName + ".reset";
-      context.blacklist.add(freeFunction.name);
+    if (freeFunction) {
+      const sourceName = freeFunction.name;
+      freeFunction = transformEntry(freeFunction, context);
+      const freeTransformEntry = file.transform[sourceName];
+      if (freeTransformEntry) {
+        combineObject(freeFunction, freeTransformEntry);
+        if (!freeTransformEntry.hints?.body) combineHints(freeTransformEntry, {
+          body: freeFunction.type === "void" ? "reset();" : "return reset();"
+        });
+      } else {
+        context.nameMap[sourceName] = refName + ".reset";
+        context.blacklist.add(sourceName);
+      }
+      freeFunction.name = "reset";
+      freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${sourceName}.`;
+      freeFunction.parameters = [{
+        name: "newResource",
+        type: pointerType,
+        default: "{}"
+      }];
+      freeFunction.hints = {
+        body: (freeFunction.type !== "void" ? "return " : "") + `${sourceName}(release(newResource));`
+      };
+    } else {
+      freeFunction = {
+        kind: "function",
+        name: "reset",
+        type: "void",
+        static: false,
+        parameters: [{
+          name: "newResource",
+          type: pointerType,
+          default: "{}"
+        }],
+        doc: `frees up ${sourceName}.`,
+      };
     }
 
     /** @type {ApiEntryTransform[]} */
@@ -657,21 +690,7 @@ function expandResources(sourceEntries, file, context) {
               body: `release(other.release());\nreturn *this;`,
             }
           },
-          "reset": {
-            kind: "function",
-            name: "reset",
-            type: freeFunction?.type ?? "void",
-            static: false,
-            parameters: [{
-              name: "newResource",
-              type: pointerType,
-              default: "{}"
-            }],
-            doc: freeFunction?.doc ? transformDoc(freeFunction.doc, context) : `frees up ${sourceName}.`,
-            hints: {
-              body: freeFunction ? (freeFunction.type !== "void" ? "return " : "") + `${freeFunction.name}(release(newResource));` : "",
-            }
-          }
+          "reset": freeFunction,
         }
       }, {
         name: uniqueName,

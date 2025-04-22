@@ -445,7 +445,13 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting.">SurfaceBase</a> structure that is created or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with loaded contents on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a> </dd>
 <dd>
 <a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a> </dd></dl>
@@ -482,7 +488,13 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting.">SurfaceBase</a> structure that is created or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with loaded contents on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a> </dd>
 <dd>
 <a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a> </dd></dl>
@@ -1479,7 +1491,7 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <p>If this function is called for a surface that already has a palette, a new palette will be created to replace it.</p>
 <dl class="section return"><dt>Returns</dt><dd>a new SDL_Palette structure on success or NULL on failure (e.g. if the surface didn't have an index format); call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#a182050cc70648a53ecb79beadcf22d6e" title="Set a range of colors in a palette.">Palette.SetColors()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#ae556f9a5758248f5e8af10d40b647105" title="Set a range of colors in a palette.">Palette.SetColors()</a> </dd></dl>
 
 </div>
 </div>

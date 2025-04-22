@@ -135,12 +135,12 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~EnvironmentRef<
 <tr class="memitem:aab5ed3321dfe73c2299f88883cce17b1 inherit pub_methods_structSDL_1_1EnvironmentBase" id="r_aab5ed3321dfe73c2299f88883cce17b1"><td class="memItemLeft" align="right" valign="top">Uint64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#aab5ed3321dfe73c2299f88883cce17b1">GetVariableCount</a> ()</td></tr>
 <tr class="memdesc:aab5ed3321dfe73c2299f88883cce17b1 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Variables count.  <br /></td></tr>
 <tr class="separator:aab5ed3321dfe73c2299f88883cce17b1 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f21f47fb54272e289452885e0738fa3 inherit pub_methods_structSDL_1_1EnvironmentBase" id="r_a7f21f47fb54272e289452885e0738fa3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a7f21f47fb54272e289452885e0738fa3">SetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> value, bool overwrite)</td></tr>
-<tr class="memdesc:a7f21f47fb54272e289452885e0738fa3 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value of a variable in the environment.  <br /></td></tr>
-<tr class="separator:a7f21f47fb54272e289452885e0738fa3 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd24dd3d5bb7419270c24d660cc9eb35 inherit pub_methods_structSDL_1_1EnvironmentBase" id="r_afd24dd3d5bb7419270c24d660cc9eb35"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#afd24dd3d5bb7419270c24d660cc9eb35">UnsetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
-<tr class="memdesc:afd24dd3d5bb7419270c24d660cc9eb35 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear a variable from the environment.  <br /></td></tr>
-<tr class="separator:afd24dd3d5bb7419270c24d660cc9eb35 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fec9f08ac50ee2c76966b84ce7b1023 inherit pub_methods_structSDL_1_1EnvironmentBase" id="r_a9fec9f08ac50ee2c76966b84ce7b1023"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a9fec9f08ac50ee2c76966b84ce7b1023">SetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> value, bool overwrite)</td></tr>
+<tr class="memdesc:a9fec9f08ac50ee2c76966b84ce7b1023 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value of a variable in the environment.  <br /></td></tr>
+<tr class="separator:a9fec9f08ac50ee2c76966b84ce7b1023 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dce8cfac507ce0ee774cf3449f450e9 inherit pub_methods_structSDL_1_1EnvironmentBase" id="r_a0dce8cfac507ce0ee774cf3449f450e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a0dce8cfac507ce0ee774cf3449f450e9">UnsetVariable</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
+<tr class="memdesc:a0dce8cfac507ce0ee774cf3449f450e9 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear a variable from the environment.  <br /></td></tr>
+<tr class="separator:a0dce8cfac507ce0ee774cf3449f450e9 inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1EnvironmentBase" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1EnvironmentBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -252,16 +252,22 @@ constexpr SDL_Environment *&#160;</td><td class="memItemRight" valign="bottom"><
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new environment (convertible to true) on success or convertible to false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the new environment on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>If <code>populated</code> is false, it is safe to call this function from any thread, otherwise it is safe if no other threads are calling setenv() or unsetenv()</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1EnvironmentBase.html#a2b34f72fb4a546bcb6ad4ce8b3cc5b4e" title="Get the value of a variable in the environment.">EnvironmentBase.GetVariable</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1EnvironmentBase.html#a34b48bcdaaae7fa66efc0db6c79ed469" title="Get all variables in the environment.">EnvironmentBase.GetVariables</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1EnvironmentBase.html#a7f21f47fb54272e289452885e0738fa3" title="Set the value of a variable in the environment.">EnvironmentBase.SetVariable</a> </dd>
+<a class="el" href="structSDL_1_1EnvironmentBase.html#a9fec9f08ac50ee2c76966b84ce7b1023" title="Set the value of a variable in the environment.">EnvironmentBase.SetVariable</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1EnvironmentBase.html#afd24dd3d5bb7419270c24d660cc9eb35" title="Clear a variable from the environment.">EnvironmentBase.UnsetVariable</a> </dd></dl>
+<a class="el" href="structSDL_1_1EnvironmentBase.html#a0dce8cfac507ce0ee774cf3449f450e9" title="Clear a variable from the environment.">EnvironmentBase.UnsetVariable</a> </dd></dl>
 
 </div>
 </div>

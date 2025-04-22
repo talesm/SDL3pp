@@ -116,7 +116,7 @@ struct TrayBase : Resource<SDL_Tray*>
    * @sa TrayBase.GetMenu
    */
   TrayBase(SurfaceBase& icon, StringParam tooltip)
-    : Resource(SDL_CreateTray(icon.get(), tooltip))
+    : Resource(CheckError(SDL_CreateTray(icon.get(), tooltip)))
   {
   }
 
@@ -769,7 +769,7 @@ struct TrayEntryRef : TrayEntryBase
    * @sa TrayMenu.GetEntries
    * @sa TrayMenu.InsertEntry
    */
-  void Remove() { SDL_RemoveTrayEntry(release()); }
+  void Remove() { reset(); }
 };
 
 /**

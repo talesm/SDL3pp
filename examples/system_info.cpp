@@ -101,16 +101,8 @@ static void showInfo(SDL::RendererRef renderer)
 int main(int argc, char** argv)
 {
   SDL::SDL init(SDL::INIT_VIDEO);
-  if (!init) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
   constexpr SDL::Point WINDOW_SZ = LOG_SZ * 2;
   auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
-  if (!window) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
   renderer.SetScale({2.f, 2.f});
 
   bool running = true;

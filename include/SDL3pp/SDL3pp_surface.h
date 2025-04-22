@@ -150,8 +150,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * LoadBMP(StringParam).
    *
    * @param file a path on the filesystem to load an image from.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new Surface with loaded contents on success.
+   * @throws Error on failure.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
@@ -165,8 +165,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * LoadBMP(IOStreamBase&).
    *
    * @param src an IOStreamBase to load an image from.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new Surface with loaded contents on success.
+   * @throws Error on failure.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)

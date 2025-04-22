@@ -200,9 +200,9 @@ constexpr SDL_Thread *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a21f81f4f3ec877fa8bb680ba0d4968af" id="r_a21f81f4f3ec877fa8bb680ba0d4968af"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadBase.html#a21f81f4f3ec877fa8bb680ba0d4968af">SetCurrentPriority</a> (<a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">ThreadPriority</a> priority)</td></tr>
-<tr class="memdesc:a21f81f4f3ec877fa8bb680ba0d4968af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority for the current thread.  <br /></td></tr>
-<tr class="separator:a21f81f4f3ec877fa8bb680ba0d4968af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae578e9b62ad54bc106dbe2f83ff53d47" id="r_ae578e9b62ad54bc106dbe2f83ff53d47"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadBase.html#ae578e9b62ad54bc106dbe2f83ff53d47">SetCurrentPriority</a> (<a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">ThreadPriority</a> priority)</td></tr>
+<tr class="memdesc:ae578e9b62ad54bc106dbe2f83ff53d47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority for the current thread.  <br /></td></tr>
+<tr class="separator:ae578e9b62ad54bc106dbe2f83ff53d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>These are opaque data.</p>
@@ -255,7 +255,13 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>an opaque pointer to the new thread object on success, nullptr if the new thread could not be created; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>an opaque pointer to the new thread object on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadBase.html#a6dfea610e20b063d4ce12453a68b3afb" title="Create a new thread with a default stack size.">ThreadBase.ThreadBase</a> </dd>
 <dd>
@@ -317,7 +323,13 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>an opaque pointer to the new thread object on success, nullptr if the new thread could not be created; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>an opaque pointer to the new thread object on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadBase.html#a6dfea610e20b063d4ce12453a68b3afb" title="Create a new thread with a default stack size.">ThreadBase.ThreadBase</a> </dd>
 <dd>
@@ -370,7 +382,13 @@ default" which might be wildly different between platforms. x86 Linux generally 
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>an opaque pointer to the new thread object on success, nullptr if the new thread could not be created; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>an opaque pointer to the new thread object on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadBase.html#a6dfea610e20b063d4ce12453a68b3afb" title="Create a new thread with a default stack size.">ThreadBase.ThreadBase</a> </dd>
 <dd>
@@ -463,8 +481,8 @@ default" which might be wildly different between platforms. x86 Linux generally 
 
 </div>
 </div>
-<a id="a21f81f4f3ec877fa8bb680ba0d4968af" name="a21f81f4f3ec877fa8bb680ba0d4968af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21f81f4f3ec877fa8bb680ba0d4968af">&#9670;&#160;</a></span>SetCurrentPriority()</h2>
+<a id="ae578e9b62ad54bc106dbe2f83ff53d47" name="ae578e9b62ad54bc106dbe2f83ff53d47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae578e9b62ad54bc106dbe2f83ff53d47">&#9670;&#160;</a></span>SetCurrentPriority()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -473,7 +491,7 @@ default" which might be wildly different between platforms. x86 Linux generally 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool SDL::ThreadBase::SetCurrentPriority </td>
+          <td class="memname">static void SDL::ThreadBase::SetCurrentPriority </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">ThreadPriority</a>&#160;</td>
           <td class="paramname"><em>priority</em></td><td>)</td>
@@ -493,7 +511,12 @@ default" which might be wildly different between platforms. x86 Linux generally 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>

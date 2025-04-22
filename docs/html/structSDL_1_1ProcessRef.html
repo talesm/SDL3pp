@@ -148,9 +148,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~ProcessRef</b> 
 <tr class="memitem:af9ce8bbcdb2d145f24a4d64163dc9f4b inherit pub_methods_structSDL_1_1ProcessBase" id="r_af9ce8bbcdb2d145f24a4d64163dc9f4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#af9ce8bbcdb2d145f24a4d64163dc9f4b">GetOutput</a> ()</td></tr>
 <tr class="memdesc:af9ce8bbcdb2d145f24a4d64163dc9f4b inherit pub_methods_structSDL_1_1ProcessBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> associated with process standard output.  <br /></td></tr>
 <tr class="separator:af9ce8bbcdb2d145f24a4d64163dc9f4b inherit pub_methods_structSDL_1_1ProcessBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c62a55736fcf7c5a9b05bd5d2d774c6 inherit pub_methods_structSDL_1_1ProcessBase" id="r_a0c62a55736fcf7c5a9b05bd5d2d774c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6">Kill</a> (bool force)</td></tr>
-<tr class="memdesc:a0c62a55736fcf7c5a9b05bd5d2d774c6 inherit pub_methods_structSDL_1_1ProcessBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a process.  <br /></td></tr>
-<tr class="separator:a0c62a55736fcf7c5a9b05bd5d2d774c6 inherit pub_methods_structSDL_1_1ProcessBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b7bb3005445057ec3f2b2aa47fb0ca inherit pub_methods_structSDL_1_1ProcessBase" id="r_a50b7bb3005445057ec3f2b2aa47fb0ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca">Kill</a> (bool force)</td></tr>
+<tr class="memdesc:a50b7bb3005445057ec3f2b2aa47fb0ca inherit pub_methods_structSDL_1_1ProcessBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop a process.  <br /></td></tr>
+<tr class="separator:a50b7bb3005445057ec3f2b2aa47fb0ca inherit pub_methods_structSDL_1_1ProcessBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2f8588e8601701823e04684c8e96e01 inherit pub_methods_structSDL_1_1ProcessBase" id="r_ae2f8588e8601701823e04684c8e96e01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#ae2f8588e8601701823e04684c8e96e01">Wait</a> (bool block, int *exitcode)</td></tr>
 <tr class="memdesc:ae2f8588e8601701823e04684c8e96e01 inherit pub_methods_structSDL_1_1ProcessBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a process to finish.  <br /></td></tr>
 <tr class="separator:ae2f8588e8601701823e04684c8e96e01 inherit pub_methods_structSDL_1_1ProcessBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,7 +280,13 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the newly created and running process, or nullptr if the process couldn't be created.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the newly created and running process. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd>
@@ -293,7 +299,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#af9ce8bbcdb2d145f24a4d64163dc9f4b" title="Get the IOStreamBase associated with process standard output.">ProcessBase.GetOutput</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6" title="Stop a process.">ProcessBase.Kill</a> </dd>
+<a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca" title="Stop a process.">ProcessBase.Kill</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#ae2f8588e8601701823e04684c8e96e01" title="Wait for a process to finish.">ProcessBase.Wait</a> </dd>
 <dd>
@@ -344,7 +350,13 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the newly created and running process, or nullptr if the process couldn't be created.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the newly created and running process. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd>
@@ -357,7 +369,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#af9ce8bbcdb2d145f24a4d64163dc9f4b" title="Get the IOStreamBase associated with process standard output.">ProcessBase.GetOutput</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6" title="Stop a process.">ProcessBase.Kill</a> </dd>
+<a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca" title="Stop a process.">ProcessBase.Kill</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#ae2f8588e8601701823e04684c8e96e01" title="Wait for a process to finish.">ProcessBase.Wait</a> </dd></dl>
 
@@ -386,14 +398,14 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Note that this does not stop the process, just destroys the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> object used to track it. If you want to stop the process you should use <a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6" title="Stop a process.">ProcessBase.Kill()</a>.</p>
+<p>Note that this does not stop the process, just destroys the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> object used to track it. If you want to stop the process you should use <a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca" title="Stop a process.">ProcessBase.Kill()</a>.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessBase.html#a0c62a55736fcf7c5a9b05bd5d2d774c6" title="Stop a process.">ProcessBase.Kill</a> </dd></dl>
+<a class="el" href="structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca" title="Stop a process.">ProcessBase.Kill</a> </dd></dl>
 
 </div>
 </div>
