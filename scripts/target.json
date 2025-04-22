@@ -10255,7 +10255,7 @@
               "sourceName": "SDL_GetRendererFromTexture",
               "immutable": true
             },
-            "SetColorAndAlphaMod": [
+            "SetMod": [
               {
                 "kind": "function",
                 "type": "void",
@@ -10265,7 +10265,7 @@
                     "name": "c"
                   }
                 ],
-                "name": "SetColorAndAlphaMod",
+                "name": "SetMod",
                 "doc": ""
               },
               {
@@ -10277,17 +10277,17 @@
                     "name": "c"
                   }
                 ],
-                "name": "SetColorAndAlphaMod",
+                "name": "SetMod",
                 "doc": ""
               }
             ],
-            "GetColorAndAlphaMod": [
+            "GetMod": [
               {
                 "kind": "function",
                 "type": "FColor",
                 "immutable": true,
                 "parameters": [],
-                "name": "GetColorAndAlphaMod",
+                "name": "GetMod",
                 "doc": ""
               },
               {
@@ -10300,7 +10300,7 @@
                     "name": "c"
                   }
                 ],
-                "name": "GetColorAndAlphaMod",
+                "name": "GetMod",
                 "doc": ""
               },
               {
@@ -10313,7 +10313,7 @@
                     "name": "c"
                   }
                 ],
-                "name": "GetColorAndAlphaMod",
+                "name": "GetMod",
                 "doc": ""
               }
             ],
@@ -17417,7 +17417,7 @@
               },
               "immutable": true
             },
-            "SetColorAndAlphaMod": {
+            "SetMod": {
               "kind": "function",
               "type": "void",
               "parameters": [
@@ -17426,15 +17426,15 @@
                   "name": "color"
                 }
               ],
-              "name": "SetColorAndAlphaMod",
+              "name": "SetMod",
               "doc": ""
             },
-            "GetColorAndAlphaMod": {
+            "GetMod": {
               "kind": "function",
               "immutable": true,
               "type": "Color",
               "parameters": [],
-              "name": "GetColorAndAlphaMod",
+              "name": "GetMod",
               "doc": ""
             },
             "SetBlendMode": {

@@ -30391,7 +30391,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param color the color to be multiplied in blit operations
    * @throws Error on failure.
    */
-  void SetColorAndAlphaMod(Color color)
+  void SetMod(Color color)
   {
     SetColorMod(color.r, color.g, color.b);
     SetAlphaMod(color.a);
@@ -30404,7 +30404,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @returns a Color containing RGBA value on success or std::nullopt on
    * failure; call GetError() for more information.
    */
-  Color GetColorAndAlphaMod() const
+  Color GetMod() const
   {
     Color c;
     GetColorMod(&c.r, &c.g, &c.b);
@@ -43886,7 +43886,7 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetColorAndAlphaMod(Color c)
+  void SetMod(Color c)
   {
     SetColorMod(c.r, c.g, c.b);
     SetAlphaMod(c.a);
@@ -43914,7 +43914,7 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetColorAndAlphaMod(FColor c)
+  void SetMod(FColor c)
   {
     SetColorMod(c.r, c.g, c.b);
     SetAlphaMod(c.a);
@@ -43933,10 +43933,10 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  FColor GetColorAndAlphaMod() const
+  FColor GetMod() const
   {
     FColor color;
-    GetColorAndAlphaMod(&color);
+    GetMod(&color);
     return color;
   }
 
@@ -43953,7 +43953,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  void GetColorAndAlphaMod(Color* c) const
+  void GetMod(Color* c) const
   {
     SDL_assert_paranoid(c != nullptr);
     GetColorMod(&c->r, &c->g, &c->b);
@@ -43973,7 +43973,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  void GetColorAndAlphaMod(FColor* c) const
+  void GetMod(FColor* c) const
   {
     SDL_assert_paranoid(c != nullptr);
     GetColorMod(&c->r, &c->g, &c->b);

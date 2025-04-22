@@ -723,7 +723,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param color the color to be multiplied in blit operations
    * @throws Error on failure.
    */
-  void SetColorAndAlphaMod(Color color)
+  void SetMod(Color color)
   {
     SetColorMod(color.r, color.g, color.b);
     SetAlphaMod(color.a);
@@ -736,7 +736,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @returns a Color containing RGBA value on success or std::nullopt on
    * failure; call GetError() for more information.
    */
-  Color GetColorAndAlphaMod() const
+  Color GetMod() const
   {
     Color c;
     GetColorMod(&c.r, &c.g, &c.b);

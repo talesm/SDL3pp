@@ -4404,11 +4404,11 @@ const transform = {
               "name": "GetRenderer",
               "immutable": true
             },
-            "SetColorAndAlphaMod": [
+            "SetMod": [
               {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
+                kind: "function",
+                type: "void",
+                parameters: [
                   {
                     "type": "Color",
                     "name": "c"
@@ -4416,9 +4416,9 @@ const transform = {
                 ]
               },
               {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
+                kind: "function",
+                type: "void",
+                parameters: [
                   {
                     "type": "FColor",
                     "name": "c"
@@ -4426,32 +4426,32 @@ const transform = {
                 ]
               }
             ],
-            "GetColorAndAlphaMod": [
+            "GetMod": [
               {
-                "kind": "function",
-                "type": "FColor",
-                "immutable": true,
-                "parameters": []
+                kind: "function",
+                type: "FColor",
+                immutable: true,
+                parameters: []
               },
               {
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
+                kind: "function",
+                type: "void",
+                immutable: true,
+                parameters: [
                   {
-                    "type": "Color *",
-                    "name": "c"
+                    type: "Color *",
+                    name: "c"
                   }
                 ]
               },
               {
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
+                kind: "function",
+                type: "void",
+                immutable: true,
+                parameters: [
                   {
-                    "type": "FColor *",
-                    "name": "c"
+                    type: "FColor *",
+                    name: "c"
                   }
                 ]
               }
@@ -5590,7 +5590,7 @@ const transform = {
               type: "Uint8",
               parameters: [{}]
             },
-            "SetColorAndAlphaMod": {
+            "SetMod": {
               kind: "function",
               type: "void",
               parameters: [{
@@ -5598,7 +5598,7 @@ const transform = {
                 name: "color"
               }]
             },
-            "GetColorAndAlphaMod": {
+            "GetMod": {
               kind: "function",
               immutable: true,
               type: "Color",

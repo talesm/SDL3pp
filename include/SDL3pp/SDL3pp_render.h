@@ -2326,7 +2326,7 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetColorAndAlphaMod(Color c)
+  void SetMod(Color c)
   {
     SetColorMod(c.r, c.g, c.b);
     SetAlphaMod(c.a);
@@ -2354,7 +2354,7 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetColorAndAlphaMod(FColor c)
+  void SetMod(FColor c)
   {
     SetColorMod(c.r, c.g, c.b);
     SetAlphaMod(c.a);
@@ -2373,10 +2373,10 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  FColor GetColorAndAlphaMod() const
+  FColor GetMod() const
   {
     FColor color;
-    GetColorAndAlphaMod(&color);
+    GetMod(&color);
     return color;
   }
 
@@ -2393,7 +2393,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  void GetColorAndAlphaMod(Color* c) const
+  void GetMod(Color* c) const
   {
     SDL_assert_paranoid(c != nullptr);
     GetColorMod(&c->r, &c->g, &c->b);
@@ -2413,7 +2413,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  void GetColorAndAlphaMod(FColor* c) const
+  void GetMod(FColor* c) const
   {
     SDL_assert_paranoid(c != nullptr);
     GetColorMod(&c->r, &c->g, &c->b);
