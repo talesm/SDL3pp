@@ -4,10 +4,7 @@
 #include <atomic>
 #include <chrono>
 #include <SDL3/SDL_events.h>
-#include "SDL3pp_callbackWrapper.h"
-#include "SDL3pp_error.h"
 #include "SDL3pp_stdinc.h"
-#include "SDL3pp_stringParam.h"
 #include "SDL3pp_video.h"
 
 namespace SDL {

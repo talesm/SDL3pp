@@ -129,7 +129,7 @@ Category                                            | Header
 [Optional references](#SDL::OptionalRef)            | SDL3pp_optionalRef.h
 @ref CategoryOwnPtr                                 | SDL3pp_ownPtr.h
 [Span-like for derived structs](#SDL::SpanRef)      | SDL3pp_spanRef.h
-[Wrapper for string parameters](#SDL::StringParam)  | SDL3pp_stringParam.h
+@ref CategoryStrings                                | SDL3pp_strings.h
 
 @defgroup Categories Categories
 
@@ -226,6 +226,7 @@ thread facilities.
 @{
 @addtogroup CategoryCallbackWrapper
 @addtogroup CategoryOwnPtr
+@addtogroup CategoryStrings
 @}
 
 @}

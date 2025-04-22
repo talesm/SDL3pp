@@ -705,6 +705,14 @@ public:
   constexpr T* data() const { return value.data(); }
 };
 
+/**
+ * @defgroup CategoryStrings Helpers to use C++ strings with SDL
+ *
+ * It has StringParam to use on parameters and StringResult to have
+ * a simple std::string-like interface for SDL allocated strings.
+ * @{
+ */
+
 #ifndef SDL3PP_ENABLE_STRING_PARAM
 
 #ifndef SDL3PP_DISABLE_STRING_PARAM
@@ -832,6 +840,8 @@ public:
 using StringParam = const char*;
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
+
+/// @}
 
 /**
  * @defgroup CategoryError Error Handling

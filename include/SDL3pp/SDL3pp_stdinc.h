@@ -9,7 +9,7 @@
 #include "SDL3pp_ownPtr.h"
 #include "SDL3pp_resource.h"
 #include "SDL3pp_spanRef.h"
-#include "SDL3pp_stringParam.h"
+#include "SDL3pp_strings.h"
 
 namespace SDL {
 

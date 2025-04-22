@@ -6,11 +6,8 @@
 #include <vector>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
-#include "SDL3pp_error.h"
-#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
-#include "SDL3pp_stringParam.h"
 #include "SDL3pp_surface.h"
 
 namespace SDL {

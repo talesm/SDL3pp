@@ -1,11 +1,19 @@
-#ifndef SDL3PP_STRING_PARAM_H_
-#define SDL3PP_STRING_PARAM_H_
+#ifndef SDL3PP_STRINGS_H_
+#define SDL3PP_STRINGS_H_
 
 #include <string>
 #include <string_view>
 #include <variant>
 
 namespace SDL {
+
+/**
+ * @defgroup CategoryStrings Helpers to use C++ strings with SDL
+ *
+ * It has StringParam to use on parameters and StringResult to have
+ * a simple std::string-like interface for SDL allocated strings.
+ * @{
+ */
 
 #ifndef SDL3PP_ENABLE_STRING_PARAM
 
@@ -135,6 +143,8 @@ using StringParam = const char*;
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
 
+/// @}
+
 } // namespace SDL
 
-#endif /* SDL3PP_STRING_PARAM_H_ */
+#endif /* SDL3PP_STRINGS_H_ */

@@ -4,16 +4,11 @@
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_version.h>
 #include "SDL3pp_blendmode.h"
-#include "SDL3pp_error.h"
 #include "SDL3pp_iostream.h"
-#include "SDL3pp_optionalRef.h"
-#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
-#include "SDL3pp_spanRef.h"
 #include "SDL3pp_stdinc.h"
-#include "SDL3pp_stringParam.h"
 
 namespace SDL {
 

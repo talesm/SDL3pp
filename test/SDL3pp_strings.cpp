@@ -1,4 +1,4 @@
-#include "SDL3pp/SDL3pp_stringParam.h"
+#include "SDL3pp/SDL3pp_strings.h"
 #include "doctest.h"
 
 #ifdef SDL3PP_ENABLE_STRING_PARAM
