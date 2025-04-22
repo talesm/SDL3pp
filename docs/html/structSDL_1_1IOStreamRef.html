@@ -408,7 +408,7 @@ constexpr SDL_IOStream *&#160;</td><td class="memItemRight" valign="bottom"><b>o
 <p>This call flushes any buffered writes to the operating system, but there are no guarantees that those writes have gone to physical media; they might be in the OS's file cache, waiting to go to disk later. If it's absolutely crucial that writes go to disk immediately, so they are definitely stored even if the power fails before the file cache would have caught up, one should call <a class="el" href="structSDL_1_1IOStreamBase.html#a86dfb5c7ea703f3b11ee9fcff35b7fc4" title="Flush any buffered data in the stream.">IOStreamBase.Flush()</a> before closing. Note that flushing takes time and makes the system and your app operate less efficiently, so do so sparingly.</p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
   </table>
   </dd>
 </dl>
@@ -796,7 +796,7 @@ template&lt;class U &gt; </div>
 <p>This call flushes any buffered writes to the operating system, but there are no guarantees that those writes have gone to physical media; they might be in the OS's file cache, waiting to go to disk later. If it's absolutely crucial that writes go to disk immediately, so they are definitely stored even if the power fails before the file cache would have caught up, one should call <a class="el" href="structSDL_1_1IOStreamBase.html#a86dfb5c7ea703f3b11ee9fcff35b7fc4" title="Flush any buffered data in the stream.">IOStreamBase.Flush()</a> before closing. Note that flushing takes time and makes the system and your app operate less efficiently, so do so sparingly.</p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
   </table>
   </dd>
 </dl>

@@ -83,8 +83,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Error.html">SDL::Error</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An exception that returns <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a>  <a href="structSDL_1_1Error.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Error.html">SDL::Error</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An exception that returns <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a>  <a href="classSDL_1_1Error.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -160,7 +160,7 @@ Functions</h2></td></tr>
 <div class="line">    DoSomething(str);</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryError_html_ga5875c9c083a88408e11abeaa8391dfa5"><div class="ttname"><a href="group__CategoryError.html#ga5875c9c083a88408e11abeaa8391dfa5">SDL_InvalidParamError</a></div><div class="ttdeci">#define SDL_InvalidParamError(param)</div><div class="ttdoc">A macro to standardize error reporting on unsupported operations.</div><div class="ttdef"><b>Definition</b> SDL3pp_error.h:274</div></div>
+<div class="ttc" id="agroup__CategoryError_html_ga5875c9c083a88408e11abeaa8391dfa5"><div class="ttname"><a href="group__CategoryError.html#ga5875c9c083a88408e11abeaa8391dfa5">SDL_InvalidParamError</a></div><div class="ttdeci">#define SDL_InvalidParamError(param)</div><div class="ttdoc">A macro to standardize error reporting on unsupported operations.</div><div class="ttdef"><b>Definition</b> SDL3pp_error.h:293</div></div>
 </div><!-- fragment --><dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
@@ -210,7 +210,7 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This should be called only for things that may set <a class="el" href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError()</a>. If the parameter is false it will throw <a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a>.</p>
+<p>This should be called only for things that may set <a class="el" href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError()</a>. If the parameter is false it will throw <a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">result</td><td>the result returned </td></tr>
@@ -245,7 +245,7 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This should be called only for things that may set <a class="el" href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError()</a>. If the parameter is false it will throw <a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a>.</p>
+<p>This should be called only for things that may set <a class="el" href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError()</a>. If the parameter is false it will throw <a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">result</td><td>the result returned </td></tr>
@@ -290,7 +290,7 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This should be called only for things that may set <a class="el" href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError()</a>. If the result parameter is equals to invalidValue it will throw <a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a>.</p>
+<p>This should be called only for things that may set <a class="el" href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError()</a>. If the result parameter is equals to invalidValue it will throw <a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">result</td><td>the result returned </td></tr>
@@ -357,7 +357,7 @@ template&lt;class T &gt; </div>
 <p>It is possible for multiple errors to occur before calling <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a>. Only the last error is returned.</p>
 <p>The message is only applicable when an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> function has signaled an error. You must check the return values of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> function calls to determine when to appropriately call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a>. You should <em>not</em> use the results of <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> to decide if an error has occurred! Sometimes <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will set an error string even when reporting success.</p>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will <em>not</em> clear the error string for successful API calls. You <em>must</em> check return values for failure cases before you can assume the error string applies.</p>
-<p><a class="el" href="structSDL_1_1Error.html" title="An exception that returns GetError()">Error</a> strings are set per-thread, so an error set in a different thread will not interfere with the current thread's operation.</p>
+<p><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a> strings are set per-thread, so an error set in a different thread will not interfere with the current thread's operation.</p>
 <p>The returned value is a thread-local string which will remain valid until the current thread's error string is changed. The caller should make a copy if the value is needed after the next <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> API call.</p>
 <dl class="section return"><dt>Returns</dt><dd>a message with information about the specific error that occurred, or an empty string if there hasn't been an error message set since the last call to <a class="el" href="group__CategoryError.html#ga7307f5502856bade5976f55c8adf5326" title="Clear any previous error message for this thread.">ClearError()</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>

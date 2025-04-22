@@ -163,17 +163,36 @@ inline const char* GetError() { return SDL_GetError(); }
  * An exception that returns GetError()
  *
  */
-struct Error : std::exception
+class Error : std::exception
 {
+  std::string m_message;
+
+public:
   /**
    * Default ctor.
    */
-  Error() = default;
+  Error()
+    : m_message(SDL_GetError())
+  {
+  }
+
+  /**
+   * Constructs from string
+   */
+  Error(std::string message)
+    : m_message(std::move(message))
+  {
+  }
 
   /**
    * Returns the explanatory string.
    */
-  const char* what() const noexcept final { return GetError(); }
+  constexpr const char* what() const noexcept { return m_message.c_str(); }
+
+  /**
+   * Returns the explanatory string.
+   */
+  constexpr const std::string& str() const noexcept { return m_message; }
 };
 
 /**

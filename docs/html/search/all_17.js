@@ -18,7 +18,7 @@ var searchData=
   ['wcsnstr_15',['wcsnstr',['../group__CategoryStdinc.html#gacc794d23fc0f8b51d4abbcf226e6d7c7',1,'SDL']]],
   ['wcsstr_16',['wcsstr',['../group__CategoryStdinc.html#gad864d11d477fc831eb7fcd5a40fbe615',1,'SDL']]],
   ['wcstol_17',['wcstol',['../group__CategoryStdinc.html#ga0408a155d55fa0fc2d0198de99ca0dc4',1,'SDL']]],
-  ['what_18',['what',['../structSDL_1_1Error.html#ac95200b00bda64ff03402b9205ac30d4',1,'SDL::Error']]],
+  ['what_18',['what',['../classSDL_1_1Error.html#a2bca9ab30a91478aa6b890c25368371f',1,'SDL::Error']]],
   ['window_19',['window',['../structSDL_1_1Window.html',1,'SDL::Window'],['../structSDL_1_1Window.html#ad1fbf607add8873ff474f204a2f46d3a',1,'SDL::Window::Window(Window &amp;&amp;other)=default'],['../structSDL_1_1Window.html#a63ab53af1845b1d2d17e2ae9ba5a6b7f',1,'SDL::Window::Window(SDL_Window *resource={})']]],
   ['window_20management_20',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
   ['window_5falways_5fon_5ftop_21',['WINDOW_ALWAYS_ON_TOP',['../group__CategoryVideo.html#gadfba4535cc12c0711bca47107d7b5d21',1,'SDL']]],

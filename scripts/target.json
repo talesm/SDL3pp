@@ -3511,16 +3511,43 @@
           "kind": "struct",
           "type": "std::exception",
           "entries": {
-            "Error": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Default ctor.",
-              "hints": {
-                "default": true
-              },
-              "name": "Error"
+            "m_message": {
+              "kind": "var",
+              "type": "std::string",
+              "name": "m_message",
+              "doc": ""
             },
+            "Error": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [],
+                "doc": "Default ctor.",
+                "hints": {
+                  "init": [
+                    "m_message(SDL_GetError())"
+                  ]
+                },
+                "name": "Error"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "std::string",
+                    "name": "message"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "m_message(std::move(message))"
+                  ]
+                },
+                "name": "Error",
+                "doc": ""
+              }
+            ],
             "what": {
               "kind": "function",
               "type": "const char *",
@@ -3531,6 +3558,15 @@
                 "body": "return GetError();"
               },
               "name": "what"
+            },
+            "str": {
+              "kind": "function",
+              "type": "const std::string &",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "name": "str",
+              "doc": ""
             }
           },
           "doc": ""

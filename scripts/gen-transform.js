@@ -508,13 +508,22 @@ const transform = {
           kind: "struct",
           type: "std::exception",
           entries: {
-            "Error": {
+            "m_message": {
+              kind: "var",
+              type: "std::string"
+            },
+            "Error": [{
               kind: "function",
               type: "",
               parameters: [],
               doc: "Default ctor.",
-              hints: { default: true }
-            },
+              hints: { init: ["m_message(SDL_GetError())"] }
+            }, {
+              kind: "function",
+              type: "",
+              parameters: [{ type: "std::string", name: "message" }],
+              hints: { init: ["m_message(std::move(message))"] }
+            }],
             "what": {
               kind: "function",
               type: "const char *",
@@ -522,6 +531,13 @@ const transform = {
               parameters: [],
               doc: "Returns the explanatory string.",
               hints: { body: "return GetError();" }
+            },
+            "str": {
+              kind: "function",
+              type: "const std::string &",
+              immutable: true,
+              constexpr: true,
+              parameters: []
             }
           }
         }, {
