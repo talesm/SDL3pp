@@ -834,6 +834,293 @@ using StringParam = const char*;
 #endif // SDL3PP_ENABLE_STRING_PARAM
 
 /**
+ * @defgroup CategoryError Error Handling
+ *
+ * Simple error message routines for SDL.
+ *
+ * Most apps will interface with these APIs in exactly one function: when
+ * almost any SDL function call reports failure, you can get a human-readable
+ * string of the problem from GetError().
+ *
+ * These strings are maintained per-thread, and apps are welcome to set their
+ * own errors, which is popular when building libraries on top of SDL for
+ * other apps to consume. These strings are set by calling SDL_SetError().
+ *
+ * A common usage pattern is to have a function that returns true for success
+ * and false for failure, and do this when something fails:
+ *
+ * ```cpp
+ * if (something_went_wrong) {
+ *    return SDL::SetError("The thing broke in this specific way: {}", errcode);
+ * }
+ * ```
+ *
+ * It's also common to just return `false` in this case if the failing thing
+ * is known to call SetError(), so errors simply propagate through.
+ *
+ * @{
+ */
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SDL::SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @param message the error message
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa GetError
+ * @sa SetError
+ */
+inline bool SetErrorUnformatted(StringParam message)
+{
+  return SDL_SetError("%s", static_cast<const char*>(message));
+}
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @tparam ARGS the formatting parameters
+ * @param fmt a
+ * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+ * style message format string
+ * @param args additional parameters matching the `{}` tokens in the format
+ * string, if any.
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat formatted-string
+ *
+ * @sa formatted-string
+ * @sa ClearError
+ * @sa GetError
+ * @sa SetError
+ * @return false
+ */
+template<class... ARGS>
+inline bool SetError(std::string_view fmt, ARGS... args)
+{
+  return SetError(
+    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+}
+
+/**
+ * Set an error indicating that memory allocation failed.
+ *
+ * This function does not do any memory allocation.
+ *
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OutOfMemory() { return SDL_OutOfMemory(); }
+
+/**
+ * Retrieve a message about the last error that occurred on the current
+ * thread.
+ *
+ * It is possible for multiple errors to occur before calling GetError().
+ * Only the last error is returned.
+ *
+ * The message is only applicable when an SDL function has signaled an error.
+ * You must check the return values of SDL function calls to determine when to
+ * appropriately call GetError(). You should *not* use the results of
+ * GetError() to decide if an error has occurred! Sometimes SDL will set
+ * an error string even when reporting success.
+ *
+ * SDL will *not* clear the error string for successful API calls. You *must*
+ * check return values for failure cases before you can assume the error
+ * string applies.
+ *
+ * Error strings are set per-thread, so an error set in a different thread
+ * will not interfere with the current thread's operation.
+ *
+ * The returned value is a thread-local string which will remain valid until
+ * the current thread's error string is changed. The caller should make a copy
+ * if the value is needed after the next SDL API call.
+ *
+ * @returns a message with information about the specific error that occurred,
+ *          or an empty string if there hasn't been an error message set since
+ *          the last call to ClearError().
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa SetErrorUnformatted
+ */
+inline const char* GetError() { return SDL_GetError(); }
+
+/**
+ * An exception that returns GetError()
+ *
+ */
+class Error : std::exception
+{
+  std::string m_message;
+
+public:
+  /**
+   * Default ctor.
+   */
+  Error()
+    : m_message(SDL_GetError())
+  {
+  }
+
+  /**
+   * Constructs from string
+   */
+  Error(std::string message)
+    : m_message(std::move(message))
+  {
+  }
+
+  /**
+   * Returns the explanatory string.
+   */
+  constexpr const char* what() const noexcept { return m_message.c_str(); }
+
+  /**
+   * Returns the explanatory string.
+   */
+  constexpr const std::string& str() const noexcept { return m_message; }
+};
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the
+ * parameter is false it will throw Error.
+ *
+ * @param result the result returned
+ */
+constexpr void CheckError(bool result)
+{
+  if (!result) throw Error();
+}
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the
+ * parameter is false it will throw Error.
+ *
+ * @param result the result returned
+ */
+template<class T>
+constexpr T CheckError(T result)
+{
+  if (!result) throw Error();
+  return result;
+}
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the result
+ * parameter is equals to invalidValue it will throw Error.
+ *
+ * @param result       the result returned
+ * @param invalidValue the value that if equal to result indicates this is
+ *                     invalid.
+ */
+template<class T>
+constexpr T CheckError(T result, T invalidValue)
+{
+  if (result == invalidValue) throw Error();
+  return result;
+}
+
+/**
+ * Clear any previous error message for this thread.
+ *
+ * @returns true.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetError
+ * @sa SetErrorUnformatted
+ */
+inline bool ClearError() { return SDL_ClearError(); }
+
+#ifdef SDL3PP_DOC
+
+/**
+ * A macro to standardize error reporting on unsupported operations.
+ *
+ * This simply calls SetError() with a standardized error string, for
+ * convenience, consistency, and clarity.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_Unsupported() SDL_SetError("That operation is not supported")
+
+/**
+ * A macro to standardize error reporting on unsupported operations.
+ *
+ * This simply calls SetError() with a standardized error string, for
+ * convenience, consistency, and clarity.
+ *
+ * A common usage pattern inside SDL is this:
+ *
+ * ```c
+ * bool MyFunction(const char *str) {
+ *     if (!str) {
+ *         return SDL_InvalidParamError("str");  // returns false.
+ *     }
+ *     DoSomething(str);
+ *     return true;
+ * }
+ * ```
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_InvalidParamError(param)                                           \
+  SDL_SetError("Parameter '%s' is invalid", (param))
+
+#endif // SDL3PP_DOC
+
+/** @} */
+
+/**
  * @defgroup CategoryStdinc Standard Library Functionality
  *
  * SDL provides its own implementation of some of the most important C runtime
@@ -1459,8 +1746,7 @@ inline void GetMemoryFunctions(malloc_func* malloc_func,
  * @param calloc_func custom calloc function.
  * @param realloc_func custom realloc function.
  * @param free_func custom free function.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread, but one
  *               should not replace the memory functions once any allocations
@@ -1471,13 +1757,13 @@ inline void GetMemoryFunctions(malloc_func* malloc_func,
  * @sa GetMemoryFunctions
  * @sa GetOriginalMemoryFunctions
  */
-inline bool SetMemoryFunctions(malloc_func malloc_func,
+inline void SetMemoryFunctions(malloc_func malloc_func,
                                calloc_func calloc_func,
                                realloc_func realloc_func,
                                free_func free_func)
 {
-  return SDL_SetMemoryFunctions(
-    malloc_func, calloc_func, realloc_func, free_func);
+  CheckError(
+    SDL_SetMemoryFunctions(malloc_func, calloc_func, realloc_func, free_func));
 }
 
 /**
@@ -1562,8 +1848,8 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    *
    * @param populated true to initialize it from the C runtime environment,
    *                  false to create an empty environment.
-   * @post the new environment (convertible to true) on success or convertible
-   *       to false on failure; call GetError() for more information.
+   * @post the new environment on success.
+   * @throws Error on failure.
    *
    * @threadsafety If `populated` is false, it is safe to call this function
    *               from any thread, otherwise it is safe if no other threads are
@@ -1577,7 +1863,7 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @sa EnvironmentBase.UnsetVariable
    */
   EnvironmentBase(bool populated)
-    : Resource(SDL_CreateEnvironment(populated))
+    : Resource(CheckError(SDL_CreateEnvironment(populated)))
   {
   }
 
@@ -1607,10 +1893,10 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * Get all variables in the environment.
    *
    * @returns a nullptr terminated array of pointers to environment variables in
-   *          the form "variable=value" or nullptr on failure; call
-   *          SDL_GetError() for more information. This is wrapped to be
+   *          the form "variable=value" on success. This is wrapped to be
    *          auto-deleted, use FreeWrapper.release() if you want to manage
    *          manually.
+   * @throws Error on failure
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1624,7 +1910,7 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    */
   inline OwnArray<char*> GetVariables()
   {
-    return OwnArray<char*>{SDL_GetEnvironmentVariables(get())};
+    return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(get()))};
   }
 
   /**
@@ -1649,8 +1935,7 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @param overwrite true to overwrite the variable if it exists, false to
    *                  return success without setting the variable if it already
    *                  exists.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1662,17 +1947,16 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @sa EnvironmentBase.GetVariables
    * @sa EnvironmentBase.UnsetVariable
    */
-  bool SetVariable(StringParam name, StringParam value, bool overwrite)
+  void SetVariable(StringParam name, StringParam value, bool overwrite)
   {
-    return SDL_SetEnvironmentVariable(get(), name, value, overwrite);
+    CheckError(SDL_SetEnvironmentVariable(get(), name, value, overwrite));
   }
 
   /**
    * Clear a variable from the environment.
    *
    * @param name the name of the variable to unset.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1685,9 +1969,9 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @sa EnvironmentBase.SetVariable
    * @sa EnvironmentBase.UnsetVariable
    */
-  bool UnsetVariable(StringParam name)
+  void UnsetVariable(StringParam name)
   {
-    return SDL_UnsetEnvironmentVariable(get(), name);
+    CheckError(SDL_UnsetEnvironmentVariable(get(), name));
   }
 };
 
@@ -5767,7 +6051,7 @@ inline double tan(double x) { return SDL_tan(x); }
  * @sa sin
  * @sa cos
  * @sa atan
- * @sa atan2f
+ * @sa atan2
  */
 inline float tan(float x) { return SDL_tanf(x); }
 
@@ -8139,274 +8423,6 @@ constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
 /// @}
 
 /**
- * @defgroup CategoryError Error Handling
- *
- * Simple error message routines for SDL.
- *
- * Most apps will interface with these APIs in exactly one function: when
- * almost any SDL function call reports failure, you can get a human-readable
- * string of the problem from GetError().
- *
- * These strings are maintained per-thread, and apps are welcome to set their
- * own errors, which is popular when building libraries on top of SDL for
- * other apps to consume. These strings are set by calling SDL_SetError().
- *
- * A common usage pattern is to have a function that returns true for success
- * and false for failure, and do this when something fails:
- *
- * ```cpp
- * if (something_went_wrong) {
- *    return SDL::SetError("The thing broke in this specific way: {}", errcode);
- * }
- * ```
- *
- * It's also common to just return `false` in this case if the failing thing
- * is known to call SetError(), so errors simply propagate through.
- *
- * @{
- */
-
-/**
- * Set the SDL error message for the current thread.
- *
- * Calling this function will replace any previous error message that was set.
- *
- * This function always returns false, since SDL frequently uses false to
- * signify a failing result, leading to this idiom:
- *
- * ```c
- * if (error_code) {
- *     return SDL::SetError("This operation has failed: {}", error_code);
- * }
- * ```
- *
- * @param message the error message
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa ClearError
- * @sa GetError
- * @sa SetError
- */
-inline bool SetErrorUnformatted(StringParam message)
-{
-  return SDL_SetError("%s", static_cast<const char*>(message));
-}
-
-/**
- * Set the SDL error message for the current thread.
- *
- * Calling this function will replace any previous error message that was set.
- *
- * This function always returns false, since SDL frequently uses false to
- * signify a failing result, leading to this idiom:
- *
- * ```c
- * if (error_code) {
- *     return SetError("This operation has failed: {}", error_code);
- * }
- * ```
- *
- * @tparam ARGS the formatting parameters
- * @param fmt a
- * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
- * style message format string
- * @param args additional parameters matching the `{}` tokens in the format
- * string, if any.
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat formatted-string
- *
- * @sa formatted-string
- * @sa ClearError
- * @sa GetError
- * @sa SetError
- * @return false
- */
-template<class... ARGS>
-inline bool SetError(std::string_view fmt, ARGS... args)
-{
-  return SetError(
-    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
-}
-
-/**
- * Set an error indicating that memory allocation failed.
- *
- * This function does not do any memory allocation.
- *
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OutOfMemory() { return SDL_OutOfMemory(); }
-
-/**
- * Retrieve a message about the last error that occurred on the current
- * thread.
- *
- * It is possible for multiple errors to occur before calling GetError().
- * Only the last error is returned.
- *
- * The message is only applicable when an SDL function has signaled an error.
- * You must check the return values of SDL function calls to determine when to
- * appropriately call GetError(). You should *not* use the results of
- * GetError() to decide if an error has occurred! Sometimes SDL will set
- * an error string even when reporting success.
- *
- * SDL will *not* clear the error string for successful API calls. You *must*
- * check return values for failure cases before you can assume the error
- * string applies.
- *
- * Error strings are set per-thread, so an error set in a different thread
- * will not interfere with the current thread's operation.
- *
- * The returned value is a thread-local string which will remain valid until
- * the current thread's error string is changed. The caller should make a copy
- * if the value is needed after the next SDL API call.
- *
- * @returns a message with information about the specific error that occurred,
- *          or an empty string if there hasn't been an error message set since
- *          the last call to ClearError().
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa ClearError
- * @sa SetErrorUnformatted
- */
-inline const char* GetError() { return SDL_GetError(); }
-
-/**
- * An exception that returns GetError()
- *
- */
-struct Error : std::exception
-{
-  /**
-   * Default ctor.
-   */
-  Error() = default;
-
-  /**
-   * Returns the explanatory string.
-   */
-  const char* what() const noexcept final { return GetError(); }
-};
-
-/**
- * Check and throw if returned value from SDL is an error.
- *
- * This should be called only for things that may set SetError(). If the
- * parameter is false it will throw Error.
- *
- * @param result the result returned
- */
-constexpr void CheckError(bool result)
-{
-  if (!result) throw Error();
-}
-
-/**
- * Check and throw if returned value from SDL is an error.
- *
- * This should be called only for things that may set SetError(). If the
- * parameter is false it will throw Error.
- *
- * @param result the result returned
- */
-template<class T>
-constexpr T CheckError(T result)
-{
-  if (!result) throw Error();
-  return result;
-}
-
-/**
- * Check and throw if returned value from SDL is an error.
- *
- * This should be called only for things that may set SetError(). If the result
- * parameter is equals to invalidValue it will throw Error.
- *
- * @param result       the result returned
- * @param invalidValue the value that if equal to result indicates this is
- *                     invalid.
- */
-template<class T>
-constexpr T CheckError(T result, T invalidValue)
-{
-  if (result == invalidValue) throw Error();
-  return result;
-}
-
-/**
- * Clear any previous error message for this thread.
- *
- * @returns true.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetError
- * @sa SetErrorUnformatted
- */
-inline bool ClearError() { return SDL_ClearError(); }
-
-#ifdef SDL3PP_DOC
-
-/**
- * A macro to standardize error reporting on unsupported operations.
- *
- * This simply calls SetError() with a standardized error string, for
- * convenience, consistency, and clarity.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_Unsupported() SDL_SetError("That operation is not supported")
-
-/**
- * A macro to standardize error reporting on unsupported operations.
- *
- * This simply calls SetError() with a standardized error string, for
- * convenience, consistency, and clarity.
- *
- * A common usage pattern inside SDL is this:
- *
- * ```c
- * bool MyFunction(const char *str) {
- *     if (!str) {
- *         return SDL_InvalidParamError("str");  // returns false.
- *     }
- *     DoSomething(str);
- *     return true;
- * }
- * ```
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_InvalidParamError(param)                                           \
-  SDL_SetError("Parameter '%s' is invalid", (param))
-
-#endif // SDL3PP_DOC
-
-/** @} */
-
-/**
  *
  * @defgroup CategoryFilesystem Filesystem Access
  *
@@ -8756,7 +8772,7 @@ constexpr PathType PATHTYPE_OTHER = SDL_PATHTYPE_OTHER;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GetPathInfo
- * @sa GetStoragePathInfo
+ * @sa StorageBase.GetPathInfo
  */
 struct PathInfo : SDL_PathInfo
 {
@@ -8796,7 +8812,7 @@ struct PathInfo : SDL_PathInfo
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GlobDirectory
- * @sa SDL_GlobStorageDirectory
+ * @sa StorageBase.GlobDirectory
  */
 using GlobFlags = Uint32;
 
@@ -8812,14 +8828,13 @@ constexpr GlobFlags GLOB_CASEINSENSITIVE =
  * this fails, it will not remove any parent directories it already made.
  *
  * @param path the path of the directory to create.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool CreateDirectory(StringParam path)
+inline void CreateDirectory(StringParam path)
 {
-  return SDL_CreateDirectory(path);
+  CheckError(SDL_CreateDirectory(path));
 }
 
 /**
@@ -8912,16 +8927,15 @@ using EnumerateDirectoryCB =
  * @param path the path of the directory to enumerate.
  * @param callback a function that is called for each entry in the directory.
  * @param userdata a pointer that is passed to `callback`.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool EnumerateDirectory(StringParam path,
+inline void EnumerateDirectory(StringParam path,
                                EnumerateDirectoryCallback callback,
                                void* userdata)
 {
-  return SDL_EnumerateDirectory(path, callback, userdata);
+  CheckError(SDL_EnumerateDirectory(path, callback, userdata));
 }
 
 /**
@@ -8939,12 +8953,11 @@ inline bool EnumerateDirectory(StringParam path,
  *
  * @param path the path of the directory to enumerate.
  * @param callback a function that is called for each entry in the directory.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
+inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 {
   return EnumerateDirectory(
     std::move(path),
@@ -8980,12 +8993,11 @@ inline std::vector<Path> EnumerateDirectory(StringParam path)
  * delete directory trees.
  *
  * @param path the path to remove from the filesystem.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RemovePath(StringParam path) { return SDL_RemovePath(path); }
+inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
 
 /**
  * Rename a file or directory.
@@ -9003,14 +9015,13 @@ inline bool RemovePath(StringParam path) { return SDL_RemovePath(path); }
  *
  * @param oldpath the old path.
  * @param newpath the new path.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RenamePath(StringParam oldpath, StringParam newpath)
+inline void RenamePath(StringParam oldpath, StringParam newpath)
 {
-  return SDL_RenamePath(oldpath, newpath);
+  CheckError(SDL_RenamePath(oldpath, newpath));
 }
 
 /**
@@ -9046,29 +9057,29 @@ inline bool RenamePath(StringParam oldpath, StringParam newpath)
  *
  * @param oldpath the old path.
  * @param newpath the new path.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool CopyFile(StringParam oldpath, StringParam newpath)
+inline void CopyFile(StringParam oldpath, StringParam newpath)
 {
-  return SDL_CopyFile(oldpath, newpath);
+  CheckError(SDL_CopyFile(oldpath, newpath));
 }
 
 /**
  * Get information about a filesystem path.
  *
  * @param path the path to query.
- * @returns true on success or false if the file doesn't exist, or another
- *          failure; call GetError() for more information.
+ * @returns the information about the path on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline PathInfo GetPathInfo(StringParam path)
 {
-  if (PathInfo info; SDL_GetPathInfo(path, &info)) return info;
-  return {};
+  PathInfo info;
+  CheckError(SDL_GetPathInfo(path, &info));
+  return info;
 }
 
 /**
@@ -9092,9 +9103,8 @@ inline PathInfo GetPathInfo(StringParam path)
  * @param pattern the pattern that files in the directory must match. Can be
  *                nullptr.
  * @param flags `SDL_GLOB_*` bitflags that affect this search.
- * @returns an array of strings on success or nullptr on failure; call
- *          GetError() for more information. This is a single allocation
- *          that should be freed with free() when it is no longer needed.
+ * @returns an array of strings on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -9105,8 +9115,7 @@ inline OwnArray<char*> GlobDirectory(StringParam path,
                                      GlobFlags flags = 0)
 {
   int count;
-  auto data = SDL_GlobDirectory(path, pattern, flags, &count);
-  if (!data) return {};
+  auto data = CheckError(SDL_GlobDirectory(path, pattern, flags, &count));
   return OwnArray<char*>{data, size_t(count)};
 }
 
@@ -13600,8 +13609,7 @@ constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE; ///< OVERRIDE
  * @param name the hint to set.
  * @param value the value of the hint variable.
  * @param priority the HintPriority level for the hint.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -13611,11 +13619,11 @@ constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE; ///< OVERRIDE
  * @sa ResetHint
  * @sa SetHint
  */
-inline bool SetHintWithPriority(StringParam name,
+inline void SetHintWithPriority(StringParam name,
                                 StringParam value,
                                 HintPriority priority)
 {
-  return SDL_SetHintWithPriority(name, value, priority);
+  CheckError(SDL_SetHintWithPriority(name, value, priority));
 }
 
 /**
@@ -13627,8 +13635,7 @@ inline bool SetHintWithPriority(StringParam name,
  *
  * @param name the hint to set.
  * @param value the value of the hint variable.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -13638,9 +13645,9 @@ inline bool SetHintWithPriority(StringParam name,
  * @sa ResetHint
  * @sa SetHintWithPriority
  */
-inline bool SetHint(StringParam name, StringParam value)
+inline void SetHint(StringParam name, StringParam value)
 {
-  return SDL_SetHint(name, value);
+  CheckError(SDL_SetHint(name, value));
 }
 
 /**
@@ -13651,8 +13658,7 @@ inline bool SetHint(StringParam name, StringParam value)
  * change.
  *
  * @param name the hint to set.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -13661,7 +13667,7 @@ inline bool SetHint(StringParam name, StringParam value)
  * @sa SetHint
  * @sa ResetHints
  */
-inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
+inline void ResetHint(StringParam name) { CheckError(SDL_ResetHint(name)); }
 
 /**
  * Reset all hints to the default values.
@@ -13749,8 +13755,7 @@ using HintCallback = SDL_HintCallback;
  * @param callback An HintCallback function that will be called when the
  *                 hint value changes.
  * @param userdata a pointer to pass to the callback function.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -13758,11 +13763,11 @@ using HintCallback = SDL_HintCallback;
  *
  * @sa RemoveHintCallback
  */
-inline bool AddHintCallback(StringParam name,
+inline void AddHintCallback(StringParam name,
                             HintCallback callback,
                             void* userdata)
 {
-  return SDL_AddHintCallback(name, callback, userdata);
+  CheckError(SDL_AddHintCallback(name, callback, userdata));
 }
 
 /**
@@ -14329,9 +14334,8 @@ using Locale = SDL_Locale;
  * if possible, and you can call this function again to get an updated copy of
  * preferred locales.
  *
- * @returns a nullptr terminated array of locale pointers, or nullptr on
- * failure; call GetError() for more information. This is a single allocation
- * that should be freed with free() when it is no longer needed.
+ * @returns a nullptr terminated array of locale pointers on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -14339,7 +14343,7 @@ inline OwnArray<Locale*> GetPreferredLocales()
 {
   int count = 0;
   auto data = SDL_GetPreferredLocales(&count);
-  return OwnArray<Locale*>{data, size_t(count)};
+  return OwnArray<Locale*>{CheckError(data), size_t(count)};
 }
 
 /// @}
@@ -14884,21 +14888,20 @@ constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM; ///< CUSTOM
  * "WARNING: ".
  *
  * @param priority the LogPriority to modify.
- * @param prefix the prefix to use for that log priority, or NULL to use no
+ * @param prefix the prefix to use for that log priority, or nullptr to use no
  *               prefix.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LogCategory::SetLogPriorities()
- * @sa LogCategory::SetLogPriority()
+ * @sa LogCategory.SetLogPriorities
+ * @sa LogCategory.SetLogPriority
  */
-inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
+inline void SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
 {
-  return SDL_SetLogPriorityPrefix(priority, prefix);
+  CheckError(SDL_SetLogPriorityPrefix(priority, prefix));
 }
 
 /**
@@ -15130,6 +15133,46 @@ inline void ResetLogOutputFunction()
 {
   return SetLogOutputFunction(GetDefaultLogOutputFunction(), nullptr);
 }
+
+/// @}
+
+/**
+ * @defgroup CategoryMisc Miscellaneous
+ *
+ * SDL API functions that don't fit elsewhere.
+ *
+ * @{
+ */
+
+/**
+ * Open a URL/URI in the browser or other appropriate external application.
+ *
+ * Open a URL in a separate, system-provided application. How this works will
+ * vary wildly depending on the platform. This will likely launch what makes
+ * sense to handle a specific URL's protocol (a web browser for `http://`,
+ * etc), but it might also be able to launch file managers for directories and
+ * other things.
+ *
+ * What happens when you open a URL varies wildly as well: your game window
+ * may lose focus (and may or may not lose focus if your game was fullscreen
+ * or grabbing input at the time). On mobile devices, your app will likely
+ * move to the background or your process might be paused. Any given platform
+ * may or may not handle a given URL.
+ *
+ * If this is unimplemented (or simply unavailable) for a platform, this will
+ * fail with an error. A successful result does not mean the URL loaded, just
+ * that we launched _something_ to handle it (or at least believe we did).
+ *
+ * All this to say: this function can be useful, but you should definitely
+ * test it on every platform you target.
+ *
+ * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
+ *            local files, if supported.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void OpenURL(StringParam url) { CheckError(SDL_OpenURL(url)); }
 
 /// @}
 
@@ -15742,8 +15785,7 @@ public:
    * @param Gmask a pointer filled in with the green mask for the format.
    * @param Bmask a pointer filled in with the blue mask for the format.
    * @param Amask a pointer filled in with the alpha mask for the format.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -15751,14 +15793,14 @@ public:
    *
    * @sa PixelFormat.ForMasks
    */
-  bool GetMasks(int* bpp,
+  void GetMasks(int* bpp,
                 Uint32* Rmask,
                 Uint32* Gmask,
                 Uint32* Bmask,
                 Uint32* Amask) const
   {
-    return SDL_GetMasksForPixelFormat(
-      m_format, bpp, Rmask, Gmask, Bmask, Amask);
+    CheckError(
+      SDL_GetMasksForPixelFormat(m_format, bpp, Rmask, Gmask, Bmask, Amask));
   }
 
   /**
@@ -17015,9 +17057,8 @@ struct PaletteBase : Resource<SDL_Palette*>
    * The palette entries are initialized to white.
    *
    * @param ncolors represents the number of color entries in the color palette.
-   * @post this represents a new Palette structure convertible to true on
-   *       success or converts to false on failure (e.g. if there wasn't enough
-   *       memory); call GetError() for more information.
+   * @post a new Palette structure on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -17027,7 +17068,7 @@ struct PaletteBase : Resource<SDL_Palette*>
    * @sa SurfaceBase.SetPalette
    */
   PaletteBase(int ncolors)
-    : Resource(SDL_CreatePalette(ncolors))
+    : Resource(CheckError(SDL_CreatePalette(ncolors)))
   {
   }
 
@@ -17042,18 +17083,17 @@ struct PaletteBase : Resource<SDL_Palette*>
    *
    * @param colors an array of Color structures to copy into the palette.
    * @param firstcolor the index of the first palette entry to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
+  void SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
   {
-    return SDL_SetPaletteColors(
-      get(), colors.data(), firstcolor, colors.size());
+    CheckError(
+      SDL_SetPaletteColors(get(), colors.data(), firstcolor, colors.size()));
   }
 
   /**
@@ -17784,6 +17824,3000 @@ inline PowerState GetPowerInfo(int* seconds, int* percent)
 /// @}
 
 /**
+ * @defgroup CategoryProperties Object Properties
+ *
+ * A property is a variable that can be created and retrieved by name at
+ * runtime.
+ *
+ * All properties are part of a property group (PropertiesBase). A property
+ * group can be created with the CreateProperties() function or by simply
+ * instantiating @ref Properties. It can be destroyed with the
+ * PropertiesRef.reset(), but the Properties destructor probably will do what
+ * you want to, automatically.
+ *
+ * Properties can be added to and retrieved from a property group through the
+ * following functions:
+ *
+ * - PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on
+ * `void*` pointer types.
+ * - PropertiesBase.SetString() and PropertiesBase.GetString() operate on string
+ * types.
+ * - PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed
+ * 64-bit integer types.
+ * - PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating
+ * point types.
+ * - PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on
+ * boolean types.
+ *
+ * Properties can be removed from a group by using PropertiesBase.Clear().
+ * @{
+ */
+
+/**
+ * SDL property type
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PropertyType = SDL_PropertyType;
+
+/**
+ * @name Callbacks for PropertiesBase.SetPointerWithCleanup()
+ * @{
+ */
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ PropertiesBase.SetPointerWithCleanup if
+ * the function fails for any reason.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesBase.SetPointerWithCleanup
+ */
+using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * @sa CleanupPropertyCallback
+ * @sa PropertiesBase.SetPointerWithCleanup()
+ * @sa result-callback
+ *
+ * @cat result-callback
+ */
+using CleanupPropertyCB = std::function<void(void*)>;
+
+/// @}
+/**
+ * @name Callbacks for PropertiesBase.Enumerate()
+ * @{
+ */
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from PropertiesBase.Enumerate(), and is called once
+ * per property in the set.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param props the PropertiesBase that is being enumerated.
+ * @param name the next property name in the enumeration.
+ *
+ * @threadsafety PropertiesBase.Enumerate holds a lock on `props` during this
+ *               callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesBase.Enumerate
+ */
+using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+
+// Forward decl
+struct PropertiesRef;
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * per property in the set.
+ *
+ * @sa EnumeratePropertyCallback
+ * @sa PropertiesBase::Enumerate()
+ * @sa immediate-callback
+ *
+ * @cat immediate-callback
+ */
+using EnumeratePropertiesCB =
+  std::function<void(PropertiesRef props, const char* name)>;
+
+/// @}
+
+// Forward decl
+struct PropertiesLock;
+
+// Forward decl
+struct PropertiesBase;
+
+// Forward decl
+struct Properties;
+
+constexpr PropertyType PROPERTY_TYPE_INVALID =
+  SDL_PROPERTY_TYPE_INVALID; ///< INVALID
+
+constexpr PropertyType PROPERTY_TYPE_POINTER =
+  SDL_PROPERTY_TYPE_POINTER; ///< POINTER
+
+constexpr PropertyType PROPERTY_TYPE_STRING =
+  SDL_PROPERTY_TYPE_STRING; ///< STRING
+
+constexpr PropertyType PROPERTY_TYPE_NUMBER =
+  SDL_PROPERTY_TYPE_NUMBER; ///< NUMBER
+
+constexpr PropertyType PROPERTY_TYPE_FLOAT = SDL_PROPERTY_TYPE_FLOAT; ///< FLOAT
+
+constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
+  SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
+
+/**
+ * Wrap properties id
+ *
+ * A property is a variable that can be created and retrieved by name at
+ * runtime.
+ *
+ * All properties are part of a property group (Properties). A property
+ * group can be created with the Properties constructor and destroyed
+ * with this goes out of scope.
+ *
+ * Properties can be added to and retrieved from a property group through the
+ * following functions:
+ *
+ * - SetPointer() and GetPointer() operate on `void*`
+ *   pointer types.
+ * - SetString() and GetString() operate on string types.
+ * - SetNumber() and GetNumber() operate on signed 64-bit
+ *   integer types.
+ * - SetFloat() and GetFloat() operate on floating point
+ *   types.
+ * - SetBoolean() and GetBoolean() operate on boolean
+ *   types.
+ *
+ * Properties can be removed from a group by using SDL_ClearProperty.
+ *
+ * To create a new properties group use CreateProperties() or
+ * Properties.Properties().
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat resource
+ *
+ * @sa Properties.Properties
+ * @sa Properties
+ * @sa PropertiesRef
+ */
+struct PropertiesBase : Resource<SDL_PropertiesID>
+{
+  using Resource::Resource;
+
+  /**
+   * Copy a group of properties.
+   *
+   * Copy all the properties from one group of properties to another, with the
+   * exception of properties requiring cleanup (set using
+   * PropertiesBase.SetPointerWithCleanup()), which will not be copied. Any
+   * property that already exists on `dst` will be overwritten.
+   *
+   * @param dst the destination properties.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void CopyPropertiesTo(PropertiesBase& dst) const
+  {
+    CheckError(SDL_CopyProperties(get(), dst.get()));
+  }
+
+  /**
+   * Lock a group of properties.
+   *
+   * Obtain a multi-threaded lock for these properties. Other threads will wait
+   * while trying to lock these properties until they are unlocked. Properties
+   * must be unlocked before they are destroyed.
+   *
+   * The lock is automatically taken when setting individual properties, this
+   * function is only needed when you want to set several properties atomically
+   * or want to guarantee that properties being queried aren't freed in another
+   * thread.
+   *
+   * @returns PropertiesLock on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesLock.Unlock
+   */
+  PropertiesLock Lock() &;
+
+  /**
+   * Set a pointer property in a group of properties with a cleanup
+   * function that is called when the property is deleted.
+   *
+   * The cleanup function is also called if setting the property fails for any
+   * reason.
+   *
+   * For simply setting basic data types, like numbers, bools, or strings, use
+   * SetNumber(), SetBoolean(), or SetString()
+   * instead, as those functions will handle cleanup on your behalf. This
+   * function is only for more complex, custom data.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or NULL to delete the property.
+   * @param cleanup the function to call when this property is deleted.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @sa result-callback
+   *
+   * @cat result-callback
+   *
+   */
+  void SetPointerWithCleanup(StringParam name,
+                             void* value,
+                             CleanupPropertyCB cleanup)
+  {
+    using Wrapper = CallbackWrapper<CleanupPropertyCB>;
+    SetPointerWithCleanup(std::move(name),
+                          value,
+                          &Wrapper::CallOnce,
+                          Wrapper::Wrap(std::move(cleanup)));
+  }
+
+  /**
+   * Set a pointer property in a group of properties with a cleanup function
+   * that is called when the property is deleted.
+   *
+   * The cleanup function is also called if setting the property fails for any
+   * reason.
+   *
+   * For simply setting basic data types, like numbers, bools, or strings, use
+   * PropertiesBase.SetNumber, PropertiesBase.SetBoolean, or
+   * PropertiesBase.SetString instead, as those functions will handle cleanup on
+   * your behalf. This function is only for more complex, custom data.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or nullptr to delete the
+   *              property.
+   * @param cleanup the function to call when this property is deleted, or
+   *                nullptr if no cleanup is necessary.
+   * @param userdata a pointer that is passed to the cleanup function.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetPointer
+   * @sa PropertiesBase.SetPointer
+   * @sa CleanupPropertyCallback
+   */
+  void SetPointerWithCleanup(StringParam name,
+                             void* value,
+                             CleanupPropertyCallback cleanup,
+                             void* userdata)
+  {
+    CheckError(
+      SDL_SetPointerPropertyWithCleanup(get(), name, value, cleanup, userdata));
+  }
+
+  /**
+   * Set a pointer property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or nullptr to delete the
+   *              property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetPointer
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetBoolean
+   * @sa PropertiesBase.SetFloat
+   * @sa PropertiesBase.SetNumber
+   * @sa PropertiesBase.SetPointerWithCleanup
+   * @sa PropertiesBase.SetString
+   */
+  void SetPointer(StringParam name, void* value)
+  {
+    CheckError(SDL_SetPointerProperty(get(), name, value));
+  }
+
+  /**
+   * Set a string property in a group of properties.
+   *
+   * This function makes a copy of the string; the caller does not have to
+   * preserve the data after this call completes.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or nullptr to delete the
+   *              property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetString
+   */
+  void SetString(StringParam name, StringParam value)
+  {
+    CheckError(SDL_SetStringProperty(get(), name, value));
+  }
+
+  /**
+   * Set an integer property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetNumber
+   */
+  void SetNumber(StringParam name, Sint64 value)
+  {
+    CheckError(SDL_SetNumberProperty(get(), name, value));
+  }
+
+  /**
+   * Set a floating point property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetFloat
+   */
+  void SetFloat(StringParam name, float value)
+  {
+    CheckError(SDL_SetFloatProperty(get(), name, value));
+  }
+
+  /**
+   * Set a boolean property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetBoolean
+   */
+  void SetBoolean(StringParam name, bool value)
+  {
+    CheckError(SDL_SetBooleanProperty(get(), name, value));
+  }
+
+  /**
+   * Return whether a property exists in a group of properties.
+   *
+   * @param name the name of the property to query.
+   * @returns true if the property exists, or false if it doesn't.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetType
+   */
+  bool Has(StringParam name) const { return SDL_HasProperty(get(), name); }
+
+  /**
+   * Get the type of a property.
+   *
+   * @param name the name of the property to query.
+   * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is
+   *          not set.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.Has
+   */
+  PropertyType GetType(StringParam name) const
+  {
+    return SDL_GetPropertyType(get(), name);
+  }
+
+  /**
+   * Get a pointer property from a group of properties.
+   *
+   * You can use SDL_GetPropertyType() to query whether the property exists and
+   * is a pointer property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a pointer property.
+   *
+   * @threadsafety It is safe to call this function from any thread, although
+   *               the data returned is not protected and could potentially be
+   *               freed if you call PropertiesBase.SetPointer() or
+   *               PropertiesBase.Clear() on these properties from another
+   *               thread. If you need to avoid this, use PropertiesBase.Lock()
+   *               and PropertiesLock.Unlock().
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetBoolean
+   * @sa PropertiesBase.GetFloat
+   * @sa PropertiesBase.GetNumber
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.GetString
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetPointer
+   */
+  void* GetPointer(StringParam name, void* default_value) const
+  {
+    return SDL_GetPointerProperty(get(), name, default_value);
+  }
+
+  /**
+   * Get a string property from a group of properties.
+   *
+   * You can use SDL_GetPropertyType() to query whether the property exists and
+   * is a string property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a string property.
+   *
+   * @threadsafety It is safe to call this function from any thread, although
+   *               the data returned is not protected and could potentially be
+   *               freed if you call PropertiesBase.SetString() or
+   *               PropertiesBase.Clear() on these properties from another
+   *               thread. If you need to avoid this, use PropertiesBase.Lock()
+   *               and PropertiesLock.Unlock().
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetString
+   */
+  const char* GetString(StringParam name, StringParam default_value) const
+  {
+    return SDL_GetStringProperty(get(), name, default_value);
+  }
+
+  /**
+   * Get a number property from a group of properties.
+   *
+   * You can use PropertiesBase.GetType() to query whether the property exists
+   * and is a number property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a number property.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetNumber
+   */
+  Sint64 GetNumber(StringParam name, Sint64 default_value) const
+  {
+    return SDL_GetNumberProperty(get(), name, default_value);
+  }
+
+  /**
+   * Get a floating point property from a group of properties.
+   *
+   * You can use PropertiesBase.GetType() to query whether the property exists
+   * and is a floating point property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a float property.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetFloat
+   */
+  float GetFloat(StringParam name, float default_value) const
+  {
+    return SDL_GetFloatProperty(get(), name, default_value);
+  }
+
+  /**
+   * Get a boolean property from a group of properties.
+   *
+   * You can use PropertiesBase.GetType() to query whether the property exists
+   * and is a boolean property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a boolean property.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.GetType
+   * @sa PropertiesBase.Has
+   * @sa PropertiesBase.SetBoolean
+   */
+  bool GetBoolean(StringParam name, bool default_value) const
+  {
+    return SDL_GetBooleanProperty(get(), name, default_value);
+  }
+
+  /**
+   * Clear a property from a group of properties.
+   *
+   * @param name the name of the property to clear.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Clear(StringParam name) { CheckError(SDL_ClearProperty(get(), name)); }
+
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * @param outputIter an output iterator to be assigned to each property name.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  template<std::output_iterator<const char*> IT>
+  void Enumerate(IT outputIter) const
+  {
+    Enumerate(
+      [&outputIter](auto props, const char name) { *outputIter++ = name; });
+  }
+
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @cat immediate-callback
+   *
+   * @sa immediate-callback
+   */
+  void Enumerate(EnumeratePropertiesCB callback) const;
+
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @param userdata a pointer that is passed to `callback`.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
+  {
+    CheckError(SDL_EnumerateProperties(get(), callback, userdata));
+  }
+
+  /**
+   * Returns the number of properties this has
+   *
+   * This uses Enumerate() internally, so might not be so fast
+   */
+  Uint64 GetCount() const;
+};
+
+/**
+ * Handle to a non owned properties
+ *
+ * @cat resource
+ *
+ * @sa PropertiesBase
+ * @sa Properties
+ */
+struct PropertiesRef : PropertiesBase
+{
+  using PropertiesBase::PropertiesBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr PropertiesRef(const PropertiesRef& other)
+    : PropertiesBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr PropertiesRef(PropertiesRef&& other)
+    : PropertiesBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~PropertiesRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  PropertiesRef& operator=(PropertiesRef other)
+  {
+    release(other.release());
+    return *this;
+  }
+
+  /**
+   * Destroy a group of properties.
+   *
+   * All properties are deleted and their cleanup functions will be called, if
+   * any.
+   *
+   * @threadsafety This function should not be called while these properties are
+   *               locked or other threads might be setting or getting values
+   *               from these properties.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProperties
+   * @sa Properties.Properties()
+   */
+  void reset(SDL_PropertiesID newResource = {})
+  {
+    SDL_DestroyProperties(release(newResource));
+  }
+};
+
+/**
+ * Handle to an owned properties
+ *
+ * @cat resource
+ *
+ * @sa PropertiesBase
+ * @sa PropertiesRef
+ */
+struct Properties : PropertiesRef
+{
+  using PropertiesRef::PropertiesRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit Properties(SDL_PropertiesID resource = {})
+    : PropertiesRef(resource)
+  {
+  }
+
+  constexpr Properties(const Properties& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr Properties(Properties&& other) = default;
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @post an ID for a new group of properties
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesRef.reset
+   */
+  Properties()
+    : Properties(CheckError(SDL_CreateProperties()))
+  {
+  }
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~Properties() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  Properties& operator=(Properties other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
+
+/**
+ * Wrap the lock state for PropertiesBase
+ *
+ */
+class PropertiesLock
+{
+  PropertiesRef properties;
+
+  /**
+   * @sa PropertiesBase.Lock()
+   */
+  explicit PropertiesLock(PropertiesRef properties)
+    : properties(properties)
+  {
+  }
+
+public:
+  /// Default ctor
+  constexpr PropertiesLock() = default;
+
+  PropertiesLock(const PropertiesLock& other) = delete;
+
+  /// Move ctor
+  PropertiesLock(PropertiesLock&& other)
+    : properties(std::move(other.properties))
+  {
+  }
+
+  /**
+   * @sa Unlock()
+   */
+  ~PropertiesLock() { Unlock(); }
+
+  /// Assignment operator
+  PropertiesLock& operator=(PropertiesLock other)
+  {
+    std::swap(properties, other.properties);
+    return *this;
+  }
+
+  /**
+   * Returns true if lock is active
+   */
+  constexpr operator bool() const { return bool(properties); }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.Lock
+   */
+  void Unlock() { SDL_UnlockProperties(properties.release()); }
+
+  friend class PropertiesBase;
+};
+
+/**
+ * Get the global SDL properties.
+ *
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline PropertiesRef GetGlobalProperties()
+{
+  return CheckError(SDL_GetGlobalProperties());
+}
+
+inline PropertiesLock PropertiesBase::Lock() &
+{
+  CheckError(SDL_LockProperties(get()));
+  return PropertiesLock{get()};
+}
+
+/**
+ * Create a group of properties.
+ *
+ * All properties are automatically destroyed when Quit() is called.
+ *
+ * @returns a valid Properties for a new group of properties, or false on
+ *          failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Properties
+ */
+inline Properties CreateProperties()
+{
+  return Properties{SDL_CreateProperties()};
+}
+
+#pragma region impl
+/// @}
+
+inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
+{
+  return Enumerate(
+    [](void* userdata, SDL_PropertiesID props, const char* name) {
+      auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
+      f(props, name);
+    },
+    &callback);
+}
+
+inline Uint64 PropertiesBase::GetCount() const
+{
+  Uint64 count = 0;
+  Enumerate([&](auto, const char*) { count++; });
+  return count;
+}
+
+#pragma endregion impl
+
+/**
+ * @defgroup CategoryRect Rectangle Functions
+ *
+ * Some helper functions for managing rectangles and 2D points, in both
+ * integer and floating point versions.
+ * @{
+ */
+
+// Forward decl
+struct FPoint;
+
+// Forward decl
+struct Rect;
+
+// Forward decl
+struct FRect;
+
+/**
+ * @brief The structure that defines a point (using integers)
+ *
+ * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct Point : SDL_Point
+{
+  /**
+   * Wraps Point.
+   *
+   * @param p the value to be wrapped
+   */
+  constexpr Point(const SDL_Point& p = {})
+    : SDL_Point(p)
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the value for x.
+   * @param y the value for y.
+   */
+  constexpr Point(int x, int y)
+    : SDL_Point{x, y}
+  {
+  }
+
+  /**
+   * Explicit conversion from FPoint
+   */
+  constexpr explicit Point(const SDL_FPoint& p)
+    : SDL_Point{int(p.x), int(p.y)}
+  {
+  }
+
+  /**
+   * Default comparison operator
+   */
+  constexpr auto operator<=>(const Point& other) const = default;
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return x != 0 && y != 0; }
+
+  /**
+   * @brief Get x coordinate
+   *
+   * @returns x coordinate
+   *
+   */
+  constexpr int GetX() const { return x; }
+
+  /**
+   * Set the x coordinate.
+   *
+   * @param newX the new x coordinate.
+   * @returns Reference to self.
+   */
+  constexpr Point& SetX(int newX)
+  {
+    x = newX;
+    return *this;
+  }
+
+  /**
+   * @brief Get y coordinate
+   *
+   * @returns y coordinate
+   *
+   */
+  constexpr int GetY() const { return y; }
+
+  /**
+   * Set the y.
+   *
+   * @param newY the new y value.
+   * @returns Reference to self.
+   */
+  constexpr Point& SetY(int newY)
+  {
+    y = newY;
+    return *this;
+  }
+
+  /**
+   * Determine whether a point resides inside a rectangle.
+   *
+   * A point is considered part of a rectangle if both `p` and `r` are not NULL,
+   * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
+   * and < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)
+   * as "inside" and (0,1) as not.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param r the rectangle to test.
+   * @returns true if this is contained by `r`, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsInRect(const Rect& r) const;
+
+  /**
+   * @brief Get point's memberwise negation
+   *
+   * @returns New Point representing memberwise negation
+   *
+   */
+  constexpr Point operator-() const { return Point(-x, -y); }
+
+  /**
+   * @brief Get point's memberwise addition with another point
+   *
+   * @param[in] other Point to add
+   *
+   * @returns New Point representing memberwise addition with another point
+   *
+   */
+  constexpr Point operator+(const Point& other) const
+  {
+    return Point(x + other.x, y + other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise subtraction with another point
+   *
+   * @param[in] other Point to subtract
+   *
+   * @returns New Point representing memberwise subtraction of another point
+   *
+   */
+  constexpr Point operator-(const Point& other) const
+  {
+    return Point(x - other.x, y - other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise division by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by an integer
+   *
+   */
+  constexpr Point operator/(int value) const
+  {
+    return Point(x / value, y / value);
+  }
+
+  /**
+   * @brief Get point's memberwise division by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by another point
+   *
+   */
+  constexpr Point operator/(const Point& other) const
+  {
+    return Point(x / other.x, y / other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise remainder from division
+   *        by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns New Point representing memberwise remainder
+   *          from division by an integer
+   *
+   */
+  constexpr Point operator%(int value) const
+  {
+    return Point(x % value, y % value);
+  }
+
+  /**
+   * @brief Get point's memberwise remainder from division
+   *        by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns New Point representing memberwise remainder
+   *          from division by another point
+   *
+   */
+  constexpr Point operator%(const Point& other) const
+  {
+    return Point(x % other.x, y % other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise multiplication by an
+   *        integer
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by an integer
+   *
+   */
+  constexpr Point operator*(int value) const
+  {
+    return Point(x * value, y * value);
+  }
+
+  /**
+   * @brief Get point's memberwise multiplication by another
+   *        point
+   *
+   * @param[in] other Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by another point
+   *
+   */
+  constexpr Point operator*(const Point& other) const
+  {
+    return Point(x * other.x, y * other.y);
+  }
+
+  /**
+   * @brief Memberwise add another point
+   *
+   * @param[in] other Point to add to the current one
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator+=(const Point& other)
+  {
+    x += other.x;
+    y += other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise subtract another point
+   *
+   * @param[in] other Point to subtract from the current one
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator-=(const Point& other)
+  {
+    x -= other.x;
+    y -= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise divide by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator/=(int value)
+  {
+    x /= value;
+    y /= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise divide by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator/=(const Point& other)
+  {
+    x /= other.x;
+    y /= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise remainder from division by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator%=(int value)
+  {
+    x %= value;
+    y %= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise remainder from division by another
+   *        point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator%=(const Point& other)
+  {
+    x %= other.x;
+    y %= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise multiply by an integer
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator*=(int value)
+  {
+    x *= value;
+    y *= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise multiply by another point
+   *
+   * @param[in] other Multiplier
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator*=(const Point& other)
+  {
+    x *= other.x;
+    y *= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Get a point with coordinates modified so it fits
+   *        into a given rect
+   *
+   * @param[in] rect Rectangle to clamp with
+   *
+   * @returns Clamped point
+   *
+   */
+  constexpr Point GetClamped(const Rect& rect) const;
+
+  /**
+   * @brief Clamp point coordinates to make it fit into a
+   *        given rect
+   *
+   * @param[in] rect Rectangle to clamp with
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& Clamp(const Rect& rect);
+
+  /**
+   * @brief Get a point wrapped within a specified rect
+   *
+   * @param[in] rect Rectangle to wrap with
+   *
+   * @returns Wrapped point
+   *
+   */
+  constexpr Point GetWrapped(const Rect& rect) const;
+
+  /**
+   * @brief Wrap point coordinates within a specified rect
+   *
+   * @param[in] rect Rectangle to wrap with
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& Wrap(const Rect& rect);
+
+  /**
+   * @brief Converts to FPoint
+   *
+   * @return FPoint
+   */
+  constexpr operator FPoint() const;
+};
+
+/**
+ * @brief The structure that defines a point (using floating point values).
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct FPoint : SDL_FPoint
+{
+  /**
+   * Wraps FPoint.
+   *
+   * @param p the value to be wrapped
+   */
+  constexpr FPoint(const SDL_FPoint& p = {})
+    : SDL_FPoint(p)
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the value for x.
+   * @param y the value for y.
+   */
+  constexpr FPoint(float x, float y)
+    : SDL_FPoint{x, y}
+  {
+  }
+
+  /**
+   * Default comparison operator
+   */
+  constexpr auto operator<=>(const FPoint& other) const = default;
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return x != 0 && y != 0; }
+
+  /**
+   * Get the x coordinate.
+   *
+   * @returns current x value.
+   */
+  constexpr float GetX() const { return x; }
+
+  /**
+   * Set the x coordinate.
+   *
+   * @param newX the new x coordinate.
+   * @returns Reference to self.
+   */
+  constexpr FPoint& SetX(float newX)
+  {
+    x = newX;
+    return *this;
+  }
+
+  /**
+   * Get the y coordinate.
+   *
+   * @returns current y coordinate.
+   */
+  constexpr float GetY() const { return y; }
+
+  /**
+   * Set the y coordinate.
+   *
+   * @param newY the new y coordinate.
+   * @returns Reference to self.
+   */
+  constexpr FPoint& SetY(float newY)
+  {
+    y = newY;
+    return *this;
+  }
+
+  /**
+   * Determine whether a point resides inside a floating point rectangle.
+   *
+   * A point is considered part of a rectangle if both `p` and `r` are not NULL,
+   * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
+   * and <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point
+   * (0,0) and (0,1) as "inside" and (0,2) as not.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param r the rectangle to test.
+   * @returns true if this is contained by `r`, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsInRect(const FRect& r) const;
+
+  /**
+   * @brief Get point's memberwise negation
+   *
+   * @returns New Point representing memberwise negation
+   *
+   */
+  constexpr FPoint operator-() const { return FPoint(-x, -y); }
+
+  /**
+   * @brief Get point's memberwise addition with another point
+   *
+   * @param[in] other Point to add
+   *
+   * @returns New Point representing memberwise addition with another point
+   *
+   */
+  constexpr FPoint operator+(const FPoint& other) const
+  {
+    return FPoint(x + other.x, y + other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise subtraction with another point
+   *
+   * @param[in] other Point to subtract
+   *
+   * @returns New Point representing memberwise subtraction of another point
+   *
+   */
+  constexpr FPoint operator-(const FPoint& other) const
+  {
+    return FPoint(x - other.x, y - other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise division by an float
+   *
+   * @param[in] value Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by an float
+   *
+   */
+  constexpr FPoint operator/(float value) const
+  {
+    return FPoint(x / value, y / value);
+  }
+
+  /**
+   * @brief Get point's memberwise division by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by another point
+   *
+   */
+  constexpr FPoint operator/(const FPoint& other) const
+  {
+    return FPoint(x / other.x, y / other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise multiplication by an
+   *        float
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by an float
+   *
+   */
+  constexpr FPoint operator*(float value) const
+  {
+    return FPoint(x * value, y * value);
+  }
+
+  /**
+   * @brief Get point's memberwise multiplication by another
+   *        point
+   *
+   * @param[in] other Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by another point
+   *
+   */
+  constexpr FPoint operator*(const FPoint& other) const
+  {
+    return FPoint(x * other.x, y * other.y);
+  }
+
+  /**
+   * @brief Memberwise add another point
+   *
+   * @param[in] other Point to add to the current one
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator+=(const FPoint& other)
+  {
+    x += other.x;
+    y += other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise subtract another point
+   *
+   * @param[in] other Point to subtract from the current one
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator-=(const FPoint& other)
+  {
+    x -= other.x;
+    y -= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise divide by an float
+   *
+   * @param[in] value Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator/=(float value)
+  {
+    x /= value;
+    y /= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise divide by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator/=(const FPoint& other)
+  {
+    x /= other.x;
+    y /= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise multiply by an float
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator*=(float value)
+  {
+    x *= value;
+    y *= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise multiply by another point
+   *
+   * @param[in] other Multiplier
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator*=(const FPoint& other)
+  {
+    x *= other.x;
+    y *= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Get a point with coordinates modified so it fits
+   *        into a given rect
+   *
+   * @param[in] rect Rectangle to clamp with
+   *
+   * @returns Clamped point
+   *
+   */
+  constexpr FPoint GetClamped(const FRect& rect) const;
+
+  /**
+   * @brief Clamp point coordinates to make it fit into a
+   *        given rect
+   *
+   * @param[in] rect Rectangle to clamp with
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& Clamp(const FRect& rect);
+
+  /**
+   * @brief Get a point wrapped within a specified rect
+   *
+   * @param[in] rect Rectangle to wrap with
+   *
+   * @returns Wrapped point
+   *
+   */
+  constexpr FPoint GetWrapped(const FRect& rect) const;
+
+  /**
+   * @brief Wrap point coordinates within a specified rect
+   *
+   * @param[in] rect Rectangle to wrap with
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& Wrap(const FRect& rect);
+};
+
+/**
+ * @brief A rectangle, with the origin at the upper left (using integers).
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct Rect : SDL_Rect
+{
+  /**
+   * Wraps Rect.
+   *
+   * @param r the value to be wrapped
+   */
+  constexpr Rect(const SDL_Rect& r = {})
+    : SDL_Rect(r)
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the left x.
+   * @param y the top y.
+   * @param w the width.
+   * @param h the height.
+   */
+  constexpr Rect(int x, int y, int w, int h)
+    : SDL_Rect({x, y, w, h})
+  {
+  }
+
+  /**
+   * Construct from offset and size
+   *
+   * @param corner the top-left corner
+   * @param size the size
+   */
+  constexpr Rect(const SDL_Point& corner, const SDL_Point& size)
+    : Rect{corner.x, corner.y, size.x, size.y}
+  {
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const Rect& other) const { return Equal(other); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * @brief Get left x coordinate.
+   *
+   * @returns coordinate of the left x
+   *
+   */
+  constexpr int GetX() const { return x; }
+
+  /**
+   * Set the left x coordinate.
+   *
+   * @param newX the new left x.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetX(int newX)
+  {
+    x = newX;
+    return *this;
+  }
+
+  /**
+   * @brief Get top y coordinate.
+   *
+   * @returns coordinate of the top y.
+   *
+   */
+  constexpr int GetY() const { return y; }
+
+  /**
+   * Set the top y coordinate.
+   *
+   * @param newY the new top y.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetY(int newY)
+  {
+    y = newY;
+    return *this;
+  }
+
+  /**
+   * @brief Get width of the rect
+   *
+   * @returns Width of the rect
+   *
+   */
+  constexpr int GetW() const { return w; }
+
+  /**
+   * Set the width of the rect.
+   *
+   * @param newW the new width.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetW(int newW)
+  {
+    w = newW;
+    return *this;
+  }
+
+  /**
+   * @brief Get height of the rect
+   *
+   * @returns Height of the rect
+   *
+   */
+  constexpr int GetH() const { return h; }
+
+  /**
+   * Set the height of the rect.
+   *
+   * @param newH the new height.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetH(int newH)
+  {
+    h = newH;
+    return *this;
+  }
+
+  /**
+   * Calculate a minimal rectangle enclosing a set of points.
+   *
+   * If `clip` is not nullptr then only points inside of the clipping rectangle
+   * are considered.
+   *
+   * @param points a span of SDL_Point structures representing points to be
+   *               enclosed.
+   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
+   *             points.
+   * @returns a SDL_Rect structure filled in with the minimal enclosing
+   *          rectangle or an empty rect if all the points were outside of the
+   *          clipping rectangle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static Rect GetEnclosingPoints(
+    SpanRef<const SDL_Point> points,
+    OptionalRef<const SDL_Rect> clip = std::nullopt)
+  {
+    Rect result;
+    if (SDL_GetRectEnclosingPoints(
+          points.data(), points.size(), clip, &result)) {
+      return result;
+    }
+    return {};
+  }
+
+  /**
+   * @brief Construct the rect from given center coordinates, width and height
+   *
+   * @param[in] cx X coordinate of the rectangle center
+   * @param[in] cy Y coordinate of the rectangle center
+   * @param[in] w Width of the rectangle
+   * @param[in] h Height of the rectangle
+   *
+   */
+  static constexpr Rect FromCenter(int cx, int cy, int w, int h)
+  {
+    return Rect(cx - w / 2, cy - h / 2, w, h);
+  }
+
+  /**
+   * @brief Construct the rect from given center coordinates and size
+   *
+   * @param[in] center Coordinates of the rectangle center
+   * @param[in] size Dimensions of the rectangle
+   *
+   */
+  static constexpr Rect FromCenter(const Point& center, const Point& size)
+  {
+    return Rect(center - size / 2, size);
+  }
+
+  /**
+   * @brief Construct the rect from given corners coordinates
+   *
+   * @param[in] x1 X coordinate of the top left rectangle corner
+   * @param[in] y1 Y coordinate of the top left rectangle corner
+   * @param[in] x2 X coordinate of the bottom right rectangle corner
+   * @param[in] y2 Y coordinate of the bottom right rectangle corner
+   *
+   */
+  static constexpr Rect FromCorners(int x1, int y1, int x2, int y2)
+  {
+    return Rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+  }
+
+  /**
+   * @brief Construct the rect from given centers coordinates
+   *
+   * @param[in] p1 Coordinates of the top left rectangle corner
+   * @param[in] p2 Coordinates of the bottom right rectangle corner
+   *
+   */
+  static constexpr Rect FromCorners(const Point& p1, const Point& p2)
+  {
+    return Rect(p1, p2 - p1 + Point(1, 1));
+  }
+
+  /**
+   * @brief Get X coordinate of the rect second corner
+   *
+   * @returns X coordinate of the rect second corner
+   *
+   */
+  constexpr int GetX2() const { return x + w - 1; }
+
+  /**
+   * @brief Set X coordinate of the rect second corner
+   *
+   * @param[in] x2 New X coordinate value
+   *
+   * This modifies rectangle width internally
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& SetX2(int x2)
+  {
+    w = x2 - x + 1;
+    return *this;
+  }
+
+  /**
+   * @brief Get Y coordinate of the rect second corner
+   *
+   * @returns Y coordinate of the rect second corner
+   *
+   */
+  constexpr int GetY2() const { return y + h - 1; }
+
+  /**
+   * @brief Set Y coordinate of the rect second corner
+   *
+   * @param[in] y2 New Y coordinate value
+   *
+   * This modifies rectangle height internally
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& SetY2(int y2)
+  {
+    h = y2 - y + 1;
+    return *this;
+  }
+
+  /**
+   * @brief Get top left corner of the rect
+   *
+   * @returns Top left corner of the rect
+   *
+   */
+  constexpr Point GetTopLeft() const { return Point(x, y); }
+
+  /**
+   * @brief Get top right corner of the rect
+   *
+   * @returns Top right corner of the rect
+   *
+   */
+  constexpr Point GetTopRight() const { return Point(GetX2(), y); }
+
+  /**
+   * @brief Get bottom left corner of the rect
+   *
+   * @returns bottom left corner of the rect
+   *
+   */
+  constexpr Point GetBottomLeft() const { return Point(x, GetY2()); }
+
+  /**
+   * @brief Get bottom right corner of the rect
+   *
+   * @returns Bottom right corner of the rect
+   *
+   */
+  constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
+
+  /**
+   * @brief Get size of the rect
+   *
+   * @returns Size of the rect
+   *
+   */
+  constexpr Point GetSize() const { return Point(w, h); }
+
+  /**
+   * @brief Get centroid of the rect
+   *
+   * @returns Centroid of the rect
+   *
+   */
+  constexpr Point GetCentroid() const { return Point(x + w / 2, y + h / 2); }
+
+  /**
+   * Calculate the intersection of a rectangle and line segment.
+   *
+   * This function is used to clip a line segment to a rectangle. A line segment
+   * contained entirely within the rectangle or that does not intersect will
+   * remain unchanged. A line segment that crosses the rectangle at either or
+   * both ends will be clipped to the boundary of the rectangle and the new
+   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
+   *
+   * @param X1 a pointer to the starting X-coordinate of the line.
+   * @param Y1 a pointer to the starting Y-coordinate of the line.
+   * @param X2 a pointer to the ending X-coordinate of the line.
+   * @param Y2 a pointer to the ending Y-coordinate of the line.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool IntersectLine(int* X1, int* Y1, int* X2, int* Y2) const
+  {
+    return SDL_GetRectAndLineIntersection(this, X1, Y1, X2, Y2);
+  }
+
+  /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
+   *
+   */
+  bool IntersectLine(Point* p1, Point* p2) const
+  {
+    return IntersectLine(p1 ? &p1->x : nullptr,
+                         p1 ? &p1->y : nullptr,
+                         p2 ? &p2->x : nullptr,
+                         p2 ? &p2->y : nullptr);
+  }
+
+  /**
+   * Convert an SDL_Rect to SDL_FRect
+   *
+   * @return A FRect filled in with the floating point representation of
+   *              `rect`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr operator FRect() const;
+
+  /**
+   * @sa operator FRect()
+   */
+  constexpr operator SDL_FRect() const { return operator SDL_FRect(); }
+
+  /**
+   * Determine whether a rectangle has no area.
+   *
+   * A rectangle is considered "empty" for this function if `r` is NULL, or if
+   * `r`'s width and/or height are <= 0.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @returns true if the rectangle is "empty", false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Empty() const { return SDL_RectEmpty(this); }
+
+  /**
+   * Determine whether two rectangles are equal.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height match.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param other the second rectangle to test.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Equal(const Rect& other) const
+  {
+    return SDL_RectsEqual(this, &other);
+  }
+
+  /**
+   * @brief Check whether the rect contains given point
+   *
+   * @param p Point to check
+   *
+   * @returns True if the point is contained in the rect
+   *
+   */
+  constexpr bool Contains(const Point& p) const
+  {
+    return SDL_PointInRect(&p, this);
+  }
+
+  /**
+   * @brief Check whether the rect contains given point
+   *
+   * @param other Point to check
+   *
+   * @returns True if the point is contained in the rect
+   *
+   */
+  constexpr bool Contains(const Rect& other) const
+  {
+    return GetUnion(other) == *this;
+  }
+
+  /**
+   * Determine whether two rectangles intersect.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetIntersection()
+   */
+  bool HasIntersection(const Rect& other) const
+  {
+    return SDL_HasRectIntersection(this, &other);
+  }
+
+  /**
+   * Calculate the intersection of two rectangles.
+   *
+   * If `result` is NULL then this function will return false.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns an SDL_Rect structure filled in with the intersection of
+   *               if there is intersection, std::nullopt otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa HasIntersection()
+   */
+  constexpr std::optional<Rect> GetIntersection(const Rect& other) const
+  {
+    if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
+      return result;
+    }
+    return std::nullopt;
+  }
+
+  /**
+   * Calculate the union of two rectangles.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns Rect representing union of two rectangles
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr Rect GetUnion(const Rect& other) const
+  {
+    Rect result;
+    CheckError(SDL_GetRectUnion(this, &other, &result));
+    return result;
+  }
+
+  /**
+   * @brief Get a rect extended by specified amount of pixels
+   *
+   * @param[in] amount Number of pixels to extend by
+   *
+   * @returns Extended rect
+   *
+   */
+  constexpr Rect GetExtension(unsigned int amount) const
+  {
+    Rect r = *this;
+    r.Extend(amount);
+    return r;
+  }
+
+  /**
+   * @brief Get a rect extended by specified amount of pixels
+   *
+   * @param[in] hAmount Number of pixels to extend by
+   *                    in horizontal direction
+   * @param[in] vAmount Number of pixels to extend by
+   *                    in vertical direction
+   *
+   * @returns Extended rect
+   *
+   */
+  constexpr Rect GetExtension(unsigned int hAmount, unsigned int vAmount) const
+  {
+    Rect r = *this;
+    r.Extend(hAmount, vAmount);
+    return r;
+  }
+
+  /**
+   * @brief Extend a rect by specified amount of pixels
+   *
+   * @param[in] amount Number of pixels to extend by
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& Extend(unsigned int amount) { return Extend(amount, amount); }
+
+  /**
+   * @brief Extend a rect by specified amount of pixels
+   *
+   * @param[in] hAmount Number of pixels to extend by
+   *                    in horizontal direction
+   * @param[in] vAmount Number of pixels to extend by
+   *                    in vertical direction
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& Extend(unsigned int hAmount, unsigned int vAmount)
+  {
+    x -= hAmount;
+    y -= vAmount;
+    w += hAmount * 2;
+    h += vAmount * 2;
+    return *this;
+  }
+
+  /**
+   * @brief Get rectangle moved by a given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Moved rectangle
+   *
+   */
+  constexpr Rect operator+(const Point& offset) const
+  {
+    return Rect(x + offset.x, y + offset.y, w, h);
+  }
+
+  /**
+   * @brief Get rectangle moved by an opposite of given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Moved rectangle
+   *
+   */
+  constexpr Rect operator-(const Point& offset) const
+  {
+    return Rect(x - offset.x, y - offset.y, w, h);
+  }
+
+  /**
+   * @brief Move by then given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& operator+=(const Point& offset)
+  {
+    x += offset.x;
+    y += offset.y;
+    return *this;
+  }
+
+  /**
+   * @brief Move by an opposite of the given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& operator-=(const Point& offset)
+  {
+    x -= offset.x;
+    y -= offset.y;
+    return *this;
+  }
+};
+
+/**
+ * @brief A rectangle, with the origin at the upper left (using floats).
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct FRect : SDL_FRect
+{
+  /**
+   * Wraps FRect.
+   *
+   * @param r the value to be wrapped
+   */
+  constexpr FRect(const SDL_FRect& r = {})
+    : SDL_FRect{r}
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the left x.
+   * @param y the top y.
+   * @param w the width.
+   * @param h the height.
+   */
+  constexpr FRect(float x, float y, float w, float h)
+    : SDL_FRect{x, y, w, h}
+  {
+  }
+
+  /// Constructs from top-left corner plus size
+  constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
+    : FRect{corner.x, corner.y, size.x, size.y}
+  {
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const FRect& other) const { return Equal(other); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * @brief Get left x coordinate.
+   *
+   * @returns coordinate of the left x
+   *
+   */
+  constexpr float GetX() const { return x; }
+
+  /**
+   * Set the left x coordinate.
+   *
+   * @param newX the new left x.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetX(float newX)
+  {
+    x = newX;
+    return *this;
+  }
+
+  /**
+   * @brief Get top y coordinate.
+   *
+   * @returns coordinate of the top y.
+   *
+   */
+  constexpr float GetY() const { return y; }
+
+  /**
+   * Set the top y coordinate.
+   *
+   * @param newY the new top y.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetY(float newY)
+  {
+    y = newY;
+    return *this;
+  }
+
+  /**
+   * @brief Get width of the rect
+   *
+   * @returns Width of the rect
+   *
+   */
+  constexpr float GetW() const { return w; }
+
+  /**
+   * Set the width of the rect.
+   *
+   * @param newW the new width.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetW(float newW)
+  {
+    w = newW;
+    return *this;
+  }
+
+  /**
+   * @brief Get height of the rect
+   *
+   * @returns Height of the rect
+   *
+   */
+  constexpr float GetH() const { return h; }
+
+  /**
+   * Set the height of the rect.
+   *
+   * @param newH the new height.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetH(float newH)
+  {
+    h = newH;
+    return *this;
+  }
+
+  /**
+   * Calculate a minimal rectangle enclosing a set of points with float
+   * precision.
+   *
+   * If `clip` is not nullptr then only points inside of the clipping rectangle
+   * are considered.
+   *
+   * @param points a span of SDL_Point structures representing points to be
+   *               enclosed.
+   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
+   *             points.
+   * @returns a FRect structure filled in with the minimal enclosing
+   *          rectangle or an empty FRect if all the points were outside of
+   * the clipping rectangle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static FRect GetEnclosingPoints(
+    SpanRef<const SDL_FPoint> points,
+    OptionalRef<const SDL_FRect> clip = std::nullopt)
+  {
+    if (FRect result; SDL_GetRectEnclosingPointsFloat(
+          points.data(), points.size(), clip, &result)) {
+      return result;
+    }
+    return {};
+  }
+
+  /**
+   * @brief Construct the rect from given center coordinates, width and height
+   *
+   * @param[in] cx X coordinate of the rectangle center
+   * @param[in] cy Y coordinate of the rectangle center
+   * @param[in] w Width of the rectangle
+   * @param[in] h Height of the rectangle
+   *
+   */
+  static constexpr FRect FromCenter(float cx, float cy, float w, float h)
+  {
+    return FRect(cx - w / 2, cy - h / 2, w, h);
+  }
+
+  /**
+   * @brief Construct the rect from given center coordinates and size
+   *
+   * @param[in] center Coordinates of the rectangle center
+   * @param[in] size Dimensions of the rectangle
+   *
+   */
+  static constexpr FRect FromCenter(const FPoint& center, const FPoint& size)
+  {
+    return FRect(center - size / 2, size);
+  }
+
+  /**
+   * @brief Construct the rect from given corners coordinates
+   *
+   * @param[in] x1 X coordinate of the top left rectangle corner
+   * @param[in] y1 Y coordinate of the top left rectangle corner
+   * @param[in] x2 X coordinate of the bottom right rectangle corner
+   * @param[in] y2 Y coordinate of the bottom right rectangle corner
+   *
+   */
+  static constexpr FRect FromCorners(float x1, float y1, float x2, float y2)
+  {
+    return FRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+  }
+
+  /**
+   * @brief Construct the rect from given centers coordinates
+   *
+   * @param[in] p1 Coordinates of the top left rectangle corner
+   * @param[in] p2 Coordinates of the bottom right rectangle corner
+   *
+   */
+  static constexpr FRect FromCorners(const FPoint& p1, const FPoint& p2)
+  {
+    return FRect(p1, p2 - p1 + FPoint(1, 1));
+  }
+
+  /**
+   * @brief Get X coordinate of the rect second corner
+   *
+   * @returns X coordinate of the rect second corner
+   *
+   */
+  constexpr float GetX2() const { return x + w - 1; }
+
+  /**
+   * @brief Set X coordinate of the rect second corner
+   *
+   * @param[in] x2 New X coordinate value
+   *
+   * This modifies rectangle width internally
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& SetX2(float x2)
+  {
+    w = x2 - x + 1;
+    return *this;
+  }
+
+  /**
+   * @brief Get Y coordinate of the rect second corner
+   *
+   * @returns Y coordinate of the rect second corner
+   *
+   */
+  constexpr float GetY2() const { return y + h - 1; }
+
+  /**
+   * @brief Set Y coordinate of the rect second corner
+   *
+   * @param[in] y2 New Y coordinate value
+   *
+   * This modifies rectangle height internally
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& SetY2(float y2)
+  {
+    h = y2 - y + 1;
+    return *this;
+  }
+
+  /**
+   * @brief Get top left corner of the rect
+   *
+   * @returns Top left corner of the rect
+   *
+   */
+  constexpr FPoint GetTopLeft() const { return FPoint(x, y); }
+
+  /**
+   * @brief Get top right corner of the rect
+   *
+   * @returns Top right corner of the rect
+   *
+   */
+  constexpr FPoint GetTopRight() const { return FPoint(GetX2(), y); }
+
+  /**
+   * @brief Get bottom left corner of the rect
+   *
+   * @returns bottom left corner of the rect
+   *
+   */
+  constexpr FPoint GetBottomLeft() const { return FPoint(x, GetY2()); }
+
+  /**
+   * @brief Get bottom right corner of the rect
+   *
+   * @returns Bottom right corner of the rect
+   *
+   */
+  constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
+
+  /**
+   * @brief Get size of the rect
+   *
+   * @returns Size of the rect
+   *
+   */
+  constexpr FPoint GetSize() const { return FPoint(w, h); }
+
+  /**
+   * @brief Get centroid of the rect
+   *
+   * @returns Centroid of the rect
+   *
+   */
+  constexpr FPoint GetCentroid() const { return FPoint(x + w / 2, y + h / 2); }
+
+  /**
+   * Calculate the intersection of a rectangle and line segment with float
+   * precision.
+   *
+   * This function is used to clip a line segment to a rectangle. A line segment
+   * contained entirely within the rectangle or that does not intersect will
+   * remain unchanged. A line segment that crosses the rectangle at either or
+   * both ends will be clipped to the boundary of the rectangle and the new
+   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
+   *
+   * @param X1 a pointer to the starting X-coordinate of the line.
+   * @param Y1 a pointer to the starting Y-coordinate of the line.
+   * @param X2 a pointer to the ending X-coordinate of the line.
+   * @param Y2 a pointer to the ending Y-coordinate of the line.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool IntersectLine(float* X1, float* Y1, float* X2, float* Y2) const
+  {
+    return SDL_GetRectAndLineIntersectionFloat(this, X1, Y1, X2, Y2);
+  }
+
+  /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
+   *
+   */
+  bool IntersectLine(FPoint* p1, FPoint* p2) const
+  {
+    return IntersectLine(p1 ? &p1->x : nullptr,
+                         p1 ? &p1->y : nullptr,
+                         p2 ? &p2->x : nullptr,
+                         p2 ? &p2->y : nullptr);
+  }
+
+  /**
+   * Determine whether a rectangle has no area.
+   *
+   * A rectangle is considered "empty" for this function if `r` is NULL, or if
+   * `r`'s width and/or height are <= 0.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @returns true if the rectangle is "empty", false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Empty() const { return SDL_RectEmptyFloat(this); }
+
+  /**
+   * Determine whether two floating point rectangles are equal, within some
+   * given epsilon.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height are within `epsilon` of each other. If you don't know
+   * what value to use for `epsilon`, you should call the SDL_RectsEqualFloat
+   * function instead.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param other the second rectangle to test.
+   * @param epsilon the epsilon value for comparison.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Equal()
+   */
+  constexpr bool EqualEpsilon(const FRect& other, const float epsilon) const
+  {
+    return SDL_RectsEqualEpsilon(this, &other, epsilon);
+  }
+
+  /**
+   * Determine whether two rectangles are equal.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height match.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param other the second rectangle to test.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Equal(const FRect& other) const
+  {
+    return SDL_RectsEqualFloat(this, &other);
+  }
+
+  /**
+   * @brief Check whether the rect contains given point
+   *
+   * @param p Point to check
+   *
+   * @returns True if the point is contained in the rect
+   *
+   */
+  constexpr bool Contains(const FPoint& p) const
+  {
+    return SDL_PointInRectFloat(&p, this);
+  }
+
+  /**
+   * @brief Check whether the rect contains given point
+   *
+   * @param other Point to check
+   *
+   * @returns True if the point is contained in the rect
+   *
+   */
+  constexpr bool Contains(const FRect& other) const
+  {
+    return GetUnion(other) == *this;
+  }
+
+  /**
+   * Determine whether two rectangles intersect.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetIntersection()
+   */
+  bool HasIntersection(const FRect& other) const
+  {
+    return SDL_HasRectIntersectionFloat(this, &other);
+  }
+
+  /**
+   * Calculate the intersection of two rectangles with float precision.
+   *
+   * If `result` is nullptr then this function will return false.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns an SDL_Rect structure filled in with the intersection of
+   *          if there is intersection, an empty FRect otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa FRect.HasIntersection
+   */
+  FRect GetIntersection(const FRect& other) const
+  {
+    if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
+      return result;
+    }
+    return {};
+  }
+
+  /**
+   * Calculate the union of two rectangles with float precision.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns Rect representing union of two rectangles
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  FRect GetUnion(const FRect& other) const
+  {
+    FRect result;
+    CheckError(SDL_GetRectUnionFloat(this, &other, &result));
+    return result;
+  }
+
+  /**
+   * @brief Get a rect extended by specified amount of pixels
+   *
+   * @param[in] amount Number of pixels to extend by
+   *
+   * @returns Extended rect
+   *
+   */
+  constexpr FRect GetExtension(unsigned int amount) const
+  {
+    FRect r = *this;
+    r.Extend(amount);
+    return r;
+  }
+
+  /**
+   * @brief Get a rect extended by specified amount of pixels
+   *
+   * @param[in] hAmount Number of pixels to extend by
+   *                    in horizontal direction
+   * @param[in] vAmount Number of pixels to extend by
+   *                    in vertical direction
+   *
+   * @returns Extended rect
+   *
+   */
+  constexpr FRect GetExtension(float hAmount, float vAmount) const
+  {
+    FRect r = *this;
+    r.Extend(hAmount, vAmount);
+    return r;
+  }
+
+  /**
+   * @brief Extend a rect by specified amount of pixels
+   *
+   * @param[in] amount Number of pixels to extend by
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& Extend(float amount) { return Extend(amount, amount); }
+
+  /**
+   * @brief Extend a rect by specified amount of pixels
+   *
+   * @param[in] hAmount Number of pixels to extend by
+   *                    in horizontal direction
+   * @param[in] vAmount Number of pixels to extend by
+   *                    in vertical direction
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& Extend(float hAmount, float vAmount)
+  {
+    x -= hAmount;
+    y -= vAmount;
+    w += hAmount * 2;
+    h += vAmount * 2;
+    return *this;
+  }
+
+  /**
+   * @brief Get rectangle moved by a given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Moved rectangle
+   *
+   */
+  constexpr FRect operator+(const FPoint& offset) const
+  {
+    return FRect(x + offset.x, y + offset.y, w, h);
+  }
+
+  /**
+   * @brief Get rectangle moved by an opposite of given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Moved rectangle
+   *
+   */
+  constexpr FRect operator-(const FPoint& offset) const
+  {
+    return FRect(x - offset.x, y - offset.y, w, h);
+  }
+
+  /**
+   * @brief Move by then given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& operator+=(const FPoint& offset)
+  {
+    x += offset.x;
+    y += offset.y;
+    return *this;
+  }
+
+  /**
+   * @brief Move by an opposite of the given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& operator-=(const FPoint& offset)
+  {
+    x -= offset.x;
+    y -= offset.y;
+    return *this;
+  }
+};
+
+constexpr bool Point::IsInRect(const Rect& r) const
+{
+  return r.Contains(*this);
+}
+
+constexpr bool FPoint::IsInRect(const FRect& r) const
+{
+  return r.Contains(*this);
+}
+
+#pragma region impl
+/// @}
+
+constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
+
+constexpr Point Point::GetClamped(const Rect& rect) const
+{
+  Point p = *this;
+  p.Clamp(rect);
+  return p;
+}
+
+constexpr Point& Point::Clamp(const Rect& rect)
+{
+  if (x < rect.x) x = rect.x;
+  if (x > rect.GetX2()) x = rect.GetX2();
+  if (y < rect.y) y = rect.y;
+  if (y > rect.GetY2()) y = rect.GetY2();
+  return *this;
+}
+
+constexpr Point Point::GetWrapped(const Rect& rect) const
+{
+  Point p = *this;
+  p.Wrap(rect);
+  return p;
+}
+
+constexpr Point& Point::Wrap(const Rect& rect)
+{
+  if (x < rect.x)
+    x = rect.x + rect.w - 1 - (rect.x - x + rect.w - 1) % rect.w;
+  else if (x >= rect.x + rect.w)
+    x = rect.x + (x - rect.x - rect.w) % rect.w;
+
+  if (y < rect.y)
+    y = rect.y + rect.h - 1 - (rect.y - y + rect.h - 1) % rect.h;
+  else if (y >= rect.y + rect.h)
+    y = rect.y + (y - rect.y - rect.h) % rect.h;
+
+  return *this;
+}
+
+constexpr FPoint FPoint::GetClamped(const FRect& rect) const
+{
+  FPoint p = *this;
+  p.Clamp(rect);
+  return p;
+}
+
+constexpr FPoint& FPoint::Clamp(const FRect& rect)
+{
+  if (x < rect.x) x = rect.x;
+  if (x > rect.GetX2()) x = rect.GetX2();
+  if (y < rect.y) y = rect.y;
+  if (y > rect.GetY2()) y = rect.GetY2();
+  return *this;
+}
+
+constexpr FPoint FPoint::GetWrapped(const FRect& rect) const
+{
+  FPoint p = *this;
+  p.Wrap(rect);
+  return p;
+}
+
+constexpr FPoint& FPoint::Wrap(const FRect& rect)
+{
+  if (x < rect.x)
+    x = rect.x + rect.w - 1 - fmod(rect.x - x + rect.w - 1, rect.w);
+  else if (x >= rect.x + rect.w)
+    x = rect.x + fmod(x - rect.x - rect.w, rect.w);
+
+  if (y < rect.y)
+    y = rect.y + rect.h - 1 - fmod(rect.y - y + rect.h - 1, rect.h);
+  else if (y >= rect.y + rect.h)
+    y = rect.y + fmod(y - rect.y - rect.h, rect.h);
+
+  return *this;
+}
+
+constexpr Rect::operator FRect() const
+{
+  return {float(x), float(y), float(w), float(h)};
+}
+
+#pragma endregion impl
+
+/**
  *
  * @defgroup CategoryScancode Keyboard Scancodes
  *
@@ -17855,7 +20889,7 @@ public:
   }
 
   // Set name
-  bool SetName(StringParam name);
+  void SetName(StringParam name);
 
   // Get name
   const char* GetName() const;
@@ -18588,21 +21622,20 @@ struct DateTime : SDL_DateTime
   }
 
   /**
-   * Converts an SDL_Time in nanoseconds since the epoch to a calendar time in
-   * the SDL_DateTime format.
+   * Converts an Time in nanoseconds since the epoch to a calendar time in
+   * the DateTime format.
    *
-   * @param ticks the SDL_Time to be converted.
-   * @param localTime the resulting DateTime will be expressed in local time if
-   *        true, otherwise it will be in Universal Coordinated Time (UTC).
-   * @post true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @param ticks the Time to be converted.
+   * @param localTime the resulting DateTime will be expressed in local time
+   *                  if true, otherwise it will be in Universal Coordinated
+   *                  Time (UTC).
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
   DateTime(Time ticks, bool localTime = true)
-    : SDL_DateTime(0)
   {
-    SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
+    CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
   }
 
   /**
@@ -18610,7 +21643,6 @@ struct DateTime : SDL_DateTime
    */
   constexpr auto operator<=>(const DateTime& other) const = default;
 
-  /// Returns If valid
   /**
    * Check if valid.
    *
@@ -18794,20 +21826,21 @@ struct DateTime : SDL_DateTime
   }
 
   /**
-   * Converts a calendar time to an SDL_Time in nanoseconds since the epoch.
+   * Converts a calendar time to an Time in nanoseconds since the epoch.
    *
-   * This function ignores the day_of_week member of the SDL_DateTime struct, so
+   * This function ignores the day_of_week member of the DateTime struct, so
    * it may remain unset.
    *
-   * @returns time on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns time on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
   operator Time() const
   {
-    if (SDL_Time t; SDL_DateTimeToTime(this, &t)) return Time::FromNS(t);
-    return {};
+    SDL_Time t;
+    CheckError(SDL_DateTimeToTime(this, &t));
+    return Time::FromNS(t);
   }
 };
 
@@ -18816,43 +21849,31 @@ struct DateTime : SDL_DateTime
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa SDL_GetDateTimeLocalePreferences
+ * @sa GetDateTimeLocalePreferences
  */
 using DateFormat = SDL_DateFormat;
 
-/**
- * Year/Month/Day.
- */
-constexpr DateFormat DATE_FORMAT_YYYYMMDD = SDL_DATE_FORMAT_YYYYMMDD;
+constexpr DateFormat DATE_FORMAT_YYYYMMDD =
+  SDL_DATE_FORMAT_YYYYMMDD; ///< Year/Month/Day.
 
-/**
- * Day/Month/Year.
- */
-constexpr DateFormat DATE_FORMAT_DDMMYYYY = SDL_DATE_FORMAT_DDMMYYYY;
+constexpr DateFormat DATE_FORMAT_DDMMYYYY =
+  SDL_DATE_FORMAT_DDMMYYYY; ///< Day/Month/Year.
 
-/**
- * Month/Day/Year.
- */
-constexpr DateFormat DATE_FORMAT_MMDDYYYY = SDL_DATE_FORMAT_MMDDYYYY;
+constexpr DateFormat DATE_FORMAT_MMDDYYYY =
+  SDL_DATE_FORMAT_MMDDYYYY; ///< Month/Day/Year.
 
 /**
  * The preferred time format of the current system locale.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa SDL_GetDateTimeLocalePreferences
+ * @sa GetDateTimeLocalePreferences
  */
 using TimeFormat = SDL_TimeFormat;
 
-/**
- * 24 hour time
- */
-constexpr TimeFormat TIME_FORMAT_24HR = SDL_TIME_FORMAT_24HR;
+constexpr TimeFormat TIME_FORMAT_24HR = SDL_TIME_FORMAT_24HR; ///< 24 hour time
 
-/**
- * 12 hour time
- */
-constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR;
+constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR; ///< 12 hour time
 
 /**
  * Gets the current preferred date and time format for the system locale.
@@ -18862,34 +21883,33 @@ constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR;
  * formats can change, usually because the user has changed a system
  * preference outside of your program.
  *
- * @param dateFormat a pointer to the SDL_DateFormat to hold the returned date
- *                   format, may be NULL.
- * @param timeFormat a pointer to the SDL_TimeFormat to hold the returned time
- *                   format, may be NULL.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @param dateFormat a pointer to the DateFormat to hold the returned date
+ *                   format, may be nullptr.
+ * @param timeFormat a pointer to the TimeFormat to hold the returned time
+ *                   format, may be nullptr.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GetDateTimeLocalePreferences(DateFormat* dateFormat,
+inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
                                          TimeFormat* timeFormat)
 {
-  return SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat);
+  CheckError(SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat));
 }
 
 /**
  * Gets the current value of the system realtime clock in nanoseconds since
  * Jan 1, 1970 in Universal Coordinated Time (UTC).
  *
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline Time Time::Current()
 {
-  if (SDL_Time t; SDL_GetCurrentTime(&t)) return Time::FromNS(t);
-  return Time{};
+  SDL_Time t;
+  CheckError(SDL_GetCurrentTime(&t));
+  return Time::FromNS(t);
 }
 
 /**
@@ -18933,14 +21953,14 @@ inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
  *
  * @param year the year.
  * @param month the month [1-12].
- * @returns the number of days in the requested month or -1 on failure; call
- *          SDL_GetError() for more information.
+ * @returns the number of days in the requested month.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDaysInMonth(int year, int month)
 {
-  return SDL_GetDaysInMonth(year, month);
+  return CheckError(SDL_GetDaysInMonth(year, month), -1);
 }
 
 /**
@@ -18949,14 +21969,14 @@ inline int GetDaysInMonth(int year, int month)
  * @param year the year component of the date.
  * @param month the month component of the date.
  * @param day the day component of the date.
- * @returns the day of year [0-365] if the date is valid or -1 on failure;
- *          call SDL_GetError() for more information.
+ * @returns the day of year [0-365] if the date is valid.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDayOfYear(int year, int month, int day)
 {
-  return SDL_GetDayOfYear(year, month, day);
+  return CheckError(SDL_GetDayOfYear(year, month, day), -1);
 }
 
 /**
@@ -18965,15 +21985,485 @@ inline int GetDayOfYear(int year, int month, int day)
  * @param year the year component of the date.
  * @param month the month component of the date.
  * @param day the day component of the date.
- * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or
- *          -1 on failure; call SDL_GetError() for more information.
+ * @returns a value between 0 and 6 (0 being Sunday) if the date is valid.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDayOfWeek(int year, int month, int day)
 {
-  return SDL_GetDayOfWeek(year, month, day);
+  return CheckError(SDL_GetDayOfWeek(year, month, day), -1);
 }
+
+/// @}
+
+/**
+ * @defgroup CategoryTimer Timer Support
+ *
+ * SDL provides time management functionality. It is useful for dealing with
+ * (usually) small durations of time.
+ *
+ * This is not to be confused with _calendar time_ management, which is
+ * provided by [CategoryTime](#CategoryTime).
+ *
+ * This category covers measuring time elapsed (GetTicks(),
+ * GetPerformanceCounter()), putting a thread to sleep for a certain
+ * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
+ * a callback function after a certain amount of time has elapsed
+ * (AddTimer(), etc).
+ *
+ * @{
+ */
+
+/**
+ * Convert seconds to nanoseconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @param time the number of seconds to convert.
+ * @returns the converted Time.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Time Time::FromPosix(Sint64 time)
+{
+  return Time::FromNS(SDL_SECONDS_TO_NS(time));
+}
+
+/**
+ * Convert nanoseconds to seconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @returns Posix time (in seconds).
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Sint64 Time::ToPosix() const
+{
+  return SDL_NS_TO_SECONDS(m_value.count());
+}
+
+/**
+ * Get the time elapsed since SDL library initialization.
+ *
+ * @returns a std::chrono::nanoseconds value representing the number of
+ * nanoseconds since the SDL library initialized.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline std::chrono::nanoseconds GetTicks()
+{
+  return std::chrono::nanoseconds{SDL_GetTicksNS()};
+}
+
+/**
+ * Get the current value of the high resolution counter.
+ *
+ * This function is typically used for profiling.
+ *
+ * The counter values are only meaningful relative to each other. Differences
+ * between values can be converted to times by using
+ * SDL_GetPerformanceFrequency().
+ *
+ * @returns the current counter value.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPerformanceFrequency()
+ */
+inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
+
+/**
+ * Get the count per second of the high resolution counter.
+ *
+ * @returns a platform-specific count per second.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPerformanceCounter()
+ */
+inline Uint64 GetPerformanceFrequency()
+{
+  return SDL_GetPerformanceFrequency();
+}
+
+/**
+ * Wait a specified duration before returning.
+ *
+ * This function waits a specified duration before returning. It
+ * waits at least the specified time, but possibly longer due to OS
+ * scheduling.
+ *
+ * @param duration the duration to delay, with max precision in ns.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ */
+inline void Delay(std::chrono::nanoseconds duration)
+{
+  SDL_DelayNS(duration.count());
+}
+
+/**
+ * Wait a specified duration before returning.
+ *
+ * This function waits a specified duration before returning. It
+ * will attempt to wait as close to the requested time as possible, busy
+ * waiting if necessary, but could return later due to OS scheduling.
+ *
+ * @param duration the duration to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Delay()
+ * @sa DelayNS()
+ */
+inline void DelayPrecise(std::chrono::nanoseconds duration)
+{
+  SDL_DelayPrecise(duration.count());
+}
+/**
+ * Definition of the timer ID type.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using TimerID = SDL_TimerID;
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through
+ *                 AddTimer(), for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddTimer
+ */
+using TimerCallback = SDL_NSTimerCallback;
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa AddTimer(TimerCB)
+ */
+using TimerCB =
+  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimer() call and should return the
+ * next timer interval. If the value returned from the callback is 0, the
+ * timer is canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ns to execute and returned
+ * 1000 (ns), the timer would only wait another 750 ns before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicks() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ *                 `callback`.
+ * @param callback the NSTimerCallback function to call when the specified
+ *                 `interval` elapses.
+ * @param userdata a pointer that is passed to `callback`.
+ * @returns a timer ID.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveTimer
+ */
+inline TimerID AddTimer(std::chrono::nanoseconds interval,
+                        TimerCallback callback,
+                        void* userdata)
+{
+  return CheckError(SDL_AddTimerNS(interval.count(), callback, userdata));
+}
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimerNS() call and should return the
+ * next timer interval. If the value returned from the callback is 0, the
+ * timer is canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ns to execute and returned
+ * 1000 (ns), the timer would only wait another 750 ns before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ * `callback`.
+ * @param callback the TimerCB function to call when the specified
+ *                 `interval` elapses.
+ * @returns a timer ID.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
+{
+  using Wrapper = CallbackWrapper<TimerCB>;
+  using Store = KeyValueWrapper<TimerID, TimerCB*>;
+
+  auto cb = Wrapper::Wrap(std::move(callback));
+
+  if (TimerID id = SDL_AddTimerNS(
+        interval.count(),
+        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
+          auto& f = *static_cast<TimerCB*>(userdata);
+          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
+          // If ask to removal, then remove it
+          if (next == 0) delete Store::release(timerID);
+          return next;
+        },
+        cb)) {
+    Store::Wrap(id, std::move(cb));
+    return id;
+  }
+  delete cb;
+  throw Error{};
+}
+
+/**
+ * Remove a timer created with AddTimer().
+ *
+ * @param id the ID of the timer to remove.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddTimer
+ */
+inline void RemoveTimer(TimerID id)
+{
+  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
+  CheckError(SDL_RemoveTimer(id));
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryVersion Querying SDL Version
+ *
+ * Functionality to query the current SDL version, both as headers the app was
+ * compiled against, and a library the app is linked to.
+ *
+ * @{
+ */
+
+#ifdef SDL3PP_DOC
+
+/**
+ * The current major version of SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 3.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_MAJOR_VERSION 3
+
+/**
+ * The current minor version of the SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 2.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_MINOR_VERSION 2
+
+/**
+ * The current micro (or patchlevel) version of the SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 1.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_MICRO_VERSION 11
+
+/**
+ * This macro turns the version numbers into a numeric value.
+ *
+ * (1,2,3) becomes 1002003.
+ *
+ * @param major the major version number.
+ * @param minor the minorversion number.
+ * @param patch the patch version number.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_VERSIONNUM(major, minor, patch)                                    \
+  ((major) * 1000000 + (minor) * 1000 + (patch))
+
+/**
+ * This macro extracts the major version from a version number
+ *
+ * 1002003 becomes 1.
+ *
+ * @param version the version number.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_VERSIONNUM_MAJOR(version) ((version) / 1000000)
+
+/**
+ * This macro extracts the minor version from a version number
+ *
+ * 1002003 becomes 2.
+ *
+ * @param version the version number.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_VERSIONNUM_MINOR(version) (((version) / 1000) % 1000)
+
+/**
+ * This macro extracts the micro version from a version number
+ *
+ * 1002003 becomes 3.
+ *
+ * @param version the version number.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_VERSIONNUM_MICRO(version) ((version) % 1000)
+
+/**
+ * This is the version number macro for the current SDL version.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa GetVersion
+ */
+#define SDL_VERSION                                                            \
+  SDL_VERSIONNUM(SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
+
+/**
+ * This macro will evaluate to true if compiled with SDL at least X.Y.Z.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL_VERSION_ATLEAST(X, Y, Z) (SDL_VERSION >= SDL_VERSIONNUM(X, Y, Z))
+
+#endif // SDL3PP_DOC
+
+/**
+ * Get the version of SDL that is linked against your program.
+ *
+ * If you are linking to SDL dynamically, then it is possible that the current
+ * version will be different than the version you compiled against. This
+ * function returns the current version, while SDL_VERSION is the version you
+ * compiled with.
+ *
+ * This function may be called safely at any time, even before InitSubSystem().
+ *
+ * @returns the version of the linked library.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetRevision
+ */
+inline int GetVersion() { return SDL_GetVersion(); }
+
+/**
+ * Get the code revision of SDL that is linked against your program.
+ *
+ * This value is the revision of the code you are linked with and may be
+ * different from the code you are compiling with, which is found in the
+ * constant SDL_REVISION.
+ *
+ * The revision is arbitrary string (a hash value) uniquely identifying the
+ * exact revision of the SDL library in use, and is only useful in comparing
+ * against other revisions. It is NOT an incrementing number.
+ *
+ * If SDL wasn't built from a git repository with the appropriate tools, this
+ * will return an empty string.
+ *
+ * You shouldn't use this function for anything but logging it for debugging
+ * purposes. The string is not intended to be reliable in any way.
+ *
+ * @returns an arbitrary string, uniquely identifying the exact revision of
+ *          the SDL library in use.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetVersion
+ */
+inline const char* GetRevision() { return SDL_GetRevision(); }
 
 /// @}
 
@@ -19080,7 +22570,7 @@ constexpr InitFlags INIT_CAMERA =
 /**
  * Return values for optional main callbacks.
  *
- * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
+ * Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit,
  * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
  * success/failure to the operating system. What that means is
  * platform-dependent. On Unix, for example, on success, the process error
@@ -19088,7 +22578,7 @@ constexpr InitFlags INIT_CAMERA =
  * allow you to return specific exit codes, just whether there was an error
  * generally or not.
  *
- * Returning SDL_APP_CONTINUE from these functions will let the app continue
+ * Returning APP_CONTINUE from these functions will let the app continue
  * to run.
  *
  * See
@@ -19126,7 +22616,7 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 /**
  * Function pointer typedef for SDL_AppInit.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppInit directly.
  *
@@ -19135,8 +22625,8 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
  * @param argc the standard ANSI C main's argc; number of elements in `argv`.
  * @param argv the standard ANSI C main's argv; array of command line
  *             arguments.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
+ *          terminate with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -19145,13 +22635,13 @@ using AppInit_func = SDL_AppInit_func;
 /**
  * Function pointer typedef for SDL_AppIterate.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppIterate directly.
  *
  * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
+ *          terminate with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -19160,14 +22650,14 @@ using AppIterate_func = SDL_AppIterate_func;
 /**
  * Function pointer typedef for SDL_AppEvent.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppEvent directly.
  *
  * @param appstate an optional pointer, provided by the app in SDL_AppInit.
  * @param event the new event for the app to examine.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
+ *          terminate with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -19176,7 +22666,7 @@ using AppEvent_func = SDL_AppEvent_func;
 /**
  * Function pointer typedef for SDL_AppQuit.
  *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind
  * the scenes for apps using the optional main callbacks. Apps that want to
  * use this should just implement SDL_AppEvent directly.
  *
@@ -19195,8 +22685,8 @@ using AppQuit_func = SDL_AppQuit_func;
  * The class Init is probably what you are looking for, as it automatically
  * handles de-initialization.
  *
- * The file I/O (for example: IOStream) and threading (CreateThread)
- * subsystems are initialized by default. Message boxes
+ * The file I/O (for example: IOStreamBase.IOStreamBase) and threading
+ * (ThreadBase.ThreadBase) subsystems are initialized by default. Message boxes
  * (ShowSimpleMessageBox) also attempt to work without initializing the
  * video subsystem, in hopes of being useful in showing an error dialog when
  * Init fails. You must specifically initialize other subsystems if you
@@ -19224,28 +22714,26 @@ using AppQuit_func = SDL_AppQuit_func;
  *   events subsystem
  *
  * Subsystem initialization is ref-counted, you must call QuitSubSystem()
- * for each InitSubSystem() to correctly shutdown a subsystem manually (or
+ * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
  * call Quit() to force shutdown). If a subsystem is already loaded then
  * this call will increase the ref-count and return.
  *
  * Consider reporting some basic metadata about your application before
- * calling Init, using either SetAppMetadata() or
+ * calling InitSubSystem, using either SetAppMetadata() or
  * SetAppMetadataProperty().
  *
  * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- * @sa InitSubSystem()
- * @sa Quit()
- * @sa SetMainReady()
- * @sa WasInit()
+ * @sa SetAppMetadata
+ * @sa SetAppMetadataProperty
+ * @sa Quit
+ * @sa SetMainReady
+ * @sa WasInit
  */
-inline bool InitSubSystem(InitFlags flags) { return SDL_Init(flags); }
+inline void InitSubSystem(InitFlags flags) { CheckError(SDL_Init(flags)); }
 
 /**
  * Initialize the SDL library.
@@ -19296,8 +22784,7 @@ inline bool InitSubSystem(InitFlags flags) { return SDL_Init(flags); }
  * @param flag0 subsystem initialization flags.
  * @param flag1 subsystem initialization flags.
  * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -19309,10 +22796,10 @@ inline bool InitSubSystem(InitFlags flags) { return SDL_Init(flags); }
  * @sa WasInit()
  */
 template<class FLAG0, class FLAG1, class... FLAGS>
-inline bool InitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
+inline void InitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
 {
-  if (InitSubSystem(flag0)) return InitSubSystem(flag1, flags...);
-  return false;
+  InitSubSystem(flag0);
+  InitSubSystem(flag1, flags...);
 }
 
 /**
@@ -19363,8 +22850,7 @@ inline bool InitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
  * @param flag0 subsystem initialization flags.
  * @param flag1 subsystem initialization flags.
  * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -19376,7 +22862,7 @@ inline bool InitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
  * @sa WasInit()
  */
 template<class FLAG, class... FLAGS>
-inline bool InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
+inline void InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
 {
   return InitSubSystem(flag0 | flag1, flags...);
 }
@@ -19387,14 +22873,15 @@ inline bool InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
  * You still need to call Quit() even if you close all open subsystems with
  * QuitSubSystem().
  *
- * @param flags any of the flags used by Init(); see InitFlags for details.
+ * @param flags any of the flags used by InitSubSystem(); see InitFlags for
+ * details.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa InitSubSystem()
- * @sa Quit()
+ * @sa InitSubSystem
+ * @sa Quit
  */
-inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
+inline void QuitSubSystem(InitFlags flags) { SDL_QuitSubSystem(flags); }
 
 /**
  * Shut down specific SDL subsystems.
@@ -19443,12 +22930,14 @@ inline void QuitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
 /**
  * Check if all of the specified subsystems which are currently initialized.
  *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @param flags any of the flags used by InitSubSystem(); see InitSubSystem for
+ *              details.
  * @returns true if all subsystems are currently initialized
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Init()
- * @sa InitSubSystem()
+ * @sa InitSubSystem
+ * @sa SDL_InitSubSystem
  */
 inline bool WasInit(InitFlags flags) { return SDL_WasInit(flags) == flags; }
 
@@ -19490,7 +22979,7 @@ inline bool WasInit(FLAG flag0, FLAG flag1, FLAGS... flags)
  * Clean up all initialized subsystems.
  *
  * You should call this function even if you have already shutdown each
- * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
+ * initialized subsystem with QuitSubSystem(). It is safe to call this
  * function even in the case of errors in initialization.
  *
  * You can use this function with atexit() to ensure that it is run when your
@@ -19499,10 +22988,10 @@ inline bool WasInit(FLAG flag0, FLAG flag1, FLAGS... flags)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Init()
- * @sa QuitSubSystem()
+ * @sa InitSubSystem
+ * @sa QuitSubSystem
  */
-inline void Quit() { return SDL_Quit(); }
+inline void Quit() { SDL_Quit(); }
 
 /**
  * Initialize the SDL library.
@@ -19536,7 +23025,12 @@ public:
   SDL(FLAGS... flags)
   {
     if (updateActive(true)) {
-      if (!InitSubSystem(flags...)) updateActive(false);
+      try {
+        InitSubSystem(flags...);
+      } catch (...) {
+        updateActive(false);
+        throw;
+      }
     }
   }
 
@@ -19601,7 +23095,7 @@ public:
  *
  * On Apple platforms, the main thread is the thread that runs your program's
  * main() entry point. On other platforms, the main thread is the one that
- * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
+ * calls InitSubSystem(INIT_VIDEO), which should usually be the one that runs
  * your program's main() entry point. If you are using the main callbacks,
  * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
  * main thread.
@@ -19612,7 +23106,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RunOnMainThread()
+ * @sa RunOnMainThread
  */
 inline bool IsMainThread() { return SDL_IsMainThread(); }
 
@@ -19628,7 +23122,7 @@ inline bool IsMainThread() { return SDL_IsMainThread(); }
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa RunOnMainThread()
+ * @sa RunOnMainThread
  */
 using MainThreadCallback = SDL_MainThreadCallback;
 
@@ -19658,20 +23152,19 @@ using MainThreadCB = std::function<void()>;
  * @param userdata a pointer that is passed to `callback`.
  * @param wait_complete true to wait for the callback to complete, false to
  *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IsMainThread()
+ * @sa IsMainThread
  */
-inline bool RunOnMainThread(MainThreadCallback callback,
+inline void RunOnMainThread(MainThreadCallback callback,
                             void* userdata,
                             bool wait_complete)
 {
-  return SDL_RunOnMainThread(callback, userdata, wait_complete);
+  CheckError(SDL_RunOnMainThread(callback, userdata, wait_complete));
 }
 
 /**
@@ -19688,8 +23181,7 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @param callback the callback to call on the main thread.
  * @param wait_complete true to wait for the callback to complete, false to
  *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -19700,11 +23192,16 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  *
  * @cat result-callback
  */
-inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
+inline void RunOnMainThread(MainThreadCB callback, bool wait_complete)
 {
   using Wrapper = CallbackWrapper<MainThreadCB>;
-  return RunOnMainThread(
-    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
+  void* wrapped = Wrapper::Wrap(std::move(callback));
+  try {
+    RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
+  } catch (...) {
+    Wrapper::release(wrapped);
+    throw;
+  }
 }
 
 /**
@@ -19715,18 +23212,18 @@ inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
  *
  * There are several locations where SDL can make use of metadata (an "About"
  * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left as NULL, if a specific
+ * mixers, etc). Any piece of metadata can be left as nullptr, if a specific
  * detail doesn't make sense for the app.
  *
- * This function should be called as early as possible, before SDL_Init.
+ * This function should be called as early as possible, before InitSubSystem.
  * Multiple calls to this function are allowed, but various state might not
  * change once it has been set up with a previous call to this function.
  *
- * Passing a NULL removes any previous metadata.
+ * Passing a nullptr removes any previous metadata.
  *
  * This is a simplified interface for the most important information. You can
  * supply significantly more detailed metadata with
- * SDL_SetAppMetadataProperty().
+ * SetAppMetadataProperty().
  *
  * @param appname The name of the application ("My Game 2: Bad Guy's
  *                Revenge!").
@@ -19734,20 +23231,19 @@ inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
  *                   hash, or whatever makes sense).
  * @param appidentifier A unique string in reverse-domain format that
  *                      identifies this app ("com.example.mygame2").
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetAppMetadataProperty()
+ * @sa SetAppMetadataProperty
  */
-inline bool SetAppMetadata(StringParam appname,
+inline void SetAppMetadata(StringParam appname,
                            StringParam appversion,
                            StringParam appidentifier)
 {
-  return SDL_SetAppMetadata(appname, appversion, appidentifier);
+  CheckError(SDL_SetAppMetadata(appname, appversion, appidentifier));
 }
 
 /**
@@ -19761,59 +23257,58 @@ inline bool SetAppMetadata(StringParam appname,
  * mixers, etc). Any piece of metadata can be left out, if a specific detail
  * doesn't make sense for the app.
  *
- * This function should be called as early as possible, before SDL_Init.
+ * This function should be called as early as possible, before InitSubSystem.
  * Multiple calls to this function are allowed, but various state might not
  * change once it has been set up with a previous call to this function.
  *
- * Once set, this metadata can be read using SDL_GetAppMetadataProperty().
+ * Once set, this metadata can be read using GetAppMetadataProperty().
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the
+ * - `prop::appMetaData.NAME_STRING`: The human-readable name of the
  *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
  *   anywhere the OS shows the name of the application separately from window
  *   titles, such as volume control applets, etc. This defaults to "SDL
  *   Application".
- * - `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is
+ * - `prop::appMetaData.VERSION_STRING`: The version of the app that is
  *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
  *   2024" and a git hash are all valid options. This has no default.
- * - `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that
+ * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that
  *   identifies this app. This must be in reverse-domain format, like
  *   "com.example.mygame2". This string is used by desktop compositors to
  *   identify and group windows together, as well as match applications with
  *   associated desktop settings and icons. If you plan to package your
  *   application in a container such as Flatpak, the app ID should match the
  *   name of your Flatpak container as well. This has no default.
- * - `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the
+ * - `prop::appMetaData.CREATOR_STRING`: The human-readable name of the
  *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright
+ * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright
  *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
  *   to one line, don't paste a copy of a whole software license in here. This
  *   has no default.
- * - `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a
+ * - `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a
  *   product page, or a storefront, or even a GitHub repository, for user's
  *   further information This has no default.
- * - `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.
+ * - `prop::appMetaData.TYPE_STRING`: The type of application this is.
  *   Currently this string can be "game" for a video game, "mediaplayer" for a
  *   media player, or generically "application" if nothing else applies.
  *   Future versions of SDL might add new types. This defaults to
  *   "application".
  *
  * @param name the name of the metadata property to set.
- * @param value the value of the property, or NULL to remove that property.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @param value the value of the property, or nullptr to remove that property.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetAppMetadataProperty()
- * @sa SetAppMetadata()
+ * @sa GetAppMetadataProperty
+ * @sa SetAppMetadata
  */
-inline bool SetAppMetadataProperty(StringParam name, StringParam value)
+inline void SetAppMetadataProperty(StringParam name, StringParam value)
 {
-  return SDL_SetAppMetadataProperty(name, value);
+  CheckError(SDL_SetAppMetadataProperty(name, value));
 }
 
 namespace prop::appMetaData {
@@ -19837,23 +23332,23 @@ constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
 /**
  * Get metadata about your app.
  *
- * This returns metadata previously set using SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
+ * This returns metadata previously set using SetAppMetadata() or
+ * SetAppMetadataProperty(). See SetAppMetadataProperty() for the list
  * of available properties and their meanings.
  *
  * @param name the name of the metadata property to get.
  * @returns the current value of the metadata property, or the default if it
- *          is not set, NULL for properties with no default.
+ *          is not set, nullptr for properties with no default.
  *
  * @threadsafety It is safe to call this function from any thread, although
  *               the string returned is not protected and could potentially be
- *               freed if you call SDL_SetAppMetadataProperty() to set that
+ *               freed if you call SetAppMetadataProperty() to set that
  *               property from another thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetAppMetadata
- * @sa SDL_SetAppMetadataProperty
+ * @sa SetAppMetadata
+ * @sa SetAppMetadataProperty
  */
 inline const char* GetAppMetadataProperty(StringParam name)
 {
@@ -20090,6 +23585,1615 @@ inline bool SDL::updateActive(bool active)
 }
 
 #pragma endregion
+
+/**
+ * @defgroup CategoryIOStream I/O Streams
+ *
+ * SDL provides an abstract interface for reading and writing data streams. It
+ * offers implementations for files, memory, etc, and the app can provide
+ * their own implementations, too.
+ *
+ * SDL_IOStream is not related to the standard C++ iostream class, other than
+ * both are abstract interfaces to read/write data.
+ *
+ * @{
+ */
+
+/**
+ * @cat constructor-tag
+ */
+constexpr struct IOFromDynamicMem_CtorTag
+{
+} IOFromDynamicMem;
+
+// Forward decl
+struct IOStreamBase;
+
+// Forward decl
+struct IOStreamRef;
+
+// Forward decl
+struct IOStream;
+
+/**
+ * IOStreamBase status, set by a read or write operation.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using IOStatus = SDL_IOStatus;
+
+constexpr IOStatus IO_STATUS_READY =
+  SDL_IO_STATUS_READY; ///< Everything is ready (no errors and not EOF).
+
+constexpr IOStatus IO_STATUS_ERROR =
+  SDL_IO_STATUS_ERROR; ///< Read or write I/O error.
+
+constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file.
+
+constexpr IOStatus IO_STATUS_NOT_READY =
+  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready.
+
+constexpr IOStatus IO_STATUS_READONLY =
+  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer.
+
+constexpr IOStatus IO_STATUS_WRITEONLY =
+  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
+
+/**
+ * Possible `whence` values for IOStreamBase seeking.
+ *
+ * These map to the same "whence" concept that `fseek` or `lseek` use in the
+ * standard C runtime.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using IOWhence = SDL_IOWhence;
+
+constexpr IOWhence IO_SEEK_SET =
+  SDL_IO_SEEK_SET; ///< Seek from the beginning of data.
+
+constexpr IOWhence IO_SEEK_CUR =
+  SDL_IO_SEEK_CUR; ///< Seek relative to current read point.
+
+constexpr IOWhence IO_SEEK_END =
+  SDL_IO_SEEK_END; ///< Seek relative to the end of data.
+
+/**
+ * The function pointers that drive an IOStreamBase.
+ *
+ * Applications can provide this struct to IOStreamBase.IOStreamBase() to create
+ * their own implementation of IOStreamBase. This is not necessarily required,
+ * as SDL already offers several common types of I/O streams, via
+ * IOStreamBase.IOStreamBase().
+ *
+ * This structure should be initialized using SDL_INIT_INTERFACE()
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa SDL_INIT_INTERFACE
+ */
+using IOStreamInterface = SDL_IOStreamInterface;
+
+/**
+ * The read/write operation structure.
+ *
+ * This operates as an opaque handle. There are several APIs to create various
+ * types of I/O streams, or an app can supply an IOStreamInterface to
+ * IOStreamBase.IOStreamBase() to provide their own stream implementation behind
+ * this struct's abstract interface.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ *
+ * @sa IOStream
+ * @sa IOStreamRef
+ */
+struct IOStreamBase : Resource<SDL_IOStream*>
+{
+  using Resource::Resource;
+
+  /**
+   * Use this function to create a new IOStreamBase structure for reading from
+   * and/or writing to a named file.
+   *
+   * The `mode` string is treated roughly the same as in a call to the C
+   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
+   * scenes.
+   *
+   * Available `mode` strings:
+   *
+   * - "r": Open a file for reading. The file must exist.
+   * - "w": Create an empty file for writing. If a file with the same name
+   *   already exists its content is erased and the file is treated as a new
+   *   empty file.
+   * - "a": Append to a file. Writing operations append data at the end of the
+   *   file. The file is created if it does not exist.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   * - "a+": Open a file for reading and appending. All writing operations are
+   *   performed at the end of the file, protecting the previous content to be
+   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+   *   anywhere in the file for reading, but writing operations will move it
+   *   back to the end of file. The file is created if it does not exist.
+   *
+   * **NOTE**: In order to open a file as a binary file, a "b" character has to
+   * be included in the `mode` string. This additional "b" character can either
+   * be appended at the end of the string (thus making the following compound
+   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
+   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
+   * Additional characters may follow the sequence, although they should have no
+   * effect. For example, "t" is sometimes appended to make explicit the file is
+   * a text file.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * In Android, IOStreamBase.IOStreamBase() can be used to open content://
+   * URIs. As a fallback, IOStreamBase.IOStreamBase() will transparently open a
+   * matching filename in the app's `assets`.
+   *
+   * Closing the IOStreamBase will close SDL's internal file handle.
+   *
+   * The following properties may be set at creation time by SDL:
+   *
+   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
+   *   to a win32 `HANDLE`, that this IOStreamBase is using to access the
+   *   filesystem. If the program isn't running on Windows, or SDL used some
+   *   other method to access the filesystem, this property will not be set.
+   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   *   stdio `FILE *`, that this IOStreamBase is using to access the filesystem.
+   *   If SDL used some other method to access the filesystem, this property
+   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
+   *   than your app, trying to use this pointer will almost certainly result in
+   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   your app with the same compiler and settings to avoid it.
+   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   *   IOStreamBase is using to access the filesystem.
+   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
+   *   to an Android NDK `AAsset *`, that this IOStreamBase is using to access
+   *   the filesystem. If SDL used some other method to access the filesystem,
+   *   this property will not be set.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @post the object is convertible to true if valid or false on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   * @sa IOStreamBase.Write
+   */
+  IOStreamBase(StringParam file, StringParam mode)
+    : Resource(SDL_IOFromFile(file, mode))
+  {
+  }
+
+  /**
+   * Use this function to prepare a read-write memory buffer for use with
+   * IOStreamBase.
+   *
+   * This function sets up an IOStreamBase struct based on a memory area of a
+   * certain size, for both read and write access.
+   *
+   * This memory buffer is not copied by the IOStreamBase; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to make sure the IOStreamBase never writes to the memory
+   * buffer, you should use IOStreamBase.IOStreamBase() with a read-only buffer
+   * of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
+   *   was passed to this function.
+   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * @param mem a pointer to a buffer to feed an IOStreamBase stream.
+   * @param size the buffer size, in bytes.
+   * @post the object is convertible to true if valid or false on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   * @sa IOStreamBase.Write
+   */
+  IOStreamBase(void* mem, size_t size)
+    : Resource(SDL_IOFromMem(mem, size))
+  {
+  }
+
+  /**
+   * Use this function to prepare a read-only memory buffer for use with
+   * IOStreamBase.
+   *
+   * This function sets up an IOStreamBase struct based on a memory area of a
+   * certain size. It assumes the memory area is not writable.
+   *
+   * Attempting to write to this IOStreamBase stream will report an error
+   * without writing to the memory buffer.
+   *
+   * This memory buffer is not copied by the IOStreamBase; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to write to a memory buffer, you should use
+   * IOStreamBase.IOStreamBase() with a writable buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
+   *   was passed to this function.
+   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * @param mem a pointer to a read-only buffer to feed an IOStreamBase stream.
+   * @param size the buffer size, in bytes.
+   * @post the object is convertible to true if valid or false on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   */
+  IOStreamBase(const void* mem, size_t size)
+    : Resource(SDL_IOFromConstMem(mem, size))
+  {
+  }
+
+  /**
+   * Use this function to create an IOStreamBase that is backed by dynamically
+   * allocated memory.
+   *
+   * This supports the following properties to provide access to the memory and
+   * control over allocations:
+   *
+   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
+   *   memory of the stream. This can be set to nullptr to transfer ownership of
+   *   the memory to the application, which should free the memory with
+   *   free(). If this is done, the next operation on the stream must be
+   *   IOStreamRef.Close().
+   * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   *   multiples of this size, defaulting to 1024.
+   *
+   * @post a pointer to a new IOStreamBase structure or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   * @sa IOStreamBase.Write
+   */
+  IOStreamBase(IOFromDynamicMem_CtorTag)
+    : Resource(SDL_IOFromDynamicMem())
+  {
+  }
+
+  /**
+   * Create a custom IOStreamBase.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own IOStreamBase implementation. If you just need an IOStreamBase to
+   * read/write a common data source, you should use the built-in
+   * implementations in SDL, like IOStreamBase.IOStreamBase() or
+   * IOStreamBase.IOStreamBase(), etc.
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this IOStreamBase, initialized
+   *              using SDL_INIT_INTERFACE().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @post the object is convertible to true if valid or false on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.Close
+   * @sa SDL_INIT_INTERFACE
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamBase.IOStreamBase
+   */
+  IOStreamBase(const IOStreamInterface& iface, void* userdata)
+    : Resource(SDL_OpenIO(&iface, userdata))
+  {
+  }
+
+  /**
+   * Use this function to prepare a memory buffer for use with IOStreamBase.
+   *
+   * @tparam U
+   * @param mem the span of memory to use as buffer. If const we get read-only,
+   * otherwise we get a read-write buffer.
+   *
+   * @post the object is convertible to true if valid or false on failure; call
+   *       GetError() for more information.
+   */
+  template<class U>
+  IOStreamBase(std::span<U> mem)
+    : IOStreamBase(mem.data(), mem.size_bytes())
+  {
+  }
+
+  /**
+   * Get the properties associated with an IOStreamBase.
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  PropertiesRef GetProperties() const
+  {
+    return CheckError(SDL_GetIOProperties(get()));
+  }
+
+  /**
+   * Query the stream status of an IOStreamBase.
+   *
+   * This information can be useful to decide if a short read or write was due
+   * to an error, an EOF, or a non-blocking operation that isn't yet ready to
+   * complete.
+   *
+   * An IOStreamBase's status is only expected to change after a
+   * IOStreamBase.Read or IOStreamBase.Write call; don't expect it to change if
+   * you just call this query function in a tight loop.
+   *
+   * @returns an IOStatus enum with the current state.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  IOStatus GetStatus() const { return SDL_GetIOStatus(get()); }
+
+  /**
+   * Use this function to get the size of the data stream in an IOStreamBase.
+   *
+   * @returns the size of the data stream in the IOStreamBase on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint64 GetSize() const
+  {
+    auto size = SDL_GetIOSize(get());
+    if (size < 0) throw Error{};
+    return size;
+  }
+
+  /**
+   * Seek within an IOStreamBase data stream.
+   *
+   * This function seeks to byte `offset`, relative to `whence`.
+   *
+   * `whence` may be any of the following values:
+   *
+   * - `IO_SEEK_SET`: seek from the beginning of data
+   * - `IO_SEEK_CUR`: seek relative to current read point
+   * - `IO_SEEK_END`: seek relative to the end of data
+   *
+   * If this stream can not seek, it will return -1.
+   *
+   * @param offset an offset in bytes, relative to `whence` location; can be
+   *               negative.
+   * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,
+   *               `IO_SEEK_END`.
+   * @returns the final offset in the data stream after the seek or -1 on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.Tell
+   */
+  Sint64 Seek(Sint64 offset, IOWhence whence)
+  {
+    return SDL_SeekIO(get(), offset, whence);
+  }
+
+  /**
+   * Determine the current read/write offset in an IOStreamBase data stream.
+   *
+   * This is actually a wrapper function that calls the IOStreamBase's `seek`
+   * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
+   * application development.
+   *
+   * @returns the current offset in the stream, or -1 if the information can not
+   *          be determined.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.Seek
+   */
+  Sint64 Tell() const { return SDL_TellIO(get()); }
+
+  /**
+   * Read from a data source.
+   *
+   * This function reads up `size` bytes from the data source to the area
+   * pointed at by `ptr`. This function may read less bytes than requested.
+   *
+   * This function will return zero when the data stream is completely read, and
+   * IOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and
+   * the stream is not at EOF, IOStreamBase.GetStatus() will return a different
+   * error value and GetError() will offer a human-readable message.
+   *
+   * @param ptr a pointer to a buffer to read data into.
+   * @param size the number of bytes to read from the data source.
+   * @returns the number of bytes read, or 0 on end of file or other failure;
+   *          call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.Write
+   * @sa IOStreamBase.GetStatus
+   */
+  size_t Read(void* ptr, size_t size) { return SDL_ReadIO(get(), ptr, size); }
+
+  /**
+   * Write to an IOStreamBase data stream.
+   *
+   * This function writes exactly `size` bytes from the area pointed at by `ptr`
+   * to the stream. If this fails for any reason, it'll return less than `size`
+   * to demonstrate how far the write progressed. On success, it returns `size`.
+   *
+   * On error, this function still attempts to write as much as possible, so it
+   * might return a positive value less than the requested write size.
+   *
+   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
+   * recoverable, such as a non-blocking write that can simply be retried later,
+   * or a fatal error.
+   *
+   * @param data the bytes to write to
+   * @returns the number of bytes written, which will be less than `size` on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.printf
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.GetStatus
+   */
+  template<class U>
+  size_t Write(std::span<U> data)
+  {
+    return Write(data.data(), data.size_bytes());
+  }
+
+  /**
+   * Write to an IOStreamBase data stream.
+   *
+   * This function writes exactly `size` bytes from the area pointed at by `ptr`
+   * to the stream. If this fails for any reason, it'll return less than `size`
+   * to demonstrate how far the write progressed. On success, it returns `size`.
+   *
+   * On error, this function still attempts to write as much as possible, so it
+   * might return a positive value less than the requested write size.
+   *
+   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
+   * recoverable, such as a non-blocking write that can simply be retried later,
+   * or a fatal error.
+   *
+   * @param str the bytes to write to
+   * @returns the number of bytes written, which will be less than `size` on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.printf
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.GetStatus
+   */
+  size_t Write(std::string_view str) { return Write(str.data(), str.size()); }
+
+  /**
+   * Write to an IOStreamBase data stream.
+   *
+   * This function writes exactly `size` bytes from the area pointed at by `ptr`
+   * to the stream. If this fails for any reason, it'll return less than `size`
+   * to demonstrate how far the write progressed. On success, it returns `size`.
+   *
+   * On error, this function still attempts to write as much as possible, so it
+   * might return a positive value less than the requested write size.
+   *
+   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
+   * recoverable, such as a non-blocking write that can simply be retried later,
+   * or a fatal error.
+   *
+   * @param ptr a pointer to a buffer containing data to write.
+   * @param size the number of bytes to write.
+   * @returns the number of bytes written, which will be less than `size` on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.printf
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.GetStatus
+   */
+  size_t Write(const void* ptr, size_t size)
+  {
+    return SDL_WriteIO(get(), ptr, size);
+  }
+
+  /**
+   * @cat formatted-string
+   */
+  size_t print(std::string_view fmt, auto... args)
+  {
+    return Write(std::vformat(fmt, std::make_format_args(args...)));
+  }
+
+  /**
+   * @cat formatted-string
+   */
+  size_t println(std::string_view fmt, auto... args)
+  {
+    std::string result =
+      std::vformat(fmt, std::make_format_args(args...)) + "\n";
+    return Write(result);
+  }
+
+  /**
+   * Print to an IOStreamBase data stream.
+   *
+   * @warning this is not typesafe! Prefer using print() and println()
+   *
+   * This function does formatted printing to the stream.
+   *
+   * @param fmt a printf() style format string.
+   * @param ... additional parameters matching % tokens in the `fmt` string, if
+   *            any.
+   * @returns the number of bytes written or 0 on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.vprintf
+   * @sa IOStreamBase.Write
+   */
+  size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
+  {
+    va_list ap;
+    size_t result;
+
+    va_start(ap, fmt);
+    result = vprintf(fmt, ap);
+    va_end(ap);
+
+    return result;
+  }
+
+  /**
+   * Print to an IOStreamBase data stream.
+   *
+   * @warning this is not typesafe! Prefer using print() and println()
+   *
+   * This function does formatted printing to the stream.
+   *
+   * @param fmt a printf() style format string.
+   * @param ap a variable argument list.
+   * @returns the number of bytes written or 0 on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.printf
+   * @sa IOStreamBase.Write
+   */
+  size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap)
+  {
+    return SDL_IOvprintf(get(), fmt, ap);
+  }
+
+  /**
+   * Flush any buffered data in the stream.
+   *
+   * This function makes sure that any buffered data is written to the stream.
+   * Normally this isn't necessary but if the stream is a pipe or socket it
+   * guarantees that any pending data is sent.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamBase.Write
+   */
+  void Flush() { CheckError(SDL_FlushIO(get())); }
+
+  /**
+   * Load all the data from an SDL data stream.
+   *
+   * The data is allocated with a zero byte at the end (null terminated) for
+   * convenience. This extra byte is not included in the value reported via
+   * `datasize`.
+   *
+   * @returns the data in bytes
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa LoadFile
+   * @sa IOStreamBase.SaveFile
+   */
+  OwnArray<std::byte> LoadFile()
+  {
+    size_t datasize = 0;
+    auto data =
+      static_cast<std::byte*>(SDL_LoadFile_IO(get(), &datasize, false));
+    return OwnArray<std::byte>{CheckError(data), datasize};
+  }
+
+  /**
+   * Save all the data into an SDL data stream.
+   *
+   * @param data the data to be written. If datasize is 0, may be nullptr or a
+   *             invalid pointer.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SaveFile
+   * @sa IOStreamBase.LoadFile
+   */
+  template<class U>
+  void SaveFile(std::span<U> data)
+  {
+    return SaveFile(data.data(), data.size_bytes());
+  }
+
+  /**
+   * Save all the data into an SDL data stream.
+   *
+   * @param str the data to be written. If datasize is 0, may be nullptr or a
+   *            invalid pointer.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SaveFile
+   * @sa IOStreamBase.LoadFile
+   */
+  void SaveFile(std::string_view str)
+  {
+    return SaveFile(str.data(), str.size());
+  }
+
+  /**
+   * Save all the data into an SDL data stream.
+   *
+   * @param data the data to be written. If datasize is 0, may be nullptr or a
+   *             invalid pointer.
+   * @param datasize the number of bytes to be written.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SaveFile
+   * @sa IOStreamBase.LoadFile
+   */
+  void SaveFile(const void* data, size_t datasize)
+  {
+    CheckError(SDL_SaveFile_IO(get(), data, datasize, false));
+  }
+
+  /**
+   * Use this function to read a byte from an IOStreamBase.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint8 ReadU8()
+  {
+    Uint8 value;
+    CheckError(SDL_ReadU8(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read a signed byte from an IOStreamBase.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint8 ReadS8()
+  {
+    Sint8 value;
+    CheckError(SDL_ReadS8(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 16 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint16 ReadU16LE()
+  {
+    Uint16 value;
+    CheckError(SDL_ReadU16LE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 16 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint16 ReadS16LE()
+  {
+    Sint16 value;
+    CheckError(SDL_ReadS16LE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 16 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint16 ReadU16BE()
+  {
+    Uint16 value;
+    CheckError(SDL_ReadU16BE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 16 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint16 ReadS16BE()
+  {
+    Sint16 value;
+    CheckError(SDL_ReadS16BE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 32 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint32 ReadU32LE()
+  {
+    Uint32 value;
+    CheckError(SDL_ReadU32LE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 32 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint32 ReadS32LE()
+  {
+    Sint32 value;
+    CheckError(SDL_ReadS32LE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 32 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint32 ReadU32BE()
+  {
+    Uint32 value;
+    CheckError(SDL_ReadU32BE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 32 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint32 ReadS32BE()
+  {
+    Sint32 value;
+    CheckError(SDL_ReadS32BE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 64 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint64 ReadU64LE()
+  {
+    Uint64 value;
+    CheckError(SDL_ReadU64LE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 64 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint64 ReadS64LE()
+  {
+    Sint64 value;
+    CheckError(SDL_ReadS64LE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 64 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Uint64 ReadU64BE()
+  {
+    Uint64 value;
+    CheckError(SDL_ReadU64BE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to read 64 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint64 ReadS64BE()
+  {
+    Sint64 value;
+    CheckError(SDL_ReadS64BE(get(), &value));
+    return value;
+  }
+
+  /**
+   * Use this function to write a byte to an IOStreamBase.
+   *
+   * @param value the byte value to write.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteU8(Uint8 value) { CheckError(SDL_WriteU8(get(), value)); }
+
+  /**
+   * Use this function to write a signed byte to an IOStreamBase.
+   *
+   * @param value the byte value to write.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteS8(Sint8 value) { CheckError(SDL_WriteS8(get(), value)); }
+
+  /**
+   * Use this function to write 16 bits in native format to an IOStreamBase as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteU16LE(Uint16 value) { CheckError(SDL_WriteU16LE(get(), value)); }
+
+  /**
+   * Use this function to write 16 bits in native format to an IOStreamBase as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteS16LE(Sint16 value) { CheckError(SDL_WriteS16LE(get(), value)); }
+
+  /**
+   * Use this function to write 16 bits in native format to an IOStreamBase as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteU16BE(Uint16 value) { CheckError(SDL_WriteU16BE(get(), value)); }
+
+  /**
+   * Use this function to write 16 bits in native format to an IOStreamBase as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteS16BE(Sint16 value) { CheckError(SDL_WriteS16BE(get(), value)); }
+
+  /**
+   * Use this function to write 32 bits in native format to an IOStreamBase as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteU32LE(Uint32 value) { CheckError(SDL_WriteU32LE(get(), value)); }
+
+  /**
+   * Use this function to write 32 bits in native format to an IOStreamBase as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteS32LE(Sint32 value) { CheckError(SDL_WriteS32LE(get(), value)); }
+
+  /**
+   * Use this function to write 32 bits in native format to an IOStreamBase as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteU32BE(Uint32 value) { CheckError(SDL_WriteU32BE(get(), value)); }
+
+  /**
+   * Use this function to write 32 bits in native format to an IOStreamBase as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteS32BE(Sint32 value) { CheckError(SDL_WriteS32BE(get(), value)); }
+
+  /**
+   * Use this function to write 64 bits in native format to an IOStreamBase as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteU64LE(Uint64 value) { CheckError(SDL_WriteU64LE(get(), value)); }
+
+  /**
+   * Use this function to write 64 bits in native format to an IOStreamBase as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteS64LE(Sint64 value) { CheckError(SDL_WriteS64LE(get(), value)); }
+
+  /**
+   * Use this function to write 64 bits in native format to an IOStreamBase as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteU64BE(Uint64 value) { CheckError(SDL_WriteU64BE(get(), value)); }
+
+  /**
+   * Use this function to write 64 bits in native format to an IOStreamBase as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WriteS64BE(Sint64 value) { CheckError(SDL_WriteS64BE(get(), value)); }
+};
+
+/**
+ * Handle to a non owned iOStream
+ *
+ * @cat resource
+ *
+ * @sa IOStreamBase
+ * @sa IOStream
+ */
+struct IOStreamRef : IOStreamBase
+{
+  using IOStreamBase::IOStreamBase;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr IOStreamRef(const IOStreamRef& other)
+    : IOStreamBase(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr IOStreamRef(IOStreamRef&& other)
+    : IOStreamBase(other.release())
+  {
+  }
+
+  /**
+   * Default constructor
+   */
+  constexpr ~IOStreamRef() = default;
+
+  /**
+   * Assignment operator.
+   */
+  IOStreamRef& operator=(IOStreamRef other)
+  {
+    release(other.release());
+    return *this;
+  }
+
+  /**
+   * Close and free an allocated IOStreamBase structure.
+   *
+   * IOStreamRef.Close() closes and cleans up the IOStreamBase stream. It
+   * releases any resources used by the stream and frees the IOStreamBase
+   * itself. This returns true on success, or false if the stream failed to
+   * flush to its output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the IOStreamBase is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call IOStreamBase.Flush() before closing. Note that flushing takes
+   * time and makes the system and your app operate less efficiently, so do so
+   * sparingly.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.IOStreamBase
+   */
+  void reset(SDL_IOStream* newResource = {})
+  {
+    CheckError(SDL_CloseIO(release(newResource)));
+  }
+
+  /**
+   * Close and free an allocated IOStreamBase structure.
+   *
+   * IOStreamRef.Close() closes and cleans up the IOStreamBase stream. It
+   * releases any resources used by the stream and frees the IOStreamBase
+   * itself. This returns true on success, or false if the stream failed to
+   * flush to its output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the IOStreamBase is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call IOStreamBase.Flush() before closing. Note that flushing takes
+   * time and makes the system and your app operate less efficiently, so do so
+   * sparingly.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.IOStreamBase
+   */
+  void Close() { reset(); }
+};
+
+/**
+ * Handle to an owned iOStream
+ *
+ * @cat resource
+ *
+ * @sa IOStreamBase
+ * @sa IOStreamRef
+ */
+struct IOStream : IOStreamRef
+{
+  using IOStreamRef::IOStreamRef;
+
+  /**
+   * Constructs from the underlying resource.
+   */
+  constexpr explicit IOStream(SDL_IOStream* resource = {})
+    : IOStreamRef(resource)
+  {
+  }
+
+  constexpr IOStream(const IOStream& other) = delete;
+
+  /**
+   * Move constructor.
+   */
+  constexpr IOStream(IOStream&& other) = default;
+
+  /**
+   * Frees up resource when object goes out of scope.
+   */
+  ~IOStream() { reset(); }
+
+  /**
+   * Assignment operator.
+   */
+  IOStream& operator=(IOStream other)
+  {
+    reset(other.release());
+    return *this;
+  }
+};
+
+namespace prop::IOStream {
+
+constexpr auto WINDOWS_HANDLE_POINTER =
+  SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER;
+
+constexpr auto STDIO_FILE_POINTER = SDL_PROP_IOSTREAM_STDIO_FILE_POINTER;
+
+constexpr auto FILE_DESCRIPTOR_NUMBER =
+  SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER;
+
+constexpr auto ANDROID_AASSET_POINTER =
+  SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER;
+
+constexpr auto MEMORY_POINTER = SDL_PROP_IOSTREAM_MEMORY_POINTER;
+
+constexpr auto MEMORY_SIZE_NUMBER = SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER;
+
+constexpr auto DYNAMIC_MEMORY_POINTER =
+  SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER;
+
+constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
+  SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER;
+
+} // namespace prop::IOStream
+
+/**
+ * Load all the data from a file path.
+ *
+ * The data is allocated with a zero byte at the end (null terminated) for
+ * convenience. This extra byte is not included in the value reported via
+ * `datasize`.
+ *
+ * @param file the path to read all available data from.
+ * @returns the data or nullptr on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IOStreamBase.LoadFile
+ * @sa SaveFile
+ */
+inline OwnArray<std::byte> LoadFile(StringParam file)
+{
+  size_t datasize = 0;
+  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
+  return OwnArray<std::byte>{CheckError(data), datasize};
+}
+
+/**
+ * Save all the data into a file path.
+ *
+ * @param file the path to write all available data into.
+ * @param data the data to be written. If datasize is 0, may be nullptr or a
+ *             invalid pointer.
+ * @param datasize the number of bytes to be written.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IOStreamBase.SaveFile
+ * @sa LoadFile
+ */
+inline void SaveFile(StringParam file, const void* data, size_t datasize)
+{
+  CheckError(SDL_SaveFile(file, data, datasize));
+}
+
+/**
+ * Save all the data into a file path.
+ *
+ * @param file the path to write all available data into.
+ * @param data the data to be written.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IOStreamBase.SaveFile
+ * @sa LoadFile
+ */
+template<class T>
+inline void SaveFile(StringParam file, std::span<T> data)
+{
+  return SaveFile(file, data.data(), data.size_bytes());
+}
+
+/**
+ * Save all the data into a file path.
+ *
+ * @param file the path to write all available data into.
+ * @param str the data to be written.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IOStreamBase.SaveFile
+ * @sa LoadFile
+ */
+inline void SaveFile(StringParam file, std::string_view str)
+{
+  return SaveFile(std::move(file), str.data(), str.size());
+}
+
+#pragma region impl
+/// @}
+
+#pragma endregion impl
 
 /**
  *
@@ -21243,5155 +26347,6 @@ constexpr Keycode KEYCODE_RHYPER = SDLK_RHYPER; ///< Extended key Right Hyper
 /// @}
 
 /**
- * @defgroup CategoryMisc Miscellaneous
- *
- * SDL API functions that don't fit elsewhere.
- *
- * @{
- */
-
-/**
- * Open a URL/URI in the browser or other appropriate external application.
- *
- * Open a URL in a separate, system-provided application. How this works will
- * vary wildly depending on the platform. This will likely launch what makes
- * sense to handle a specific URL's protocol (a web browser for `http://`,
- * etc), but it might also be able to launch file managers for directories and
- * other things.
- *
- * What happens when you open a URL varies wildly as well: your game window
- * may lose focus (and may or may not lose focus if your game was fullscreen
- * or grabbing input at the time). On mobile devices, your app will likely
- * move to the background or your process might be paused. Any given platform
- * may or may not handle a given URL.
- *
- * If this is unimplemented (or simply unavailable) for a platform, this will
- * fail with an error. A successful result does not mean the URL loaded, just
- * that we launched _something_ to handle it (or at least believe we did).
- *
- * All this to say: this function can be useful, but you should definitely
- * test it on every platform you target.
- *
- * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
- *            local files, if supported.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
-
-/// @}
-
-/**
- * @defgroup CategoryProperties Object Properties
- *
- * A property is a variable that can be created and retrieved by name at
- * runtime.
- *
- * All properties are part of a property group (PropertiesBase). A property
- * group can be created with the CreateProperties() function or by simply
- * instantiating @ref Properties. It can be destroyed with the
- * PropertiesRef.reset(), but the Properties destructor probably will do what
- * you want to, automatically.
- *
- * Properties can be added to and retrieved from a property group through the
- * following functions:
- *
- * - PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on
- * `void*` pointer types.
- * - PropertiesBase.SetString() and PropertiesBase.GetString() operate on string
- * types.
- * - PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed
- * 64-bit integer types.
- * - PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating
- * point types.
- * - PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on
- * boolean types.
- *
- * Properties can be removed from a group by using PropertiesBase.Clear().
- * @{
- */
-
-/**
- * SDL property type
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PropertyType = SDL_PropertyType;
-
-/**
- * @name Callbacks for PropertiesBase.SetPointerWithCleanup()
- * @{
- */
-
-/**
- * A callback used to free resources when a property is deleted.
- *
- * This should release any resources associated with `value` that are no
- * longer needed.
- *
- * This callback is set per-property. Different properties in the same group
- * can have different cleanup callbacks.
- *
- * This callback will be called _during_ PropertiesBase.SetPointerWithCleanup if
- * the function fails for any reason.
- *
- * @param userdata an app-defined pointer passed to the callback.
- * @param value the pointer assigned to the property to clean up.
- *
- * @threadsafety This callback may fire without any locks held; if this is a
- *               concern, the app should provide its own locking.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa PropertiesBase.SetPointerWithCleanup
- */
-using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
-
-/**
- * A callback used to free resources when a property is deleted.
- *
- * @sa CleanupPropertyCallback
- * @sa PropertiesBase.SetPointerWithCleanup()
- * @sa result-callback
- *
- * @cat result-callback
- */
-using CleanupPropertyCB = std::function<void(void*)>;
-
-/// @}
-/**
- * @name Callbacks for PropertiesBase.Enumerate()
- * @{
- */
-
-/**
- * A callback used to enumerate all the properties in a group of properties.
- *
- * This callback is called from PropertiesBase.Enumerate(), and is called once
- * per property in the set.
- *
- * @param userdata an app-defined pointer passed to the callback.
- * @param props the PropertiesBase that is being enumerated.
- * @param name the next property name in the enumeration.
- *
- * @threadsafety PropertiesBase.Enumerate holds a lock on `props` during this
- *               callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa PropertiesBase.Enumerate
- */
-using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
-
-// Forward decl
-struct PropertiesRef;
-
-/**
- * A callback used to enumerate all the properties in a group of properties.
- *
- * This callback is called from PropertiesBase::Enumerate(), and is called once
- * per property in the set.
- *
- * @sa EnumeratePropertyCallback
- * @sa PropertiesBase::Enumerate()
- * @sa immediate-callback
- *
- * @cat immediate-callback
- */
-using EnumeratePropertiesCB =
-  std::function<void(PropertiesRef props, const char* name)>;
-
-/// @}
-
-// Forward decl
-struct PropertiesLock;
-
-// Forward decl
-struct PropertiesBase;
-
-// Forward decl
-struct Properties;
-
-constexpr PropertyType PROPERTY_TYPE_INVALID =
-  SDL_PROPERTY_TYPE_INVALID; ///< INVALID
-
-constexpr PropertyType PROPERTY_TYPE_POINTER =
-  SDL_PROPERTY_TYPE_POINTER; ///< POINTER
-
-constexpr PropertyType PROPERTY_TYPE_STRING =
-  SDL_PROPERTY_TYPE_STRING; ///< STRING
-
-constexpr PropertyType PROPERTY_TYPE_NUMBER =
-  SDL_PROPERTY_TYPE_NUMBER; ///< NUMBER
-
-constexpr PropertyType PROPERTY_TYPE_FLOAT = SDL_PROPERTY_TYPE_FLOAT; ///< FLOAT
-
-constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
-  SDL_PROPERTY_TYPE_BOOLEAN; ///< BOOLEAN
-
-/**
- * Wrap properties id
- *
- * A property is a variable that can be created and retrieved by name at
- * runtime.
- *
- * All properties are part of a property group (Properties). A property
- * group can be created with the Properties constructor and destroyed
- * with this goes out of scope.
- *
- * Properties can be added to and retrieved from a property group through the
- * following functions:
- *
- * - SetPointer() and GetPointer() operate on `void*`
- *   pointer types.
- * - SetString() and GetString() operate on string types.
- * - SetNumber() and GetNumber() operate on signed 64-bit
- *   integer types.
- * - SetFloat() and GetFloat() operate on floating point
- *   types.
- * - SetBoolean() and GetBoolean() operate on boolean
- *   types.
- *
- * Properties can be removed from a group by using SDL_ClearProperty.
- *
- * To create a new properties group use CreateProperties() or
- * Properties.Properties().
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat resource
- *
- * @sa CreateProperties()
- * @sa Properties.Properties
- * @sa Properties
- * @sa PropertiesRef
- */
-struct PropertiesBase : Resource<SDL_PropertiesID>
-{
-  using Resource::Resource;
-
-  /**
-   * Copy a group of properties.
-   *
-   * Copy all the properties from one group of properties to another, with the
-   * exception of properties requiring cleanup (set using
-   * PropertiesBase.SetPointerWithCleanup()), which will not be copied. Any
-   * property that already exists on `dst` will be overwritten.
-   *
-   * @param dst the destination properties.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool CopyPropertiesTo(PropertiesBase& dst) const
-  {
-    return SDL_CopyProperties(get(), dst.get());
-  }
-
-  /**
-   * Lock a group of properties.
-   *
-   * Obtain a multi-threaded lock for these properties. Other threads will wait
-   * while trying to lock these properties until they are unlocked. Properties
-   * must be unlocked before they are destroyed.
-   *
-   * The lock is automatically taken when setting individual properties, this
-   * function is only needed when you want to set several properties atomically
-   * or want to guarantee that properties being queried aren't freed in another
-   * thread.
-   *
-   * @returns PropertiesLock on success or false on failure; call GetError() for
-   *          more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesLock.Unlock
-   */
-  PropertiesLock Lock() &;
-
-  /**
-   * Set a pointer property in a group of properties with a cleanup
-   * function that is called when the property is deleted.
-   *
-   * The cleanup function is also called if setting the property fails for any
-   * reason.
-   *
-   * For simply setting basic data types, like numbers, bools, or strings, use
-   * SetNumber(), SetBoolean(), or SetString()
-   * instead, as those functions will handle cleanup on your behalf. This
-   * function is only for more complex, custom data.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
-   * @param cleanup the function to call when this property is deleted.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @sa result-callback
-   *
-   * @cat result-callback
-   *
-   */
-  bool SetPointerWithCleanup(StringParam name,
-                             void* value,
-                             CleanupPropertyCB cleanup)
-  {
-    using Wrapper = CallbackWrapper<CleanupPropertyCB>;
-    return SetPointerWithCleanup(std::move(name),
-                                 value,
-                                 &Wrapper::CallOnce,
-                                 Wrapper::Wrap(std::move(cleanup)));
-  }
-
-  /**
-   * Set a pointer property in a group of properties with a cleanup function
-   * that is called when the property is deleted.
-   *
-   * The cleanup function is also called if setting the property fails for any
-   * reason.
-   *
-   * For simply setting basic data types, like numbers, bools, or strings, use
-   * PropertiesBase.SetNumber, PropertiesBase.SetBoolean, or
-   * PropertiesBase.SetString instead, as those functions will handle cleanup on
-   * your behalf. This function is only for more complex, custom data.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or nullptr to delete the
-   *              property.
-   * @param cleanup the function to call when this property is deleted, or
-   *                nullptr if no cleanup is necessary.
-   * @param userdata a pointer that is passed to the cleanup function.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetPointer
-   * @sa PropertiesBase.SetPointer
-   * @sa CleanupPropertyCallback
-   */
-  bool SetPointerWithCleanup(StringParam name,
-                             void* value,
-                             CleanupPropertyCallback cleanup,
-                             void* userdata)
-  {
-    return SDL_SetPointerPropertyWithCleanup(
-      get(), name, value, cleanup, userdata);
-  }
-
-  /**
-   * Set a pointer property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or nullptr to delete the
-   *              property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetPointer
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetBoolean
-   * @sa PropertiesBase.SetFloat
-   * @sa PropertiesBase.SetNumber
-   * @sa PropertiesBase.SetPointerWithCleanup
-   * @sa PropertiesBase.SetString
-   */
-  bool SetPointer(StringParam name, void* value)
-  {
-    return SDL_SetPointerProperty(get(), name, value);
-  }
-
-  /**
-   * Set a string property in a group of properties.
-   *
-   * This function makes a copy of the string; the caller does not have to
-   * preserve the data after this call completes.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or nullptr to delete the
-   *              property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetString
-   */
-  bool SetString(StringParam name, StringParam value)
-  {
-    return SDL_SetStringProperty(get(), name, value);
-  }
-
-  /**
-   * Set an integer property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetNumber
-   */
-  bool SetNumber(StringParam name, Sint64 value)
-  {
-    return SDL_SetNumberProperty(get(), name, value);
-  }
-
-  /**
-   * Set a floating point property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetFloat
-   */
-  bool SetFloat(StringParam name, float value)
-  {
-    return SDL_SetFloatProperty(get(), name, value);
-  }
-
-  /**
-   * Set a boolean property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetBoolean
-   */
-  bool SetBoolean(StringParam name, bool value)
-  {
-    return SDL_SetBooleanProperty(get(), name, value);
-  }
-
-  /**
-   * Return whether a property exists.
-   *
-   * @param name the name of the property to query.
-   * @returns true if the property exists, or false if it doesn't.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetType
-   */
-  bool Has(StringParam name) const { return SDL_HasProperty(get(), name); }
-
-  /**
-   * Get the type of a property.
-   *
-   * @param name the name of the property to query.
-   * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is
-   *          not set.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.Has
-   */
-  PropertyType GetType(StringParam name) const
-  {
-    return SDL_GetPropertyType(get(), name);
-  }
-
-  /**
-   * Get a pointer property from a group of properties.
-   *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a pointer property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a pointer property.
-   *
-   * @threadsafety It is safe to call this function from any thread, although
-   *               the data returned is not protected and could potentially be
-   *               freed if you call PropertiesBase.SetPointer() or
-   *               PropertiesBase.Clear() on these properties from another
-   *               thread. If you need to avoid this, use PropertiesBase.Lock()
-   *               and PropertiesLock.Unlock().
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetBoolean
-   * @sa PropertiesBase.GetFloat
-   * @sa PropertiesBase.GetNumber
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.GetString
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetPointer
-   */
-  void* GetPointer(StringParam name, void* default_value) const
-  {
-    return SDL_GetPointerProperty(get(), name, default_value);
-  }
-
-  /**
-   * Get a string property from a group of properties.
-   *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a string property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a string property.
-   *
-   * @threadsafety It is safe to call this function from any thread, although
-   *               the data returned is not protected and could potentially be
-   *               freed if you call PropertiesBase.SetString() or
-   *               PropertiesBase.Clear() on these properties from another
-   *               thread. If you need to avoid this, use PropertiesBase.Lock()
-   *               and PropertiesLock.Unlock().
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetString
-   */
-  const char* GetString(StringParam name, StringParam default_value) const
-  {
-    return SDL_GetStringProperty(get(), name, default_value);
-  }
-
-  /**
-   * Get a number property from a group of properties.
-   *
-   * You can use PropertiesBase.GetType() to query whether the property exists
-   * and is a number property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a number property.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetNumber
-   */
-  Sint64 GetNumber(StringParam name, Sint64 default_value) const
-  {
-    return SDL_GetNumberProperty(get(), name, default_value);
-  }
-
-  /**
-   * Get a floating point property from a group of properties.
-   *
-   * You can use PropertiesBase.GetType() to query whether the property exists
-   * and is a floating point property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a float property.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetFloat
-   */
-  float GetFloat(StringParam name, float default_value) const
-  {
-    return SDL_GetFloatProperty(get(), name, default_value);
-  }
-
-  /**
-   * Get a boolean property from a group of properties.
-   *
-   * You can use PropertiesBase.GetType() to query whether the property exists
-   * and is a boolean property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a boolean property.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetBoolean
-   */
-  bool GetBoolean(StringParam name, bool default_value) const
-  {
-    return SDL_GetBooleanProperty(get(), name, default_value);
-  }
-
-  /**
-   * Clear a property from a group of properties.
-   *
-   * @param name the name of the property to clear.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool Clear(StringParam name) { return SDL_ClearProperty(get(), name); }
-
-  /**
-   * Enumerate the properties contained in a group of properties.
-   *
-   * @param outputIter an output iterator to be assigned to each property name
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  template<std::output_iterator<const char*> IT>
-  bool Enumerate(IT outputIter) const
-  {
-    return Enumerate(
-      [&outputIter](auto props, const char name) { *outputIter++ = name; });
-  }
-
-  /**
-   * Enumerate the properties contained in a group of properties.
-   *
-   * The callback function is called for each property in the group of
-   * properties. The properties are locked during enumeration.
-   *
-   * @param callback the function to call for each property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @cat immediate-callback
-   *
-   * @sa immediate-callback
-   */
-  bool Enumerate(EnumeratePropertiesCB callback) const;
-
-  /**
-   * Enumerate the properties contained in a group of properties.
-   *
-   * The callback function is called for each property in the group of
-   * properties. The properties are locked during enumeration.
-   *
-   * @param callback the function to call for each property.
-   * @param userdata a pointer that is passed to `callback`.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
-  {
-    return SDL_EnumerateProperties(get(), callback, userdata);
-  }
-
-  /**
-   * Returns the number of properties this has
-   *
-   * This uses Enumerate() internally, so might not be so fast
-   */
-  Uint64 GetCount() const;
-};
-
-/**
- * Handle to a non owned properties
- *
- * @cat resource
- *
- * @sa PropertiesBase
- * @sa Properties
- */
-struct PropertiesRef : PropertiesBase
-{
-  using PropertiesBase::PropertiesBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr PropertiesRef(const PropertiesRef& other)
-    : PropertiesBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr PropertiesRef(PropertiesRef&& other)
-    : PropertiesBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~PropertiesRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  PropertiesRef& operator=(PropertiesRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Destroy a group of properties.
-   *
-   * All properties are deleted and their cleanup functions will be called, if
-   * any.
-   *
-   * @threadsafety This function should not be called while these properties are
-   *               locked or other threads might be setting or getting values
-   *               from these properties.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProperties
-   * @sa Properties.Properties()
-   */
-  void reset(SDL_PropertiesID newResource = {})
-  {
-    SDL_DestroyProperties(release(newResource));
-  }
-};
-
-/**
- * Handle to an owned properties
- *
- * @cat resource
- *
- * @sa PropertiesBase
- * @sa PropertiesRef
- */
-struct Properties : PropertiesRef
-{
-  using PropertiesRef::PropertiesRef;
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Properties(SDL_PropertiesID resource = {})
-    : PropertiesRef(resource)
-  {
-  }
-
-  constexpr Properties(const Properties& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Properties(Properties&& other) = default;
-
-  /**
-   * Create a group of properties.
-   *
-   * All properties are automatically destroyed when Quit() is called.
-   *
-   * @post an ID for a new group of properties, or 0 on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesRef.reset
-   */
-  Properties()
-    : Properties(SDL_CreateProperties())
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Properties() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Properties& operator=(Properties other)
-  {
-    reset(other.release());
-    return *this;
-  }
-};
-
-/**
- * Wrap the lock state for PropertiesBase
- *
- */
-class PropertiesLock
-{
-  PropertiesRef properties;
-
-  /**
-   * @sa PropertiesBase.Lock()
-   */
-  explicit PropertiesLock(PropertiesRef properties)
-    : properties(properties)
-  {
-  }
-
-public:
-  /// Default ctor
-  constexpr PropertiesLock() = default;
-
-  PropertiesLock(const PropertiesLock& other) = delete;
-
-  /// Move ctor
-  PropertiesLock(PropertiesLock&& other)
-    : properties(std::move(other.properties))
-  {
-  }
-
-  /**
-   * @sa Unlock()
-   */
-  ~PropertiesLock() { Unlock(); }
-
-  /// Assignment operator
-  PropertiesLock& operator=(PropertiesLock other)
-  {
-    std::swap(properties, other.properties);
-    return *this;
-  }
-
-  /**
-   * Returns true if lock is active
-   */
-  constexpr operator bool() const { return bool(properties); }
-
-  /**
-   * Unlock a group of properties.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.Lock
-   */
-  void Unlock() { return SDL_UnlockProperties(properties.release()); }
-
-  friend class PropertiesBase;
-};
-
-/**
- * Get the global SDL properties.
- *
- * @returns a valid property ID on success or 0 on failure; call
- *          GetError() for more information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline PropertiesRef GetGlobalProperties() { return SDL_GetGlobalProperties(); }
-
-/**
- * Create a group of properties.
- *
- * All properties are automatically destroyed when Quit() is called.
- *
- * @returns a valid Properties for a new group of properties, or false on
- *          failure; call GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Properties
- */
-inline Properties CreateProperties()
-{
-  return Properties{SDL_CreateProperties()};
-}
-
-#pragma region impl
-/// @}
-
-inline bool PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
-{
-  return Enumerate(
-    [](void* userdata, SDL_PropertiesID props, const char* name) {
-      auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
-      f(props, name);
-    },
-    &callback);
-}
-
-inline Uint64 PropertiesBase::GetCount() const
-{
-  Uint64 count = 0;
-  if (Enumerate([&](auto, const char*) { count++; })) { return count; }
-  return 0;
-}
-
-inline PropertiesLock PropertiesBase::Lock() &
-{
-  if (SDL_LockProperties(get())) return PropertiesLock{get()};
-  return {};
-}
-
-#pragma endregion impl
-
-/**
- * @defgroup CategoryRect Rectangle Functions
- *
- * Some helper functions for managing rectangles and 2D points, in both
- * integer and floating point versions.
- * @{
- */
-
-// Forward decl
-struct FPoint;
-
-// Forward decl
-struct Rect;
-
-// Forward decl
-struct FRect;
-
-/**
- * @brief The structure that defines a point (using integers)
- *
- * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct Point : SDL_Point
-{
-  /**
-   * Wraps Point.
-   *
-   * @param p the value to be wrapped
-   */
-  constexpr Point(const SDL_Point& p = {})
-    : SDL_Point(p)
-  {
-  }
-
-  /**
-   * Constructs from its fields.
-   *
-   * @param x the value for x.
-   * @param y the value for y.
-   */
-  constexpr Point(int x, int y)
-    : SDL_Point{x, y}
-  {
-  }
-
-  /**
-   * Explicit conversion from FPoint
-   */
-  constexpr explicit Point(const SDL_FPoint& p)
-    : SDL_Point{int(p.x), int(p.y)}
-  {
-  }
-
-  /**
-   * Default comparison operator
-   */
-  constexpr auto operator<=>(const Point& other) const = default;
-
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return x != 0 && y != 0; }
-
-  /**
-   * @brief Get x coordinate
-   *
-   * @returns x coordinate
-   *
-   */
-  constexpr int GetX() const { return x; }
-
-  /**
-   * Set the x coordinate.
-   *
-   * @param newX the new x coordinate.
-   * @returns Reference to self.
-   */
-  constexpr Point& SetX(int newX)
-  {
-    x = newX;
-    return *this;
-  }
-
-  /**
-   * @brief Get y coordinate
-   *
-   * @returns y coordinate
-   *
-   */
-  constexpr int GetY() const { return y; }
-
-  /**
-   * Set the y.
-   *
-   * @param newY the new y value.
-   * @returns Reference to self.
-   */
-  constexpr Point& SetY(int newY)
-  {
-    y = newY;
-    return *this;
-  }
-
-  /**
-   * Determine whether a point resides inside a rectangle.
-   *
-   * A point is considered part of a rectangle if both `p` and `r` are not NULL,
-   * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
-   * and < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)
-   * as "inside" and (0,1) as not.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param r the rectangle to test.
-   * @returns true if this is contained by `r`, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsInRect(const Rect& r) const;
-
-  /**
-   * @brief Get point's memberwise negation
-   *
-   * @returns New Point representing memberwise negation
-   *
-   */
-  constexpr Point operator-() const { return Point(-x, -y); }
-
-  /**
-   * @brief Get point's memberwise addition with another point
-   *
-   * @param[in] other Point to add
-   *
-   * @returns New Point representing memberwise addition with another point
-   *
-   */
-  constexpr Point operator+(const Point& other) const
-  {
-    return Point(x + other.x, y + other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise subtraction with another point
-   *
-   * @param[in] other Point to subtract
-   *
-   * @returns New Point representing memberwise subtraction of another point
-   *
-   */
-  constexpr Point operator-(const Point& other) const
-  {
-    return Point(x - other.x, y - other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise division by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by an integer
-   *
-   */
-  constexpr Point operator/(int value) const
-  {
-    return Point(x / value, y / value);
-  }
-
-  /**
-   * @brief Get point's memberwise division by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by another point
-   *
-   */
-  constexpr Point operator/(const Point& other) const
-  {
-    return Point(x / other.x, y / other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise remainder from division
-   *        by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise remainder
-   *          from division by an integer
-   *
-   */
-  constexpr Point operator%(int value) const
-  {
-    return Point(x % value, y % value);
-  }
-
-  /**
-   * @brief Get point's memberwise remainder from division
-   *        by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise remainder
-   *          from division by another point
-   *
-   */
-  constexpr Point operator%(const Point& other) const
-  {
-    return Point(x % other.x, y % other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise multiplication by an
-   *        integer
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by an integer
-   *
-   */
-  constexpr Point operator*(int value) const
-  {
-    return Point(x * value, y * value);
-  }
-
-  /**
-   * @brief Get point's memberwise multiplication by another
-   *        point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by another point
-   *
-   */
-  constexpr Point operator*(const Point& other) const
-  {
-    return Point(x * other.x, y * other.y);
-  }
-
-  /**
-   * @brief Memberwise add another point
-   *
-   * @param[in] other Point to add to the current one
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator+=(const Point& other)
-  {
-    x += other.x;
-    y += other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise subtract another point
-   *
-   * @param[in] other Point to subtract from the current one
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator-=(const Point& other)
-  {
-    x -= other.x;
-    y -= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise divide by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator/=(int value)
-  {
-    x /= value;
-    y /= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise divide by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator/=(const Point& other)
-  {
-    x /= other.x;
-    y /= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise remainder from division by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator%=(int value)
-  {
-    x %= value;
-    y %= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise remainder from division by another
-   *        point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator%=(const Point& other)
-  {
-    x %= other.x;
-    y %= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise multiply by an integer
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator*=(int value)
-  {
-    x *= value;
-    y *= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise multiply by another point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator*=(const Point& other)
-  {
-    x *= other.x;
-    y *= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Get a point with coordinates modified so it fits
-   *        into a given rect
-   *
-   * @param[in] rect Rectangle to clamp with
-   *
-   * @returns Clamped point
-   *
-   */
-  constexpr Point GetClamped(const Rect& rect) const;
-
-  /**
-   * @brief Clamp point coordinates to make it fit into a
-   *        given rect
-   *
-   * @param[in] rect Rectangle to clamp with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& Clamp(const Rect& rect);
-
-  /**
-   * @brief Get a point wrapped within a specified rect
-   *
-   * @param[in] rect Rectangle to wrap with
-   *
-   * @returns Wrapped point
-   *
-   */
-  constexpr Point GetWrapped(const Rect& rect) const;
-
-  /**
-   * @brief Wrap point coordinates within a specified rect
-   *
-   * @param[in] rect Rectangle to wrap with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& Wrap(const Rect& rect);
-
-  /**
-   * @brief Converts to FPoint
-   *
-   * @return FPoint
-   */
-  constexpr operator FPoint() const;
-};
-
-/**
- * @brief The structure that defines a point (using floating point values).
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct FPoint : SDL_FPoint
-{
-  /**
-   * Wraps FPoint.
-   *
-   * @param p the value to be wrapped
-   */
-  constexpr FPoint(const SDL_FPoint& p = {})
-    : SDL_FPoint(p)
-  {
-  }
-
-  /**
-   * Constructs from its fields.
-   *
-   * @param x the value for x.
-   * @param y the value for y.
-   */
-  constexpr FPoint(float x, float y)
-    : SDL_FPoint{x, y}
-  {
-  }
-
-  /**
-   * Default comparison operator
-   */
-  constexpr auto operator<=>(const FPoint& other) const = default;
-
-  /**
-   * Check if valid.
-   *
-   * @returns True if valid state, false otherwise.
-   */
-  constexpr explicit operator bool() const { return x != 0 && y != 0; }
-
-  /**
-   * Get the x coordinate.
-   *
-   * @returns current x value.
-   */
-  constexpr float GetX() const { return x; }
-
-  /**
-   * Set the x coordinate.
-   *
-   * @param newX the new x coordinate.
-   * @returns Reference to self.
-   */
-  constexpr FPoint& SetX(float newX)
-  {
-    x = newX;
-    return *this;
-  }
-
-  /**
-   * Get the y coordinate.
-   *
-   * @returns current y coordinate.
-   */
-  constexpr float GetY() const { return y; }
-
-  /**
-   * Set the y coordinate.
-   *
-   * @param newY the new y coordinate.
-   * @returns Reference to self.
-   */
-  constexpr FPoint& SetY(float newY)
-  {
-    y = newY;
-    return *this;
-  }
-
-  /**
-   * Determine whether a point resides inside a floating point rectangle.
-   *
-   * A point is considered part of a rectangle if both `p` and `r` are not NULL,
-   * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
-   * and <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point
-   * (0,0) and (0,1) as "inside" and (0,2) as not.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param r the rectangle to test.
-   * @returns true if this is contained by `r`, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsInRect(const FRect& r) const;
-
-  /**
-   * @brief Get point's memberwise negation
-   *
-   * @returns New Point representing memberwise negation
-   *
-   */
-  constexpr FPoint operator-() const { return FPoint(-x, -y); }
-
-  /**
-   * @brief Get point's memberwise addition with another point
-   *
-   * @param[in] other Point to add
-   *
-   * @returns New Point representing memberwise addition with another point
-   *
-   */
-  constexpr FPoint operator+(const FPoint& other) const
-  {
-    return FPoint(x + other.x, y + other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise subtraction with another point
-   *
-   * @param[in] other Point to subtract
-   *
-   * @returns New Point representing memberwise subtraction of another point
-   *
-   */
-  constexpr FPoint operator-(const FPoint& other) const
-  {
-    return FPoint(x - other.x, y - other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise division by an float
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by an float
-   *
-   */
-  constexpr FPoint operator/(float value) const
-  {
-    return FPoint(x / value, y / value);
-  }
-
-  /**
-   * @brief Get point's memberwise division by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by another point
-   *
-   */
-  constexpr FPoint operator/(const FPoint& other) const
-  {
-    return FPoint(x / other.x, y / other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise multiplication by an
-   *        float
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by an float
-   *
-   */
-  constexpr FPoint operator*(float value) const
-  {
-    return FPoint(x * value, y * value);
-  }
-
-  /**
-   * @brief Get point's memberwise multiplication by another
-   *        point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by another point
-   *
-   */
-  constexpr FPoint operator*(const FPoint& other) const
-  {
-    return FPoint(x * other.x, y * other.y);
-  }
-
-  /**
-   * @brief Memberwise add another point
-   *
-   * @param[in] other Point to add to the current one
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator+=(const FPoint& other)
-  {
-    x += other.x;
-    y += other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise subtract another point
-   *
-   * @param[in] other Point to subtract from the current one
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator-=(const FPoint& other)
-  {
-    x -= other.x;
-    y -= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise divide by an float
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator/=(float value)
-  {
-    x /= value;
-    y /= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise divide by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator/=(const FPoint& other)
-  {
-    x /= other.x;
-    y /= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise multiply by an float
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator*=(float value)
-  {
-    x *= value;
-    y *= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise multiply by another point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator*=(const FPoint& other)
-  {
-    x *= other.x;
-    y *= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Get a point with coordinates modified so it fits
-   *        into a given rect
-   *
-   * @param[in] rect Rectangle to clamp with
-   *
-   * @returns Clamped point
-   *
-   */
-  constexpr FPoint GetClamped(const FRect& rect) const;
-
-  /**
-   * @brief Clamp point coordinates to make it fit into a
-   *        given rect
-   *
-   * @param[in] rect Rectangle to clamp with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& Clamp(const FRect& rect);
-
-  /**
-   * @brief Get a point wrapped within a specified rect
-   *
-   * @param[in] rect Rectangle to wrap with
-   *
-   * @returns Wrapped point
-   *
-   */
-  constexpr FPoint GetWrapped(const FRect& rect) const;
-
-  /**
-   * @brief Wrap point coordinates within a specified rect
-   *
-   * @param[in] rect Rectangle to wrap with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& Wrap(const FRect& rect);
-};
-
-/**
- * @brief A rectangle, with the origin at the upper left (using integers).
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct Rect : SDL_Rect
-{
-  /**
-   * Wraps Rect.
-   *
-   * @param r the value to be wrapped
-   */
-  constexpr Rect(const SDL_Rect& r = {})
-    : SDL_Rect(r)
-  {
-  }
-
-  /**
-   * Constructs from its fields.
-   *
-   * @param x the left x.
-   * @param y the top y.
-   * @param w the width.
-   * @param h the height.
-   */
-  constexpr Rect(int x, int y, int w, int h)
-    : SDL_Rect({x, y, w, h})
-  {
-  }
-
-  /**
-   * Construct from offset and size
-   *
-   * @param corner the top-left corner
-   * @param size the size
-   */
-  constexpr Rect(const SDL_Point& corner, const SDL_Point& size)
-    : Rect{corner.x, corner.y, size.x, size.y}
-  {
-  }
-
-  /**
-   * @sa Equal()
-   */
-  constexpr bool operator==(const Rect& other) const { return Equal(other); }
-
-  /**
-   * @sa Empty()
-   */
-  constexpr operator bool() const { return !Empty(); }
-
-  /**
-   * @brief Get left x coordinate.
-   *
-   * @returns coordinate of the left x
-   *
-   */
-  constexpr int GetX() const { return x; }
-
-  /**
-   * Set the left x coordinate.
-   *
-   * @param newX the new left x.
-   * @returns Reference to self.
-   */
-  constexpr Rect& SetX(int newX)
-  {
-    x = newX;
-    return *this;
-  }
-
-  /**
-   * @brief Get top y coordinate.
-   *
-   * @returns coordinate of the top y.
-   *
-   */
-  constexpr int GetY() const { return y; }
-
-  /**
-   * Set the top y coordinate.
-   *
-   * @param newY the new top y.
-   * @returns Reference to self.
-   */
-  constexpr Rect& SetY(int newY)
-  {
-    y = newY;
-    return *this;
-  }
-
-  /**
-   * @brief Get width of the rect
-   *
-   * @returns Width of the rect
-   *
-   */
-  constexpr int GetW() const { return w; }
-
-  /**
-   * Set the width of the rect.
-   *
-   * @param newW the new width.
-   * @returns Reference to self.
-   */
-  constexpr Rect& SetW(int newW)
-  {
-    w = newW;
-    return *this;
-  }
-
-  /**
-   * @brief Get height of the rect
-   *
-   * @returns Height of the rect
-   *
-   */
-  constexpr int GetH() const { return h; }
-
-  /**
-   * Set the height of the rect.
-   *
-   * @param newH the new height.
-   * @returns Reference to self.
-   */
-  constexpr Rect& SetH(int newH)
-  {
-    h = newH;
-    return *this;
-  }
-
-  /**
-   * Calculate a minimal rectangle enclosing a set of points.
-   *
-   * If `clip` is not NULL then only points inside of the clipping rectangle are
-   * considered.
-   *
-   * @param points a span of SDL_Point structures representing points to be
-   *               enclosed.
-   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
-   *             points.
-   * @returns a SDL_Rect structure filled in with the minimal enclosing
-   * rectangle or std::nullopt if all the points were outside of the
-   * clipping rectangle.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  static std::optional<Rect> GetEnclosingPoints(
-    SpanRef<const SDL_Point> points,
-    OptionalRef<const SDL_Rect> clip = std::nullopt)
-  {
-    Rect result;
-    if (SDL_GetRectEnclosingPoints(
-          points.data(), points.size(), clip, &result)) {
-      return result;
-    }
-    return std::nullopt;
-  }
-
-  /**
-   * @brief Construct the rect from given center coordinates, width and height
-   *
-   * @param[in] cx X coordinate of the rectangle center
-   * @param[in] cy Y coordinate of the rectangle center
-   * @param[in] w Width of the rectangle
-   * @param[in] h Height of the rectangle
-   *
-   */
-  static constexpr Rect FromCenter(int cx, int cy, int w, int h)
-  {
-    return Rect(cx - w / 2, cy - h / 2, w, h);
-  }
-
-  /**
-   * @brief Construct the rect from given center coordinates and size
-   *
-   * @param[in] center Coordinates of the rectangle center
-   * @param[in] size Dimensions of the rectangle
-   *
-   */
-  static constexpr Rect FromCenter(const Point& center, const Point& size)
-  {
-    return Rect(center - size / 2, size);
-  }
-
-  /**
-   * @brief Construct the rect from given corners coordinates
-   *
-   * @param[in] x1 X coordinate of the top left rectangle corner
-   * @param[in] y1 Y coordinate of the top left rectangle corner
-   * @param[in] x2 X coordinate of the bottom right rectangle corner
-   * @param[in] y2 Y coordinate of the bottom right rectangle corner
-   *
-   */
-  static constexpr Rect FromCorners(int x1, int y1, int x2, int y2)
-  {
-    return Rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-  }
-
-  /**
-   * @brief Construct the rect from given centers coordinates
-   *
-   * @param[in] p1 Coordinates of the top left rectangle corner
-   * @param[in] p2 Coordinates of the bottom right rectangle corner
-   *
-   */
-  static constexpr Rect FromCorners(const Point& p1, const Point& p2)
-  {
-    return Rect(p1, p2 - p1 + Point(1, 1));
-  }
-
-  /**
-   * @brief Get X coordinate of the rect second corner
-   *
-   * @returns X coordinate of the rect second corner
-   *
-   */
-  constexpr int GetX2() const { return x + w - 1; }
-
-  /**
-   * @brief Set X coordinate of the rect second corner
-   *
-   * @param[in] x2 New X coordinate value
-   *
-   * This modifies rectangle width internally
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetX2(int x2)
-  {
-    w = x2 - x + 1;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect second corner
-   *
-   * @returns Y coordinate of the rect second corner
-   *
-   */
-  constexpr int GetY2() const { return y + h - 1; }
-
-  /**
-   * @brief Set Y coordinate of the rect second corner
-   *
-   * @param[in] y2 New Y coordinate value
-   *
-   * This modifies rectangle height internally
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetY2(int y2)
-  {
-    h = y2 - y + 1;
-    return *this;
-  }
-
-  /**
-   * @brief Get top left corner of the rect
-   *
-   * @returns Top left corner of the rect
-   *
-   */
-  constexpr Point GetTopLeft() const { return Point(x, y); }
-
-  /**
-   * @brief Get top right corner of the rect
-   *
-   * @returns Top right corner of the rect
-   *
-   */
-  constexpr Point GetTopRight() const { return Point(GetX2(), y); }
-
-  /**
-   * @brief Get bottom left corner of the rect
-   *
-   * @returns bottom left corner of the rect
-   *
-   */
-  constexpr Point GetBottomLeft() const { return Point(x, GetY2()); }
-
-  /**
-   * @brief Get bottom right corner of the rect
-   *
-   * @returns Bottom right corner of the rect
-   *
-   */
-  constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
-
-  /**
-   * @brief Get size of the rect
-   *
-   * @returns Size of the rect
-   *
-   */
-  constexpr Point GetSize() const { return Point(w, h); }
-
-  /**
-   * @brief Get centroid of the rect
-   *
-   * @returns Centroid of the rect
-   *
-   */
-  constexpr Point GetCentroid() const { return Point(x + w / 2, y + h / 2); }
-
-  /**
-   * Calculate the intersection of a rectangle and line segment.
-   *
-   * This function is used to clip a line segment to a rectangle. A line segment
-   * contained entirely within the rectangle or that does not intersect will
-   * remain unchanged. A line segment that crosses the rectangle at either or
-   * both ends will be clipped to the boundary of the rectangle and the new
-   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
-   *
-   * @param X1 a pointer to the starting X-coordinate of the line.
-   * @param Y1 a pointer to the starting Y-coordinate of the line.
-   * @param X2 a pointer to the ending X-coordinate of the line.
-   * @param Y2 a pointer to the ending Y-coordinate of the line.
-   * @returns true if there is an intersection, false otherwise.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool IntersectLine(int* X1, int* Y1, int* X2, int* Y2) const
-  {
-    return SDL_GetRectAndLineIntersection(this, X1, Y1, X2, Y2);
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(Point* p1, Point* p2) const
-  {
-    return IntersectLine(p1 ? &p1->x : nullptr,
-                         p1 ? &p1->y : nullptr,
-                         p2 ? &p2->x : nullptr,
-                         p2 ? &p2->y : nullptr);
-  }
-
-  /**
-   * Convert an SDL_Rect to SDL_FRect
-   *
-   * @return A FRect filled in with the floating point representation of
-   *              `rect`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr operator FRect() const;
-
-  /**
-   * @sa operator FRect()
-   */
-  constexpr operator SDL_FRect() const { return operator SDL_FRect(); }
-
-  /**
-   * Determine whether a rectangle has no area.
-   *
-   * A rectangle is considered "empty" for this function if `r` is NULL, or if
-   * `r`'s width and/or height are <= 0.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @returns true if the rectangle is "empty", false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Empty() const { return SDL_RectEmpty(this); }
-
-  /**
-   * Determine whether two rectangles are equal.
-   *
-   * Rectangles are considered equal if both are not NULL and each of their x,
-   * y, width and height match.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param other the second rectangle to test.
-   * @returns true if the rectangles are equal, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Equal(const Rect& other) const
-  {
-    return SDL_RectsEqual(this, &other);
-  }
-
-  /**
-   * @brief Check whether the rect contains given point
-   *
-   * @param p Point to check
-   *
-   * @returns True if the point is contained in the rect
-   *
-   */
-  constexpr bool Contains(const Point& p) const
-  {
-    return SDL_PointInRect(&p, this);
-  }
-
-  /**
-   * @brief Check whether the rect contains given point
-   *
-   * @param other Point to check
-   *
-   * @returns True if the point is contained in the rect
-   *
-   */
-  constexpr bool Contains(const Rect& other) const
-  {
-    return GetUnion(other) == *this;
-  }
-
-  /**
-   * Determine whether two rectangles intersect.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns true if there is an intersection, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetIntersection()
-   */
-  bool HasIntersection(const Rect& other) const
-  {
-    return SDL_HasRectIntersection(this, &other);
-  }
-
-  /**
-   * Calculate the intersection of two rectangles.
-   *
-   * If `result` is NULL then this function will return false.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns an SDL_Rect structure filled in with the intersection of
-   *               if there is intersection, std::nullopt otherwise.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa HasIntersection()
-   */
-  constexpr std::optional<Rect> GetIntersection(const Rect& other) const
-  {
-    if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
-      return result;
-    }
-    return std::nullopt;
-  }
-
-  /**
-   * Calculate the union of two rectangles.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns Rect representing union of two rectangles
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr std::optional<Rect> GetUnion(const Rect& other) const
-  {
-    if (Rect result; SDL_GetRectUnion(this, &other, &result)) return result;
-    return std::nullopt;
-  }
-
-  /**
-   * @brief Get a rect extended by specified amount of pixels
-   *
-   * @param[in] amount Number of pixels to extend by
-   *
-   * @returns Extended rect
-   *
-   */
-  constexpr Rect GetExtension(unsigned int amount) const
-  {
-    Rect r = *this;
-    r.Extend(amount);
-    return r;
-  }
-
-  /**
-   * @brief Get a rect extended by specified amount of pixels
-   *
-   * @param[in] hAmount Number of pixels to extend by
-   *                    in horizontal direction
-   * @param[in] vAmount Number of pixels to extend by
-   *                    in vertical direction
-   *
-   * @returns Extended rect
-   *
-   */
-  constexpr Rect GetExtension(unsigned int hAmount, unsigned int vAmount) const
-  {
-    Rect r = *this;
-    r.Extend(hAmount, vAmount);
-    return r;
-  }
-
-  /**
-   * @brief Extend a rect by specified amount of pixels
-   *
-   * @param[in] amount Number of pixels to extend by
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& Extend(unsigned int amount) { return Extend(amount, amount); }
-
-  /**
-   * @brief Extend a rect by specified amount of pixels
-   *
-   * @param[in] hAmount Number of pixels to extend by
-   *                    in horizontal direction
-   * @param[in] vAmount Number of pixels to extend by
-   *                    in vertical direction
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& Extend(unsigned int hAmount, unsigned int vAmount)
-  {
-    x -= hAmount;
-    y -= vAmount;
-    w += hAmount * 2;
-    h += vAmount * 2;
-    return *this;
-  }
-
-  /**
-   * @brief Get rectangle moved by a given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Moved rectangle
-   *
-   */
-  constexpr Rect operator+(const Point& offset) const
-  {
-    return Rect(x + offset.x, y + offset.y, w, h);
-  }
-
-  /**
-   * @brief Get rectangle moved by an opposite of given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Moved rectangle
-   *
-   */
-  constexpr Rect operator-(const Point& offset) const
-  {
-    return Rect(x - offset.x, y - offset.y, w, h);
-  }
-
-  /**
-   * @brief Move by then given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& operator+=(const Point& offset)
-  {
-    x += offset.x;
-    y += offset.y;
-    return *this;
-  }
-
-  /**
-   * @brief Move by an opposite of the given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& operator-=(const Point& offset)
-  {
-    x -= offset.x;
-    y -= offset.y;
-    return *this;
-  }
-};
-
-/**
- * @brief A rectangle, with the origin at the upper left (using floats).
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct FRect : SDL_FRect
-{
-  /**
-   * Wraps FRect.
-   *
-   * @param r the value to be wrapped
-   */
-  constexpr FRect(const SDL_FRect& r = {})
-    : SDL_FRect{r}
-  {
-  }
-
-  /**
-   * Constructs from its fields.
-   *
-   * @param x the left x.
-   * @param y the top y.
-   * @param w the width.
-   * @param h the height.
-   */
-  constexpr FRect(float x, float y, float w, float h)
-    : SDL_FRect{x, y, w, h}
-  {
-  }
-
-  /// Constructs from top-left corner plus size
-  constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
-    : FRect{corner.x, corner.y, size.x, size.y}
-  {
-  }
-
-  /**
-   * @sa Equal()
-   */
-  constexpr bool operator==(const FRect& other) const { return Equal(other); }
-
-  /**
-   * @sa Empty()
-   */
-  constexpr operator bool() const { return !Empty(); }
-
-  /**
-   * @brief Get left x coordinate.
-   *
-   * @returns coordinate of the left x
-   *
-   */
-  constexpr float GetX() const { return x; }
-
-  /**
-   * Set the left x coordinate.
-   *
-   * @param newX the new left x.
-   * @returns Reference to self.
-   */
-  constexpr FRect& SetX(float newX)
-  {
-    x = newX;
-    return *this;
-  }
-
-  /**
-   * @brief Get top y coordinate.
-   *
-   * @returns coordinate of the top y.
-   *
-   */
-  constexpr float GetY() const { return y; }
-
-  /**
-   * Set the top y coordinate.
-   *
-   * @param newY the new top y.
-   * @returns Reference to self.
-   */
-  constexpr FRect& SetY(float newY)
-  {
-    y = newY;
-    return *this;
-  }
-
-  /**
-   * @brief Get width of the rect
-   *
-   * @returns Width of the rect
-   *
-   */
-  constexpr float GetW() const { return w; }
-
-  /**
-   * Set the width of the rect.
-   *
-   * @param newW the new width.
-   * @returns Reference to self.
-   */
-  constexpr FRect& SetW(float newW)
-  {
-    w = newW;
-    return *this;
-  }
-
-  /**
-   * @brief Get height of the rect
-   *
-   * @returns Height of the rect
-   *
-   */
-  constexpr float GetH() const { return h; }
-
-  /**
-   * Set the height of the rect.
-   *
-   * @param newH the new height.
-   * @returns Reference to self.
-   */
-  constexpr FRect& SetH(float newH)
-  {
-    h = newH;
-    return *this;
-  }
-
-  /**
-   * Calculate a minimal rectangle enclosing a set of points.
-   *
-   * If `clip` is not NULL then only points inside of the clipping rectangle are
-   * considered.
-   *
-   * @param points a span of SDL_Point structures representing points to be
-   *               enclosed.
-   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
-   *             points.
-   * @returns a FRect structure filled in with the minimal enclosing
-   *          rectangle or std::nullopt if all the points were outside of
-   * the clipping rectangle.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  static std::optional<FRect> GetEnclosingPoints(
-    SpanRef<const SDL_FPoint> points,
-    OptionalRef<const SDL_FRect> clip = std::nullopt)
-  {
-    FRect result;
-    if (SDL_GetRectEnclosingPointsFloat(
-          points.data(), points.size(), clip, &result)) {
-      return result;
-    }
-    return std::nullopt;
-  }
-
-  /**
-   * @brief Construct the rect from given center coordinates, width and height
-   *
-   * @param[in] cx X coordinate of the rectangle center
-   * @param[in] cy Y coordinate of the rectangle center
-   * @param[in] w Width of the rectangle
-   * @param[in] h Height of the rectangle
-   *
-   */
-  static constexpr FRect FromCenter(float cx, float cy, float w, float h)
-  {
-    return FRect(cx - w / 2, cy - h / 2, w, h);
-  }
-
-  /**
-   * @brief Construct the rect from given center coordinates and size
-   *
-   * @param[in] center Coordinates of the rectangle center
-   * @param[in] size Dimensions of the rectangle
-   *
-   */
-  static constexpr FRect FromCenter(const FPoint& center, const FPoint& size)
-  {
-    return FRect(center - size / 2, size);
-  }
-
-  /**
-   * @brief Construct the rect from given corners coordinates
-   *
-   * @param[in] x1 X coordinate of the top left rectangle corner
-   * @param[in] y1 Y coordinate of the top left rectangle corner
-   * @param[in] x2 X coordinate of the bottom right rectangle corner
-   * @param[in] y2 Y coordinate of the bottom right rectangle corner
-   *
-   */
-  static constexpr FRect FromCorners(float x1, float y1, float x2, float y2)
-  {
-    return FRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-  }
-
-  /**
-   * @brief Construct the rect from given centers coordinates
-   *
-   * @param[in] p1 Coordinates of the top left rectangle corner
-   * @param[in] p2 Coordinates of the bottom right rectangle corner
-   *
-   */
-  static constexpr FRect FromCorners(const FPoint& p1, const FPoint& p2)
-  {
-    return FRect(p1, p2 - p1 + FPoint(1, 1));
-  }
-
-  /**
-   * @brief Get X coordinate of the rect second corner
-   *
-   * @returns X coordinate of the rect second corner
-   *
-   */
-  constexpr float GetX2() const { return x + w - 1; }
-
-  /**
-   * @brief Set X coordinate of the rect second corner
-   *
-   * @param[in] x2 New X coordinate value
-   *
-   * This modifies rectangle width internally
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetX2(float x2)
-  {
-    w = x2 - x + 1;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect second corner
-   *
-   * @returns Y coordinate of the rect second corner
-   *
-   */
-  constexpr float GetY2() const { return y + h - 1; }
-
-  /**
-   * @brief Set Y coordinate of the rect second corner
-   *
-   * @param[in] y2 New Y coordinate value
-   *
-   * This modifies rectangle height internally
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetY2(float y2)
-  {
-    h = y2 - y + 1;
-    return *this;
-  }
-
-  /**
-   * @brief Get top left corner of the rect
-   *
-   * @returns Top left corner of the rect
-   *
-   */
-  constexpr FPoint GetTopLeft() const { return FPoint(x, y); }
-
-  /**
-   * @brief Get top right corner of the rect
-   *
-   * @returns Top right corner of the rect
-   *
-   */
-  constexpr FPoint GetTopRight() const { return FPoint(GetX2(), y); }
-
-  /**
-   * @brief Get bottom left corner of the rect
-   *
-   * @returns bottom left corner of the rect
-   *
-   */
-  constexpr FPoint GetBottomLeft() const { return FPoint(x, GetY2()); }
-
-  /**
-   * @brief Get bottom right corner of the rect
-   *
-   * @returns Bottom right corner of the rect
-   *
-   */
-  constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
-
-  /**
-   * @brief Get size of the rect
-   *
-   * @returns Size of the rect
-   *
-   */
-  constexpr FPoint GetSize() const { return FPoint(w, h); }
-
-  /**
-   * @brief Get centroid of the rect
-   *
-   * @returns Centroid of the rect
-   *
-   */
-  constexpr FPoint GetCentroid() const { return FPoint(x + w / 2, y + h / 2); }
-
-  /**
-   * Calculate the intersection of a rectangle and line segment with float
-   * precision.
-   *
-   * This function is used to clip a line segment to a rectangle. A line segment
-   * contained entirely within the rectangle or that does not intersect will
-   * remain unchanged. A line segment that crosses the rectangle at either or
-   * both ends will be clipped to the boundary of the rectangle and the new
-   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
-   *
-   * @param X1 a pointer to the starting X-coordinate of the line.
-   * @param Y1 a pointer to the starting Y-coordinate of the line.
-   * @param X2 a pointer to the ending X-coordinate of the line.
-   * @param Y2 a pointer to the ending Y-coordinate of the line.
-   * @returns true if there is an intersection, false otherwise.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool IntersectLine(float* X1, float* Y1, float* X2, float* Y2) const
-  {
-    return SDL_GetRectAndLineIntersectionFloat(this, X1, Y1, X2, Y2);
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(FPoint* p1, FPoint* p2) const
-  {
-    return IntersectLine(p1 ? &p1->x : nullptr,
-                         p1 ? &p1->y : nullptr,
-                         p2 ? &p2->x : nullptr,
-                         p2 ? &p2->y : nullptr);
-  }
-
-  /**
-   * Determine whether a rectangle has no area.
-   *
-   * A rectangle is considered "empty" for this function if `r` is NULL, or if
-   * `r`'s width and/or height are <= 0.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @returns true if the rectangle is "empty", false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Empty() const { return SDL_RectEmptyFloat(this); }
-
-  /**
-   * Determine whether two floating point rectangles are equal, within some
-   * given epsilon.
-   *
-   * Rectangles are considered equal if both are not NULL and each of their x,
-   * y, width and height are within `epsilon` of each other. If you don't know
-   * what value to use for `epsilon`, you should call the SDL_RectsEqualFloat
-   * function instead.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param other the second rectangle to test.
-   * @param epsilon the epsilon value for comparison.
-   * @returns true if the rectangles are equal, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Equal()
-   */
-  constexpr bool EqualEpsilon(const FRect& other, const float epsilon) const
-  {
-    return SDL_RectsEqualEpsilon(this, &other, epsilon);
-  }
-
-  /**
-   * Determine whether two rectangles are equal.
-   *
-   * Rectangles are considered equal if both are not NULL and each of their x,
-   * y, width and height match.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param other the second rectangle to test.
-   * @returns true if the rectangles are equal, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Equal(const FRect& other) const
-  {
-    return SDL_RectsEqualFloat(this, &other);
-  }
-
-  /**
-   * @brief Check whether the rect contains given point
-   *
-   * @param p Point to check
-   *
-   * @returns True if the point is contained in the rect
-   *
-   */
-  constexpr bool Contains(const FPoint& p) const
-  {
-    return SDL_PointInRectFloat(&p, this);
-  }
-
-  /**
-   * @brief Check whether the rect contains given point
-   *
-   * @param other Point to check
-   *
-   * @returns True if the point is contained in the rect
-   *
-   */
-  constexpr bool Contains(const FRect& other) const
-  {
-    return GetUnion(other) == *this;
-  }
-
-  /**
-   * Determine whether two rectangles intersect.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns true if there is an intersection, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetIntersection()
-   */
-  bool HasIntersection(const FRect& other) const
-  {
-    return SDL_HasRectIntersectionFloat(this, &other);
-  }
-
-  /**
-   * Calculate the intersection of two rectangles.
-   *
-   * If `result` is NULL then this function will return false.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns an SDL_Rect structure filled in with the intersection of
-   *               if there is intersection, std::nullopt otherwise.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa HasIntersection()
-   */
-  constexpr std::optional<FRect> GetIntersection(const FRect& other) const
-  {
-    if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
-      return result;
-    }
-    return std::nullopt;
-  }
-
-  /**
-   * Calculate the union of two rectangles with float precision.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns Rect representing union of two rectangles
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  inline std::optional<FRect> GetUnion(const FRect& other) const
-  {
-    if (FRect result; SDL_GetRectUnionFloat(this, &other, &result))
-      return result;
-    return std::nullopt;
-  }
-
-  /**
-   * @brief Get a rect extended by specified amount of pixels
-   *
-   * @param[in] amount Number of pixels to extend by
-   *
-   * @returns Extended rect
-   *
-   */
-  constexpr FRect GetExtension(unsigned int amount) const
-  {
-    FRect r = *this;
-    r.Extend(amount);
-    return r;
-  }
-
-  /**
-   * @brief Get a rect extended by specified amount of pixels
-   *
-   * @param[in] hAmount Number of pixels to extend by
-   *                    in horizontal direction
-   * @param[in] vAmount Number of pixels to extend by
-   *                    in vertical direction
-   *
-   * @returns Extended rect
-   *
-   */
-  constexpr FRect GetExtension(float hAmount, float vAmount) const
-  {
-    FRect r = *this;
-    r.Extend(hAmount, vAmount);
-    return r;
-  }
-
-  /**
-   * @brief Extend a rect by specified amount of pixels
-   *
-   * @param[in] amount Number of pixels to extend by
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& Extend(float amount) { return Extend(amount, amount); }
-
-  /**
-   * @brief Extend a rect by specified amount of pixels
-   *
-   * @param[in] hAmount Number of pixels to extend by
-   *                    in horizontal direction
-   * @param[in] vAmount Number of pixels to extend by
-   *                    in vertical direction
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& Extend(float hAmount, float vAmount)
-  {
-    x -= hAmount;
-    y -= vAmount;
-    w += hAmount * 2;
-    h += vAmount * 2;
-    return *this;
-  }
-
-  /**
-   * @brief Get rectangle moved by a given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Moved rectangle
-   *
-   */
-  constexpr FRect operator+(const FPoint& offset) const
-  {
-    return FRect(x + offset.x, y + offset.y, w, h);
-  }
-
-  /**
-   * @brief Get rectangle moved by an opposite of given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Moved rectangle
-   *
-   */
-  constexpr FRect operator-(const FPoint& offset) const
-  {
-    return FRect(x - offset.x, y - offset.y, w, h);
-  }
-
-  /**
-   * @brief Move by then given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& operator+=(const FPoint& offset)
-  {
-    x += offset.x;
-    y += offset.y;
-    return *this;
-  }
-
-  /**
-   * @brief Move by an opposite of the given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& operator-=(const FPoint& offset)
-  {
-    x -= offset.x;
-    y -= offset.y;
-    return *this;
-  }
-};
-
-#pragma region impl
-/// @}
-
-constexpr bool Point::IsInRect(const Rect& r) const
-{
-  return r.Contains(*this);
-}
-
-constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
-
-constexpr Point Point::GetClamped(const Rect& rect) const
-{
-  Point p = *this;
-  p.Clamp(rect);
-  return p;
-}
-
-constexpr Point& Point::Clamp(const Rect& rect)
-{
-  if (x < rect.x) x = rect.x;
-  if (x > rect.GetX2()) x = rect.GetX2();
-  if (y < rect.y) y = rect.y;
-  if (y > rect.GetY2()) y = rect.GetY2();
-  return *this;
-}
-
-constexpr Point Point::GetWrapped(const Rect& rect) const
-{
-  Point p = *this;
-  p.Wrap(rect);
-  return p;
-}
-
-constexpr Point& Point::Wrap(const Rect& rect)
-{
-  if (x < rect.x)
-    x = rect.x + rect.w - 1 - (rect.x - x + rect.w - 1) % rect.w;
-  else if (x >= rect.x + rect.w)
-    x = rect.x + (x - rect.x - rect.w) % rect.w;
-
-  if (y < rect.y)
-    y = rect.y + rect.h - 1 - (rect.y - y + rect.h - 1) % rect.h;
-  else if (y >= rect.y + rect.h)
-    y = rect.y + (y - rect.y - rect.h) % rect.h;
-
-  return *this;
-}
-
-constexpr bool FPoint::IsInRect(const FRect& r) const
-{
-  return r.Contains(*this);
-}
-
-constexpr FPoint FPoint::GetClamped(const FRect& rect) const
-{
-  FPoint p = *this;
-  p.Clamp(rect);
-  return p;
-}
-
-constexpr FPoint& FPoint::Clamp(const FRect& rect)
-{
-  if (x < rect.x) x = rect.x;
-  if (x > rect.GetX2()) x = rect.GetX2();
-  if (y < rect.y) y = rect.y;
-  if (y > rect.GetY2()) y = rect.GetY2();
-  return *this;
-}
-
-constexpr FPoint FPoint::GetWrapped(const FRect& rect) const
-{
-  FPoint p = *this;
-  p.Wrap(rect);
-  return p;
-}
-
-constexpr FPoint& FPoint::Wrap(const FRect& rect)
-{
-  if (x < rect.x)
-    x = rect.x + rect.w - 1 - fmod(rect.x - x + rect.w - 1, rect.w);
-  else if (x >= rect.x + rect.w)
-    x = rect.x + fmod(x - rect.x - rect.w, rect.w);
-
-  if (y < rect.y)
-    y = rect.y + rect.h - 1 - fmod(rect.y - y + rect.h - 1, rect.h);
-  else if (y >= rect.y + rect.h)
-    y = rect.y + fmod(y - rect.y - rect.h, rect.h);
-
-  return *this;
-}
-
-constexpr Rect::operator FRect() const
-{
-  return {float(x), float(y), float(w), float(h)};
-}
-
-#pragma endregion impl
-
-/**
- * @defgroup CategoryTimer Timer Support
- *
- * SDL provides time management functionality. It is useful for dealing with
- * (usually) small durations of time.
- *
- * This is not to be confused with _calendar time_ management, which is
- * provided by [CategoryTime](#CategoryTime).
- *
- * This category covers measuring time elapsed (GetTicks(),
- * GetPerformanceCounter()), putting a thread to sleep for a certain
- * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elapsed
- * (AddTimer(), etc).
- *
- * @{
- */
-
-/**
- * Convert seconds to nanoseconds.
- *
- * This only converts whole numbers, not fractional seconds.
- *
- * @param time the number of seconds to convert.
- * @returns the converted Time.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr Time Time::FromPosix(Sint64 time)
-{
-  return Time::FromNS(SDL_SECONDS_TO_NS(time));
-}
-
-/**
- * Convert nanoseconds to seconds.
- *
- * This only converts whole numbers, not fractional seconds.
- *
- * @returns Posix time (in seconds).
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr Sint64 Time::ToPosix() const
-{
-  return SDL_NS_TO_SECONDS(m_value.count());
-}
-
-/**
- * Get the time elapsed since SDL library initialization.
- *
- * @returns a std::chrono::nanoseconds value representing the number of
- * nanoseconds since the SDL library initialized.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline std::chrono::nanoseconds GetTicks()
-{
-  return std::chrono::nanoseconds{SDL_GetTicksNS()};
-}
-
-/**
- * Get the current value of the high resolution counter.
- *
- * This function is typically used for profiling.
- *
- * The counter values are only meaningful relative to each other. Differences
- * between values can be converted to times by using
- * SDL_GetPerformanceFrequency().
- *
- * @returns the current counter value.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPerformanceFrequency()
- */
-inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
-
-/**
- * Get the count per second of the high resolution counter.
- *
- * @returns a platform-specific count per second.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPerformanceCounter()
- */
-inline Uint64 GetPerformanceFrequency()
-{
-  return SDL_GetPerformanceFrequency();
-}
-
-/**
- * Wait a specified duration before returning.
- *
- * This function waits a specified duration before returning. It
- * waits at least the specified time, but possibly longer due to OS
- * scheduling.
- *
- * @param duration the duration to delay, with max precision in ns.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- */
-inline void Delay(std::chrono::nanoseconds duration)
-{
-  SDL_DelayNS(duration.count());
-}
-
-/**
- * Wait a specified duration before returning.
- *
- * This function waits a specified duration before returning. It
- * will attempt to wait as close to the requested time as possible, busy
- * waiting if necessary, but could return later due to OS scheduling.
- *
- * @param duration the duration to delay.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Delay()
- * @sa DelayNS()
- */
-inline void DelayPrecise(std::chrono::nanoseconds duration)
-{
-  SDL_DelayPrecise(duration.count());
-}
-/**
- * Definition of the timer ID type.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using TimerID = SDL_TimerID;
-
-/**
- * Function prototype for the millisecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in milliseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param userdata an arbitrary pointer provided by the app through
- *                 SDL_AddTimer, for its own use.
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-using TimerCallback = SDL_TimerCallback;
-
-/**
- * Function prototype for the nanosecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param userdata an arbitrary pointer provided by the app through
- *                 AddTimer(), for its own use.
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-using NSTimerCallback = SDL_NSTimerCallback;
-
-/**
- * Function prototype for the nanosecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa AddTimer(TimerCB)
- */
-using TimerCB =
-  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimer() call and should return the next
- * timer interval. If the value returned from the callback is 0, the timer is
- * canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ms to execute and returned
- * 1000 (ms), the timer would only wait another 750 ms before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in milliseconds, passed to `callback`.
- * @param callback the TimerCallback function to call when the specified
- *                 `interval` elapses.
- * @param userdata a pointer that is passed to `callback`.
- * @returns a timer ID or 0 on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::milliseconds interval,
-                        TimerCallback callback,
-                        void* userdata)
-{
-  return SDL_AddTimer(interval.count(), callback, userdata);
-}
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimerNS() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in std::chrono::nanoseconds, passed to
- * `callback`.
- * @param callback the NSTimerCallback function to call when the specified
- *                 `interval` elapses.
- * @param userdata a pointer that is passed to `callback`.
- * @returns a timer ID or 0 on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::nanoseconds interval,
-                        NSTimerCallback callback,
-                        void* userdata)
-{
-  return SDL_AddTimerNS(interval.count(), callback, userdata);
-}
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimerNS() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in std::chrono::nanoseconds, passed to
- * `callback`.
- * @param callback the TimerCB function to call when the specified
- *                 `interval` elapses.
- * @returns a timer ID or 0 on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
-{
-  using Wrapper = CallbackWrapper<TimerCB>;
-  using Store = KeyValueWrapper<TimerID, TimerCB*>;
-
-  auto cb = Wrapper::Wrap(std::move(callback));
-
-  if (TimerID id = SDL_AddTimerNS(
-        interval.count(),
-        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-          auto& f = *static_cast<TimerCB*>(userdata);
-          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
-          // If ask to removal, then remove it
-          if (next == 0) delete Store::release(timerID);
-          return next;
-        },
-        cb)) {
-    Store::Wrap(id, std::move(cb));
-    return id;
-  }
-  delete cb;
-  return TimerID{0};
-}
-
-/**
- * Remove a timer created with AddTimer().
- *
- * @param id the ID of the timer to remove.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-inline bool RemoveTimer(TimerID id)
-{
-  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
-  return SDL_RemoveTimer(id);
-}
-
-/// @}
-
-/**
- * @defgroup CategoryVersion Querying SDL Version
- *
- * Functionality to query the current SDL version, both as headers the app was
- * compiled against, and a library the app is linked to.
- *
- * @{
- */
-
-#ifdef SDL3PP_DOC
-
-/**
- * The current major version of SDL headers.
- *
- * If this were SDL version 3.2.1, this value would be 3.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_MAJOR_VERSION 3
-
-/**
- * The current minor version of the SDL headers.
- *
- * If this were SDL version 3.2.1, this value would be 2.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_MINOR_VERSION 2
-
-/**
- * The current micro (or patchlevel) version of the SDL headers.
- *
- * If this were SDL version 3.2.1, this value would be 1.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_MICRO_VERSION 11
-
-/**
- * This macro turns the version numbers into a numeric value.
- *
- * (1,2,3) becomes 1002003.
- *
- * @param major the major version number.
- * @param minor the minorversion number.
- * @param patch the patch version number.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_VERSIONNUM(major, minor, patch)                                    \
-  ((major) * 1000000 + (minor) * 1000 + (patch))
-
-/**
- * This macro extracts the major version from a version number
- *
- * 1002003 becomes 1.
- *
- * @param version the version number.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_VERSIONNUM_MAJOR(version) ((version) / 1000000)
-
-/**
- * This macro extracts the minor version from a version number
- *
- * 1002003 becomes 2.
- *
- * @param version the version number.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_VERSIONNUM_MINOR(version) (((version) / 1000) % 1000)
-
-/**
- * This macro extracts the micro version from a version number
- *
- * 1002003 becomes 3.
- *
- * @param version the version number.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_VERSIONNUM_MICRO(version) ((version) % 1000)
-
-/**
- * This is the version number macro for the current SDL version.
- *
- * @since This macro is available since SDL 3.2.0.
- *
- * @sa GetVersion
- */
-#define SDL_VERSION                                                            \
-  SDL_VERSIONNUM(SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
-
-/**
- * This macro will evaluate to true if compiled with SDL at least X.Y.Z.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL_VERSION_ATLEAST(X, Y, Z) (SDL_VERSION >= SDL_VERSIONNUM(X, Y, Z))
-
-#endif // SDL3PP_DOC
-
-/**
- * Get the version of SDL that is linked against your program.
- *
- * If you are linking to SDL dynamically, then it is possible that the current
- * version will be different than the version you compiled against. This
- * function returns the current version, while SDL_VERSION is the version you
- * compiled with.
- *
- * This function may be called safely at any time, even before InitSubSystem().
- *
- * @returns the version of the linked library.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetRevision
- */
-inline int GetVersion() { return SDL_GetVersion(); }
-
-/**
- * Get the code revision of SDL that is linked against your program.
- *
- * This value is the revision of the code you are linked with and may be
- * different from the code you are compiling with, which is found in the
- * constant SDL_REVISION.
- *
- * The revision is arbitrary string (a hash value) uniquely identifying the
- * exact revision of the SDL library in use, and is only useful in comparing
- * against other revisions. It is NOT an incrementing number.
- *
- * If SDL wasn't built from a git repository with the appropriate tools, this
- * will return an empty string.
- *
- * You shouldn't use this function for anything but logging it for debugging
- * purposes. The string is not intended to be reliable in any way.
- *
- * @returns an arbitrary string, uniquely identifying the exact revision of
- *          the SDL library in use.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetVersion
- */
-inline const char* GetRevision() { return SDL_GetRevision(); }
-
-/// @}
-
-/**
- * @defgroup CategoryIOStream I/O Streams
- *
- * SDL provides an abstract interface for reading and writing data streams. It
- * offers implementations for files, memory, etc, and the app can provide
- * their own implementations, too.
- *
- * SDL_IOStream is not related to the standard C++ iostream class, other than
- * both are abstract interfaces to read/write data.
- *
- * @{
- */
-
-/**
- * @cat constructor-tag
- */
-constexpr struct IOFromDynamicMem_CtorTag
-{
-} IOFromDynamicMem;
-
-// Forward decl
-struct IOStreamBase;
-
-// Forward decl
-struct IOStreamRef;
-
-// Forward decl
-struct IOStream;
-
-/**
- * IOStreamBase status, set by a read or write operation.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using IOStatus = SDL_IOStatus;
-
-constexpr IOStatus IO_STATUS_READY =
-  SDL_IO_STATUS_READY; ///< Everything is ready (no errors and not EOF).
-
-constexpr IOStatus IO_STATUS_ERROR =
-  SDL_IO_STATUS_ERROR; ///< Read or write I/O error.
-
-constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file.
-
-constexpr IOStatus IO_STATUS_NOT_READY =
-  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready.
-
-constexpr IOStatus IO_STATUS_READONLY =
-  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer.
-
-constexpr IOStatus IO_STATUS_WRITEONLY =
-  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
-
-/**
- * Possible `whence` values for IOStreamBase seeking.
- *
- * These map to the same "whence" concept that `fseek` or `lseek` use in the
- * standard C runtime.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using IOWhence = SDL_IOWhence;
-
-constexpr IOWhence IO_SEEK_SET =
-  SDL_IO_SEEK_SET; ///< Seek from the beginning of data.
-
-constexpr IOWhence IO_SEEK_CUR =
-  SDL_IO_SEEK_CUR; ///< Seek relative to current read point.
-
-constexpr IOWhence IO_SEEK_END =
-  SDL_IO_SEEK_END; ///< Seek relative to the end of data.
-
-/**
- * The function pointers that drive an IOStreamBase.
- *
- * Applications can provide this struct to IOStreamBase.IOStreamBase() to create
- * their own implementation of IOStreamBase. This is not necessarily required,
- * as SDL already offers several common types of I/O streams, via
- * IOStreamBase.IOStreamBase().
- *
- * This structure should be initialized using SDL_INIT_INTERFACE()
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa SDL_INIT_INTERFACE
- */
-using IOStreamInterface = SDL_IOStreamInterface;
-
-/**
- * The read/write operation structure.
- *
- * This operates as an opaque handle. There are several APIs to create various
- * types of I/O streams, or an app can supply an IOStreamInterface to
- * IOStreamBase.IOStreamBase() to provide their own stream implementation behind
- * this struct's abstract interface.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
- *
- * @sa IOStream
- * @sa IOStreamRef
- */
-struct IOStreamBase : Resource<SDL_IOStream*>
-{
-  using Resource::Resource;
-
-  /**
-   * Use this function to create a new SDL_IOStream structure for reading from
-   * and/or writing to a named file.
-   *
-   * The `mode` string is treated roughly the same as in a call to the C
-   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
-   * scenes.
-   *
-   * Available `mode` strings:
-   *
-   * - "r": Open a file for reading. The file must exist.
-   * - "w": Create an empty file for writing. If a file with the same name
-   *   already exists its content is erased and the file is treated as a new
-   *   empty file.
-   * - "a": Append to a file. Writing operations append data at the end of the
-   *   file. The file is created if it does not exist.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   * - "a+": Open a file for reading and appending. All writing operations are
-   *   performed at the end of the file, protecting the previous content to be
-   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-   *   anywhere in the file for reading, but writing operations will move it
-   *   back to the end of file. The file is created if it does not exist.
-   *
-   * **NOTE**: In order to open a file as a binary file, a "b" character has to
-   * be included in the `mode` string. This additional "b" character can either
-   * be appended at the end of the string (thus making the following compound
-   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
-   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
-   * Additional characters may follow the sequence, although they should have no
-   * effect. For example, "t" is sometimes appended to make explicit the file is
-   * a text file.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * In Android, IOStreamBase.IOStreamBase() can be used to open content://
-   * URIs. As a fallback, IOStreamBase.IOStreamBase() will transparently open a
-   * matching filename in the app's `assets`.
-   *
-   * Closing the IOStreamBase will close SDL's internal file handle.
-   *
-   * The following properties may be set at creation time by SDL:
-   *
-   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this IOStreamBase is using to access the
-   *   filesystem. If the program isn't running on Windows, or SDL used some
-   *   other method to access the filesystem, this property will not be set.
-   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStreamBase is using to access the filesystem.
-   *   If SDL used some other method to access the filesystem, this property
-   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
-   *   than your app, trying to use this pointer will almost certainly result in
-   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
-   *   your app with the same compiler and settings to avoid it.
-   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   IOStreamBase is using to access the filesystem.
-   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this IOStreamBase is using to access
-   *   the filesystem. If SDL used some other method to access the filesystem,
-   *   this property will not be set.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @post the object is convertible to true if valid or false on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa IOStreamBase.Flush
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Tell
-   * @sa IOStreamBase.Write
-   */
-  IOStreamBase(StringParam file, StringParam mode)
-    : Resource(SDL_IOFromFile(file, mode))
-  {
-  }
-
-  /**
-   * Use this function to prepare a read-write memory buffer for use with
-   * IOStreamBase.
-   *
-   * This function sets up an IOStreamBase struct based on a memory area of a
-   * certain size, for both read and write access.
-   *
-   * This memory buffer is not copied by the IOStreamBase; the pointer you
-   * provide must remain valid until you close the stream. Closing the stream
-   * will not free the original buffer.
-   *
-   * If you need to make sure the IOStreamBase never writes to the memory
-   * buffer, you should use IOStreamBase.IOStreamBase() with a read-only buffer
-   * of memory instead.
-   *
-   * The following properties will be set at creation time by SDL:
-   *
-   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
-   *   was passed to this function.
-   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
-   *   that was passed to this function.
-   *
-   * @param mem a pointer to a buffer to feed an IOStreamBase stream.
-   * @param size the buffer size, in bytes.
-   * @post the object is convertible to true if valid or false on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.IOStreamBase
-   * @sa IOStreamRef.Close
-   * @sa IOStreamBase.Flush
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Tell
-   * @sa IOStreamBase.Write
-   */
-  IOStreamBase(void* mem, size_t size)
-    : Resource(SDL_IOFromMem(mem, size))
-  {
-  }
-
-  /**
-   * Use this function to prepare a read-only memory buffer for use with
-   * IOStreamBase.
-   *
-   * This function sets up an IOStreamBase struct based on a memory area of a
-   * certain size. It assumes the memory area is not writable.
-   *
-   * Attempting to write to this IOStreamBase stream will report an error
-   * without writing to the memory buffer.
-   *
-   * This memory buffer is not copied by the IOStreamBase; the pointer you
-   * provide must remain valid until you close the stream. Closing the stream
-   * will not free the original buffer.
-   *
-   * If you need to write to a memory buffer, you should use
-   * IOStreamBase.IOStreamBase() with a writable buffer of memory instead.
-   *
-   * The following properties will be set at creation time by SDL:
-   *
-   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
-   *   was passed to this function.
-   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
-   *   that was passed to this function.
-   *
-   * @param mem a pointer to a read-only buffer to feed an IOStreamBase stream.
-   * @param size the buffer size, in bytes.
-   * @post the object is convertible to true if valid or false on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.IOStreamBase
-   * @sa IOStreamRef.Close
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Tell
-   */
-  IOStreamBase(const void* mem, size_t size)
-    : Resource(SDL_IOFromConstMem(mem, size))
-  {
-  }
-
-  /**
-   * Use this function to create an IOStreamBase that is backed by dynamically
-   * allocated memory.
-   *
-   * This supports the following properties to provide access to the memory and
-   * control over allocations:
-   *
-   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
-   *   memory of the stream. This can be set to nullptr to transfer ownership of
-   *   the memory to the application, which should free the memory with
-   *   free(). If this is done, the next operation on the stream must be
-   *   IOStreamRef.Close().
-   * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
-   *   multiples of this size, defaulting to 1024.
-   *
-   * @post a pointer to a new IOStreamBase structure or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Tell
-   * @sa IOStreamBase.Write
-   */
-  IOStreamBase(IOFromDynamicMem_CtorTag)
-    : Resource(SDL_IOFromDynamicMem())
-  {
-  }
-
-  /**
-   * Create a custom IOStreamBase.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own IOStreamBase implementation. If you just need an IOStreamBase to
-   * read/write a common data source, you should use the built-in
-   * implementations in SDL, like IOStreamBase.IOStreamBase() or
-   * IOStreamBase.IOStreamBase(), etc.
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this IOStreamBase, initialized
-   *              using SDL_INIT_INTERFACE().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post the object is convertible to true if valid or false on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa SDL_INIT_INTERFACE
-   * @sa IOStreamBase.IOStreamBase
-   * @sa IOStreamBase.IOStreamBase
-   * @sa IOStreamBase.IOStreamBase
-   */
-  IOStreamBase(const IOStreamInterface& iface, void* userdata)
-    : Resource(SDL_OpenIO(&iface, userdata))
-  {
-  }
-
-  /**
-   * Use this function to prepare a memory buffer for use with IOStreamBase.
-   *
-   * @tparam U
-   * @param mem the span of memory to use as buffer. If const we get read-only,
-   * otherwise we get a read-write buffer.
-   *
-   * @post the object is convertible to true if valid or false on failure; call
-   *       GetError() for more information.
-   */
-  template<class U>
-  IOStreamBase(std::span<U> mem)
-    : IOStreamBase(mem.data(), mem.size_bytes())
-  {
-  }
-
-  /**
-   * Get the properties associated with an IOStreamBase.
-   *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  PropertiesRef GetProperties() const
-  {
-    return PropertiesRef{SDL_GetIOProperties(get())};
-  }
-
-  /**
-   * Query the stream status of an IOStreamBase.
-   *
-   * This information can be useful to decide if a short read or write was due
-   * to an error, an EOF, or a non-blocking operation that isn't yet ready to
-   * complete.
-   *
-   * An IOStreamBase's status is only expected to change after a
-   * IOStreamBase.Read or IOStreamBase.Write call; don't expect it to change if
-   * you just call this query function in a tight loop.
-   *
-   * @returns an IOStatus enum with the current state.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  IOStatus GetStatus() const { return SDL_GetIOStatus(get()); }
-
-  /**
-   * Use this function to get the size of the data stream in an IOStreamBase.
-   *
-   * @returns the size of the data stream in the IOStreamBase on success or a
-   *          negative error code on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  Sint64 GetSize() const { return SDL_GetIOSize(get()); }
-
-  /**
-   * Seek within an IOStreamBase data stream.
-   *
-   * This function seeks to byte `offset`, relative to `whence`.
-   *
-   * `whence` may be any of the following values:
-   *
-   * - `IO_SEEK_SET`: seek from the beginning of data
-   * - `IO_SEEK_CUR`: seek relative to current read point
-   * - `IO_SEEK_END`: seek relative to the end of data
-   *
-   * If this stream can not seek, it will return -1.
-   *
-   * @param offset an offset in bytes, relative to `whence` location; can be
-   *               negative.
-   * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,
-   *               `IO_SEEK_END`.
-   * @returns the final offset in the data stream after the seek or -1 on
-   *          failure; call GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.Tell
-   */
-  Sint64 Seek(Sint64 offset, IOWhence whence)
-  {
-    return SDL_SeekIO(get(), offset, whence);
-  }
-
-  /**
-   * Determine the current read/write offset in an IOStreamBase data stream.
-   *
-   * This is actually a wrapper function that calls the IOStreamBase's `seek`
-   * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
-   * application development.
-   *
-   * @returns the current offset in the stream, or -1 if the information can not
-   *          be determined.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.Seek
-   */
-  Sint64 Tell() const { return SDL_TellIO(get()); }
-
-  /**
-   * Read from a data source.
-   *
-   * This function reads up `size` bytes from the data source to the area
-   * pointed at by `ptr`. This function may read less bytes than requested.
-   *
-   * This function will return zero when the data stream is completely read, and
-   * IOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and
-   * the stream is not at EOF, IOStreamBase.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
-   *
-   * @param ptr a pointer to a buffer to read data into.
-   * @param size the number of bytes to read from the data source.
-   * @returns the number of bytes read, or 0 on end of file or other failure;
-   *          call GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.Write
-   * @sa IOStreamBase.GetStatus
-   */
-  size_t Read(void* ptr, size_t size) { return SDL_ReadIO(get(), ptr, size); }
-
-  /**
-   * Write to an IOStreamBase data stream.
-   *
-   * This function writes exactly `size` bytes from the area pointed at by `ptr`
-   * to the stream. If this fails for any reason, it'll return less than `size`
-   * to demonstrate how far the write progressed. On success, it returns `size`.
-   *
-   * On error, this function still attempts to write as much as possible, so it
-   * might return a positive value less than the requested write size.
-   *
-   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
-   * recoverable, such as a non-blocking write that can simply be retried later,
-   * or a fatal error.
-   *
-   * @param data the bytes to write to
-   * @returns the number of bytes written, which will be less than `size` on
-   *          failure; call GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.printf
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Flush
-   * @sa IOStreamBase.GetStatus
-   */
-  template<class U>
-  size_t Write(std::span<U> data)
-  {
-    return Write(data.data(), data.size_bytes());
-  }
-
-  /**
-   * Write to an IOStreamBase data stream.
-   *
-   * This function writes exactly `size` bytes from the area pointed at by `ptr`
-   * to the stream. If this fails for any reason, it'll return less than `size`
-   * to demonstrate how far the write progressed. On success, it returns `size`.
-   *
-   * On error, this function still attempts to write as much as possible, so it
-   * might return a positive value less than the requested write size.
-   *
-   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
-   * recoverable, such as a non-blocking write that can simply be retried later,
-   * or a fatal error.
-   *
-   * @param str the bytes to write to
-   * @returns the number of bytes written, which will be less than `size` on
-   *          failure; call GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.printf
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Flush
-   * @sa IOStreamBase.GetStatus
-   */
-  size_t Write(std::string_view str) { return Write(str.data(), str.size()); }
-
-  /**
-   * Write to an IOStreamBase data stream.
-   *
-   * This function writes exactly `size` bytes from the area pointed at by `ptr`
-   * to the stream. If this fails for any reason, it'll return less than `size`
-   * to demonstrate how far the write progressed. On success, it returns `size`.
-   *
-   * On error, this function still attempts to write as much as possible, so it
-   * might return a positive value less than the requested write size.
-   *
-   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
-   * recoverable, such as a non-blocking write that can simply be retried later,
-   * or a fatal error.
-   *
-   * @param ptr a pointer to a buffer containing data to write.
-   * @param size the number of bytes to write.
-   * @returns the number of bytes written, which will be less than `size` on
-   *          failure; call GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.printf
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Flush
-   * @sa IOStreamBase.GetStatus
-   */
-  size_t Write(const void* ptr, size_t size)
-  {
-    return SDL_WriteIO(get(), ptr, size);
-  }
-
-  /**
-   * @cat formatted-string
-   */
-  size_t print(std::string_view fmt, auto... args)
-  {
-    return Write(std::vformat(fmt, std::make_format_args(args...)));
-  }
-
-  /**
-   * @cat formatted-string
-   */
-  size_t println(std::string_view fmt, auto... args)
-  {
-    std::string result =
-      std::vformat(fmt, std::make_format_args(args...)) + "\n";
-    return Write(result);
-  }
-
-  /**
-   * Print to an IOStreamBase data stream.
-   *
-   * @warning this is not typesafe! Prefer using print() and println()
-   *
-   * This function does formatted printing to the stream.
-   *
-   * @param fmt a printf() style format string.
-   * @param ... additional parameters matching % tokens in the `fmt` string, if
-   *            any.
-   * @returns the number of bytes written or 0 on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.vprintf
-   * @sa IOStreamBase.Write
-   */
-  size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
-  {
-    va_list ap;
-    size_t result;
-
-    va_start(ap, fmt);
-    result = vprintf(fmt, ap);
-    va_end(ap);
-
-    return result;
-  }
-
-  /**
-   * Print to an IOStreamBase data stream.
-   *
-   * @warning this is not typesafe! Prefer using print() and println()
-   *
-   * This function does formatted printing to the stream.
-   *
-   * @param fmt a printf() style format string.
-   * @param ap a variable argument list.
-   * @returns the number of bytes written or 0 on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.printf
-   * @sa IOStreamBase.Write
-   */
-  size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap)
-  {
-    return SDL_IOvprintf(get(), fmt, ap);
-  }
-
-  /**
-   * Flush any buffered data in the stream.
-   *
-   * This function makes sure that any buffered data is written to the stream.
-   * Normally this isn't necessary but if the stream is a pipe or socket it
-   * guarantees that any pending data is sent.
-   *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.IOStreamBase
-   * @sa IOStreamBase.Write
-   */
-  bool Flush() { return SDL_FlushIO(get()); }
-
-  /**
-   * Load all the data from an SDL data stream.
-   *
-   * The data is allocated with a zero byte at the end (null terminated) for
-   * convenience. This extra byte is not included in the value reported via
-   * `datasize`.
-   *
-   * @returns the data or nullptr on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa LoadFile
-   * @sa IOStreamBase.SaveFile
-   */
-  OwnArray<std::byte> LoadFile()
-  {
-    size_t datasize = 0;
-    auto data =
-      static_cast<std::byte*>(SDL_LoadFile_IO(get(), &datasize, false));
-    return OwnArray<std::byte>{data, datasize};
-  }
-
-  /**
-   * Save all the data into an SDL data stream.
-   *
-   * @param data the data to be written. If datasize is 0, may be nullptr or a
-   *             invalid pointer.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SaveFile
-   * @sa IOStreamBase.LoadFile
-   */
-  template<class U>
-  bool SaveFile(std::span<U> data)
-  {
-    return SaveFile(data.data(), data.size_bytes());
-  }
-
-  /**
-   * Save all the data into an SDL data stream.
-   *
-   * @param str the data to be written. If datasize is 0, may be nullptr or a
-   *            invalid pointer.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SaveFile
-   * @sa IOStreamBase.LoadFile
-   */
-  bool SaveFile(std::string_view str)
-  {
-    return SaveFile(str.data(), str.size());
-  }
-
-  /**
-   * Save all the data into an SDL data stream.
-   *
-   * @param data the data to be written. If datasize is 0, may be nullptr or a
-   *             invalid pointer.
-   * @param datasize the number of bytes to be written.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SaveFile
-   * @sa IOStreamBase.LoadFile
-   */
-  bool SaveFile(const void* data, size_t datasize)
-  {
-    return SDL_SaveFile_IO(get(), data, datasize, false);
-  }
-
-  /**
-   * Use this function to read a byte from an IOStreamBase.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on success or false on failure or EOF; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU8(Uint8* value) { return SDL_ReadU8(get(), value); }
-
-  /**
-   * Use this function to read a signed byte from an IOStreamBase.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS8(Sint8* value) { return SDL_ReadS8(get(), value); }
-
-  /**
-   * Use this function to read 16 bits of little-endian data from an
-   * IOStreamBase and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU16LE(Uint16* value) { return SDL_ReadU16LE(get(), value); }
-
-  /**
-   * Use this function to read 16 bits of little-endian data from an
-   * IOStreamBase and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS16LE(Sint16* value) { return SDL_ReadS16LE(get(), value); }
-
-  /**
-   * Use this function to read 16 bits of big-endian data from an IOStreamBase
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU16BE(Uint16* value) { return SDL_ReadU16BE(get(), value); }
-
-  /**
-   * Use this function to read 16 bits of big-endian data from an IOStreamBase
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS16BE(Sint16* value) { return SDL_ReadS16BE(get(), value); }
-
-  /**
-   * Use this function to read 32 bits of little-endian data from an
-   * IOStreamBase and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU32LE(Uint32* value) { return SDL_ReadU32LE(get(), value); }
-
-  /**
-   * Use this function to read 32 bits of little-endian data from an
-   * IOStreamBase and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS32LE(Sint32* value) { return SDL_ReadS32LE(get(), value); }
-
-  /**
-   * Use this function to read 32 bits of big-endian data from an IOStreamBase
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU32BE(Uint32* value) { return SDL_ReadU32BE(get(), value); }
-
-  /**
-   * Use this function to read 32 bits of big-endian data from an IOStreamBase
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS32BE(Sint32* value) { return SDL_ReadS32BE(get(), value); }
-
-  /**
-   * Use this function to read 64 bits of little-endian data from an
-   * IOStreamBase and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU64LE(Uint64* value) { return SDL_ReadU64LE(get(), value); }
-
-  /**
-   * Use this function to read 64 bits of little-endian data from an
-   * IOStreamBase and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS64LE(Sint64* value) { return SDL_ReadS64LE(get(), value); }
-
-  /**
-   * Use this function to read 64 bits of big-endian data from an IOStreamBase
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU64BE(Uint64* value) { return SDL_ReadU64BE(get(), value); }
-
-  /**
-   * Use this function to read 64 bits of big-endian data from an IOStreamBase
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
-   *
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS64BE(Sint64* value) { return SDL_ReadS64BE(get(), value); }
-
-  /**
-   * Use this function to write a byte to an IOStreamBase.
-   *
-   * @param value the byte value to write.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU8(Uint8 value) { return SDL_WriteU8(get(), value); }
-
-  /**
-   * Use this function to write a signed byte to an IOStreamBase.
-   *
-   * @param value the byte value to write.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS8(Sint8 value) { return SDL_WriteS8(get(), value); }
-
-  /**
-   * Use this function to write 16 bits in native format to an IOStreamBase as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU16LE(Uint16 value) { return SDL_WriteU16LE(get(), value); }
-
-  /**
-   * Use this function to write 16 bits in native format to an IOStreamBase as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS16LE(Sint16 value) { return SDL_WriteS16LE(get(), value); }
-
-  /**
-   * Use this function to write 16 bits in native format to an IOStreamBase as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU16BE(Uint16 value) { return SDL_WriteU16BE(get(), value); }
-
-  /**
-   * Use this function to write 16 bits in native format to an IOStreamBase as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS16BE(Sint16 value) { return SDL_WriteS16BE(get(), value); }
-
-  /**
-   * Use this function to write 32 bits in native format to an IOStreamBase as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU32LE(Uint32 value) { return SDL_WriteU32LE(get(), value); }
-
-  /**
-   * Use this function to write 32 bits in native format to an IOStreamBase as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS32LE(Sint32 value) { return SDL_WriteS32LE(get(), value); }
-
-  /**
-   * Use this function to write 32 bits in native format to an IOStreamBase as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU32BE(Uint32 value) { return SDL_WriteU32BE(get(), value); }
-
-  /**
-   * Use this function to write 32 bits in native format to an IOStreamBase as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS32BE(Sint32 value) { return SDL_WriteS32BE(get(), value); }
-
-  /**
-   * Use this function to write 64 bits in native format to an IOStreamBase as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU64LE(Uint64 value) { return SDL_WriteU64LE(get(), value); }
-
-  /**
-   * Use this function to write 64 bits in native format to an IOStreamBase as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS64LE(Sint64 value) { return SDL_WriteS64LE(get(), value); }
-
-  /**
-   * Use this function to write 64 bits in native format to an IOStreamBase as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU64BE(Uint64 value) { return SDL_WriteU64BE(get(), value); }
-
-  /**
-   * Use this function to write 64 bits in native format to an IOStreamBase as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS64BE(Sint64 value) { return SDL_WriteS64BE(get(), value); }
-};
-
-/**
- * Handle to a non owned iOStream
- *
- * @cat resource
- *
- * @sa IOStreamBase
- * @sa IOStream
- */
-struct IOStreamRef : IOStreamBase
-{
-  using IOStreamBase::IOStreamBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr IOStreamRef(const IOStreamRef& other)
-    : IOStreamBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr IOStreamRef(IOStreamRef&& other)
-    : IOStreamBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~IOStreamRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  IOStreamRef& operator=(IOStreamRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Close and free an allocated IOStreamBase structure.
-   *
-   * IOStreamRef.Close() closes and cleans up the IOStreamBase stream. It
-   * releases any resources used by the stream and frees the IOStreamBase
-   * itself. This returns true on success, or false if the stream failed to
-   * flush to its output (e.g. to disk).
-   *
-   * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the IOStreamBase is still invalid once this function
-   * returns.
-   *
-   * This call flushes any buffered writes to the operating system, but there
-   * are no guarantees that those writes have gone to physical media; they might
-   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
-   * crucial that writes go to disk immediately, so they are definitely stored
-   * even if the power fails before the file cache would have caught up, one
-   * should call IOStreamBase.Flush() before closing. Note that flushing takes
-   * time and makes the system and your app operate less efficiently, so do so
-   * sparingly.
-   *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.IOStreamBase
-   */
-  bool reset(SDL_IOStream* newResource = {})
-  {
-    return SDL_CloseIO(release(newResource));
-  }
-
-  /**
-   * Close and free an allocated IOStreamBase structure.
-   *
-   * IOStreamRef.Close() closes and cleans up the IOStreamBase stream. It
-   * releases any resources used by the stream and frees the IOStreamBase
-   * itself. This returns true on success, or false if the stream failed to
-   * flush to its output (e.g. to disk).
-   *
-   * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the IOStreamBase is still invalid once this function
-   * returns.
-   *
-   * This call flushes any buffered writes to the operating system, but there
-   * are no guarantees that those writes have gone to physical media; they might
-   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
-   * crucial that writes go to disk immediately, so they are definitely stored
-   * even if the power fails before the file cache would have caught up, one
-   * should call IOStreamBase.Flush() before closing. Note that flushing takes
-   * time and makes the system and your app operate less efficiently, so do so
-   * sparingly.
-   *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.IOStreamBase
-   */
-  bool Close() { return reset(); }
-};
-
-/**
- * Handle to an owned iOStream
- *
- * @cat resource
- *
- * @sa IOStreamBase
- * @sa IOStreamRef
- */
-struct IOStream : IOStreamRef
-{
-  using IOStreamRef::IOStreamRef;
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit IOStream(SDL_IOStream* resource = {})
-    : IOStreamRef(resource)
-  {
-  }
-
-  constexpr IOStream(const IOStream& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr IOStream(IOStream&& other) = default;
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~IOStream() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  IOStream& operator=(IOStream other)
-  {
-    reset(other.release());
-    return *this;
-  }
-};
-
-namespace prop::IOStream {
-
-constexpr auto WINDOWS_HANDLE_POINTER =
-  SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER;
-
-constexpr auto STDIO_FILE_POINTER = SDL_PROP_IOSTREAM_STDIO_FILE_POINTER;
-
-constexpr auto FILE_DESCRIPTOR_NUMBER =
-  SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER;
-
-constexpr auto ANDROID_AASSET_POINTER =
-  SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER;
-
-constexpr auto MEMORY_POINTER = SDL_PROP_IOSTREAM_MEMORY_POINTER;
-
-constexpr auto MEMORY_SIZE_NUMBER = SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER;
-
-constexpr auto DYNAMIC_MEMORY_POINTER =
-  SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER;
-
-constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
-  SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER;
-
-} // namespace prop::IOStream
-
-/**
- * Load all the data from a file path.
- *
- * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported via
- * `datasize`.
- *
- * @param file the path to read all available data from.
- * @returns the data or nullptr on failure; call GetError() for more
- *          information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOStreamBase.LoadFile
- * @sa SaveFile
- */
-inline OwnArray<std::byte> LoadFile(StringParam file)
-{
-  size_t datasize = 0;
-  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
-  return OwnArray<std::byte>{data, datasize};
-}
-
-/**
- * Save all the data into a file path.
- *
- * @param file the path to write all available data into.
- * @param data the data to be written. If datasize is 0, may be nullptr or a
- *             invalid pointer.
- * @param datasize the number of bytes to be written.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOStreamBase.SaveFile
- * @sa LoadFile
- */
-inline bool SaveFile(StringParam file, const void* data, size_t datasize)
-{
-  return SDL_SaveFile(file, data, datasize);
-}
-
-/**
- * Save all the data into a file path.
- *
- * @param file the path to write all available data into.
- * @param data the data to be written.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOStreamBase.SaveFile
- * @sa LoadFile
- */
-template<class T>
-inline bool SaveFile(StringParam file, std::span<T> data)
-{
-  return SaveFile(file, data.data(), data.size_bytes());
-}
-
-/**
- * Save all the data into a file path.
- *
- * @param file the path to write all available data into.
- * @param str the data to be written.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOStreamBase.SaveFile
- * @sa LoadFile
- */
-inline bool SaveFile(StringParam file, std::string_view str)
-{
-  return SaveFile(std::move(file), str.data(), str.size());
-}
-
-#pragma region impl
-/// @}
-
-#pragma endregion impl
-
-/**
  *
  * @defgroup CategoryStorage Storage Abstraction
  *
@@ -26666,17 +26621,18 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param override a path to override the backend's default title root.
    * @param props a property list that may contain backend-specific information.
-   * @post a title storage container on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @post a title storage container on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa StorageRef.Close
    * @sa StorageBase.GetFileSize
    * @sa StorageBase.StorageBase
    * @sa StorageBase.ReadFile
    */
   StorageBase(StringParam override, PropertiesBase& props)
-    : Resource(SDL_OpenTitleStorage(override, props.get()))
+    : Resource(CheckError(SDL_OpenTitleStorage(override, props.get())))
   {
   }
 
@@ -26691,8 +26647,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param org the name of your organization.
    * @param app the name of your application.
    * @param props a property list that may contain backend-specific information.
-   * @post a user storage container on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @post a user storage container on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -26704,7 +26660,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.WriteFile
    */
   StorageBase(StringParam org, StringParam app, PropertiesBase& props)
-    : Resource(SDL_OpenUserStorage(org, app, props.get()))
+    : Resource(CheckError(SDL_OpenUserStorage(org, app, props.get())))
   {
   }
 
@@ -26717,8 +26673,8 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
-   * @post a filesystem storage container on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @post a filesystem storage container on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -26730,7 +26686,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.WriteFile
    */
   StorageBase(StringParam path)
-    : Resource(SDL_OpenFileStorage(path))
+    : Resource(CheckError(SDL_OpenFileStorage(path)))
   {
   }
 
@@ -26748,8 +26704,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param iface the interface that implements this storage, initialized using
    *              SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
-   * @post a storage container on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @post a storage container on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -26761,7 +26717,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.WriteFile
    */
   StorageBase(const StorageInterface& iface, void* userdata)
-    : Resource(SDL_OpenStorage(&iface, userdata))
+    : Resource(CheckError(SDL_OpenStorage(&iface, userdata)))
   {
   }
 
@@ -26783,7 +26739,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * Query the size of a file within a storage container.
    *
    * @param path the relative path of the file to query.
-   * @returns true if the file could be queried or false on failure; call
+   * @returns the file's length on success or 0 on failure; call
    *          GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
@@ -26796,7 +26752,7 @@ struct StorageBase : Resource<SDL_Storage*>
     if (Uint64 length; SDL_GetStorageFileSize(get(), path, &length)) {
       return length;
     }
-    return std::nullopt;
+    return 0;
   }
 
   /**
@@ -26809,7 +26765,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param path the relative path of the file to read.
    * @returns the content if the file was read or empty string on failure; call
-   * GetError() for more information.
+   *          GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -26887,8 +26843,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
-   * @returns true if the file was written or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -26896,7 +26851,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.ReadFile
    * @sa StorageBase.Ready
    */
-  bool WriteFile(StringParam path, std::string_view source)
+  void WriteFile(StringParam path, std::string_view source)
   {
     return WriteFile(std::move(path), source.data(), source.size());
   }
@@ -26906,8 +26861,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
-   * @returns true if the file was written or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -26916,11 +26870,11 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.Ready
    */
   template<class T>
-  bool WriteFile(StringParam path, std::span<T> source)
+  void WriteFile(StringParam path, std::span<T> source)
   {
     static_assert(std::is_convertible_v<T*, const void*>,
                   "destination can not be assigned");
-    return WriteFile(std::move(path), source.data(), source.size_bytes());
+    WriteFile(std::move(path), source.data(), source.size_bytes());
   }
 
   /**
@@ -26929,8 +26883,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
    * @param length the length of the source buffer.
-   * @returns true if the file was written or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -26938,25 +26891,24 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.ReadFile
    * @sa StorageBase.Ready
    */
-  bool WriteFile(StringParam path, const void* source, Uint64 length)
+  void WriteFile(StringParam path, const void* source, Uint64 length)
   {
-    return SDL_WriteStorageFile(get(), path, source, length);
+    CheckError(SDL_WriteStorageFile(get(), path, source, length));
   }
 
   /**
    * Create a directory in a writable storage container.
    *
    * @param path the path of the directory to create.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool CreateDirectory(StringParam path)
+  void CreateDirectory(StringParam path)
   {
-    return SDL_CreateStorageDirectory(get(), path);
+    CheckError(SDL_CreateStorageDirectory(get(), path));
   }
 
   /**
@@ -26996,16 +26948,15 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param path the path of the directory to enumerate, or nullptr for the
    * root.
    * @param callback a function that is called for each entry in the directory.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
+  void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
   {
-    return EnumerateDirectory(
+    EnumerateDirectory(
       std::move(path),
       [](void* userdata, const char* dirname, const char* fname) {
         auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
@@ -27034,34 +26985,32 @@ struct StorageBase : Resource<SDL_Storage*>
    * root.
    * @param callback a function that is called for each entry in the directory.
    * @param userdata a pointer that is passed to `callback`.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool EnumerateDirectory(StringParam path,
+  void EnumerateDirectory(StringParam path,
                           EnumerateDirectoryCallback callback,
                           void* userdata)
   {
-    return SDL_EnumerateStorageDirectory(get(), path, callback, userdata);
+    CheckError(SDL_EnumerateStorageDirectory(get(), path, callback, userdata));
   }
 
   /**
    * Remove a file or an empty directory in a writable storage container.
    *
    * @param path the path of the directory to enumerate.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool RemovePath(StringParam path)
+  void RemovePath(StringParam path)
   {
-    return SDL_RemoveStoragePath(get(), path);
+    CheckError(SDL_RemoveStoragePath(get(), path));
   }
 
   /**
@@ -27069,16 +27018,15 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param oldpath the old path.
    * @param newpath the new path.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool RenamePath(StringParam oldpath, StringParam newpath)
+  void RenamePath(StringParam oldpath, StringParam newpath)
   {
-    return SDL_RenameStoragePath(get(), oldpath, newpath);
+    CheckError(SDL_RenameStoragePath(get(), oldpath, newpath));
   }
 
   /**
@@ -27086,16 +27034,15 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param oldpath the old path.
    * @param newpath the new path.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool CopyFile(StringParam oldpath, StringParam newpath)
+  void CopyFile(StringParam oldpath, StringParam newpath)
   {
-    return SDL_CopyStorageFile(get(), oldpath, newpath);
+    CheckError(SDL_CopyStorageFile(get(), oldpath, newpath));
   }
 
   /**
@@ -27157,8 +27104,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param pattern the pattern that files in the directory must match. Can be
    *                nullptr.
    * @param flags `SDL_GLOB_*` bitflags that affect this search.
-   * @returns an array of strings on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns an array of strings on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread, assuming
    *               the `storage` object is thread-safe.
@@ -27170,8 +27117,8 @@ struct StorageBase : Resource<SDL_Storage*>
                                 GlobFlags flags)
   {
     int count;
-    auto data = SDL_GlobStorageDirectory(get(), path, pattern, flags, &count);
-    if (!data) return {};
+    auto data =
+      CheckError(SDL_GlobStorageDirectory(get(), path, pattern, flags, &count));
     return OwnArray<char*>{data, size_t(count)};
   }
 };
@@ -27345,8 +27292,8 @@ using ThreadID = SDL_ThreadID;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadBase.GetTLS
- * @sa ThreadBase.SetTLS
+ * @sa GetTLS
+ * @sa SetTLS
  */
 using TLSID = AtomicInt;
 
@@ -27372,15 +27319,15 @@ using ThreadFunction = SDL_ThreadFunction;
 using ThreadCB = std::function<int()>;
 
 /**
- * The callback used to cleanup data passed to ThreadBase.SetTLS.
+ * The callback used to cleanup data passed to SetTLS.
  *
  * This is called when a thread exits, to allow an app to free any resources.
  *
- * @param value a pointer previously handed to ThreadBase.SetTLS.
+ * @param value a pointer previously handed to SetTLS.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadBase.SetTLS
+ * @sa SetTLS
  */
 using TLSDestructorCallback = SDL_TLSDestructorCallback;
 
@@ -27466,9 +27413,8 @@ struct ThreadBase : Resource<SDL_Thread*>
    *
    * @param fn the ThreadFunction function to call in the new thread.
    * @param name the name of the thread.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *       new thread could not be created; call GetError() for more
-   *       information.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -27501,9 +27447,8 @@ struct ThreadBase : Resource<SDL_Thread*>
    * @param fn the ThreadFunction function to call in the new thread.
    * @param name the name of the thread.
    * @param data a pointer that is passed to `fn`.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *       new thread could not be created; call GetError() for more
-   *       information.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -27511,7 +27456,7 @@ struct ThreadBase : Resource<SDL_Thread*>
    * @sa ThreadBase.Wait
    */
   ThreadBase(ThreadFunction fn, StringParam name, void* data)
-    : Resource(SDL_CreateThread(fn, name, data))
+    : Resource(CheckError(SDL_CreateThread(fn, name, data)))
   {
   }
 
@@ -27570,9 +27515,8 @@ struct ThreadBase : Resource<SDL_Thread*>
    * and let the macros hide the details.
    *
    * @param props the properties to use.
-   * @post an opaque pointer to the new thread object on success, nullptr if the
-   *          new thread could not be created; call GetError() for more
-   *          information.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -27580,7 +27524,7 @@ struct ThreadBase : Resource<SDL_Thread*>
    * @sa ThreadBase.Wait
    */
   ThreadBase(PropertiesBase& props)
-    : Resource(SDL_CreateThreadWithProperties(props.get()))
+    : Resource(CheckError(SDL_CreateThreadWithProperties(props.get())))
   {
   }
 
@@ -27618,14 +27562,13 @@ struct ThreadBase : Resource<SDL_Thread*>
    * an administrator account. Be prepared for this to fail.
    *
    * @param priority the ThreadPriority to set.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static bool SetCurrentPriority(ThreadPriority priority)
+  static void SetCurrentPriority(ThreadPriority priority)
   {
-    return SDL_SetCurrentThreadPriority(priority);
+    CheckError(SDL_SetCurrentThreadPriority(priority));
   }
 
   /**
@@ -27894,8 +27837,7 @@ inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
  * @param value the value to associate with the ID for the current thread.
  * @param destructor a function called when the thread exits, to free the
  *                   value, may be nullptr.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -27903,11 +27845,11 @@ inline void* GetTLS(TLSID* id) { return SDL_GetTLS(*id); }
  *
  * @sa GetTLS
  */
-inline bool SetTLS(TLSID* id,
+inline void SetTLS(TLSID* id,
                    const void* value,
                    TLSDestructorCallback destructor)
 {
-  return SDL_SetTLS(*id, value, destructor);
+  CheckError(SDL_SetTLS(*id, value, destructor));
 }
 
 /**
@@ -28062,14 +28004,14 @@ struct MutexBase : Resource<SDL_Mutex*>
    *
    * This function returns true if passed a nullptr mutex.
    *
-   * @returns true on success, false if the mutex would block.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MutexBase.Lock
    * @sa MutexBase.Unlock
    */
-  bool TryLock() { return SDL_TryLockMutex(get()); }
+  void TryLock() { CheckError(SDL_TryLockMutex(get())); }
 
   /**
    * Unlock the mutex.
@@ -28345,7 +28287,7 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * This function returns true if passed a nullptr rwlock.
    *
-   * @returns true on success, false if the lock would block.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -28353,7 +28295,7 @@ struct RWLockBase : Resource<SDL_RWLock*>
    * @sa RWLockBase.TryLockForWriting
    * @sa RWLockBase.Unlock
    */
-  bool TryLockForReading() { return SDL_TryLockRWLockForReading(get()); }
+  void TryLockForReading() { CheckError(SDL_TryLockRWLockForReading(get())); }
 
   /**
    * Try to lock a read/write lock _for writing_ without blocking.
@@ -28374,7 +28316,7 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * This function returns true if passed a nullptr rwlock.
    *
-   * @returns true on success, false if the lock would block.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -28382,7 +28324,7 @@ struct RWLockBase : Resource<SDL_RWLock*>
    * @sa RWLockBase.TryLockForReading
    * @sa RWLockBase.Unlock
    */
-  bool TryLockForWriting() { return SDL_TryLockRWLockForWriting(get()); }
+  void TryLockForWriting() { CheckError(SDL_TryLockRWLockForWriting(get())); }
 
   /**
    * Unlock the read/write lock.
@@ -29260,8 +29202,8 @@ struct ProcessBase : Resource<SDL_Process*>
    *                   from the process's standard output, false for the process
    *                   to have no input and inherit the application's standard
    *                   output.
-   * @post the newly created and running process, or nullptr if the process
-   *          couldn't be created.
+   * @post the newly created and running process.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -29277,7 +29219,7 @@ struct ProcessBase : Resource<SDL_Process*>
    * @sa ProcessRef.reset
    */
   ProcessBase(const char* const* args, bool pipe_stdio)
-    : Resource(SDL_CreateProcess(args, pipe_stdio))
+    : Resource(CheckError(SDL_CreateProcess(args, pipe_stdio)))
   {
   }
 
@@ -29326,8 +29268,8 @@ struct ProcessBase : Resource<SDL_Process*>
    * use ProcessBase.Wait() instead.
    *
    * @param props the properties to use.
-   * @post the newly created and running process, or nullptr if the process
-   *          couldn't be created.
+   * @post the newly created and running process.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -29342,7 +29284,7 @@ struct ProcessBase : Resource<SDL_Process*>
    * @sa ProcessBase.Wait
    */
   ProcessBase(PropertiesBase& props)
-    : Resource(SDL_CreateProcessWithProperties(props.get()))
+    : Resource(CheckError(SDL_CreateProcessWithProperties(props.get())))
   {
   }
 
@@ -29364,8 +29306,8 @@ struct ProcessBase : Resource<SDL_Process*>
    * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in
    *   the background.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -29375,7 +29317,7 @@ struct ProcessBase : Resource<SDL_Process*>
    */
   PropertiesRef GetProperties() const
   {
-    return SDL_GetProcessProperties(get());
+    return CheckError(SDL_GetProcessProperties(get()));
   }
 
   /**
@@ -29393,8 +29335,8 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @param exitcode a pointer filled in with the process exit code if the
    *                 process has exited, may be nullptr.
-   * @returns the data or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns the data on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -29407,8 +29349,7 @@ struct ProcessBase : Resource<SDL_Process*>
     size_t size = 0;
     auto data =
       static_cast<std::byte*>(SDL_ReadProcess(get(), &size, exitcode));
-    if (!data) return {};
-    return OwnArray<std::byte>(data, size);
+    return OwnArray<std::byte>(CheckError(data), size);
   }
 
   /**
@@ -29500,8 +29441,7 @@ struct ProcessBase : Resource<SDL_Process*>
    *              the process gracefully first as terminating a process may
    *              leave it with half-written data or in some other unstable
    *              state.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -29512,7 +29452,7 @@ struct ProcessBase : Resource<SDL_Process*>
    * @sa ProcessBase.Wait
    * @sa ProcessRef.reset
    */
-  bool Kill(bool force) { return SDL_KillProcess(get(), force); }
+  void Kill(bool force) { CheckError(SDL_KillProcess(get(), force)); }
 
   /**
    * Wait for a process to finish.
@@ -29827,8 +29767,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * LoadBMP(StringParam).
    *
    * @param file a path on the filesystem to load an image from.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new Surface with loaded contents on success.
+   * @throws Error on failure.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
@@ -29842,8 +29782,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * LoadBMP(IOStreamBase&).
    *
    * @param src an IOStreamBase to load an image from.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new Surface with loaded contents on success.
+   * @throws Error on failure.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
@@ -29857,15 +29797,15 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new SurfaceBase structure that is created.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
   SurfaceBase(const SDL_Point& size, PixelFormat format)
-    : Resource(SDL_CreateSurface(size.x, size.y, format))
+    : Resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
   {
   }
 
@@ -29886,8 +29826,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
-   * @post the new SurfaceBase structure that is created or nullptr on failure;
-   *       call GetError() for more information.
+   * @post the new SurfaceBase structure that is created.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -29897,7 +29837,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
               PixelFormat format,
               void* pixels,
               int pitch)
-    : Resource(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch))
+    : Resource(CheckError(
+        SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
   {
   }
 
@@ -29938,16 +29879,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * interpreted in color operations.
    *
    * @param colorspace a Colorspace value describing the surface colorspace.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetColorspace()
+   * @sa SurfaceBase.GetColorspace
    */
-  bool SetColorspace(Colorspace colorspace)
+  void SetColorspace(Colorspace colorspace)
   {
-    return SDL_SetSurfaceColorspace(get(), colorspace);
+    CheckError(SDL_SetSurfaceColorspace(get(), colorspace));
   }
 
   /**
@@ -29994,9 +29936,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * A single palette can be shared with many surfaces.
    *
-   * @param palette the Palette to use.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param palette the PaletteBase structure to use.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -30005,16 +29946,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @sa PaletteBase.PaletteBase
    * @sa SurfaceBase.GetPalette
    */
-  bool SetPalette(PaletteBase& palette)
+  void SetPalette(PaletteBase& palette)
   {
-    return SDL_SetSurfacePalette(get(), palette.get());
+    CheckError(SDL_SetSurfacePalette(get(), palette.get()));
   }
 
   /**
    * Get the palette used by a surface.
    *
-   * @returns a pointer to the palette used by the surface, or NULL if there is
-   *          no palette used.
+   * @returns a pointer to the palette used by the surface, or nullptr if there
+   *          is no palette used.
    */
   PaletteRef GetPalette() const { return SDL_GetSurfacePalette(get()); }
 
@@ -30031,8 +29972,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @param image an alternate SurfaceBase to associate with this
    *              surface.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -30042,9 +29982,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @sa SurfaceBase.GetImages
    * @sa SurfaceBase.HasAlternateImages
    */
-  bool AddAlternateImage(SurfaceBase& image)
+  void AddAlternateImage(SurfaceBase& image)
   {
-    return SDL_AddSurfaceAlternateImage(get(), image.get());
+    CheckError(SDL_AddSurfaceAlternateImage(get(), image.get()));
   }
 
   /**
@@ -30123,8 +30063,10 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * evaluates to false, then you can read and write to the surface at any time,
    * and the pixel format of the surface will not change.
    *
-   * @returns SurfaceLock object that converts to true on success or false on
-   * failure; call GetError() for more information.
+   * @returns SurfaceLock object on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -30140,10 +30082,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * the surface must be locked before directly accessing the pixels.
    *
    * @param enabled true to enable RLE acceleration, false to disable it.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.Blit
+   * @sa SurfaceBase.Lock
+   * @sa SurfaceLock.Unlock
    */
-  bool SetRLE(bool enabled) { return SDL_SetSurfaceRLE(get(), enabled); }
+  void SetRLE(bool enabled) { CheckError(SDL_SetSurfaceRLE(get(), enabled)); }
 
   /**
    * Returns whether the surface is RLE enabled.
@@ -30163,8 +30112,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * SDL_MapRGB().
    *
    * @param key the transparent pixel color.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -30172,7 +30120,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @sa SetRLE()
    * @sa HasColorKey()
    */
-  bool SetColorKey(Color key) { return SetColorKey(MapColor(key)); }
+  void SetColorKey(Color key) { SetColorKey(MapColor(key)); }
 
   /**
    * Set the color key (transparent pixel) in a surface.
@@ -30182,21 +30130,22 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * considered transparent, and therefore not rendered.
    *
    * It is a pixel of the format used by the surface, as generated by
-   * SDL_MapRGB().
+   * MapRGB().
    *
    * @param key the transparent pixel or std::nullopt to disable it.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetColorKey()
-   * @sa SetRLE()
-   * @sa HasColorKey()
+   * @sa SurfaceBase.GetColorKey
+   * @sa SurfaceBase.SetRLE
+   * @sa SurfaceBase.HasColorKey
    */
-  bool SetColorKey(std::optional<Uint32> key)
+  void SetColorKey(std::optional<Uint32> key)
   {
-    return SDL_SetSurfaceColorKey(get(), key.has_value(), key.value_or(0));
+    CheckError(SDL_SetSurfaceColorKey(get(), key.has_value(), key.value_or(0)));
   }
 
   /**
@@ -30206,10 +30155,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * a blit. For example, one can use this to specify that cyan pixels should be
    * considered transparent, and therefore not rendered.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    */
-  bool ClearColorKey() { return SDL_SetSurfaceColorKey(get(), false, 0); }
+  void ClearColorKey() { CheckError(SDL_SetSurfaceColorKey(get(), false, 0)); }
 
   /**
    * Returns whether the surface has a color key.
@@ -30228,16 +30176,18 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * std::nullopt.
    *
    * @returns the color key as Color or std::nullopt if it does not have one.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SetColorKey()
    * @sa HasColorKey()
    */
-  std::optional<Color> GetColorKey() const
+  Color GetColorKey() const
   {
-    if (Color color; GetColorKey(&color)) return color;
-    return std::nullopt;
+    Color color;
+    GetColorKey(&color);
+    return color;
   }
 
   /**
@@ -30249,43 +30199,43 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * If the surface doesn't have color key enabled this function returns false.
    *
    * @param key a pointer filled in with the transparent pixel.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SetColorKey()
    * @sa HasColorKey()
    */
-  bool GetColorKey(Color* key) const
+  void GetColorKey(Color* key) const
   {
-    if (Uint32 color; GetColorKey(&color)) {
-      *key = GetFormat().Get(color, GetPalette());
-      return true;
-    }
-    return false;
+    Uint32 color;
+    GetColorKey(&color);
+    *key = GetFormat().Get(color, GetPalette());
   }
 
   /**
    * Get the color key (transparent pixel) for a surface.
    *
    * The color key is a pixel of the format used by the surface, as generated by
-   * SDL_MapRGB().
+   * MapRGB().
    *
    * If the surface doesn't have color key enabled this function returns false.
    *
    * @param key a pointer filled in with the transparent pixel.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SetColorKey()
-   * @sa HasColorKey()
+   * @sa SurfaceBase.SetColorKey
+   * @sa SurfaceBase.HasColorKey
    */
-  bool GetColorKey(Uint32* key) const
+  void GetColorKey(Uint32* key) const
   {
-    return SDL_GetSurfaceColorKey(get(), key);
+    CheckError(SDL_GetSurfaceColorKey(get(), key));
   }
 
   /**
@@ -30300,12 +30250,18 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param r the red color value multiplied into blit operations.
    * @param g the green color value multiplied into blit operations.
    * @param b the blue color value multiplied into blit operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.GetColorMod
+   * @sa SurfaceBase.SetAlphaMod
    */
-  bool SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
   {
-    return SDL_SetSurfaceColorMod(get(), r, g, b);
+    CheckError(SDL_SetSurfaceColorMod(get(), r, g, b));
   }
 
   /**
@@ -30314,12 +30270,18 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param r a pointer filled in with the current red color value.
    * @param g a pointer filled in with the current green color value.
    * @param b a pointer filled in with the current blue color value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.GetAlphaMod
+   * @sa SurfaceBase.SetColorMod
    */
-  bool GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
   {
-    return SDL_GetSurfaceColorMod(get(), r, g, b);
+    CheckError(SDL_GetSurfaceColorMod(get(), r, g, b));
   }
 
   /**
@@ -30331,21 +30293,37 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * `srcA = srcA * (alpha / 255)`
    *
    * @param alpha the alpha value multiplied into blit operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.GetAlphaMod
+   * @sa SurfaceBase.SetColorMod
    */
-  bool SetAlphaMod(Uint8 alpha) { return SDL_SetSurfaceAlphaMod(get(), alpha); }
+  void SetAlphaMod(Uint8 alpha)
+  {
+    CheckError(SDL_SetSurfaceAlphaMod(get(), alpha));
+  }
 
   /**
    * Get the additional alpha value used in blit operations.
    *
-   * @returns alpha on success or std::nullopt on failure; call GetError()
-   * for more information.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.GetColorMod
+   * @sa SurfaceBase.SetAlphaMod
    */
-  std::optional<Uint8> GetAlphaMod() const
+  Uint8 GetAlphaMod() const
   {
-    if (Uint8 alpha; SDL_GetSurfaceAlphaMod(get(), &alpha)) return alpha;
-    return std::nullopt;
+    Uint8 alpha;
+    CheckError(SDL_GetSurfaceAlphaMod(get(), &alpha));
+    return alpha;
   }
 
   /**
@@ -30360,12 +30338,12 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * `srcA = srcA * (alpha / 255)`
    *
    * @param color the color to be multiplied in blit operations
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    */
-  bool SetColorAndAlphaMod(Color color)
+  void SetMod(Color color)
   {
-    return SetColorMod(color.r, color.g, color.b) && SetAlphaMod(color.a);
+    SetColorMod(color.r, color.g, color.b);
+    SetAlphaMod(color.a);
   }
 
   /**
@@ -30375,13 +30353,12 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @returns a Color containing RGBA value on success or std::nullopt on
    * failure; call GetError() for more information.
    */
-  std::optional<Color> GetColorAndAlphaMod() const
+  Color GetMod() const
   {
-    if (Color c;
-        GetColorMod(&c.r, &c.g, &c.b) && SDL_GetSurfaceAlphaMod(get(), &c.a)) {
-      return c;
-    }
-    return std::nullopt;
+    Color c;
+    GetColorMod(&c.r, &c.g, &c.b);
+    c.a = GetAlphaMod();
+    return c;
   }
 
   /**
@@ -30389,19 +30366,20 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * To copy a surface to another surface (or texture) without blending with the
    * existing data, the blendmode of the SOURCE surface should be set to
-   * `SDL_BLENDMODE_NONE`.
+   * `BLENDMODE_NONE`.
    *
-   * @param blendMode the SDL_BlendMode to use for blit blending.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param blendMode the BlendMode to use for blit blending.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetBlendMode()
+   * @sa SurfaceBase.GetBlendMode
    */
-  bool SetBlendMode(BlendMode blendMode)
+  void SetBlendMode(BlendMode blendMode)
   {
-    return SDL_SetSurfaceBlendMode(get(), blendMode);
+    CheckError(SDL_SetSurfaceBlendMode(get(), blendMode));
   }
 
   /**
@@ -30444,11 +30422,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
   /**
    * Disable the clipping rectangle for a surface.
    *
-   * @returns true if clips was reset successfully
-   *
    * @sa SetClipRect()
    */
-  bool ResetClipRect() { return SDL_SetSurfaceClipRect(get(), nullptr); }
+  void ResetClipRect() { SDL_SetSurfaceClipRect(get(), nullptr); }
 
   /**
    * Get the clipping rectangle for a surface.
@@ -30470,12 +30446,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Flip a surface vertically or horizontally.
    *
    * @param flip the direction to flip.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Flip(FlipMode flip) { return SDL_FlipSurface(get(), flip); }
+  void Flip(FlipMode flip) { CheckError(SDL_FlipSurface(get(), flip)); }
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -30577,14 +30554,15 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @param linear true to convert from sRGB to linear space for the alpha
    *               multiplication, false to do multiplication in sRGB space.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool PremultiplyAlpha(bool linear)
+  void PremultiplyAlpha(bool linear)
   {
-    return SDL_PremultiplySurfaceAlpha(get(), linear);
+    CheckError(SDL_PremultiplySurfaceAlpha(get(), linear));
   }
 
   // TODO SDL_ConvertSurfaceAndColorspace
@@ -30598,218 +30576,146 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * otherwise the color is assumed to be in the colorspace of the surface.
    *
    * @param color the color of the pixel, normally in the range 0-1.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Clear(SDL_FColor color)
+  void Clear(SDL_FColor color)
   {
-    return SDL_ClearSurface(get(), color.r, color.g, color.b, color.a);
+    CheckError(SDL_ClearSurface(get(), color.r, color.g, color.b, color.a));
+  }
+
+  /**
+   * Perform a fast fill of a rectangle with a specific color.
+   *
+   * If there is a clip rectangle set on the destination (set via
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * intersection of the clip rectangle and `rect`.
+   *
+   * @param color the color to fill with.
+   * @throws Error on failure.
+   */
+  void Fill(SDL_Color color) { return Fill(MapColor(color)); }
+
+  /**
+   * Perform a fast fill of a rectangle with a specific color.
+   *
+   * `color` should be a pixel of the format used by the surface, and can be
+   * generated by MapRGB() or MapRGBA(). If the color value contains an
+   * alpha component then the destination is simply filled with that alpha
+   * information, no blending takes place.
+   *
+   * If there is a clip rectangle set on the destination (set via
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * intersection of the clip rectangle and `rect`.
+   *
+   * @param color the color to fill with.
+   * @throws Error on failure.
+   */
+  void Fill(Uint32 color)
+  {
+    CheckError(SDL_FillSurfaceRect(get(), nullptr, color));
+  }
+
+  /**
+   * Perform a fast fill of a rectangle with a specific color.
+   *
+   * If there is a clip rectangle set on the destination (set via
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * intersection of the clip rectangle and `rect`.
+   *
+   * @param rect the SDL_Rect structure representing the rectangle to fill.
+   * @param color the color to fill with.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.FillRects
+   */
+  void FillRect(const SDL_Rect& rect, SDL_Color color)
+  {
+    FillRect(rect, MapColor(color));
   }
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
+   * generated by MapRGB() or MapRGBA(). If the color value contains an
    * alpha component then the destination is simply filled with that alpha
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
-   * the clip rectangle.
-   *
-   * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool Fill(SDL_Color color) { return Fill(MapColor(color)); }
-
-  /**
-   * Perform a fast fill of a rectangle with a specific color.
-   *
-   * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
-   * alpha component then the destination is simply filled with that alpha
-   * information, no blending takes place.
-   *
-   * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
-   * the clip rectangle.
-   *
-   * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool Fill(Uint32 color) { return SDL_FillSurfaceRect(get(), nullptr, color); }
-
-  /**
-   * Perform a fast fill of a rectangle with a specific color.
-   *
-   * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rect the SDL_Rect structure representing the rectangle to fill.
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.FillRects
    */
-  bool FillRect(const SDL_Rect& rect, SDL_Color color)
+  void FillRect(const SDL_Rect& rect, Uint32 color)
   {
-    return FillRect(rect, MapColor(color));
-  }
-
-  /**
-   * Perform a fast fill of a rectangle with a specific color.
-   *
-   * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
-   * alpha component then the destination is simply filled with that alpha
-   * information, no blending takes place.
-   *
-   * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
-   * intersection of the clip rectangle and `rect`.
-   *
-   * @param rect the SDL_Rect structure representing the rectangle to fill.
-   * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool FillRect(const SDL_Rect& rect, Uint32 color)
-  {
-    return SDL_FillSurfaceRect(get(), &rect, color);
+    CheckError(SDL_FillSurfaceRect(get(), &rect, color));
   }
 
   /**
    * Perform a fast fill of a set of rectangles with a specific color.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rects an array of SDL_Rects representing the rectangles to fill.
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa FillRect()
    */
-  bool FillRects(SpanRef<const SDL_Rect> rects, SDL_Color color)
+  void FillRects(SpanRef<const SDL_Rect> rects, SDL_Color color)
   {
-    return FillRects(rects, MapColor(color));
+    FillRects(rects, MapColor(color));
   }
 
   /**
    * Perform a fast fill of a set of rectangles with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
+   * generated by MapRGB() or MapRGBA(). If the color value contains an
    * alpha component then the destination is simply filled with that alpha
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SDL_SetSurfaceClipRect()), then this function will fill based on the
+   * SurfaceBase.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rects an array of SDL_Rects representing the rectangles to fill.
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa FillRect()
+   * @sa SurfaceBase.FillRect
    */
-  bool FillRects(SpanRef<const SDL_Rect> rects, Uint32 color)
+  void FillRects(SpanRef<const SDL_Rect> rects, Uint32 color)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_UINT32);
-    return SDL_FillSurfaceRects(get(), rects.data(), rects.size(), color);
-  }
-
-  /**
-   * Performs a fast blit from the source surface to the destination surface
-   * with clipping.
-   *
-   * If either `srcrect` or `dstrect` are NULL, the entire surface (`src` or
-   * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
-   *
-   * The final blit rectangles are saved in `srcrect` and `dstrect` after all
-   * clipping is performed.
-   *
-   * The blit function should not be called on a locked surface.
-   *
-   * The blit semantics for surfaces with and without blending and colorkey are
-   * defined as follows:
-   *
-   * ```
-   *    RGBA->RGB:
-   *      Source surface blend mode set to SDL_BLENDMODE_BLEND:
-   *       alpha-blend (using the source alpha-channel and per-surface alpha)
-   *       SDL_SRCCOLORKEY ignored.
-   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
-   *       copy RGB.
-   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
-   *       RGB values of the source color key, ignoring alpha in the
-   *       comparison.
-   *
-   *   RGB->RGBA:
-   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
-   *       alpha-blend (using the source per-surface alpha)
-   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
-   *       copy RGB, set destination alpha to source per-surface alpha value.
-   *     both:
-   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
-   *       source color key.
-   *
-   *   RGBA->RGBA:
-   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
-   *       alpha-blend (using the source alpha-channel and per-surface alpha)
-   *       SDL_SRCCOLORKEY ignored.
-   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
-   *       copy all of RGBA to the destination.
-   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
-   *       RGB values of the source color key, ignoring alpha in the
-   *       comparison.
-   *
-   *   RGB->RGB:
-   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
-   *       alpha-blend (using the source per-surface alpha)
-   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
-   *       copy RGB.
-   *     both:
-   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
-   *       source color key.
-   * ```
-   *
-   * @param src the SDL_Surface structure to be copied from.
-   * @param srcrect the SDL_Rect structure representing the rectangle to be
-   *                copied, or NULL to copy the entire surface.
-   * @param dstpos  the SDL_Point structure representing the x and y position in
-   *                the destination surface, or NULL for (0,0). The width and
-   *                height are ignored, and are copied from `srcrect`. If you
-   *                want a specific width and height, you should use
-   *                SDL_BlitSurfaceScaled().
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety The same destination surface should not be used from two
-   *               threads at once. It is safe to use the same source surface
-   *               from multiple threads.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa BlitScaled()
-   */
-  bool Blit(const SurfaceBase& src,
-            OptionalRef<const SDL_Rect> srcrect,
-            const SDL_Point& dstpos)
-  {
-    return Blit(src, srcrect, Rect{dstpos, {}});
+    CheckError(SDL_FillSurfaceRects(get(), rects.data(), rects.size(), color));
   }
 
   /**
@@ -30870,13 +30776,12 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, or NULL to copy the entire surface.
-   * @param dstrect the SDL_Point structure representing the x and y position in
+   * @param dstpos  the SDL_Point structure representing the x and y position in
    *                the destination surface, or NULL for (0,0). The width and
    *                height are ignored, and are copied from `srcrect`. If you
    *                want a specific width and height, you should use
    *                SurfaceBase.BlitScaled().
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -30885,11 +30790,90 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.BlitScaled
    */
-  bool Blit(const SurfaceBase& src,
+  void Blit(const SurfaceBase& src,
+            OptionalRef<const SDL_Rect> srcrect,
+            const SDL_Point& dstpos)
+  {
+    Blit(src, srcrect, Rect{dstpos, {}});
+  }
+
+  /**
+   * Performs a fast blit from the source surface to the destination surface
+   * with clipping.
+   *
+   * If either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or
+   * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
+   *
+   * The final blit rectangles are saved in `srcrect` and `dstrect` after all
+   * clipping is performed.
+   *
+   * The blit function should not be called on a locked surface.
+   *
+   * The blit semantics for surfaces with and without blending and colorkey are
+   * defined as follows:
+   *
+   * ```
+   *    RGBA->RGB:
+   *      Source surface blend mode set to BLENDMODE_BLEND:
+   *       alpha-blend (using the source alpha-channel and per-surface alpha)
+   *       SDL_SRCCOLORKEY ignored.
+   *     Source surface blend mode set to BLENDMODE_NONE:
+   *       copy RGB.
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       RGB values of the source color key, ignoring alpha in the
+   *       comparison.
+   *
+   *   RGB->RGBA:
+   *     Source surface blend mode set to BLENDMODE_BLEND:
+   *       alpha-blend (using the source per-surface alpha)
+   *     Source surface blend mode set to BLENDMODE_NONE:
+   *       copy RGB, set destination alpha to source per-surface alpha value.
+   *     both:
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       source color key.
+   *
+   *   RGBA->RGBA:
+   *     Source surface blend mode set to BLENDMODE_BLEND:
+   *       alpha-blend (using the source alpha-channel and per-surface alpha)
+   *       SDL_SRCCOLORKEY ignored.
+   *     Source surface blend mode set to BLENDMODE_NONE:
+   *       copy all of RGBA to the destination.
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       RGB values of the source color key, ignoring alpha in the
+   *       comparison.
+   *
+   *   RGB->RGB:
+   *     Source surface blend mode set to BLENDMODE_BLEND:
+   *       alpha-blend (using the source per-surface alpha)
+   *     Source surface blend mode set to BLENDMODE_NONE:
+   *       copy RGB.
+   *     both:
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       source color key.
+   * ```
+   *
+   * @param src the SDL_Surface structure to be copied from.
+   * @param srcrect the SDL_Rect structure representing the rectangle to be
+   *                copied, or NULL to copy the entire surface.
+   * @param dstrect the SDL_Rect structure representing the x and y position in
+   *                the destination surface, or NULL for (0,0). The width and
+   *                height are ignored, and are copied from `srcrect`. If you
+   *                want a specific width and height, you should use
+   *                SurfaceBase.BlitScaled().
+   * @throws Error on failure.
+   *
+   * @threadsafety Only one thread should be using the `src` and `dst` surfaces
+   *               at any given time.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceBase.BlitScaled
+   */
+  void Blit(const SurfaceBase& src,
             OptionalRef<const SDL_Rect> srcrect,
             OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurface(src.get(), srcrect, get(), dstrect);
+    CheckError(SDL_BlitSurface(src.get(), srcrect, get(), dstrect));
   }
 
   /**
@@ -30902,9 +30886,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, may not be NULL.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
-   *                the destination surface, may not be NULL.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *                the destination surface, may not be nullptr.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -30913,11 +30896,11 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool BlitUnchecked(const SurfaceBase& src,
+  void BlitUnchecked(const SurfaceBase& src,
                      const SDL_Rect& srcrect,
                      const SDL_Rect& dstrect)
   {
-    return SDL_BlitSurfaceUnchecked(src.get(), &srcrect, get(), &dstrect);
+    CheckError(SDL_BlitSurfaceUnchecked(src.get(), &srcrect, get(), &dstrect));
   }
 
   /**
@@ -30931,8 +30914,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *                the destination surface, or nullptr to fill the entire
    *                destination surface.
    * @param scaleMode the ScaleMode to be used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -30941,12 +30923,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool BlitScaled(const SurfaceBase& src,
+  void BlitScaled(const SurfaceBase& src,
                   OptionalRef<const SDL_Rect> srcrect,
                   OptionalRef<const SDL_Rect> dstrect,
                   ScaleMode scaleMode)
   {
-    return SDL_BlitSurfaceScaled(src.get(), srcrect, get(), dstrect, scaleMode);
+    CheckError(
+      SDL_BlitSurfaceScaled(src.get(), srcrect, get(), dstrect, scaleMode));
   }
 
   /**
@@ -30961,8 +30944,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, may not be nullptr.
    * @param scaleMode the ScaleMode to be used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -30971,13 +30953,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.BlitScaled
    */
-  bool BlitUncheckedScaled(const SurfaceBase& src,
+  void BlitUncheckedScaled(const SurfaceBase& src,
                            const SDL_Rect& srcrect,
                            const SDL_Rect& dstrect,
                            ScaleMode scaleMode)
   {
-    return SDL_BlitSurfaceScaled(
-      src.get(), &srcrect, get(), &dstrect, scaleMode);
+    CheckError(
+      SDL_BlitSurfaceScaled(src.get(), &srcrect, get(), &dstrect, scaleMode));
   }
 
 #if SDL_VERSION_ATLEAST(3, 2, 4)
@@ -30991,8 +30973,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, may not be nullptr.
    * @param scaleMode the ScaleMode to be used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -31001,12 +30982,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.BlitScaled
    */
-  bool Stretch(const SurfaceBase& src,
+  void Stretch(const SurfaceBase& src,
                const SDL_Rect& srcrect,
                const SDL_Rect& dstrect,
                ScaleMode scaleMode)
   {
-    return SDL_StretchSurface(src.get(), &srcrect, get(), &dstrect, scaleMode);
+    CheckError(
+      SDL_StretchSurface(src.get(), &srcrect, get(), &dstrect, scaleMode));
   }
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 4)
@@ -31024,8 +31006,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, or nullptr to fill the entire
    *                surface.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -31034,11 +31015,11 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool BlitTiled(const SurfaceBase& src,
+  void BlitTiled(const SurfaceBase& src,
                  OptionalRef<const SDL_Rect> srcrect,
                  OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurfaceTiled(src.get(), srcrect, get(), dstrect);
+    CheckError(SDL_BlitSurfaceTiled(src.get(), srcrect, get(), dstrect));
   }
 
   /**
@@ -31057,9 +31038,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param scaleMode scale algorithm to be used.
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, or nullptr to fill the entire
-   * surface.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *                surface.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -31068,14 +31048,14 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool BlitTiledWithScale(const SurfaceBase& src,
+  void BlitTiledWithScale(const SurfaceBase& src,
                           OptionalRef<const SDL_Rect> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
                           OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurfaceTiledWithScale(
-      src.get(), srcrect, scale, scaleMode, get(), dstrect);
+    CheckError(SDL_BlitSurfaceTiledWithScale(
+      src.get(), srcrect, scale, scaleMode, get(), dstrect));
   }
 
   /**
@@ -31089,27 +31069,26 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * then stretched into place to cover the remaining destination rectangle.
    *
    * @param src the SDL_Surface structure to be copied from.
+   * @param srcrect the Rect structure representing the rectangle to be used
+   *                for the 9-grid, or nullptr to use the entire surface.
    * @param left_width the width, in pixels, of the left corners in `srcrect`.
    * @param right_width the width, in pixels, of the right corners in `srcrect`.
    * @param top_height the height, in pixels, of the top corners in `srcrect`.
    * @param bottom_height the height, in pixels, of the bottom corners in
    *                      `srcrect`.
-   * @param dstrect the SDL_Rect structure representing the target rectangle in
-   *                the destination surface, or NULL to fill the entire surface.
-   * @param srcrect the SDL_Rect structure representing the rectangle to be used
-   *                for the 9-grid, or NULL to use the entire surface.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @param dstrect the Rect structure representing the target rectangle in
+   *                the destination surface, or nullptr to fill the entire
+   * surface.
+   * @throws Error on failure.
    *
-   * @threadsafety The same destination surface should not be used from two
-   *               threads at once. It is safe to use the same source surface
-   *               from multiple threads.
+   * @threadsafety Only one thread should be using the `src` and `dst` surfaces
+   *               at any given time.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Blit()
+   * @sa SurfaceBase.Blit
    */
-  bool Blit9Grid(const SurfaceBase& src,
+  void Blit9Grid(const SurfaceBase& src,
                  OptionalRef<const SDL_Rect> srcrect,
                  int left_width,
                  int right_width,
@@ -31117,15 +31096,15 @@ struct SurfaceBase : Resource<SDL_Surface*>
                  int bottom_height,
                  OptionalRef<const SDL_Rect> dstrect)
   {
-    return Blit9GridWithScale(src,
-                              srcrect,
-                              left_width,
-                              right_width,
-                              top_height,
-                              bottom_height,
-                              0.0,
-                              SDL_SCALEMODE_NEAREST,
-                              dstrect);
+    Blit9GridWithScale(src,
+                       srcrect,
+                       left_width,
+                       right_width,
+                       top_height,
+                       bottom_height,
+                       0.0,
+                       SDL_SCALEMODE_NEAREST,
+                       dstrect);
   }
 
   /**
@@ -31151,9 +31130,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param scaleMode scale algorithm to be used.
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, or nullptr to fill the entire
-   *                surface.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * surface.
+   * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
@@ -31162,7 +31140,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @sa SurfaceBase.Blit
    */
-  bool Blit9GridWithScale(const SurfaceBase& src,
+  void Blit9GridWithScale(const SurfaceBase& src,
                           OptionalRef<const SDL_Rect> srcrect,
                           int left_width,
                           int right_width,
@@ -31172,16 +31150,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
                           SDL_ScaleMode scaleMode,
                           OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurface9Grid(src.get(),
-                                srcrect,
-                                left_width,
-                                right_width,
-                                top_height,
-                                bottom_height,
-                                scale,
-                                scaleMode,
-                                get(),
-                                dstrect);
+    CheckError(SDL_BlitSurface9Grid(src.get(),
+                                    srcrect,
+                                    left_width,
+                                    right_width,
+                                    top_height,
+                                    bottom_height,
+                                    scale,
+                                    scaleMode,
+                                    get(),
+                                    dstrect));
   }
 
   /**
@@ -31274,15 +31252,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
-   * @returns color  on success or std::nullopt on failure; call GetError() for
-   * more information.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @returns color on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    */
-  std::optional<Color> ReadPixel(int x, int y) const
+  Color ReadPixel(const SDL_Point& p) const
   {
-    if (Color c; ReadPixel(x, y, &c)) return c;
-    return std::nullopt;
+    Color c;
+    ReadPixel(p, &c);
+    return c;
   }
 
   /**
@@ -31292,16 +31272,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param c a color pointer to be filled with the color information. Must not
-   *          be NULL.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *          be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    */
-  bool ReadPixel(int x, int y, SDL_Color* c) const
+  void ReadPixel(const SDL_Point& p, SDL_Color* c) const
   {
-    return ReadPixel(x, y, &c->r, &c->g, &c->b, &c->a);
+    ReadPixel(p, &c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -31310,16 +31290,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param c a color pointer to be filled with the color information. Must not
-   *          be NULL.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *          be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    */
-  bool ReadPixel(int x, int y, SDL_FColor* c) const
+  void ReadPixel(const SDL_Point& p, SDL_FColor* c) const
   {
-    return ReadPixel(x, y, &c->r, &c->g, &c->b, &c->a);
+    return ReadPixel(p, &c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -31328,27 +31308,31 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
+   * Like GetRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
-   * @param r a pointer filled in with the red channel, 0-255, or NULL to ignore
-   *          this channel.
-   * @param g a pointer filled in with the green channel, 0-255, or NULL to
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+   * ignore this channel.
+   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
    *          ignore this channel.
-   * @param b a pointer filled in with the blue channel, 0-255, or NULL to
+   * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
    *          ignore this channel.
-   * @param a a pointer filled in with the alpha channel, 0-255, or NULL to
+   * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
    *          ignore this channel.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ReadPixel(int x, int y, Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+  void ReadPixel(const SDL_Point& p,
+                 Uint8* r,
+                 Uint8* g,
+                 Uint8* b,
+                 Uint8* a) const
   {
-    return SDL_ReadSurfacePixel(get(), x, y, r, g, b, a);
+    CheckError(SDL_ReadSurfacePixel(get(), p.x, p.y, r, g, b, a));
   }
 
   /**
@@ -31357,40 +31341,50 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param r a pointer filled in with the red channel, normally in the range
-   *          0-1, or NULL to ignore this channel.
+   *          0-1, or nullptr to ignore this channel.
    * @param g a pointer filled in with the green channel, normally in the range
-   *          0-1, or NULL to ignore this channel.
+   *          0-1, or nullptr to ignore this channel.
    * @param b a pointer filled in with the blue channel, normally in the range
-   *          0-1, or NULL to ignore this channel.
+   *          0-1, or nullptr to ignore this channel.
    * @param a a pointer filled in with the alpha channel, normally in the range
-   *          0-1, or NULL to ignore this channel.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *          0-1, or nullptr to ignore this channel.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
-  bool ReadPixel(int x, int y, float* r, float* g, float* b, float* a) const
+  void ReadPixel(const SDL_Point& p,
+                 float* r,
+                 float* g,
+                 float* b,
+                 float* a) const
   {
-    return SDL_ReadSurfacePixelFloat(get(), x, y, r, g, b, a);
+    CheckError(SDL_ReadSurfacePixelFloat(get(), p.x, p.y, r, g, b, a));
   }
 
   /**
-   * This function prioritizes correctness over speed: it is suitable for
-   * unit tests, but is not intended for use in a game engine.
+   * Writes a single pixel to a surface.
    *
-   * Like MapRGBA(), this uses the entire 0..255 range when converting color
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like MapRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param c the color values, 0-255.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
-  bool WritePixel(int x, int y, SDL_Color c)
+  void WritePixel(const SDL_Point& p, SDL_Color c)
   {
-    return WritePixel(x, y, c.r, c.g, c.b, c.a);
+    CheckError(SDL_WriteSurfacePixel(get(), p.x, p.y, c.r, c.g, c.b, c.a));
   }
 
   /**
@@ -31399,56 +31393,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param c the color values, normally in the range 0-1.
-   * @returns true on success or false on failure; call GetError() for
-   * more information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
-  bool WritePixel(int x, int y, SDL_FColor c)
+  void WritePixel(const SDL_Point& p, SDL_FColor c)
   {
-    return WritePixel(x, y, c.r, c.g, c.b, c.a);
-  }
-
-  /**
-   * This function prioritizes correctness over speed: it is suitable for
-   * unit tests, but is not intended for use in a game engine.
-   *
-   * Like MapRGBA(), this uses the entire 0..255 range when converting color
-   * components from pixel formats with less than 8 bits per RGB component.
-   *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
-   * @param r the red channel value, 0-255.
-   * @param g the green channel value, 0-255.
-   * @param b the blue channel value, 0-255.
-   * @param a the alpha channel value, 0-255.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool WritePixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-  {
-    return SDL_WriteSurfacePixel(get(), x, y, r, g, b, a);
-  }
-
-  /**
-   * Writes a single pixel to a surface.
-   *
-   * This function prioritizes correctness over speed: it is suitable for unit
-   * tests, but is not intended for use in a game engine.
-   *
-   * @param x the horizontal coordinate, 0 <= x < width.
-   * @param y the vertical coordinate, 0 <= y < height.
-   * @param r the red channel value, normally in the range 0-1.
-   * @param g the green channel value, normally in the range 0-1.
-   * @param b the blue channel value, normally in the range 0-1.
-   * @param a the alpha channel value, normally in the range 0-1.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   */
-  bool WritePixel(int x, int y, float r, float g, float b, float a)
-  {
-    return SDL_WriteSurfacePixelFloat(get(), x, y, r, g, b, a);
+    CheckError(SDL_WriteSurfacePixelFloat(get(), p.x, p.y, c.r, c.g, c.b, c.a));
   }
 
   /**
@@ -31711,8 +31666,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @param surface the SurfaceBase structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -31720,9 +31674,9 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @sa LoadBMP
  */
-inline bool SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
+inline void SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
 {
-  return SDL_SaveBMP_IO(surface.get(), dst.get(), false);
+  CheckError(SDL_SaveBMP_IO(surface.get(), dst.get(), false));
 }
 
 /**
@@ -31736,8 +31690,7 @@ inline bool SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
  *
  * @param surface the SurfaceBase structure containing the image to be saved.
  * @param file a file to save to.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -31745,9 +31698,9 @@ inline bool SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
  *
  * @sa LoadBMP
  */
-inline bool SaveBMP(SurfaceBase& surface, StringParam file)
+inline void SaveBMP(SurfaceBase& surface, StringParam file)
 {
-  return SDL_SaveBMP(surface.get(), file);
+  CheckError(SDL_SaveBMP(surface.get(), file));
 }
 
 inline Surface SurfaceBase::Duplicate() const
@@ -31787,8 +31740,7 @@ inline Surface SurfaceBase::Convert(PixelFormat format,
  * @param dst_format an PixelFormat value of the `dst` pixels format.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety The same destination pixels should not be used from two
  *               threads at once. It is safe to use the same source pixels
@@ -31798,7 +31750,7 @@ inline Surface SurfaceBase::Convert(PixelFormat format,
  *
  * @sa ConvertPixelsAndColorspace
  */
-inline bool ConvertPixels(int width,
+inline void ConvertPixels(int width,
                           int height,
                           PixelFormat src_format,
                           const void* src,
@@ -31807,8 +31759,8 @@ inline bool ConvertPixels(int width,
                           void* dst,
                           int dst_pitch)
 {
-  return SDL_ConvertPixels(
-    width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch);
+  CheckError(SDL_ConvertPixels(
+    width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch));
 }
 
 /**
@@ -31831,8 +31783,7 @@ inline bool ConvertPixels(int width,
  *                       properties, or 0.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety The same destination pixels should not be used from two
  *               threads at once. It is safe to use the same source pixels
@@ -31842,7 +31793,7 @@ inline bool ConvertPixels(int width,
  *
  * @sa ConvertPixels
  */
-inline bool ConvertPixelsAndColorspace(int width,
+inline void ConvertPixelsAndColorspace(int width,
                                        int height,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
@@ -31855,18 +31806,18 @@ inline bool ConvertPixelsAndColorspace(int width,
                                        void* dst,
                                        int dst_pitch)
 {
-  return SDL_ConvertPixelsAndColorspace(width,
-                                        height,
-                                        src_format,
-                                        src_colorspace,
-                                        src_properties.get(),
-                                        src,
-                                        src_pitch,
-                                        dst_format,
-                                        dst_colorspace,
-                                        dst_properties.get(),
-                                        dst,
-                                        dst_pitch);
+  CheckError(SDL_ConvertPixelsAndColorspace(width,
+                                            height,
+                                            src_format,
+                                            src_colorspace,
+                                            src_properties.get(),
+                                            src,
+                                            src_pitch,
+                                            dst_format,
+                                            dst_colorspace,
+                                            dst_properties.get(),
+                                            dst,
+                                            dst_pitch));
 }
 
 /**
@@ -31884,8 +31835,7 @@ inline bool ConvertPixelsAndColorspace(int width,
  * @param dst_pitch the pitch of the destination pixels, in bytes.
  * @param linear true to convert from sRGB to linear space for the alpha
  *               multiplication, false to do multiplication in sRGB space.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety The same destination pixels should not be used from two
  *               threads at once. It is safe to use the same source pixels
@@ -31893,7 +31843,7 @@ inline bool ConvertPixelsAndColorspace(int width,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool PremultiplyAlpha(int width,
+inline void PremultiplyAlpha(int width,
                              int height,
                              PixelFormat src_format,
                              const void* src,
@@ -31903,15 +31853,15 @@ inline bool PremultiplyAlpha(int width,
                              int dst_pitch,
                              bool linear)
 {
-  return SDL_PremultiplyAlpha(width,
-                              height,
-                              src_format,
-                              src,
-                              src_pitch,
-                              dst_format,
-                              dst,
-                              dst_pitch,
-                              linear);
+  CheckError(SDL_PremultiplyAlpha(width,
+                                  height,
+                                  src_format,
+                                  src,
+                                  src_pitch,
+                                  dst_format,
+                                  dst,
+                                  dst_pitch,
+                                  linear));
 }
 
 /// @}
@@ -32031,7 +31981,7 @@ struct TrayBase : Resource<SDL_Tray*>
    * @sa TrayBase.GetMenu
    */
   TrayBase(SurfaceBase& icon, StringParam tooltip)
-    : Resource(SDL_CreateTray(icon.get(), tooltip))
+    : Resource(CheckError(SDL_CreateTray(icon.get(), tooltip)))
   {
   }
 
@@ -32684,7 +32634,7 @@ struct TrayEntryRef : TrayEntryBase
    * @sa TrayMenu.GetEntries
    * @sa TrayMenu.InsertEntry
    */
-  void Remove() { SDL_RemoveTrayEntry(release()); }
+  void Remove() { reset(); }
 };
 
 /**
@@ -33208,8 +33158,8 @@ public:
   /**
    * Return the primary display.
    *
-   * @returns the instance ID of the primary display on success or 0 on failure;
-   *          call GetError() for more information.
+   * @returns the instance ID of the primary display on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33217,7 +33167,7 @@ public:
    *
    * @sa Display.GetAll
    */
-  static Display GetPrimary() { return {SDL_GetPrimaryDisplay()}; }
+  static Display GetPrimary() { return CheckError(SDL_GetPrimaryDisplay()); }
 
   /**
    * Get the properties associated with a display.
@@ -33237,8 +33187,8 @@ public:
    *   responsible for any coordinate transformations needed to conform to the
    *   requested display orientation.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33246,7 +33196,7 @@ public:
    */
   PropertiesRef GetProperties() const
   {
-    return SDL_GetDisplayProperties(m_displayID);
+    return CheckError(SDL_GetDisplayProperties(m_displayID));
   }
 
   /**
@@ -33270,7 +33220,7 @@ public:
    * different location depending on monitor layout.
    *
    * @returns the Rect structure filled in with the display bounds on success
-   *          or std::nullopt on failure; call GetError() for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33279,11 +33229,11 @@ public:
    * @sa Display.GetUsableBounds
    * @sa Display.GetAll
    */
-  std::optional<Rect> GetBounds() const
+  Rect GetBounds() const
   {
     Rect bounds;
-    if (SDL_GetDisplayBounds(m_displayID, &bounds)) return bounds;
-    return std::nullopt;
+    SDL_GetDisplayBounds(m_displayID, &bounds);
+    return bounds;
   }
 
   /**
@@ -33298,8 +33248,8 @@ public:
    * so these are good guidelines for the maximum space available to a
    * non-fullscreen window.
    *
-   * @returns the Rect structure filled in with the display bounds on success
-   *          or nullopt on failure; call GetError() for more information.
+   * @returns the Rect structure filled in with the display bounds on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33308,11 +33258,11 @@ public:
    * @sa Display.GetBounds
    * @sa Display.GetAll
    */
-  std::optional<Rect> GetUsableBounds() const
+  Rect GetUsableBounds() const
   {
     Rect bounds;
-    if (SDL_GetDisplayUsableBounds(m_displayID, &bounds)) return bounds;
-    return {};
+    CheckError(SDL_GetDisplayUsableBounds(m_displayID, &bounds));
+    return bounds;
   }
 
   /**
@@ -33390,8 +33340,8 @@ public:
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @returns a nullptr terminated array of display mode pointers or nullptr on
-   *          failure; call GetError() for more information.
+   * @returns a nullptr terminated array of display mode pointers on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33404,7 +33354,7 @@ public:
   OwnArray<DisplayMode*> GetFullscreenModes() const
   {
     int count = 0;
-    auto data = SDL_GetFullscreenDisplayModes(m_displayID, &count);
+    auto data = CheckError(SDL_GetFullscreenDisplayModes(m_displayID, &count));
     return OwnArray<DisplayMode*>{data, size_t(count)};
   }
 
@@ -33425,8 +33375,8 @@ public:
    * @param include_high_density_modes boolean to include high density modes in
    *                                   the search.
    * @returns the closest display mode equal to or larger than the desired mode
-   *          on success or std::nullopt on failure; call GetError() for more
-   *          information.
+   *          on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33435,22 +33385,15 @@ public:
    * @sa Display.GetAll
    * @sa Display.GetFullscreenModes
    */
-  std::optional<DisplayMode> GetClosestFullscreenMode(
-    int w,
-    int h,
-    float refresh_rate,
-    bool include_high_density_modes) const
+  DisplayMode GetClosestFullscreenMode(int w,
+                                       int h,
+                                       float refresh_rate,
+                                       bool include_high_density_modes) const
   {
-    if (SDL_DisplayMode closest;
-        SDL_GetClosestFullscreenDisplayMode(m_displayID,
-                                            w,
-                                            h,
-                                            refresh_rate,
-                                            include_high_density_modes,
-                                            &closest)) {
-      return closest;
-    }
-    return {};
+    SDL_DisplayMode closest;
+    CheckError(SDL_GetClosestFullscreenDisplayMode(
+      m_displayID, w, h, refresh_rate, include_high_density_modes, &closest));
+    return closest;
   }
 
   /**
@@ -33461,8 +33404,8 @@ public:
    * function will return the previous native display mode, and not the current
    * display mode.
    *
-   * @returns a pointer to the desktop display mode or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns a pointer to the desktop display mode.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33473,7 +33416,7 @@ public:
    */
   const DisplayMode* GetDesktopMode() const
   {
-    return SDL_GetDesktopDisplayMode(m_displayID);
+    return CheckError(SDL_GetDesktopDisplayMode(m_displayID));
   }
 
   /**
@@ -33535,7 +33478,7 @@ public:
    */
   static Display GetForRect(const SDL_Rect& rect)
   {
-    return {SDL_GetDisplayForRect(&rect)};
+    return SDL_GetDisplayForRect(&rect);
   }
 
   /**
@@ -33694,9 +33637,8 @@ struct WindowBase : Resource<SDL_Window*>
    * @param title the title of the window, in UTF-8 encoding.
    * @param size the width and height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
-   * @post the window that was created, convertible to true on success or
-   *       convertible to false on failure; call GetError() for more
-   *       information.
+   * @post the window that was created.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33705,7 +33647,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa CreateWindowAndRenderer()
    */
   WindowBase(StringParam title, SDL_Point size, WindowFlags flags = 0)
-    : Resource(SDL_CreateWindow(title, size.x, size.y, flags))
+    : Resource(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)))
   {
   }
 
@@ -33758,9 +33700,8 @@ struct WindowBase : Resource<SDL_Window*>
    * @param size the width and height of the window.
    * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
    *              additional WindowFlags OR'd together.
-   * @post the window that was created, convertible to true on success or
-   *       convertible to false on failure; call GetError() for more
-   *       information.
+   * @post the window that was created.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33772,12 +33713,12 @@ struct WindowBase : Resource<SDL_Window*>
              SDL_Point offset,
              SDL_Point size,
              WindowFlags flags = 0)
-    : Resource(SDL_CreatePopupWindow(parent.get(),
-                                     offset.x,
-                                     offset.y,
-                                     size.x,
-                                     size.y,
-                                     flags))
+    : Resource(CheckError(SDL_CreatePopupWindow(parent.get(),
+                                                offset.x,
+                                                offset.y,
+                                                size.x,
+                                                size.y,
+                                                flags)))
   {
   }
 
@@ -33893,9 +33834,8 @@ struct WindowBase : Resource<SDL_Window*>
    * WindowBase.Show().
    *
    * @param props the properties to use.
-   * @post the window that was created, convertible to true on success or
-   *       convertible to false on failure; call GetError() for more
-   *       information.
+   * @post the window that was created.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33904,7 +33844,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa Properties.Properties
    */
   WindowBase(PropertiesBase& props)
-    : Resource(SDL_CreateWindowWithProperties(props.get()))
+    : Resource(CheckError(SDL_CreateWindowWithProperties(props.get())))
   {
   }
 
@@ -33986,8 +33926,7 @@ struct WindowBase : Resource<SDL_Window*>
    *             fullscreen desktop mode, or one of the fullscreen modes
    *             returned by Display.GetFullscreenModes() to set an exclusive
    *             fullscreen mode.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -33997,9 +33936,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.SetFullscreen
    * @sa WindowBase.Sync
    */
-  bool SetFullscreenMode(OptionalRef<const DisplayMode> mode)
+  void SetFullscreenMode(OptionalRef<const DisplayMode> mode)
   {
-    return SDL_SetWindowFullscreenMode(get(), mode);
+    CheckError(SDL_SetWindowFullscreenMode(get(), mode));
   }
 
   /**
@@ -34024,8 +33963,8 @@ struct WindowBase : Resource<SDL_Window*>
    * Get the raw ICC profile data for the screen the window is currently on.
    *
    * @param size the size of the ICC profile.
-   * @returns the raw ICC profile data on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns the raw ICC profile data on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34033,21 +33972,23 @@ struct WindowBase : Resource<SDL_Window*>
    */
   OwnPtr<void> GetICCProfile(size_t* size) const
   {
-    return OwnPtr<void>{SDL_GetWindowICCProfile(get(), size)};
+    return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(get(), size))};
   }
 
   /**
    * Get the pixel format associated with the window.
    *
-   * @returns the pixel format of the window on success or
-   *          PIXELFORMAT_UNKNOWN on failure; call GetError() for more
-   *          information.
+   * @returns the pixel format of the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PixelFormat GetPixelFormat() const { return SDL_GetWindowPixelFormat(get()); }
+  PixelFormat GetPixelFormat() const
+  {
+    return CheckError(SDL_GetWindowPixelFormat(get()));
+  }
 
   /**
    * Get the numeric ID of a window.
@@ -34055,8 +33996,8 @@ struct WindowBase : Resource<SDL_Window*>
    * The numeric ID is what WindowEvent references, and is necessary to map
    * these events to specific WindowBase objects.
    *
-   * @returns the ID of the window on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns the ID of the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34064,13 +34005,13 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowRef.FromID
    */
-  WindowID GetID() const { return SDL_GetWindowID(get()); }
+  WindowID GetID() const { return CheckError(SDL_GetWindowID(get())); }
 
   /**
    * Get parent of a window.
    *
-   * @returns the parent of the window on success or nullptr if the window has
-   *          no parent.
+   * @returns the parent of the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34192,14 +34133,17 @@ struct WindowBase : Resource<SDL_Window*>
    * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the
    *   window
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  PropertiesRef GetProperties() const { return SDL_GetWindowProperties(get()); }
+  PropertiesRef GetProperties() const
+  {
+    return CheckError(SDL_GetWindowProperties(get()));
+  }
 
   /**
    * Get the window flags.
@@ -34226,8 +34170,7 @@ struct WindowBase : Resource<SDL_Window*>
    * This string is expected to be in UTF-8 encoding.
    *
    * @param title the desired window title in UTF-8 format.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34235,7 +34178,10 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.GetTitle
    */
-  bool SetTitle(StringParam title) { return SDL_SetWindowTitle(get(), title); }
+  void SetTitle(StringParam title)
+  {
+    CheckError(SDL_SetWindowTitle(get(), title));
+  }
 
   /**
    * Get the title of a window.
@@ -34265,33 +34211,32 @@ struct WindowBase : Resource<SDL_Window*>
    * smaller image will be upscaled and be used instead.
    *
    * @param icon an SurfaceBase structure containing the icon for the window.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetIcon(SurfaceBase& icon)
+  void SetIcon(SurfaceBase& icon)
   {
-    return SDL_SetWindowIcon(get(), icon.get());
+    CheckError(SDL_SetWindowIcon(get(), icon.get()));
   }
 
   /**
    * @brief Request the window's position and size to be set.
    *
    * @param rect the rect containing the new coordinates
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @sa WindowBase.SetPosition()
    * @sa WindowBase.SetSize()
    */
-  bool SetRect(Rect rect)
+  void SetRect(Rect rect)
   {
-    return SetPosition(rect.GetTopLeft()) && SetSize(rect.GetSize());
+    SetPosition(rect.GetTopLeft());
+    SetSize(rect.GetSize());
   }
 
   /**
@@ -34304,15 +34249,10 @@ struct WindowBase : Resource<SDL_Window*>
    * window is on a high pixel density display. Use Window.GetSizeInPixels()
    * or RendererBase.GetOutputSize() to get the real client area size in pixels.
    *
-   * @return std::optional<Rect>
+   * @return Rect with the position and size
+   * @throws Error on failure.
    */
-  std::optional<Rect> GetRect() const
-  {
-    if (Rect rect; GetPosition(&rect.x, &rect.y) && GetSize(&rect.w, &rect.h)) {
-      return rect;
-    }
-    return std::nullopt;
-  }
+  Rect GetRect() const { return Rect{GetPosition(), GetSize()}; }
 
   /**
    * Request that the window's position be set.
@@ -34340,8 +34280,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @param p the x, y coordinate of the window, or `WINDOWPOS_CENTERED` or
    *          `WINDOWPOS_UNDEFINED`.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34350,9 +34289,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetPosition
    * @sa WindowBase.Sync
    */
-  bool SetPosition(SDL_Point p)
+  void SetPosition(SDL_Point p)
   {
-    return SDL_SetWindowPosition(get(), p.x, p.y);
+    CheckError(SDL_SetWindowPosition(get(), p.x, p.y));
   }
 
   /**
@@ -34361,8 +34300,8 @@ struct WindowBase : Resource<SDL_Window*>
    * This is the current position of the window as last reported by the
    * windowing system.
    *
-   * @returns the position on success or false on std::nullopt; call
-   * GetError() for more information.
+   * @returns the position on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34371,10 +34310,11 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa SetPosition()
    * @sa SetPosition(int *, int *)
    */
-  std::optional<Point> GetPosition() const
+  Point GetPosition() const
   {
-    if (Point p; GetPosition(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetPosition(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -34390,8 +34330,7 @@ struct WindowBase : Resource<SDL_Window*>
    *          nullptr.
    * @param y a pointer filled in with the y position of the window, may be
    *          nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34399,9 +34338,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.SetPosition
    */
-  bool GetPosition(int* x, int* y) const
+  void GetPosition(int* x, int* y) const
   {
-    return SDL_GetWindowPosition(get(), x, y);
+    CheckError(SDL_GetWindowPosition(get(), x, y));
   }
 
   /**
@@ -34426,8 +34365,7 @@ struct WindowBase : Resource<SDL_Window*>
    * this is just a request, it can be denied by the windowing system.
    *
    * @param p the width, height of the window, both must be > 0.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34437,7 +34375,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.SetFullscreenMode
    * @sa WindowBase.Sync
    */
-  bool SetSize(SDL_Point p) { return SDL_SetWindowSize(get(), p.x, p.y); }
+  void SetSize(SDL_Point p) { CheckError(SDL_SetWindowSize(get(), p.x, p.y)); }
 
   /**
    * Get the size of a window's client area.
@@ -34458,10 +34396,11 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa SetSize()
    * @sa GetSize(int *, int *)
    */
-  std::optional<Point> GetSize() const
+  Point GetSize() const
   {
-    if (Point p; GetSize(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetSize(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -34473,8 +34412,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @param w a pointer filled in with the width of the window, may be nullptr.
    * @param h a pointer filled in with the height of the window, may be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34484,7 +34422,10 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetSizeInPixels
    * @sa WindowBase.SetSize
    */
-  bool GetSize(int* w, int* h) const { return SDL_GetWindowSize(get(), w, h); }
+  void GetSize(int* w, int* h) const
+  {
+    CheckError(SDL_GetWindowSize(get(), w, h));
+  }
 
   /**
    * Get the safe area for this window.
@@ -34496,17 +34437,18 @@ struct WindowBase : Resource<SDL_Window*>
    * into the rest of the window, but it should not contain visually important
    * or interactible content.
    *
-   * @returns the client area that is safe for interactive content on success or
-   *          std::nullopt on failure; call GetError() for more information.
+   * @returns the client area that is safe for interactive content on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Rect> GetSafeArea() const
+  Rect GetSafeArea() const
   {
-    if (Rect rect; SDL_GetWindowSafeArea(get(), &rect)) return rect;
-    return std::nullopt;
+    Rect rect;
+    CheckError(SDL_GetWindowSafeArea(get(), &rect));
+    return rect;
   }
 
   /**
@@ -34537,8 +34479,7 @@ struct WindowBase : Resource<SDL_Window*>
    *                   limit.
    * @param max_aspect the maximum aspect ratio of the window, or 0.0f for no
    *                   limit.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34547,9 +34488,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetAspectRatio
    * @sa WindowBase.Sync
    */
-  bool SetAspectRatio(float min_aspect, float max_aspect)
+  void SetAspectRatio(float min_aspect, float max_aspect)
   {
-    return SDL_SetWindowAspectRatio(get(), min_aspect, max_aspect);
+    CheckError(SDL_SetWindowAspectRatio(get(), min_aspect, max_aspect));
   }
 
   /**
@@ -34559,8 +34500,7 @@ struct WindowBase : Resource<SDL_Window*>
    *                   window, may be nullptr.
    * @param max_aspect a pointer filled in with the maximum aspect ratio of the
    *                   window, may be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34568,9 +34508,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.SetAspectRatio
    */
-  bool GetAspectRatio(float* min_aspect, float* max_aspect) const
+  void GetAspectRatio(float* min_aspect, float* max_aspect) const
   {
-    return SDL_GetWindowAspectRatio(get(), min_aspect, max_aspect);
+    CheckError(SDL_GetWindowAspectRatio(get(), min_aspect, max_aspect));
   }
 
   /**
@@ -34597,8 +34537,7 @@ struct WindowBase : Resource<SDL_Window*>
    *               border; nullptr is permitted.
    * @param right pointer to variable for storing the size of the right border;
    *              nullptr is permitted.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34606,9 +34545,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.GetSize
    */
-  bool GetBordersSize(int* top, int* left, int* bottom, int* right) const
+  void GetBordersSize(int* top, int* left, int* bottom, int* right) const
   {
-    return SDL_GetWindowBordersSize(get(), top, left, bottom, right);
+    CheckError(SDL_GetWindowBordersSize(get(), top, left, bottom, right));
   }
 
   /**
@@ -34624,10 +34563,11 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa GetSize()
    * @sa GetSizeInPixels(int*, int*)
    */
-  std::optional<Point> GetSizeInPixels() const
+  Point GetSizeInPixels() const
   {
-    if (Point p; GetSizeInPixels(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetSizeInPixels(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -34637,8 +34577,7 @@ struct WindowBase : Resource<SDL_Window*>
    *          nullptr.
    * @param h a pointer to variable for storing the height in pixels, may be
    *          nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34647,17 +34586,16 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.WindowBase
    * @sa WindowBase.GetSize
    */
-  bool GetSizeInPixels(int* w, int* h) const
+  void GetSizeInPixels(int* w, int* h) const
   {
-    return SDL_GetWindowSizeInPixels(get(), w, h);
+    CheckError(SDL_GetWindowSizeInPixels(get(), w, h));
   }
 
   /**
    * Set the minimum size of a window's client area.
    *
    * @param p the minimum width and height of the window, or 0 for no limit.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34666,9 +34604,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetMinimumSize
    * @sa WindowBase.SetMaximumSize
    */
-  bool SetMinimumSize(SDL_Point p)
+  void SetMinimumSize(SDL_Point p)
   {
-    return SDL_SetWindowMinimumSize(get(), p.x, p.y);
+    CheckError(SDL_SetWindowMinimumSize(get(), p.x, p.y));
   }
 
   /**
@@ -34678,8 +34616,7 @@ struct WindowBase : Resource<SDL_Window*>
    *          nullptr.
    * @param h a pointer filled in with the minimum height of the window, may be
    *          nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34688,17 +34625,16 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetMaximumSize
    * @sa WindowBase.SetMinimumSize
    */
-  bool GetMinimumSize(int* w, int* h) const
+  void GetMinimumSize(int* w, int* h) const
   {
-    return SDL_GetWindowMinimumSize(get(), w, h);
+    CheckError(SDL_GetWindowMinimumSize(get(), w, h));
   }
 
   /**
    * Set the maximum size of a window's client area.
    *
    * @param p the maximum width and height of the window, or 0 for no limit.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34707,9 +34643,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetMaximumSize
    * @sa WindowBase.SetMinimumSize
    */
-  bool SetMaximumSize(SDL_Point p)
+  void SetMaximumSize(SDL_Point p)
   {
-    return SDL_SetWindowMaximumSize(get(), p.x, p.y);
+    CheckError(SDL_SetWindowMaximumSize(get(), p.x, p.y));
   }
 
   /**
@@ -34719,8 +34655,7 @@ struct WindowBase : Resource<SDL_Window*>
    *          nullptr.
    * @param h a pointer filled in with the maximum height of the window, may be
    *          nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34729,9 +34664,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetMinimumSize
    * @sa WindowBase.SetMaximumSize
    */
-  bool GetMaximumSize(int* w, int* h) const
+  void GetMaximumSize(int* w, int* h) const
   {
-    return SDL_GetWindowMaximumSize(get(), w, h);
+    CheckError(SDL_GetWindowMaximumSize(get(), w, h));
   }
 
   /**
@@ -34744,8 +34679,7 @@ struct WindowBase : Resource<SDL_Window*>
    * You can't change the border state of a fullscreen window.
    *
    * @param bordered false to remove border, true to add border.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34753,9 +34687,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.GetFlags
    */
-  bool SetBordered(bool bordered)
+  void SetBordered(bool bordered)
   {
-    return SDL_SetWindowBordered(get(), bordered);
+    CheckError(SDL_SetWindowBordered(get(), bordered));
   }
 
   /**
@@ -34768,8 +34702,7 @@ struct WindowBase : Resource<SDL_Window*>
    * You can't change the resizable state of a fullscreen window.
    *
    * @param resizable true to allow resizing, false to disallow.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34777,9 +34710,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.GetFlags
    */
-  bool SetResizable(bool resizable)
+  void SetResizable(bool resizable)
   {
-    return SDL_SetWindowResizable(get(), resizable);
+    CheckError(SDL_SetWindowResizable(get(), resizable));
   }
 
   /**
@@ -34789,8 +34722,7 @@ struct WindowBase : Resource<SDL_Window*>
    * will bring the window to the front and keep the window above the rest.
    *
    * @param on_top true to set the window always on top, false to disable.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34798,16 +34730,15 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.GetFlags
    */
-  bool SetAlwaysOnTop(bool on_top)
+  void SetAlwaysOnTop(bool on_top)
   {
-    return SDL_SetWindowAlwaysOnTop(get(), on_top);
+    CheckError(SDL_SetWindowAlwaysOnTop(get(), on_top));
   }
 
   /**
    * Show a window.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34816,13 +34747,12 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.Hide
    * @sa WindowBase.Raise
    */
-  bool Show() { return SDL_ShowWindow(get()); }
+  void Show() { CheckError(SDL_ShowWindow(get())); }
 
   /**
    * Hide a window.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34831,7 +34761,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.Show
    * @sa WINDOW_HIDDEN
    */
-  bool Hide() { return SDL_HideWindow(get()); }
+  void Hide() { CheckError(SDL_HideWindow(get())); }
 
   /**
    * Request that a window be raised above other windows and gain the input
@@ -34843,14 +34773,13 @@ struct WindowBase : Resource<SDL_Window*>
    * input focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and
    * the window will have the WINDOW_INPUT_FOCUS flag set.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Raise() { return SDL_RaiseWindow(get()); }
+  void Raise() { CheckError(SDL_RaiseWindow(get())); }
 
   /**
    * Request that the window be made as large as possible.
@@ -34872,8 +34801,7 @@ struct WindowBase : Resource<SDL_Window*>
    * manager. Win32 and macOS enforce the constraints when maximizing, while X11
    * and Wayland window managers may vary.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34883,7 +34811,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.Restore
    * @sa WindowBase.Sync
    */
-  bool Maximize() { return SDL_MaximizeWindow(get()); }
+  void Maximize() { CheckError(SDL_MaximizeWindow(get())); }
 
   /**
    * Request that the window be minimized to an iconic representation.
@@ -34900,8 +34828,7 @@ struct WindowBase : Resource<SDL_Window*>
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34911,7 +34838,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.Restore
    * @sa WindowBase.Sync
    */
-  bool Minimize() { return SDL_MinimizeWindow(get()); }
+  void Minimize() { CheckError(SDL_MinimizeWindow(get())); }
 
   /**
    * Request that the size and position of a minimized or maximized window be
@@ -34929,8 +34856,7 @@ struct WindowBase : Resource<SDL_Window*>
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34940,7 +34866,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.Minimize
    * @sa WindowBase.Sync
    */
-  bool Restore() { return SDL_RestoreWindow(get()); }
+  void Restore() { CheckError(SDL_RestoreWindow(get())); }
 
   /**
    * Request that the window's fullscreen state be changed.
@@ -34959,8 +34885,7 @@ struct WindowBase : Resource<SDL_Window*>
    * is just a request, it can be denied by the windowing system.
    *
    * @param fullscreen true for fullscreen mode, false for windowed mode.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -34971,9 +34896,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.Sync
    * @sa WINDOW_FULLSCREEN
    */
-  bool SetFullscreen(bool fullscreen)
+  void SetFullscreen(bool fullscreen)
   {
-    return SDL_SetWindowFullscreen(get(), fullscreen);
+    CheckError(SDL_SetWindowFullscreen(get(), fullscreen));
   }
 
   /**
@@ -34988,8 +34913,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * On windowing systems where changes are immediate, this does nothing.
    *
-   * @returns true on success or false if the operation timed out before the
-   *          window was in the requested state.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35003,7 +34927,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.Restore
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
-  bool Sync() { return SDL_SyncWindow(get()); }
+  void Sync() { CheckError(SDL_SyncWindow(get())); }
 
   /**
    * Return whether the window has a surface associated with it.
@@ -35061,8 +34985,7 @@ struct WindowBase : Resource<SDL_Window*>
    * whether the requested setting is supported.
    *
    * @param vsync the vertical refresh sync interval.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35070,16 +34993,16 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.GetSurfaceVSync
    */
-  bool SetSurfaceVSync(int vsync)
+  void SetSurfaceVSync(int vsync)
   {
-    return SDL_SetWindowSurfaceVSync(get(), vsync);
+    CheckError(SDL_SetWindowSurfaceVSync(get(), vsync));
   }
 
   /**
    * Get VSync for the window surface.
    *
-   * @returns the current vertical refresh sync interval on success or
-   * std::nullopt on failure; call GetError() for more information.
+   * @returns the current vertical refresh sync interval on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35087,10 +35010,11 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.SetSurfaceVSync
    */
-  std::optional<int> GetSurfaceVSync() const
+  int GetSurfaceVSync() const
   {
-    if (int vsync; SDL_GetWindowSurfaceVSync(get(), &vsync)) return vsync;
-    return std::nullopt;
+    int vsync;
+    CheckError(SDL_GetWindowSurfaceVSync(get(), &vsync));
+    return vsync;
   }
 
   /**
@@ -35101,8 +35025,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * This function is equivalent to the SDL 1.2 API SDL_Flip().
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35111,7 +35034,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetSurface
    * @sa WindowBase.UpdateSurfaceRects
    */
-  bool UpdateSurface() { return SDL_UpdateWindowSurface(get()); }
+  void UpdateSurface() { CheckError(SDL_UpdateWindowSurface(get())); }
 
   /**
    * Copy areas of the window surface to the screen.
@@ -35128,8 +35051,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @param rects an array of Rect structures representing areas of the
    *              surface to copy, in pixels.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35138,17 +35060,16 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetSurface
    * @sa WindowBase.UpdateSurface
    */
-  bool UpdateSurfaceRects(SpanRef<const SDL_Rect> rects)
+  void UpdateSurfaceRects(SpanRef<const SDL_Rect> rects)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_SINT32);
-    return SDL_UpdateWindowSurfaceRects(get(), rects.data(), rects.size());
+    CheckError(SDL_UpdateWindowSurfaceRects(get(), rects.data(), rects.size()));
   }
 
   /**
    * Destroy the surface associated with the window.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35157,7 +35078,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetSurface
    * @sa WindowBase.HasSurface
    */
-  bool DestroySurface() { return SDL_DestroyWindowSurface(get()); }
+  void DestroySurface() { CheckError(SDL_DestroyWindowSurface(get())); }
 
   /**
    * Set a window's keyboard grab mode.
@@ -35179,8 +35100,7 @@ struct WindowBase : Resource<SDL_Window*>
    * other window loses its grab in favor of the caller's window.
    *
    * @param grabbed this is true to grab keyboard, and false to release.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35189,9 +35109,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetKeyboardGrab
    * @sa WindowBase.SetMouseGrab
    */
-  bool SetKeyboardGrab(bool grabbed)
+  void SetKeyboardGrab(bool grabbed)
   {
-    return SDL_SetWindowKeyboardGrab(get(), grabbed);
+    CheckError(SDL_SetWindowKeyboardGrab(get(), grabbed));
   }
 
   /**
@@ -35200,8 +35120,7 @@ struct WindowBase : Resource<SDL_Window*>
    * Mouse grab confines the mouse cursor to the window.
    *
    * @param grabbed this is true to grab mouse, and false to release.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35212,9 +35131,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.SetMouseGrab
    * @sa WindowBase.SetKeyboardGrab
    */
-  bool SetMouseGrab(bool grabbed)
+  void SetMouseGrab(bool grabbed)
   {
-    return SDL_SetWindowMouseGrab(get(), grabbed);
+    CheckError(SDL_SetWindowMouseGrab(get(), grabbed));
   }
 
   /**
@@ -35254,8 +35173,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @param rect a rectangle area in window-relative coordinates. If nullptr the
    *             barrier for the specified window will be destroyed.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35265,9 +35183,9 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetMouseGrab
    * @sa WindowBase.SetMouseGrab
    */
-  bool SetMouseRect(const SDL_Rect& rect)
+  void SetMouseRect(const SDL_Rect& rect)
   {
-    return SDL_SetWindowMouseRect(get(), &rect);
+    CheckError(SDL_SetWindowMouseRect(get(), &rect));
   }
 
   /**
@@ -35295,8 +35213,7 @@ struct WindowBase : Resource<SDL_Window*>
    * This function also returns false if setting the opacity isn't supported.
    *
    * @param opacity the opacity value (0.0f - transparent, 1.0f - opaque).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35304,9 +35221,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.GetOpacity
    */
-  bool SetOpacity(float opacity)
+  void SetOpacity(float opacity)
   {
-    return SDL_SetWindowOpacity(get(), opacity);
+    CheckError(SDL_SetWindowOpacity(get(), opacity));
   }
 
   /**
@@ -35348,8 +35265,7 @@ struct WindowBase : Resource<SDL_Window*>
    * child window results in undefined behavior.
    *
    * @param parent the new parent window for the child window.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35357,7 +35273,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa WindowBase.SetModal
    */
-  bool SetParent(OptionalWindow parent);
+  void SetParent(OptionalWindow parent);
 
   /**
    * Toggle the state of the window as modal.
@@ -35366,8 +35282,7 @@ struct WindowBase : Resource<SDL_Window*>
    * window of a parent, or toggling modal status on will fail.
    *
    * @param modal true to toggle modal status on, false to toggle it off.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35376,22 +35291,21 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.SetParent
    * @sa WINDOW_MODAL
    */
-  bool SetModal(bool modal) { return SDL_SetWindowModal(get(), modal); }
+  void SetModal(bool modal) { CheckError(SDL_SetWindowModal(get(), modal)); }
 
   /**
    * Set whether the window may have input focus.
    *
    * @param focusable true to allow input focus, false to not allow input focus.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetFocusable(bool focusable)
+  void SetFocusable(bool focusable)
   {
-    return SDL_SetWindowFocusable(get(), focusable);
+    CheckError(SDL_SetWindowFocusable(get(), focusable));
   }
 
   /**
@@ -35407,16 +35321,15 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @param p the x, y coordinate of the menu, relative to the origin (top-left)
    *          of the client area.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ShowSystemMenu(SDL_Point p)
+  void ShowSystemMenu(SDL_Point p)
   {
-    return SDL_ShowWindowSystemMenu(get(), p.x, p.y);
+    CheckError(SDL_ShowWindowSystemMenu(get(), p.x, p.y));
   }
 
   /**
@@ -35452,8 +35365,7 @@ struct WindowBase : Resource<SDL_Window*>
    * devoid of allocations, etc.
    *
    * @param callback the function to call when doing a hit-test.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35461,7 +35373,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @cat listener-callback
    */
-  bool SetHitTest(HitTestCB callback);
+  void SetHitTest(HitTestCB callback);
 
   /**
    * Provide a callback that decides if a window region has special properties.
@@ -35497,16 +35409,15 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @param callback the function to call when doing a hit-test.
    * @param callback_data an app-defined void pointer passed to **callback**.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetHitTest(HitTest callback, void* callback_data)
+  void SetHitTest(HitTest callback, void* callback_data)
   {
-    return SDL_SetWindowHitTest(get(), callback, callback_data);
+    CheckError(SDL_SetWindowHitTest(get(), callback, callback_data));
   }
 
   /**
@@ -35527,55 +35438,53 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @param shape the surface representing the shape of the window, or nullptr
    *              to remove any current shape.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetShape(SurfaceBase& shape)
+  void SetShape(SurfaceBase& shape)
   {
-    return SDL_SetWindowShape(get(), shape.get());
+    CheckError(SDL_SetWindowShape(get(), shape.get()));
   }
 
   /**
    * Request a window to demand attention from the user.
    *
    * @param operation the operation to perform.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Flash(FlashOperation operation)
+  void Flash(FlashOperation operation)
   {
-    return SDL_FlashWindow(get(), operation);
+    CheckError(SDL_FlashWindow(get(), operation));
   }
 
   RendererRef GetRenderer() const;
 
-  bool StartTextInput();
+  void StartTextInput();
 
-  bool StartTextInput(PropertiesBase& props);
+  void StartTextInput(PropertiesBase& props);
 
   bool IsTextInputActive() const;
 
-  bool StopTextInput();
+  void StopTextInput();
 
-  bool ClearComposition();
+  void ClearComposition();
 
-  bool SetTextInputArea(const SDL_Rect& rect, int cursor);
+  void SetTextInputArea(const SDL_Rect& rect, int cursor);
 
-  bool GetTextInputArea(Rect* rect, int* cursor);
+  void GetTextInputArea(Rect* rect, int* cursor);
 
   bool IsScreenKeyboardShown() const;
 
   void WarpMouse(float x, float y);
 
-  bool SetRelativeMouseMode(bool enabled);
+  void SetRelativeMouseMode(bool enabled);
 
   bool GetRelativeMouseMode() const;
 };
@@ -35830,8 +35739,8 @@ struct GLContextBase : Resource<SDL_GLContextState*>
    * GLContextBase is opaque to the application.
    *
    * @param window the window to associate with the context.
-   * @post the OpenGL context associated with `window` or nullptr on failure;
-   *          call GetError() for more information.
+   * @post the OpenGL context associated with `window`.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35841,7 +35750,7 @@ struct GLContextBase : Resource<SDL_GLContextState*>
    * @sa GLContextBase.MakeCurrent
    */
   GLContextBase(WindowBase& window)
-    : Resource(SDL_GL_CreateContext(window.get()))
+    : Resource(CheckError(SDL_GL_CreateContext(window.get())))
   {
   }
 
@@ -35851,8 +35760,7 @@ struct GLContextBase : Resource<SDL_GLContextState*>
    * The context must have been created with a compatible window.
    *
    * @param window the window to associate with the context.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -35860,9 +35768,9 @@ struct GLContextBase : Resource<SDL_GLContextState*>
    *
    * @sa GLContextBase.GLContextBase
    */
-  bool MakeCurrent(WindowBase& window)
+  void MakeCurrent(WindowBase& window)
   {
-    return SDL_GL_MakeCurrent(window.get(), get());
+    CheckError(SDL_GL_MakeCurrent(window.get(), get()));
   }
 };
 
@@ -36395,8 +36303,8 @@ constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
 /**
  * Get a list of valid windows.
  *
- * @returns a nullptr terminated array of WindowBase pointers or nullptr on
- * failure; call GetError() for more information.
+ * @returns a nullptr terminated array of WindowRef pointers.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36405,7 +36313,7 @@ constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
 inline OwnArray<WindowRef> GetWindows()
 {
   int count = 0;
-  auto data = reinterpret_cast<WindowRef*>(SDL_GetWindows(&count));
+  auto data = CheckError(reinterpret_cast<WindowRef*>(SDL_GetWindows(&count)));
   return OwnArray<WindowRef>{data, size_t(count)};
 }
 
@@ -36632,8 +36540,7 @@ inline bool ScreenSaverEnabled() { return SDL_ScreenSaverEnabled(); }
 /**
  * Allow the screen to be blanked by a screen saver.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36642,7 +36549,7 @@ inline bool ScreenSaverEnabled() { return SDL_ScreenSaverEnabled(); }
  * @sa DisableScreenSaver
  * @sa ScreenSaverEnabled
  */
-inline bool EnableScreenSaver() { return SDL_EnableScreenSaver(); }
+inline void EnableScreenSaver() { CheckError(SDL_EnableScreenSaver()); }
 
 /**
  * Prevent the screen from being blanked by a screen saver.
@@ -36653,8 +36560,7 @@ inline bool EnableScreenSaver() { return SDL_EnableScreenSaver(); }
  * The screensaver is disabled by default, but this may by changed by
  * SDL_HINT_VIDEO_ALLOW_SCREENSAVER.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36663,7 +36569,7 @@ inline bool EnableScreenSaver() { return SDL_EnableScreenSaver(); }
  * @sa EnableScreenSaver
  * @sa ScreenSaverEnabled
  */
-inline bool DisableScreenSaver() { return SDL_DisableScreenSaver(); }
+inline void DisableScreenSaver() { CheckError(SDL_DisableScreenSaver()); }
 
 /**
  * Dynamically load an OpenGL library.
@@ -36677,8 +36583,7 @@ inline bool DisableScreenSaver() { return SDL_DisableScreenSaver(); }
  *
  * @param path the platform dependent OpenGL library name, or nullptr to open
  *             the default OpenGL library.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36687,9 +36592,9 @@ inline bool DisableScreenSaver() { return SDL_DisableScreenSaver(); }
  * @sa GL_GetProcAddress
  * @sa GL_UnloadLibrary
  */
-inline bool GL_LoadLibrary(StringParam path)
+inline void GL_LoadLibrary(StringParam path)
 {
-  return SDL_GL_LoadLibrary(path);
+  CheckError(SDL_GL_LoadLibrary(path));
 }
 
 /**
@@ -36832,8 +36737,7 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  * @param attr an GLAttr enum value specifying the OpenGL attribute to
  *             set.
  * @param value the desired value for the attribute.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36842,9 +36746,9 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  * @sa GL_GetAttribute
  * @sa GL_ResetAttributes
  */
-inline bool GL_SetAttribute(GLAttr attr, int value)
+inline void GL_SetAttribute(GLAttr attr, int value)
 {
-  return SDL_GL_SetAttribute(attr, value);
+  CheckError(SDL_GL_SetAttribute(attr, value));
 }
 
 /**
@@ -36853,8 +36757,7 @@ inline bool GL_SetAttribute(GLAttr attr, int value)
  * @param attr an GLAttr enum value specifying the OpenGL attribute to
  *             get.
  * @param value a pointer filled in with the current value of `attr`.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36863,28 +36766,31 @@ inline bool GL_SetAttribute(GLAttr attr, int value)
  * @sa GL_ResetAttributes
  * @sa GL_SetAttribute
  */
-inline bool GL_GetAttribute(GLAttr attr, int* value)
+inline void GL_GetAttribute(GLAttr attr, int* value)
 {
-  return SDL_GL_GetAttribute(attr, value);
+  CheckError(SDL_GL_GetAttribute(attr, value));
 }
 
 /**
  * Get the currently active OpenGL window.
  *
- * @returns the currently active OpenGL window on success or nullptr on failure;
- *          call GetError() for more information.
+ * @returns the currently active OpenGL window on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline WindowRef GL_GetCurrentWindow() { return SDL_GL_GetCurrentWindow(); }
+inline WindowRef GL_GetCurrentWindow()
+{
+  return CheckError(SDL_GL_GetCurrentWindow());
+}
 
 /**
  * Get the currently active OpenGL context.
  *
- * @returns the currently active OpenGL context or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the currently active OpenGL context.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36894,14 +36800,14 @@ inline WindowRef GL_GetCurrentWindow() { return SDL_GL_GetCurrentWindow(); }
  */
 inline GLContextRef GL_GetCurrentContext()
 {
-  return SDL_GL_GetCurrentContext();
+  return CheckError(SDL_GL_GetCurrentContext());
 }
 
 /**
  * Get the currently active EGL display.
  *
- * @returns the currently active EGL display or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the currently active EGL display.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36909,27 +36815,30 @@ inline GLContextRef GL_GetCurrentContext()
  */
 inline EGLDisplay EGL_GetCurrentDisplay()
 {
-  return SDL_EGL_GetCurrentDisplay();
+  return CheckError(SDL_EGL_GetCurrentDisplay());
 }
 
 /**
  * Get the currently active EGL config.
  *
- * @returns the currently active EGL config or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the currently active EGL config.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
+inline EGLConfig EGL_GetCurrentConfig()
+{
+  return CheckError(SDL_EGL_GetCurrentConfig());
+}
 
 /**
  * Get the EGL surface associated with the window.
  *
  * @param window the window to query.
- * @returns the EGLSurface pointer associated with the window, or nullptr on
- *          failure.
+ * @returns the EGLSurface pointer associated with the window.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -36937,7 +36846,7 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  */
 inline EGLSurface EGL_GetWindowSurface(WindowBase& window)
 {
-  return SDL_EGL_GetWindowSurface(window.get());
+  return CheckError(SDL_EGL_GetWindowSurface(window.get()));
 }
 
 /**
@@ -36992,8 +36901,7 @@ inline void EGL_SetAttributeCallbacks(
  *
  * @param interval 0 for immediate updates, 1 for updates synchronized with
  *                 the vertical retrace, -1 for adaptive vsync.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -37001,9 +36909,9 @@ inline void EGL_SetAttributeCallbacks(
  *
  * @sa GL_GetSwapInterval
  */
-inline bool GL_SetSwapInterval(int interval)
+inline void GL_SetSwapInterval(int interval)
 {
-  return SDL_GL_SetSwapInterval(interval);
+  CheckError(SDL_GL_SetSwapInterval(interval));
 }
 
 /**
@@ -37016,8 +36924,7 @@ inline bool GL_SetSwapInterval(int interval)
  *                 synchronization, 1 if the buffer swap is synchronized with
  *                 the vertical retrace, and -1 if late swaps happen
  *                 immediately instead of waiting for the next retrace.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -37025,9 +36932,9 @@ inline bool GL_SetSwapInterval(int interval)
  *
  * @sa GL_SetSwapInterval
  */
-inline bool GL_GetSwapInterval(int* interval)
+inline void GL_GetSwapInterval(int* interval)
 {
-  return SDL_GL_GetSwapInterval(interval);
+  CheckError(SDL_GL_GetSwapInterval(interval));
 }
 
 /**
@@ -37041,27 +36948,26 @@ inline bool GL_GetSwapInterval(int* interval)
  * extra.
  *
  * @param window the window to change.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GL_SwapWindow(WindowBase& window)
+inline void GL_SwapWindow(WindowBase& window)
 {
-  return SDL_GL_SwapWindow(window.get());
+  CheckError(SDL_GL_SwapWindow(window.get()));
 }
 
 #pragma region impl
 
 /// @}
 
-inline bool WindowBase::SetHitTest(HitTestCB callback)
+inline void WindowBase::SetHitTest(HitTestCB callback)
 {
   using Wrapper = KeyValueWrapper<SDL_Window*, HitTestCB>;
   void* cbHandle = Wrapper::Wrap(get(), std::move(callback));
-  return SetHitTest(
+  SetHitTest(
     [](SDL_Window* win, const SDL_Point* area, void* data) {
       auto& cb = Wrapper::at(data);
       return cb(WindowRef{win}, Point(*area));
@@ -39003,18 +38909,17 @@ inline std::optional<Event> PollEvent()
  *
  * @param event the Event structure to be filled in with the next event
  *              from the queue, or nullptr.
- * @returns true on success or false if there was an error while waiting for
- *          events; call GetError() for more information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa PushEvent()
- * @sa WaitEventTimeout()
+ * @sa PollEvent
+ * @sa PushEvent
+ * @sa WaitEventTimeout
  */
-inline bool WaitEvent(Event* event) { return SDL_WaitEvent(event); }
+inline void WaitEvent(Event* event) { CheckError(SDL_WaitEvent(event)); }
 
 /**
  * Wait indefinitely for the next available event.
@@ -39024,8 +38929,8 @@ inline bool WaitEvent(Event* event) { return SDL_WaitEvent(event); }
  * As this function may implicitly call PumpEvents(), you can only call
  * this function in the thread that initialized the video subsystem.
  *
- * @returns Event on success or std::nullopt if there was an error while waiting
- * for events; call GetError() for more information.
+ * @returns Event on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -39035,10 +38940,11 @@ inline bool WaitEvent(Event* event) { return SDL_WaitEvent(event); }
  * @sa PushEvent()
  * @sa WaitEventTimeout()
  */
-inline std::optional<Event> WaitEvent()
+inline Event WaitEvent()
 {
-  if (Event event; WaitEvent(&event)) return event;
-  return std::nullopt;
+  Event event;
+  WaitEvent(&event);
+  return event;
 }
 
 /**
@@ -39173,32 +39079,30 @@ inline std::optional<Event> WaitEventTimeout(
  * Not only can events be read from the queue, but the user can also push
  * their own events onto it. `event` is a pointer to the event structure you
  * wish to push onto the queue. The event is copied into the queue, and the
- * caller may dispose of the memory pointed to after SDL_PushEvent() returns.
+ * caller may dispose of the memory pointed to after PushEvent() returns.
  *
  * Note: Pushing device input events onto the queue doesn't modify the state
  * of the device within SDL.
  *
- * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
- * the event filter but events added with SDL_PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through
+ * the event filter but events added with PeepEvents() do not.
  *
- * For pushing application-specific events, please use SDL_RegisterEvents() to
+ * For pushing application-specific events, please use RegisterEvents() to
  * get an event type that does not conflict with other code that also wants
  * its own custom event types.
  *
- * @param event the SDL_Event to be added to the queue.
- * @returns true on success, false if the event was filtered or on failure;
- *          call GetError() for more information. A common reason for
- *          error is the event queue being full.
+ * @param event the Event to be added to the queue.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PeepEvents()
- * @sa PollEvent()
- * @sa RegisterEvents()
+ * @sa PeepEvents
+ * @sa PollEvent
+ * @sa RegisterEvents
  */
-inline bool PushEvent(Event* event) { return SDL_PushEvent(event); }
+inline void PushEvent(Event* event) { CheckError(SDL_PushEvent(event)); }
 
 /**
  * Add an event to the event queue.
@@ -39207,34 +39111,32 @@ inline bool PushEvent(Event* event) { return SDL_PushEvent(event); }
  * Not only can events be read from the queue, but the user can also push
  * their own events onto it. `event` is a pointer to the event structure you
  * wish to push onto the queue. The event is copied into the queue, and the
- * caller may dispose of the memory pointed to after SDL_PushEvent() returns.
+ * caller may dispose of the memory pointed to after PushEvent() returns.
  *
  * Note: Pushing device input events onto the queue doesn't modify the state
  * of the device within SDL.
  *
- * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
- * the event filter but events added with SDL_PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through
+ * the event filter but events added with PeepEvents() do not.
  *
- * For pushing application-specific events, please use SDL_RegisterEvents() to
+ * For pushing application-specific events, please use RegisterEvents() to
  * get an event type that does not conflict with other code that also wants
  * its own custom event types.
  *
- * @param event the SDL_Event to be added to the queue.
- * @returns true on success, false if the event was filtered or on failure;
- *          call GetError() for more information. A common reason for
- *          error is the event queue being full.
+ * @param event the Event to be added to the queue.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PeepEvents()
- * @sa PollEvent()
- * @sa RegisterEvents()
+ * @sa PeepEvents
+ * @sa PollEvent
+ * @sa RegisterEvents
  */
-inline bool PushEvent(const Event& event)
+inline void PushEvent(const Event& event)
 {
-  return PushEvent(const_cast<Event*>(&event));
+  PushEvent(const_cast<Event*>(&event));
 }
 
 /**
@@ -39410,17 +39312,17 @@ inline void SetEventFilter(EventFilterCB filter = {})
  * @param filter the current callback function will be stored here.
  * @param userdata the pointer that is passed to the current event filter will
  *                 be stored here.
- * @returns true on success or false if there is no event filter set.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetEventFilter()
+ * @sa SetEventFilter
  */
-inline bool GetEventFilter(EventFilter* filter, void** userdata)
+inline void GetEventFilter(EventFilter* filter, void** userdata)
 {
-  return SDL_GetEventFilter(filter, userdata);
+  CheckError(SDL_GetEventFilter(filter, userdata));
 }
 
 /**
@@ -39481,19 +39383,18 @@ inline bool EventWatchAuxCallback(void* userdata, Event* event)
  *
  * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RemoveEventWatch()
- * @sa SetEventFilter()
+ * @sa RemoveEventWatch
+ * @sa SetEventFilter
  */
-inline bool AddEventWatch(EventFilter filter, void* userdata)
+inline void AddEventWatch(EventFilter filter, void* userdata)
 {
-  return SDL_AddEventWatch(filter, userdata);
+  CheckError(SDL_AddEventWatch(filter, userdata));
 }
 
 /**
@@ -39516,7 +39417,8 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  *
  * @param filter an EventFilterCB to call when an event happens.
  * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
- * success or false on failure; call GetError() for more information.
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -39536,7 +39438,7 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
   auto cb = Wrapper::Wrap(std::move(filter));
   if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
     delete cb;
-    return EventWatchHandle{nullptr};
+    throw Error{};
   }
 
   static std::atomic_size_t lastId = 0;
@@ -39691,7 +39593,8 @@ inline Uint32 RegisterEvents(int numevents)
  * Get window associated with an event.
  *
  * @param event an event containing a `windowID`.
- * @returns the associated window on success or nullptr if there is none.
+ * @returns the associated window on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -39703,7 +39606,7 @@ inline Uint32 RegisterEvents(int numevents)
  */
 inline WindowRef GetWindowFromEvent(const Event& event)
 {
-  return SDL_GetWindowFromEvent(&event);
+  return CheckError(SDL_GetWindowFromEvent(&event));
 }
 
 /// @}
@@ -39899,13 +39802,14 @@ inline void SetModState(Keymod modstate) { SDL_SetModState(modstate); }
  * @param modstate the modifier state to use when translating the scancode to
  *                 a keycode.
  * @param key_event true if the keycode will be used in key events.
+ * @post the Keycode that corresponds to the given Scancode.
  *
  * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Keycode::GetName
- * @sa Keycode::GetScancode
+ * @sa Keycode.GetName
+ * @sa Keycode.GetScancode
  */
 inline Keycode::Keycode(Scancode scancode, Keymod modstate, bool key_event)
   : Keycode(SDL_GetKeyFromScancode(scancode, modstate, key_event))
@@ -39917,20 +39821,21 @@ inline Keycode::Keycode(Scancode scancode, Keymod modstate, bool key_event)
  *
  * @param name the human-readable key name.
  * @post a valid key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call
- *          GetError() for more information.
+ *       GetError() for more information.
  *
  * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Keycode::Keycode
- * @sa Keycode::GetName
- * @sa Scancode::Scancode
+ * @sa Keycode.Keycode
+ * @sa Keycode.GetName
+ * @sa Scancode.Scancode
  */
 inline Keycode::Keycode(StringParam name)
   : Keycode(SDL_GetKeyFromName(name))
 {
 }
+
 /**
  * Get the scancode corresponding to the given key code according to the
  * current keyboard layout.
@@ -39946,8 +39851,8 @@ inline Keycode::Keycode(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Keycode::Keycode
- * @sa Scancode::GetName
+ * @sa Keycode.Keycode
+ * @sa Scancode.GetName
  */
 inline Scancode Keycode::GetScancode(Keymod* modstate) const
 {
@@ -39960,18 +39865,17 @@ inline Scancode Keycode::GetScancode(Keymod* modstate) const
  * @param name the name to use for the scancode, encoded as UTF-8. The string
  *             is not copied, so the pointer given to this function must stay
  *             valid while SDL is being used.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Scancode::GetName
+ * @sa Scancode.GetName
  */
-inline bool Scancode::SetName(StringParam name)
+inline void Scancode::SetName(StringParam name)
 {
-  return SDL_SetScancodeName(m_scancode, name);
+  CheckError(SDL_SetScancodeName(m_scancode, name));
 }
 
 /**
@@ -39993,9 +39897,9 @@ inline bool Scancode::SetName(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Keycode::GetScancode
- * @sa GetScancodeFromName
- * @sa Scancode::SetName
+ * @sa Keycode.GetScancode
+ * @sa Scancode.Scancode
+ * @sa Scancode.SetName
  */
 inline const char* Scancode::GetName() const
 {
@@ -40013,9 +39917,9 @@ inline const char* Scancode::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Keycode::Keycode
- * @sa Keycode::GetScancode
- * @sa Scancode::GetName
+ * @sa Keycode.Keycode
+ * @sa Keycode.GetScancode
+ * @sa Scancode.GetName
  */
 inline Scancode::Scancode(StringParam name)
   : Scancode(SDL_GetScancodeFromName(name))
@@ -40035,9 +39939,9 @@ inline Scancode::Scancode(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Keycode::Keycode
- * @sa Keycode::Keycode
- * @sa Keycode::GetScancode
+ * @sa Keycode.Keycode
+ * @sa Keycode.Keycode
+ * @sa Keycode.GetScancode
  */
 inline const char* Keycode::GetName() const
 {
@@ -40057,8 +39961,7 @@ inline const char* Keycode::GetName() const
  * activates an IME, which can prevent some key press events from being passed
  * through.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -40069,7 +39972,10 @@ inline const char* Keycode::GetName() const
  * @sa WindowBase.StopTextInput
  * @sa WindowBase.IsTextInputActive
  */
-inline bool WindowBase::StartTextInput() { return SDL_StartTextInput(get()); }
+inline void WindowBase::StartTextInput()
+{
+  return CheckError(SDL_StartTextInput(get()));
+}
 
 /**
  * Start accepting Unicode text input events in a window, with properties
@@ -40108,8 +40014,7 @@ inline bool WindowBase::StartTextInput() { return SDL_StartTextInput(get()); }
  *   https://developer.android.com/reference/android/text/InputType
  *
  * @param props the properties to use.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -40120,107 +40025,80 @@ inline bool WindowBase::StartTextInput() { return SDL_StartTextInput(get()); }
  * @sa WindowBase.StopTextInput
  * @sa WindowBase.IsTextInputActive
  */
-inline bool WindowBase::StartTextInput(PropertiesBase& props)
+inline void WindowBase::StartTextInput(PropertiesBase& props)
 {
-  return SDL_StartTextInputWithProperties(get(), props.get());
+  CheckError(SDL_StartTextInputWithProperties(get(), props.get()));
 }
 
 /**
  * Text input type.
  *
- * These are the valid values for SDL_PROP_TEXTINPUT_TYPE_NUMBER. Not every
+ * These are the valid values for prop::TextInput.TYPE_NUMBER. Not every
  * value is valid on every platform, but where a value isn't supported, a
  * reasonable fallback will be used.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa StartTextInputWithProperties
+ * @sa WindowBase.StartTextInput
  */
 using TextInputType = SDL_TextInputType;
 
-/**
- * The input is text.
- */
-constexpr TextInputType TEXTINPUT_TYPE_TEXT = SDL_TEXTINPUT_TYPE_TEXT;
+constexpr TextInputType TEXTINPUT_TYPE_TEXT =
+  SDL_TEXTINPUT_TYPE_TEXT; ///< The input is text.
 
-/**
- * The input is a person's name.
- */
-constexpr TextInputType TEXTINPUT_TYPE_TEXT_NAME = SDL_TEXTINPUT_TYPE_TEXT_NAME;
+constexpr TextInputType TEXTINPUT_TYPE_TEXT_NAME =
+  SDL_TEXTINPUT_TYPE_TEXT_NAME; ///< The input is a person's name.
 
-/**
- * The input is an e-mail address.
- */
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_EMAIL =
-  SDL_TEXTINPUT_TYPE_TEXT_EMAIL;
+  SDL_TEXTINPUT_TYPE_TEXT_EMAIL; ///< The input is an e-mail address.
 
-/**
- * The input is a username.
- */
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_USERNAME =
-  SDL_TEXTINPUT_TYPE_TEXT_USERNAME;
+  SDL_TEXTINPUT_TYPE_TEXT_USERNAME; ///< The input is a username.
 
-/**
- * The input is a secure password that is hidden.
- */
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN =
-  SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN;
+  SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN; ///< The input is a secure password
+                                           ///< that is hidden.
 
-/**
- * The input is a secure password that is visible.
- */
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE =
-  SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE;
+  SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE; ///< The input is a secure password
+                                            ///< that is visible.
 
-/**
- * The input is a number.
- */
-constexpr TextInputType TEXTINPUT_TYPE_NUMBER = SDL_TEXTINPUT_TYPE_NUMBER;
+constexpr TextInputType TEXTINPUT_TYPE_NUMBER =
+  SDL_TEXTINPUT_TYPE_NUMBER; ///< The input is a number.
 
-/**
- * The input is a secure PIN that is hidden.
- */
 constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN =
-  SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN;
+  SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN; ///< The input is a secure PIN that
+                                             ///< is hidden.
 
-/**
- * The input is a secure PIN that is visible.
- */
 constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
-  SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE;
+  SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE; ///< The input is a secure PIN
+                                              ///< that is visible.
 
 /**
  * Auto capitalization type.
  *
- * These are the valid values for SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER.
+ * These are the valid values for prop::TextInput.CAPITALIZATION_NUMBER.
  * Not every value is valid on every platform, but where a value isn't
  * supported, a reasonable fallback will be used.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa StartTextInputWithProperties
+ * @sa WindowBase.StartTextInput
  */
 using Capitalization = SDL_Capitalization;
 
-/**
- * No auto-capitalization will be done.
- */
-constexpr Capitalization CAPITALIZE_NONE = SDL_CAPITALIZE_NONE;
+constexpr Capitalization CAPITALIZE_NONE =
+  SDL_CAPITALIZE_NONE; ///< No auto-capitalization will be done.
 
-/**
- * The first letter of sentences will be capitalized.
- */
-constexpr Capitalization CAPITALIZE_SENTENCES = SDL_CAPITALIZE_SENTENCES;
+constexpr Capitalization CAPITALIZE_SENTENCES =
+  SDL_CAPITALIZE_SENTENCES; ///< The first letter of sentences will be
+                            ///< capitalized.
 
-/**
- * The first letter of words will be capitalized.
- */
-constexpr Capitalization CAPITALIZE_WORDS = SDL_CAPITALIZE_WORDS;
+constexpr Capitalization CAPITALIZE_WORDS =
+  SDL_CAPITALIZE_WORDS; ///< The first letter of words will be capitalized.
 
-/**
- * All letters will be capitalized.
- */
-constexpr Capitalization CAPITALIZE_LETTERS = SDL_CAPITALIZE_LETTERS;
+constexpr Capitalization CAPITALIZE_LETTERS =
+  SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized.
 
 namespace prop::TextInput {
 
@@ -40259,8 +40137,7 @@ inline bool WindowBase::IsTextInputActive() const
  * If WindowBase.StartTextInput() showed the screen keyboard, this function will
  * hide it.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -40268,13 +40145,15 @@ inline bool WindowBase::IsTextInputActive() const
  *
  * @sa WindowBase.StartTextInput
  */
-inline bool WindowBase::StopTextInput() { return SDL_StopTextInput(get()); }
+inline void WindowBase::StopTextInput()
+{
+  CheckError(SDL_StopTextInput(get()));
+}
 
 /**
  * Dismiss the composition window/IME without disabling the subsystem.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -40283,9 +40162,9 @@ inline bool WindowBase::StopTextInput() { return SDL_StopTextInput(get()); }
  * @sa WindowBase.StartTextInput
  * @sa WindowBase.StopTextInput
  */
-inline bool WindowBase::ClearComposition()
+inline void WindowBase::ClearComposition()
 {
-  return SDL_ClearComposition(get());
+  CheckError(SDL_ClearComposition(get()));
 }
 
 /**
@@ -40298,8 +40177,7 @@ inline bool WindowBase::ClearComposition()
  *             coordinates, or nullptr to clear it.
  * @param cursor the offset of the current cursor location relative to
  *               `rect->x`, in window coordinates.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -40308,9 +40186,9 @@ inline bool WindowBase::ClearComposition()
  * @sa WindowBase.GetTextInputArea
  * @sa WindowBase.StartTextInput
  */
-inline bool WindowBase::SetTextInputArea(const SDL_Rect& rect, int cursor)
+inline void WindowBase::SetTextInputArea(const SDL_Rect& rect, int cursor)
 {
-  return SDL_SetTextInputArea(get(), &rect, cursor);
+  CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
 }
 
 /**
@@ -40322,8 +40200,7 @@ inline bool WindowBase::SetTextInputArea(const SDL_Rect& rect, int cursor)
  *             may be nullptr.
  * @param cursor a pointer to the offset of the current cursor location
  *               relative to `rect->x`, may be nullptr.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -40331,9 +40208,9 @@ inline bool WindowBase::SetTextInputArea(const SDL_Rect& rect, int cursor)
  *
  * @sa WindowBase.SetTextInputArea
  */
-inline bool WindowBase::GetTextInputArea(Rect* rect, int* cursor)
+inline void WindowBase::GetTextInputArea(Rect* rect, int* cursor)
 {
-  return SDL_GetTextInputArea(get(), rect, cursor);
+  CheckError(SDL_GetTextInputArea(get(), rect, cursor));
 }
 
 /**
@@ -40347,7 +40224,7 @@ inline bool WindowBase::GetTextInputArea(Rect* rect, int* cursor)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa WindowBase.StartTextInput
- * @sa ScreenKeyboardShown
+ * @sa WindowBase.IsScreenKeyboardShown
  */
 inline bool HasScreenKeyboardSupport()
 {
@@ -40409,27 +40286,17 @@ using MessageBoxFlags = Uint32;
 constexpr MessageBoxFlags MESSAGEBOX_ERROR =
   SDL_MESSAGEBOX_ERROR; ///< error dialog
 
-/**
- * warning dialog
- */
-constexpr MessageBoxFlags MESSAGEBOX_WARNING = SDL_MESSAGEBOX_WARNING;
+constexpr MessageBoxFlags MESSAGEBOX_WARNING =
+  SDL_MESSAGEBOX_WARNING; ///< warning dialog
 
-/**
- * informational dialog
- */
-constexpr MessageBoxFlags MESSAGEBOX_INFORMATION = SDL_MESSAGEBOX_INFORMATION;
+constexpr MessageBoxFlags MESSAGEBOX_INFORMATION =
+  SDL_MESSAGEBOX_INFORMATION; ///< informational dialog
 
-/**
- * buttons placed left to right
- */
 constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT =
-  SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT;
+  SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT; ///< buttons placed left to right
 
-/**
- * buttons placed right to left
- */
 constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT =
-  SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT;
+  SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT; ///< buttons placed right to left
 
 /// @}
 
@@ -40445,17 +40312,13 @@ constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT =
  */
 using MessageBoxButtonFlags = Uint32;
 
-/**
- * Marks the default button when return is hit
- */
 constexpr MessageBoxButtonFlags MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT =
-  SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;
+  SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT; ///< Marks the default button when
+                                           ///< return is hit
 
-/**
- * Marks the default button when escape is hit
- */
 constexpr MessageBoxButtonFlags MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT =
-  SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT;
+  SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT; ///< Marks the default button when
+                                           ///< escape is hit
 
 /// @}
 
@@ -40499,11 +40362,8 @@ constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_BACKGROUND =
 constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_SELECTED =
   SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED; ///< BUTTON_SELECTED
 
-/**
- * Count
- */
 constexpr MessageBoxColorType MESSAGEBOX_COLOR_COUNT =
-  SDL_MESSAGEBOX_COLOR_COUNT;
+  SDL_MESSAGEBOX_COLOR_COUNT; ///< Count
 
 /// @}
 
@@ -40582,14 +40442,16 @@ struct MessageBox : SDL_MessageBoxData
    *
    * @param buttonid the pointer to which user id of hit button should be
    *                 copied.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa ShowSimpleMessageBox
    */
-  bool Show(int* buttonid) const { return SDL_ShowMessageBox(this, buttonid); }
+  void Show(int* buttonid) const
+  {
+    CheckError(SDL_ShowMessageBox(this, buttonid));
+  }
 
   /**
    * Get the flags.
@@ -40754,19 +40616,18 @@ struct MessageBox : SDL_MessageBoxData
  * @param title UTF-8 title text.
  * @param message UTF-8 message text.
  * @param window the parent window, or nullptr for no parent.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MessageBox.Show
  */
-inline bool ShowSimpleMessageBox(MessageBoxFlags flags,
+inline void ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,
                                  StringParam message,
                                  OptionalWindow window)
 {
-  return SDL_ShowSimpleMessageBox(flags, title, message, window.get());
+  CheckError(SDL_ShowSimpleMessageBox(flags, title, message, window.get()));
 }
 
 /// @}
@@ -40966,8 +40827,8 @@ struct CursorBase : Resource<SDL_Cursor*>
    *              mouse x position, in the range of 0 to `w` - 1.
    * @param hot_y the y-axis offset from the top of the cursor image to the
    *              mouse y position, in the range of 0 to `h` - 1.
-   * @post a new cursor with the specified parameters on success or nullptr on
-   *          failure; call GetError() for more information.
+   * @post a new cursor with the specified parameters on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -40984,7 +40845,7 @@ struct CursorBase : Resource<SDL_Cursor*>
              int h,
              int hot_x,
              int hot_y)
-    : Resource(SDL_CreateCursor(data, mask, w, h, hot_x, hot_y))
+    : Resource(CheckError(SDL_CreateCursor(data, mask, w, h, hot_x, hot_y)))
   {
   }
 
@@ -41004,8 +40865,8 @@ struct CursorBase : Resource<SDL_Cursor*>
    * @param surface an SurfaceBase structure representing the cursor image.
    * @param hot_x the x position of the cursor hot spot.
    * @param hot_y the y position of the cursor hot spot.
-   * @post the new cursor on success or nullptr on failure; call GetError()
-   *          for more information.
+   * @post the new cursor on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41017,7 +40878,7 @@ struct CursorBase : Resource<SDL_Cursor*>
    * @sa SetCursor
    */
   CursorBase(SurfaceBase& surface, int hot_x, int hot_y)
-    : Resource(SDL_CreateColorCursor(surface.get(), hot_x, hot_y))
+    : Resource(CheckError(SDL_CreateColorCursor(surface.get(), hot_x, hot_y)))
   {
   }
 
@@ -41025,8 +40886,8 @@ struct CursorBase : Resource<SDL_Cursor*>
    * Create a system cursor.
    *
    * @param id an SystemCursor enum value.
-   * @post a cursor on success or nullptr on failure; call GetError() for
-   *          more information.
+   * @post a cursor on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41035,7 +40896,7 @@ struct CursorBase : Resource<SDL_Cursor*>
    * @sa CursorRef.reset
    */
   CursorBase(SystemCursor id)
-    : Resource(SDL_CreateSystemCursor(id))
+    : Resource(CheckError(SDL_CreateSystemCursor(id)))
   {
   }
 };
@@ -41236,9 +41097,8 @@ inline bool HasMouse() { return SDL_HasMouse(); }
  * You should wait for input from a device before you consider it actively in
  * use.
  *
- * @returns a 0 terminated array of mouse instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ * @returns a 0 terminated array of mouse instance IDs.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -41250,8 +41110,7 @@ inline bool HasMouse() { return SDL_HasMouse(); }
 inline OwnArray<MouseID> GetMice()
 {
   int count;
-  auto data = SDL_GetMice(&count);
-  if (!data) return {};
+  auto data = CheckError(SDL_GetMice(&count));
   return OwnArray<MouseID>{data, size_t(count)};
 }
 
@@ -41261,8 +41120,8 @@ inline OwnArray<MouseID> GetMice()
  * This function returns "" if the mouse doesn't have a name.
  *
  * @param instance_id the mouse instance ID.
- * @returns the name of the selected mouse, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the name of the selected mouse.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -41272,7 +41131,7 @@ inline OwnArray<MouseID> GetMice()
  */
 inline const char* GetMouseNameForID(MouseID instance_id)
 {
-  return SDL_GetMouseNameForID(instance_id);
+  return CheckError(SDL_GetMouseNameForID(instance_id));
 }
 
 /**
@@ -41438,8 +41297,7 @@ inline void WindowBase::WarpMouse(float x, float y)
  *
  * @param x the x coordinate.
  * @param y the y coordinate.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -41447,7 +41305,10 @@ inline void WindowBase::WarpMouse(float x, float y)
  *
  * @sa WindowBase.WarpMouse
  */
-inline bool WarpMouse(float x, float y) { return SDL_WarpMouseGlobal(x, y); }
+inline void WarpMouse(float x, float y)
+{
+  CheckError(SDL_WarpMouseGlobal(x, y));
+}
 
 /**
  * Set relative mouse mode for a window.
@@ -41465,8 +41326,7 @@ inline bool WarpMouse(float x, float y) { return SDL_WarpMouseGlobal(x, y); }
  * This function will flush any pending mouse motion for this window.
  *
  * @param enabled true to enable relative mode, false to disable.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -41474,9 +41334,9 @@ inline bool WarpMouse(float x, float y) { return SDL_WarpMouseGlobal(x, y); }
  *
  * @sa WindowBase.GetRelativeMouseMode
  */
-inline bool WindowBase::SetRelativeMouseMode(bool enabled)
+inline void WindowBase::SetRelativeMouseMode(bool enabled)
 {
-  return SDL_SetWindowRelativeMouseMode(get(), enabled);
+  CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
 }
 
 /**
@@ -41532,8 +41392,7 @@ inline bool WindowBase::GetRelativeMouseMode() const
  * `SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.
  *
  * @param enabled true to enable capturing, false to disable.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -41541,7 +41400,10 @@ inline bool WindowBase::GetRelativeMouseMode() const
  *
  * @sa GetGlobalMouseState
  */
-inline bool CaptureMouse(bool enabled) { return SDL_CaptureMouse(enabled); }
+inline void CaptureMouse(bool enabled)
+{
+  CheckError(SDL_CaptureMouse(enabled));
+}
 
 /**
  * Set the active cursor.
@@ -41552,8 +41414,7 @@ inline bool CaptureMouse(bool enabled) { return SDL_CaptureMouse(enabled); }
  * this is desired for any reason.
  *
  * @param cursor a cursor to make active.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -41561,9 +41422,9 @@ inline bool CaptureMouse(bool enabled) { return SDL_CaptureMouse(enabled); }
  *
  * @sa GetCursor
  */
-inline bool SetCursor(CursorBase& cursor)
+inline void SetCursor(CursorBase& cursor)
 {
-  return SDL_SetCursor(cursor.get());
+  CheckError(SDL_SetCursor(cursor.get()));
 }
 
 /**
@@ -41588,20 +41449,22 @@ inline CursorRef GetCursor() { return SDL_GetCursor(); }
  * You do not have to call CursorRef.reset() on the return value, but it is
  * safe to do so.
  *
- * @returns the default cursor on success or nullptr on failuree; call
- *          GetError() for more information.
+ * @returns the default cursor on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline CursorRef GetDefaultCursor() { return SDL_GetDefaultCursor(); }
+inline CursorRef GetDefaultCursor()
+{
+  return CheckError(SDL_GetDefaultCursor());
+}
 
 /**
  * Show the cursor.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -41610,13 +41473,12 @@ inline CursorRef GetDefaultCursor() { return SDL_GetDefaultCursor(); }
  * @sa CursorVisible
  * @sa HideCursor
  */
-inline bool ShowCursor() { return SDL_ShowCursor(); }
+inline void ShowCursor() { CheckError(SDL_ShowCursor()); }
 
 /**
  * Hide the cursor.
  *
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -41625,7 +41487,7 @@ inline bool ShowCursor() { return SDL_ShowCursor(); }
  * @sa CursorVisible
  * @sa ShowCursor
  */
-inline bool HideCursor() { return SDL_HideCursor(); }
+inline void HideCursor() { CheckError(SDL_HideCursor()); }
 
 /**
  * Return whether the cursor is currently being shown.
@@ -41830,8 +41692,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param window the window where rendering is displayed.
    * @param name the name of the rendering driver to initialize, or nullptr to
    *             let SDL choose one.
-   * @post a valid rendering context or nullptr if there was an error; call
-   *       GetError() for more information.
+   * @post a valid rendering context.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41842,7 +41704,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetName
    */
   RendererBase(WindowBase& window, StringParam name)
-    : Resource(SDL_CreateRenderer(window.get(), name))
+    : Resource(CheckError(SDL_CreateRenderer(window.get(), name)))
   {
   }
 
@@ -41887,8 +41749,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * GetError() for more information.
    *
    * @param props the properties to use.
-   * @post a valid rendering context or nullptr if there was an error; call
-   *       GetError() for more information.
+   * @post a valid rendering context.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41898,7 +41760,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetName
    */
   RendererBase(PropertiesBase& props)
-    : Resource(SDL_CreateRendererWithProperties(props.get()))
+    : Resource(CheckError(SDL_CreateRendererWithProperties(props.get())))
   {
   }
 
@@ -41910,47 +41772,44 @@ struct RendererBase : Resource<SDL_Renderer*>
    * create a software renderer, but they are intended to be used with an
    * WindowBase as the final destination and not an SurfaceBase.
    *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
-   * @param surface the SDL_Surface structure representing the surface where
+   * @param surface the Surface structure representing the surface where
    *                rendering is done.
-   * @post a valid rendering context or nullptr if there was an error; call
-   *       GetError() for more information.
+   * @post a valid rendering context.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
   RendererBase(SurfaceBase& surface)
-    : Resource(SDL_CreateSoftwareRenderer(surface.get()))
+    : Resource(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
   {
   }
 
   /**
    * Get the window associated with a renderer.
    *
-   * @returns the window on success or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  WindowRef GetWindow() { return SDL_GetRenderWindow(get()); }
+  WindowRef GetWindow() { return CheckError(SDL_GetRenderWindow(get())); }
 
   /**
    * Get the name of a renderer.
    *
-   * @returns the name of the selected renderer, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns the name of the selected renderer.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
    */
-  const char* GetName() const { return SDL_GetRendererName(get()); }
+  const char* GetName() const { return CheckError(SDL_GetRendererName(get())); }
 
   /**
    * Get the output size in pixels of a rendering context.
@@ -41961,10 +41820,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @returns Point on success or std::nullopt on failure; call GetError() for
    *          more information.
    */
-  std::optional<Point> GetOutputSize() const
+  Point GetOutputSize() const
   {
-    if (Point p; GetOutputSize(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetOutputSize(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -41978,8 +41838,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param w a pointer filled in with the width in pixels.
    * @param h a pointer filled in with the height in pixels.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41987,9 +41846,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetCurrentOutputSize
    */
-  bool GetOutputSize(int* w, int* h) const
+  void GetOutputSize(int* w, int* h) const
   {
-    return SDL_GetRenderOutputSize(get(), w, h);
+    CheckError(SDL_GetRenderOutputSize(get(), w, h));
   }
 
   /**
@@ -41999,8 +41858,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * target in pixels, otherwise if a logical size is set, it will return the
    * logical size, otherwise it will return the value of GetOutputSize().
    *
-   * @returns the size on success or false on failure; call GetError() for more
-   *          information.
+   * @returns the size on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42008,10 +41867,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa GetOutputSize()
    */
-  std::optional<Point> GetCurrentOutputSize() const
+  Point GetCurrentOutputSize() const
   {
-    if (Point p; GetCurrentOutputSize(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetCurrentOutputSize(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -42026,8 +41886,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param w a pointer filled in with the current width.
    * @param h a pointer filled in with the current height.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42035,9 +41894,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetOutputSize
    */
-  bool GetCurrentOutputSize(int* w, int* h) const
+  void GetCurrentOutputSize(int* w, int* h) const
   {
-    return SDL_GetCurrentRenderOutputSize(get(), w, h);
+    CheckError(SDL_GetCurrentRenderOutputSize(get(), w, h));
   }
 
   /**
@@ -42116,8 +41975,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * - `prop::Renderer.GPU_DEVICE_POINTER`: the SDL_GPUDevice associated with
    *   the renderer
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -42125,7 +41984,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    */
   PropertiesRef GetProperties() const
   {
-    return SDL_GetRendererProperties(get());
+    return CheckError(SDL_GetRendererProperties(get()));
   }
 
   /**
@@ -42133,8 +41992,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * This is equivalent to SetTarget(nullptr)
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42143,7 +42001,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa SetTarget(nullptr)
    * @sa GetTarget()
    */
-  bool ResetTarget();
+  void ResetTarget();
 
   /**
    * Set a texture as the current rendering target.
@@ -42160,8 +42018,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param texture the targeted texture, which must be created with the
    *                `TEXTUREACCESS_TARGET` flag, or nullptr to render to the
    *                window instead of a texture.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42169,7 +42026,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetTarget
    */
-  bool SetTarget(OptionalTexture texture);
+  void SetTarget(OptionalTexture texture);
 
   /**
    * Get the current render target.
@@ -42228,8 +42085,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param size the width and height of the logical resolution.
    * @param mode the presentation mode used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42239,9 +42095,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetLogicalPresentation
    * @sa RendererBase.GetLogicalPresentationRect
    */
-  bool SetLogicalPresentation(SDL_Point size, RendererLogicalPresentation mode)
+  void SetLogicalPresentation(SDL_Point size, RendererLogicalPresentation mode)
   {
-    return SDL_SetRenderLogicalPresentation(get(), size.x, size.y, mode);
+    CheckError(SDL_SetRenderLogicalPresentation(get(), size.x, size.y, mode));
   }
 
   /**
@@ -42252,8 +42108,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param size a Point to be filled with the width and height.
    * @param mode the presentation mode used.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42261,7 +42116,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetLogicalPresentation
    */
-  bool GetLogicalPresentation(SDL_Point* size,
+  void GetLogicalPresentation(SDL_Point* size,
                               RendererLogicalPresentation* mode)
   {
     if (!size) return GetLogicalPresentation(nullptr, nullptr, mode);
@@ -42280,8 +42135,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param w an int to be filled with the width.
    * @param h an int to be filled with the height.
    * @param mode the presentation mode used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42289,11 +42143,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetLogicalPresentation
    */
-  bool GetLogicalPresentation(int* w,
+  void GetLogicalPresentation(int* w,
                               int* h,
                               RendererLogicalPresentation* mode) const
   {
-    return SDL_GetRenderLogicalPresentation(get(), w, h, mode);
+    CheckError(SDL_GetRenderLogicalPresentation(get(), w, h, mode));
   }
 
   /**
@@ -42307,8 +42161,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Each render target has its own logical presentation state. This function
    * gets the rectangle for the current render target.
    *
-   * @returns the rect with the final presentation rectangle on success or
-   * std::nullopt on failure; call GetError() for more information.
+   * @returns the rect with the final presentation rectangle on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42316,12 +42170,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetLogicalPresentation
    */
-  std::optional<FRect> GetLogicalPresentationRect() const
+  FRect GetLogicalPresentationRect() const
   {
-    if (FRect rect; SDL_GetRenderLogicalPresentationRect(get(), &rect)) {
-      return rect;
-    }
-    return std::nullopt;
+    FRect rect;
+    CheckError(SDL_GetRenderLogicalPresentationRect(get(), &rect));
+    return rect;
   }
 
   /**
@@ -42335,8 +42188,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * - The viewport (RendererBase.SetViewport)
    *
    * @param window_coord the x, y coordinate in window coordinates.
-   * @returns a FPoint containing ther render coordinates on success or
-   * {0,0} on failure; call GetError() for more information.
+   * @returns a FPoint containing ther render coordinates on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42345,14 +42198,12 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.SetLogicalPresentation
    * @sa RendererBase.SetScale
    */
-  std::optional<FPoint> RenderCoordinatesFromWindow(
-    const SDL_FPoint& window_coord) const
+  FPoint RenderCoordinatesFromWindow(const SDL_FPoint& window_coord) const
   {
-    if (FPoint p; SDL_RenderCoordinatesFromWindow(
-          get(), window_coord.x, window_coord.y, &p.x, &p.y)) {
-      return p;
-    }
-    return {};
+    FPoint p;
+    CheckError(SDL_RenderCoordinatesFromWindow(
+      get(), window_coord.x, window_coord.y, &p.x, &p.y));
+    return p;
   }
 
   /**
@@ -42366,8 +42217,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * - The viewport (RendererBase.SetViewport)
    *
    * @param coord the x, y coordinate in render coordinates.
-   * @returns a FPoint filled with window coordinates on success or std::nullopt
-   * on failure; call SDL_GetError() for more information.
+   * @returns a FPoint filled with window coordinates on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42377,13 +42228,12 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.SetScale
    * @sa RendererBase.SetViewport
    */
-  std::optional<FPoint> RenderCoordinatesToWindow(const SDL_FPoint& coord) const
+  FPoint RenderCoordinatesToWindow(const SDL_FPoint& coord) const
   {
-    if (FPoint p;
-        SDL_RenderCoordinatesToWindow(get(), coord.x, coord.y, &p.x, &p.y)) {
-      return p;
-    }
-    return {};
+    FPoint p;
+    CheckError(
+      SDL_RenderCoordinatesToWindow(get(), coord.x, coord.y, &p.x, &p.y));
+    return p;
   }
 
   /**
@@ -42410,8 +42260,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Once converted, coordinates may be outside the rendering area.
    *
    * @param event the event to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42419,9 +42268,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderCoordinatesFromWindow
    */
-  bool ConvertEventToRenderCoordinates(Event* event) const
+  void ConvertEventToRenderCoordinates(Event* event) const
   {
-    return SDL_ConvertEventToRenderCoordinates(get(), event);
+    CheckError(SDL_ConvertEventToRenderCoordinates(get(), event));
   }
 
   /**
@@ -42429,8 +42278,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * This is equivalent to `SetViewport(std::nullopt)`
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42440,7 +42288,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa SetViewport()
    * @sa ViewportSet()
    */
-  bool ResetViewport() { return SetViewport(std::nullopt); }
+  void ResetViewport() { SetViewport(std::nullopt); }
 
   /**
    * Set the drawing area for rendering on the current target.
@@ -42456,8 +42304,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param rect the Rect structure representing the drawing area, or nullptr
    *             to set the viewport to the entire target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42466,9 +42313,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetViewport
    * @sa RendererBase.IsViewportSet
    */
-  bool SetViewport(OptionalRef<const SDL_Rect> rect)
+  void SetViewport(OptionalRef<const SDL_Rect> rect)
   {
-    return SDL_SetRenderViewport(get(), rect);
+    CheckError(SDL_SetRenderViewport(get(), rect));
   }
 
   /**
@@ -42477,8 +42324,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Each render target has its own viewport. This function gets the viewport
    * for the current render target.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @returns an Rect with the current drawing area.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42487,10 +42334,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.IsViewportSet
    * @sa RendererBase.SetViewport
    */
-  std::optional<Rect> GetViewport() const
+  Rect GetViewport() const
   {
-    if (Rect rect; SDL_GetRenderViewport(get(), &rect)) return rect;
-    return {};
+    Rect rect;
+    CheckError(SDL_GetRenderViewport(get(), &rect));
+    return rect;
   }
 
   /**
@@ -42525,17 +42373,18 @@ struct RendererBase : Resource<SDL_Renderer*>
    * rendering into the rest of the render target, but it should not contain
    * visually important or interactible content.
    *
-   * @returns the rect filled the area that is safe for interactive content on
-   * success or std::nullopt on failure; call GetError() for more information.
+   * @returns the rect filled the area that is safe for interactive content.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Rect> GetSafeArea() const
+  Rect GetSafeArea() const
   {
-    if (Rect rect; SDL_GetRenderSafeArea(get(), &rect)) return rect;
-    return {};
+    Rect rect;
+    CheckError(SDL_GetRenderSafeArea(get(), &rect));
+    return rect;
   }
 
   /**
@@ -42543,8 +42392,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * This is equivalent to `SetClipRect(std::nullopt)`
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42554,7 +42402,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa SetClipRect()
    * @sa ClipEnabled()
    */
-  bool ResetClipRect() { return SetClipRect({}); }
+  void ResetClipRect() { SetClipRect({}); }
 
   /**
    * Set the clip rectangle for rendering on the specified target.
@@ -42564,8 +42412,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param rect an Rect structure representing the clip area, relative to
    *             the viewport, or nullptr to disable clipping.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42575,9 +42422,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.ResetClipRect()
    * @sa RendererBase.IsClipEnabled
    */
-  bool SetClipRect(OptionalRef<const SDL_Rect> rect)
+  void SetClipRect(OptionalRef<const SDL_Rect> rect)
   {
-    return SDL_SetRenderClipRect(get(), rect);
+    CheckError(SDL_SetRenderClipRect(get(), rect));
   }
 
   /**
@@ -42586,9 +42433,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Each render target has its own clip rectangle. This function gets the
    * cliprect for the current render target.
    *
-   * @returns the rect filled in with the current clipping area or an empty
-   * rectangle if clipping is disabled on success; std::nullopt on failure, call
-   * GetError() for more information.
+   * @returns an Rect structure with the current clipping area
+   *             or an empty rectangle if clipping is disabled.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42597,10 +42444,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.IsClipEnabled
    * @sa RendererBase.SetClipRect
    */
-  std::optional<Rect> GetClipRect() const
+  Rect GetClipRect() const
   {
-    if (Rect rect; SDL_GetRenderClipRect(get(), &rect)) return rect;
-    return {};
+    Rect rect;
+    CheckError(SDL_GetRenderClipRect(get(), &rect));
+    return rect;
   }
 
   /**
@@ -42636,8 +42484,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * current render target.
    *
    * @param scale the x, y scaling factors.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42645,9 +42492,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetScale
    */
-  bool SetScale(SDL_FPoint scale)
+  void SetScale(SDL_FPoint scale)
   {
-    return SDL_SetRenderScale(get(), scale.x, scale.y);
+    CheckError(SDL_SetRenderScale(get(), scale.x, scale.y));
   }
 
   /**
@@ -42656,8 +42503,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Each render target has its own scale. This function gets the scale for the
    * current render target.
    *
-   * @returns the scaling factors on success or std::nullopt on failure; call
-   *          GetError() for more information.
+   * @returns the scaling factors on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42665,10 +42512,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetScale
    */
-  std::optional<FPoint> GetScale() const
+  FPoint GetScale() const
   {
-    if (FPoint p; GetScale(&p.x, &p.y)) return p;
-    return std::nullopt;
+    FPoint p;
+    GetScale(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -42679,8 +42527,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param scaleX a pointer filled in with the horizontal scaling factor.
    * @param scaleY a pointer filled in with the vertical scaling factor.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42688,9 +42535,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetScale
    */
-  bool GetScale(float* scaleX, float* scaleY) const
+  void GetScale(float* scaleX, float* scaleY) const
   {
-    return SDL_GetRenderScale(get(), scaleX, scaleY);
+    CheckError(SDL_GetRenderScale(get(), scaleX, scaleY));
   }
 
   /**
@@ -42700,8 +42547,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * RendererBase.RenderClear().
    *
    * @param c the color value used to draw on the rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42709,9 +42555,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetDrawColor
    */
-  bool SetDrawColor(SDL_Color c)
+  void SetDrawColor(SDL_Color c)
   {
-    return SDL_SetRenderDrawColor(get(), c.r, c.g, c.b, c.a);
+    CheckError(SDL_SetRenderDrawColor(get(), c.r, c.g, c.b, c.a));
   }
 
   /**
@@ -42721,8 +42567,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * RendererBase.RenderClear().
    *
    * @param c the RGBA values used to draw on the rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42730,16 +42575,16 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetDrawColor
    */
-  bool SetDrawColor(SDL_FColor c)
+  void SetDrawColor(SDL_FColor c)
   {
-    return SDL_SetRenderDrawColorFloat(get(), c.r, c.g, c.b, c.a);
+    CheckError(SDL_SetRenderDrawColorFloat(get(), c.r, c.g, c.b, c.a));
   }
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
-   * @returns the color on success or false on failure; call GetError() for more
-   *          information.
+   * @returns the color on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42748,19 +42593,19 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa GetDrawColor(SDL_FColor*)
    * @sa SetDrawColor()
    */
-  std::optional<FColor> GetDrawColor() const
+  FColor GetDrawColor() const
   {
-    if (FColor color; GetDrawColor(&color)) return color;
-    return std::nullopt;
+    FColor color;
+    GetDrawColor(&color);
+    return color;
   }
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
    * @param c a pointer filled in with the color channel values used to draw on
-   *          the rendering target.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   *          the rendering target. @b must @b not be nullptr.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42769,21 +42614,17 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa GetDrawColor(SDL_FColor*)
    * @sa SetDrawColor()
    */
-  bool GetDrawColor(SDL_Color* c) const
+  void GetDrawColor(SDL_Color* c) const
   {
-    if (!c) {
-      return SDL_GetRenderDrawColor(get(), nullptr, nullptr, nullptr, nullptr);
-    }
-    return GetDrawColor(&c->r, &c->g, &c->b, &c->a);
+    GetDrawColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
    * @param c a pointer filled in with the color channel values used to draw on
-   *          the rendering target.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   *          the rendering target. @b must @b not be nullptr.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42792,13 +42633,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa GetDrawColor(SDL_Color*)
    * @sa SetDrawColor()
    */
-  bool GetDrawColor(SDL_FColor* c) const
+  void GetDrawColor(SDL_FColor* c) const
   {
-    if (!c) {
-      return SDL_GetRenderDrawColorFloat(
-        get(), nullptr, nullptr, nullptr, nullptr);
-    }
-    return GetDrawColor(&c->r, &c->g, &c->b, &c->a);
+    GetDrawColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -42812,8 +42649,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *          rendering target.
    * @param a a pointer filled in with the alpha value used to draw on the
    *          rendering target; usually `SDL_ALPHA_OPAQUE` (255).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42821,9 +42657,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetDrawColor
    */
-  bool GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+  void GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
   {
-    return SDL_GetRenderDrawColor(get(), r, g, b, a);
+    CheckError(SDL_GetRenderDrawColor(get(), r, g, b, a));
   }
 
   /**
@@ -42837,8 +42673,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *          rendering target.
    * @param a a pointer filled in with the alpha value used to draw on the
    *          rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42846,9 +42681,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetDrawColor
    */
-  bool GetDrawColor(float* r, float* g, float* b, float* a) const
+  void GetDrawColor(float* r, float* g, float* b, float* a) const
   {
-    return SDL_GetRenderDrawColorFloat(get(), r, g, b, a);
+    CheckError(SDL_GetRenderDrawColorFloat(get(), r, g, b, a));
   }
 
   /**
@@ -42863,8 +42698,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * brightness.
    *
    * @param scale the color scale value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42872,16 +42706,16 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetColorScale
    */
-  bool SetColorScale(float scale)
+  void SetColorScale(float scale)
   {
-    return SDL_SetRenderColorScale(get(), scale);
+    CheckError(SDL_SetRenderColorScale(get(), scale));
   }
 
   /**
    * Get the color scale used for render operations.
    *
-   * @returns a float representing the current color scale on success or
-   * std::nullopt on failure; call SDL_GetError() for more information.
+   * @returns a float representing the current color scale on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42889,10 +42723,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetColorScale
    */
-  std::optional<float> GetColorScale() const
+  float GetColorScale() const
   {
-    if (float scale; SDL_GetRenderColorScale(get(), &scale)) return scale;
-    return std::nullopt;
+    float scale;
+    CheckError(SDL_GetRenderColorScale(get(), &scale));
+    return scale;
   }
 
   /**
@@ -42901,8 +42736,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * If the blend mode is not supported, the closest supported mode is chosen.
    *
    * @param blendMode the BlendMode to use for blending.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42910,16 +42744,16 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetDrawBlendMode
    */
-  bool SetDrawBlendMode(BlendMode blendMode)
+  void SetDrawBlendMode(BlendMode blendMode)
   {
-    return SDL_SetRenderDrawBlendMode(get(), blendMode);
+    CheckError(SDL_SetRenderDrawBlendMode(get(), blendMode));
   }
 
   /**
    * Get the blend mode used for drawing operations.
    *
-   * @returns the current BlendMode on success or std::nullopt on failure; call
-   *          GetError() for more information.
+   * @returns the current BlendMode on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42927,12 +42761,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetDrawBlendMode
    */
-  std::optional<BlendMode> GetDrawBlendMode() const
+  BlendMode GetDrawBlendMode() const
   {
-    if (BlendMode blendMode; SDL_GetRenderDrawBlendMode(get(), &blendMode)) {
-      return blendMode;
-    }
-    return std::nullopt;
+    BlendMode blendMode;
+    CheckError(SDL_GetRenderDrawBlendMode(get(), &blendMode));
+    return blendMode;
   }
 
   /**
@@ -42943,8 +42776,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * the rendering target to current renderer draw color, so make sure to invoke
    * RendererBase.SetDrawColor() when needed.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42952,14 +42784,13 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetDrawColor
    */
-  bool RenderClear() { return SDL_RenderClear(get()); }
+  void RenderClear() { CheckError(SDL_RenderClear(get())); }
 
   /**
    * Draw a point on the current rendering target at subpixel precision.
    *
    * @param p the x, y coordinates of the point.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42967,14 +42798,16 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderPoints
    */
-  bool RenderPoint(SDL_FPoint p) { return SDL_RenderPoint(get(), p.x, p.y); }
+  void RenderPoint(SDL_FPoint p)
+  {
+    CheckError(SDL_RenderPoint(get(), p.x, p.y));
+  }
 
   /**
    * Draw multiple points on the current rendering target at subpixel precision.
    *
    * @param points the points to draw.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42982,10 +42815,10 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderPoint
    */
-  bool RenderPoints(SpanRef<const SDL_FPoint> points)
+  void RenderPoints(SpanRef<const SDL_FPoint> points)
   {
     SDL_assert_paranoid(points.size() < SDL_MAX_SINT32);
-    return SDL_RenderPoints(get(), points.data(), points.size());
+    CheckError(SDL_RenderPoints(get(), points.data(), points.size()));
   }
 
   /**
@@ -42993,8 +42826,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param p1 the x,y coordinate of the start point.
    * @param p2 the x,y coordinate of the end point.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43002,18 +42834,17 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderLines
    */
-  bool RenderLine(SDL_FPoint p1, SDL_FPoint p2)
+  void RenderLine(SDL_FPoint p1, SDL_FPoint p2)
   {
-    return SDL_RenderLine(get(), p1.x, p1.y, p2.x, p2.y);
+    CheckError(SDL_RenderLine(get(), p1.x, p1.y, p2.x, p2.y));
   }
 
   /**
    * Draw a series of connected lines on the current rendering target at
    * subpixel precision.
    *
-   * @param points the points along the lines, drawing points.size-1 lines.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param points the points along the lines.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43021,10 +42852,10 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderLine
    */
-  bool RenderLines(SpanRef<const SDL_FPoint> points)
+  void RenderLines(SpanRef<const SDL_FPoint> points)
   {
     SDL_assert_paranoid(points.size() < SDL_MAX_SINT32);
-    return SDL_RenderLines(get(), points.data(), points.size());
+    CheckError(SDL_RenderLines(get(), points.data(), points.size()));
   }
 
   /**
@@ -43032,8 +42863,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param rect a pointer to the destination rectangle, or std::nullopt to
    *             outline the entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43041,9 +42871,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderRects
    */
-  bool RenderRect(OptionalRef<const SDL_FRect> rect)
+  void RenderRect(OptionalRef<const SDL_FRect> rect)
   {
-    return SDL_RenderRect(get(), rect);
+    CheckError(SDL_RenderRect(get(), rect));
   }
 
   /**
@@ -43051,8 +42881,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * precision.
    *
    * @param rects a pointer to an array of destination rectangles.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43060,10 +42889,10 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderRect
    */
-  bool RenderRects(SpanRef<const SDL_FRect> rects)
+  void RenderRects(SpanRef<const SDL_FRect> rects)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_SINT32);
-    return SDL_RenderRects(get(), rects.data(), rects.size());
+    CheckError(SDL_RenderRects(get(), rects.data(), rects.size()));
   }
 
   /**
@@ -43072,8 +42901,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param rect a pointer to the destination rectangle, or std::nullopt for the
    *             entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43081,9 +42909,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderFillRects
    */
-  bool RenderFillRect(OptionalRef<const SDL_FRect> rect)
+  void RenderFillRect(OptionalRef<const SDL_FRect> rect)
   {
-    return SDL_RenderFillRect(get(), rect);
+    CheckError(SDL_RenderFillRect(get(), rect));
   }
 
   /**
@@ -43091,8 +42919,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * drawing color at subpixel precision.
    *
    * @param rects a pointer to an array of destination rectangles.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43100,10 +42927,10 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderFillRect
    */
-  bool RenderFillRects(SpanRef<const SDL_FRect> rects)
+  void RenderFillRects(SpanRef<const SDL_FRect> rects)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_SINT32);
-    return SDL_RenderFillRects(get(), rects.data(), rects.size());
+    CheckError(SDL_RenderFillRects(get(), rects.data(), rects.size()));
   }
 
   /**
@@ -43115,8 +42942,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *                texture.
    * @param dstrect a pointer to the destination rectangle, or nullptr for the
    *                entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43125,7 +42951,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.RenderTextureRotated
    * @sa RendererBase.RenderTextureTiled
    */
-  bool RenderTexture(TextureBase& texture,
+  void RenderTexture(TextureBase& texture,
                      OptionalRef<const SDL_FRect> srcrect,
                      OptionalRef<const SDL_FRect> dstrect);
 
@@ -43145,8 +42971,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *               around dstrect.w/2, dstrect.h/2).
    * @param flip an FlipMode value stating which flipping actions should be
    *             performed on the texture.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43154,7 +42979,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderTexture
    */
-  bool RenderTextureRotated(TextureBase& texture,
+  void RenderTextureRotated(TextureBase& texture,
                             OptionalRef<const SDL_FRect> srcrect,
                             OptionalRef<const SDL_FRect> dstrect,
                             double angle,
@@ -43176,9 +43001,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    *              target's top-right corner.
    * @param down a pointer to a point indicating where the bottom-left corner of
    *             srcrect should be mapped to, or nullptr for the rendering
-   * target's bottom-left corner.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *             target's bottom-left corner.
+   * @throws Error on failure.
    *
    * @threadsafety You may only call this function from the main thread.
    *
@@ -43186,7 +43010,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderTexture
    */
-  bool RenderTextureAffine(TextureBase& texture,
+  void RenderTextureAffine(TextureBase& texture,
                            OptionalRef<const SDL_FRect> srcrect,
                            OptionalRef<const SDL_FPoint> origin,
                            OptionalRef<const SDL_FPoint> right,
@@ -43207,8 +43031,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *              64x64 tiles.
    * @param dstrect a pointer to the destination rectangle, or nullptr for the
    *                entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43216,7 +43039,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderTexture
    */
-  bool RenderTextureTiled(TextureBase& texture,
+  void RenderTextureTiled(TextureBase& texture,
                           OptionalRef<const SDL_FRect> srcrect,
                           float scale,
                           OptionalRef<const SDL_FRect> dstrect);
@@ -43243,8 +43066,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *              corner of `dstrect`, or 0.0f for an unscaled copy.
    * @param dstrect a pointer to the destination rectangle, or nullptr for the
    *                entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43252,7 +43074,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderTexture
    */
-  bool RenderTexture9Grid(TextureBase& texture,
+  void RenderTexture9Grid(TextureBase& texture,
                           OptionalRef<const SDL_FRect> srcrect,
                           float left_width,
                           float right_width,
@@ -43271,8 +43093,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param indices (optional) An array of integer indices into the 'vertices'
    *                array, if nullptr all vertices will be rendered in
    *                sequential order.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43280,7 +43101,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderGeometryRaw
    */
-  bool RenderGeometry(OptionalTexture texture,
+  void RenderGeometry(OptionalTexture texture,
                       std::span<const Vertex> vertices,
                       std::span<const int> indices = {});
 
@@ -43302,8 +43123,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *                order.
    * @param num_indices number of indices.
    * @param size_indices index size: 1 (byte), 2 (short), 4 (int).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43311,7 +43131,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderGeometry
    */
-  bool RenderGeometryRaw(OptionalTexture texture,
+  void RenderGeometryRaw(OptionalTexture texture,
                          const float* xy,
                          int xy_stride,
                          const FColor* color,
@@ -43341,8 +43161,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param rect an Rect structure representing the area to read, which will
    *             be clipped to the current viewport, or nullptr for the entire
    *             viewport.
-   * @returns a new Surface on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns a new Surface on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43350,7 +43170,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    */
   Surface RenderReadPixels(OptionalRef<const SDL_Rect> rect) const
   {
-    return Surface{SDL_RenderReadPixels(get(), rect)};
+    return Surface(CheckError(SDL_RenderReadPixels(get(), rect)));
   }
 
   /**
@@ -43381,8 +43201,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * the screen with any current drawing that has been done _to the window
    * itself_.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43401,7 +43220,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.SetDrawBlendMode
    * @sa RendererBase.SetDrawColor
    */
-  bool Present() { return SDL_RenderPresent(get()); }
+  void Present() { CheckError(SDL_RenderPresent(get())); }
 
   /**
    * Force the rendering context to flush any pending commands and state.
@@ -43426,14 +43245,13 @@ struct RendererBase : Resource<SDL_Renderer*>
    * OpenGL state that can confuse things; you should use your best judgment and
    * be prepared to make changes if specific state needs to be protected.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Flush() { return SDL_FlushRenderer(get()); }
+  void Flush() { CheckError(SDL_FlushRenderer(get())); }
 
   /**
    * Toggle VSync of the given renderer.
@@ -43448,8 +43266,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * requested setting is supported.
    *
    * @param vsync the vertical refresh sync interval.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43457,13 +43274,13 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetVSync
    */
-  bool SetVSync(int vsync) { return SDL_SetRenderVSync(get(), vsync); }
+  void SetVSync(int vsync) { CheckError(SDL_SetRenderVSync(get(), vsync)); }
 
   /**
    * Get VSync of the given renderer.
    *
-   * @returns the current vertical refresh sync interval on success or
-   * std::nullopt on failure; call GetError() for more information.
+   * @returns the current vertical refresh sync interval on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43471,10 +43288,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetVSync
    */
-  std::optional<int> GetVSync() const
+  int GetVSync() const
   {
-    if (int vsync; SDL_GetRenderVSync(get(), &vsync)) return vsync;
-    return std::nullopt;
+    int vsync;
+    CheckError(SDL_GetRenderVSync(get(), &vsync));
+    return vsync;
   }
 
   /**
@@ -43503,10 +43321,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * The text is drawn in the color specified by RendererBase.SetDrawColor().
    *
    * @param p the x, y coordinates where the top-left corner of the text will
-   * draw.
+   *          draw.
    * @param str the string to render.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43514,9 +43331,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  bool RenderDebugText(FPoint p, StringParam str)
+  void RenderDebugText(FPoint p, StringParam str)
   {
-    return SDL_RenderDebugText(get(), p.x, p.y, str);
+    CheckError(SDL_RenderDebugText(get(), p.x, p.y, str));
   }
 
   /**
@@ -43531,12 +43348,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    * SDL_RenderDebugText.
    *
    * @param p the x, y coordinates where the top-left corner of the text will
-   * draw.
+   *          draw.
    * @param fmt the format string to draw.
    * @param args additional parameters matching {} tokens in the `fmt` string,
-   * if any.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *             if any.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43546,10 +43362,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
-  bool RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
+  void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
   {
-    return RenderDebugText(p,
-                           std::vformat(fmt, std::make_format_args(args...)));
+    RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
   }
 };
 
@@ -43682,10 +43497,10 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param renderer the rendering context.
    * @param file a path on the filesystem to load an image from.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the new Texture with loaded contents on success.
+   * @throws Error on failure.
    *
-   * @sa LoadTexture(StringParam)
+   * @sa LoadTexture(RendererBase&, StringParam)
    */
   TextureBase(RendererBase& renderer, StringParam file);
 
@@ -43697,11 +43512,11 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param renderer the rendering context.
    * @param src an IOStreamBase to load an image from.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the new Texture with loaded contents on success.
+   * @throws Error on failure.
    *
-   * @sa LoadSurface(StringParam)
-   * @sa LoadBMP(StringParam)
+   * @sa LoadTexture(RendererBase&StringParam)
+   * @sa LoadTextureBMP(RendererBase&, StringParam)
    */
   TextureBase(RendererBase& renderer, IOStream& src);
 
@@ -43714,8 +43529,8 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param format one of the enumerated values in PixelFormat.
    * @param access one of the enumerated values in TextureAccess.
    * @param size the width and height of the texture in pixels.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43728,8 +43543,8 @@ struct TextureBase : Resource<SDL_Texture*>
               PixelFormat format,
               TextureAccess access,
               const SDL_Point& size)
-    : Resource(
-        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y))
+    : Resource(CheckError(
+        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y)))
   {
   }
 
@@ -43748,15 +43563,16 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param renderer the rendering context.
    * @param surface the SurfaceBase structure containing pixel data used to fill
    *                the texture.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
   TextureBase(RendererBase& renderer, SurfaceBase& surface)
-    : Resource(SDL_CreateTextureFromSurface(renderer.get(), surface.get()))
+    : Resource(
+        CheckError(SDL_CreateTextureFromSurface(renderer.get(), surface.get())))
   {
   }
 
@@ -43856,8 +43672,8 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43871,7 +43687,8 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.Update
    */
   TextureBase(RendererBase& renderer, PropertiesBase& props)
-    : Resource(SDL_CreateTextureWithProperties(renderer.get(), props.get()))
+    : Resource(CheckError(
+        SDL_CreateTextureWithProperties(renderer.get(), props.get())))
   {
   }
 
@@ -43953,8 +43770,8 @@ struct TextureBase : Resource<SDL_Texture*>
    * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
    *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -43962,7 +43779,7 @@ struct TextureBase : Resource<SDL_Texture*>
    */
   PropertiesRef GetProperties() const
   {
-    return SDL_GetTextureProperties(get());
+    return CheckError(SDL_GetTextureProperties(get()));
   }
 
   /**
@@ -43993,16 +43810,16 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param c the color and alpha channel values multiplied into copy
    *          operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetColorAndAlphaMod(Color c)
+  void SetMod(Color c)
   {
-    return SetColorMod(c.r, c.g, c.b) && SetAlphaMod(c.a);
+    SetColorMod(c.r, c.g, c.b);
+    SetAlphaMod(c.a);
   }
 
   /**
@@ -44021,23 +43838,23 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param c the color and alpha channel values multiplied into copy
    *          operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetColorAndAlphaMod(FColor c)
+  void SetMod(FColor c)
   {
-    return SetColorMod(c.r, c.g, c.b) && SetAlphaMod(c.a);
+    SetColorMod(c.r, c.g, c.b);
+    SetAlphaMod(c.a);
   }
 
   /**
    * Get the additional color value multiplied into render copy operations.
    *
-   * @returns the color channels (0-1) on success or false on failure; call
-   *          GetError() for more information.
+   * @returns the color channels (0-1) on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44046,38 +43863,18 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  std::optional<FColor> GetColorAndAlphaMod() const
+  FColor GetMod() const
   {
-    if (FColor color; GetColorAndAlphaMod(&color)) return color;
-    return std::nullopt;
-  }
-
-  /**
-   * Get the additional color value multiplied into render copy operations.
-   *
-   * @param c a pointer filled in with the current color and alpha mod values.
-   * @returns true success or false on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetAlphaMod()
-   * @sa SetColorMod()
-   */
-  bool GetColorAndAlphaMod(Color* c) const
-  {
-    SDL_assert(c != nullptr);
-    return GetColorMod(&c->r, &c->g, &c->b) && GetAlphaMod(&c->a);
+    FColor color;
+    GetMod(&color);
+    return color;
   }
 
   /**
    * Get the additional color value multiplied into render copy operations.
    *
    * @param c a pointer filled in with the current color and alpha mod values.
-   * @returns true success or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44086,10 +43883,31 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  bool GetColorAndAlphaMod(FColor* c) const
+  void GetMod(Color* c) const
   {
-    SDL_assert(c != nullptr);
-    return GetColorMod(&c->r, &c->g, &c->b) && GetAlphaMod(&c->a);
+    SDL_assert_paranoid(c != nullptr);
+    GetColorMod(&c->r, &c->g, &c->b);
+    GetAlphaMod(&c->a);
+  }
+
+  /**
+   * Get the additional color value multiplied into render copy operations.
+   *
+   * @param c a pointer filled in with the current color and alpha mod values.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAlphaMod()
+   * @sa SetColorMod()
+   */
+  void GetMod(FColor* c) const
+  {
+    SDL_assert_paranoid(c != nullptr);
+    GetColorMod(&c->r, &c->g, &c->b);
+    GetAlphaMod(&c->a);
   }
 
   /**
@@ -44107,8 +43925,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param r the red color value multiplied into copy operations.
    * @param g the green color value multiplied into copy operations.
    * @param b the blue color value multiplied into copy operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44117,9 +43934,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetColorMod
    * @sa TextureBase.SetAlphaMod
    */
-  bool SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
   {
-    return SDL_SetTextureColorMod(get(), r, g, b);
+    CheckError(SDL_SetTextureColorMod(get(), r, g, b));
   }
 
   /**
@@ -44137,8 +43954,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param r the red color value multiplied into copy operations.
    * @param g the green color value multiplied into copy operations.
    * @param b the blue color value multiplied into copy operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44147,9 +43963,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetColorMod
    * @sa TextureBase.SetAlphaMod
    */
-  bool SetColorMod(float r, float g, float b)
+  void SetColorMod(float r, float g, float b)
   {
-    return SDL_SetTextureColorModFloat(get(), r, g, b);
+    CheckError(SDL_SetTextureColorModFloat(get(), r, g, b));
   }
 
   /**
@@ -44158,8 +43974,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param r a pointer filled in with the current red color value.
    * @param g a pointer filled in with the current green color value.
    * @param b a pointer filled in with the current blue color value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44168,9 +43983,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetAlphaMod
    * @sa TextureBase.SetColorMod
    */
-  bool GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
   {
-    return SDL_GetTextureColorMod(get(), r, g, b);
+    CheckError(SDL_GetTextureColorMod(get(), r, g, b));
   }
 
   /**
@@ -44179,8 +43994,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param r a pointer filled in with the current red color value.
    * @param g a pointer filled in with the current green color value.
    * @param b a pointer filled in with the current blue color value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44189,9 +44003,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetAlphaMod
    * @sa TextureBase.SetColorMod
    */
-  bool GetColorMod(float* r, float* g, float* b) const
+  void GetColorMod(float* r, float* g, float* b) const
   {
-    return SDL_GetTextureColorModFloat(get(), r, g, b);
+    CheckError(SDL_GetTextureColorModFloat(get(), r, g, b));
   }
 
   /**
@@ -44206,8 +44020,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * false if alpha modulation is not supported.
    *
    * @param alpha the source alpha value multiplied into copy operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44216,7 +44029,10 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetAlphaMod
    * @sa TextureBase.SetColorMod
    */
-  bool SetAlphaMod(Uint8 alpha) { return SDL_SetTextureAlphaMod(get(), alpha); }
+  void SetAlphaMod(Uint8 alpha)
+  {
+    CheckError(SDL_SetTextureAlphaMod(get(), alpha));
+  }
 
   /**
    * Set an additional alpha value multiplied into render copy operations.
@@ -44230,8 +44046,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * false if alpha modulation is not supported.
    *
    * @param alpha the source alpha value multiplied into copy operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44240,31 +44055,31 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetAlphaMod
    * @sa TextureBase.SetColorMod
    */
-  bool SetAlphaMod(float alpha)
+  void SetAlphaMod(float alpha)
   {
-    return SDL_SetTextureAlphaModFloat(get(), alpha);
+    CheckError(SDL_SetTextureAlphaModFloat(get(), alpha));
   }
 
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
-   * @returns the current alpha value on success or false on failure; call
-   *          GetError() for more information.
+   * @returns the current alpha value on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  std::optional<float> GetAlphaMod() const
+  float GetAlphaMod() const
   {
-    if (float alpha; GetAlphaMod(&alpha)) return alpha;
-    return std::nullopt;
+    float alpha;
+    GetAlphaMod(&alpha);
+    return alpha;
   }
 
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
    * @param alpha a pointer filled in with the current alpha value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44273,17 +44088,16 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetColorMod
    * @sa TextureBase.SetAlphaMod
    */
-  bool GetAlphaMod(Uint8* alpha) const
+  void GetAlphaMod(Uint8* alpha) const
   {
-    return SDL_GetTextureAlphaMod(get(), alpha);
+    CheckError(SDL_GetTextureAlphaMod(get(), alpha));
   }
 
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
    * @param alpha a pointer filled in with the current alpha value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44292,9 +44106,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetColorMod
    * @sa TextureBase.SetAlphaMod
    */
-  bool GetAlphaMod(float* alpha) const
+  void GetAlphaMod(float* alpha) const
   {
-    return SDL_GetTextureAlphaModFloat(get(), alpha);
+    CheckError(SDL_GetTextureAlphaModFloat(get(), alpha));
   }
 
   /**
@@ -44304,8 +44118,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * and this function returns false.
    *
    * @param blendMode the BlendMode to use for texture blending.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44313,16 +44126,16 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureBase.GetBlendMode
    */
-  bool SetBlendMode(BlendMode blendMode)
+  void SetBlendMode(BlendMode blendMode)
   {
-    return SDL_SetTextureBlendMode(get(), blendMode);
+    CheckError(SDL_SetTextureBlendMode(get(), blendMode));
   }
 
   /**
    * Get the blend mode used for texture copy operations.
    *
-   * @returns the current SDL_BlendMode on success or std::nullopt on failure;
-   *          call GetError() for more information.
+   * @returns the current SDL_BlendMode on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44330,12 +44143,11 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureBase.SetBlendMode
    */
-  std::optional<BlendMode> GetBlendMode() const
+  BlendMode GetBlendMode() const
   {
-    if (BlendMode blendMode; SDL_GetTextureBlendMode(get(), &blendMode)) {
-      return blendMode;
-    }
-    return std::nullopt;
+    BlendMode blendMode;
+    CheckError(SDL_GetTextureBlendMode(get(), &blendMode));
+    return blendMode;
   }
 
   /**
@@ -44346,8 +44158,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * If the scale mode is not supported, the closest supported mode is chosen.
    *
    * @param scaleMode the ScaleMode to use for texture scaling.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44355,16 +44166,16 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureBase.GetScaleMode
    */
-  bool SetScaleMode(ScaleMode scaleMode)
+  void SetScaleMode(ScaleMode scaleMode)
   {
-    return SDL_SetTextureScaleMode(get(), scaleMode);
+    CheckError(SDL_SetTextureScaleMode(get(), scaleMode));
   }
 
   /**
    * Get the scale mode used for texture scale operations.
    *
-   * @returns the current scale mode on success or std::nullopt on failure; call
-   *          GetError() for more information.
+   * @returns the current scale mode on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44372,12 +44183,11 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureBase.SetScaleMode
    */
-  std::optional<ScaleMode> GetScaleMode() const
+  ScaleMode GetScaleMode() const
   {
-    if (ScaleMode scaleMode; SDL_GetTextureScaleMode(get(), &scaleMode)) {
-      return scaleMode;
-    }
-    return std::nullopt;
+    ScaleMode scaleMode;
+    CheckError(SDL_GetTextureScaleMode(get(), &scaleMode));
+    return scaleMode;
   }
 
   /**
@@ -44399,8 +44209,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param pixels the raw pixel data in the format of the texture.
    * @param pitch the number of bytes in a row of pixel data, including padding
    *              between lines.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44411,9 +44220,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.UpdateNV
    * @sa TextureBase.UpdateYUV
    */
-  bool Update(OptionalRef<const SDL_Rect> rect, const void* pixels, int pitch)
+  void Update(OptionalRef<const SDL_Rect> rect, const void* pixels, int pitch)
   {
-    return SDL_UpdateTexture(get(), rect, pixels, pitch);
+    CheckError(SDL_UpdateTexture(get(), rect, pixels, pitch));
   }
 
   /**
@@ -44435,8 +44244,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param Vplane the raw pixel data for the V plane.
    * @param Vpitch the number of bytes between rows of pixel data for the V
    *               plane.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44445,7 +44253,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.UpdateNV
    * @sa TextureBase.Update
    */
-  bool UpdateYUV(OptionalRef<const SDL_Rect> rect,
+  void UpdateYUV(OptionalRef<const SDL_Rect> rect,
                  const Uint8* Yplane,
                  int Ypitch,
                  const Uint8* Uplane,
@@ -44453,8 +44261,8 @@ struct TextureBase : Resource<SDL_Texture*>
                  const Uint8* Vplane,
                  int Vpitch)
   {
-    return SDL_UpdateYUVTexture(
-      get(), rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
+    CheckError(SDL_UpdateYUVTexture(
+      get(), rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch));
   }
 
   /**
@@ -44472,8 +44280,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param UVplane the raw pixel data for the UV plane.
    * @param UVpitch the number of bytes between rows of pixel data for the UV
    *                plane.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44482,13 +44289,14 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.Update
    * @sa TextureBase.UpdateYUV
    */
-  bool UpdateNV(OptionalRef<const SDL_Rect> rect,
+  void UpdateNV(OptionalRef<const SDL_Rect> rect,
                 const Uint8* Yplane,
                 int Ypitch,
                 const Uint8* UVplane,
                 int UVpitch)
   {
-    return SDL_UpdateNVTexture(get(), rect, Yplane, Ypitch, UVplane, UVpitch);
+    CheckError(
+      SDL_UpdateNVTexture(get(), rect, Yplane, Ypitch, UVplane, UVpitch));
   }
 
   /**
@@ -44504,9 +44312,8 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param rect an Rect structure representing the area to lock for access;
    *             nullptr to lock the entire texture.
-   * @returns TextureLock on success or false if the texture is not valid or was
-   *          not created with `SDL_TEXTUREACCESS_STREAMING`; call GetError()
-   *          for more information.
+   * @returns TextureLock on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44692,7 +44499,7 @@ public:
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that SDL_LockTexture() is intended to be
+   * **Warning**: Please note that TextureBase.Lock() is intended to be
    * write-only; it will not guarantee the previous contents of the texture will
    * be provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
@@ -44704,7 +44511,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_LockTexture
+   * @sa TextureBase.Lock
    */
   void Unlock()
   {
@@ -44784,8 +44591,8 @@ inline const char* GetRenderDriver(int index)
  * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
  *                     WindowBase.WindowBase()).
- * @returns a pair with Window and Renderer on success or a pair of nullptr on
- * failure; call GetError() for more information.
+ * @returns a pair with Window and Renderer on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -44801,8 +44608,8 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 {
   SDL_Window* window;
   SDL_Renderer* renderer;
-  SDL_CreateWindowAndRenderer(
-    title, size.x, size.y, window_flags, &window, &renderer);
+  CheckError(SDL_CreateWindowAndRenderer(
+    title, size.x, size.y, window_flags, &window, &renderer));
   return {Window{window}, Renderer{renderer}};
 }
 
@@ -44903,8 +44710,8 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
 /**
  * Get the renderer associated with a window.
  *
- * @returns the rendering context on success or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the rendering context on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -44912,7 +44719,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  */
 inline RendererRef WindowBase::GetRenderer() const
 {
-  return SDL_GetRenderer(get());
+  return CheckError(SDL_GetRenderer(get()));
 }
 
 namespace prop::Texture {
@@ -45049,9 +44856,9 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
 
 } // namespace prop::Texture
 
-inline bool RendererBase::SetTarget(OptionalTexture texture)
+inline void RendererBase::SetTarget(OptionalTexture texture)
 {
-  return SDL_SetRenderTarget(get(), texture.get());
+  CheckError(SDL_SetRenderTarget(get(), texture.get()));
 }
 
 inline TextureRef RendererBase::GetTarget() const
@@ -45059,14 +44866,14 @@ inline TextureRef RendererBase::GetTarget() const
   return SDL_GetRenderTarget(get());
 }
 
-inline bool RendererBase::RenderTexture(TextureBase& texture,
+inline void RendererBase::RenderTexture(TextureBase& texture,
                                         OptionalRef<const SDL_FRect> srcrect,
                                         OptionalRef<const SDL_FRect> dstrect)
 {
-  return SDL_RenderTexture(get(), texture.get(), srcrect, dstrect);
+  CheckError(SDL_RenderTexture(get(), texture.get(), srcrect, dstrect));
 }
 
-inline bool RendererBase::RenderTextureRotated(
+inline void RendererBase::RenderTextureRotated(
   TextureBase& texture,
   OptionalRef<const SDL_FRect> srcrect,
   OptionalRef<const SDL_FRect> dstrect,
@@ -45074,31 +44881,32 @@ inline bool RendererBase::RenderTextureRotated(
   OptionalRef<const SDL_FPoint> center,
   FlipMode flip)
 {
-  return SDL_RenderTextureRotated(
-    get(), texture.get(), srcrect, dstrect, angle, center, flip);
+  CheckError(SDL_RenderTextureRotated(
+    get(), texture.get(), srcrect, dstrect, angle, center, flip));
 }
 
-inline bool RendererBase::RenderTextureAffine(
+inline void RendererBase::RenderTextureAffine(
   TextureBase& texture,
   OptionalRef<const SDL_FRect> srcrect,
   OptionalRef<const SDL_FPoint> origin,
   OptionalRef<const SDL_FPoint> right,
   OptionalRef<const SDL_FPoint> down)
 {
-  return SDL_RenderTextureAffine(
-    get(), texture.get(), srcrect, origin, right, down);
+  CheckError(SDL_RenderTextureAffine(
+    get(), texture.get(), srcrect, origin, right, down));
 }
 
-inline bool RendererBase::RenderTextureTiled(
+inline void RendererBase::RenderTextureTiled(
   TextureBase& texture,
   OptionalRef<const SDL_FRect> srcrect,
   float scale,
   OptionalRef<const SDL_FRect> dstrect)
 {
-  return SDL_RenderTextureTiled(get(), texture.get(), srcrect, scale, dstrect);
+  CheckError(
+    SDL_RenderTextureTiled(get(), texture.get(), srcrect, scale, dstrect));
 }
 
-inline bool RendererBase::RenderTexture9Grid(
+inline void RendererBase::RenderTexture9Grid(
   TextureBase& texture,
   OptionalRef<const SDL_FRect> srcrect,
   float left_width,
@@ -45108,30 +44916,30 @@ inline bool RendererBase::RenderTexture9Grid(
   float scale,
   OptionalRef<const SDL_FRect> dstrect)
 {
-  return SDL_RenderTexture9Grid(get(),
-                                texture.get(),
-                                srcrect,
-                                left_width,
-                                right_width,
-                                top_height,
-                                bottom_height,
-                                scale,
-                                dstrect);
+  CheckError(SDL_RenderTexture9Grid(get(),
+                                    texture.get(),
+                                    srcrect,
+                                    left_width,
+                                    right_width,
+                                    top_height,
+                                    bottom_height,
+                                    scale,
+                                    dstrect));
 }
 
-inline bool RendererBase::RenderGeometry(OptionalTexture texture,
+inline void RendererBase::RenderGeometry(OptionalTexture texture,
                                          std::span<const Vertex> vertices,
                                          std::span<const int> indices)
 {
-  return SDL_RenderGeometry(get(),
-                            texture.get(),
-                            vertices.data(),
-                            vertices.size(),
-                            indices.data(),
-                            indices.size());
+  CheckError(SDL_RenderGeometry(get(),
+                                texture.get(),
+                                vertices.data(),
+                                vertices.size(),
+                                indices.data(),
+                                indices.size()));
 }
 
-inline bool RendererBase::RenderGeometryRaw(OptionalTexture texture,
+inline void RendererBase::RenderGeometryRaw(OptionalTexture texture,
                                             const float* xy,
                                             int xy_stride,
                                             const FColor* color,
@@ -45143,18 +44951,18 @@ inline bool RendererBase::RenderGeometryRaw(OptionalTexture texture,
                                             int num_indices,
                                             int size_indices)
 {
-  return SDL_RenderGeometryRaw(get(),
-                               texture.get(),
-                               xy,
-                               xy_stride,
-                               color,
-                               color_stride,
-                               uv,
-                               uv_stride,
-                               num_vertices,
-                               indices,
-                               num_indices,
-                               size_indices);
+  CheckError(SDL_RenderGeometryRaw(get(),
+                                   texture.get(),
+                                   xy,
+                                   xy_stride,
+                                   color,
+                                   color_stride,
+                                   uv,
+                                   uv_stride,
+                                   num_vertices,
+                                   indices,
+                                   num_indices,
+                                   size_indices));
 }
 
 /**
@@ -45164,8 +44972,8 @@ inline bool RendererBase::RenderGeometryRaw(OptionalTexture texture,
  * headers, but it can be safely cast to a `CAMetalLayer *`.
  *
  * @param renderer the renderer to query.
- * @returns a `CAMetalLayer *` on success, or nullptr if the renderer isn't a
- *          Metal renderer.
+ * @returns a `CAMetalLayer *` on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -45175,7 +44983,7 @@ inline bool RendererBase::RenderGeometryRaw(OptionalTexture texture,
  */
 inline void* GetRenderMetalLayer(RendererBase& renderer)
 {
-  return SDL_GetRenderMetalLayer(renderer.get());
+  return CheckError(SDL_GetRenderMetalLayer(renderer.get()));
 }
 
 /**
@@ -45190,8 +44998,8 @@ inline void* GetRenderMetalLayer(RendererBase& renderer)
  * backbuffer. Check your return values!
  *
  * @param renderer the renderer to query.
- * @returns an `id<MTLRenderCommandEncoder>` on success, or nullptr if the
- *          renderer isn't a Metal renderer or there was an error.
+ * @returns an `id<MTLRenderCommandEncoder>` on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -45201,7 +45009,7 @@ inline void* GetRenderMetalLayer(RendererBase& renderer)
  */
 inline void* GetRenderMetalCommandEncoder(RendererBase& renderer)
 {
-  return SDL_GetRenderMetalCommandEncoder(renderer.get());
+  return CheckError(SDL_GetRenderMetalCommandEncoder(renderer.get()));
 }
 
 /**
@@ -45224,21 +45032,20 @@ inline void* GetRenderMetalCommandEncoder(RendererBase& renderer)
  * @param signal_semaphore a VkSempahore that SDL will signal when rendering
  *                         for the current frame is complete, or 0 if not
  *                         needed.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is **NOT** safe to call this function from two threads at
  *               once.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool AddVulkanRenderSemaphores(RendererBase& renderer,
+inline void AddVulkanRenderSemaphores(RendererBase& renderer,
                                       Uint32 wait_stage_mask,
                                       Sint64 wait_semaphore,
                                       Sint64 signal_semaphore)
 {
-  return SDL_AddVulkanRenderSemaphores(
-    renderer.get(), wait_stage_mask, wait_semaphore, signal_semaphore);
+  CheckError(SDL_AddVulkanRenderSemaphores(
+    renderer.get(), wait_stage_mask, wait_semaphore, signal_semaphore));
 }
 
 #ifdef SDL3PP_DOC
@@ -45264,7 +45071,7 @@ inline bool AddVulkanRenderSemaphores(RendererBase& renderer,
 
 #pragma region impl
 
-inline bool RendererBase::ResetTarget() { return SetTarget(nullptr); }
+inline void RendererBase::ResetTarget() { return SetTarget(nullptr); }
 
 inline TextureLock TextureBase::Lock(OptionalRef<const SDL_Rect> rect) &
 {
@@ -47149,14 +46956,13 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  * @param file path on the filesystem to write new file to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline bool SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
+inline void SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
 {
-  return IMG_SaveAVIF(surface.get(), file, quality);
+  CheckError(IMG_SaveAVIF(surface.get(), file, quality));
 }
 
 /**
@@ -47168,14 +46974,13 @@ inline bool SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
  * @param dst the IOStreamBase to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline bool SaveAVIF(SurfaceRef surface, IOStreamBase& dst, int quality)
+inline void SaveAVIF(SurfaceRef surface, IOStreamBase& dst, int quality)
 {
-  return IMG_SaveAVIF_IO(surface.get(), dst.get(), false, quality);
+  CheckError(IMG_SaveAVIF_IO(surface.get(), dst.get(), false, quality));
 }
 
 /**
@@ -47185,16 +46990,15 @@ inline bool SaveAVIF(SurfaceRef surface, IOStreamBase& dst, int quality)
  *
  * @param surface the SDL surface to save.
  * @param file path on the filesystem to write new file to.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SavePNG
  */
-inline bool SavePNG(SurfaceBase& surface, StringParam file)
+inline void SavePNG(SurfaceBase& surface, StringParam file)
 {
-  return IMG_SavePNG(surface.get(), file);
+  CheckError(IMG_SavePNG(surface.get(), file));
 }
 
 /**
@@ -47204,16 +47008,13 @@ inline bool SavePNG(SurfaceBase& surface, StringParam file)
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStreamBase to save the image data to.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
- *
- * @sa SavePNG
  */
-inline bool SavePNG(SurfaceRef surface, IOStreamBase& dst)
+inline void SavePNG(SurfaceRef surface, IOStreamBase& dst)
 {
-  return IMG_SavePNG_IO(surface.get(), dst.get(), false);
+  CheckError(IMG_SavePNG_IO(surface.get(), dst.get(), false));
 }
 
 /**
@@ -47225,14 +47026,13 @@ inline bool SavePNG(SurfaceRef surface, IOStreamBase& dst)
  * @param file path on the filesystem to write new file to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline bool SaveJPG(SurfaceBase& surface, StringParam file, int quality)
+inline void SaveJPG(SurfaceBase& surface, StringParam file, int quality)
 {
-  return IMG_SaveJPG(surface.get(), file, quality);
+  CheckError(IMG_SaveJPG(surface.get(), file, quality));
 }
 
 /**
@@ -47244,16 +47044,13 @@ inline bool SaveJPG(SurfaceBase& surface, StringParam file, int quality)
  * @param dst the IOStreamBase to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
- *
- * @sa SaveJPG
  */
-inline bool SaveJPG(SurfaceRef surface, IOStreamBase& dst, int quality)
+inline void SaveJPG(SurfaceRef surface, IOStreamBase& dst, int quality)
 {
-  return IMG_SaveJPG_IO(surface.get(), dst.get(), false, quality);
+  CheckError(IMG_SaveJPG_IO(surface.get(), dst.get(), false, quality));
 }
 
 /**
@@ -47499,22 +47296,22 @@ inline Animation LoadWEBPAnimation(IOStreamBase& src)
 /// @}
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(IMG_Load(file))
+  : Resource(CheckError(IMG_Load(file)))
 {
 }
 
 inline SurfaceBase::SurfaceBase(IOStreamBase& src)
-  : Resource(IMG_Load_IO(src.get(), false))
+  : Resource(CheckError(IMG_Load_IO(src.get(), false)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
-  : Resource(IMG_LoadTexture(renderer.get(), file))
+  : Resource(CheckError(IMG_LoadTexture(renderer.get(), file)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
-  : Resource(IMG_LoadTexture_IO(renderer.get(), src.get(), false))
+  : Resource(CheckError(IMG_LoadTexture_IO(renderer.get(), src.get(), false)))
 {
 }
 
@@ -47527,22 +47324,22 @@ inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
 namespace SDL {
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(SDL_LoadBMP(file))
+  : Resource(CheckError(SDL_LoadBMP(file)))
 {
 }
 
 inline SurfaceBase::SurfaceBase(IOStreamBase& src)
-  : Resource(SDL_LoadBMP_IO(src.get(), false))
+  : Resource(CheckError(SDL_LoadBMP_IO(src.get(), false)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
-  : Resource(LoadTextureBMP(renderer, file).release())
+  : Resource(CheckError(LoadTextureBMP(renderer, file).release()))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
-  : Resource(LoadTextureBMP(renderer, src).release())
+  : Resource(CheckError(LoadTextureBMP(renderer, src).release()))
 {
 }
 
@@ -47941,15 +47738,15 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param file path to font file.
    * @param ptsize point size to use for the newly-opened font.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(StringParam file, float ptsize)
-    : Resource(TTF_OpenFont(file, ptsize))
+    : Resource(CheckError(TTF_OpenFont(file, ptsize)))
   {
   }
 
@@ -47962,15 +47759,15 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param src an IOStreamBase to provide a font file's data.
    * @param ptsize point size to use for the newly-opened font.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(IOStreamBase& src, float ptsize)
-    : Resource(TTF_OpenFontIO(src.get(), false, ptsize))
+    : Resource(CheckError(TTF_OpenFontIO(src.get(), false, ptsize)))
   {
   }
 
@@ -48008,15 +47805,15 @@ struct FontBase : Resource<TTF_Font*>
    *   the new font.
    *
    * @param props the properties to use.
-   * @post a valid FontBase, or nullptr on failure; call GetError() for more
-   *       information.
+   * @post a valid FontBase on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
   FontBase(PropertiesBase& props)
-    : Resource(TTF_OpenFontWithProperties(props.get()))
+    : Resource(CheckError(TTF_OpenFontWithProperties(props.get())))
   {
   }
 
@@ -48026,8 +47823,8 @@ struct FontBase : Resource<TTF_Font*>
    * The copy will be distinct from the original, but will share the font file
    * and have the same size and style as the original.
    *
-   * @returns a valid Font, or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns a valid Font on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               original font.
@@ -48050,14 +47847,17 @@ struct FontBase : Resource<TTF_Font*>
    * - `prop::Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
    *   when setting the font outline, defaults to 0.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  PropertiesRef GetProperties() { return TTF_GetFontProperties(get()); }
+  PropertiesRef GetProperties()
+  {
+    return CheckError(TTF_GetFontProperties(get()));
+  }
 
   /**
    * Get the font generation.
@@ -48086,8 +47886,7 @@ struct FontBase : Resource<TTF_Font*>
    * This updates any TextBase objects using this font.
    *
    * @param fallback the font to add as a fallback.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created
    *               both fonts.
@@ -48097,9 +47896,9 @@ struct FontBase : Resource<TTF_Font*>
    * @sa FontBase.ClearFallbacks
    * @sa FontBase.RemoveFallback
    */
-  bool AddFallback(FontBase& fallback)
+  void AddFallback(FontBase& fallback)
   {
-    return TTF_AddFallbackFont(get(), fallback.get());
+    CheckError(TTF_AddFallbackFont(get(), fallback.get()));
   }
 
   /**
@@ -48145,8 +47944,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param ptsize the new point size.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48155,7 +47953,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetSize
    */
-  bool SetSize(float ptsize) { return TTF_SetFontSize(get(), ptsize); }
+  void SetSize(float ptsize) { CheckError(TTF_SetFontSize(get(), ptsize)); }
 
   /**
    * Set font size dynamically with target resolutions, in dots per inch.
@@ -48166,8 +47964,7 @@ struct FontBase : Resource<TTF_Font*>
    * @param ptsize the new point size.
    * @param hdpi the target horizontal DPI.
    * @param vdpi the target vertical DPI.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48177,9 +47974,9 @@ struct FontBase : Resource<TTF_Font*>
    * @sa FontBase.GetSize
    * @sa TTF_GetFontSizeDPI
    */
-  bool SetSizeDPI(float ptsize, int hdpi, int vdpi)
+  void SetSizeDPI(float ptsize, int hdpi, int vdpi)
   {
-    return TTF_SetFontSizeDPI(get(), ptsize, hdpi, vdpi);
+    CheckError(TTF_SetFontSizeDPI(get(), ptsize, hdpi, vdpi));
   }
 
   /**
@@ -48203,8 +48000,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param hdpi a pointer filled in with the target horizontal DPI.
    * @param vdpi a pointer filled in with the target vertical DPI.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48213,9 +48009,9 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.SetSizeDPI
    */
-  bool GetDPI(int* hdpi, int* vdpi) const
+  void GetDPI(int* hdpi, int* vdpi) const
   {
-    return TTF_GetFontDPI(get(), hdpi, vdpi);
+    CheckError(TTF_GetFontDPI(get(), hdpi, vdpi));
   }
 
   /**
@@ -48275,8 +48071,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param outline positive outline value, 0 to default.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48285,7 +48080,10 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetOutline
    */
-  bool SetOutline(int outline) { return TTF_SetFontOutline(get(), outline); }
+  void SetOutline(int outline)
+  {
+    CheckError(TTF_SetFontOutline(get(), outline));
+  }
 
   /**
    * Query a font's current outline.
@@ -48371,8 +48169,7 @@ struct FontBase : Resource<TTF_Font*>
    * already-generated glyphs, if any, from the cache.
    *
    * @param enabled true to enable SDF, false to disable.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48381,7 +48178,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa FontBase.GetSDF
    */
-  bool SetSDF(bool enabled) { return TTF_SetFontSDF(get(), enabled); }
+  void SetSDF(bool enabled) { CheckError(TTF_SetFontSDF(get(), enabled)); }
 
   /**
    * Query whether Signed Distance Field rendering is enabled for a font.
@@ -48624,17 +48421,16 @@ struct FontBase : Resource<TTF_Font*>
    * This updates any TextBase objects using this font.
    *
    * @param direction the new direction for text to flow.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetDirection(Direction direction)
+  void SetDirection(Direction direction)
   {
-    return TTF_SetFontDirection(get(), direction);
+    CheckError(TTF_SetFontDirection(get(), direction));
   }
 
   /**
@@ -48660,8 +48456,7 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param script an
    * [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -48670,7 +48465,10 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @sa StringToTag
    */
-  bool SetScript(Uint32 script) { return TTF_SetFontScript(get(), script); }
+  void SetScript(Uint32 script)
+  {
+    CheckError(TTF_SetFontScript(get(), script));
+  }
 
   /**
    * Get the script used for text shaping a font.
@@ -48715,17 +48513,16 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param language_bcp47 a null-terminated string containing the desired
    *                       language's BCP47 code. Or null to reset the value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetLanguage(StringParam language_bcp47)
+  void SetLanguage(StringParam language_bcp47)
   {
-    return TTF_SetFontLanguage(get(), language_bcp47);
+    CheckError(TTF_SetFontLanguage(get(), language_bcp47));
   }
 
   /**
@@ -48803,22 +48600,21 @@ struct FontBase : Resource<TTF_Font*>
    *             from the bottom edge of its bounding box.
    * @param advance a pointer filled in with the distance to the next glyph from
    *                the left edge of this glyph's bounding box.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetGlyphMetrics(Uint32 ch,
+  void GetGlyphMetrics(Uint32 ch,
                        int* minx,
                        int* maxx,
                        int* miny,
                        int* maxy,
                        int* advance) const
   {
-    return TTF_GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance);
+    CheckError(TTF_GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance));
   }
 
   /**
@@ -48826,18 +48622,18 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param previous_ch the previous codepoint.
    * @param ch the current codepoint.
-   * @returns the kerning size between the two glyphs, in pixels, on success or
-   *          false on failure; call GetError() for more information.
+   * @returns the kerning size between the two glyphs, in pixels.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<int> GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
+  int GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
   {
     if (int r; TTF_GetGlyphKerning(get(), previous_ch, ch, &r)) return r;
-    return std::nullopt;
+    throw Error();
   }
 
   /**
@@ -48847,18 +48643,19 @@ struct FontBase : Resource<TTF_Font*>
    * specified string will take to fully render.
    *
    * @param text text to calculate, in UTF-8 encoding.
-   * @returns return a Point with the width, height on success or std::nullopt
-   *          on failure; call GetError() for more information.
+   * @returns return a Point with the width, height.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<Point> GetStringSize(std::string_view text) const
+  Point GetStringSize(std::string_view text) const
   {
-    if (Point p; GetStringSize(text, &p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetStringSize(text, &p.x, &p.y);
+    return p;
   }
 
   /**
@@ -48870,17 +48667,16 @@ struct FontBase : Resource<TTF_Font*>
    * @param text text to calculate, in UTF-8 encoding.
    * @param w will be filled with width, in pixels, on return.
    * @param h will be filled with height, in pixels, on return.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetStringSize(std::string_view text, int* w, int* h) const
+  void GetStringSize(std::string_view text, int* w, int* h) const
   {
-    return TTF_GetStringSize(get(), text.data(), text.size(), w, h);
+    CheckError(TTF_GetStringSize(get(), text.data(), text.size(), w, h));
   }
 
   /**
@@ -48896,19 +48692,19 @@ struct FontBase : Resource<TTF_Font*>
    *
    * @param text text to calculate, in UTF-8 encoding.
    * @param wrap_width the maximum width or 0 to wrap on newline characters.
-   * @returns return a Point with the width, height on success or std::nullopt
-   *          on failure; call GetError() for more information.
+   * @returns return a Point with the width, height on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  std::optional<Point> GetStringSizeWrapped(std::string_view text,
-                                            int wrap_width) const
+  Point GetStringSizeWrapped(std::string_view text, int wrap_width) const
   {
-    if (Point p; GetStringSizeWrapped(text, wrap_width, &p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetStringSizeWrapped(text, wrap_width, &p.x, &p.y);
+    return p;
   }
 
   /**
@@ -48926,21 +48722,20 @@ struct FontBase : Resource<TTF_Font*>
    * @param wrap_width the maximum width or 0 to wrap on newline characters.
    * @param w will be filled with width, in pixels, on return.
    * @param h will be filled with height, in pixels, on return.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetStringSizeWrapped(std::string_view text,
+  void GetStringSizeWrapped(std::string_view text,
                             int wrap_width,
                             int* w,
                             int* h) const
   {
-    return TTF_GetStringSizeWrapped(
-      get(), text.data(), text.size(), wrap_width, w, h);
+    CheckError(TTF_GetStringSizeWrapped(
+      get(), text.data(), text.size(), wrap_width, w, h));
   }
 
   /**
@@ -48958,25 +48753,24 @@ struct FontBase : Resource<TTF_Font*>
    *                       string that will fit, may be nullptr.
    * @param measured_length a pointer filled in with the length, in bytes, of
    *                        the string that will fit, may be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool MeasureString(std::string_view text,
+  void MeasureString(std::string_view text,
                      int max_width,
                      int* measured_width,
                      size_t* measured_length) const
   {
-    return TTF_MeasureString(get(),
-                             text.data(),
-                             text.size(),
-                             max_width,
-                             measured_width,
-                             measured_length);
+    CheckError(TTF_MeasureString(get(),
+                                 text.data(),
+                                 text.size(),
+                                 max_width,
+                                 measured_width,
+                                 measured_length));
   }
 
   /**
@@ -49542,14 +49336,13 @@ struct Font : FontRef
  * call should be paired with a matching QuitSubSystem(TtfInitFlag) call.
  *
  * @param _ An INIT_TTF value;
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa QuitSubSystem(TtfInitFlag)
  */
-inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
+inline void InitSubSystem(TtfInitFlag _) { CheckError(TTF_Init()); }
 
 /**
  * A text engine used to create text objects.
@@ -49904,8 +49697,7 @@ struct TextBase : Resource<TTF_Text*>
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
    * @param surface the surface to draw on.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -49915,9 +49707,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa CreateSurfaceTextEngine
    * @sa TextBase.TextBase
    */
-  bool DrawSurface(Point p, SurfaceRef surface) const
+  void DrawSurface(Point p, SurfaceRef surface) const
   {
-    return TTF_DrawSurfaceText(get(), p.x, p.y, surface.get());
+    CheckError(TTF_DrawSurfaceText(get(), p.x, p.y, surface.get()));
   }
 
   /**
@@ -49929,8 +49721,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -49940,9 +49731,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa CreateRendererTextEngine
    * @sa TextBase.TextBase
    */
-  bool DrawRenderer(FPoint p) const
+  void DrawRenderer(FPoint p) const
   {
-    return TTF_DrawRendererText(get(), p.x, p.y);
+    CheckError(TTF_DrawRendererText(get(), p.x, p.y));
   }
 
   /**
@@ -49990,6 +49781,8 @@ struct TextBase : Resource<TTF_Text*>
    *               font and text engine.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextRef.reset
    */
   TextBase(TextEngineBase& engine, FontRef font, std::string_view text)
     : Resource(
@@ -50000,15 +49793,18 @@ struct TextBase : Resource<TTF_Text*>
   /**
    * Get the properties associated with a text object.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  PropertiesRef GetProperties() const { return TTF_GetTextProperties(get()); }
+  PropertiesRef GetProperties() const
+  {
+    return CheckError(TTF_GetTextProperties(get()));
+  }
 
   /**
    * Set the text engine used by a text object.
@@ -50016,8 +49812,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param engine the text engine to use for drawing.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50026,16 +49821,16 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.GetEngine
    */
-  bool SetEngine(TextEngineBase& engine)
+  void SetEngine(TextEngineBase& engine)
   {
-    return TTF_SetTextEngine(get(), engine.get());
+    CheckError(TTF_SetTextEngine(get(), engine.get()));
   }
 
   /**
    * Get the text engine used by a text object.
    *
-   * @returns the TextEngineBase used by the text on success or nullptr on
-   * failure; call GetError() for more information.
+   * @returns the TextEngineBase used by the text on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50044,7 +49839,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetEngine
    */
-  TextEngineRef GetEngine() const { return TTF_GetTextEngine(get()); }
+  TextEngineRef GetEngine() const
+  {
+    return CheckError(TTF_GetTextEngine(get()));
+  }
 
   /**
    * Set the font used by a text object.
@@ -50071,8 +49869,8 @@ struct TextBase : Resource<TTF_Text*>
   /**
    * Get the font used by a text object.
    *
-   * @returns the FontBase used by the text on success or nullptr on failure;
-   * call GetError() for more information.
+   * @returns the FontBase used by the text on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50081,7 +49879,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetFont
    */
-  FontRef GetFont() const { return TTF_GetTextFont(get()); }
+  FontRef GetFont() const { return CheckError(TTF_GetTextFont(get())); }
 
   /**
    * Set the direction to be used for text shaping a text object.
@@ -50090,17 +49888,16 @@ struct TextBase : Resource<TTF_Text*>
    * built with HarfBuzz support.
    *
    * @param direction the new direction for text to flow.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool SetDirection(Direction direction)
+  void SetDirection(Direction direction)
   {
-    return TTF_SetTextDirection(get(), direction);
+    CheckError(TTF_SetTextDirection(get(), direction));
   }
 
   /**
@@ -50124,8 +49921,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param script an [ISO 15924
    * code](https://unicode.org/iso15924/iso15924-codes.html).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50134,7 +49930,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa StringToTag
    */
-  bool SetScript(Uint32 script) { return TTF_SetTextScript(get(), script); }
+  void SetScript(Uint32 script)
+  {
+    CheckError(TTF_SetTextScript(get(), script));
+  }
 
   /**
    * Get the script used for text shaping a text object.
@@ -50160,9 +49959,8 @@ struct TextBase : Resource<TTF_Text*>
    *
    * The default text color is white (255, 255, 255, 255).
    *
-   * @param c the color value in the range of 0-255.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param c the color values in the range of 0-255.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50172,7 +49970,10 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.GetColor(Color*)
    * @sa TextBase.SetColor(FColor)
    */
-  bool SetColor(Color c) { return TTF_SetTextColor(get(), c.r, c.g, c.b, c.a); }
+  void SetColor(Color c)
+  {
+    CheckError(TTF_SetTextColor(get(), c.r, c.g, c.b, c.a));
+  }
 
   /**
    * Set the color of a text object.
@@ -50180,8 +49981,7 @@ struct TextBase : Resource<TTF_Text*>
    * The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).
    *
    * @param c the color value, normally in the range of 0-1.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50191,26 +49991,27 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.GetColor(FColor*)
    * @sa TextBase.SetColor(Color)
    */
-  bool SetColor(FColor c)
+  void SetColor(FColor c)
   {
-    return TTF_SetTextColorFloat(get(), c.r, c.g, c.b, c.a);
+    CheckError(TTF_SetTextColorFloat(get(), c.r, c.g, c.b, c.a));
   }
 
   /**
    * Get the color of a text object.
    *
-   * @return The color in the range of 0-1 or std::nullopt on failure; call
-   * GetError() for more information.
+   * @return The color in the range of 0-1 on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @sa SetColor(FColor)
    */
-  std::optional<FColor> GetColor() const
+  FColor GetColor() const
   {
-    if (FColor c; GetColor(&c)) return c;
-    return std::nullopt;
+    FColor c;
+    GetColor(&c);
+    return c;
   }
 
   /**
@@ -50218,8 +50019,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param c a pointer filled in with red color value in the range of 0-255,
    *          __must__ not be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50228,10 +50028,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(Color)
    */
-  bool GetColor(Color* c) const
+  void GetColor(Color* c) const
   {
     SDL_assert_paranoid(c != nullptr);
-    return GetColor(&c->r, &c->g, &c->b, &c->a);
+    GetColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -50239,8 +50039,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param c a pointer filled in with red color value in the range of 0-1,
    *          __must__ not be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50249,10 +50048,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(FColor)
    */
-  bool GetColor(FColor* c) const
+  void GetColor(FColor* c) const
   {
     SDL_assert_paranoid(c != nullptr);
-    return GetColor(&c->r, &c->g, &c->b, &c->a);
+    GetColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -50266,8 +50065,7 @@ struct TextBase : Resource<TTF_Text*>
    *          0-255, may be nullptr.
    * @param a a pointer filled in with the alpha value in the range of 0-255,
    *          may be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50276,9 +50074,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(Color)
    */
-  bool GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+  void GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
   {
-    return TTF_GetTextColor(get(), r, g, b, a);
+    CheckError(TTF_GetTextColor(get(), r, g, b, a));
   }
 
   /**
@@ -50292,8 +50090,7 @@ struct TextBase : Resource<TTF_Text*>
    *          range of 0-1, may be nullptr.
    * @param a a pointer filled in with the alpha value in the range of 0-1, may
    *          be nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50302,9 +50099,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetColor(FColor)
    */
-  bool GetColor(float* r, float* g, float* b, float* a) const
+  void GetColor(float* r, float* g, float* b, float* a) const
   {
-    return TTF_GetTextColorFloat(get(), r, g, b, a);
+    CheckError(TTF_GetTextColorFloat(get(), r, g, b, a));
   }
 
   /**
@@ -50330,8 +50127,8 @@ struct TextBase : Resource<TTF_Text*>
    * Get the position of a text object.
    *
    * @returns a Point with the offset of the upper left corner of this text in
-   *          pixels or std::nullopt on failure; call GetError() for more
-   *          information.
+   *          pixels on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50340,10 +50137,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa SetPosition()
    */
-  std::optional<Point> GetPosition() const
+  Point GetPosition() const
   {
-    if (Point p; GetPosition(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetPosition(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -50375,8 +50173,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param wrap_width the maximum width in pixels, 0 to wrap on newline
    *                   characters.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50385,17 +50182,17 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.GetWrapWidth
    */
-  bool SetWrapWidth(int wrap_width)
+  void SetWrapWidth(int wrap_width)
   {
-    return TTF_SetTextWrapWidth(get(), wrap_width);
+    CheckError(TTF_SetTextWrapWidth(get(), wrap_width));
   }
 
   /**
    * Get whether wrapping is enabled on a text object.
    *
    * @returns an int with the maximum width in pixels or 0 if the text is being
-   *          wrapped on newline characters on success or std::nullopt on
-   *          failure; call GetError() for more information.
+   *          wrapped on newline characters on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50404,10 +50201,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.SetWrapWidth
    */
-  std::optional<int> GetWrapWidth() const
+  int GetWrapWidth() const
   {
-    if (int w; TTF_GetTextWrapWidth(get(), &w)) return w;
-    return std::nullopt;
+    int w;
+    CheckError(TTF_GetTextWrapWidth(get(), &w));
+    return w;
   }
 
   /**
@@ -50422,8 +50220,7 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param visible true to show whitespace when wrapping text, false to hide
    *                it.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50432,9 +50229,9 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @sa TextBase.IsWrapWhitespaceVisible
    */
-  bool SetWrapWhitespaceVisible(bool visible)
+  void SetWrapWhitespaceVisible(bool visible)
   {
-    return TTF_SetTextWrapWhitespaceVisible(get(), visible);
+    CheckError(TTF_SetTextWrapWhitespaceVisible(get(), visible));
   }
 
   /**
@@ -50461,8 +50258,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param string the UTF-8 text to use.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50473,9 +50269,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.DeleteString
    * @sa TextBase.InsertString
    */
-  bool SetString(std::string_view string)
+  void SetString(std::string_view string)
   {
-    return TTF_SetTextString(get(), string.data(), string.size());
+    CheckError(TTF_SetTextString(get(), string.data(), string.size()));
   }
 
   /**
@@ -50488,8 +50284,7 @@ struct TextBase : Resource<TTF_Text*>
    *               this does not do UTF-8 validation, so you should only insert
    *               at UTF-8 sequence boundaries.
    * @param string the UTF-8 text to insert.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50500,9 +50295,10 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.DeleteString
    * @sa TextBase.SetString
    */
-  bool InsertString(int offset, std::string_view string)
+  void InsertString(int offset, std::string_view string)
   {
-    return TTF_InsertTextString(get(), offset, string.data(), string.size());
+    CheckError(
+      TTF_InsertTextString(get(), offset, string.data(), string.size()));
   }
 
   /**
@@ -50511,8 +50307,7 @@ struct TextBase : Resource<TTF_Text*>
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param string the UTF-8 text to insert.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50523,9 +50318,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.InsertString
    * @sa TextBase.SetString
    */
-  bool AppendString(std::string_view string)
+  void AppendString(std::string_view string)
   {
-    return TTF_AppendTextString(get(), string.data(), string.size());
+    CheckError(TTF_AppendTextString(get(), string.data(), string.size()));
   }
 
   /**
@@ -50539,8 +50334,7 @@ struct TextBase : Resource<TTF_Text*>
    *               at UTF-8 sequence boundaries.
    * @param length the length of text to delete, in bytes, or -1 for the
    *               remainder of the string.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50551,9 +50345,9 @@ struct TextBase : Resource<TTF_Text*>
    * @sa TextBase.InsertString
    * @sa TextBase.SetString
    */
-  bool DeleteString(int offset, int length = -1)
+  void DeleteString(int offset, int length = -1)
   {
-    return TTF_DeleteTextString(get(), offset, length);
+    CheckError(TTF_DeleteTextString(get(), offset, length));
   }
 
   /**
@@ -50572,10 +50366,11 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @see GetSize(int*,int*) if might want only one of the coordinates
    */
-  std::optional<Point> GetSize() const
+  Point GetSize() const
   {
-    if (Point p; GetSize(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetSize(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -50588,8 +50383,7 @@ struct TextBase : Resource<TTF_Text*>
    *          nullptr.
    * @param h a pointer filled in with the height of the text, in pixels, may be
    *          nullptr.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -50598,7 +50392,10 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @see GetSize() if you need both coordinates.
    */
-  bool GetSize(int* w, int* h) const { return TTF_GetTextSize(get(), w, h); }
+  void GetSize(int* w, int* h) const
+  {
+    CheckError(TTF_GetTextSize(get(), w, h));
+  }
 
   /**
    * Get the substring of a text object that surrounds a text offset.
@@ -50612,17 +50409,16 @@ struct TextBase : Resource<TTF_Text*>
    * @param offset a byte offset into the text string.
    * @param substring a pointer filled in with the substring containing the
    *                  offset.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubString(int offset, SubString* substring) const
+  void GetSubString(int offset, SubString* substring) const
   {
-    return TTF_GetTextSubString(get(), offset, substring);
+    CheckError(TTF_GetTextSubString(get(), offset, substring));
   }
 
   /**
@@ -50663,17 +50459,16 @@ struct TextBase : Resource<TTF_Text*>
    * @param line a zero-based line index, in the range [0 .. text->num_lines-1].
    * @param substring a pointer filled in with the substring containing the
    *                  offset.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubStringForLine(int line, SubString* substring) const
+  void GetSubStringForLine(int line, SubString* substring) const
   {
-    return TTF_GetTextSubStringForLine(get(), line, substring);
+    CheckError(TTF_GetTextSubStringForLine(get(), line, substring));
   }
 
   /**
@@ -50739,17 +50534,16 @@ struct TextBase : Resource<TTF_Text*>
    *          outside the bounds of the text area.
    * @param substring a pointer filled in with the closest substring of text to
    *                  the given point.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetSubStringForPoint(Point p, SubString* substring) const
+  void GetSubStringForPoint(Point p, SubString* substring) const
   {
-    return TTF_GetTextSubStringForPoint(get(), p.x, p.y, substring);
+    CheckError(TTF_GetTextSubStringForPoint(get(), p.x, p.y, substring));
   }
 
   /**
@@ -50760,18 +50554,17 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param substring the SubString to query.
    * @param previous a pointer filled in with the previous substring.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetPreviousSubString(const SubString& substring,
+  void GetPreviousSubString(const SubString& substring,
                             SubString* previous) const
   {
-    return TTF_GetPreviousTextSubString(get(), &substring, previous);
+    CheckError(TTF_GetPreviousTextSubString(get(), &substring, previous));
   }
 
   /**
@@ -50782,17 +50575,16 @@ struct TextBase : Resource<TTF_Text*>
    *
    * @param substring the SubString to query.
    * @param next a pointer filled in with the next substring.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool GetNextSubString(const SubString& substring, SubString* next) const
+  void GetNextSubString(const SubString& substring, SubString* next) const
   {
-    return TTF_GetNextTextSubString(get(), &substring, next);
+    CheckError(TTF_GetNextTextSubString(get(), &substring, next));
   }
 
   /**
@@ -50802,15 +50594,14 @@ struct TextBase : Resource<TTF_Text*>
    * rendered, but you can call this if you need more control over the timing of
    * when the layout and text engine representation are updated.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    */
-  bool Update() { return TTF_UpdateText(get()); }
+  void Update() { CheckError(TTF_UpdateText(get())); }
 
   /**
    * A copy of the UTF-8 string that this text object represents, useful for
@@ -51188,32 +50979,30 @@ inline int WasInit(TtfInitFlag _) { return TTF_WasInit(); }
 
 inline SubStringIterator TextBase::begin() const
 {
-  if (SubStringIterator it{get()}; GetSubString(0, &it.m_subString)) return it;
-  return {};
+  SubStringIterator it{get()};
+  GetSubString(0, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::end() const
 {
-  if (SubStringIterator it{get()}; GetSubString(INT_MAX, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubString(INT_MAX, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::GetSubStringForLine(int line) const
 {
-  if (SubStringIterator it{get()}; GetSubStringForLine(line, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubStringForLine(line, &it.m_subString);
+  return it;
 }
 
 inline SubStringIterator TextBase::GetSubStringForPoint(Point p) const
 {
-  if (SubStringIterator it{get()}; GetSubStringForPoint(p, &it.m_subString)) {
-    return it;
-  }
-  return {};
+  SubStringIterator it{get()};
+  GetSubStringForPoint(p, &it.m_subString);
+  return it;
 }
 
 #pragma endregion impl

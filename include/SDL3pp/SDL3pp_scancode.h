@@ -78,7 +78,7 @@ public:
   }
 
   // Set name
-  bool SetName(StringParam name);
+  void SetName(StringParam name);
 
   // Get name
   const char* GetName() const;

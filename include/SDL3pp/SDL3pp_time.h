@@ -74,21 +74,20 @@ struct DateTime : SDL_DateTime
   }
 
   /**
-   * Converts an SDL_Time in nanoseconds since the epoch to a calendar time in
-   * the SDL_DateTime format.
+   * Converts an Time in nanoseconds since the epoch to a calendar time in
+   * the DateTime format.
    *
-   * @param ticks the SDL_Time to be converted.
-   * @param localTime the resulting DateTime will be expressed in local time if
-   *        true, otherwise it will be in Universal Coordinated Time (UTC).
-   * @post true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @param ticks the Time to be converted.
+   * @param localTime the resulting DateTime will be expressed in local time
+   *                  if true, otherwise it will be in Universal Coordinated
+   *                  Time (UTC).
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
   DateTime(Time ticks, bool localTime = true)
-    : SDL_DateTime(0)
   {
-    SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
+    CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
   }
 
   /**
@@ -96,7 +95,6 @@ struct DateTime : SDL_DateTime
    */
   constexpr auto operator<=>(const DateTime& other) const = default;
 
-  /// Returns If valid
   /**
    * Check if valid.
    *
@@ -280,20 +278,21 @@ struct DateTime : SDL_DateTime
   }
 
   /**
-   * Converts a calendar time to an SDL_Time in nanoseconds since the epoch.
+   * Converts a calendar time to an Time in nanoseconds since the epoch.
    *
-   * This function ignores the day_of_week member of the SDL_DateTime struct, so
+   * This function ignores the day_of_week member of the DateTime struct, so
    * it may remain unset.
    *
-   * @returns time on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns time on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
   operator Time() const
   {
-    if (SDL_Time t; SDL_DateTimeToTime(this, &t)) return Time::FromNS(t);
-    return {};
+    SDL_Time t;
+    CheckError(SDL_DateTimeToTime(this, &t));
+    return Time::FromNS(t);
   }
 };
 
@@ -302,43 +301,31 @@ struct DateTime : SDL_DateTime
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa SDL_GetDateTimeLocalePreferences
+ * @sa GetDateTimeLocalePreferences
  */
 using DateFormat = SDL_DateFormat;
 
-/**
- * Year/Month/Day.
- */
-constexpr DateFormat DATE_FORMAT_YYYYMMDD = SDL_DATE_FORMAT_YYYYMMDD;
+constexpr DateFormat DATE_FORMAT_YYYYMMDD =
+  SDL_DATE_FORMAT_YYYYMMDD; ///< Year/Month/Day.
 
-/**
- * Day/Month/Year.
- */
-constexpr DateFormat DATE_FORMAT_DDMMYYYY = SDL_DATE_FORMAT_DDMMYYYY;
+constexpr DateFormat DATE_FORMAT_DDMMYYYY =
+  SDL_DATE_FORMAT_DDMMYYYY; ///< Day/Month/Year.
 
-/**
- * Month/Day/Year.
- */
-constexpr DateFormat DATE_FORMAT_MMDDYYYY = SDL_DATE_FORMAT_MMDDYYYY;
+constexpr DateFormat DATE_FORMAT_MMDDYYYY =
+  SDL_DATE_FORMAT_MMDDYYYY; ///< Month/Day/Year.
 
 /**
  * The preferred time format of the current system locale.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa SDL_GetDateTimeLocalePreferences
+ * @sa GetDateTimeLocalePreferences
  */
 using TimeFormat = SDL_TimeFormat;
 
-/**
- * 24 hour time
- */
-constexpr TimeFormat TIME_FORMAT_24HR = SDL_TIME_FORMAT_24HR;
+constexpr TimeFormat TIME_FORMAT_24HR = SDL_TIME_FORMAT_24HR; ///< 24 hour time
 
-/**
- * 12 hour time
- */
-constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR;
+constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR; ///< 12 hour time
 
 /**
  * Gets the current preferred date and time format for the system locale.
@@ -348,34 +335,33 @@ constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR;
  * formats can change, usually because the user has changed a system
  * preference outside of your program.
  *
- * @param dateFormat a pointer to the SDL_DateFormat to hold the returned date
- *                   format, may be NULL.
- * @param timeFormat a pointer to the SDL_TimeFormat to hold the returned time
- *                   format, may be NULL.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @param dateFormat a pointer to the DateFormat to hold the returned date
+ *                   format, may be nullptr.
+ * @param timeFormat a pointer to the TimeFormat to hold the returned time
+ *                   format, may be nullptr.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GetDateTimeLocalePreferences(DateFormat* dateFormat,
+inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
                                          TimeFormat* timeFormat)
 {
-  return SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat);
+  CheckError(SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat));
 }
 
 /**
  * Gets the current value of the system realtime clock in nanoseconds since
  * Jan 1, 1970 in Universal Coordinated Time (UTC).
  *
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline Time Time::Current()
 {
-  if (SDL_Time t; SDL_GetCurrentTime(&t)) return Time::FromNS(t);
-  return Time{};
+  SDL_Time t;
+  CheckError(SDL_GetCurrentTime(&t));
+  return Time::FromNS(t);
 }
 
 /**
@@ -419,14 +405,14 @@ inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
  *
  * @param year the year.
  * @param month the month [1-12].
- * @returns the number of days in the requested month or -1 on failure; call
- *          SDL_GetError() for more information.
+ * @returns the number of days in the requested month.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDaysInMonth(int year, int month)
 {
-  return SDL_GetDaysInMonth(year, month);
+  return CheckError(SDL_GetDaysInMonth(year, month), -1);
 }
 
 /**
@@ -435,14 +421,14 @@ inline int GetDaysInMonth(int year, int month)
  * @param year the year component of the date.
  * @param month the month component of the date.
  * @param day the day component of the date.
- * @returns the day of year [0-365] if the date is valid or -1 on failure;
- *          call SDL_GetError() for more information.
+ * @returns the day of year [0-365] if the date is valid.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDayOfYear(int year, int month, int day)
 {
-  return SDL_GetDayOfYear(year, month, day);
+  return CheckError(SDL_GetDayOfYear(year, month, day), -1);
 }
 
 /**
@@ -451,14 +437,14 @@ inline int GetDayOfYear(int year, int month, int day)
  * @param year the year component of the date.
  * @param month the month component of the date.
  * @param day the day component of the date.
- * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or
- *          -1 on failure; call SDL_GetError() for more information.
+ * @returns a value between 0 and 6 (0 being Sunday) if the date is valid.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDayOfWeek(int year, int month, int day)
 {
-  return SDL_GetDayOfWeek(year, month, day);
+  return CheckError(SDL_GetDayOfWeek(year, month, day), -1);
 }
 
 /// @}

@@ -1847,14 +1847,13 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  * @param file path on the filesystem to write new file to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline bool SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
+inline void SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
 {
-  return IMG_SaveAVIF(surface.get(), file, quality);
+  CheckError(IMG_SaveAVIF(surface.get(), file, quality));
 }
 
 /**
@@ -1866,14 +1865,13 @@ inline bool SaveAVIF(SurfaceBase& surface, StringParam file, int quality)
  * @param dst the IOStreamBase to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline bool SaveAVIF(SurfaceRef surface, IOStreamBase& dst, int quality)
+inline void SaveAVIF(SurfaceRef surface, IOStreamBase& dst, int quality)
 {
-  return IMG_SaveAVIF_IO(surface.get(), dst.get(), false, quality);
+  CheckError(IMG_SaveAVIF_IO(surface.get(), dst.get(), false, quality));
 }
 
 /**
@@ -1883,16 +1881,15 @@ inline bool SaveAVIF(SurfaceRef surface, IOStreamBase& dst, int quality)
  *
  * @param surface the SDL surface to save.
  * @param file path on the filesystem to write new file to.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa SavePNG
  */
-inline bool SavePNG(SurfaceBase& surface, StringParam file)
+inline void SavePNG(SurfaceBase& surface, StringParam file)
 {
-  return IMG_SavePNG(surface.get(), file);
+  CheckError(IMG_SavePNG(surface.get(), file));
 }
 
 /**
@@ -1902,16 +1899,13 @@ inline bool SavePNG(SurfaceBase& surface, StringParam file)
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStreamBase to save the image data to.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
- *
- * @sa SavePNG
  */
-inline bool SavePNG(SurfaceRef surface, IOStreamBase& dst)
+inline void SavePNG(SurfaceRef surface, IOStreamBase& dst)
 {
-  return IMG_SavePNG_IO(surface.get(), dst.get(), false);
+  CheckError(IMG_SavePNG_IO(surface.get(), dst.get(), false));
 }
 
 /**
@@ -1923,14 +1917,13 @@ inline bool SavePNG(SurfaceRef surface, IOStreamBase& dst)
  * @param file path on the filesystem to write new file to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline bool SaveJPG(SurfaceBase& surface, StringParam file, int quality)
+inline void SaveJPG(SurfaceBase& surface, StringParam file, int quality)
 {
-  return IMG_SaveJPG(surface.get(), file, quality);
+  CheckError(IMG_SaveJPG(surface.get(), file, quality));
 }
 
 /**
@@ -1942,16 +1935,13 @@ inline bool SaveJPG(SurfaceBase& surface, StringParam file, int quality)
  * @param dst the IOStreamBase to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
- *
- * @sa SaveJPG
  */
-inline bool SaveJPG(SurfaceRef surface, IOStreamBase& dst, int quality)
+inline void SaveJPG(SurfaceRef surface, IOStreamBase& dst, int quality)
 {
-  return IMG_SaveJPG_IO(surface.get(), dst.get(), false, quality);
+  CheckError(IMG_SaveJPG_IO(surface.get(), dst.get(), false, quality));
 }
 
 /**
@@ -2197,22 +2187,22 @@ inline Animation LoadWEBPAnimation(IOStreamBase& src)
 /// @}
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(IMG_Load(file))
+  : Resource(CheckError(IMG_Load(file)))
 {
 }
 
 inline SurfaceBase::SurfaceBase(IOStreamBase& src)
-  : Resource(IMG_Load_IO(src.get(), false))
+  : Resource(CheckError(IMG_Load_IO(src.get(), false)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
-  : Resource(IMG_LoadTexture(renderer.get(), file))
+  : Resource(CheckError(IMG_LoadTexture(renderer.get(), file)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
-  : Resource(IMG_LoadTexture_IO(renderer.get(), src.get(), false))
+  : Resource(CheckError(IMG_LoadTexture_IO(renderer.get(), src.get(), false)))
 {
 }
 
@@ -2225,22 +2215,22 @@ inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
 namespace SDL {
 
 inline SurfaceBase::SurfaceBase(StringParam file)
-  : Resource(SDL_LoadBMP(file))
+  : Resource(CheckError(SDL_LoadBMP(file)))
 {
 }
 
 inline SurfaceBase::SurfaceBase(IOStreamBase& src)
-  : Resource(SDL_LoadBMP_IO(src.get(), false))
+  : Resource(CheckError(SDL_LoadBMP_IO(src.get(), false)))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
-  : Resource(LoadTextureBMP(renderer, file).release())
+  : Resource(CheckError(LoadTextureBMP(renderer, file).release()))
 {
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, IOStream& src)
-  : Resource(LoadTextureBMP(renderer, src).release())
+  : Resource(CheckError(LoadTextureBMP(renderer, src).release()))
 {
 }
 

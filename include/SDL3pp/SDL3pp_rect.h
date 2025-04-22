@@ -898,20 +898,20 @@ struct Rect : SDL_Rect
   /**
    * Calculate a minimal rectangle enclosing a set of points.
    *
-   * If `clip` is not NULL then only points inside of the clipping rectangle are
-   * considered.
+   * If `clip` is not nullptr then only points inside of the clipping rectangle
+   * are considered.
    *
    * @param points a span of SDL_Point structures representing points to be
    *               enclosed.
    * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
    *             points.
    * @returns a SDL_Rect structure filled in with the minimal enclosing
-   * rectangle or std::nullopt if all the points were outside of the
-   * clipping rectangle.
+   *          rectangle or an empty rect if all the points were outside of the
+   *          clipping rectangle.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static std::optional<Rect> GetEnclosingPoints(
+  static Rect GetEnclosingPoints(
     SpanRef<const SDL_Point> points,
     OptionalRef<const SDL_Rect> clip = std::nullopt)
   {
@@ -920,7 +920,7 @@ struct Rect : SDL_Rect
           points.data(), points.size(), clip, &result)) {
       return result;
     }
-    return std::nullopt;
+    return {};
   }
 
   /**
@@ -1245,13 +1245,15 @@ struct Rect : SDL_Rect
    *
    * @param other an SDL_Rect structure representing the second rectangle.
    * @returns Rect representing union of two rectangles
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr std::optional<Rect> GetUnion(const Rect& other) const
+  constexpr Rect GetUnion(const Rect& other) const
   {
-    if (Rect result; SDL_GetRectUnion(this, &other, &result)) return result;
-    return std::nullopt;
+    Rect result;
+    CheckError(SDL_GetRectUnion(this, &other, &result));
+    return result;
   }
 
   /**
@@ -1503,31 +1505,31 @@ struct FRect : SDL_FRect
   }
 
   /**
-   * Calculate a minimal rectangle enclosing a set of points.
+   * Calculate a minimal rectangle enclosing a set of points with float
+   * precision.
    *
-   * If `clip` is not NULL then only points inside of the clipping rectangle are
-   * considered.
+   * If `clip` is not nullptr then only points inside of the clipping rectangle
+   * are considered.
    *
    * @param points a span of SDL_Point structures representing points to be
    *               enclosed.
    * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
    *             points.
    * @returns a FRect structure filled in with the minimal enclosing
-   *          rectangle or std::nullopt if all the points were outside of
+   *          rectangle or an empty FRect if all the points were outside of
    * the clipping rectangle.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static std::optional<FRect> GetEnclosingPoints(
+  static FRect GetEnclosingPoints(
     SpanRef<const SDL_FPoint> points,
     OptionalRef<const SDL_FRect> clip = std::nullopt)
   {
-    FRect result;
-    if (SDL_GetRectEnclosingPointsFloat(
+    if (FRect result; SDL_GetRectEnclosingPointsFloat(
           points.data(), points.size(), clip, &result)) {
       return result;
     }
-    return std::nullopt;
+    return {};
   }
 
   /**
@@ -1840,24 +1842,24 @@ struct FRect : SDL_FRect
   }
 
   /**
-   * Calculate the intersection of two rectangles.
+   * Calculate the intersection of two rectangles with float precision.
    *
-   * If `result` is NULL then this function will return false.
+   * If `result` is nullptr then this function will return false.
    *
    * @param other an SDL_Rect structure representing the second rectangle.
    * @returns an SDL_Rect structure filled in with the intersection of
-   *               if there is intersection, std::nullopt otherwise.
+   *          if there is intersection, an empty FRect otherwise.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa HasIntersection()
+   * @sa FRect.HasIntersection
    */
-  constexpr std::optional<FRect> GetIntersection(const FRect& other) const
+  FRect GetIntersection(const FRect& other) const
   {
     if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
       return result;
     }
-    return std::nullopt;
+    return {};
   }
 
   /**
@@ -1865,14 +1867,15 @@ struct FRect : SDL_FRect
    *
    * @param other an SDL_Rect structure representing the second rectangle.
    * @returns Rect representing union of two rectangles
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline std::optional<FRect> GetUnion(const FRect& other) const
+  FRect GetUnion(const FRect& other) const
   {
-    if (FRect result; SDL_GetRectUnionFloat(this, &other, &result))
-      return result;
-    return std::nullopt;
+    FRect result;
+    CheckError(SDL_GetRectUnionFloat(this, &other, &result));
+    return result;
   }
 
   /**
@@ -1995,13 +1998,18 @@ struct FRect : SDL_FRect
   }
 };
 
-#pragma region impl
-/// @}
-
 constexpr bool Point::IsInRect(const Rect& r) const
 {
   return r.Contains(*this);
 }
+
+constexpr bool FPoint::IsInRect(const FRect& r) const
+{
+  return r.Contains(*this);
+}
+
+#pragma region impl
+/// @}
 
 constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
 
@@ -2041,11 +2049,6 @@ constexpr Point& Point::Wrap(const Rect& rect)
     y = rect.y + (y - rect.y - rect.h) % rect.h;
 
   return *this;
-}
-
-constexpr bool FPoint::IsInRect(const FRect& r) const
-{
-  return r.Contains(*this);
 }
 
 constexpr FPoint FPoint::GetClamped(const FRect& rect) const

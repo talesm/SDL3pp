@@ -65,9 +65,8 @@ using Locale = SDL_Locale;
  * if possible, and you can call this function again to get an updated copy of
  * preferred locales.
  *
- * @returns a nullptr terminated array of locale pointers, or nullptr on
- * failure; call GetError() for more information. This is a single allocation
- * that should be freed with free() when it is no longer needed.
+ * @returns a nullptr terminated array of locale pointers on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -75,7 +74,7 @@ inline OwnArray<Locale*> GetPreferredLocales()
 {
   int count = 0;
   auto data = SDL_GetPreferredLocales(&count);
-  return OwnArray<Locale*>{data, size_t(count)};
+  return OwnArray<Locale*>{CheckError(data), size_t(count)};
 }
 
 /// @}

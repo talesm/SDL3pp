@@ -31,9 +31,9 @@ var searchData=
   ['traymenu_28',['TrayMenu',['../classSDL_1_1TrayMenu.html#a235b24928e50708dd08011690f67dfee',1,'SDL::TrayMenu']]],
   ['trayref_29',['trayref',['../structSDL_1_1Tray.html#ac5c7291520ee9a9bfe6a580afd54dd69',1,'SDL::Tray::TrayRef(const TrayRef &amp;other)'],['../structSDL_1_1Tray.html#ad60e3d93758c4d5cc4710f3f669acf56',1,'SDL::Tray::TrayRef(TrayRef &amp;&amp;other)'],['../structSDL_1_1TrayRef.html#ad60e3d93758c4d5cc4710f3f669acf56',1,'SDL::TrayRef::TrayRef(TrayRef &amp;&amp;other)'],['../structSDL_1_1TrayRef.html#ac5c7291520ee9a9bfe6a580afd54dd69',1,'SDL::TrayRef::TrayRef(const TrayRef &amp;other)']]],
   ['trunc_30',['trunc',['../group__CategoryStdinc.html#gaeb64b2b465e001720dce40bacec1b937',1,'SDL::trunc(double x)'],['../group__CategoryStdinc.html#ga673e5ecaed895190e52c8265b89e17d8',1,'SDL::trunc(float x)']]],
-  ['trylock_31',['TryLock',['../structSDL_1_1MutexBase.html#a8c6a2265b8f0062383e8b8bc4d8f4412',1,'SDL::MutexBase']]],
-  ['trylockforreading_32',['TryLockForReading',['../structSDL_1_1RWLockBase.html#a8111d1e96fb6c4fcc205ab856f27b1d4',1,'SDL::RWLockBase']]],
-  ['trylockforwriting_33',['TryLockForWriting',['../structSDL_1_1RWLockBase.html#a2915498093b329332f47d9f754d35324',1,'SDL::RWLockBase']]],
+  ['trylock_31',['TryLock',['../structSDL_1_1MutexBase.html#aa56d2e57a3b919b65637b8b295fa1fc8',1,'SDL::MutexBase']]],
+  ['trylockforreading_32',['TryLockForReading',['../structSDL_1_1RWLockBase.html#a2c77b3116f75fda17aad835c1ad1fbb8',1,'SDL::RWLockBase']]],
+  ['trylockforwriting_33',['TryLockForWriting',['../structSDL_1_1RWLockBase.html#a3e8d005af95c5a5f5c13b00b21baee9f',1,'SDL::RWLockBase']]],
   ['trywait_34',['TryWait',['../structSDL_1_1SemaphoreBase.html#a30aea644cdb4a2a02c13994488ae8b2a',1,'SDL::SemaphoreBase']]],
   ['ttf_5fversion_35',['TTF_Version',['../group__CategorySDLTTF.html#ga5154c3cde8d6a4944a18dfd88e145c01',1,'SDL']]]
 ];

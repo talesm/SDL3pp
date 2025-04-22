@@ -4349,8 +4349,7 @@ constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE; ///< OVERRIDE
  * @param name the hint to set.
  * @param value the value of the hint variable.
  * @param priority the HintPriority level for the hint.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4360,11 +4359,11 @@ constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE; ///< OVERRIDE
  * @sa ResetHint
  * @sa SetHint
  */
-inline bool SetHintWithPriority(StringParam name,
+inline void SetHintWithPriority(StringParam name,
                                 StringParam value,
                                 HintPriority priority)
 {
-  return SDL_SetHintWithPriority(name, value, priority);
+  CheckError(SDL_SetHintWithPriority(name, value, priority));
 }
 
 /**
@@ -4376,8 +4375,7 @@ inline bool SetHintWithPriority(StringParam name,
  *
  * @param name the hint to set.
  * @param value the value of the hint variable.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4387,9 +4385,9 @@ inline bool SetHintWithPriority(StringParam name,
  * @sa ResetHint
  * @sa SetHintWithPriority
  */
-inline bool SetHint(StringParam name, StringParam value)
+inline void SetHint(StringParam name, StringParam value)
 {
-  return SDL_SetHint(name, value);
+  CheckError(SDL_SetHint(name, value));
 }
 
 /**
@@ -4400,8 +4398,7 @@ inline bool SetHint(StringParam name, StringParam value)
  * change.
  *
  * @param name the hint to set.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4410,7 +4407,7 @@ inline bool SetHint(StringParam name, StringParam value)
  * @sa SetHint
  * @sa ResetHints
  */
-inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
+inline void ResetHint(StringParam name) { CheckError(SDL_ResetHint(name)); }
 
 /**
  * Reset all hints to the default values.
@@ -4498,8 +4495,7 @@ using HintCallback = SDL_HintCallback;
  * @param callback An HintCallback function that will be called when the
  *                 hint value changes.
  * @param userdata a pointer to pass to the callback function.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4507,11 +4503,11 @@ using HintCallback = SDL_HintCallback;
  *
  * @sa RemoveHintCallback
  */
-inline bool AddHintCallback(StringParam name,
+inline void AddHintCallback(StringParam name,
                             HintCallback callback,
                             void* userdata)
 {
-  return SDL_AddHintCallback(name, callback, userdata);
+  CheckError(SDL_AddHintCallback(name, callback, userdata));
 }
 
 /**

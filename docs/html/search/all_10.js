@@ -143,8 +143,8 @@ var searchData=
   ['powerstate_5fno_5fbattery_140',['POWERSTATE_NO_BATTERY',['../group__CategoryPower.html#ga49d768ccd9bac62ac317afc4b04fb4a8',1,'SDL']]],
   ['powerstate_5fon_5fbattery_141',['POWERSTATE_ON_BATTERY',['../group__CategoryPower.html#ga1bc24c65645e030f4e96f30003ea0cbd',1,'SDL']]],
   ['powerstate_5funknown_142',['POWERSTATE_UNKNOWN',['../group__CategoryPower.html#ga25c407edb7134d9bed51897ffde972ec',1,'SDL']]],
-  ['premultiplyalpha_143',['premultiplyalpha',['../structSDL_1_1SurfaceBase.html#ab9c52e01d01067354a6be2c81b31c184',1,'SDL::SurfaceBase::PremultiplyAlpha()'],['../group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5',1,'SDL::PremultiplyAlpha()']]],
-  ['present_144',['Present',['../structSDL_1_1RendererBase.html#ad0cda5a0dd3a96a6a3bfa7b3e5486364',1,'SDL::RendererBase']]],
+  ['premultiplyalpha_143',['premultiplyalpha',['../structSDL_1_1SurfaceBase.html#a97d5cbddf468c0cf89dd6af59801b95b',1,'SDL::SurfaceBase::PremultiplyAlpha()'],['../group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4',1,'SDL::PremultiplyAlpha()']]],
+  ['present_144',['Present',['../structSDL_1_1RendererBase.html#a9e775356c7cde688e0cb62afc6cd8d13',1,'SDL::RendererBase']]],
   ['primitives_145',['Thread Synchronization Primitives',['../group__CategoryMutex.html',1,'']]],
   ['print_146',['print',['../structSDL_1_1IOStreamBase.html#aa9aae1323e3428a0033d8f77c0513f4e',1,'SDL::IOStreamBase']]],
   ['printf_147',['printf',['../structSDL_1_1IOStreamBase.html#a72963a0a1522b0240fd5470c379bc5f3',1,'SDL::IOStreamBase']]],
@@ -171,5 +171,5 @@ var searchData=
   ['propertytype_168',['PropertyType',['../group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f',1,'SDL']]],
   ['ptrdeleter_169',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]],
   ['pumpevents_170',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
-  ['pushevent_171',['pushevent',['../group__CategoryEvents.html#gad4b7289dcacfa19eb1f868a42b9c1e69',1,'SDL::PushEvent(const Event &amp;event)'],['../group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576',1,'SDL::PushEvent(Event *event)']]]
+  ['pushevent_171',['pushevent',['../group__CategoryEvents.html#ga09dbb5157cd6a2c4ee0e3b586df8cdf2',1,'SDL::PushEvent(const Event &amp;event)'],['../group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f',1,'SDL::PushEvent(Event *event)']]]
 ];

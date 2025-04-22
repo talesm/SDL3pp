@@ -283,17 +283,18 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param override a path to override the backend's default title root.
    * @param props a property list that may contain backend-specific information.
-   * @post a title storage container on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @post a title storage container on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa StorageRef.Close
    * @sa StorageBase.GetFileSize
    * @sa StorageBase.StorageBase
    * @sa StorageBase.ReadFile
    */
   StorageBase(StringParam override, PropertiesBase& props)
-    : Resource(SDL_OpenTitleStorage(override, props.get()))
+    : Resource(CheckError(SDL_OpenTitleStorage(override, props.get())))
   {
   }
 
@@ -308,8 +309,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param org the name of your organization.
    * @param app the name of your application.
    * @param props a property list that may contain backend-specific information.
-   * @post a user storage container on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @post a user storage container on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -321,7 +322,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.WriteFile
    */
   StorageBase(StringParam org, StringParam app, PropertiesBase& props)
-    : Resource(SDL_OpenUserStorage(org, app, props.get()))
+    : Resource(CheckError(SDL_OpenUserStorage(org, app, props.get())))
   {
   }
 
@@ -334,8 +335,8 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
-   * @post a filesystem storage container on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @post a filesystem storage container on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -347,7 +348,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.WriteFile
    */
   StorageBase(StringParam path)
-    : Resource(SDL_OpenFileStorage(path))
+    : Resource(CheckError(SDL_OpenFileStorage(path)))
   {
   }
 
@@ -365,8 +366,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param iface the interface that implements this storage, initialized using
    *              SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
-   * @post a storage container on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @post a storage container on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -378,7 +379,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.WriteFile
    */
   StorageBase(const StorageInterface& iface, void* userdata)
-    : Resource(SDL_OpenStorage(&iface, userdata))
+    : Resource(CheckError(SDL_OpenStorage(&iface, userdata)))
   {
   }
 
@@ -400,7 +401,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * Query the size of a file within a storage container.
    *
    * @param path the relative path of the file to query.
-   * @returns true if the file could be queried or false on failure; call
+   * @returns the file's length on success or 0 on failure; call
    *          GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
@@ -413,7 +414,7 @@ struct StorageBase : Resource<SDL_Storage*>
     if (Uint64 length; SDL_GetStorageFileSize(get(), path, &length)) {
       return length;
     }
-    return std::nullopt;
+    return 0;
   }
 
   /**
@@ -426,7 +427,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param path the relative path of the file to read.
    * @returns the content if the file was read or empty string on failure; call
-   * GetError() for more information.
+   *          GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -504,8 +505,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
-   * @returns true if the file was written or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -513,7 +513,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.ReadFile
    * @sa StorageBase.Ready
    */
-  bool WriteFile(StringParam path, std::string_view source)
+  void WriteFile(StringParam path, std::string_view source)
   {
     return WriteFile(std::move(path), source.data(), source.size());
   }
@@ -523,8 +523,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
-   * @returns true if the file was written or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -533,11 +532,11 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.Ready
    */
   template<class T>
-  bool WriteFile(StringParam path, std::span<T> source)
+  void WriteFile(StringParam path, std::span<T> source)
   {
     static_assert(std::is_convertible_v<T*, const void*>,
                   "destination can not be assigned");
-    return WriteFile(std::move(path), source.data(), source.size_bytes());
+    WriteFile(std::move(path), source.data(), source.size_bytes());
   }
 
   /**
@@ -546,8 +545,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param path the relative path of the file to write.
    * @param source a client-provided buffer to write from.
    * @param length the length of the source buffer.
-   * @returns true if the file was written or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -555,25 +553,24 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.ReadFile
    * @sa StorageBase.Ready
    */
-  bool WriteFile(StringParam path, const void* source, Uint64 length)
+  void WriteFile(StringParam path, const void* source, Uint64 length)
   {
-    return SDL_WriteStorageFile(get(), path, source, length);
+    CheckError(SDL_WriteStorageFile(get(), path, source, length));
   }
 
   /**
    * Create a directory in a writable storage container.
    *
    * @param path the path of the directory to create.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool CreateDirectory(StringParam path)
+  void CreateDirectory(StringParam path)
   {
-    return SDL_CreateStorageDirectory(get(), path);
+    CheckError(SDL_CreateStorageDirectory(get(), path));
   }
 
   /**
@@ -613,16 +610,15 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param path the path of the directory to enumerate, or nullptr for the
    * root.
    * @param callback a function that is called for each entry in the directory.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
+  void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
   {
-    return EnumerateDirectory(
+    EnumerateDirectory(
       std::move(path),
       [](void* userdata, const char* dirname, const char* fname) {
         auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
@@ -651,34 +647,32 @@ struct StorageBase : Resource<SDL_Storage*>
    * root.
    * @param callback a function that is called for each entry in the directory.
    * @param userdata a pointer that is passed to `callback`.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool EnumerateDirectory(StringParam path,
+  void EnumerateDirectory(StringParam path,
                           EnumerateDirectoryCallback callback,
                           void* userdata)
   {
-    return SDL_EnumerateStorageDirectory(get(), path, callback, userdata);
+    CheckError(SDL_EnumerateStorageDirectory(get(), path, callback, userdata));
   }
 
   /**
    * Remove a file or an empty directory in a writable storage container.
    *
    * @param path the path of the directory to enumerate.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool RemovePath(StringParam path)
+  void RemovePath(StringParam path)
   {
-    return SDL_RemoveStoragePath(get(), path);
+    CheckError(SDL_RemoveStoragePath(get(), path));
   }
 
   /**
@@ -686,16 +680,15 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param oldpath the old path.
    * @param newpath the new path.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool RenamePath(StringParam oldpath, StringParam newpath)
+  void RenamePath(StringParam oldpath, StringParam newpath)
   {
-    return SDL_RenameStoragePath(get(), oldpath, newpath);
+    CheckError(SDL_RenameStoragePath(get(), oldpath, newpath));
   }
 
   /**
@@ -703,16 +696,15 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @param oldpath the old path.
    * @param newpath the new path.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageBase.Ready
    */
-  bool CopyFile(StringParam oldpath, StringParam newpath)
+  void CopyFile(StringParam oldpath, StringParam newpath)
   {
-    return SDL_CopyStorageFile(get(), oldpath, newpath);
+    CheckError(SDL_CopyStorageFile(get(), oldpath, newpath));
   }
 
   /**
@@ -774,8 +766,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * @param pattern the pattern that files in the directory must match. Can be
    *                nullptr.
    * @param flags `SDL_GLOB_*` bitflags that affect this search.
-   * @returns an array of strings on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns an array of strings on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread, assuming
    *               the `storage` object is thread-safe.
@@ -787,8 +779,8 @@ struct StorageBase : Resource<SDL_Storage*>
                                 GlobFlags flags)
   {
     int count;
-    auto data = SDL_GlobStorageDirectory(get(), path, pattern, flags, &count);
-    if (!data) return {};
+    auto data =
+      CheckError(SDL_GlobStorageDirectory(get(), path, pattern, flags, &count));
     return OwnArray<char*>{data, size_t(count)};
   }
 };

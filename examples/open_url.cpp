@@ -13,16 +13,12 @@ int main(int argc, char** argv)
   }
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", {400, 400});
-  if (!window) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
   const char clickString[] = "Click anywhere to open URL";
-  SDL::FPoint stringPos(
+  SDL::FPoint stringPos =
     (SDL::FPoint(WINDOW_SZ) -
      SDL::FPoint{SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * sizeof(clickString),
                  SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE}) /
-    2);
+    2;
 
   bool running = true;
   while (running) {

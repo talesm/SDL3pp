@@ -619,8 +619,7 @@ public:
    * @param Gmask a pointer filled in with the green mask for the format.
    * @param Bmask a pointer filled in with the blue mask for the format.
    * @param Amask a pointer filled in with the alpha mask for the format.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -628,14 +627,14 @@ public:
    *
    * @sa PixelFormat.ForMasks
    */
-  bool GetMasks(int* bpp,
+  void GetMasks(int* bpp,
                 Uint32* Rmask,
                 Uint32* Gmask,
                 Uint32* Bmask,
                 Uint32* Amask) const
   {
-    return SDL_GetMasksForPixelFormat(
-      m_format, bpp, Rmask, Gmask, Bmask, Amask);
+    CheckError(
+      SDL_GetMasksForPixelFormat(m_format, bpp, Rmask, Gmask, Bmask, Amask));
   }
 
   /**
@@ -1892,9 +1891,8 @@ struct PaletteBase : Resource<SDL_Palette*>
    * The palette entries are initialized to white.
    *
    * @param ncolors represents the number of color entries in the color palette.
-   * @post this represents a new Palette structure convertible to true on
-   *       success or converts to false on failure (e.g. if there wasn't enough
-   *       memory); call GetError() for more information.
+   * @post a new Palette structure on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1904,7 +1902,7 @@ struct PaletteBase : Resource<SDL_Palette*>
    * @sa SurfaceBase.SetPalette
    */
   PaletteBase(int ncolors)
-    : Resource(SDL_CreatePalette(ncolors))
+    : Resource(CheckError(SDL_CreatePalette(ncolors)))
   {
   }
 
@@ -1919,18 +1917,17 @@ struct PaletteBase : Resource<SDL_Palette*>
    *
    * @param colors an array of Color structures to copy into the palette.
    * @param firstcolor the index of the first palette entry to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
+  void SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
   {
-    return SDL_SetPaletteColors(
-      get(), colors.data(), firstcolor, colors.size());
+    CheckError(
+      SDL_SetPaletteColors(get(), colors.data(), firstcolor, colors.size()));
   }
 
   /**

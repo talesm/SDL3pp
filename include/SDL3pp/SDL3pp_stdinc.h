@@ -4,6 +4,7 @@
 #include <chrono>
 #include <SDL3/SDL_stdinc.h>
 #include "SDL3pp_callbackWrapper.h"
+#include "SDL3pp_error.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_ownPtr.h"
 #include "SDL3pp_resource.h"
@@ -638,8 +639,7 @@ inline void GetMemoryFunctions(malloc_func* malloc_func,
  * @param calloc_func custom calloc function.
  * @param realloc_func custom realloc function.
  * @param free_func custom free function.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread, but one
  *               should not replace the memory functions once any allocations
@@ -650,13 +650,13 @@ inline void GetMemoryFunctions(malloc_func* malloc_func,
  * @sa GetMemoryFunctions
  * @sa GetOriginalMemoryFunctions
  */
-inline bool SetMemoryFunctions(malloc_func malloc_func,
+inline void SetMemoryFunctions(malloc_func malloc_func,
                                calloc_func calloc_func,
                                realloc_func realloc_func,
                                free_func free_func)
 {
-  return SDL_SetMemoryFunctions(
-    malloc_func, calloc_func, realloc_func, free_func);
+  CheckError(
+    SDL_SetMemoryFunctions(malloc_func, calloc_func, realloc_func, free_func));
 }
 
 /**
@@ -741,8 +741,8 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    *
    * @param populated true to initialize it from the C runtime environment,
    *                  false to create an empty environment.
-   * @post the new environment (convertible to true) on success or convertible
-   *       to false on failure; call GetError() for more information.
+   * @post the new environment on success.
+   * @throws Error on failure.
    *
    * @threadsafety If `populated` is false, it is safe to call this function
    *               from any thread, otherwise it is safe if no other threads are
@@ -756,7 +756,7 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @sa EnvironmentBase.UnsetVariable
    */
   EnvironmentBase(bool populated)
-    : Resource(SDL_CreateEnvironment(populated))
+    : Resource(CheckError(SDL_CreateEnvironment(populated)))
   {
   }
 
@@ -786,10 +786,10 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * Get all variables in the environment.
    *
    * @returns a nullptr terminated array of pointers to environment variables in
-   *          the form "variable=value" or nullptr on failure; call
-   *          SDL_GetError() for more information. This is wrapped to be
+   *          the form "variable=value" on success. This is wrapped to be
    *          auto-deleted, use FreeWrapper.release() if you want to manage
    *          manually.
+   * @throws Error on failure
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -803,7 +803,7 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    */
   inline OwnArray<char*> GetVariables()
   {
-    return OwnArray<char*>{SDL_GetEnvironmentVariables(get())};
+    return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(get()))};
   }
 
   /**
@@ -828,8 +828,7 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @param overwrite true to overwrite the variable if it exists, false to
    *                  return success without setting the variable if it already
    *                  exists.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -841,17 +840,16 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @sa EnvironmentBase.GetVariables
    * @sa EnvironmentBase.UnsetVariable
    */
-  bool SetVariable(StringParam name, StringParam value, bool overwrite)
+  void SetVariable(StringParam name, StringParam value, bool overwrite)
   {
-    return SDL_SetEnvironmentVariable(get(), name, value, overwrite);
+    CheckError(SDL_SetEnvironmentVariable(get(), name, value, overwrite));
   }
 
   /**
    * Clear a variable from the environment.
    *
    * @param name the name of the variable to unset.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -864,9 +862,9 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @sa EnvironmentBase.SetVariable
    * @sa EnvironmentBase.UnsetVariable
    */
-  bool UnsetVariable(StringParam name)
+  void UnsetVariable(StringParam name)
   {
-    return SDL_UnsetEnvironmentVariable(get(), name);
+    CheckError(SDL_UnsetEnvironmentVariable(get(), name));
   }
 };
 
@@ -4946,7 +4944,7 @@ inline double tan(double x) { return SDL_tan(x); }
  * @sa sin
  * @sa cos
  * @sa atan
- * @sa atan2f
+ * @sa atan2
  */
 inline float tan(float x) { return SDL_tanf(x); }
 

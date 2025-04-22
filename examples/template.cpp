@@ -10,11 +10,6 @@ struct Main
   SDL::Window window{"Test", windowSz};
   SDL::Renderer renderer{window};
 
-  Main()
-  {
-    if (!renderer) throw std::runtime_error{SDL::GetError()};
-  }
-
   SDL::AppResult Iterate()
   {
     renderer.SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});

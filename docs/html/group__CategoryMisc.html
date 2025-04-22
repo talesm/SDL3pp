@@ -81,14 +81,14 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga59e209c6233f74a03b27e90eba2ab151" id="r_ga59e209c6233f74a03b27e90eba2ab151"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMisc.html#ga59e209c6233f74a03b27e90eba2ab151">SDL::OpenURL</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> url)</td></tr>
-<tr class="memdesc:ga59e209c6233f74a03b27e90eba2ab151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a URL/URI in the browser or other appropriate external application.  <br /></td></tr>
-<tr class="separator:ga59e209c6233f74a03b27e90eba2ab151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga209f59026ba24b9709886185d3315e36" id="r_ga209f59026ba24b9709886185d3315e36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMisc.html#ga209f59026ba24b9709886185d3315e36">SDL::OpenURL</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> url)</td></tr>
+<tr class="memdesc:ga209f59026ba24b9709886185d3315e36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a URL/URI in the browser or other appropriate external application.  <br /></td></tr>
+<tr class="separator:ga209f59026ba24b9709886185d3315e36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga59e209c6233f74a03b27e90eba2ab151" name="ga59e209c6233f74a03b27e90eba2ab151"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga59e209c6233f74a03b27e90eba2ab151">&#9670;&#160;</a></span>OpenURL()</h2>
+<a id="ga209f59026ba24b9709886185d3315e36" name="ga209f59026ba24b9709886185d3315e36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga209f59026ba24b9709886185d3315e36">&#9670;&#160;</a></span>OpenURL()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -97,7 +97,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::OpenURL </td>
+          <td class="memname">void SDL::OpenURL </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>url</em></td><td>)</td>
@@ -120,7 +120,12 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>

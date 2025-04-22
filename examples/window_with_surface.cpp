@@ -16,22 +16,10 @@ static SDL::Point makeRandomPoint()
 int main(int argc, char** argv)
 {
   SDL::SDL init(SDL::INIT_VIDEO);
-  if (!init) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   SDL::Window window{"Test", WINDOW_SZ};
-  if (!window) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
   SDL::SurfaceRef screen = window.GetSurface();
   SDL::Surface smileyImg("assets/smiley.bmp");
-  if (!smileyImg) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
 
   constexpr int WW = 64;
 

@@ -356,7 +356,7 @@ constexpr PathType PATHTYPE_OTHER = SDL_PATHTYPE_OTHER;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GetPathInfo
- * @sa GetStoragePathInfo
+ * @sa StorageBase.GetPathInfo
  */
 struct PathInfo : SDL_PathInfo
 {
@@ -396,7 +396,7 @@ struct PathInfo : SDL_PathInfo
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GlobDirectory
- * @sa SDL_GlobStorageDirectory
+ * @sa StorageBase.GlobDirectory
  */
 using GlobFlags = Uint32;
 
@@ -412,14 +412,13 @@ constexpr GlobFlags GLOB_CASEINSENSITIVE =
  * this fails, it will not remove any parent directories it already made.
  *
  * @param path the path of the directory to create.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool CreateDirectory(StringParam path)
+inline void CreateDirectory(StringParam path)
 {
-  return SDL_CreateDirectory(path);
+  CheckError(SDL_CreateDirectory(path));
 }
 
 /**
@@ -512,16 +511,15 @@ using EnumerateDirectoryCB =
  * @param path the path of the directory to enumerate.
  * @param callback a function that is called for each entry in the directory.
  * @param userdata a pointer that is passed to `callback`.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool EnumerateDirectory(StringParam path,
+inline void EnumerateDirectory(StringParam path,
                                EnumerateDirectoryCallback callback,
                                void* userdata)
 {
-  return SDL_EnumerateDirectory(path, callback, userdata);
+  CheckError(SDL_EnumerateDirectory(path, callback, userdata));
 }
 
 /**
@@ -539,12 +537,11 @@ inline bool EnumerateDirectory(StringParam path,
  *
  * @param path the path of the directory to enumerate.
  * @param callback a function that is called for each entry in the directory.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
+inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 {
   return EnumerateDirectory(
     std::move(path),
@@ -580,12 +577,11 @@ inline std::vector<Path> EnumerateDirectory(StringParam path)
  * delete directory trees.
  *
  * @param path the path to remove from the filesystem.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RemovePath(StringParam path) { return SDL_RemovePath(path); }
+inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
 
 /**
  * Rename a file or directory.
@@ -603,14 +599,13 @@ inline bool RemovePath(StringParam path) { return SDL_RemovePath(path); }
  *
  * @param oldpath the old path.
  * @param newpath the new path.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RenamePath(StringParam oldpath, StringParam newpath)
+inline void RenamePath(StringParam oldpath, StringParam newpath)
 {
-  return SDL_RenamePath(oldpath, newpath);
+  CheckError(SDL_RenamePath(oldpath, newpath));
 }
 
 /**
@@ -646,29 +641,29 @@ inline bool RenamePath(StringParam oldpath, StringParam newpath)
  *
  * @param oldpath the old path.
  * @param newpath the new path.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool CopyFile(StringParam oldpath, StringParam newpath)
+inline void CopyFile(StringParam oldpath, StringParam newpath)
 {
-  return SDL_CopyFile(oldpath, newpath);
+  CheckError(SDL_CopyFile(oldpath, newpath));
 }
 
 /**
  * Get information about a filesystem path.
  *
  * @param path the path to query.
- * @returns true on success or false if the file doesn't exist, or another
- *          failure; call GetError() for more information.
+ * @returns the information about the path on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline PathInfo GetPathInfo(StringParam path)
 {
-  if (PathInfo info; SDL_GetPathInfo(path, &info)) return info;
-  return {};
+  PathInfo info;
+  CheckError(SDL_GetPathInfo(path, &info));
+  return info;
 }
 
 /**
@@ -692,9 +687,8 @@ inline PathInfo GetPathInfo(StringParam path)
  * @param pattern the pattern that files in the directory must match. Can be
  *                nullptr.
  * @param flags `SDL_GLOB_*` bitflags that affect this search.
- * @returns an array of strings on success or nullptr on failure; call
- *          GetError() for more information. This is a single allocation
- *          that should be freed with free() when it is no longer needed.
+ * @returns an array of strings on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -705,8 +699,7 @@ inline OwnArray<char*> GlobDirectory(StringParam path,
                                      GlobFlags flags = 0)
 {
   int count;
-  auto data = SDL_GlobDirectory(path, pattern, flags, &count);
-  if (!data) return {};
+  auto data = CheckError(SDL_GlobDirectory(path, pattern, flags, &count));
   return OwnArray<char*>{data, size_t(count)};
 }
 

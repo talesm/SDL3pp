@@ -34,12 +34,6 @@ struct Main
   SDL::Texture texture{renderer,
                        std::format("{}/assets/sample.bmp", SDL::GetBasePath())};
 
-  // This function runs once at startup.
-  Main()
-  {
-    if (!renderer || !texture) throw std::runtime_error{SDL::GetError()};
-  }
-
   SDL::AppResult Iterate()
   {
     SDL::FRect dst_rect;

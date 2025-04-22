@@ -508,33 +508,19 @@ function generateBody(entry, prefix) {
     return `\n${prefix}{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
   }
   if (entry.proto) return ";";
-  const paramStr = entry.parameters
+  const selfStr = hint?.self ?? "";
+  const hasSelf = selfStr && entry.type && !entry.static && !entry.hints?.static;
+  const paramStr = (hasSelf ? (selfStr + (entry.parameters?.length ? ", " : "")) : "") + entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
-  const returnStr = entry.type === "void" ? "" : "return ";
+  const internalCallStr = `${sourceName}(${paramStr})`;
+  const callStr = hint?.mayFail ? `CheckError(${internalCallStr})` : internalCallStr;
   if (!entry.type) {
     const superStr = hint?.super ?? "T";
-    return `\n${prefix}  : ${superStr}(${sourceName}(${paramStr}))\n${prefix}{}`;
+    return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;
   }
-  if (!prefix || entry.static || entry.hints?.static) {
-    const selfStr = (hint?.self && !entry.static && !hint?.static) ? hint.self + (paramStr.length ? ", " : "") : "";
-    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${selfStr}${paramStr});\n${prefix}}`;
-  }
-  if (paramStr) {
-    const selfStr = hint?.self ?? "T::get()";
-    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${selfStr}, ${paramStr});\n${prefix}}`;
-  }
-  let selfStr;
-  if (looksLikeFreeFunction(sourceName)) {
-    if (!returnStr) {
-      const selfStr = hint?.self ?? "T::free()";
-      return `\n${prefix}{\n${prefix}  ${selfStr};\n${prefix}}`;
-    }
-    selfStr = hint?.self ?? "T::release()";
-  } else {
-    selfStr = hint?.self ?? "T::get()";
-  }
-  return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${selfStr});\n${prefix}}`;
+  const returnStr = entry.type === "void" ? "" : "return ";
+  return `\n${prefix}{\n${prefix}  ${returnStr}${callStr};\n${prefix}}`;
 }
 
 /**

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['valuetype_0',['valuetype',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::ValueType'],['../structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae',1,'SDL::KeyValueWrapper::ValueType'],['../structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49',1,'SDL::UniqueWrapper::ValueType']]],
-  ['vertex_1',['Vertex',['../group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b',1,'SDL']]]
+  ['windowevent_0',['WindowEvent',['../group__CategoryEvents.html#ga22c708f93afa966a81668e9a40dd5b0a',1,'SDL']]],
+  ['windowflags_1',['WindowFlags',['../group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67',1,'SDL']]],
+  ['windowid_2',['WindowID',['../group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3',1,'SDL']]]
 ];

@@ -51,8 +51,6 @@ struct Main
   // This function runs once at startup.
   Main()
   {
-    if (!renderer) throw std::runtime_error{SDL::GetError()};
-
     // set up the data for a bunch of points.
     for (int i = 0; i < points.size(); ++i) {
       points[i] = {SDL::randf() * windowSz.GetX(),
