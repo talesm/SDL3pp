@@ -38407,19 +38407,23 @@
           },
           "doc": ""
         },
-        "SDL_PI_D": {
-          "doc": "The value of Pi, as a double-precision floating point literal.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_PI_F",
-          "name": "SDL_PI_D",
-          "kind": "def",
+        "PI_D": {
+          "doc": "The value of Pi, as a double-precision floating point literal.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa PI_F",
+          "name": "PI_D",
+          "kind": "var",
           "value": "3.141592653589793238462643383279502884",
-          "sourceName": "SDL_PI_D"
+          "sourceName": "SDL_PI_D",
+          "constexpr": true,
+          "type": "double"
         },
-        "SDL_PI_F": {
-          "doc": "The value of Pi, as a single-precision floating point literal.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_PI_D",
-          "name": "SDL_PI_F",
-          "kind": "def",
+        "PI_F": {
+          "doc": "The value of Pi, as a single-precision floating point literal.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa PI_D",
+          "name": "PI_F",
+          "kind": "var",
           "value": "3.141592653589793238462643383279502884F",
-          "sourceName": "SDL_PI_F"
+          "sourceName": "SDL_PI_F",
+          "constexpr": true,
+          "type": "float"
         },
         "acos": [
           {

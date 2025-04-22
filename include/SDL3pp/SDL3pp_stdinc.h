@@ -3829,27 +3829,23 @@ public:
   Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
 };
 
-#ifdef SDL3PP_DOC
-
 /**
  * The value of Pi, as a double-precision floating point literal.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_PI_F
+ * @sa PI_F
  */
-#define SDL_PI_D 3.141592653589793238462643383279502884
+constexpr double PI_D = SDL_PI_D;
 
 /**
  * The value of Pi, as a single-precision floating point literal.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL_PI_D
+ * @sa PI_D
  */
-#define SDL_PI_F 3.141592653589793238462643383279502884F
-
-#endif // SDL3PP_DOC
+constexpr float PI_F = SDL_PI_F;
 
 /**
  * Compute the arc cosine of `x`.

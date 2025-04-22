@@ -5249,6 +5249,16 @@ const transform = {
           "type": "Uint32",
           "constexpr": true
         },
+        "SDL_PI_D": {
+          kind: "var",
+          constexpr: true,
+          type: "double",
+        },
+        "SDL_PI_F": {
+          kind: "var",
+          constexpr: true,
+          type: "float",
+        },
         "SDL_acosf": { name: "acos" },
         "SDL_asinf": { name: "asin" },
         "SDL_atanf": { name: "atan" },
