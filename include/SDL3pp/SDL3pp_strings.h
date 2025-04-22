@@ -4,6 +4,8 @@
 #include <string>
 #include <string_view>
 #include <variant>
+#include <SDL3/SDL_stdinc.h>
+#include "SDL3pp_ownPtr.h"
 
 namespace SDL {
 
@@ -142,6 +144,90 @@ public:
 using StringParam = const char*;
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
+
+/**
+ * A simple std::string-like interface for SDL allocated strings.
+ */
+struct StringResult : OwnArray<char>
+{
+
+  /// Use parent ctors
+  using OwnArray::OwnArray;
+
+  /// Copy ctor
+  StringResult(const StringResult& other)
+    : StringResult(std::string_view(other))
+  {
+  }
+
+  /// Move ctor
+  constexpr StringResult(StringResult&& other)
+    : OwnArray(other.release(), other.size())
+  {
+  }
+
+  /// Constructs from string view
+  StringResult(std::string_view other)
+    : OwnArray(other.empty() ? nullptr
+                             : SDL_strndup(other.data(), other.size()))
+  {
+  }
+
+  /// Convert to StringParam
+  constexpr operator StringParam() const { return std::string_view{*this}; }
+
+  /// Convert to std::string_view
+  constexpr operator std::string_view() const
+  {
+    return std::string_view{data(), size()};
+  }
+
+  /// Append string.
+  StringResult& operator+=(std::string_view other)
+  {
+    if (empty()) {
+      reset(StringResult(other).release());
+    } else if (!other.empty()) {
+      size_t lhsSz = size();
+      size_t rhsSz = other.size();
+      size_t finalSize = lhsSz + lhsSz + 1;
+      auto newBuf = static_cast<char*>(SDL_realloc(data(), finalSize));
+      newBuf += lhsSz;
+      SDL_memcpy(newBuf, other.data(), rhsSz);
+      newBuf += rhsSz;
+      *newBuf = 0;
+      reset(newBuf, finalSize - 1);
+    }
+    return *this;
+  }
+
+  /// Append char.
+  StringResult& operator+=(char ch)
+  {
+    return (*this) += std::string_view{&ch, 1};
+  }
+
+  /// Append string.
+  StringResult operator+(std::string_view other) const
+  {
+    StringResult t{*this};
+    t += other;
+    return t;
+  }
+
+  /// Append char.
+  StringResult operator+(char ch) { return (*this) + std::string_view{&ch, 1}; }
+
+  /// Convert to string.
+  std::string str() const { return std::string{data(), size()}; }
+
+  /// Convert to c-string.
+  const char* c_str() const
+  {
+    if (empty()) return "";
+    return data();
+  }
+};
 
 /// @}
 

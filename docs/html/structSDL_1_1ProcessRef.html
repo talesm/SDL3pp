@@ -135,9 +135,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~ProcessRef</b> 
 <tr class="memitem:a8f8076fe99a9942e4583c2d7fcd400ee inherit pub_methods_structSDL_1_1ProcessBase" id="r_a8f8076fe99a9942e4583c2d7fcd400ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#a8f8076fe99a9942e4583c2d7fcd400ee">GetProperties</a> () const</td></tr>
 <tr class="memdesc:a8f8076fe99a9942e4583c2d7fcd400ee inherit pub_methods_structSDL_1_1ProcessBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a process.  <br /></td></tr>
 <tr class="separator:a8f8076fe99a9942e4583c2d7fcd400ee inherit pub_methods_structSDL_1_1ProcessBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad75e582fef0afa96a008e3d6ebf2b9ac inherit pub_methods_structSDL_1_1ProcessBase" id="r_ad75e582fef0afa96a008e3d6ebf2b9ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; std::byte &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#ad75e582fef0afa96a008e3d6ebf2b9ac">Read</a> (int *exitcode=nullptr)</td></tr>
-<tr class="memdesc:ad75e582fef0afa96a008e3d6ebf2b9ac inherit pub_methods_structSDL_1_1ProcessBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read all the output from a process.  <br /></td></tr>
-<tr class="separator:ad75e582fef0afa96a008e3d6ebf2b9ac inherit pub_methods_structSDL_1_1ProcessBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d7fc4a560986d726b7d65acd17ae97 inherit pub_methods_structSDL_1_1ProcessBase" id="r_a38d7fc4a560986d726b7d65acd17ae97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1StringResult.html">StringResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#a38d7fc4a560986d726b7d65acd17ae97">Read</a> (int *exitcode=nullptr)</td></tr>
+<tr class="memdesc:a38d7fc4a560986d726b7d65acd17ae97 inherit pub_methods_structSDL_1_1ProcessBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read all the output from a process.  <br /></td></tr>
+<tr class="separator:a38d7fc4a560986d726b7d65acd17ae97 inherit pub_methods_structSDL_1_1ProcessBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a280089e91b232fef489a7c1a03ed0b03 inherit pub_methods_structSDL_1_1ProcessBase" id="r_a280089e91b232fef489a7c1a03ed0b03"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a280089e91b232fef489a7c1a03ed0b03 inherit pub_methods_structSDL_1_1ProcessBase"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessBase.html#a280089e91b232fef489a7c1a03ed0b03">ReadAs</a> (int *exitcode=nullptr)</td></tr>
 <tr class="memdesc:a280089e91b232fef489a7c1a03ed0b03 inherit pub_methods_structSDL_1_1ProcessBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read all the output from a process.  <br /></td></tr>
@@ -271,7 +271,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 </div><div class="memdoc">
 <p>The path to the executable is supplied in args[0]. args[1..N] are additional arguments passed on the command line of the new process, and the argument list should be terminated with a nullptr, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *args[] = { <span class="stringliteral">&quot;myprogram&quot;</span>, <span class="stringliteral">&quot;argument&quot;</span>, <span class="keyword">nullptr</span> };</div>
-</div><!-- fragment --><p>Setting pipe_stdio to true is equivalent to setting <code>prop::process.CREATE_STDIN_NUMBER</code> and <code>prop::process.CREATE_STDOUT_NUMBER</code> to <code>PROCESS_STDIO_APP</code>, and will allow the use of <a class="el" href="structSDL_1_1ProcessBase.html#ad75e582fef0afa96a008e3d6ebf2b9ac" title="Read all the output from a process.">ProcessBase.Read()</a> or <a class="el" href="structSDL_1_1ProcessBase.html#a1187b45722900115ead03215e79cdd4d" title="Get the IOStreamBase associated with process standard input.">ProcessBase.GetInput()</a> and <a class="el" href="structSDL_1_1ProcessBase.html#af9ce8bbcdb2d145f24a4d64163dc9f4b" title="Get the IOStreamBase associated with process standard output.">ProcessBase.GetOutput()</a>.</p>
+</div><!-- fragment --><p>Setting pipe_stdio to true is equivalent to setting <code>prop::process.CREATE_STDIN_NUMBER</code> and <code>prop::process.CREATE_STDOUT_NUMBER</code> to <code>PROCESS_STDIO_APP</code>, and will allow the use of <a class="el" href="structSDL_1_1ProcessBase.html#a38d7fc4a560986d726b7d65acd17ae97" title="Read all the output from a process.">ProcessBase.Read()</a> or <a class="el" href="structSDL_1_1ProcessBase.html#a1187b45722900115ead03215e79cdd4d" title="Get the IOStreamBase associated with process standard input.">ProcessBase.GetInput()</a> and <a class="el" href="structSDL_1_1ProcessBase.html#af9ce8bbcdb2d145f24a4d64163dc9f4b" title="Get the IOStreamBase associated with process standard output.">ProcessBase.GetOutput()</a>.</p>
 <p>See <a class="el" href="structSDL_1_1ProcessBase.html#a33d8960ce41f0a54da9910ee2945d5cc" title="Create a new process.">ProcessBase.ProcessBase()</a> for more details.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -293,7 +293,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#a8f8076fe99a9942e4583c2d7fcd400ee" title="Get the properties associated with a process.">ProcessBase.GetProperties</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessBase.html#ad75e582fef0afa96a008e3d6ebf2b9ac" title="Read all the output from a process.">ProcessBase.Read</a> </dd>
+<a class="el" href="structSDL_1_1ProcessBase.html#a38d7fc4a560986d726b7d65acd17ae97" title="Read all the output from a process.">ProcessBase.Read</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#a1187b45722900115ead03215e79cdd4d" title="Get the IOStreamBase associated with process standard input.">ProcessBase.GetInput</a> </dd>
 <dd>
@@ -363,7 +363,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#a8f8076fe99a9942e4583c2d7fcd400ee" title="Get the properties associated with a process.">ProcessBase.GetProperties</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessBase.html#ad75e582fef0afa96a008e3d6ebf2b9ac" title="Read all the output from a process.">ProcessBase.Read</a> </dd>
+<a class="el" href="structSDL_1_1ProcessBase.html#a38d7fc4a560986d726b7d65acd17ae97" title="Read all the output from a process.">ProcessBase.Read</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessBase.html#a1187b45722900115ead03215e79cdd4d" title="Get the IOStreamBase associated with process standard input.">ProcessBase.GetInput</a> </dd>
 <dd>

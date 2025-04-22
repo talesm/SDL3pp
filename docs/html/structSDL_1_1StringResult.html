@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SDL3pp: SDL::Path Struct Reference</title>
+<title>SDL3pp: SDL::StringResult Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,26 +70,26 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespaceSDL.html">SDL</a></li><li class="navelem"><a class="el" href="structSDL_1_1Path.html">Path</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespaceSDL.html">SDL</a></li><li class="navelem"><a class="el" href="structSDL_1_1StringResult.html">StringResult</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="structSDL_1_1Path-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SDL::Path Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesFileIO.html">File and I/O Abstractions</a> &raquo; <a class="el" href="group__CategoryFilesystem.html">Filesystem Access</a></div></div></div>
+<a href="structSDL_1_1StringResult-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">SDL::StringResult Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesCppSupport.html">C++ Support</a> &raquo; <a class="el" href="group__CategoryStrings.html">Helpers to use C++ strings with SDL</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Convenience representation of a path under <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.  
+<p>A simple std::string-like interface for <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> allocated strings.  
 </p>
 <div class="dynheader">
-Inheritance diagram for SDL::Path:</div>
+Inheritance diagram for SDL::StringResult:</div>
 <div class="dyncontent">
-<div class="center"><img src="structSDL_1_1Path__inherit__graph.png" border="0" usemap="#aSDL_1_1Path_inherit__map" alt="Inheritance graph"/></div>
-<map name="aSDL_1_1Path_inherit__map" id="aSDL_1_1Path_inherit__map">
-<area shape="rect" title="Convenience representation of a path under SDL." alt="" coords="53,152,135,177"/>
-<area shape="rect" href="structSDL_1_1StringResult.html" title="A simple std::string&#45;like interface for SDL allocated strings." alt="" coords="27,79,161,104"/>
+<div class="center"><img src="structSDL_1_1StringResult__inherit__graph.png" border="0" usemap="#aSDL_1_1StringResult_inherit__map" alt="Inheritance graph"/></div>
+<map name="aSDL_1_1StringResult_inherit__map" id="aSDL_1_1StringResult_inherit__map">
+<area shape="rect" title="A simple std::string&#45;like interface for SDL allocated strings." alt="" coords="27,79,161,104"/>
+<area shape="rect" href="structSDL_1_1Path.html" title="Convenience representation of a path under SDL." alt="" coords="53,152,135,177"/>
 <area shape="poly" title=" " alt="" coords="97,118,97,152,91,152,91,118"/>
 <area shape="rect" href="classSDL_1_1OwnArray.html" title=" " alt="" coords="5,5,183,31"/>
 <area shape="poly" title=" " alt="" coords="97,44,97,79,91,79,91,44"/>
@@ -98,99 +98,62 @@ Inheritance diagram for SDL::Path:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a06070aef16424b7f9cf6f61f73b6e3cf" id="r_a06070aef16424b7f9cf6f61f73b6e3cf"><td class="memItemLeft" align="right" valign="top"><a id="a06070aef16424b7f9cf6f61f73b6e3cf" name="a06070aef16424b7f9cf6f61f73b6e3cf"></a>
-<a class="el" href="structSDL_1_1Path.html">Path</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (std::string_view other)</td></tr>
-<tr class="memdesc:a06070aef16424b7f9cf6f61f73b6e3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append. <br /></td></tr>
-<tr class="separator:a06070aef16424b7f9cf6f61f73b6e3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4398c1f26b729c070aa37ed9d0c80a65" id="r_a4398c1f26b729c070aa37ed9d0c80a65"><td class="memItemLeft" align="right" valign="top"><a id="a4398c1f26b729c070aa37ed9d0c80a65" name="a4398c1f26b729c070aa37ed9d0c80a65"></a>
-<a class="el" href="structSDL_1_1Path.html">Path</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (char ch)</td></tr>
-<tr class="memdesc:a4398c1f26b729c070aa37ed9d0c80a65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append. <br /></td></tr>
-<tr class="separator:a4398c1f26b729c070aa37ed9d0c80a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a392ba49bb30d70dfa3f07e2c406f300e" id="r_a392ba49bb30d70dfa3f07e2c406f300e"><td class="memItemLeft" align="right" valign="top"><a id="a392ba49bb30d70dfa3f07e2c406f300e" name="a392ba49bb30d70dfa3f07e2c406f300e"></a>
-<a class="el" href="structSDL_1_1Path.html">Path</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (std::string_view other) const</td></tr>
-<tr class="memdesc:a392ba49bb30d70dfa3f07e2c406f300e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append. <br /></td></tr>
-<tr class="separator:a392ba49bb30d70dfa3f07e2c406f300e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa95c9ab95db0e3d7629b864b845cf806" id="r_aa95c9ab95db0e3d7629b864b845cf806"><td class="memItemLeft" align="right" valign="top"><a id="aa95c9ab95db0e3d7629b864b845cf806" name="aa95c9ab95db0e3d7629b864b845cf806"></a>
-<a class="el" href="structSDL_1_1Path.html">Path</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (char ch) const</td></tr>
-<tr class="memdesc:aa95c9ab95db0e3d7629b864b845cf806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append. <br /></td></tr>
-<tr class="separator:aa95c9ab95db0e3d7629b864b845cf806"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44b7fdf82f5f1213d8f9c009d2501ec5" id="r_a44b7fdf82f5f1213d8f9c009d2501ec5"><td class="memItemLeft" align="right" valign="top"><a id="a44b7fdf82f5f1213d8f9c009d2501ec5" name="a44b7fdf82f5f1213d8f9c009d2501ec5"></a>
-<a class="el" href="structSDL_1_1Path.html">Path</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator/=</b> (std::string_view other)</td></tr>
-<tr class="memdesc:a44b7fdf82f5f1213d8f9c009d2501ec5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append path component. <br /></td></tr>
-<tr class="separator:a44b7fdf82f5f1213d8f9c009d2501ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64e2f2c6062fc793ba088a2179e5e0de" id="r_a64e2f2c6062fc793ba088a2179e5e0de"><td class="memItemLeft" align="right" valign="top"><a id="a64e2f2c6062fc793ba088a2179e5e0de" name="a64e2f2c6062fc793ba088a2179e5e0de"></a>
-<a class="el" href="structSDL_1_1Path.html">Path</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator/</b> (std::string_view other) const</td></tr>
-<tr class="memdesc:a64e2f2c6062fc793ba088a2179e5e0de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append path component. <br /></td></tr>
-<tr class="separator:a64e2f2c6062fc793ba088a2179e5e0de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a991bdc757b982600497647a5e7f8cac2" id="r_a991bdc757b982600497647a5e7f8cac2"><td class="memItemLeft" align="right" valign="top"><a id="a991bdc757b982600497647a5e7f8cac2" name="a991bdc757b982600497647a5e7f8cac2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>StringResult</b> (const <a class="el" href="structSDL_1_1StringResult.html">StringResult</a> &amp;other)</td></tr>
-<tr class="memdesc:a991bdc757b982600497647a5e7f8cac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
+<tr class="memdesc:a991bdc757b982600497647a5e7f8cac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy ctor. <br /></td></tr>
 <tr class="separator:a991bdc757b982600497647a5e7f8cac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ef616585a767e3b3c9726cdec735fb5" id="r_a7ef616585a767e3b3c9726cdec735fb5"><td class="memItemLeft" align="right" valign="top"><a id="a7ef616585a767e3b3c9726cdec735fb5" name="a7ef616585a767e3b3c9726cdec735fb5"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StringResult</b> (<a class="el" href="structSDL_1_1StringResult.html">StringResult</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a7ef616585a767e3b3c9726cdec735fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
+<tr class="memdesc:a7ef616585a767e3b3c9726cdec735fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move ctor. <br /></td></tr>
 <tr class="separator:a7ef616585a767e3b3c9726cdec735fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5783a07fce557fcfaf56eefef1f80062" id="r_a5783a07fce557fcfaf56eefef1f80062"><td class="memItemLeft" align="right" valign="top"><a id="a5783a07fce557fcfaf56eefef1f80062" name="a5783a07fce557fcfaf56eefef1f80062"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>StringResult</b> (std::string_view other)</td></tr>
-<tr class="memdesc:a5783a07fce557fcfaf56eefef1f80062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
+<tr class="memdesc:a5783a07fce557fcfaf56eefef1f80062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from string view. <br /></td></tr>
 <tr class="separator:a5783a07fce557fcfaf56eefef1f80062"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1StringResult"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1StringResult')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1StringResult.html">SDL::StringResult</a></td></tr>
-<tr class="memitem:a991bdc757b982600497647a5e7f8cac2 inherit pub_methods_structSDL_1_1StringResult" id="r_a991bdc757b982600497647a5e7f8cac2"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>StringResult</b> (const <a class="el" href="structSDL_1_1StringResult.html">StringResult</a> &amp;other)</td></tr>
-<tr class="memdesc:a991bdc757b982600497647a5e7f8cac2 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy ctor. <br /></td></tr>
-<tr class="separator:a991bdc757b982600497647a5e7f8cac2 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ef616585a767e3b3c9726cdec735fb5 inherit pub_methods_structSDL_1_1StringResult" id="r_a7ef616585a767e3b3c9726cdec735fb5"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StringResult</b> (<a class="el" href="structSDL_1_1StringResult.html">StringResult</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a7ef616585a767e3b3c9726cdec735fb5 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move ctor. <br /></td></tr>
-<tr class="separator:a7ef616585a767e3b3c9726cdec735fb5 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5783a07fce557fcfaf56eefef1f80062 inherit pub_methods_structSDL_1_1StringResult" id="r_a5783a07fce557fcfaf56eefef1f80062"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>StringResult</b> (std::string_view other)</td></tr>
-<tr class="memdesc:a5783a07fce557fcfaf56eefef1f80062 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from string view. <br /></td></tr>
-<tr class="separator:a5783a07fce557fcfaf56eefef1f80062 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2628aaf8ef5408bdf9a86b2732b82497 inherit pub_methods_structSDL_1_1StringResult" id="r_a2628aaf8ef5408bdf9a86b2732b82497"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a2628aaf8ef5408bdf9a86b2732b82497" id="r_a2628aaf8ef5408bdf9a86b2732b82497"><td class="memItemLeft" align="right" valign="top"><a id="a2628aaf8ef5408bdf9a86b2732b82497" name="a2628aaf8ef5408bdf9a86b2732b82497"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator StringParam</b> () const</td></tr>
-<tr class="memdesc:a2628aaf8ef5408bdf9a86b2732b82497 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to <a class="el" href="classSDL_1_1StringParam.html" title="Helpers to use C++ strings parameters.">StringParam</a>. <br /></td></tr>
-<tr class="separator:a2628aaf8ef5408bdf9a86b2732b82497 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad30b0114e6e64e0a00fce877dbb99c50 inherit pub_methods_structSDL_1_1StringResult" id="r_ad30b0114e6e64e0a00fce877dbb99c50"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a2628aaf8ef5408bdf9a86b2732b82497"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to <a class="el" href="classSDL_1_1StringParam.html" title="Helpers to use C++ strings parameters.">StringParam</a>. <br /></td></tr>
+<tr class="separator:a2628aaf8ef5408bdf9a86b2732b82497"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad30b0114e6e64e0a00fce877dbb99c50" id="r_ad30b0114e6e64e0a00fce877dbb99c50"><td class="memItemLeft" align="right" valign="top"><a id="ad30b0114e6e64e0a00fce877dbb99c50" name="ad30b0114e6e64e0a00fce877dbb99c50"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::string_view</b> () const</td></tr>
-<tr class="memdesc:ad30b0114e6e64e0a00fce877dbb99c50 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to std::string_view. <br /></td></tr>
-<tr class="separator:ad30b0114e6e64e0a00fce877dbb99c50 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91a14ec8f2243e7f7a4ebf6ae779ddb1 inherit pub_methods_structSDL_1_1StringResult" id="r_a91a14ec8f2243e7f7a4ebf6ae779ddb1"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:ad30b0114e6e64e0a00fce877dbb99c50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to std::string_view. <br /></td></tr>
+<tr class="separator:ad30b0114e6e64e0a00fce877dbb99c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91a14ec8f2243e7f7a4ebf6ae779ddb1" id="r_a91a14ec8f2243e7f7a4ebf6ae779ddb1"><td class="memItemLeft" align="right" valign="top"><a id="a91a14ec8f2243e7f7a4ebf6ae779ddb1" name="a91a14ec8f2243e7f7a4ebf6ae779ddb1"></a>
 <a class="el" href="structSDL_1_1StringResult.html">StringResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (std::string_view other)</td></tr>
-<tr class="memdesc:a91a14ec8f2243e7f7a4ebf6ae779ddb1 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append string. <br /></td></tr>
-<tr class="separator:a91a14ec8f2243e7f7a4ebf6ae779ddb1 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa05c535a81e5ebaec23789d823a37269 inherit pub_methods_structSDL_1_1StringResult" id="r_aa05c535a81e5ebaec23789d823a37269"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a91a14ec8f2243e7f7a4ebf6ae779ddb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append string. <br /></td></tr>
+<tr class="separator:a91a14ec8f2243e7f7a4ebf6ae779ddb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa05c535a81e5ebaec23789d823a37269" id="r_aa05c535a81e5ebaec23789d823a37269"><td class="memItemLeft" align="right" valign="top"><a id="aa05c535a81e5ebaec23789d823a37269" name="aa05c535a81e5ebaec23789d823a37269"></a>
 <a class="el" href="structSDL_1_1StringResult.html">StringResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (char ch)</td></tr>
-<tr class="memdesc:aa05c535a81e5ebaec23789d823a37269 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append char. <br /></td></tr>
-<tr class="separator:aa05c535a81e5ebaec23789d823a37269 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99cb8a9c36e64fbda000ee02ba5a2281 inherit pub_methods_structSDL_1_1StringResult" id="r_a99cb8a9c36e64fbda000ee02ba5a2281"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:aa05c535a81e5ebaec23789d823a37269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append char. <br /></td></tr>
+<tr class="separator:aa05c535a81e5ebaec23789d823a37269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99cb8a9c36e64fbda000ee02ba5a2281" id="r_a99cb8a9c36e64fbda000ee02ba5a2281"><td class="memItemLeft" align="right" valign="top"><a id="a99cb8a9c36e64fbda000ee02ba5a2281" name="a99cb8a9c36e64fbda000ee02ba5a2281"></a>
 <a class="el" href="structSDL_1_1StringResult.html">StringResult</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (std::string_view other) const</td></tr>
-<tr class="memdesc:a99cb8a9c36e64fbda000ee02ba5a2281 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append string. <br /></td></tr>
-<tr class="separator:a99cb8a9c36e64fbda000ee02ba5a2281 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1999cc758c27222b7d8e3aeb017e493 inherit pub_methods_structSDL_1_1StringResult" id="r_ab1999cc758c27222b7d8e3aeb017e493"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a99cb8a9c36e64fbda000ee02ba5a2281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append string. <br /></td></tr>
+<tr class="separator:a99cb8a9c36e64fbda000ee02ba5a2281"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1999cc758c27222b7d8e3aeb017e493" id="r_ab1999cc758c27222b7d8e3aeb017e493"><td class="memItemLeft" align="right" valign="top"><a id="ab1999cc758c27222b7d8e3aeb017e493" name="ab1999cc758c27222b7d8e3aeb017e493"></a>
 <a class="el" href="structSDL_1_1StringResult.html">StringResult</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (char ch)</td></tr>
-<tr class="memdesc:ab1999cc758c27222b7d8e3aeb017e493 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append char. <br /></td></tr>
-<tr class="separator:ab1999cc758c27222b7d8e3aeb017e493 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98dd41a70a552a5c6c2dd007ec26a7de inherit pub_methods_structSDL_1_1StringResult" id="r_a98dd41a70a552a5c6c2dd007ec26a7de"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:ab1999cc758c27222b7d8e3aeb017e493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append char. <br /></td></tr>
+<tr class="separator:ab1999cc758c27222b7d8e3aeb017e493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98dd41a70a552a5c6c2dd007ec26a7de" id="r_a98dd41a70a552a5c6c2dd007ec26a7de"><td class="memItemLeft" align="right" valign="top"><a id="a98dd41a70a552a5c6c2dd007ec26a7de" name="a98dd41a70a552a5c6c2dd007ec26a7de"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b> () const</td></tr>
-<tr class="memdesc:a98dd41a70a552a5c6c2dd007ec26a7de inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to string. <br /></td></tr>
-<tr class="separator:a98dd41a70a552a5c6c2dd007ec26a7de inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a767f5e35028a8ea0e71c842b16e5f304 inherit pub_methods_structSDL_1_1StringResult" id="r_a767f5e35028a8ea0e71c842b16e5f304"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a98dd41a70a552a5c6c2dd007ec26a7de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to string. <br /></td></tr>
+<tr class="separator:a98dd41a70a552a5c6c2dd007ec26a7de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a767f5e35028a8ea0e71c842b16e5f304" id="r_a767f5e35028a8ea0e71c842b16e5f304"><td class="memItemLeft" align="right" valign="top"><a id="a767f5e35028a8ea0e71c842b16e5f304" name="a767f5e35028a8ea0e71c842b16e5f304"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>c_str</b> () const</td></tr>
-<tr class="memdesc:a767f5e35028a8ea0e71c842b16e5f304 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to c-string. <br /></td></tr>
-<tr class="separator:a767f5e35028a8ea0e71c842b16e5f304 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a18c44ed30b800f95b9bcda0eff1270 inherit pub_methods_structSDL_1_1StringResult" id="r_a8a18c44ed30b800f95b9bcda0eff1270"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a767f5e35028a8ea0e71c842b16e5f304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to c-string. <br /></td></tr>
+<tr class="separator:a767f5e35028a8ea0e71c842b16e5f304"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a18c44ed30b800f95b9bcda0eff1270" id="r_a8a18c44ed30b800f95b9bcda0eff1270"><td class="memItemLeft" align="right" valign="top"><a id="a8a18c44ed30b800f95b9bcda0eff1270" name="a8a18c44ed30b800f95b9bcda0eff1270"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>OwnArray</b> (std::nullptr_t=nullptr)</td></tr>
-<tr class="memdesc:a8a18c44ed30b800f95b9bcda0eff1270 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
-<tr class="separator:a8a18c44ed30b800f95b9bcda0eff1270 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff4c886f90da1223aa32013f06368fb6 inherit pub_methods_structSDL_1_1StringResult" id="r_aff4c886f90da1223aa32013f06368fb6"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a8a18c44ed30b800f95b9bcda0eff1270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
+<tr class="separator:a8a18c44ed30b800f95b9bcda0eff1270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff4c886f90da1223aa32013f06368fb6" id="r_aff4c886f90da1223aa32013f06368fb6"><td class="memItemLeft" align="right" valign="top"><a id="aff4c886f90da1223aa32013f06368fb6" name="aff4c886f90da1223aa32013f06368fb6"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>OwnArray</b> (T *ptr, size_t <a class="el" href="classSDL_1_1OwnArray.html#acc961907e25af6463035571f9e64e2aa">size</a>)</td></tr>
-<tr class="memdesc:aff4c886f90da1223aa32013f06368fb6 inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
-<tr class="separator:aff4c886f90da1223aa32013f06368fb6 inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c2d9da9f3b3ae9749f7d8b9877185eb inherit pub_methods_structSDL_1_1StringResult" id="r_a9c2d9da9f3b3ae9749f7d8b9877185eb"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:aff4c886f90da1223aa32013f06368fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
+<tr class="separator:aff4c886f90da1223aa32013f06368fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c2d9da9f3b3ae9749f7d8b9877185eb" id="r_a9c2d9da9f3b3ae9749f7d8b9877185eb"><td class="memItemLeft" align="right" valign="top"><a id="a9c2d9da9f3b3ae9749f7d8b9877185eb" name="a9c2d9da9f3b3ae9749f7d8b9877185eb"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>OwnArray</b> (T *ptr)</td></tr>
-<tr class="memdesc:a9c2d9da9f3b3ae9749f7d8b9877185eb inherit pub_methods_structSDL_1_1StringResult"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
-<tr class="separator:a9c2d9da9f3b3ae9749f7d8b9877185eb inherit pub_methods_structSDL_1_1StringResult"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a9c2d9da9f3b3ae9749f7d8b9877185eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use parent ctors. <br /></td></tr>
+<tr class="separator:a9c2d9da9f3b3ae9749f7d8b9877185eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1OwnArray"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1OwnArray')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1OwnArray.html">SDL::OwnArray&lt; char &gt;</a></td></tr>
 <tr class="memitem:a8a18c44ed30b800f95b9bcda0eff1270 inherit pub_methods_classSDL_1_1OwnArray" id="r_a8a18c44ed30b800f95b9bcda0eff1270"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>OwnArray</b> (std::nullptr_t=nullptr)</td></tr>
@@ -268,7 +231,7 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>cend</b> () c
 <tr class="separator:a5d9ea75735b8b2f04acac9c9d6753210 inherit pub_methods_classSDL_1_1OwnArray"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>SDL3pp/<a class="el" href="SDL3pp__filesystem_8h_source.html">SDL3pp_filesystem.h</a></li>
+<li>SDL3pp/<a class="el" href="SDL3pp__strings_8h_source.html">SDL3pp_strings.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

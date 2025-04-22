@@ -29975,69 +29975,67 @@
         "Path": {
           "kind": "struct",
           "name": "Path",
-          "type": "OwnArray<char>",
+          "type": "StringResult",
           "entries": {
-            "OwnArray::OwnArray": {
+            "StringResult::StringResult": {
               "kind": "alias",
-              "name": "OwnArray::OwnArray",
+              "name": "StringResult::StringResult",
               "doc": ""
             },
-            "Path": [
+            "operator+=": [
               {
                 "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "const Path &",
-                    "name": "other"
-                  }
-                ],
-                "name": "Path",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "type": "Path &&",
-                    "name": "other"
-                  }
-                ],
-                "name": "Path",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
+                "type": "Path &",
                 "parameters": [
                   {
                     "type": "std::string_view",
                     "name": "other"
                   }
                 ],
-                "name": "Path",
+                "name": "operator+=",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "Path &",
+                "parameters": [
+                  {
+                    "type": "char",
+                    "name": "ch"
+                  }
+                ],
+                "name": "operator+=",
                 "doc": ""
               }
             ],
-            "operator StringParam": {
-              "kind": "function",
-              "type": "",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "name": "operator StringParam",
-              "doc": ""
-            },
-            "operator std::string_view": {
-              "kind": "function",
-              "type": "",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "name": "operator std::string_view",
-              "doc": ""
-            },
+            "operator+": [
+              {
+                "kind": "function",
+                "type": "Path",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "std::string_view",
+                    "name": "other"
+                  }
+                ],
+                "name": "operator+",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "Path",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "char",
+                    "name": "ch"
+                  }
+                ],
+                "name": "operator+",
+                "doc": ""
+              }
+            ],
             "operator/=": {
               "kind": "function",
               "type": "Path &",
@@ -30061,14 +30059,6 @@
                 }
               ],
               "name": "operator/",
-              "doc": ""
-            },
-            "str": {
-              "kind": "function",
-              "type": "std::string",
-              "immutable": true,
-              "parameters": [],
-              "name": "str",
               "doc": ""
             }
           },
@@ -31653,7 +31643,7 @@
               "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param src the IOStreamBase to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStreamBase.SaveFile",
               "name": "LoadFile",
               "kind": "function",
-              "type": "OwnArray<std::byte>",
+              "type": "StringResult",
               "parameters": [],
               "sourceName": "SDL_LoadFile_IO",
               "static": false
@@ -32478,7 +32468,7 @@
           "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param file the path to read all available data from.\n@param datasize if not nullptr, will store the number of bytes read.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.LoadFile\n@sa SaveFile",
           "name": "LoadFile",
           "kind": "function",
-          "type": "OwnArray<std::byte>",
+          "type": "StringResult",
           "parameters": [
             {
               "name": "file",
@@ -33462,7 +33452,7 @@
               "doc": "Read all the output from a process.\n\nIf a process was created with I/O enabled, you can use this function to\nread the output. This function blocks until the process is complete,\ncapturing all output, and providing the process exit code.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param exitcode a pointer filled in with the process exit code if the\n                process has exited, may be nullptr.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ProcessBase.ProcessBase\n@sa ProcessBase.ProcessBase\n@sa ProcessRef.reset",
               "name": "Read",
               "kind": "function",
-              "type": "OwnArray<std::byte>",
+              "type": "StringResult",
               "parameters": [
                 {
                   "name": "exitcode",

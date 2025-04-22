@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,163,45"/>
 <area shape="rect" id="Node000001" href="$structSDL_1_1GLContextBase.html" title="An opaque handle to an OpenGL context." alt="" coords="211,13,365,38"/>
-<area shape="poly" id="edge17_Node000000_Node000001" title=" " alt="" coords="177,23,210,23,210,28,177,28"/>
+<area shape="poly" id="edge18_Node000000_Node000001" title=" " alt="" coords="177,23,210,23,210,28,177,28"/>
 <area shape="rect" id="Node000002" href="$structSDL_1_1GLContextRef.html" title="Handle to a non owned gLContext." alt="" coords="413,13,559,38"/>
-<area shape="poly" id="edge18_Node000001_Node000002" title=" " alt="" coords="379,23,413,23,413,28,379,28"/>
+<area shape="poly" id="edge19_Node000001_Node000002" title=" " alt="" coords="379,23,413,23,413,28,379,28"/>
 <area shape="rect" id="Node000003" href="$structSDL_1_1GLContext.html" title="Handle to an owned gLContext." alt="" coords="607,13,729,38"/>
-<area shape="poly" id="edge19_Node000002_Node000003" title=" " alt="" coords="572,23,606,23,606,28,572,28"/>
+<area shape="poly" id="edge20_Node000002_Node000003" title=" " alt="" coords="572,23,606,23,606,28,572,28"/>
 </map>

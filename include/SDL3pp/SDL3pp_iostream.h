@@ -703,12 +703,11 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa LoadFile
    * @sa IOStreamBase.SaveFile
    */
-  OwnArray<std::byte> LoadFile()
+  StringResult LoadFile()
   {
     size_t datasize = 0;
-    auto data =
-      static_cast<std::byte*>(SDL_LoadFile_IO(get(), &datasize, false));
-    return OwnArray<std::byte>{CheckError(data), datasize};
+    auto data = static_cast<char*>(SDL_LoadFile_IO(get(), &datasize, false));
+    return StringResult{CheckError(data), datasize};
   }
 
   /**
@@ -1870,11 +1869,11 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * @sa IOStreamBase.LoadFile
  * @sa SaveFile
  */
-inline OwnArray<std::byte> LoadFile(StringParam file)
+inline StringResult LoadFile(StringParam file)
 {
   size_t datasize = 0;
-  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
-  return OwnArray<std::byte>{CheckError(data), datasize};
+  auto data = static_cast<char*>(SDL_LoadFile(file, &datasize));
+  return StringResult{CheckError(data), datasize};
 }
 
 /**

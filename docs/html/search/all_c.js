@@ -8,7 +8,7 @@ var searchData=
   ['loadavif_5',['LoadAVIF',['../group__CategorySDLImage.html#ga730f6259e2f663bb7647e8b1e60aa8a9',1,'SDL']]],
   ['loadbmp_6',['loadbmp',['../group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076',1,'SDL::LoadBMP(StringParam file)'],['../group__CategorySurface.html#gaf9cba1dd8bffadc7a58a04f4cb2a082b',1,'SDL::LoadBMP(IOStreamBase &amp;src)']]],
   ['loadcur_7',['LoadCUR',['../group__CategorySDLImage.html#ga33d3ca79c43b08a53b3d007b400fb54b',1,'SDL']]],
-  ['loadfile_8',['loadfile',['../structSDL_1_1IOStreamBase.html#aff48b93d29fb3de2169cb688e96fa476',1,'SDL::IOStreamBase::LoadFile()'],['../group__CategoryIOStream.html#ga27af92d4b163dc9d8ef55e89fd0d8b2e',1,'SDL::LoadFile()']]],
+  ['loadfile_8',['loadfile',['../structSDL_1_1IOStreamBase.html#a44c3bbe68e506e10506899ff0689d9b1',1,'SDL::IOStreamBase::LoadFile()'],['../group__CategoryIOStream.html#ga179e9ae2bbdd6a280757e2fae6157156',1,'SDL::LoadFile()']]],
   ['loadfunction_9',['LoadFunction',['../structSDL_1_1SharedObjectBase.html#ac78d78b26bf07e7d3c8b1aea952c6b79',1,'SDL::SharedObjectBase']]],
   ['loadgif_10',['LoadGIF',['../group__CategorySDLImage.html#ga90b357479dee298e2c7f5320b677ff4a',1,'SDL']]],
   ['loadgifanimation_11',['LoadGIFAnimation',['../group__CategorySDLImage.html#ga5120929f62649e394176f953c8514b55',1,'SDL']]],

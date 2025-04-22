@@ -13,9 +13,10 @@ var searchData=
   ['storagebase_10',['StorageBase',['../structSDL_1_1StorageBase.html',1,'SDL']]],
   ['storageref_11',['StorageRef',['../structSDL_1_1StorageRef.html',1,'SDL']]],
   ['stringparam_12',['StringParam',['../classSDL_1_1StringParam.html',1,'SDL']]],
-  ['substringiterator_13',['SubStringIterator',['../classSDL_1_1SubStringIterator.html',1,'SDL']]],
-  ['surface_14',['Surface',['../structSDL_1_1Surface.html',1,'SDL']]],
-  ['surfacebase_15',['SurfaceBase',['../structSDL_1_1SurfaceBase.html',1,'SDL']]],
-  ['surfacelock_16',['SurfaceLock',['../classSDL_1_1SurfaceLock.html',1,'SDL']]],
-  ['surfaceref_17',['SurfaceRef',['../structSDL_1_1SurfaceRef.html',1,'SDL']]]
+  ['stringresult_13',['StringResult',['../structSDL_1_1StringResult.html',1,'SDL']]],
+  ['substringiterator_14',['SubStringIterator',['../classSDL_1_1SubStringIterator.html',1,'SDL']]],
+  ['surface_15',['Surface',['../structSDL_1_1Surface.html',1,'SDL']]],
+  ['surfacebase_16',['SurfaceBase',['../structSDL_1_1SurfaceBase.html',1,'SDL']]],
+  ['surfacelock_17',['SurfaceLock',['../classSDL_1_1SurfaceLock.html',1,'SDL']]],
+  ['surfaceref_18',['SurfaceRef',['../structSDL_1_1SurfaceRef.html',1,'SDL']]]
 ];

@@ -841,6 +841,90 @@ using StringParam = const char*;
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
 
+/**
+ * A simple std::string-like interface for SDL allocated strings.
+ */
+struct StringResult : OwnArray<char>
+{
+
+  /// Use parent ctors
+  using OwnArray::OwnArray;
+
+  /// Copy ctor
+  StringResult(const StringResult& other)
+    : StringResult(std::string_view(other))
+  {
+  }
+
+  /// Move ctor
+  constexpr StringResult(StringResult&& other)
+    : OwnArray(other.release(), other.size())
+  {
+  }
+
+  /// Constructs from string view
+  StringResult(std::string_view other)
+    : OwnArray(other.empty() ? nullptr
+                             : SDL_strndup(other.data(), other.size()))
+  {
+  }
+
+  /// Convert to StringParam
+  constexpr operator StringParam() const { return std::string_view{*this}; }
+
+  /// Convert to std::string_view
+  constexpr operator std::string_view() const
+  {
+    return std::string_view{data(), size()};
+  }
+
+  /// Append string.
+  StringResult& operator+=(std::string_view other)
+  {
+    if (empty()) {
+      reset(StringResult(other).release());
+    } else if (!other.empty()) {
+      size_t lhsSz = size();
+      size_t rhsSz = other.size();
+      size_t finalSize = lhsSz + lhsSz + 1;
+      auto newBuf = static_cast<char*>(SDL_realloc(data(), finalSize));
+      newBuf += lhsSz;
+      SDL_memcpy(newBuf, other.data(), rhsSz);
+      newBuf += rhsSz;
+      *newBuf = 0;
+      reset(newBuf, finalSize - 1);
+    }
+    return *this;
+  }
+
+  /// Append char.
+  StringResult& operator+=(char ch)
+  {
+    return (*this) += std::string_view{&ch, 1};
+  }
+
+  /// Append string.
+  StringResult operator+(std::string_view other) const
+  {
+    StringResult t{*this};
+    t += other;
+    return t;
+  }
+
+  /// Append char.
+  StringResult operator+(char ch) { return (*this) + std::string_view{&ch, 1}; }
+
+  /// Convert to string.
+  std::string str() const { return std::string{data(), size()}; }
+
+  /// Convert to c-string.
+  const char* c_str() const
+  {
+    if (empty()) return "";
+    return data();
+  }
+};
+
 /// @}
 
 /**
@@ -8472,71 +8556,55 @@ constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
  * Convenience representation of a path under SDL
  *
  */
-struct Path : OwnArray<char>
+struct Path : StringResult
 {
   /// Use parent ctors
-  using OwnArray::OwnArray;
+  using StringResult::StringResult;
 
-  /// Copy ctor
-  Path(const Path& other)
-    : Path(std::string_view(other))
+  /// Append
+  Path& operator+=(std::string_view other)
   {
+    StringResult::operator+=(other);
+    return *this;
   }
 
-  /// Move ctor
-  constexpr Path(Path&& other)
-    : OwnArray(other.release(), other.size())
+  /// Append
+  Path& operator+=(char ch)
   {
+    StringResult::operator+=(ch);
+    return *this;
   }
 
-  /// Constructs from string view
-  Path(std::string_view other)
-    : OwnArray(other.empty() ? nullptr : strndup(other.data(), other.size()))
+  /// Append
+  Path operator+(std::string_view other) const
   {
+    Path result(*this);
+    result += other;
+    return result;
   }
 
-  /// Convert to StringParam
-  constexpr operator StringParam() const { return std::string_view{*this}; }
-
-  /// Convert to std::string_view
-  constexpr operator std::string_view() const
+  /// Append
+  Path operator+(char ch) const
   {
-    return std::string_view{data(), size()};
+    Path result(*this);
+    result += ch;
+    return result;
   }
 
   /// Append path component.
   Path& operator/=(std::string_view other)
   {
-    if (empty()) {
-      reset(Path(other).release());
-    } else if (!other.empty()) {
-      size_t lhsSz = size();
-      size_t rhsSz = other.size();
-      size_t finalSize = lhsSz + lhsSz + 1;
-      bool trailingDir = back() != '/' && back() != '\\';
-      if (trailingDir) { finalSize += 1; }
-      auto newBuf = static_cast<char*>(malloc(finalSize));
-      memcpy(newBuf, data(), lhsSz);
-      newBuf += lhsSz;
-      if (trailingDir) *(newBuf++) = '/';
-      memcpy(newBuf, other.data(), rhsSz);
-      newBuf += rhsSz;
-      *newBuf = 0;
-      reset(newBuf, finalSize - 1);
-    }
-    return *this;
+    if (!empty() && back() != '/' && back() != '\\') this->operator+=('/');
+    return this->operator+=(other);
   }
 
   /// Append path component.
   Path operator/(std::string_view other) const
   {
-    Path t{*this};
-    t /= other;
-    return t;
+    Path result(*this);
+    result /= other;
+    return result;
   }
-
-  /// Convert to string.
-  std::string str() const { return std::string{data(), size()}; }
 };
 
 /**
@@ -24341,12 +24409,11 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa LoadFile
    * @sa IOStreamBase.SaveFile
    */
-  OwnArray<std::byte> LoadFile()
+  StringResult LoadFile()
   {
     size_t datasize = 0;
-    auto data =
-      static_cast<std::byte*>(SDL_LoadFile_IO(get(), &datasize, false));
-    return OwnArray<std::byte>{CheckError(data), datasize};
+    auto data = static_cast<char*>(SDL_LoadFile_IO(get(), &datasize, false));
+    return StringResult{CheckError(data), datasize};
   }
 
   /**
@@ -25508,11 +25575,11 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * @sa IOStreamBase.LoadFile
  * @sa SaveFile
  */
-inline OwnArray<std::byte> LoadFile(StringParam file)
+inline StringResult LoadFile(StringParam file)
 {
   size_t datasize = 0;
-  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
-  return OwnArray<std::byte>{CheckError(data), datasize};
+  auto data = static_cast<char*>(SDL_LoadFile(file, &datasize));
+  return StringResult{CheckError(data), datasize};
 }
 
 /**
@@ -29731,12 +29798,11 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @sa ProcessBase.ProcessBase
    */
-  OwnArray<std::byte> Read(int* exitcode = nullptr)
+  StringResult Read(int* exitcode = nullptr)
   {
     size_t size = 0;
-    auto data =
-      static_cast<std::byte*>(SDL_ReadProcess(get(), &size, exitcode));
-    return OwnArray<std::byte>(CheckError(data), size);
+    auto data = static_cast<char*>(SDL_ReadProcess(get(), &size, exitcode));
+    return StringResult(CheckError(data), size);
   }
 
   /**

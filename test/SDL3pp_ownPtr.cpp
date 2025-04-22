@@ -1,5 +1,6 @@
 #include "SDL3pp/SDL3pp_ownPtr.h"
 #include <span>
+#include "SDL3pp/SDL3pp_stdinc.h"
 #include "doctest.h"
 
 TEST_CASE("Empty OwnPtr")

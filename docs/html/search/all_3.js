@@ -2,9 +2,9 @@ var searchData=
 [
   ['c_20strings_20with_20sdl_0',['Helpers to use C++ strings with SDL',['../group__CategoryStrings.html',1,'']]],
   ['c_20support_1',['c support',['../group__CategoriesCppSupport.html',1,'C++ Support'],['../ApiByCategory.html#c-support',1,'C++ Support']]],
-  ['c_5fstr_2',['c_str',['../classSDL_1_1StringParam.html#a026cec9d953235f6ab8e6c274de221fc',1,'SDL::StringParam']]],
+  ['c_5fstr_2',['c_str',['../structSDL_1_1StringResult.html#a767f5e35028a8ea0e71c842b16e5f304',1,'SDL::StringResult::c_str()'],['../classSDL_1_1StringParam.html#a026cec9d953235f6ab8e6c274de221fc',1,'SDL::StringParam::c_str()']]],
   ['cacheline_5fsize_3',['CACHELINE_SIZE',['../group__CategoryCPUInfo.html#ga8c917acea8f78fbf7b797009ddd7d226',1,'SDL']]],
-  ['callback_4',['callback',['../callback.html',1,'Callback'],['../callback.html#delayed-callback',1,'Delayed callback'],['../todo.html#_todo000004',1,'Immediate callback'],['../callback.html#immediate-callback',1,'Immediate callback'],['../callback.html#listener-callback',1,'Listener callback'],['../todo.html#_todo000006',1,'Listener callback'],['../callback.html#result-callback',1,'Result callback'],['../todo.html#_todo000005',1,'Result callback']]],
+  ['callback_4',['callback',['../callback.html',1,'Callback'],['../callback.html#delayed-callback',1,'Delayed callback'],['../callback.html#immediate-callback',1,'Immediate callback'],['../todo.html#_todo000004',1,'Immediate callback'],['../callback.html#listener-callback',1,'Listener callback'],['../todo.html#_todo000006',1,'Listener callback'],['../callback.html#result-callback',1,'Result callback'],['../todo.html#_todo000005',1,'Result callback']]],
   ['callback_20helpers_5',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
   ['callback_20rules_6',['Callback rules',['../transformations.html#callback-rules',1,'']]],
   ['callbackwrapper_7',['CallbackWrapper',['../structSDL_1_1CallbackWrapper.html',1,'SDL']]],

@@ -1,4 +1,5 @@
 #include "SDL3pp/SDL3pp_strings.h"
+#include "SDL3pp/SDL3pp_stdinc.h"
 #include "doctest.h"
 
 #ifdef SDL3PP_ENABLE_STRING_PARAM

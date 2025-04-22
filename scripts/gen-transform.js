@@ -865,47 +865,41 @@ const transform = {
         "__begin": {
           kind: "struct",
           name: "Path",
-          type: "OwnArray<char>",
+          type: "StringResult",
           entries: {
-            "OwnArray::OwnArray": "alias",
-            "Path": [{
+            "StringResult::StringResult": "alias",
+            "operator+=": [{
               kind: "function",
-              type: "",
-              parameters: [{
-                type: "const Path &",
-                name: "other"
-              }]
-            },
-            {
-              kind: "function",
-              type: "",
-              parameters: [{
-                type: "Path &&",
-                name: "other"
-              }]
-            },
-            {
-              kind: "function",
-              type: "",
+              type: "Path &",
               parameters: [{
                 type: "std::string_view",
                 name: "other"
               }]
+            }, {
+              kind: "function",
+              type: "Path &",
+              parameters: [{
+                type: "char",
+                name: "ch"
+              }]
             }],
-            "operator StringParam": {
+            "operator+": [{
               kind: "function",
-              type: "",
+              type: "Path",
               immutable: true,
-              constexpr: true,
-              parameters: []
-            },
-            "operator std::string_view": {
+              parameters: [{
+                type: "std::string_view",
+                name: "other"
+              }]
+            }, {
               kind: "function",
-              type: "",
+              type: "Path",
               immutable: true,
-              constexpr: true,
-              parameters: []
-            },
+              parameters: [{
+                type: "char",
+                name: "ch"
+              }]
+            }],
             "operator/=": {
               kind: "function",
               type: "Path &",
@@ -922,12 +916,6 @@ const transform = {
                 type: "std::string_view",
                 name: "other"
               }]
-            },
-            "str": {
-              kind: "function",
-              type: "std::string",
-              immutable: true,
-              parameters: []
             },
           }
         },
@@ -1528,7 +1516,7 @@ const transform = {
             },
             "SDL_LoadFile_IO": {
               "name": "LoadFile",
-              "type": "OwnArray<std::byte>",
+              "type": "StringResult",
               "static": false,
               "parameters": []
             },
@@ -1716,7 +1704,7 @@ const transform = {
       },
       transform: {
         "SDL_LoadFile": {
-          "type": "OwnArray<std::byte>",
+          "type": "StringResult",
           "parameters": [
             {}
           ]
@@ -2585,7 +2573,7 @@ const transform = {
             "SDL_CreateProcessWithProperties": "ctor",
             "SDL_GetProcessProperties": "immutable",
             "SDL_ReadProcess": {
-              type: "OwnArray<std::byte>",
+              type: "StringResult",
               parameters: [
                 {
                 },

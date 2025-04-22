@@ -166,5 +166,3 @@ using RefArray = std::span<T>;
 
 } // namespace SDL
 #endif /* SDL3PP_OWN_PTR_H_ */
-
-#include "SDL3pp_stdinc.h"

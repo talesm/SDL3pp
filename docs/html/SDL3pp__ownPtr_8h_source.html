@@ -108,10 +108,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">size_t</span> m_size = 0;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structSDL_1_1Path.html#a8a18c44ed30b800f95b9bcda0eff1270">   48</a></span>  <span class="keyword">constexpr</span> <a class="code hl_class" href="classSDL_1_1OwnArray.html">OwnArray</a>(std::nullptr_t = <span class="keyword">nullptr</span>) {}</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structSDL_1_1StringResult.html#a8a18c44ed30b800f95b9bcda0eff1270">   48</a></span>  <span class="keyword">constexpr</span> <a class="code hl_class" href="classSDL_1_1OwnArray.html">OwnArray</a>(std::nullptr_t = <span class="keyword">nullptr</span>) {}</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structSDL_1_1Path.html#aff4c886f90da1223aa32013f06368fb6">   50</a></span>  <span class="keyword">constexpr</span> <span class="keyword">explicit</span> <a class="code hl_class" href="classSDL_1_1OwnArray.html">OwnArray</a>(T* ptr, <span class="keywordtype">size_t</span> <a class="code hl_function" href="classSDL_1_1OwnArray.html#acc961907e25af6463035571f9e64e2aa">size</a>)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structSDL_1_1StringResult.html#aff4c886f90da1223aa32013f06368fb6">   50</a></span>  <span class="keyword">constexpr</span> <span class="keyword">explicit</span> <a class="code hl_class" href="classSDL_1_1OwnArray.html">OwnArray</a>(T* ptr, <span class="keywordtype">size_t</span> <a class="code hl_function" href="classSDL_1_1OwnArray.html#acc961907e25af6463035571f9e64e2aa">size</a>)</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    : m_ptr(ptr)</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    , m_size(<a class="code hl_function" href="classSDL_1_1OwnArray.html#acc961907e25af6463035571f9e64e2aa">size</a>)</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  {</div>
@@ -119,7 +119,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structSDL_1_1Path.html#a9c2d9da9f3b3ae9749f7d8b9877185eb">   56</a></span>  <span class="keyword">constexpr</span> <span class="keyword">explicit</span> <a class="code hl_class" href="classSDL_1_1OwnArray.html">OwnArray</a>(T* ptr)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structSDL_1_1StringResult.html#a9c2d9da9f3b3ae9749f7d8b9877185eb">   56</a></span>  <span class="keyword">constexpr</span> <span class="keyword">explicit</span> <a class="code hl_class" href="classSDL_1_1OwnArray.html">OwnArray</a>(T* ptr)</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    : m_ptr(ptr)</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">if</span> (ptr) {</div>
@@ -186,8 +186,6 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>} <span class="comment">// namespace SDL</span></div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_OWN_PTR_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">#include &quot;SDL3pp_stdinc.h&quot;</span></div>
 <div class="ttc" id="aclassSDL_1_1OwnArray_html"><div class="ttname"><a href="classSDL_1_1OwnArray.html">SDL::OwnArray</a></div><div class="ttdoc">Base class for SDL memory allocated array wrap.</div><div class="ttdef"><b>Definition</b> SDL3pp_ownPtr.h:43</div></div>
 <div class="ttc" id="aclassSDL_1_1OwnArray_html_a02d627466d48cb842e4237121b1962ec"><div class="ttname"><a href="classSDL_1_1OwnArray.html#a02d627466d48cb842e4237121b1962ec">SDL::OwnArray::operator[]</a></div><div class="ttdeci">constexpr T &amp; operator[](size_t i)</div><div class="ttdoc">Access index.</div><div class="ttdef"><b>Definition</b> SDL3pp_ownPtr.h:118</div></div>
 <div class="ttc" id="aclassSDL_1_1OwnArray_html_a2dcee422c96adf4c41687fb59f42f1bc"><div class="ttname"><a href="classSDL_1_1OwnArray.html#a2dcee422c96adf4c41687fb59f42f1bc">SDL::OwnArray::reset</a></div><div class="ttdeci">void reset(T *newValue, size_t size)</div><div class="ttdoc">Reset object.</div><div class="ttdef"><b>Definition</b> SDL3pp_ownPtr.h:111</div></div>

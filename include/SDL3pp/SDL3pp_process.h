@@ -285,12 +285,11 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @sa ProcessBase.ProcessBase
    */
-  OwnArray<std::byte> Read(int* exitcode = nullptr)
+  StringResult Read(int* exitcode = nullptr)
   {
     size_t size = 0;
-    auto data =
-      static_cast<std::byte*>(SDL_ReadProcess(get(), &size, exitcode));
-    return OwnArray<std::byte>(CheckError(data), size);
+    auto data = static_cast<char*>(SDL_ReadProcess(get(), &size, exitcode));
+    return StringResult(CheckError(data), size);
   }
 
   /**
