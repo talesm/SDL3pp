@@ -11,7 +11,7 @@ var searchData=
   ['pollevent_8',['pollevent',['../group__CategoryEvents.html#ga9fe4acc517213fe44e3d4e3fb8ea37f3',1,'SDL::PollEvent(Event *event)'],['../group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12',1,'SDL::PollEvent()']]],
   ['pow_9',['pow',['../group__CategoryStdinc.html#gac3b22877237dc964d05f19e5d7c93659',1,'SDL::pow(float x, float y)'],['../group__CategoryStdinc.html#ga6cfca7e593d97a56d7fca043af3ac2ce',1,'SDL::pow(double x, double y)']]],
   ['premultiplyalpha_10',['premultiplyalpha',['../structSDL_1_1SurfaceBase.html#a97d5cbddf468c0cf89dd6af59801b95b',1,'SDL::SurfaceBase::PremultiplyAlpha()'],['../group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4',1,'SDL::PremultiplyAlpha()']]],
-  ['present_11',['Present',['../structSDL_1_1RendererBase.html#ad0cda5a0dd3a96a6a3bfa7b3e5486364',1,'SDL::RendererBase']]],
+  ['present_11',['Present',['../structSDL_1_1RendererBase.html#a9e775356c7cde688e0cb62afc6cd8d13',1,'SDL::RendererBase']]],
   ['print_12',['print',['../structSDL_1_1IOStreamBase.html#aa9aae1323e3428a0033d8f77c0513f4e',1,'SDL::IOStreamBase']]],
   ['printf_13',['printf',['../structSDL_1_1IOStreamBase.html#a72963a0a1522b0240fd5470c379bc5f3',1,'SDL::IOStreamBase']]],
   ['println_14',['println',['../structSDL_1_1IOStreamBase.html#a4daa9809f64adc1a65cbacefb2013c3b',1,'SDL::IOStreamBase']]],

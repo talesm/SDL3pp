@@ -3622,6 +3622,7 @@ const transform = {
       }
     },
     "SDL_render.h": {
+      enableException: true,
       ignoreEntries: [
         "SDL_LockTextureToSurface",
         "SDL_RenderDebugTextFormat",
@@ -3744,7 +3745,7 @@ const transform = {
             "SDL_GetRendererName": "immutable",
             "GetOutputSize": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
@@ -3755,7 +3756,7 @@ const transform = {
             },
             "GetCurrentOutputSize": {
               "kind": "function",
-              "type": "std::optional<Point>",
+              "type": "Point",
               "immutable": true,
               "parameters": []
             },
@@ -3767,7 +3768,7 @@ const transform = {
             "SDL_GetRendererProperties": "immutable",
             "ResetTarget": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": []
             },
             "SDL_SetRenderTarget": {
@@ -3799,7 +3800,7 @@ const transform = {
             },
             "GetLogicalPresentation": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": [
                 {
                   "type": "SDL_Point *",
@@ -3818,12 +3819,12 @@ const transform = {
             "SDL_GetRenderLogicalPresentationRect": {
               "immutable": true,
               "name": "GetLogicalPresentationRect",
-              "type": "std::optional<FRect>",
+              "type": "FRect",
               "parameters": []
             },
             "SDL_RenderCoordinatesFromWindow": {
               "kind": "function",
-              "type": "std::optional<FPoint>",
+              "type": "FPoint",
               "immutable": true,
               "parameters": [
                 {
@@ -3834,7 +3835,7 @@ const transform = {
             },
             "SDL_RenderCoordinatesToWindow": {
               "kind": "function",
-              "type": "std::optional<FPoint>",
+              "type": "FPoint",
               "immutable": true,
               "parameters": [
                 {
@@ -3846,7 +3847,7 @@ const transform = {
             "SDL_ConvertEventToRenderCoordinates": "immutable",
             "ResetViewport": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": []
             },
             "SDL_SetRenderViewport": {
@@ -3862,7 +3863,7 @@ const transform = {
             "SDL_GetRenderViewport": {
               "name": "GetViewport",
               "immutable": true,
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": []
             },
             "SDL_RenderViewportSet": {
@@ -3872,12 +3873,12 @@ const transform = {
             "SDL_GetRenderSafeArea": {
               "name": "GetSafeArea",
               "immutable": true,
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": []
             },
             "ResetClipRect": {
               "kind": "function",
-              "type": "bool",
+              "type": "void",
               "parameters": []
             },
             "SDL_SetRenderClipRect": {
@@ -3893,7 +3894,7 @@ const transform = {
             "SDL_GetRenderClipRect": {
               "name": "GetClipRect",
               "immutable": true,
-              "type": "std::optional<Rect>",
+              "type": "Rect",
               "parameters": []
             },
             "SDL_RenderClipEnabled": {
@@ -3913,7 +3914,7 @@ const transform = {
             "GetScale": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<FPoint>",
+              "type": "FPoint",
               "parameters": []
             },
             "SDL_GetRenderScale": {
@@ -3944,13 +3945,13 @@ const transform = {
               {
                 "kind": "function",
                 "immutable": true,
-                "type": "std::optional<FColor>",
+                "type": "FColor",
                 "parameters": []
               },
               {
                 "kind": "function",
                 "immutable": true,
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "type": "SDL_Color *",
@@ -3961,7 +3962,7 @@ const transform = {
               {
                 "kind": "function",
                 "immutable": true,
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "type": "SDL_FColor *",
@@ -3984,7 +3985,7 @@ const transform = {
             "SDL_GetRenderColorScale": {
               "name": "GetColorScale",
               "immutable": true,
-              "type": "std::optional<float>",
+              "type": "float",
               "parameters": []
             },
             "SDL_SetRenderDrawBlendMode": {
@@ -3993,7 +3994,7 @@ const transform = {
             "SDL_GetRenderDrawBlendMode": {
               "name": "GetDrawBlendMode",
               "immutable": true,
-              "type": "std::optional<BlendMode>",
+              "type": "BlendMode",
               "parameters": []
             },
             "SDL_RenderClear": "function",
@@ -4296,14 +4297,14 @@ const transform = {
               "name": "SetVSync"
             },
             "SDL_GetRenderVSync": {
-              "kind": "function",
-              "name": "GetVSync",
-              "type": "std::optional<int>",
-              "immutable": true,
-              "parameters": []
+              kind: "function",
+              name: "GetVSync",
+              type: "int",
+              immutable: true,
+              parameters: []
             },
             "SDL_RenderDebugText": {
-              "parameters": [
+              parameters: [
                 {
                   "name": "this"
                 },
@@ -4318,15 +4319,15 @@ const transform = {
               ]
             },
             "RenderDebugTextFormat": {
-              "kind": "function",
-              "type": "bool",
-              "template": [
+              kind: "function",
+              type: "void",
+              template: [
                 {
                   "type": "class...",
                   "name": "ARGS"
                 }
               ],
-              "parameters": [
+              parameters: [
                 {
                   "type": "FPoint",
                   "name": "p"
@@ -4406,7 +4407,7 @@ const transform = {
             "SetColorAndAlphaMod": [
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "type": "Color",
@@ -4416,7 +4417,7 @@ const transform = {
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "parameters": [
                   {
                     "type": "FColor",
@@ -4428,13 +4429,13 @@ const transform = {
             "GetColorAndAlphaMod": [
               {
                 "kind": "function",
-                "type": "std::optional<FColor>",
+                "type": "FColor",
                 "immutable": true,
                 "parameters": []
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "immutable": true,
                 "parameters": [
                   {
@@ -4445,7 +4446,7 @@ const transform = {
               },
               {
                 "kind": "function",
-                "type": "bool",
+                "type": "void",
                 "immutable": true,
                 "parameters": [
                   {
@@ -4464,7 +4465,7 @@ const transform = {
             "GetAlphaMod": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<float>",
+              "type": "float",
               "parameters": []
             },
             "SDL_GetTextureAlphaMod": "immutable",
@@ -4473,14 +4474,14 @@ const transform = {
             "SDL_GetTextureBlendMode": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<BlendMode>",
+              "type": "BlendMode",
               "parameters": []
             },
             "SDL_SetTextureScaleMode": "function",
             "SDL_GetTextureScaleMode": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<ScaleMode>",
+              "type": "ScaleMode",
               "parameters": []
             },
             "SDL_UpdateTexture": {

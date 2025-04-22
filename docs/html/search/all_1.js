@@ -14,7 +14,7 @@ var searchData=
   ['addhintcallback_11',['AddHintCallback',['../group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c',1,'SDL']]],
   ['additional_20functionality_12',['additional functionality',['../ApiByCategory.html#additional-functionality',1,'Additional Functionality'],['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality']]],
   ['addtimer_13',['addtimer',['../group__CategoryTimer.html#ga4605aebef3c001d56891a33e116e0201',1,'SDL::AddTimer(std::chrono::nanoseconds interval, TimerCB callback)'],['../group__CategoryTimer.html#ga02d8e0fb2964e4869f7f7df72fb4641d',1,'SDL::AddTimer(std::chrono::nanoseconds interval, NSTimerCallback callback, void *userdata)'],['../group__CategoryTimer.html#ga20856cc59994a8ecf066d73490d67bb5',1,'SDL::AddTimer(std::chrono::milliseconds interval, TimerCallback callback, void *userdata)']]],
-  ['addvulkanrendersemaphores_14',['AddVulkanRenderSemaphores',['../group__CategoryRender.html#gae0a3ed82279ee237450c52b3d616ab2a',1,'SDL']]],
+  ['addvulkanrendersemaphores_14',['AddVulkanRenderSemaphores',['../group__CategoryRender.html#ga0ea1b1c1d4bacddbbb4e6d41436903f8',1,'SDL']]],
   ['aligned_5falloc_15',['aligned_alloc',['../group__CategoryStdinc.html#gae3c9f70ddeadaecb2afeee2b3be34733',1,'SDL']]],
   ['aligned_5ffree_16',['aligned_free',['../group__CategoryStdinc.html#gaaf1efed697d82742be084a1871c95aa2',1,'SDL']]],
   ['and_20byte_20swapping_17',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]],

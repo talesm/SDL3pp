@@ -496,7 +496,7 @@ constexpr SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 </ul>
 <p>The <a class="el" href="structSDL_1_1WindowBase.html" title="Represents a handle to a window.">WindowBase</a> is implicitly shown if WINDOW_HIDDEN is not set.</p>
 <p>On Apple's macOS, you <b>must</b> set the NSHighResolutionCapable Info.plist property to YES, otherwise you will not receive a High-DPI OpenGL canvas.</p>
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#acae2c7e78b39f05ecdb5e117fe8e3d5b" title="Get the size of a window&#39;s client area.">WindowBase.GetSize()</a> to query the client area's size in window coordinates, and <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">WindowBase.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#a6fd3e1a52596cdebb32a7238de44b6c4" title="Get the output size in pixels of a rendering context.">RendererBase.GetOutputSize()</a> to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.</p>
+<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#acae2c7e78b39f05ecdb5e117fe8e3d5b" title="Get the size of a window&#39;s client area.">WindowBase.GetSize()</a> to query the client area's size in window coordinates, and <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">WindowBase.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#aca014225ade318d55397e72e2f8fe7c2" title="Get the output size in pixels of a rendering context.">RendererBase.GetOutputSize()</a> to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.</p>
 <p>If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN flags, then the corresponding LoadLibrary function (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by <a class="el" href="structSDL_1_1WindowRef.html#a850b93ca1b23b6472f846c2f76af7099" title="Destroy a window.">WindowRef.reset()</a>.</p>
 <p>If WINDOW_VULKAN is specified and there isn't a working Vulkan driver, <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase()</a> will fail, because SDL_Vulkan_LoadLibrary() will fail.</p>
 <p>If WINDOW_METAL is specified on an OS that does not support Metal, <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase()</a> will fail.</p>
@@ -1628,7 +1628,7 @@ SetPosition(int *, int *) </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>This is the current position of the window as last reported by the windowing system.</p>
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">Window.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#a6fd3e1a52596cdebb32a7238de44b6c4" title="Get the output size in pixels of a rendering context.">RendererBase.GetOutputSize()</a> to get the real client area size in pixels.</p>
+<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">Window.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#aca014225ade318d55397e72e2f8fe7c2" title="Get the output size in pixels of a rendering context.">RendererBase.GetOutputSize()</a> to get the real client area size in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> with the position and size </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
@@ -1696,11 +1696,11 @@ SetPosition(int *, int *) </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#a6fd3e1a52596cdebb32a7238de44b6c4" title="Get the output size in pixels of a rendering context.">Renderer.GetOutputSize()</a> to get the real client area size in pixels.</p>
+<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#aca014225ade318d55397e72e2f8fe7c2" title="Get the output size in pixels of a rendering context.">Renderer.GetOutputSize()</a> to get the real client area size in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd>a point with width and height on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a6fd3e1a52596cdebb32a7238de44b6c4" title="Get the output size in pixels of a rendering context.">Renderer.GetOutputSize()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aca014225ade318d55397e72e2f8fe7c2" title="Get the output size in pixels of a rendering context.">Renderer.GetOutputSize()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> </dd>
 <dd>
@@ -1743,7 +1743,7 @@ GetSize(int *, int *) </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">WindowBase.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#a6fd3e1a52596cdebb32a7238de44b6c4" title="Get the output size in pixels of a rendering context.">RendererBase.GetOutputSize()</a> to get the real client area size in pixels.</p>
+<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">WindowBase.GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#aca014225ade318d55397e72e2f8fe7c2" title="Get the output size in pixels of a rendering context.">RendererBase.GetOutputSize()</a> to get the real client area size in pixels.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">w</td><td>a pointer filled in with the width of the window, may be nullptr. </td></tr>
@@ -1759,7 +1759,7 @@ GetSize(int *, int *) </dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a6fd3e1a52596cdebb32a7238de44b6c4" title="Get the output size in pixels of a rendering context.">RendererBase.GetOutputSize</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aca014225ade318d55397e72e2f8fe7c2" title="Get the output size in pixels of a rendering context.">RendererBase.GetOutputSize</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a88424d7be2e4d98ec3bc32d44a6d4b50" title="Get the size of a window&#39;s client area, in pixels.">WindowBase.GetSizeInPixels</a> </dd>
 <dd>

@@ -512,11 +512,11 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>TextureBase</b></td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><b>Warning</b>: Please note that SDL_LockTexture() is intended to be write-only; it will not guarantee the previous contents of the texture will be provided. You must fully initialize any area of a texture that you lock before unlocking it, as the pixels might otherwise be uninitialized memory.</p>
+<p><b>Warning</b>: Please note that <a class="el" href="group__CategoryRender.html#ga03f21dd1f8d971c47399a7f17bfb860a" title="Lock a portion of the texture for write-only pixel access.">TextureBase.Lock()</a> is intended to be write-only; it will not guarantee the previous contents of the texture will be provided. You must fully initialize any area of a texture that you lock before unlocking it, as the pixels might otherwise be uninitialized memory.</p>
 <p>Which is to say: locking and immediately unlocking a texture can result in corrupted textures, depending on the renderer in use.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_LockTexture </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga03f21dd1f8d971c47399a7f17bfb860a" title="Lock a portion of the texture for write-only pixel access.">TextureBase.Lock</a> </dd></dl>
 
 </div>
 </div>

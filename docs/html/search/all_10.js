@@ -144,7 +144,7 @@ var searchData=
   ['powerstate_5fon_5fbattery_141',['POWERSTATE_ON_BATTERY',['../group__CategoryPower.html#ga1bc24c65645e030f4e96f30003ea0cbd',1,'SDL']]],
   ['powerstate_5funknown_142',['POWERSTATE_UNKNOWN',['../group__CategoryPower.html#ga25c407edb7134d9bed51897ffde972ec',1,'SDL']]],
   ['premultiplyalpha_143',['premultiplyalpha',['../structSDL_1_1SurfaceBase.html#a97d5cbddf468c0cf89dd6af59801b95b',1,'SDL::SurfaceBase::PremultiplyAlpha()'],['../group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4',1,'SDL::PremultiplyAlpha()']]],
-  ['present_144',['Present',['../structSDL_1_1RendererBase.html#ad0cda5a0dd3a96a6a3bfa7b3e5486364',1,'SDL::RendererBase']]],
+  ['present_144',['Present',['../structSDL_1_1RendererBase.html#a9e775356c7cde688e0cb62afc6cd8d13',1,'SDL::RendererBase']]],
   ['primitives_145',['Thread Synchronization Primitives',['../group__CategoryMutex.html',1,'']]],
   ['print_146',['print',['../structSDL_1_1IOStreamBase.html#aa9aae1323e3428a0033d8f77c0513f4e',1,'SDL::IOStreamBase']]],
   ['printf_147',['printf',['../structSDL_1_1IOStreamBase.html#a72963a0a1522b0240fd5470c379bc5f3',1,'SDL::IOStreamBase']]],

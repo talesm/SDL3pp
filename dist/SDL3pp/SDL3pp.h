@@ -41762,8 +41762,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param window the window where rendering is displayed.
    * @param name the name of the rendering driver to initialize, or nullptr to
    *             let SDL choose one.
-   * @post a valid rendering context or nullptr if there was an error; call
-   *       GetError() for more information.
+   * @post a valid rendering context.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41774,7 +41774,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetName
    */
   RendererBase(WindowBase& window, StringParam name)
-    : Resource(SDL_CreateRenderer(window.get(), name))
+    : Resource(CheckError(SDL_CreateRenderer(window.get(), name)))
   {
   }
 
@@ -41819,8 +41819,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * GetError() for more information.
    *
    * @param props the properties to use.
-   * @post a valid rendering context or nullptr if there was an error; call
-   *       GetError() for more information.
+   * @post a valid rendering context.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41830,7 +41830,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetName
    */
   RendererBase(PropertiesBase& props)
-    : Resource(SDL_CreateRendererWithProperties(props.get()))
+    : Resource(CheckError(SDL_CreateRendererWithProperties(props.get())))
   {
   }
 
@@ -41842,47 +41842,44 @@ struct RendererBase : Resource<SDL_Renderer*>
    * create a software renderer, but they are intended to be used with an
    * WindowBase as the final destination and not an SurfaceBase.
    *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
-   * @param surface the SDL_Surface structure representing the surface where
+   * @param surface the Surface structure representing the surface where
    *                rendering is done.
-   * @post a valid rendering context or nullptr if there was an error; call
-   *       GetError() for more information.
+   * @post a valid rendering context.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
   RendererBase(SurfaceBase& surface)
-    : Resource(SDL_CreateSoftwareRenderer(surface.get()))
+    : Resource(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
   {
   }
 
   /**
    * Get the window associated with a renderer.
    *
-   * @returns the window on success or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  WindowRef GetWindow() { return SDL_GetRenderWindow(get()); }
+  WindowRef GetWindow() { return CheckError(SDL_GetRenderWindow(get())); }
 
   /**
    * Get the name of a renderer.
    *
-   * @returns the name of the selected renderer, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns the name of the selected renderer.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
    */
-  const char* GetName() const { return SDL_GetRendererName(get()); }
+  const char* GetName() const { return CheckError(SDL_GetRendererName(get())); }
 
   /**
    * Get the output size in pixels of a rendering context.
@@ -41893,10 +41890,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @returns Point on success or std::nullopt on failure; call GetError() for
    *          more information.
    */
-  std::optional<Point> GetOutputSize() const
+  Point GetOutputSize() const
   {
-    if (Point p; GetOutputSize(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetOutputSize(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -41910,8 +41908,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param w a pointer filled in with the width in pixels.
    * @param h a pointer filled in with the height in pixels.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41919,9 +41916,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetCurrentOutputSize
    */
-  bool GetOutputSize(int* w, int* h) const
+  void GetOutputSize(int* w, int* h) const
   {
-    return SDL_GetRenderOutputSize(get(), w, h);
+    CheckError(SDL_GetRenderOutputSize(get(), w, h));
   }
 
   /**
@@ -41931,8 +41928,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * target in pixels, otherwise if a logical size is set, it will return the
    * logical size, otherwise it will return the value of GetOutputSize().
    *
-   * @returns the size on success or false on failure; call GetError() for more
-   *          information.
+   * @returns the size on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41940,10 +41937,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa GetOutputSize()
    */
-  std::optional<Point> GetCurrentOutputSize() const
+  Point GetCurrentOutputSize() const
   {
-    if (Point p; GetCurrentOutputSize(&p.x, &p.y)) return p;
-    return std::nullopt;
+    Point p;
+    GetCurrentOutputSize(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -41958,8 +41956,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param w a pointer filled in with the current width.
    * @param h a pointer filled in with the current height.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -41967,9 +41964,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetOutputSize
    */
-  bool GetCurrentOutputSize(int* w, int* h) const
+  void GetCurrentOutputSize(int* w, int* h) const
   {
-    return SDL_GetCurrentRenderOutputSize(get(), w, h);
+    CheckError(SDL_GetCurrentRenderOutputSize(get(), w, h));
   }
 
   /**
@@ -42048,8 +42045,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * - `prop::Renderer.GPU_DEVICE_POINTER`: the SDL_GPUDevice associated with
    *   the renderer
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -42057,7 +42054,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    */
   PropertiesRef GetProperties() const
   {
-    return SDL_GetRendererProperties(get());
+    return CheckError(SDL_GetRendererProperties(get()));
   }
 
   /**
@@ -42065,8 +42062,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * This is equivalent to SetTarget(nullptr)
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42075,7 +42071,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa SetTarget(nullptr)
    * @sa GetTarget()
    */
-  bool ResetTarget();
+  void ResetTarget();
 
   /**
    * Set a texture as the current rendering target.
@@ -42092,8 +42088,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param texture the targeted texture, which must be created with the
    *                `TEXTUREACCESS_TARGET` flag, or nullptr to render to the
    *                window instead of a texture.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42101,7 +42096,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetTarget
    */
-  bool SetTarget(OptionalTexture texture);
+  void SetTarget(OptionalTexture texture);
 
   /**
    * Get the current render target.
@@ -42160,8 +42155,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param size the width and height of the logical resolution.
    * @param mode the presentation mode used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42171,9 +42165,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetLogicalPresentation
    * @sa RendererBase.GetLogicalPresentationRect
    */
-  bool SetLogicalPresentation(SDL_Point size, RendererLogicalPresentation mode)
+  void SetLogicalPresentation(SDL_Point size, RendererLogicalPresentation mode)
   {
-    return SDL_SetRenderLogicalPresentation(get(), size.x, size.y, mode);
+    CheckError(SDL_SetRenderLogicalPresentation(get(), size.x, size.y, mode));
   }
 
   /**
@@ -42184,8 +42178,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param size a Point to be filled with the width and height.
    * @param mode the presentation mode used.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42193,7 +42186,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetLogicalPresentation
    */
-  bool GetLogicalPresentation(SDL_Point* size,
+  void GetLogicalPresentation(SDL_Point* size,
                               RendererLogicalPresentation* mode)
   {
     if (!size) return GetLogicalPresentation(nullptr, nullptr, mode);
@@ -42212,8 +42205,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param w an int to be filled with the width.
    * @param h an int to be filled with the height.
    * @param mode the presentation mode used.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42221,11 +42213,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetLogicalPresentation
    */
-  bool GetLogicalPresentation(int* w,
+  void GetLogicalPresentation(int* w,
                               int* h,
                               RendererLogicalPresentation* mode) const
   {
-    return SDL_GetRenderLogicalPresentation(get(), w, h, mode);
+    CheckError(SDL_GetRenderLogicalPresentation(get(), w, h, mode));
   }
 
   /**
@@ -42239,8 +42231,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Each render target has its own logical presentation state. This function
    * gets the rectangle for the current render target.
    *
-   * @returns the rect with the final presentation rectangle on success or
-   * std::nullopt on failure; call GetError() for more information.
+   * @returns the rect with the final presentation rectangle on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42248,12 +42240,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetLogicalPresentation
    */
-  std::optional<FRect> GetLogicalPresentationRect() const
+  FRect GetLogicalPresentationRect() const
   {
-    if (FRect rect; SDL_GetRenderLogicalPresentationRect(get(), &rect)) {
-      return rect;
-    }
-    return std::nullopt;
+    FRect rect;
+    CheckError(SDL_GetRenderLogicalPresentationRect(get(), &rect));
+    return rect;
   }
 
   /**
@@ -42267,8 +42258,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * - The viewport (RendererBase.SetViewport)
    *
    * @param window_coord the x, y coordinate in window coordinates.
-   * @returns a FPoint containing ther render coordinates on success or
-   * {0,0} on failure; call GetError() for more information.
+   * @returns a FPoint containing ther render coordinates on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42277,14 +42268,12 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.SetLogicalPresentation
    * @sa RendererBase.SetScale
    */
-  std::optional<FPoint> RenderCoordinatesFromWindow(
-    const SDL_FPoint& window_coord) const
+  FPoint RenderCoordinatesFromWindow(const SDL_FPoint& window_coord) const
   {
-    if (FPoint p; SDL_RenderCoordinatesFromWindow(
-          get(), window_coord.x, window_coord.y, &p.x, &p.y)) {
-      return p;
-    }
-    return {};
+    FPoint p;
+    CheckError(SDL_RenderCoordinatesFromWindow(
+      get(), window_coord.x, window_coord.y, &p.x, &p.y));
+    return p;
   }
 
   /**
@@ -42298,8 +42287,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * - The viewport (RendererBase.SetViewport)
    *
    * @param coord the x, y coordinate in render coordinates.
-   * @returns a FPoint filled with window coordinates on success or std::nullopt
-   * on failure; call SDL_GetError() for more information.
+   * @returns a FPoint filled with window coordinates on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42309,13 +42298,12 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.SetScale
    * @sa RendererBase.SetViewport
    */
-  std::optional<FPoint> RenderCoordinatesToWindow(const SDL_FPoint& coord) const
+  FPoint RenderCoordinatesToWindow(const SDL_FPoint& coord) const
   {
-    if (FPoint p;
-        SDL_RenderCoordinatesToWindow(get(), coord.x, coord.y, &p.x, &p.y)) {
-      return p;
-    }
-    return {};
+    FPoint p;
+    CheckError(
+      SDL_RenderCoordinatesToWindow(get(), coord.x, coord.y, &p.x, &p.y));
+    return p;
   }
 
   /**
@@ -42342,8 +42330,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Once converted, coordinates may be outside the rendering area.
    *
    * @param event the event to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42351,9 +42338,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderCoordinatesFromWindow
    */
-  bool ConvertEventToRenderCoordinates(Event* event) const
+  void ConvertEventToRenderCoordinates(Event* event) const
   {
-    return SDL_ConvertEventToRenderCoordinates(get(), event);
+    CheckError(SDL_ConvertEventToRenderCoordinates(get(), event));
   }
 
   /**
@@ -42361,8 +42348,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * This is equivalent to `SetViewport(std::nullopt)`
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42372,7 +42358,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa SetViewport()
    * @sa ViewportSet()
    */
-  bool ResetViewport() { return SetViewport(std::nullopt); }
+  void ResetViewport() { SetViewport(std::nullopt); }
 
   /**
    * Set the drawing area for rendering on the current target.
@@ -42388,8 +42374,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param rect the Rect structure representing the drawing area, or nullptr
    *             to set the viewport to the entire target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42398,9 +42383,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetViewport
    * @sa RendererBase.IsViewportSet
    */
-  bool SetViewport(OptionalRef<const SDL_Rect> rect)
+  void SetViewport(OptionalRef<const SDL_Rect> rect)
   {
-    return SDL_SetRenderViewport(get(), rect);
+    CheckError(SDL_SetRenderViewport(get(), rect));
   }
 
   /**
@@ -42409,8 +42394,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Each render target has its own viewport. This function gets the viewport
    * for the current render target.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @returns an Rect with the current drawing area.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42419,10 +42404,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.IsViewportSet
    * @sa RendererBase.SetViewport
    */
-  std::optional<Rect> GetViewport() const
+  Rect GetViewport() const
   {
-    if (Rect rect; SDL_GetRenderViewport(get(), &rect)) return rect;
-    return {};
+    Rect rect;
+    CheckError(SDL_GetRenderViewport(get(), &rect));
+    return rect;
   }
 
   /**
@@ -42457,17 +42443,18 @@ struct RendererBase : Resource<SDL_Renderer*>
    * rendering into the rest of the render target, but it should not contain
    * visually important or interactible content.
    *
-   * @returns the rect filled the area that is safe for interactive content on
-   * success or std::nullopt on failure; call GetError() for more information.
+   * @returns the rect filled the area that is safe for interactive content.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Rect> GetSafeArea() const
+  Rect GetSafeArea() const
   {
-    if (Rect rect; SDL_GetRenderSafeArea(get(), &rect)) return rect;
-    return {};
+    Rect rect;
+    CheckError(SDL_GetRenderSafeArea(get(), &rect));
+    return rect;
   }
 
   /**
@@ -42475,8 +42462,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * This is equivalent to `SetClipRect(std::nullopt)`
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42486,7 +42472,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa SetClipRect()
    * @sa ClipEnabled()
    */
-  bool ResetClipRect() { return SetClipRect({}); }
+  void ResetClipRect() { SetClipRect({}); }
 
   /**
    * Set the clip rectangle for rendering on the specified target.
@@ -42496,8 +42482,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param rect an Rect structure representing the clip area, relative to
    *             the viewport, or nullptr to disable clipping.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42507,9 +42492,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.ResetClipRect()
    * @sa RendererBase.IsClipEnabled
    */
-  bool SetClipRect(OptionalRef<const SDL_Rect> rect)
+  void SetClipRect(OptionalRef<const SDL_Rect> rect)
   {
-    return SDL_SetRenderClipRect(get(), rect);
+    CheckError(SDL_SetRenderClipRect(get(), rect));
   }
 
   /**
@@ -42518,9 +42503,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Each render target has its own clip rectangle. This function gets the
    * cliprect for the current render target.
    *
-   * @returns the rect filled in with the current clipping area or an empty
-   * rectangle if clipping is disabled on success; std::nullopt on failure, call
-   * GetError() for more information.
+   * @returns an Rect structure with the current clipping area
+   *             or an empty rectangle if clipping is disabled.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42529,10 +42514,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.IsClipEnabled
    * @sa RendererBase.SetClipRect
    */
-  std::optional<Rect> GetClipRect() const
+  Rect GetClipRect() const
   {
-    if (Rect rect; SDL_GetRenderClipRect(get(), &rect)) return rect;
-    return {};
+    Rect rect;
+    CheckError(SDL_GetRenderClipRect(get(), &rect));
+    return rect;
   }
 
   /**
@@ -42568,8 +42554,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * current render target.
    *
    * @param scale the x, y scaling factors.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42577,9 +42562,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetScale
    */
-  bool SetScale(SDL_FPoint scale)
+  void SetScale(SDL_FPoint scale)
   {
-    return SDL_SetRenderScale(get(), scale.x, scale.y);
+    CheckError(SDL_SetRenderScale(get(), scale.x, scale.y));
   }
 
   /**
@@ -42588,8 +42573,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Each render target has its own scale. This function gets the scale for the
    * current render target.
    *
-   * @returns the scaling factors on success or std::nullopt on failure; call
-   *          GetError() for more information.
+   * @returns the scaling factors on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42597,10 +42582,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetScale
    */
-  std::optional<FPoint> GetScale() const
+  FPoint GetScale() const
   {
-    if (FPoint p; GetScale(&p.x, &p.y)) return p;
-    return std::nullopt;
+    FPoint p;
+    GetScale(&p.x, &p.y);
+    return p;
   }
 
   /**
@@ -42611,8 +42597,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param scaleX a pointer filled in with the horizontal scaling factor.
    * @param scaleY a pointer filled in with the vertical scaling factor.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42620,9 +42605,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetScale
    */
-  bool GetScale(float* scaleX, float* scaleY) const
+  void GetScale(float* scaleX, float* scaleY) const
   {
-    return SDL_GetRenderScale(get(), scaleX, scaleY);
+    CheckError(SDL_GetRenderScale(get(), scaleX, scaleY));
   }
 
   /**
@@ -42632,8 +42617,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * RendererBase.RenderClear().
    *
    * @param c the color value used to draw on the rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42641,9 +42625,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetDrawColor
    */
-  bool SetDrawColor(SDL_Color c)
+  void SetDrawColor(SDL_Color c)
   {
-    return SDL_SetRenderDrawColor(get(), c.r, c.g, c.b, c.a);
+    CheckError(SDL_SetRenderDrawColor(get(), c.r, c.g, c.b, c.a));
   }
 
   /**
@@ -42653,8 +42637,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * RendererBase.RenderClear().
    *
    * @param c the RGBA values used to draw on the rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42662,16 +42645,16 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetDrawColor
    */
-  bool SetDrawColor(SDL_FColor c)
+  void SetDrawColor(SDL_FColor c)
   {
-    return SDL_SetRenderDrawColorFloat(get(), c.r, c.g, c.b, c.a);
+    CheckError(SDL_SetRenderDrawColorFloat(get(), c.r, c.g, c.b, c.a));
   }
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
-   * @returns the color on success or false on failure; call GetError() for more
-   *          information.
+   * @returns the color on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42680,19 +42663,19 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa GetDrawColor(SDL_FColor*)
    * @sa SetDrawColor()
    */
-  std::optional<FColor> GetDrawColor() const
+  FColor GetDrawColor() const
   {
-    if (FColor color; GetDrawColor(&color)) return color;
-    return std::nullopt;
+    FColor color;
+    GetDrawColor(&color);
+    return color;
   }
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
    * @param c a pointer filled in with the color channel values used to draw on
-   *          the rendering target.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   *          the rendering target. @b must @b not be nullptr.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42701,21 +42684,17 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa GetDrawColor(SDL_FColor*)
    * @sa SetDrawColor()
    */
-  bool GetDrawColor(SDL_Color* c) const
+  void GetDrawColor(SDL_Color* c) const
   {
-    if (!c) {
-      return SDL_GetRenderDrawColor(get(), nullptr, nullptr, nullptr, nullptr);
-    }
-    return GetDrawColor(&c->r, &c->g, &c->b, &c->a);
+    GetDrawColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
    * @param c a pointer filled in with the color channel values used to draw on
-   *          the rendering target.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   *          the rendering target. @b must @b not be nullptr.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42724,13 +42703,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa GetDrawColor(SDL_Color*)
    * @sa SetDrawColor()
    */
-  bool GetDrawColor(SDL_FColor* c) const
+  void GetDrawColor(SDL_FColor* c) const
   {
-    if (!c) {
-      return SDL_GetRenderDrawColorFloat(
-        get(), nullptr, nullptr, nullptr, nullptr);
-    }
-    return GetDrawColor(&c->r, &c->g, &c->b, &c->a);
+    GetDrawColor(&c->r, &c->g, &c->b, &c->a);
   }
 
   /**
@@ -42744,8 +42719,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *          rendering target.
    * @param a a pointer filled in with the alpha value used to draw on the
    *          rendering target; usually `SDL_ALPHA_OPAQUE` (255).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42753,9 +42727,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetDrawColor
    */
-  bool GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+  void GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
   {
-    return SDL_GetRenderDrawColor(get(), r, g, b, a);
+    CheckError(SDL_GetRenderDrawColor(get(), r, g, b, a));
   }
 
   /**
@@ -42769,8 +42743,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *          rendering target.
    * @param a a pointer filled in with the alpha value used to draw on the
    *          rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42778,9 +42751,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetDrawColor
    */
-  bool GetDrawColor(float* r, float* g, float* b, float* a) const
+  void GetDrawColor(float* r, float* g, float* b, float* a) const
   {
-    return SDL_GetRenderDrawColorFloat(get(), r, g, b, a);
+    CheckError(SDL_GetRenderDrawColorFloat(get(), r, g, b, a));
   }
 
   /**
@@ -42795,8 +42768,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * brightness.
    *
    * @param scale the color scale value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42804,16 +42776,16 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetColorScale
    */
-  bool SetColorScale(float scale)
+  void SetColorScale(float scale)
   {
-    return SDL_SetRenderColorScale(get(), scale);
+    CheckError(SDL_SetRenderColorScale(get(), scale));
   }
 
   /**
    * Get the color scale used for render operations.
    *
-   * @returns a float representing the current color scale on success or
-   * std::nullopt on failure; call SDL_GetError() for more information.
+   * @returns a float representing the current color scale on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42821,10 +42793,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetColorScale
    */
-  std::optional<float> GetColorScale() const
+  float GetColorScale() const
   {
-    if (float scale; SDL_GetRenderColorScale(get(), &scale)) return scale;
-    return std::nullopt;
+    float scale;
+    CheckError(SDL_GetRenderColorScale(get(), &scale));
+    return scale;
   }
 
   /**
@@ -42833,8 +42806,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * If the blend mode is not supported, the closest supported mode is chosen.
    *
    * @param blendMode the BlendMode to use for blending.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42842,16 +42814,16 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetDrawBlendMode
    */
-  bool SetDrawBlendMode(BlendMode blendMode)
+  void SetDrawBlendMode(BlendMode blendMode)
   {
-    return SDL_SetRenderDrawBlendMode(get(), blendMode);
+    CheckError(SDL_SetRenderDrawBlendMode(get(), blendMode));
   }
 
   /**
    * Get the blend mode used for drawing operations.
    *
-   * @returns the current BlendMode on success or std::nullopt on failure; call
-   *          GetError() for more information.
+   * @returns the current BlendMode on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42859,12 +42831,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetDrawBlendMode
    */
-  std::optional<BlendMode> GetDrawBlendMode() const
+  BlendMode GetDrawBlendMode() const
   {
-    if (BlendMode blendMode; SDL_GetRenderDrawBlendMode(get(), &blendMode)) {
-      return blendMode;
-    }
-    return std::nullopt;
+    BlendMode blendMode;
+    CheckError(SDL_GetRenderDrawBlendMode(get(), &blendMode));
+    return blendMode;
   }
 
   /**
@@ -42875,8 +42846,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * the rendering target to current renderer draw color, so make sure to invoke
    * RendererBase.SetDrawColor() when needed.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42884,14 +42854,13 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetDrawColor
    */
-  bool RenderClear() { return SDL_RenderClear(get()); }
+  void RenderClear() { CheckError(SDL_RenderClear(get())); }
 
   /**
    * Draw a point on the current rendering target at subpixel precision.
    *
    * @param p the x, y coordinates of the point.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42899,14 +42868,16 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderPoints
    */
-  bool RenderPoint(SDL_FPoint p) { return SDL_RenderPoint(get(), p.x, p.y); }
+  void RenderPoint(SDL_FPoint p)
+  {
+    CheckError(SDL_RenderPoint(get(), p.x, p.y));
+  }
 
   /**
    * Draw multiple points on the current rendering target at subpixel precision.
    *
    * @param points the points to draw.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42914,10 +42885,10 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderPoint
    */
-  bool RenderPoints(SpanRef<const SDL_FPoint> points)
+  void RenderPoints(SpanRef<const SDL_FPoint> points)
   {
     SDL_assert_paranoid(points.size() < SDL_MAX_SINT32);
-    return SDL_RenderPoints(get(), points.data(), points.size());
+    CheckError(SDL_RenderPoints(get(), points.data(), points.size()));
   }
 
   /**
@@ -42925,8 +42896,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param p1 the x,y coordinate of the start point.
    * @param p2 the x,y coordinate of the end point.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42934,18 +42904,17 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderLines
    */
-  bool RenderLine(SDL_FPoint p1, SDL_FPoint p2)
+  void RenderLine(SDL_FPoint p1, SDL_FPoint p2)
   {
-    return SDL_RenderLine(get(), p1.x, p1.y, p2.x, p2.y);
+    CheckError(SDL_RenderLine(get(), p1.x, p1.y, p2.x, p2.y));
   }
 
   /**
    * Draw a series of connected lines on the current rendering target at
    * subpixel precision.
    *
-   * @param points the points along the lines, drawing points.size-1 lines.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param points the points along the lines.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42953,10 +42922,10 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderLine
    */
-  bool RenderLines(SpanRef<const SDL_FPoint> points)
+  void RenderLines(SpanRef<const SDL_FPoint> points)
   {
     SDL_assert_paranoid(points.size() < SDL_MAX_SINT32);
-    return SDL_RenderLines(get(), points.data(), points.size());
+    CheckError(SDL_RenderLines(get(), points.data(), points.size()));
   }
 
   /**
@@ -42964,8 +42933,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param rect a pointer to the destination rectangle, or std::nullopt to
    *             outline the entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42973,9 +42941,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderRects
    */
-  bool RenderRect(OptionalRef<const SDL_FRect> rect)
+  void RenderRect(OptionalRef<const SDL_FRect> rect)
   {
-    return SDL_RenderRect(get(), rect);
+    CheckError(SDL_RenderRect(get(), rect));
   }
 
   /**
@@ -42983,8 +42951,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * precision.
    *
    * @param rects a pointer to an array of destination rectangles.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -42992,10 +42959,10 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderRect
    */
-  bool RenderRects(SpanRef<const SDL_FRect> rects)
+  void RenderRects(SpanRef<const SDL_FRect> rects)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_SINT32);
-    return SDL_RenderRects(get(), rects.data(), rects.size());
+    CheckError(SDL_RenderRects(get(), rects.data(), rects.size()));
   }
 
   /**
@@ -43004,8 +42971,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @param rect a pointer to the destination rectangle, or std::nullopt for the
    *             entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43013,9 +42979,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderFillRects
    */
-  bool RenderFillRect(OptionalRef<const SDL_FRect> rect)
+  void RenderFillRect(OptionalRef<const SDL_FRect> rect)
   {
-    return SDL_RenderFillRect(get(), rect);
+    CheckError(SDL_RenderFillRect(get(), rect));
   }
 
   /**
@@ -43023,8 +42989,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * drawing color at subpixel precision.
    *
    * @param rects a pointer to an array of destination rectangles.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43032,10 +42997,10 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderFillRect
    */
-  bool RenderFillRects(SpanRef<const SDL_FRect> rects)
+  void RenderFillRects(SpanRef<const SDL_FRect> rects)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_SINT32);
-    return SDL_RenderFillRects(get(), rects.data(), rects.size());
+    CheckError(SDL_RenderFillRects(get(), rects.data(), rects.size()));
   }
 
   /**
@@ -43047,8 +43012,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *                texture.
    * @param dstrect a pointer to the destination rectangle, or nullptr for the
    *                entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43057,7 +43021,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.RenderTextureRotated
    * @sa RendererBase.RenderTextureTiled
    */
-  bool RenderTexture(TextureBase& texture,
+  void RenderTexture(TextureBase& texture,
                      OptionalRef<const SDL_FRect> srcrect,
                      OptionalRef<const SDL_FRect> dstrect);
 
@@ -43077,8 +43041,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *               around dstrect.w/2, dstrect.h/2).
    * @param flip an FlipMode value stating which flipping actions should be
    *             performed on the texture.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43086,7 +43049,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderTexture
    */
-  bool RenderTextureRotated(TextureBase& texture,
+  void RenderTextureRotated(TextureBase& texture,
                             OptionalRef<const SDL_FRect> srcrect,
                             OptionalRef<const SDL_FRect> dstrect,
                             double angle,
@@ -43108,9 +43071,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    *              target's top-right corner.
    * @param down a pointer to a point indicating where the bottom-left corner of
    *             srcrect should be mapped to, or nullptr for the rendering
-   * target's bottom-left corner.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *             target's bottom-left corner.
+   * @throws Error on failure.
    *
    * @threadsafety You may only call this function from the main thread.
    *
@@ -43118,7 +43080,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderTexture
    */
-  bool RenderTextureAffine(TextureBase& texture,
+  void RenderTextureAffine(TextureBase& texture,
                            OptionalRef<const SDL_FRect> srcrect,
                            OptionalRef<const SDL_FPoint> origin,
                            OptionalRef<const SDL_FPoint> right,
@@ -43139,8 +43101,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *              64x64 tiles.
    * @param dstrect a pointer to the destination rectangle, or nullptr for the
    *                entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43148,7 +43109,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderTexture
    */
-  bool RenderTextureTiled(TextureBase& texture,
+  void RenderTextureTiled(TextureBase& texture,
                           OptionalRef<const SDL_FRect> srcrect,
                           float scale,
                           OptionalRef<const SDL_FRect> dstrect);
@@ -43175,8 +43136,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *              corner of `dstrect`, or 0.0f for an unscaled copy.
    * @param dstrect a pointer to the destination rectangle, or nullptr for the
    *                entire rendering target.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43184,7 +43144,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderTexture
    */
-  bool RenderTexture9Grid(TextureBase& texture,
+  void RenderTexture9Grid(TextureBase& texture,
                           OptionalRef<const SDL_FRect> srcrect,
                           float left_width,
                           float right_width,
@@ -43203,8 +43163,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param indices (optional) An array of integer indices into the 'vertices'
    *                array, if nullptr all vertices will be rendered in
    *                sequential order.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43212,7 +43171,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderGeometryRaw
    */
-  bool RenderGeometry(OptionalTexture texture,
+  void RenderGeometry(OptionalTexture texture,
                       std::span<const Vertex> vertices,
                       std::span<const int> indices = {});
 
@@ -43234,8 +43193,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *                order.
    * @param num_indices number of indices.
    * @param size_indices index size: 1 (byte), 2 (short), 4 (int).
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43243,7 +43201,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderGeometry
    */
-  bool RenderGeometryRaw(OptionalTexture texture,
+  void RenderGeometryRaw(OptionalTexture texture,
                          const float* xy,
                          int xy_stride,
                          const FColor* color,
@@ -43273,8 +43231,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @param rect an Rect structure representing the area to read, which will
    *             be clipped to the current viewport, or nullptr for the entire
    *             viewport.
-   * @returns a new Surface on success or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns a new Surface on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43282,7 +43240,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    */
   Surface RenderReadPixels(OptionalRef<const SDL_Rect> rect) const
   {
-    return Surface{SDL_RenderReadPixels(get(), rect)};
+    return Surface(CheckError(SDL_RenderReadPixels(get(), rect)));
   }
 
   /**
@@ -43313,8 +43271,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * the screen with any current drawing that has been done _to the window
    * itself_.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43333,7 +43290,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.SetDrawBlendMode
    * @sa RendererBase.SetDrawColor
    */
-  bool Present() { return SDL_RenderPresent(get()); }
+  void Present() { CheckError(SDL_RenderPresent(get())); }
 
   /**
    * Force the rendering context to flush any pending commands and state.
@@ -43358,14 +43315,13 @@ struct RendererBase : Resource<SDL_Renderer*>
    * OpenGL state that can confuse things; you should use your best judgment and
    * be prepared to make changes if specific state needs to be protected.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Flush() { return SDL_FlushRenderer(get()); }
+  void Flush() { CheckError(SDL_FlushRenderer(get())); }
 
   /**
    * Toggle VSync of the given renderer.
@@ -43380,8 +43336,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * requested setting is supported.
    *
    * @param vsync the vertical refresh sync interval.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43389,13 +43344,13 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetVSync
    */
-  bool SetVSync(int vsync) { return SDL_SetRenderVSync(get(), vsync); }
+  void SetVSync(int vsync) { CheckError(SDL_SetRenderVSync(get(), vsync)); }
 
   /**
    * Get VSync of the given renderer.
    *
-   * @returns the current vertical refresh sync interval on success or
-   * std::nullopt on failure; call GetError() for more information.
+   * @returns the current vertical refresh sync interval on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43403,10 +43358,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.SetVSync
    */
-  std::optional<int> GetVSync() const
+  int GetVSync() const
   {
-    if (int vsync; SDL_GetRenderVSync(get(), &vsync)) return vsync;
-    return std::nullopt;
+    int vsync;
+    CheckError(SDL_GetRenderVSync(get(), &vsync));
+    return vsync;
   }
 
   /**
@@ -43435,10 +43391,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * The text is drawn in the color specified by RendererBase.SetDrawColor().
    *
    * @param p the x, y coordinates where the top-left corner of the text will
-   * draw.
+   *          draw.
    * @param str the string to render.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43446,9 +43401,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  bool RenderDebugText(FPoint p, StringParam str)
+  void RenderDebugText(FPoint p, StringParam str)
   {
-    return SDL_RenderDebugText(get(), p.x, p.y, str);
+    CheckError(SDL_RenderDebugText(get(), p.x, p.y, str));
   }
 
   /**
@@ -43463,12 +43418,11 @@ struct RendererBase : Resource<SDL_Renderer*>
    * SDL_RenderDebugText.
    *
    * @param p the x, y coordinates where the top-left corner of the text will
-   * draw.
+   *          draw.
    * @param fmt the format string to draw.
    * @param args additional parameters matching {} tokens in the `fmt` string,
-   * if any.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   *             if any.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43478,10 +43432,9 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
-  bool RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
+  void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
   {
-    return RenderDebugText(p,
-                           std::vformat(fmt, std::make_format_args(args...)));
+    RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
   }
 };
 
@@ -43646,8 +43599,8 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param format one of the enumerated values in PixelFormat.
    * @param access one of the enumerated values in TextureAccess.
    * @param size the width and height of the texture in pixels.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43660,8 +43613,8 @@ struct TextureBase : Resource<SDL_Texture*>
               PixelFormat format,
               TextureAccess access,
               const SDL_Point& size)
-    : Resource(
-        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y))
+    : Resource(CheckError(
+        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y)))
   {
   }
 
@@ -43680,15 +43633,16 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param renderer the rendering context.
    * @param surface the SurfaceBase structure containing pixel data used to fill
    *                the texture.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
   TextureBase(RendererBase& renderer, SurfaceBase& surface)
-    : Resource(SDL_CreateTextureFromSurface(renderer.get(), surface.get()))
+    : Resource(
+        CheckError(SDL_CreateTextureFromSurface(renderer.get(), surface.get())))
   {
   }
 
@@ -43788,8 +43742,8 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @post the created texture is convertible to true on success or false on
-   *       failure; call GetError() for more information.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43803,7 +43757,8 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.Update
    */
   TextureBase(RendererBase& renderer, PropertiesBase& props)
-    : Resource(SDL_CreateTextureWithProperties(renderer.get(), props.get()))
+    : Resource(CheckError(
+        SDL_CreateTextureWithProperties(renderer.get(), props.get())))
   {
   }
 
@@ -43885,8 +43840,8 @@ struct TextureBase : Resource<SDL_Texture*>
    * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
    *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -43894,7 +43849,7 @@ struct TextureBase : Resource<SDL_Texture*>
    */
   PropertiesRef GetProperties() const
   {
-    return SDL_GetTextureProperties(get());
+    return CheckError(SDL_GetTextureProperties(get()));
   }
 
   /**
@@ -43925,16 +43880,16 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param c the color and alpha channel values multiplied into copy
    *          operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetColorAndAlphaMod(Color c)
+  void SetColorAndAlphaMod(Color c)
   {
-    return SetColorMod(c.r, c.g, c.b) && SetAlphaMod(c.a);
+    SetColorMod(c.r, c.g, c.b);
+    SetAlphaMod(c.a);
   }
 
   /**
@@ -43953,23 +43908,23 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param c the color and alpha channel values multiplied into copy
    *          operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetColorAndAlphaMod(FColor c)
+  void SetColorAndAlphaMod(FColor c)
   {
-    return SetColorMod(c.r, c.g, c.b) && SetAlphaMod(c.a);
+    SetColorMod(c.r, c.g, c.b);
+    SetAlphaMod(c.a);
   }
 
   /**
    * Get the additional color value multiplied into render copy operations.
    *
-   * @returns the color channels (0-1) on success or false on failure; call
-   *          GetError() for more information.
+   * @returns the color channels (0-1) on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -43978,38 +43933,18 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  std::optional<FColor> GetColorAndAlphaMod() const
+  FColor GetColorAndAlphaMod() const
   {
-    if (FColor color; GetColorAndAlphaMod(&color)) return color;
-    return std::nullopt;
-  }
-
-  /**
-   * Get the additional color value multiplied into render copy operations.
-   *
-   * @param c a pointer filled in with the current color and alpha mod values.
-   * @returns true success or false on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetAlphaMod()
-   * @sa SetColorMod()
-   */
-  bool GetColorAndAlphaMod(Color* c) const
-  {
-    SDL_assert(c != nullptr);
-    return GetColorMod(&c->r, &c->g, &c->b) && GetAlphaMod(&c->a);
+    FColor color;
+    GetColorAndAlphaMod(&color);
+    return color;
   }
 
   /**
    * Get the additional color value multiplied into render copy operations.
    *
    * @param c a pointer filled in with the current color and alpha mod values.
-   * @returns true success or false on failure; call
-   *          GetError() for more information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44018,10 +43953,31 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa GetAlphaMod()
    * @sa SetColorMod()
    */
-  bool GetColorAndAlphaMod(FColor* c) const
+  void GetColorAndAlphaMod(Color* c) const
   {
-    SDL_assert(c != nullptr);
-    return GetColorMod(&c->r, &c->g, &c->b) && GetAlphaMod(&c->a);
+    SDL_assert_paranoid(c != nullptr);
+    GetColorMod(&c->r, &c->g, &c->b);
+    GetAlphaMod(&c->a);
+  }
+
+  /**
+   * Get the additional color value multiplied into render copy operations.
+   *
+   * @param c a pointer filled in with the current color and alpha mod values.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAlphaMod()
+   * @sa SetColorMod()
+   */
+  void GetColorAndAlphaMod(FColor* c) const
+  {
+    SDL_assert_paranoid(c != nullptr);
+    GetColorMod(&c->r, &c->g, &c->b);
+    GetAlphaMod(&c->a);
   }
 
   /**
@@ -44039,8 +43995,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param r the red color value multiplied into copy operations.
    * @param g the green color value multiplied into copy operations.
    * @param b the blue color value multiplied into copy operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44049,9 +44004,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetColorMod
    * @sa TextureBase.SetAlphaMod
    */
-  bool SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+  void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
   {
-    return SDL_SetTextureColorMod(get(), r, g, b);
+    CheckError(SDL_SetTextureColorMod(get(), r, g, b));
   }
 
   /**
@@ -44069,8 +44024,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param r the red color value multiplied into copy operations.
    * @param g the green color value multiplied into copy operations.
    * @param b the blue color value multiplied into copy operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44079,9 +44033,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetColorMod
    * @sa TextureBase.SetAlphaMod
    */
-  bool SetColorMod(float r, float g, float b)
+  void SetColorMod(float r, float g, float b)
   {
-    return SDL_SetTextureColorModFloat(get(), r, g, b);
+    CheckError(SDL_SetTextureColorModFloat(get(), r, g, b));
   }
 
   /**
@@ -44090,8 +44044,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param r a pointer filled in with the current red color value.
    * @param g a pointer filled in with the current green color value.
    * @param b a pointer filled in with the current blue color value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44100,9 +44053,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetAlphaMod
    * @sa TextureBase.SetColorMod
    */
-  bool GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+  void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
   {
-    return SDL_GetTextureColorMod(get(), r, g, b);
+    CheckError(SDL_GetTextureColorMod(get(), r, g, b));
   }
 
   /**
@@ -44111,8 +44064,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param r a pointer filled in with the current red color value.
    * @param g a pointer filled in with the current green color value.
    * @param b a pointer filled in with the current blue color value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44121,9 +44073,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetAlphaMod
    * @sa TextureBase.SetColorMod
    */
-  bool GetColorMod(float* r, float* g, float* b) const
+  void GetColorMod(float* r, float* g, float* b) const
   {
-    return SDL_GetTextureColorModFloat(get(), r, g, b);
+    CheckError(SDL_GetTextureColorModFloat(get(), r, g, b));
   }
 
   /**
@@ -44138,8 +44090,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * false if alpha modulation is not supported.
    *
    * @param alpha the source alpha value multiplied into copy operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44148,7 +44099,10 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetAlphaMod
    * @sa TextureBase.SetColorMod
    */
-  bool SetAlphaMod(Uint8 alpha) { return SDL_SetTextureAlphaMod(get(), alpha); }
+  void SetAlphaMod(Uint8 alpha)
+  {
+    CheckError(SDL_SetTextureAlphaMod(get(), alpha));
+  }
 
   /**
    * Set an additional alpha value multiplied into render copy operations.
@@ -44162,8 +44116,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * false if alpha modulation is not supported.
    *
    * @param alpha the source alpha value multiplied into copy operations.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44172,31 +44125,31 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetAlphaMod
    * @sa TextureBase.SetColorMod
    */
-  bool SetAlphaMod(float alpha)
+  void SetAlphaMod(float alpha)
   {
-    return SDL_SetTextureAlphaModFloat(get(), alpha);
+    CheckError(SDL_SetTextureAlphaModFloat(get(), alpha));
   }
 
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
-   * @returns the current alpha value on success or false on failure; call
-   *          GetError() for more information.
+   * @returns the current alpha value on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  std::optional<float> GetAlphaMod() const
+  float GetAlphaMod() const
   {
-    if (float alpha; GetAlphaMod(&alpha)) return alpha;
-    return std::nullopt;
+    float alpha;
+    GetAlphaMod(&alpha);
+    return alpha;
   }
 
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
    * @param alpha a pointer filled in with the current alpha value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44205,17 +44158,16 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetColorMod
    * @sa TextureBase.SetAlphaMod
    */
-  bool GetAlphaMod(Uint8* alpha) const
+  void GetAlphaMod(Uint8* alpha) const
   {
-    return SDL_GetTextureAlphaMod(get(), alpha);
+    CheckError(SDL_GetTextureAlphaMod(get(), alpha));
   }
 
   /**
    * Get the additional alpha value multiplied into render copy operations.
    *
    * @param alpha a pointer filled in with the current alpha value.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44224,9 +44176,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.GetColorMod
    * @sa TextureBase.SetAlphaMod
    */
-  bool GetAlphaMod(float* alpha) const
+  void GetAlphaMod(float* alpha) const
   {
-    return SDL_GetTextureAlphaModFloat(get(), alpha);
+    CheckError(SDL_GetTextureAlphaModFloat(get(), alpha));
   }
 
   /**
@@ -44236,8 +44188,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * and this function returns false.
    *
    * @param blendMode the BlendMode to use for texture blending.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44245,16 +44196,16 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureBase.GetBlendMode
    */
-  bool SetBlendMode(BlendMode blendMode)
+  void SetBlendMode(BlendMode blendMode)
   {
-    return SDL_SetTextureBlendMode(get(), blendMode);
+    CheckError(SDL_SetTextureBlendMode(get(), blendMode));
   }
 
   /**
    * Get the blend mode used for texture copy operations.
    *
-   * @returns the current SDL_BlendMode on success or std::nullopt on failure;
-   *          call GetError() for more information.
+   * @returns the current SDL_BlendMode on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44262,12 +44213,11 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureBase.SetBlendMode
    */
-  std::optional<BlendMode> GetBlendMode() const
+  BlendMode GetBlendMode() const
   {
-    if (BlendMode blendMode; SDL_GetTextureBlendMode(get(), &blendMode)) {
-      return blendMode;
-    }
-    return std::nullopt;
+    BlendMode blendMode;
+    CheckError(SDL_GetTextureBlendMode(get(), &blendMode));
+    return blendMode;
   }
 
   /**
@@ -44278,8 +44228,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * If the scale mode is not supported, the closest supported mode is chosen.
    *
    * @param scaleMode the ScaleMode to use for texture scaling.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44287,16 +44236,16 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureBase.GetScaleMode
    */
-  bool SetScaleMode(ScaleMode scaleMode)
+  void SetScaleMode(ScaleMode scaleMode)
   {
-    return SDL_SetTextureScaleMode(get(), scaleMode);
+    CheckError(SDL_SetTextureScaleMode(get(), scaleMode));
   }
 
   /**
    * Get the scale mode used for texture scale operations.
    *
-   * @returns the current scale mode on success or std::nullopt on failure; call
-   *          GetError() for more information.
+   * @returns the current scale mode on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44304,12 +44253,11 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @sa TextureBase.SetScaleMode
    */
-  std::optional<ScaleMode> GetScaleMode() const
+  ScaleMode GetScaleMode() const
   {
-    if (ScaleMode scaleMode; SDL_GetTextureScaleMode(get(), &scaleMode)) {
-      return scaleMode;
-    }
-    return std::nullopt;
+    ScaleMode scaleMode;
+    CheckError(SDL_GetTextureScaleMode(get(), &scaleMode));
+    return scaleMode;
   }
 
   /**
@@ -44331,8 +44279,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param pixels the raw pixel data in the format of the texture.
    * @param pitch the number of bytes in a row of pixel data, including padding
    *              between lines.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44343,9 +44290,9 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.UpdateNV
    * @sa TextureBase.UpdateYUV
    */
-  bool Update(OptionalRef<const SDL_Rect> rect, const void* pixels, int pitch)
+  void Update(OptionalRef<const SDL_Rect> rect, const void* pixels, int pitch)
   {
-    return SDL_UpdateTexture(get(), rect, pixels, pitch);
+    CheckError(SDL_UpdateTexture(get(), rect, pixels, pitch));
   }
 
   /**
@@ -44367,8 +44314,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param Vplane the raw pixel data for the V plane.
    * @param Vpitch the number of bytes between rows of pixel data for the V
    *               plane.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44377,7 +44323,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.UpdateNV
    * @sa TextureBase.Update
    */
-  bool UpdateYUV(OptionalRef<const SDL_Rect> rect,
+  void UpdateYUV(OptionalRef<const SDL_Rect> rect,
                  const Uint8* Yplane,
                  int Ypitch,
                  const Uint8* Uplane,
@@ -44385,8 +44331,8 @@ struct TextureBase : Resource<SDL_Texture*>
                  const Uint8* Vplane,
                  int Vpitch)
   {
-    return SDL_UpdateYUVTexture(
-      get(), rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
+    CheckError(SDL_UpdateYUVTexture(
+      get(), rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch));
   }
 
   /**
@@ -44404,8 +44350,7 @@ struct TextureBase : Resource<SDL_Texture*>
    * @param UVplane the raw pixel data for the UV plane.
    * @param UVpitch the number of bytes between rows of pixel data for the UV
    *                plane.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44414,13 +44359,14 @@ struct TextureBase : Resource<SDL_Texture*>
    * @sa TextureBase.Update
    * @sa TextureBase.UpdateYUV
    */
-  bool UpdateNV(OptionalRef<const SDL_Rect> rect,
+  void UpdateNV(OptionalRef<const SDL_Rect> rect,
                 const Uint8* Yplane,
                 int Ypitch,
                 const Uint8* UVplane,
                 int UVpitch)
   {
-    return SDL_UpdateNVTexture(get(), rect, Yplane, Ypitch, UVplane, UVpitch);
+    CheckError(
+      SDL_UpdateNVTexture(get(), rect, Yplane, Ypitch, UVplane, UVpitch));
   }
 
   /**
@@ -44436,9 +44382,8 @@ struct TextureBase : Resource<SDL_Texture*>
    *
    * @param rect an Rect structure representing the area to lock for access;
    *             nullptr to lock the entire texture.
-   * @returns TextureLock on success or false if the texture is not valid or was
-   *          not created with `SDL_TEXTUREACCESS_STREAMING`; call GetError()
-   *          for more information.
+   * @returns TextureLock on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -44624,7 +44569,7 @@ public:
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that SDL_LockTexture() is intended to be
+   * **Warning**: Please note that TextureBase.Lock() is intended to be
    * write-only; it will not guarantee the previous contents of the texture will
    * be provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
@@ -44636,7 +44581,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_LockTexture
+   * @sa TextureBase.Lock
    */
   void Unlock()
   {
@@ -44716,8 +44661,8 @@ inline const char* GetRenderDriver(int index)
  * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
  *                     WindowBase.WindowBase()).
- * @returns a pair with Window and Renderer on success or a pair of nullptr on
- * failure; call GetError() for more information.
+ * @returns a pair with Window and Renderer on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -44733,8 +44678,8 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 {
   SDL_Window* window;
   SDL_Renderer* renderer;
-  SDL_CreateWindowAndRenderer(
-    title, size.x, size.y, window_flags, &window, &renderer);
+  CheckError(SDL_CreateWindowAndRenderer(
+    title, size.x, size.y, window_flags, &window, &renderer));
   return {Window{window}, Renderer{renderer}};
 }
 
@@ -44835,8 +44780,8 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
 /**
  * Get the renderer associated with a window.
  *
- * @returns the rendering context on success or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the rendering context on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -44844,7 +44789,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  */
 inline RendererRef WindowBase::GetRenderer() const
 {
-  return SDL_GetRenderer(get());
+  return CheckError(SDL_GetRenderer(get()));
 }
 
 namespace prop::Texture {
@@ -44981,9 +44926,9 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
 
 } // namespace prop::Texture
 
-inline bool RendererBase::SetTarget(OptionalTexture texture)
+inline void RendererBase::SetTarget(OptionalTexture texture)
 {
-  return SDL_SetRenderTarget(get(), texture.get());
+  CheckError(SDL_SetRenderTarget(get(), texture.get()));
 }
 
 inline TextureRef RendererBase::GetTarget() const
@@ -44991,14 +44936,14 @@ inline TextureRef RendererBase::GetTarget() const
   return SDL_GetRenderTarget(get());
 }
 
-inline bool RendererBase::RenderTexture(TextureBase& texture,
+inline void RendererBase::RenderTexture(TextureBase& texture,
                                         OptionalRef<const SDL_FRect> srcrect,
                                         OptionalRef<const SDL_FRect> dstrect)
 {
-  return SDL_RenderTexture(get(), texture.get(), srcrect, dstrect);
+  CheckError(SDL_RenderTexture(get(), texture.get(), srcrect, dstrect));
 }
 
-inline bool RendererBase::RenderTextureRotated(
+inline void RendererBase::RenderTextureRotated(
   TextureBase& texture,
   OptionalRef<const SDL_FRect> srcrect,
   OptionalRef<const SDL_FRect> dstrect,
@@ -45006,31 +44951,32 @@ inline bool RendererBase::RenderTextureRotated(
   OptionalRef<const SDL_FPoint> center,
   FlipMode flip)
 {
-  return SDL_RenderTextureRotated(
-    get(), texture.get(), srcrect, dstrect, angle, center, flip);
+  CheckError(SDL_RenderTextureRotated(
+    get(), texture.get(), srcrect, dstrect, angle, center, flip));
 }
 
-inline bool RendererBase::RenderTextureAffine(
+inline void RendererBase::RenderTextureAffine(
   TextureBase& texture,
   OptionalRef<const SDL_FRect> srcrect,
   OptionalRef<const SDL_FPoint> origin,
   OptionalRef<const SDL_FPoint> right,
   OptionalRef<const SDL_FPoint> down)
 {
-  return SDL_RenderTextureAffine(
-    get(), texture.get(), srcrect, origin, right, down);
+  CheckError(SDL_RenderTextureAffine(
+    get(), texture.get(), srcrect, origin, right, down));
 }
 
-inline bool RendererBase::RenderTextureTiled(
+inline void RendererBase::RenderTextureTiled(
   TextureBase& texture,
   OptionalRef<const SDL_FRect> srcrect,
   float scale,
   OptionalRef<const SDL_FRect> dstrect)
 {
-  return SDL_RenderTextureTiled(get(), texture.get(), srcrect, scale, dstrect);
+  CheckError(
+    SDL_RenderTextureTiled(get(), texture.get(), srcrect, scale, dstrect));
 }
 
-inline bool RendererBase::RenderTexture9Grid(
+inline void RendererBase::RenderTexture9Grid(
   TextureBase& texture,
   OptionalRef<const SDL_FRect> srcrect,
   float left_width,
@@ -45040,30 +44986,30 @@ inline bool RendererBase::RenderTexture9Grid(
   float scale,
   OptionalRef<const SDL_FRect> dstrect)
 {
-  return SDL_RenderTexture9Grid(get(),
-                                texture.get(),
-                                srcrect,
-                                left_width,
-                                right_width,
-                                top_height,
-                                bottom_height,
-                                scale,
-                                dstrect);
+  CheckError(SDL_RenderTexture9Grid(get(),
+                                    texture.get(),
+                                    srcrect,
+                                    left_width,
+                                    right_width,
+                                    top_height,
+                                    bottom_height,
+                                    scale,
+                                    dstrect));
 }
 
-inline bool RendererBase::RenderGeometry(OptionalTexture texture,
+inline void RendererBase::RenderGeometry(OptionalTexture texture,
                                          std::span<const Vertex> vertices,
                                          std::span<const int> indices)
 {
-  return SDL_RenderGeometry(get(),
-                            texture.get(),
-                            vertices.data(),
-                            vertices.size(),
-                            indices.data(),
-                            indices.size());
+  CheckError(SDL_RenderGeometry(get(),
+                                texture.get(),
+                                vertices.data(),
+                                vertices.size(),
+                                indices.data(),
+                                indices.size()));
 }
 
-inline bool RendererBase::RenderGeometryRaw(OptionalTexture texture,
+inline void RendererBase::RenderGeometryRaw(OptionalTexture texture,
                                             const float* xy,
                                             int xy_stride,
                                             const FColor* color,
@@ -45075,18 +45021,18 @@ inline bool RendererBase::RenderGeometryRaw(OptionalTexture texture,
                                             int num_indices,
                                             int size_indices)
 {
-  return SDL_RenderGeometryRaw(get(),
-                               texture.get(),
-                               xy,
-                               xy_stride,
-                               color,
-                               color_stride,
-                               uv,
-                               uv_stride,
-                               num_vertices,
-                               indices,
-                               num_indices,
-                               size_indices);
+  CheckError(SDL_RenderGeometryRaw(get(),
+                                   texture.get(),
+                                   xy,
+                                   xy_stride,
+                                   color,
+                                   color_stride,
+                                   uv,
+                                   uv_stride,
+                                   num_vertices,
+                                   indices,
+                                   num_indices,
+                                   size_indices));
 }
 
 /**
@@ -45096,8 +45042,8 @@ inline bool RendererBase::RenderGeometryRaw(OptionalTexture texture,
  * headers, but it can be safely cast to a `CAMetalLayer *`.
  *
  * @param renderer the renderer to query.
- * @returns a `CAMetalLayer *` on success, or nullptr if the renderer isn't a
- *          Metal renderer.
+ * @returns a `CAMetalLayer *` on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -45107,7 +45053,7 @@ inline bool RendererBase::RenderGeometryRaw(OptionalTexture texture,
  */
 inline void* GetRenderMetalLayer(RendererBase& renderer)
 {
-  return SDL_GetRenderMetalLayer(renderer.get());
+  return CheckError(SDL_GetRenderMetalLayer(renderer.get()));
 }
 
 /**
@@ -45122,8 +45068,8 @@ inline void* GetRenderMetalLayer(RendererBase& renderer)
  * backbuffer. Check your return values!
  *
  * @param renderer the renderer to query.
- * @returns an `id<MTLRenderCommandEncoder>` on success, or nullptr if the
- *          renderer isn't a Metal renderer or there was an error.
+ * @returns an `id<MTLRenderCommandEncoder>` on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -45133,7 +45079,7 @@ inline void* GetRenderMetalLayer(RendererBase& renderer)
  */
 inline void* GetRenderMetalCommandEncoder(RendererBase& renderer)
 {
-  return SDL_GetRenderMetalCommandEncoder(renderer.get());
+  return CheckError(SDL_GetRenderMetalCommandEncoder(renderer.get()));
 }
 
 /**
@@ -45156,21 +45102,20 @@ inline void* GetRenderMetalCommandEncoder(RendererBase& renderer)
  * @param signal_semaphore a VkSempahore that SDL will signal when rendering
  *                         for the current frame is complete, or 0 if not
  *                         needed.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety It is **NOT** safe to call this function from two threads at
  *               once.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool AddVulkanRenderSemaphores(RendererBase& renderer,
+inline void AddVulkanRenderSemaphores(RendererBase& renderer,
                                       Uint32 wait_stage_mask,
                                       Sint64 wait_semaphore,
                                       Sint64 signal_semaphore)
 {
-  return SDL_AddVulkanRenderSemaphores(
-    renderer.get(), wait_stage_mask, wait_semaphore, signal_semaphore);
+  CheckError(SDL_AddVulkanRenderSemaphores(
+    renderer.get(), wait_stage_mask, wait_semaphore, signal_semaphore));
 }
 
 #ifdef SDL3PP_DOC
@@ -45196,7 +45141,7 @@ inline bool AddVulkanRenderSemaphores(RendererBase& renderer,
 
 #pragma region impl
 
-inline bool RendererBase::ResetTarget() { return SetTarget(nullptr); }
+inline void RendererBase::ResetTarget() { return SetTarget(nullptr); }
 
 inline TextureLock TextureBase::Lock(OptionalRef<const SDL_Rect> rect) &
 {

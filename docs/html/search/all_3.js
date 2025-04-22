@@ -94,7 +94,7 @@ var searchData=
   ['control_91',['Process Control',['../group__CategoryProcess.html',1,'']]],
   ['conversion_20routines_92',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
   ['convert_93',['convert',['../group__CategorySurface.html#ga07a85c47200e1a8dbb9d494f9c641a84',1,'SDL::SurfaceBase::Convert(PixelFormat format) const'],['../group__CategorySurface.html#ga749789d4cb045e6d6069e135033b32b1',1,'SDL::SurfaceBase::Convert(PixelFormat format, PaletteBase &amp;palette, Colorspace colorspace, PropertiesBase &amp;props) const']]],
-  ['converteventtorendercoordinates_94',['ConvertEventToRenderCoordinates',['../structSDL_1_1RendererBase.html#aeedc4f333f876ce47ba91918627d9e21',1,'SDL::RendererBase']]],
+  ['converteventtorendercoordinates_94',['ConvertEventToRenderCoordinates',['../structSDL_1_1RendererBase.html#a478ab74f6eabf08ce8da38461abc16ea',1,'SDL::RendererBase']]],
   ['convertpixels_95',['ConvertPixels',['../group__CategorySurface.html#ga2e0582a8edc370955aa64e33c5efcf59',1,'SDL']]],
   ['convertpixelsandcolorspace_96',['ConvertPixelsAndColorspace',['../group__CategorySurface.html#gac93acca678be154b634252304b696f7e',1,'SDL']]],
   ['copy_97',['Copy',['../group__CategorySDLTTF.html#ga937befee401acd98778e23a40bbe8b45',1,'SDL::FontBase']]],
