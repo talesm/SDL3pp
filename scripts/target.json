@@ -32087,6 +32087,104 @@
               "hints": {
                 "mayFail": true
               }
+            },
+            "TryReadU8": {
+              "kind": "function",
+              "type": "std::optional<Uint8>",
+              "parameters": [],
+              "name": "TryReadU8",
+              "doc": ""
+            },
+            "TryReadS8": {
+              "kind": "function",
+              "type": "std::optional<Sint8>",
+              "parameters": [],
+              "name": "TryReadS8",
+              "doc": ""
+            },
+            "TryReadU16LE": {
+              "kind": "function",
+              "type": "std::optional<Uint16>",
+              "parameters": [],
+              "name": "TryReadU16LE",
+              "doc": ""
+            },
+            "TryReadS16LE": {
+              "kind": "function",
+              "type": "std::optional<Sint16>",
+              "parameters": [],
+              "name": "TryReadS16LE",
+              "doc": ""
+            },
+            "TryReadU16BE": {
+              "kind": "function",
+              "type": "std::optional<Uint16>",
+              "parameters": [],
+              "name": "TryReadU16BE",
+              "doc": ""
+            },
+            "TryReadS16BE": {
+              "kind": "function",
+              "type": "std::optional<Sint16>",
+              "parameters": [],
+              "name": "TryReadS16BE",
+              "doc": ""
+            },
+            "TryReadU32LE": {
+              "kind": "function",
+              "type": "std::optional<Uint32>",
+              "parameters": [],
+              "name": "TryReadU32LE",
+              "doc": ""
+            },
+            "TryReadS32LE": {
+              "kind": "function",
+              "type": "std::optional<Sint32>",
+              "parameters": [],
+              "name": "TryReadS32LE",
+              "doc": ""
+            },
+            "TryReadU32BE": {
+              "kind": "function",
+              "type": "std::optional<Uint32>",
+              "parameters": [],
+              "name": "TryReadU32BE",
+              "doc": ""
+            },
+            "TryReadS32BE": {
+              "kind": "function",
+              "type": "std::optional<Sint32>",
+              "parameters": [],
+              "name": "TryReadS32BE",
+              "doc": ""
+            },
+            "TryReadU64LE": {
+              "kind": "function",
+              "type": "std::optional<Uint64>",
+              "parameters": [],
+              "name": "TryReadU64LE",
+              "doc": ""
+            },
+            "TryReadS64LE": {
+              "kind": "function",
+              "type": "std::optional<Sint64>",
+              "parameters": [],
+              "name": "TryReadS64LE",
+              "doc": ""
+            },
+            "TryReadU64BE": {
+              "kind": "function",
+              "type": "std::optional<Uint64>",
+              "parameters": [],
+              "name": "TryReadU64BE",
+              "doc": ""
+            },
+            "TryReadS64BE": {
+              "kind": "function",
+              "type": "std::optional<Sint64>",
+              "parameters": [],
+              "name": "TryReadS64BE",
+              "doc": ""
             }
           },
           "hints": {

@@ -24975,6 +24975,334 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @since This function is available since SDL 3.2.0.
    */
   void WriteS64BE(Sint64 value) { CheckError(SDL_WriteS64BE(get(), value)); }
+
+  /**
+   * Use this function to read a byte from an IOStreamBase.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Uint8> TryReadU8()
+  {
+    if (Uint8 value; SDL_ReadU8(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read a byte from an IOStreamBase.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Sint8> TryReadS8()
+  {
+    if (Sint8 value; SDL_ReadS8(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 16 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Uint16> TryReadU16LE()
+  {
+    if (Uint16 value; SDL_ReadU16LE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 16 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Sint16> TryReadS16LE()
+  {
+    if (Sint16 value; SDL_ReadS16LE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 16 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Uint16> TryReadU16BE()
+  {
+    if (Uint16 value; SDL_ReadU16BE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 16 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Sint16> TryReadS16BE()
+  {
+    if (Sint16 value; SDL_ReadS16BE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 32 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Uint32> TryReadU32LE()
+  {
+    if (Uint32 value; SDL_ReadU32LE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 32 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Sint32> TryReadS32LE()
+  {
+    if (Sint32 value; SDL_ReadS32LE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 32 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Uint32> TryReadU32BE()
+  {
+    if (Uint32 value; SDL_ReadU32BE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 32 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Sint32> TryReadS32BE()
+  {
+    if (Sint32 value; SDL_ReadS32BE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 64 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Uint64> TryReadU64LE()
+  {
+    if (Uint64 value; SDL_ReadU64LE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 64 bits of little-endian data from an
+   * IOStreamBase and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Sint64> TryReadS64LE()
+  {
+    if (Sint64 value; SDL_ReadS64LE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 64 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Uint64> TryReadU64BE()
+  {
+    if (Uint64 value; SDL_ReadU64BE(get(), &value)) return value;
+    return {};
+  }
+
+  /**
+   * Use this function to read 64 bits of big-endian data from an IOStreamBase
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * a different error value and GetError() will offer a human-readable message.
+   *
+   * @returns the data read on success, std::nullopt on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  std::optional<Sint64> TryReadS64BE()
+  {
+    if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
+    return {};
+  }
 };
 
 /**

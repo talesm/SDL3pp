@@ -1638,6 +1638,76 @@ const transform = {
             "SDL_WriteS64LE": "function",
             "SDL_WriteU64BE": "function",
             "SDL_WriteS64BE": "function",
+            "TryReadU8": {
+              kind: "function",
+              type: "std::optional<Uint8>",
+              parameters: []
+            },
+            "TryReadS8": {
+              kind: "function",
+              type: "std::optional<Sint8>",
+              parameters: []
+            },
+            "TryReadU16LE": {
+              kind: "function",
+              type: "std::optional<Uint16>",
+              parameters: []
+            },
+            "TryReadS16LE": {
+              kind: "function",
+              type: "std::optional<Sint16>",
+              parameters: []
+            },
+            "TryReadU16BE": {
+              kind: "function",
+              type: "std::optional<Uint16>",
+              parameters: []
+            },
+            "TryReadS16BE": {
+              kind: "function",
+              type: "std::optional<Sint16>",
+              parameters: []
+            },
+            "TryReadU32LE": {
+              kind: "function",
+              type: "std::optional<Uint32>",
+              parameters: []
+            },
+            "TryReadS32LE": {
+              kind: "function",
+              type: "std::optional<Sint32>",
+              parameters: []
+            },
+            "TryReadU32BE": {
+              kind: "function",
+              type: "std::optional<Uint32>",
+              parameters: []
+            },
+            "TryReadS32BE": {
+              kind: "function",
+              type: "std::optional<Sint32>",
+              parameters: []
+            },
+            "TryReadU64LE": {
+              kind: "function",
+              type: "std::optional<Uint64>",
+              parameters: []
+            },
+            "TryReadS64LE": {
+              kind: "function",
+              type: "std::optional<Sint64>",
+              parameters: []
+            },
+            "TryReadU64BE": {
+              kind: "function",
+              type: "std::optional<Uint64>",
+              parameters: []
+            },
+            "TryReadS64BE": {
+              kind: "function",
+              type: "std::optional<Sint64>",
+              parameters: []
+            },
           }
         }
       },
