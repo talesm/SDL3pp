@@ -26,5 +26,6 @@ var searchData=
   ['io_5fstatus_5fnot_5fready_23',['IO_STATUS_NOT_READY',['../group__CategoryIOStream.html#gadd19fed8fd3d810f9b58376b753e9d24',1,'SDL']]],
   ['io_5fstatus_5freadonly_24',['IO_STATUS_READONLY',['../group__CategoryIOStream.html#gad49f75db9e5b37ab6e670a792754617d',1,'SDL']]],
   ['io_5fstatus_5fready_25',['IO_STATUS_READY',['../group__CategoryIOStream.html#gadca1e808b43d37fa4bcfedac6abdd125',1,'SDL']]],
-  ['io_5fstatus_5fwriteonly_26',['IO_STATUS_WRITEONLY',['../group__CategoryIOStream.html#ga9af9c81fff2c2d7fbd1fc431be4cb92f',1,'SDL']]]
+  ['io_5fstatus_5fwriteonly_26',['IO_STATUS_WRITEONLY',['../group__CategoryIOStream.html#ga9af9c81fff2c2d7fbd1fc431be4cb92f',1,'SDL']]],
+  ['iofromdynamicmem_27',['IOFromDynamicMem',['../group__CategoryIOStream.html#gacaa9988b2fc00136dccf5f557222bcaa',1,'SDL']]]
 ];

@@ -128,6 +128,7 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:gacaa9988b2fc00136dccf5f557222bcaa" id="r_gacaa9988b2fc00136dccf5f557222bcaa"><td class="memItemLeft" align="right" valign="top"><a id="gacaa9988b2fc00136dccf5f557222bcaa" name="gacaa9988b2fc00136dccf5f557222bcaa"></a>
 constexpr struct <a class="el" href="structSDL_1_1IOFromDynamicMem__CtorTag.html">SDL::IOFromDynamicMem_CtorTag</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::IOFromDynamicMem</b></td></tr>
+<tr class="memdesc:gacaa9988b2fc00136dccf5f557222bcaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">DynamicMem tag. <br /></td></tr>
 <tr class="separator:gacaa9988b2fc00136dccf5f557222bcaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadca1e808b43d37fa4bcfedac6abdd125" id="r_gadca1e808b43d37fa4bcfedac6abdd125"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056f3a597416c642">IOStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gadca1e808b43d37fa4bcfedac6abdd125">SDL::IO_STATUS_READY</a></td></tr>
 <tr class="memdesc:gadca1e808b43d37fa4bcfedac6abdd125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything is ready (no errors and not EOF).  <br /></td></tr>
@@ -242,7 +243,13 @@ constexpr <a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the data or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the data. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#a44c3bbe68e506e10506899ff0689d9b1" title="Load all the data from an SDL data stream.">IOStreamBase.LoadFile</a> </dd>
@@ -354,7 +361,12 @@ template&lt;class T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#a1fdee008cdc5351687d43b2ed49b3430" title="Save all the data into an SDL data stream.">IOStreamBase.SaveFile</a> </dd>
@@ -403,7 +415,12 @@ template&lt;class T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#a1fdee008cdc5351687d43b2ed49b3430" title="Save all the data into an SDL data stream.">IOStreamBase.SaveFile</a> </dd>

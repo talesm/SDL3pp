@@ -23731,7 +23731,7 @@ inline bool SDL::updateActive(bool active)
  */
 constexpr struct IOFromDynamicMem_CtorTag
 {
-} IOFromDynamicMem;
+} IOFromDynamicMem; ///< DynamicMem tag
 
 // Forward decl
 struct IOStreamBase;
@@ -24176,6 +24176,46 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa IOStreamBase.Seek
    */
   Sint64 Tell() const { return SDL_TellIO(get()); }
+
+  /**
+   * Read from a data source.
+   *
+   * This function reads up `size` bytes from the data source to the area
+   * pointed at by `ptr`. This function may read less bytes than requested.
+   *
+   * This function will return zero when the data stream is completely read, and
+   * IOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and
+   * the stream is not at EOF, IOStreamBase.GetStatus() will return a different
+   * error value and GetError() will offer a human-readable message.
+   *
+   * @param size the number of bytes to read from the data source.
+   * @returns the bytes, or empty string on end of file or other failure;
+   *          call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.Write
+   * @sa IOStreamBase.GetStatus
+   */
+  std::string Read(size_t size = -1)
+  {
+    std::string result;
+    Sint64 pos = Tell();
+    auto curSize = SDL_GetIOSize(get());
+    if ((curSize < 0 || pos < 0)) {
+      if (size == size_t(-1)) return {};
+    } else if (curSize - pos <= 0) {
+      return {};
+    } else if (curSize - pos < size) {
+      size = curSize - pos;
+    }
+    result.resize(size);
+    auto actualSize = Read(result.data(), size);
+    if (actualSize < size) result.resize(actualSize);
+    return result;
+  }
 
   /**
    * Read from a data source.
@@ -25565,8 +25605,8 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * `datasize`.
  *
  * @param file the path to read all available data from.
- * @returns the data or nullptr on failure; call GetError() for more
- *          information.
+ * @returns the data.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -25608,8 +25648,7 @@ inline void SaveFile(StringParam file, const void* data, size_t datasize)
  *
  * @param file the path to write all available data into.
  * @param data the data to be written.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -25629,8 +25668,7 @@ inline void SaveFile(StringParam file, std::span<T> data)
  *
  * @param file the path to write all available data into.
  * @param str the data to be written.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *

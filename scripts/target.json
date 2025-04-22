@@ -31499,23 +31499,38 @@
               "sourceName": "SDL_TellIO",
               "immutable": true
             },
-            "Read": {
-              "doc": "Read from a data source.\n\nThis function reads up `size` bytes from the data source to the area\npointed at by `ptr`. This function may read less bytes than requested.\n\nThis function will return zero when the data stream is completely read, and\nIOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and\nthe stream is not at EOF, IOStreamBase.GetStatus() will return a different error\nvalue and GetError() will offer a human-readable message.\n\n@param ptr a pointer to a buffer to read data into.\n@param size the number of bytes to read from the data source.\n@returns the number of bytes read, or 0 on end of file or other failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.Write\n@sa IOStreamBase.GetStatus",
-              "name": "Read",
-              "kind": "function",
-              "type": "size_t",
-              "parameters": [
-                {
-                  "name": "ptr",
-                  "type": "void *"
-                },
-                {
-                  "name": "size",
-                  "type": "size_t"
-                }
-              ],
-              "sourceName": "SDL_ReadIO"
-            },
+            "Read": [
+              {
+                "kind": "function",
+                "type": "std::string",
+                "parameters": [
+                  {
+                    "type": "size_t",
+                    "name": "size",
+                    "default": "-1"
+                  }
+                ],
+                "name": "Read",
+                "doc": ""
+              },
+              {
+                "doc": "Read from a data source.\n\nThis function reads up `size` bytes from the data source to the area\npointed at by `ptr`. This function may read less bytes than requested.\n\nThis function will return zero when the data stream is completely read, and\nIOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and\nthe stream is not at EOF, IOStreamBase.GetStatus() will return a different error\nvalue and GetError() will offer a human-readable message.\n\n@param ptr a pointer to a buffer to read data into.\n@param size the number of bytes to read from the data source.\n@returns the number of bytes read, or 0 on end of file or other failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.Write\n@sa IOStreamBase.GetStatus",
+                "name": "Read",
+                "kind": "function",
+                "type": "size_t",
+                "parameters": [
+                  {
+                    "name": "ptr",
+                    "type": "void *"
+                  },
+                  {
+                    "name": "size",
+                    "type": "size_t"
+                  }
+                ],
+                "sourceName": "SDL_ReadIO"
+              }
+            ],
             "Write": [
               {
                 "kind": "function",

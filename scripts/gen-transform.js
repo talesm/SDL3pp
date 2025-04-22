@@ -1441,35 +1441,38 @@ const transform = {
               "name": "Tell",
               "immutable": true
             },
-            "SDL_ReadIO": {
-              "name": "Read"
+            "Read": {
+              kind: "function",
+              type: "std::string",
+              parameters: [{
+                type: "size_t",
+                name: "size",
+                default: "-1"
+              }],
             },
+            "SDL_ReadIO": { name: "Read" },
             "Write": [
               {
-                "kind": "function",
-                "type": "size_t",
-                "template": [
+                kind: "function",
+                type: "size_t",
+                template: [
                   {
-                    "type": "class",
-                    "name": "U"
+                    type: "class",
+                    name: "U"
                   }
                 ],
-                "parameters": [
-                  {
-                    "type": "std::span<U>",
-                    "name": "data"
-                  }
-                ]
+                parameters: [{
+                  type: "std::span<U>",
+                  name: "data"
+                }]
               },
               {
-                "kind": "function",
-                "type": "size_t",
-                "parameters": [
-                  {
-                    "type": "std::string_view",
-                    "name": "str"
-                  }
-                ]
+                kind: "function",
+                type: "size_t",
+                parameters: [{
+                  type: "std::string_view",
+                  name: "str"
+                }]
               }
             ],
             "SDL_WriteIO": {
@@ -1522,15 +1525,15 @@ const transform = {
             },
             "SaveFile": [
               {
-                "kind": "function",
-                "type": "void",
-                "template": [
+                kind: "function",
+                type: "void",
+                template: [
                   {
                     "type": "class",
                     "name": "U"
                   }
                 ],
-                "parameters": [
+                parameters: [
                   {
                     "type": "std::span<U>",
                     "name": "data"
@@ -1538,9 +1541,9 @@ const transform = {
                 ]
               },
               {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
+                kind: "function",
+                type: "void",
+                parameters: [
                   {
                     "type": "std::string_view",
                     "name": "str"
@@ -1704,10 +1707,8 @@ const transform = {
       },
       transform: {
         "SDL_LoadFile": {
-          "type": "StringResult",
-          "parameters": [
-            {}
-          ]
+          type: "StringResult",
+          parameters: [{}]
         },
         "SDL_CloseIO": {
           name: "IOStreamRef.Close",
