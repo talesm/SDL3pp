@@ -711,7 +711,6 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 </table>
 </div><div class="memdoc">
 <p>If either <code>srcrect</code> or <code>dstrect</code> are nullptr, the entire surface (<code>src</code> or <code>dst</code>) is copied while ensuring clipping to <code>dst-&gt;clip_rect</code>.</p>
-<p>The final blit rectangles are saved in <code>srcrect</code> and <code>dstrect</code> after all clipping is performed.</p>
 <p>The blit function should not be called on a locked surface.</p>
 <p>The blit semantics for surfaces with and without blending and colorkey are defined as follows:</p>
 <div class="fragment"><div class="line"> RGBA-&gt;RGB:</div>

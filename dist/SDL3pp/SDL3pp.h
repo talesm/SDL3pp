@@ -10330,8 +10330,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * By default, SDL will try all available GPU backends in a reasonable order
  * until it finds one that can work, but this hint allows the app or user to
- * force a specific target, such as "direct3d11" if, say, your hardware
- * supports D3D12 but want to try using D3D11 instead.
+ * force a specific target, such as "direct3d12" if, say, your hardware
+ * supports Vulkan but you want to try using D3D12 instead.
  *
  * This hint should be set before any GPU functions are called.
  *
@@ -30774,9 +30774,6 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * If either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or
    * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
    *
-   * The final blit rectangles are saved in `srcrect` and `dstrect` after all
-   * clipping is performed.
-   *
    * The blit function should not be called on a locked surface.
    *
    * The blit semantics for surfaces with and without blending and colorkey are
@@ -42394,8 +42391,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    * Return whether an explicit rectangle was set as the viewport.
    *
    * This is useful if you're saving and restoring the viewport and want to know
-   * whether you should restore a specific rectangle or nullptr. Note that the
-   * viewport is always reset when changing rendering targets.
+   * whether you should restore a specific rectangle or nullptr.
    *
    * Each render target has its own viewport. This function checks the viewport
    * for the current render target.

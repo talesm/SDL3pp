@@ -1756,7 +1756,7 @@ constexpr SDL_Renderer *&#160;</td><td class="memItemRight" valign="bottom"><b>o
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This is useful if you're saving and restoring the viewport and want to know whether you should restore a specific rectangle or nullptr. Note that the viewport is always reset when changing rendering targets.</p>
+<p>This is useful if you're saving and restoring the viewport and want to know whether you should restore a specific rectangle or nullptr.</p>
 <p>Each render target has its own viewport. This function checks the viewport for the current render target.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the viewport was set to a specific rectangle, or false if it was set to nullptr (the entire target).</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
