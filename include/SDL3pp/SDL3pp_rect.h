@@ -191,6 +191,17 @@ struct Point : SDL_Point
   }
 
   /**
+   * @brief Get point's memberwise division by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by an integer
+   *
+   */
+  constexpr FPoint operator/(float value) const;
+
+  /**
    * @brief Get point's memberwise division by another point
    *
    * @param[in] other Divisor
@@ -248,6 +259,18 @@ struct Point : SDL_Point
   {
     return Point(x * value, y * value);
   }
+
+  /**
+   * @brief Get point's memberwise multiplication by an
+   *        integer
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by an integer
+   *
+   */
+  constexpr FPoint operator*(float value) const;
 
   /**
    * @brief Get point's memberwise multiplication by another
@@ -2012,6 +2035,15 @@ constexpr bool FPoint::IsInRect(const FRect& r) const
 /// @}
 
 constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
+
+constexpr FPoint Point::operator/(float value) const
+{
+  return FPoint(*this) / value;
+}
+constexpr FPoint Point::operator*(float value) const
+{
+  return FPoint(*this) * value;
+}
 
 constexpr Point Point::GetClamped(const Rect& rect) const
 {
