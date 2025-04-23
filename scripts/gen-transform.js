@@ -275,6 +275,41 @@ const transform = {
       }
     },
     "SDL_audio.h": {
+      includeBefore: {
+        "SDL_AudioDeviceID": [
+          { name: "AudioPostmixCallback" },
+          { name: "AudioPostmixCB" },
+        ],
+        "SDL_AudioStream": [
+          { name: "AudioStreamCallback" },
+          { name: "AudioStreamCB" },
+        ],
+      },
+      includeAfter: {
+        "SDL_MixAudio": {
+          kind: "function",
+          name: "MixAudio",
+          type: "void",
+          parameters: [
+            {
+              name: "dst",
+              type: "std::span<Uint8>"
+            },
+            {
+              name: "src",
+              type: "std::span<const Uint8>"
+            },
+            {
+              name: "format",
+              type: "AudioFormat"
+            },
+            {
+              name: "volume",
+              type: "float"
+            }
+          ]
+        },
+      },
       wrappers: {
         "SDL_AudioFormat": {
           entries: {
@@ -352,6 +387,11 @@ const transform = {
               static: false,
               parameters: []
             },
+            "SDL_GetAudioFormatName": "immutable",
+            "SDL_GetSilenceValueForFormat": {
+              immutable: true,
+              name: "GetSilenceValue",
+            },
           }
         },
       },
@@ -408,6 +448,17 @@ const transform = {
               ]
             },
             "SDL_UnbindAudioStream": "function",
+            "SetPostmixCallback": {
+              kind: "function",
+              type: "void",
+              parameters: [{
+                type: "AudioPostmixCB",
+                name: "callback"
+              }]
+            },
+            "SDL_SetAudioPostmixCallback": {
+              name: "SetPostmixCallback"
+            },
           }
         },
         "SDL_AudioStream": {
@@ -415,6 +466,48 @@ const transform = {
           lockFunction: "SDL_LockAudioStream",
           unlockFunction: "SDL_UnlockAudioStream",
           entries: {
+            "AudioStreamBase": {
+              kind: "function",
+              type: "",
+              parameters: [
+                {
+                  name: "devid",
+                  type: "AudioDeviceBase &"
+                },
+                {
+                  name: "spec",
+                  type: "OptionalRef<const AudioSpec>"
+                },
+                {
+                  name: "callback",
+                  type: "AudioStreamCB"
+                }
+              ]
+            },
+            "SDL_OpenAudioDeviceStream": {
+              name: "ctor",
+              parameters: [
+                {
+                  name: "devid",
+                  type: "AudioDeviceBase &"
+                },
+                {
+                  name: "spec",
+                  type: "OptionalRef<const AudioSpec>",
+                  default: "std::nullopt"
+                },
+                {
+                  name: "callback",
+                  type: "AudioStreamCallback",
+                  default: "nullptr"
+                },
+                {
+                  name: "userdata",
+                  type: "void *",
+                  default: "nullptr"
+                }
+              ],
+            },
             "SDL_CreateAudioStream": "ctor",
             "SDL_GetAudioStreamProperties": "immutable",
             "GetInputFormat": {
@@ -487,6 +580,26 @@ const transform = {
             "SDL_LockAudioStream": {
               type: "AudioStreamLock"
             },
+            "SetGetCallback": {
+              kind: "function",
+              type: "void",
+              proto: true,
+              parameters: [{
+                name: "callback",
+                type: "AudioStreamCB"
+              }],
+            },
+            "SDL_SetAudioStreamGetCallback": "function",
+            "SetPutCallback": {
+              kind: "function",
+              type: "void",
+              proto: true,
+              parameters: [{
+                name: "callback",
+                type: "AudioStreamCB"
+              }],
+            },
+            "SDL_SetAudioStreamPutCallback": "function",
             "Bind": {
               kind: "function",
               type: "void",
@@ -538,6 +651,58 @@ const transform = {
           type: "OwnArray<AudioDeviceRef>",
           parameters: []
         },
+        "SDL_LoadWAV_IO": {
+          name: "LoadWAV",
+          type: "OwnArray<Uint8>",
+          parameters: [
+            {},
+            { name: "spec", type: "AudioSpec *" },
+          ]
+        },
+        "SDL_LoadWAV": {
+          type: "OwnArray<Uint8>",
+          parameters: [
+            {},
+            { name: "spec", type: "AudioSpec *" },
+          ]
+        },
+        "SDL_MixAudio": {
+          parameters: [
+            {
+              name: "dst",
+              type: "Uint8 *"
+            },
+            {
+              name: "src",
+              type: "std::span<const Uint8>"
+            },
+            {
+              name: "format",
+              type: "AudioFormat"
+            },
+            {
+              name: "volume",
+              type: "float"
+            }
+          ]
+        },
+        "SDL_ConvertAudioSamples": {
+          type: "OwnArray<Uint8>",
+          parameters: [
+            {
+              name: "src_spec",
+              type: "const AudioSpec &"
+            },
+            {
+              name: "src_data",
+              type: "const Uint8 &"
+            },
+            {
+              name: "dst_spec",
+              type: "const AudioSpec &"
+            }
+          ]
+        }
       }
     },
     "SDL_blendmode.h": {
