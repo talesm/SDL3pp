@@ -9,15 +9,12 @@
 
 #include <SDL3pp/SDL3pp.h>
 
+#define SDL3PP_MAIN_USE_THIS_CLASS Main
+#define SDL3PP_MAIN_USE_THIS_APPNAME "Example Renderer Streaming Textures"
+#define SDL3PP_MAIN_USE_THIS_APPID "com.example.renderer-streaming-textures"
+
 struct Main
 {
-  static SDL::AppResult Init(Main** state, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata(
-      "Example Renderer Textures", "1.0", "com.example.renderer-textures");
-    return SDL::DefaultCreateClass(state, args);
-  }
-
   // Window size
   static constexpr SDL::Point windowSz = {640, 480};
   static constexpr SDL::Point textureSz = {150, 150};
@@ -26,7 +23,7 @@ struct Main
   SDL::SDL init{SDL::INIT_VIDEO};
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{"examples/renderer/textures", windowSz};
+  SDL::Window window{"examples/renderer/streaming-textures", windowSz};
   SDL::Renderer renderer{window};
   SDL::Texture texture{renderer,
                        SDL::PIXELFORMAT_RGBA8888,
@@ -75,5 +72,4 @@ struct Main
   }
 };
 
-#define SDL3PP_MAIN_USE_THIS_CLASS Main
 #include <SDL3pp/SDL3pp_main.h>

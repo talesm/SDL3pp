@@ -12,15 +12,12 @@
 
 #include <SDL3pp/SDL3pp.h>
 
+#define SDL3PP_MAIN_USE_THIS_CLASS Main
+#define SDL3PP_MAIN_USE_THIS_APPNAME "Example Renderer Clear"
+#define SDL3PP_MAIN_USE_THIS_APPID "com.example.renderer-clear"
+
 struct Main
 {
-  static SDL::AppResult Init(Main** state, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata(
-      "Example Renderer Clear", "1.0", "com.example.renderer-clear");
-    return SDL::DefaultCreateClass(state, args);
-  }
-
   // Window size
   static constexpr SDL::Point windowSz = {640, 480};
 
@@ -51,5 +48,4 @@ struct Main
   }
 };
 
-#define SDL3PP_MAIN_USE_THIS_CLASS Main
 #include <SDL3pp/SDL3pp_main.h>

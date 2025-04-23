@@ -215,6 +215,18 @@ static_assert(SDL::HasIterateFunction<SDL3PP_MAIN_USE_THIS_CLASS>,
 
 inline SDL::AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
+#ifdef SDL3PP_MAIN_USE_THIS_APPID
+#ifndef SDL3PP_MAIN_USE_THIS_APPNAME
+#define SDL3PP_MAIN_USE_THIS_APPNAME SDL3PP_MAIN_USE_THIS_APPID
+#endif // SDL3PP_MAIN_USE_THIS_APPNAME
+#ifndef SDL3PP_MAIN_USE_THIS_APPVERSION
+#define SDL3PP_MAIN_USE_THIS_APPVERSION "1.0"
+#endif // SDL3PP_MAIN_USE_THIS_APPVERSION
+  SDL::SetAppMetadata(SDL3PP_MAIN_USE_THIS_APPNAME,
+                      SDL3PP_MAIN_USE_THIS_APPVERSION,
+                      SDL3PP_MAIN_USE_THIS_APPID);
+#endif // SDL3PP_MAIN_USE_THIS_APPID
+
   return SDL::InitClass(reinterpret_cast<SDL3PP_APP_CLASS**>(appstate),
                         SDL::AppArgs{argv, size_t(argc)});
 }

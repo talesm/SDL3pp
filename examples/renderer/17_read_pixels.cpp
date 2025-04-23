@@ -14,18 +14,12 @@
  */
 #include <SDL3pp/SDL3pp.h>
 
-using namespace std::chrono_literals;
+#define SDL3PP_MAIN_USE_THIS_CLASS Main
+#define SDL3PP_MAIN_USE_THIS_APPNAME "Example Renderer Read Pixels"
+#define SDL3PP_MAIN_USE_THIS_APPID "com.example.renderer-read-pixels"
 
 struct Main
 {
-  static SDL::AppResult Init(Main** state, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Renderer Read Pixels",
-                        "1.0",
-                        "com.example.renderer-read-pixels");
-    return SDL::DefaultCreateClass(state, args);
-  }
-
   static constexpr SDL::Point windowSz = {640, 480};
 
   SDL::SDL init{SDL::INIT_VIDEO};
@@ -115,5 +109,4 @@ struct Main
   }
 };
 
-#define SDL3PP_MAIN_USE_THIS_CLASS Main
 #include <SDL3pp/SDL3pp_main.h>

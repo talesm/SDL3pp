@@ -2,6 +2,10 @@
 
 using namespace std::chrono_literals;
 
+#define SDL3PP_MAIN_USE_THIS_CLASS Main
+#define SDL3PP_MAIN_USE_THIS_APPNAME "Example Template"
+#define SDL3PP_MAIN_USE_THIS_APPID "com.example.template"
+
 struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
@@ -22,5 +26,4 @@ struct Main
   }
 };
 
-#define SDL3PP_MAIN_USE_THIS_CLASS Main
 #include <SDL3pp/SDL3pp_main.h>
