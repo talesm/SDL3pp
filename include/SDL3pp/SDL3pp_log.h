@@ -654,11 +654,9 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @cat listener-callback
  *
- * @sa listener-callback
  * @sa LogOutputFunction
  */
-using LogOutputFunctionCB =
-  std::function<void(LogCategory, LogPriority, StringParam)>;
+using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
 
 /**
  * Get the default log output function.
@@ -699,7 +697,7 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 /**
  * Get the current log output function.
  *
- * @returns the LogOutputFunctionCB currently set
+ * @returns the LogOutputCB currently set
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -711,9 +709,9 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  * @sa GetDefaultLogOutputFunction()
  * @sa SetLogOutputFunction()
  */
-inline LogOutputFunctionCB GetLogOutputFunction()
+inline LogOutputCB GetLogOutputFunction()
 {
-  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
+  using Wrapper = UniqueWrapper<LogOutputCB>;
   LogOutputFunction cb;
   void* userdata;
   if (userdata == nullptr) {
@@ -746,7 +744,7 @@ inline LogOutputFunctionCB GetLogOutputFunction()
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
-  UniqueWrapper<LogOutputFunctionCB>::erase();
+  UniqueWrapper<LogOutputCB>::erase();
   return SDL_SetLogOutputFunction(callback, userdata);
 }
 
@@ -766,9 +764,9 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  * @sa GetLogOutputFunction()
  * @sa ResetLogOutputFunction()
  */
-inline void SetLogOutputFunction(LogOutputFunctionCB callback)
+inline void SetLogOutputFunction(LogOutputCB callback)
 {
-  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
+  using Wrapper = UniqueWrapper<LogOutputCB>;
   SDL_SetLogOutputFunction(
     [](
       void* userdata, int category, LogPriority priority, const char* message) {

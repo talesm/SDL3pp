@@ -9,6 +9,7 @@ var searchData=
   ['arrayorder_6',['ArrayOrder',['../group__CategoryPixels.html#ga1dbdac1bb77c06fb6212f18507722247',1,'SDL']]],
   ['assertdata_7',['AssertData',['../group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d',1,'SDL']]],
   ['assertionhandler_8',['AssertionHandler',['../group__CategoryAssert.html#gaa96234b976cffe73f8c2d3fa30b47a23',1,'SDL']]],
-  ['assertstate_9',['AssertState',['../group__CategoryAssert.html#ga6cef7fc19a80762bc63c2eba129c8758',1,'SDL']]],
-  ['audiodeviceevent_10',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]]
+  ['assertionhandlercb_9',['AssertionHandlerCB',['../group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979',1,'SDL']]],
+  ['assertstate_10',['AssertState',['../group__CategoryAssert.html#ga6cef7fc19a80762bc63c2eba129c8758',1,'SDL']]],
+  ['audiodeviceevent_11',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]]
 ];

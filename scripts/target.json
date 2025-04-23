@@ -603,7 +603,7 @@
           "kind": "alias",
           "name": "MainThreadCB",
           "type": "std::function<void()>",
-          "doc": ""
+          "doc": "Callback run on the main thread.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa RunOnMainThread\n@sa MainThreadCallback"
         },
         "RunOnMainThread": [
           {
@@ -2594,6 +2594,12 @@
           "type": "SDL_HintCallback",
           "sourceName": "SDL_HintCallback"
         },
+        "HintCB": {
+          "kind": "alias",
+          "name": "HintCB",
+          "type": "std::function<void(const char *, const char *, const char *)>",
+          "doc": "A callback used to send notifications of hint value changes.\n\nThis is called an initial time during AddHintCallback with the hint's\ncurrent value, and then again each time the hint's value changes.\n\n@param userdata what was passed as `userdata` to AddHintCallback().\n@param name what was passed as `name` to AddHintCallback().\n@param oldValue the previous hint value.\n@param newValue the new value hint is to be set to.\n\n@threadsafety This callback is fired from whatever thread is setting a new\n              hint value. SDL holds a lock on the hint subsystem when\n              calling this callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AddHintCallback\n@sa HintCallback"
+        },
         "AddHintCallback": {
           "doc": "Add a function to watch a particular hint.\n\nThe callback function is called _during_ this function, to provide it an\ninitial value, and again each time the hint's value changes.\n\n@param name the hint to watch.\n@param callback An HintCallback function that will be called when the\n                hint value changes.\n@param userdata a pointer to pass to the callback function.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RemoveHintCallback",
           "name": "AddHintCallback",
@@ -2660,9 +2666,10 @@
           "sourceName": "SDL_CleanupPropertyCallback"
         },
         "CleanupPropertyCB": {
+          "kind": "alias",
           "name": "CleanupPropertyCB",
-          "doc": "@sa PropertiesRef.CleanupCallback",
-          "kind": "alias"
+          "type": "std::function<void(void *)>",
+          "doc": "A callback used to free resources when a property is deleted.\n\nThis should release any resources associated with `value` that are no\nlonger needed.\n\nThis callback is set per-property. Different properties in the same group\ncan have different cleanup callbacks.\n\nThis callback will be called _during_ PropertiesBase.SetPointerWithCleanup if\nthe function fails for any reason.\n\n@param userdata an app-defined pointer passed to the callback.\n@param value the pointer assigned to the property to clean up.\n\n@threadsafety This callback may fire without any locks held; if this is a\n              concern, the app should provide its own locking.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa PropertiesBase.SetPointerWithCleanup\n@sa CleanupPropertyCallback"
         },
         "EnumeratePropertiesCallback": {
           "doc": "A callback used to enumerate all the properties in a group of properties.\n\nThis callback is called from PropertiesBase.Enumerate(), and is called once\nper property in the set.\n\n@param userdata an app-defined pointer passed to the callback.\n@param props the PropertiesBase that is being enumerated.\n@param name the next property name in the enumeration.\n\n@threadsafety PropertiesBase.Enumerate holds a lock on `props` during this\n              callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa PropertiesBase.Enumerate",
@@ -2677,9 +2684,10 @@
           "doc": ""
         },
         "EnumeratePropertiesCB": {
+          "kind": "alias",
           "name": "EnumeratePropertiesCB",
-          "doc": "@sa PropertiesRef.EnumerateCallback",
-          "kind": "alias"
+          "type": "std::function<void(PropertiesRef props, const char *name)>",
+          "doc": "A callback used to enumerate all the properties in a group of properties.\n\nThis callback is called from PropertiesBase.Enumerate(), and is called once\nper property in the set.\n\n@param userdata an app-defined pointer passed to the callback.\n@param props the PropertiesBase that is being enumerated.\n@param name the next property name in the enumeration.\n\n@threadsafety PropertiesBase.Enumerate holds a lock on `props` during this\n              callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa PropertiesBase.Enumerate\n@sa EnumeratePropertiesCallback"
         },
         "PropertiesLock-forward": {
           "name": "PropertiesLock",
@@ -4302,10 +4310,11 @@
           "type": "SDL_LogOutputFunction",
           "sourceName": "SDL_LogOutputFunction"
         },
-        "LogOutputFunctionCB": {
-          "name": "LogOutputFunctionCB",
-          "doc": "@sa LogOutputFunction",
-          "kind": "alias"
+        "LogOutputCB": {
+          "kind": "alias",
+          "name": "LogOutputCB",
+          "type": "std::function<void(LogCategory, LogPriority, const char *)>",
+          "doc": "The prototype for the log output callback function.\n\nThis function is called by SDL when there is new text to be logged. A mutex\nis held so that this function is never called by more than one thread at\nonce.\n\n@param userdata what was passed as `userdata` to\n                SetLogOutputFunction().\n@param category the category of the message.\n@param priority the priority of the message.\n@param message the message being output.\n\n@since This datatype is available since SDL 3.2.0.\n@sa LogOutputFunction"
         },
         "GetDefaultLogOutputFunction": {
           "doc": "Get the default log output function.\n\n@returns the default log output callback.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetLogOutputFunction\n@sa GetLogOutputFunction",
@@ -4336,7 +4345,7 @@
           {
             "name": "GetLogOutputFunction",
             "kind": "function",
-            "type": "LogOutputFunctionCB",
+            "type": "LogOutputCB",
             "parameters": [],
             "doc": ""
           }
@@ -4365,7 +4374,7 @@
             "type": "void",
             "parameters": [
               {
-                "type": "LogOutputFunctionCB",
+                "type": "LogOutputCB",
                 "name": "callback"
               }
             ],
@@ -4581,6 +4590,12 @@
           "kind": "alias",
           "type": "SDL_AssertionHandler",
           "sourceName": "SDL_AssertionHandler"
+        },
+        "AssertionHandlerCB": {
+          "kind": "alias",
+          "name": "AssertionHandlerCB",
+          "type": "std::function<SDL_AssertState(const SDL_AssertData *)>",
+          "doc": "A callback that fires when an SDL assertion fails.\n\n@param data a pointer to the AssertData structure corresponding to the\n            current assertion.\n@param userdata what was passed as `userdata` to SetAssertionHandler().\n@returns an AssertState value indicating how to handle the failure.\n\n@threadsafety This callback may be called from any thread that triggers an\n              assert at any time.\n\n@since This datatype is available since SDL 3.2.0.\n@sa AssertionHandler"
         },
         "SetAssertionHandler": {
           "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
@@ -7269,12 +7284,24 @@
           "type": "SDL_EGLAttribArrayCallback",
           "sourceName": "SDL_EGLAttribArrayCallback"
         },
+        "EGLAttribArrayCB": {
+          "kind": "alias",
+          "name": "EGLAttribArrayCB",
+          "type": "std::function<SDL_EGLAttrib *()>",
+          "doc": "EGL platform attribute initialization callback.\n\nThis is called when SDL is attempting to create an EGL context, to let the\napp add extra attributes to its eglGetPlatformDisplay() call.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks\n@sa EGLAttribArrayCallback"
+        },
         "EGLIntArrayCallback": {
           "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks",
           "name": "EGLIntArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLIntArrayCallback",
           "sourceName": "SDL_EGLIntArrayCallback"
+        },
+        "EGLIntArrayCB": {
+          "kind": "alias",
+          "name": "EGLIntArrayCB",
+          "type": "std::function<SDL_EGLint *(SDL_EGLDisplay, SDL_EGLConfig)>",
+          "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with malloc() and will be\npassed to free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks\n@sa EGLIntArrayCallback"
         },
         "GLAttr": {
           "doc": "An enumeration of OpenGL configuration attributes.\n\nWhile you can set most OpenGL attributes normally, the attributes listed\nabove must be known before SDL creates the window that will be used with\nthe OpenGL context. These attributes are set and read with\nGL_SetAttribute() and GL_GetAttribute().\n\nIn some cases, these attributes are minimum requests; the GL does not\npromise to give you exactly what you asked for. It's possible to ask for a\n16-bit depth buffer and get a 24-bit one instead, for example, or to ask\nfor no stencil buffer and still have one available. Context creation should\nfail if the GL can't provide your requested attributes at a minimum, but\nyou should check to see exactly what you got.\n\n@since This enum is available since SDL 3.2.0.",
@@ -20545,7 +20572,7 @@
           "kind": "alias",
           "name": "EventFilterCB",
           "type": "std::function<bool(const Event &)>",
-          "doc": ""
+          "doc": "A function pointer used for callbacks that watch the event queue.\n\n@param userdata what was passed as `userdata` to SetEventFilter() or\n                AddEventWatch, etc.\n@param event the event that triggered the callback.\n@returns true to permit event to be added to the queue, and false to\n         disallow it. When used with AddEventWatch, the return value is\n         ignored.\n\n@threadsafety SDL may call this callback at any time from any thread; the\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetEventFilter\n@sa AddEventWatch\n@sa EventFilter"
         },
         "EventWatchHandle": {
           "doc": "Handle returned by AddEventWatch()",
@@ -29322,7 +29349,8 @@
         "TimerCB": {
           "kind": "alias",
           "name": "TimerCB",
-          "doc": ""
+          "type": "std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>",
+          "doc": "Function prototype for the nanosecond timer callback function.\n\nThe callback function is passed the current timer interval and returns the\nnext timer interval, in nanoseconds. If the returned value is the same as\nthe one passed in, the periodic alarm continues, otherwise a new alarm is\nscheduled. If the callback returns 0, the periodic alarm is canceled and\nwill be removed.\n\n@param userdata an arbitrary pointer provided by the app through\n                SDL_AddTimer, for its own use.\n@param timerID the current timer being processed.\n@param interval the current callback time interval.\n@returns the new callback time interval, or 0 to disable further runs of\n         the callback.\n\n@threadsafety SDL may call this callback at any time from a background\n              thread; the application is responsible for locking resources\n              the callback touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AddTimer\n@sa TimerCallback"
         },
         "AddTimer": [
           {
@@ -30393,10 +30421,10 @@
           "sourceName": "SDL_EnumerateDirectoryCallback"
         },
         "EnumerateDirectoryCB": {
-          "name": "EnumerateDirectoryCB",
           "kind": "alias",
+          "name": "EnumerateDirectoryCB",
           "type": "std::function<EnumerationResult(const char *dirname, const char *fname)>",
-          "doc": ""
+          "doc": "Callback for directory enumeration.\n\nEnumeration of directory entries will continue until either all entries\nhave been provided to the callback, or the callback has requested a stop\nthrough its return value.\n\nReturning ENUM_CONTINUE will let enumeration proceed, calling the\ncallback with further entries. ENUM_SUCCESS and ENUM_FAILURE will\nterminate the enumeration early, and dictate the return value of the\nenumeration function itself.\n\n`dirname` is guaranteed to end with a path separator ('\\\\' on Windows, '/'\non most other platforms).\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param dirname the directory that is being enumerated.\n@param fname the next entry in the enumeration.\n@returns how the enumeration should proceed.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EnumerateDirectory\n@sa EnumerateDirectoryCallback"
         },
         "EnumerateDirectory": [
           {
@@ -34243,10 +34271,10 @@
           "sourceName": "SDL_DialogFileCallback"
         },
         "DialogFileCB": {
-          "name": "DialogFileCB",
           "kind": "alias",
+          "name": "DialogFileCB",
           "type": "std::function<void(const char *const *, int)>",
-          "doc": ""
+          "doc": "Callback used by file dialog functions.\n\nThe specific usage is described in each function.\n\nIf `filelist` is:\n\n- nullptr, an error occurred. Details can be obtained with GetError().\n- A pointer to nullptr, the user either didn't choose any file or canceled the\n  dialog.\n- A pointer to non-`nullptr`, the user chose one or more files. The argument\n  is a null-terminated array of pointers to UTF-8 encoded strings, each\n  containing a path.\n\nThe filelist argument should not be freed; it will automatically be freed\nwhen the callback returns.\n\nThe filter argument is the index of the filter that was selected, or -1 if\nno filter was selected or if the platform or method doesn't support\nfetching the selected filter.\n\nIn Android, the `filelist` are `content://` URIs. They should be opened\nusing IOStreamBase.IOStreamBase() with appropriate modes. This applies both to open\nand save file dialog.\n\n@param userdata an app-provided pointer, for the callback's use.\n@param filelist the file(s) chosen by the user.\n@param filter index of the selected filter.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties\n@sa DialogFileCallback"
         },
         "ShowOpenFileDialog": [
           {
@@ -34954,10 +34982,10 @@
           "sourceName": "SDL_TrayCallback"
         },
         "TrayCB": {
-          "name": "TrayCB",
           "kind": "alias",
+          "name": "TrayCB",
           "type": "std::function<void(TrayEntryRef)>",
-          "doc": ""
+          "doc": "A callback that is invoked when a tray entry is selected.\n\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param entry the tray entry that was selected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa TrayEntryBase.SetCallback\n@sa TrayCallback"
         },
         "TrayMenu": {
           "doc": "An opaque handle representing a menu/submenu on a system tray object.\n\n@since This struct is available since SDL 3.2.0.",
@@ -36794,6 +36822,12 @@
           "kind": "alias",
           "type": "SDL_CompareCallback_r",
           "sourceName": "SDL_CompareCallback_r"
+        },
+        "CompareCallbackCB": {
+          "kind": "alias",
+          "name": "CompareCallbackCB",
+          "type": "std::function<int(const void *, const void *)>",
+          "doc": "A callback used with SDL sorting and binary search functions.\n\n@param userdata the `userdata` pointer passed to the sort function.\n@param a a pointer to the first element being compared.\n@param b a pointer to the second element being compared.\n@returns -1 if `a` should be sorted before `b`, 1 if `b` should be sorted\n         before `a`, 0 if they are equal. If two elements are equal, their\n         order in the sorted array is undefined.\n\n@since This callback is available since SDL 3.2.0.\n\n@sa qsort_r\n@sa bsearch_r\n@sa CompareCallback_r"
         },
         "qsort_r": {
           "doc": "Sort an array, passing a userdata pointer to the compare function.\n\nFor example:\n\n```c\ntypedef enum {\n    sort_increasing,\n    sort_decreasing,\n} sort_method;\n\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *userdata, const void *a, const void *b)\n{\n    sort_method method = (sort_method)(uintptr_t)userdata;\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->key < B->key) {\n        return (method == sort_increasing) ? -1 : 1;\n    } else if (B->key < A->key) {\n        return (method == sort_increasing) ? 1 : -1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 3, \"third\" }, { 1, \"first\" }, { 2, \"second\" }\n};\n\nqsort_r(values, arraysize(values), sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);\n```\n\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n@param userdata a pointer to pass to the compare function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa bsearch_r\n@sa qsort",

@@ -120,7 +120,7 @@ var searchData=
   ['getlineskip_117',['GetLineSkip',['../structSDL_1_1FontBase.html#a6333d253a9a97f3d3464d60b00e8d97c',1,'SDL::FontBase']]],
   ['getlogicalpresentation_118',['getlogicalpresentation',['../structSDL_1_1RendererBase.html#a9499d004858c96f91f01ccae52478755',1,'SDL::RendererBase::GetLogicalPresentation(int *w, int *h, RendererLogicalPresentation *mode) const'],['../structSDL_1_1RendererBase.html#a6bc1e3a8112e704bd527ef3c503da12c',1,'SDL::RendererBase::GetLogicalPresentation(SDL_Point *size, RendererLogicalPresentation *mode)']]],
   ['getlogicalpresentationrect_119',['GetLogicalPresentationRect',['../structSDL_1_1RendererBase.html#a096a5b40b234d38d68e1b96c57b8fc4f',1,'SDL::RendererBase']]],
-  ['getlogoutputfunction_120',['getlogoutputfunction',['../group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413',1,'SDL::GetLogOutputFunction(LogOutputFunction *callback, void **userdata)'],['../group__CategoryLog.html#gaae40ad42b1a6520c9a29192c24b5dce6',1,'SDL::GetLogOutputFunction()']]],
+  ['getlogoutputfunction_120',['getlogoutputfunction',['../group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413',1,'SDL::GetLogOutputFunction(LogOutputFunction *callback, void **userdata)'],['../group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d',1,'SDL::GetLogOutputFunction()']]],
   ['getlogpriority_121',['GetLogPriority',['../classSDL_1_1LogCategory.html#a65ea4161b3babe85d994133fe116be12',1,'SDL::LogCategory']]],
   ['getmasks_122',['GetMasks',['../classSDL_1_1PixelFormat.html#af36f1368725701942a356fc9f8388efe',1,'SDL::PixelFormat']]],
   ['getmatrix_123',['GetMatrix',['../classSDL_1_1Colorspace.html#ad115ff36ec0048a88a134c8d6ac7abef',1,'SDL::Colorspace']]],

@@ -44,6 +44,7 @@ export interface EntryHint {
   super?: string;
   static?: boolean;
   mayFail?: boolean;
+  removeParamThis?: boolean
 }
 
 export interface VersionTag {
@@ -162,6 +163,25 @@ export interface ApiResource extends ApiEntryTransform {
    * 
    */
   returnType?: "ref" | "unique" | "none";
+
+  /**
+   * If true or object, the object to lock
+   */
+  lock?: ApiLock | boolean;
+
+  /**
+   * The lock function name to be added to the lock class
+   */
+  lockFunction?: string;
+
+  /**
+   * The unlock function name to be added to the lock class
+   */
+  unlockFunction?: string;
+}
+
+export interface ApiLock extends ApiEntryTransform {
+  kind?: "struct";
 }
 
 export interface ApiWrapper extends ApiEntryTransform {

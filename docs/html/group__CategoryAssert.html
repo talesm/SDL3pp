@@ -135,6 +135,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gaa96234b976cffe73f8c2d3fa30b47a23" id="r_gaa96234b976cffe73f8c2d3fa30b47a23"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#gaa96234b976cffe73f8c2d3fa30b47a23">SDL::AssertionHandler</a> = SDL_AssertionHandler</td></tr>
 <tr class="memdesc:gaa96234b976cffe73f8c2d3fa30b47a23"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="callback.html">Callback</a> that fires when an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> assertion fails.  <br /></td></tr>
 <tr class="separator:gaa96234b976cffe73f8c2d3fa30b47a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga26233ae390b2dfe2932f09fe97419979" id="r_ga26233ae390b2dfe2932f09fe97419979"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979">SDL::AssertionHandlerCB</a> = std::function&lt; SDL_AssertState(const SDL_AssertData *)&gt;</td></tr>
+<tr class="memdesc:ga26233ae390b2dfe2932f09fe97419979"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback that fires when an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> assertion fails.  <br /></td></tr>
+<tr class="separator:ga26233ae390b2dfe2932f09fe97419979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -561,6 +564,30 @@ constexpr <a class="el" href="group__CategoryAssert.html#ga6cef7fc19a80762bc63c2
 <dl class="section return"><dt>Returns</dt><dd>an SDL_AssertState value indicating how to handle the failure.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This callback may be called from any thread that triggers an assert at any time.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga26233ae390b2dfe2932f09fe97419979" name="ga26233ae390b2dfe2932f09fe97419979"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga26233ae390b2dfe2932f09fe97419979">&#9670;&#160;</a></span>AssertionHandlerCB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979">SDL::AssertionHandlerCB</a> = typedef std::function&lt;SDL_AssertState(const SDL_AssertData*)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>a pointer to the AssertData structure corresponding to the current assertion. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an AssertState value indicating how to handle the failure.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This callback may be called from any thread that triggers an assert at any time.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#gaa96234b976cffe73f8c2d3fa30b47a23" title="A Callback that fires when an SDL assertion fails.">AssertionHandler</a> </dd></dl>
 
 </div>
 </div>

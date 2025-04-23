@@ -92,9 +92,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gaad3bdff14ac0fcb4c9cb4277048bca70" id="r_gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">SDL::LogOutputFunction</a> = SDL_LogOutputFunction</td></tr>
 <tr class="memdesc:gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prototype for the log output callback function.  <br /></td></tr>
 <tr class="separator:gaad3bdff14ac0fcb4c9cb4277048bca70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2dbf9e66c462a0ae7fc5fc392708b663" id="r_ga2dbf9e66c462a0ae7fc5fc392708b663"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga2dbf9e66c462a0ae7fc5fc392708b663">SDL::LogOutputFunctionCB</a> = std::function&lt; void(<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a>)&gt;</td></tr>
-<tr class="memdesc:ga2dbf9e66c462a0ae7fc5fc392708b663"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prototype for the log output callback function.  <br /></td></tr>
-<tr class="separator:ga2dbf9e66c462a0ae7fc5fc392708b663"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9358a764d7eccceda60f37c0d658deb1" id="r_ga9358a764d7eccceda60f37c0d658deb1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">SDL::LogOutputCB</a> = std::function&lt; void(<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>, const char *)&gt;</td></tr>
+<tr class="memdesc:ga9358a764d7eccceda60f37c0d658deb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prototype for the log output callback function.  <br /></td></tr>
+<tr class="separator:ga9358a764d7eccceda60f37c0d658deb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -114,15 +114,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8a90cd5b3014ccc0a76470e20fb38413" id="r_ga8a90cd5b3014ccc0a76470e20fb38413"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga8a90cd5b3014ccc0a76470e20fb38413">SDL::GetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a> *callback, void **userdata)</td></tr>
 <tr class="memdesc:ga8a90cd5b3014ccc0a76470e20fb38413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current log output function.  <br /></td></tr>
 <tr class="separator:ga8a90cd5b3014ccc0a76470e20fb38413"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaae40ad42b1a6520c9a29192c24b5dce6" id="r_gaae40ad42b1a6520c9a29192c24b5dce6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryLog.html#ga2dbf9e66c462a0ae7fc5fc392708b663">LogOutputFunctionCB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaae40ad42b1a6520c9a29192c24b5dce6">SDL::GetLogOutputFunction</a> ()</td></tr>
-<tr class="memdesc:gaae40ad42b1a6520c9a29192c24b5dce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current log output function.  <br /></td></tr>
-<tr class="separator:gaae40ad42b1a6520c9a29192c24b5dce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga34fd25f38e2e9348e95b37645f021d4d" id="r_ga34fd25f38e2e9348e95b37645f021d4d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">LogOutputCB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d">SDL::GetLogOutputFunction</a> ()</td></tr>
+<tr class="memdesc:ga34fd25f38e2e9348e95b37645f021d4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current log output function.  <br /></td></tr>
+<tr class="separator:ga34fd25f38e2e9348e95b37645f021d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga289db14fab774b210d34224e24cc534d" id="r_ga289db14fab774b210d34224e24cc534d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d">SDL::SetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70">LogOutputFunction</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:ga289db14fab774b210d34224e24cc534d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the default log output function with one of your own.  <br /></td></tr>
 <tr class="separator:ga289db14fab774b210d34224e24cc534d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga06e1e1a45b237119f72c366bb7bd4f09" id="r_ga06e1e1a45b237119f72c366bb7bd4f09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga06e1e1a45b237119f72c366bb7bd4f09">SDL::SetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#ga2dbf9e66c462a0ae7fc5fc392708b663">LogOutputFunctionCB</a> callback)</td></tr>
-<tr class="memdesc:ga06e1e1a45b237119f72c366bb7bd4f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the default log output function with one of your own.  <br /></td></tr>
-<tr class="separator:ga06e1e1a45b237119f72c366bb7bd4f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf38a5a30c53684b5c0df27979d853b0" id="r_gaaf38a5a30c53684b5c0df27979d853b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#gaaf38a5a30c53684b5c0df27979d853b0">SDL::SetLogOutputFunction</a> (<a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">LogOutputCB</a> callback)</td></tr>
+<tr class="memdesc:gaaf38a5a30c53684b5c0df27979d853b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the default log output function with one of your own.  <br /></td></tr>
+<tr class="separator:gaaf38a5a30c53684b5c0df27979d853b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga526c25000071797d56d66a9b58cc457f" id="r_ga526c25000071797d56d66a9b58cc457f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f">SDL::ResetLogOutputFunction</a> ()</td></tr>
 <tr class="memdesc:ga526c25000071797d56d66a9b58cc457f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the current log output function with the default one.  <br /></td></tr>
 <tr class="separator:ga526c25000071797d56d66a9b58cc457f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,6 +260,32 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
 <p>You don't need to have a newline (<code>@n</code>) on the end of messages, the functions will do that for you. For consistent behavior cross-platform, you shouldn't have any newlines in messages, such as to log multiple lines in one call; unusual platform-specific behavior can be observed in such usage. Do one log call per line instead, with no newlines in messages.</p>
 <p>Each log call is atomic, so you won't see log messages cut off one another when logging from multiple threads. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga9358a764d7eccceda60f37c0d658deb1" name="ga9358a764d7eccceda60f37c0d658deb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9358a764d7eccceda60f37c0d658deb1">&#9670;&#160;</a></span>LogOutputCB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">SDL::LogOutputCB</a> = typedef std::function&lt;void(<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>, const char*)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function is called by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> when there is new text to be logged. A mutex is held so that this function is never called by more than one thread at once.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
+    <tr><td class="paramname">priority</td><td>the priority of the message. </td></tr>
+    <tr><td class="paramname">message</td><td>the message being output.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70" title="The prototype for the log output callback function.">LogOutputFunction</a> </dd></dl>
+
+</div>
+</div>
 <a id="gaad3bdff14ac0fcb4c9cb4277048bca70" name="gaad3bdff14ac0fcb4c9cb4277048bca70"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaad3bdff14ac0fcb4c9cb4277048bca70">&#9670;&#160;</a></span>LogOutputFunction</h2>
 
@@ -282,34 +308,6 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
-
-</div>
-</div>
-<a id="ga2dbf9e66c462a0ae7fc5fc392708b663" name="ga2dbf9e66c462a0ae7fc5fc392708b663"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2dbf9e66c462a0ae7fc5fc392708b663">&#9670;&#160;</a></span>LogOutputFunctionCB</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryLog.html#ga2dbf9e66c462a0ae7fc5fc392708b663">SDL::LogOutputFunctionCB</a> = typedef std::function&lt;void(<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a>)&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This function is called by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> when there is new text to be logged. A mutex is held so that this function is never called by more than one thread at once.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">category</td><td>the category of the message. </td></tr>
-    <tr><td class="paramname">priority</td><td>the priority of the message. </td></tr>
-    <tr><td class="paramname">message</td><td>the message being output.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>listener-callback </dd>
-<dd>
-<a class="el" href="group__CategoryLog.html#gaad3bdff14ac0fcb4c9cb4277048bca70" title="The prototype for the log output callback function.">LogOutputFunction</a> </dd></dl>
 
 </div>
 </div>
@@ -356,12 +354,12 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d" title="Replace the default log output function with one of your own.">SetLogOutputFunction()</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#gaae40ad42b1a6520c9a29192c24b5dce6" title="Get the current log output function.">GetLogOutputFunction()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d" title="Get the current log output function.">GetLogOutputFunction()</a> </dd></dl>
 
 </div>
 </div>
-<a id="gaae40ad42b1a6520c9a29192c24b5dce6" name="gaae40ad42b1a6520c9a29192c24b5dce6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaae40ad42b1a6520c9a29192c24b5dce6">&#9670;&#160;</a></span>GetLogOutputFunction() <span class="overload">[1/2]</span></h2>
+<a id="ga34fd25f38e2e9348e95b37645f021d4d" name="ga34fd25f38e2e9348e95b37645f021d4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga34fd25f38e2e9348e95b37645f021d4d">&#9670;&#160;</a></span>GetLogOutputFunction() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -370,7 +368,7 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryLog.html#ga2dbf9e66c462a0ae7fc5fc392708b663">LogOutputFunctionCB</a> SDL::GetLogOutputFunction </td>
+          <td class="memname"><a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">LogOutputCB</a> SDL::GetLogOutputFunction </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -382,7 +380,7 @@ constexpr <a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>&#160
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the LogOutputFunctionCB currently set</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the LogOutputCB currently set</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
@@ -590,12 +588,54 @@ template&lt;class... ARGS&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#gaae40ad42b1a6520c9a29192c24b5dce6" title="Get the current log output function.">GetLogOutputFunction()</a> </dd></dl>
+<a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d" title="Get the current log output function.">GetLogOutputFunction()</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaaf38a5a30c53684b5c0df27979d853b0" name="gaaf38a5a30c53684b5c0df27979d853b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaf38a5a30c53684b5c0df27979d853b0">&#9670;&#160;</a></span>SetLogOutputFunction() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::SetLogOutputFunction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga9358a764d7eccceda60f37c0d658deb1">LogOutputCB</a>&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>an LogOutputFunction to call instead of the default.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd>listener-callback </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d" title="Get the current log output function.">GetLogOutputFunction()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f" title="Replace the current log output function with the default one.">ResetLogOutputFunction()</a> </dd></dl>
 
 </div>
 </div>
 <a id="ga289db14fab774b210d34224e24cc534d" name="ga289db14fab774b210d34224e24cc534d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga289db14fab774b210d34224e24cc534d">&#9670;&#160;</a></span>SetLogOutputFunction() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga289db14fab774b210d34224e24cc534d">&#9670;&#160;</a></span>SetLogOutputFunction() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -638,49 +678,7 @@ template&lt;class... ARGS&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
 <dd>
-<a class="el" href="group__CategoryLog.html#gaae40ad42b1a6520c9a29192c24b5dce6" title="Get the current log output function.">GetLogOutputFunction()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f" title="Replace the current log output function with the default one.">ResetLogOutputFunction()</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga06e1e1a45b237119f72c366bb7bd4f09" name="ga06e1e1a45b237119f72c366bb7bd4f09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga06e1e1a45b237119f72c366bb7bd4f09">&#9670;&#160;</a></span>SetLogOutputFunction() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::SetLogOutputFunction </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga2dbf9e66c462a0ae7fc5fc392708b663">LogOutputFunctionCB</a>&#160;</td>
-          <td class="paramname"><em>callback</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">callback</td><td>an LogOutputFunction to call instead of the default.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>listener-callback </dd>
-<dd>
-<a class="el" href="group__CategoryLog.html#gad4438e5c07b0ca31e83093d4c973f1a2" title="Get the default log output function.">GetDefaultLogOutputFunction()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryLog.html#gaae40ad42b1a6520c9a29192c24b5dce6" title="Get the current log output function.">GetLogOutputFunction()</a> </dd>
+<a class="el" href="group__CategoryLog.html#ga34fd25f38e2e9348e95b37645f021d4d" title="Get the current log output function.">GetLogOutputFunction()</a> </dd>
 <dd>
 <a class="el" href="group__CategoryLog.html#ga526c25000071797d56d66a9b58cc457f" title="Replace the current log output function with the default one.">ResetLogOutputFunction()</a> </dd></dl>
 

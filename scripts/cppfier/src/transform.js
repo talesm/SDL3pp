@@ -153,6 +153,23 @@ class ApiContext {
 
 /**
  * 
+ * @param {ApiEntryKind} kind 
+ */
+function isType(kind) {
+  switch (kind) {
+    case "alias":
+    case "callback":
+    case "enum":
+    case "struct":
+    case "union":
+    case "ns":
+      return true;
+    default: return false;
+  }
+}
+
+/**
+ * 
  * @param {ApiEntries}        sourceEntries 
  * @param {ApiFileTransform}  file
  * @param {ApiContext}        context 
@@ -162,15 +179,13 @@ function expandTypes(sourceEntries, file, context) {
   expandWrappers(sourceEntries, file, context);
   expandEnumerations(sourceEntries, file, context);
   expandNamespaces(sourceEntries, file, context);
+  expandCallbacks(sourceEntries, file, context);
 
   const transformMap = file.transform;
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (context.blacklist.has(sourceName) || Array.isArray(sourceEntry)) continue;
-    const sourceKind = sourceEntry.kind;
-    if (sourceKind !== "alias" && sourceKind !== "callback" && sourceKind !== "enum" && sourceKind !== "struct" && sourceKind !== "union"
-      && sourceKind !== "ns"
-    ) continue;
+    if (!isType(sourceEntry.kind)) continue;
     const targetDelta = transformMap[sourceName];
     const name = transformName(sourceName, context);
     if (!targetDelta) {
@@ -294,6 +309,52 @@ function expandNamespaces(sourceEntries, transform, context) {
 
 /**
  * 
+ * @param {ApiEntries}        sourceEntries 
+ * @param {ApiFileTransform}  file,
+ * @param {ApiContext}        context 
+ */
+function expandCallbacks(sourceEntries, file, context) {
+  const transformMap = file.transform;
+  for (const sourceEntry of Object.values(sourceEntries)) {
+    if (Array.isArray(sourceEntry) || sourceEntry.kind !== "callback") continue;
+    const sourceName = sourceEntry.name;
+    const targetDelta = transformMap[sourceName];
+    const name = targetDelta?.name ?? transformName(sourceName, context);
+    if (!targetDelta) {
+      transformMap[sourceName] = {
+        name,
+        kind: "alias",
+        type: sourceName
+      };
+    } else if (!targetDelta.name) {
+      targetDelta.name = name;
+    }
+    const parameters = sourceEntry.parameters;
+    delete sourceEntry.parameters;
+    for (let i = 0; i < parameters.length; i++) {
+      const parameter = parameters[i];
+      if (typeof parameter !== "string" && parameter.type === "void *" && parameter.name === "userdata") {
+        const typeParams = parameters.map(p => (typeof p === "string") ? p : p.type);
+        const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
+        typeParams.splice(i, 1);
+        /** @type {ApiEntryTransform}  */
+        const callbackEntry = {
+          kind: "alias",
+          name: callbackName,
+          type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
+          doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
+          ...(file.transform[callbackName] ?? {})
+        };
+        prependIncludeAfter(callbackEntry, file, sourceName);
+        if (callbackEntry.name === "EventFilterCB") console.log(file.includeAfter[sourceName]);
+        break;
+      }
+    }
+  }
+}
+
+/**
+ * 
  * @param {ApiEntryBase|ApiEntryBase[]} entry 
  * @param {EntryHint}                   hints 
  */
@@ -322,9 +383,9 @@ function combineHints(entry, hints) {
 
 /**
  * 
- * @param {ApiEntries}    sourceEntries 
+ * @param {ApiEntries}       sourceEntries 
  * @param {ApiFileTransform} transform,
- * @param {ApiContext}    context 
+ * @param {ApiContext}       context 
  */
 function expandWrappers(sourceEntries, transform, context) {
   const wrappers = transform.wrappers ?? {};
@@ -543,7 +604,7 @@ function expandResources(sourceEntries, file, context) {
       { name: refName, kind: "forward" },
       { name: uniqueName, kind: "forward" }
     );
-    if (resourceEntry.aliasOptional) {
+    if (resourceEntry.aliasOptional || resourceEntry.lock) {
       referenceAliases.push({
         name: optionalName,
         kind: "alias",
@@ -763,6 +824,68 @@ function expandResources(sourceEntries, file, context) {
         }
       }
     ];
+    const derivedNames = new Set([refName, uniqueName, optionalName]);
+    if (resourceEntry.lock) {
+      const lockEntry = resourceEntry.lock !== true ? resourceEntry.lock : {};
+      lockEntry.kind = "struct";
+      if (!lockEntry.name) lockEntry.name = uniqueName + "Lock";
+      if (!lockEntry.type) lockEntry.type = `LockBase<${refName}>`;
+      if (!lockEntry.doc) lockEntry.doc = `Locks a ${uniqueName}.`;
+      combineHints(lockEntry, { super: lockEntry.type });
+      derivedNames.add(lockEntry.name);
+      referenceAliases.push({ kind: "forward", name: lockEntry.name });
+      derivedEntries.push(lockEntry);
+      const lockFunctionName = resourceEntry.lockFunction;
+      const unlockFunctionName = resourceEntry.unlockFunction;
+      const lockFunction = resourceEntry.entries[lockFunctionName];
+      if (typeof lockFunction === "string") {
+        resourceEntry.entries[lockFunctionName] = {
+          type: lockEntry.name,
+        };
+      }
+
+      lockEntry.entries = {
+        [lockEntry.name]: [{
+          kind: "function",
+          type: "",
+          constexpr: true,
+          proto: true,
+          parameters: [],
+          doc: "Creates an empty lock",
+          hints: { default: true }
+        }, {
+          kind: "function",
+          type: "",
+          constexpr: true,
+          parameters: [{ type: `${lockEntry.name} &&`, name: "other" }],
+          doc: "Move ctor",
+          hints: { init: ["LockBase(std::move(other))"] }
+        }],
+        [lockFunctionName]: "ctor",
+        [`~${lockEntry.name}`]: {
+          kind: "function",
+          type: "",
+          parameters: [],
+          hints: { body: "Unlock();" }
+        },
+        [unlockFunctionName]: {
+          name: "Unlock",
+          static: false,
+          hints: {
+            body: `CheckError(${unlockFunctionName}());`,
+            removeParamThis: true,
+          },
+        },
+        "reset": {
+          kind: "function",
+          type: "void",
+          parameters: [],
+          doc: "Same as Unlock(), just for uniformity.",
+          hints: { body: "Unlock();" },
+        },
+        ...(lockEntry.entries ?? {})
+      };
+    }
 
     if (resourceEntry.includeAfter) {
       includeAfter(name, file, resourceEntry.includeAfter);
@@ -770,7 +893,6 @@ function expandResources(sourceEntries, file, context) {
     } else {
       prependIncludeAfter(derivedEntries, file, includeAfterKey);
     }
-    const derivedNames = new Set([refName, uniqueName, optionalName]);
     let pointToIncludeFunc = includeAfterKey;
     for (const [subName, subEntry] of Object.entries(subEntries)) {
       if (Array.isArray(subEntry)) {
@@ -927,13 +1049,10 @@ function prependIncludeAfter(entryOrName, transform, includeAfterKey) {
  */
 function getOrCreateIncludeAfter(transform, includeAfterKey) {
   const includeTarget = transform.includeAfter[includeAfterKey];
-  if (!includeTarget) {
-    return transform.includeAfter[includeAfterKey] = [];
-  } else if (Array.isArray(includeTarget)) {
-    return includeTarget;
-  } else {
-    return transform.includeAfter[includeAfterKey] = [includeTarget];
-  }
+  if (Array.isArray(includeTarget)) return includeTarget;
+
+  transform.includeAfter[includeAfterKey] = includeTarget ? [includeTarget] : [];
+  return transform.includeAfter[includeAfterKey];
 }
 
 /**
@@ -1204,7 +1323,7 @@ function prepareForTypeInsert(entry, name, typeName) {
   if (!parameters?.length) return;
   const parameter = parameters[0];
   const type = typeof parameter !== "string" ? parameter.type : "";
-  if (type.includes(typeName) && !entry.static) {
+  if ((type.includes(typeName) || entry.hints?.removeParamThis) && !entry.static) {
     parameters.shift();
     if (entry.doc) entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
     if (type.startsWith("const ")) entry.immutable = true;
@@ -1254,7 +1373,6 @@ function transformEntry(sourceEntry, context) {
       targetEntry.parameters = sourceEntry.parameters;
       break;
     default:
-      delete targetEntry.parameters;
       delete targetEntry.entries;
       break;
   }
@@ -1293,6 +1411,14 @@ function transformFileDoc(docStr, context) {
   if (!docStr) return "";
   docStr = docStr.replace(/^# Category(\w+)/, `@defgroup Category$1 Category $1`);
   return transformDoc(docStr, context);
+}
+
+/** 
+ * @param {string}      docStr
+ * @param {ApiContext}  context   
+ **/
+function transformMemberDoc(docStr, context) {
+  return transformDoc(docStr, context).replace(/@param \w+.*\n/, "");
 }
 
 /** 

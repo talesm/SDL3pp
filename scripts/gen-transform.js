@@ -274,6 +274,272 @@ const transform = {
         },
       }
     },
+    "SDL_audio.h": {
+      wrappers: {
+        "SDL_AudioFormat": {
+          entries: {
+            "SDL_DEFINE_AUDIO_FORMAT": {
+              name: "ctor",
+              constexpr: true,
+              parameters: [
+                { type: "bool", name: "signed" },
+                { type: "bool", name: "bigendian" },
+                { type: "bool", name: "flt" },
+                { type: "Uint16", name: "size" },
+              ]
+            },
+            "SDL_AUDIO_BITSIZE": {
+              kind: "function",
+              name: "GetBitSize",
+              constexpr: true,
+              type: "Uint16",
+              static: false,
+              parameters: []
+            },
+            "SDL_AUDIO_BYTESIZE": {
+              kind: "function",
+              name: "GetByteSize",
+              constexpr: true,
+              type: "Uint16",
+              static: false,
+              parameters: []
+            },
+            "SDL_AUDIO_ISFLOAT": {
+              kind: "function",
+              name: "IsFloat",
+              constexpr: true,
+              type: "bool",
+              static: false,
+              parameters: []
+            },
+            "SDL_AUDIO_ISBIGENDIAN": {
+              kind: "function",
+              name: "IsBigEndian",
+              constexpr: true,
+              type: "bool",
+              static: false,
+              parameters: []
+            },
+            "SDL_AUDIO_ISLITTLEENDIAN": {
+              kind: "function",
+              name: "IsLittleEndian",
+              constexpr: true,
+              type: "bool",
+              static: false,
+              parameters: []
+            },
+            "SDL_AUDIO_ISSIGNED": {
+              kind: "function",
+              name: "IsSigned",
+              constexpr: true,
+              type: "bool",
+              static: false,
+              parameters: []
+            },
+            "SDL_AUDIO_ISINT": {
+              kind: "function",
+              name: "IsInt",
+              constexpr: true,
+              type: "bool",
+              static: false,
+              parameters: []
+            },
+            "SDL_AUDIO_ISUNSIGNED": {
+              kind: "function",
+              name: "IsUnsigned",
+              constexpr: true,
+              type: "bool",
+              static: false,
+              parameters: []
+            },
+          }
+        },
+      },
+      resources: {
+        "SDL_AudioDeviceID": {
+          uniqueName: "AudioDevice",
+          free: "SDL_CloseAudioDevice",
+          entries: {
+            "SDL_OpenAudioDevice": {
+              name: "ctor",
+              parameters: [
+                {},
+                { type: "OptionalRef<const SDL_AudioSpec>", default: "std::nullopt" }
+              ]
+            },
+            "SDL_GetAudioDeviceName": "immutable",
+            "SDL_GetAudioDeviceFormat": {
+              immutable: true,
+              type: "AudioSpec",
+              parameters: [
+                {},
+                {
+                  type: "int *",
+                  name: "sample_frames",
+                  default: "nullptr"
+                }
+              ]
+            },
+            "SDL_GetAudioDeviceChannelMap": {
+              immutable: true,
+              type: "OwnArray<int>",
+              parameters: [{}]
+            },
+            "SDL_IsAudioDevicePhysical": "immutable",
+            "SDL_IsAudioDevicePlayback": "immutable",
+            "SDL_PauseAudioDevice": "function",
+            "SDL_ResumeAudioDevice": "function",
+            "SDL_AudioDevicePaused": "immutable",
+            "SDL_GetAudioDeviceGain": "immutable",
+            "SDL_SetAudioDeviceGain": "function",
+            "SDL_BindAudioStreams": {
+              proto: true,
+              parameters: [
+                { name: "this" },
+                { type: "std::span<AudioStreamRef>" }
+              ]
+            },
+            "SDL_BindAudioStream": "function",
+            "SDL_UnbindAudioStreams": {
+              proto: true,
+              parameters: [
+                { name: "this" },
+                { type: "std::span<AudioStreamRef>" }
+              ]
+            },
+            "SDL_UnbindAudioStream": "function",
+          }
+        },
+        "SDL_AudioStream": {
+          lock: true,
+          lockFunction: "SDL_LockAudioStream",
+          unlockFunction: "SDL_UnlockAudioStream",
+          entries: {
+            "SDL_CreateAudioStream": "ctor",
+            "SDL_GetAudioStreamProperties": "immutable",
+            "GetInputFormat": {
+              kind: "function",
+              type: "AudioSpec",
+              immutable: true,
+              parameters: []
+            },
+            "GetOutputFormat": {
+              kind: "function",
+              type: "AudioSpec",
+              immutable: true,
+              parameters: []
+            },
+            "SDL_GetAudioStreamFormat": "immutable",
+            "SetInputFormat": {
+              kind: "function",
+              type: "void",
+              parameters: [{ type: "const SDL_AudioSpec &", name: "spec" }]
+            },
+            "SetOutputFormat": {
+              kind: "function",
+              type: "void",
+              parameters: [{ type: "const SDL_AudioSpec &", name: "spec" }]
+            },
+            "SDL_SetAudioStreamFormat": "function",
+            "SDL_GetAudioStreamFrequencyRatio": "immutable",
+            "SDL_SetAudioStreamFrequencyRatio": "function",
+            "SDL_GetAudioStreamGain": "immutable",
+            "SDL_SetAudioStreamGain": "function",
+            "SDL_GetAudioStreamInputChannelMap": {
+              type: "OwnArray<int>",
+              immutable: true,
+              parameters: [{}]
+            },
+            "SDL_GetAudioStreamOutputChannelMap": {
+              type: "OwnArray<int>",
+              immutable: true,
+              parameters: [{}]
+            },
+            "SDL_SetAudioStreamInputChannelMap": {
+              type: "void",
+              parameters: [{}, { type: "std::span<int>" }]
+            },
+            "SDL_SetAudioStreamOutputChannelMap": {
+              type: "void",
+              parameters: [{}, { type: "std::span<int>" }]
+            },
+            "PutData": {
+              kind: "function",
+              type: "void",
+              template: [{ type: "class", name: "T" }],
+              parameters: [{ type: "std::span<T>", name: "buf" }]
+            },
+            "SDL_PutAudioStreamData": "function",
+            "GetData": {
+              kind: "function",
+              type: "int",
+              template: [{ type: "class", name: "T" }],
+              parameters: [{ type: "std::span<T>", name: "buf" }]
+            },
+            "SDL_GetAudioStreamData": "function",
+            "SDL_GetAudioStreamAvailable": "immutable",
+            "SDL_GetAudioStreamQueued": "immutable",
+            "SDL_FlushAudioStream": "function",
+            "SDL_ClearAudioStream": "function",
+            "SDL_PauseAudioStreamDevice": "function",
+            "SDL_ResumeAudioStreamDevice": "function",
+            "SDL_AudioStreamDevicePaused": "immutable",
+            "SDL_LockAudioStream": {
+              type: "AudioStreamLock"
+            },
+            "Bind": {
+              kind: "function",
+              type: "void",
+              doc: "@see AudioDeviceBase.BindAudioStream",
+              parameters: [{
+                type: "AudioDeviceBase &",
+                name: "devid"
+              }]
+            },
+            "Unbind": {
+              kind: "function",
+              type: "void",
+              doc: "@see AudioDeviceBase.UnbindAudioStream",
+              parameters: [{
+                type: "AudioDeviceBase &",
+                name: "devid"
+              }]
+            },
+            "SDL_GetAudioStreamDevice": "immutable",
+          }
+        }
+      },
+      transform: {
+        "SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK": {
+          kind: "var",
+          constexpr: true,
+          type: "AudionDeviceRef"
+        },
+        "SDL_AUDIO_DEVICE_DEFAULT_RECORDING": {
+          kind: "var",
+          constexpr: true,
+          type: "AudionDeviceRef"
+        },
+        "SDL_AUDIO_FRAMESIZE": {
+          kind: "function",
+          name: "AudioFrameSize",
+          constexpr: true,
+          type: "int",
+          parameters: [{
+            type: "const AudioSpec &",
+            name: "x"
+          }]
+        },
+        "SDL_GetAudioPlaybackDevices": {
+          type: "OwnArray<AudioDeviceRef>",
+          parameters: []
+        },
+        "SDL_GetAudioRecordingDevices": {
+          type: "OwnArray<AudioDeviceRef>",
+          parameters: []
+        },
+      }
+    },
     "SDL_blendmode.h": {
       enumerations: {
         "SDL_BlendMode": {
@@ -295,11 +561,6 @@ const transform = {
         "SDL_PROP_FILE_DIALOG_": "prop::FileDialog"
       },
       includeAfter: {
-        "SDL_DialogFileCallback": {
-          "name": "DialogFileCB",
-          "kind": "alias",
-          "type": "std::function<void(const char *const *, int)>"
-        },
         "SDL_ShowOpenFileDialog": {
           "name": "ShowOpenFileDialog",
           "kind": "function",
@@ -742,11 +1003,6 @@ const transform = {
         },
         "SDL_EventFilter": [
           {
-            "kind": "alias",
-            "name": "EventFilterCB",
-            "type": "std::function<bool(const Event &)>"
-          },
-          {
             "doc": "Handle returned by AddEventWatch()",
             "kind": "struct",
             "name": "EventWatchHandle",
@@ -858,6 +1114,9 @@ const transform = {
         "SDL_EventType": {
           prefix: "SDL_EVENT_"
         }
+      },
+      transform: {
+        "EventFilterCB": { type: "std::function<bool(const Event &)>" },
       }
     },
     "SDL_filesystem.h": {
@@ -919,11 +1178,6 @@ const transform = {
             },
           }
         },
-        "SDL_EnumerateDirectoryCallback": {
-          name: "EnumerateDirectoryCB",
-          kind: "alias",
-          type: "std::function<EnumerationResult(const char *dirname, const char *fname)>"
-        },
         "SDL_EnumerateDirectory": [{
           name: "EnumerateDirectory",
           kind: "function",
@@ -960,6 +1214,9 @@ const transform = {
         }
       },
       transform: {
+        "EnumerateDirectoryCB": {
+          type: "std::function<EnumerationResult(const char *dirname, const char *fname)>"
+        },
         "SDL_GetPrefPath": {
           type: "Path"
         },
@@ -1306,11 +1563,6 @@ const transform = {
               }
             ]
           }
-        },
-        "SDL_MainThreadCallback": {
-          "kind": "alias",
-          "name": "MainThreadCB",
-          "type": "std::function<void()>"
         },
         "SDL_RunOnMainThread": {
           "kind": "function",
@@ -1864,15 +2116,10 @@ const transform = {
         }
       },
       includeAfter: {
-        "SDL_LogOutputFunction": {
-          "name": "LogOutputFunctionCB",
-          "doc": "@sa LogOutputFunction",
-          "kind": "alias"
-        },
         "SDL_GetLogOutputFunction": {
           "name": "GetLogOutputFunction",
           "kind": "function",
-          "type": "LogOutputFunctionCB",
+          "type": "LogOutputCB",
           "parameters": []
         },
         "SDL_SetLogOutputFunction": [
@@ -1882,7 +2129,7 @@ const transform = {
             "type": "void",
             "parameters": [
               {
-                "type": "LogOutputFunctionCB",
+                "type": "LogOutputCB",
                 "name": "callback"
               }
             ]
@@ -1896,6 +2143,9 @@ const transform = {
         ]
       },
       transform: {
+        "LogOutputCB": {
+          type: "std::function<void(LogCategory, LogPriority, const char *)>"
+        },
         "SDL_LogCategory": {
           "kind": "struct",
           "type": "",
@@ -2934,15 +3184,11 @@ const transform = {
           { "name": "CleanupPropertyCallback" },
           {
             "name": "CleanupPropertyCB",
-            "doc": "@sa PropertiesRef.CleanupCallback",
-            "kind": "alias"
           },
           { "name": "EnumeratePropertiesCallback" },
           { "name": "PropertiesRef", kind: "forward" },
           {
             "name": "EnumeratePropertiesCB",
-            "doc": "@sa PropertiesRef.EnumerateCallback",
-            "kind": "alias"
           },
           {
             "name": "PropertiesLock",
@@ -3168,6 +3414,9 @@ const transform = {
         }
       },
       transform: {
+        "EnumeratePropertiesCB": {
+          type: "std::function<void(PropertiesRef props, const char *name)>"
+        },
         "SDL_CreateProperties": {
           name: "Properties.Properties",
           type: ""
@@ -4948,6 +5197,7 @@ const transform = {
         }
       },
       transform: {
+        "CompareCallback_rCB": { name: "CompareCallbackCB" },
         "SDL_Time": {
           kind: "struct",
           type: "",
@@ -6500,11 +6750,6 @@ const transform = {
         "SDL_NS_TO_US"
       ],
       includeAfter: {
-        "SDL_NSTimerCallback":
-        {
-          "kind": "alias",
-          "name": "TimerCB"
-        },
         "SDL_AddTimerNS": {
           "kind": "function",
           "name": "AddTimer",
@@ -6568,6 +6813,9 @@ const transform = {
           type: "SDL_NSTimerCallback",
           kind: "alias"
         },
+        "TimerCB": {
+          type: "std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>"
+        },
         "SDL_AddTimerNS": {
           name: "AddTimer",
           parameters: [
@@ -6603,8 +6851,6 @@ const transform = {
           name: "TrayCallback"
         }, {
           name: "TrayCB",
-          kind: "alias",
-          type: "std::function<void(TrayEntryRef)>"
         }],
       },
       resources: {
@@ -6720,6 +6966,7 @@ const transform = {
         },
       },
       transform: {
+        "TrayCB": { type: "std::function<void(TrayEntryRef)>" },
         "SDL_RemoveTrayEntry": {
           name: "TrayEntryRef.Remove",
           static: false,

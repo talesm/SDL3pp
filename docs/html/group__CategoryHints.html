@@ -807,6 +807,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gafca244836857d1f55905d488451a6798" id="r_gafca244836857d1f55905d488451a6798"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">SDL::HintCallback</a> = SDL_HintCallback</td></tr>
 <tr class="memdesc:gafca244836857d1f55905d488451a6798"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to send notifications of hint value changes.  <br /></td></tr>
 <tr class="separator:gafca244836857d1f55905d488451a6798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9e6f04601e2174e6d2e8f7708483e1bc" id="r_ga9e6f04601e2174e6d2e8f7708483e1bc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#ga9e6f04601e2174e6d2e8f7708483e1bc">SDL::HintCB</a> = std::function&lt; void(const char *, const char *, const char *)&gt;</td></tr>
+<tr class="memdesc:ga9e6f04601e2174e6d2e8f7708483e1bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to send notifications of hint value changes.  <br /></td></tr>
+<tr class="separator:ga9e6f04601e2174e6d2e8f7708483e1bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -5846,6 +5849,35 @@ game" or "Watching a video".</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This callback is fired from whatever thread is setting a new hint value. <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> holds a lock on the hint subsystem when calling this callback.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c" title="Add a function to watch a particular hint.">AddHintCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga9e6f04601e2174e6d2e8f7708483e1bc" name="ga9e6f04601e2174e6d2e8f7708483e1bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9e6f04601e2174e6d2e8f7708483e1bc">&#9670;&#160;</a></span>HintCB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryHints.html#ga9e6f04601e2174e6d2e8f7708483e1bc">SDL::HintCB</a> = typedef std::function&lt;void(const char*, const char*, const char*)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is called an initial time during AddHintCallback with the hint's current value, and then again each time the hint's value changes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">userdata</td><td>what was passed as <code>userdata</code> to <a class="el" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c" title="Add a function to watch a particular hint.">AddHintCallback()</a>. </td></tr>
+    <tr><td class="paramname">name</td><td>what was passed as <code>name</code> to <a class="el" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c" title="Add a function to watch a particular hint.">AddHintCallback()</a>. </td></tr>
+    <tr><td class="paramname">oldValue</td><td>the previous hint value. </td></tr>
+    <tr><td class="paramname">newValue</td><td>the new value hint is to be set to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This callback is fired from whatever thread is setting a new hint value. <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> holds a lock on the hint subsystem when calling this callback.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c" title="Add a function to watch a particular hint.">AddHintCallback</a> </dd>
+<dd>
+<a class="el" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798" title="A callback used to send notifications of hint value changes.">HintCallback</a> </dd></dl>
 
 </div>
 </div>

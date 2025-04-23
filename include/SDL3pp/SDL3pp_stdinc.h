@@ -1229,6 +1229,23 @@ inline void* bsearch(const void* key,
 using CompareCallback_r = SDL_CompareCallback_r;
 
 /**
+ * A callback used with SDL sorting and binary search functions.
+ *
+ * @param a a pointer to the first element being compared.
+ * @param b a pointer to the second element being compared.
+ * @returns -1 if `a` should be sorted before `b`, 1 if `b` should be sorted
+ *          before `a`, 0 if they are equal. If two elements are equal, their
+ *          order in the sorted array is undefined.
+ *
+ * @since This callback is available since SDL 3.2.0.
+ *
+ * @sa qsort_r
+ * @sa bsearch_r
+ * @sa CompareCallback_r
+ */
+using CompareCallbackCB = std::function<int(const void*, const void*)>;
+
+/**
  * Sort an array, passing a userdata pointer to the compare function.
  *
  * For example:

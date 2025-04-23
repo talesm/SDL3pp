@@ -4486,6 +4486,28 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
 using HintCallback = SDL_HintCallback;
 
 /**
+ * A callback used to send notifications of hint value changes.
+ *
+ * This is called an initial time during AddHintCallback with the hint's
+ * current value, and then again each time the hint's value changes.
+ *
+ * @param userdata what was passed as `userdata` to AddHintCallback().
+ * @param name what was passed as `name` to AddHintCallback().
+ * @param oldValue the previous hint value.
+ * @param newValue the new value hint is to be set to.
+ *
+ * @threadsafety This callback is fired from whatever thread is setting a new
+ *               hint value. SDL holds a lock on the hint subsystem when
+ *               calling this callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddHintCallback
+ * @sa HintCallback
+ */
+using HintCB = std::function<void(const char*, const char*, const char*)>;
+
+/**
  * Add a function to watch a particular hint.
  *
  * The callback function is called _during_ this function, to provide it an

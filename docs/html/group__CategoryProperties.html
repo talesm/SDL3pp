@@ -249,13 +249,20 @@ result-callback</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This callback is called from <a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a>, and is called once per property in the set.</p>
-<dl class="section see"><dt>See also</dt><dd>EnumeratePropertyCallback </dd>
+<p>This callback is called from <a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate()</a>, and is called once per property in the set.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">props</td><td>the <a class="el" href="structSDL_1_1PropertiesBase.html" title="Wrap properties id.">PropertiesBase</a> that is being enumerated. </td></tr>
+    <tr><td class="paramname">name</td><td>the next property name in the enumeration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate</a> holds a lock on <code>props</code> during this callback.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#immediate-callback">Immediate callback</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase.Enumerate</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1PropertiesBase.html#a8bd5ec634a29ae1b5c6a6db9bce4ac66" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a> </dd>
-<dd>
-immediate-callback</dd></dl>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#immediate-callback">Immediate callback</a> </dd></dl>
+<a class="el" href="group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c" title="A callback used to enumerate all the properties in a group of properties.">EnumeratePropertiesCallback</a> </dd></dl>
 
 </div>
 </div>

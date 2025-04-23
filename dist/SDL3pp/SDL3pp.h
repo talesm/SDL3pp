@@ -2477,6 +2477,23 @@ inline void* bsearch(const void* key,
 using CompareCallback_r = SDL_CompareCallback_r;
 
 /**
+ * A callback used with SDL sorting and binary search functions.
+ *
+ * @param a a pointer to the first element being compared.
+ * @param b a pointer to the second element being compared.
+ * @returns -1 if `a` should be sorted before `b`, 1 if `b` should be sorted
+ *          before `a`, 0 if they are equal. If two elements are equal, their
+ *          order in the sorted array is undefined.
+ *
+ * @since This callback is available since SDL 3.2.0.
+ *
+ * @sa qsort_r
+ * @sa bsearch_r
+ * @sa CompareCallback_r
+ */
+using CompareCallbackCB = std::function<int(const void*, const void*)>;
+
+/**
  * Sort an array, passing a userdata pointer to the compare function.
  *
  * For example:
@@ -6961,6 +6978,8 @@ inline AssertState ReportAssertion(AssertData* data,
  */
 #define SDL_assert_always(condition) SDL_enabled_assert(condition)
 
+#endif // SDL3PP_DOC
+
 /**
  * A @ref callback that fires when an SDL assertion fails.
  *
@@ -6975,6 +6994,22 @@ inline AssertState ReportAssertion(AssertData* data,
  * @since This datatype is available since SDL 3.2.0.
  */
 using AssertionHandler = SDL_AssertionHandler;
+
+/**
+ * A callback that fires when an SDL assertion fails.
+ *
+ * @param data a pointer to the AssertData structure corresponding to the
+ *             current assertion.
+ * @returns an AssertState value indicating how to handle the failure.
+ *
+ * @threadsafety This callback may be called from any thread that triggers an
+ *               assert at any time.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ * @sa AssertionHandler
+ */
+using AssertionHandlerCB =
+  std::function<SDL_AssertState(const SDL_AssertData*)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -7108,8 +7143,6 @@ inline const AssertData* GetAssertionReport()
  * @sa SDL_GetAssertionReport
  */
 inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
-
-#endif // SDL3PP_DOC
 
 /// @}
 
@@ -13883,6 +13916,28 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
 using HintCallback = SDL_HintCallback;
 
 /**
+ * A callback used to send notifications of hint value changes.
+ *
+ * This is called an initial time during AddHintCallback with the hint's
+ * current value, and then again each time the hint's value changes.
+ *
+ * @param userdata what was passed as `userdata` to AddHintCallback().
+ * @param name what was passed as `name` to AddHintCallback().
+ * @param oldValue the previous hint value.
+ * @param newValue the new value hint is to be set to.
+ *
+ * @threadsafety This callback is fired from whatever thread is setting a new
+ *               hint value. SDL holds a lock on the hint subsystem when
+ *               calling this callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddHintCallback
+ * @sa HintCallback
+ */
+using HintCB = std::function<void(const char*, const char*, const char*)>;
+
+/**
  * Add a function to watch a particular hint.
  *
  * The callback function is called _during_ this function, to provide it an
@@ -15133,11 +15188,9 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @cat listener-callback
  *
- * @sa listener-callback
  * @sa LogOutputFunction
  */
-using LogOutputFunctionCB =
-  std::function<void(LogCategory, LogPriority, StringParam)>;
+using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
 
 /**
  * Get the default log output function.
@@ -15178,7 +15231,7 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 /**
  * Get the current log output function.
  *
- * @returns the LogOutputFunctionCB currently set
+ * @returns the LogOutputCB currently set
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15190,9 +15243,9 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  * @sa GetDefaultLogOutputFunction()
  * @sa SetLogOutputFunction()
  */
-inline LogOutputFunctionCB GetLogOutputFunction()
+inline LogOutputCB GetLogOutputFunction()
 {
-  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
+  using Wrapper = UniqueWrapper<LogOutputCB>;
   LogOutputFunction cb;
   void* userdata;
   if (userdata == nullptr) {
@@ -15225,7 +15278,7 @@ inline LogOutputFunctionCB GetLogOutputFunction()
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
-  UniqueWrapper<LogOutputFunctionCB>::erase();
+  UniqueWrapper<LogOutputCB>::erase();
   return SDL_SetLogOutputFunction(callback, userdata);
 }
 
@@ -15245,9 +15298,9 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  * @sa GetLogOutputFunction()
  * @sa ResetLogOutputFunction()
  */
-inline void SetLogOutputFunction(LogOutputFunctionCB callback)
+inline void SetLogOutputFunction(LogOutputCB callback)
 {
-  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
+  using Wrapper = UniqueWrapper<LogOutputCB>;
   SDL_SetLogOutputFunction(
     [](
       void* userdata, int category, LogPriority priority, const char* message) {
@@ -18068,14 +18121,22 @@ struct PropertiesRef;
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * This callback is called from PropertiesBase.Enumerate(), and is called once
  * per property in the set.
  *
- * @sa EnumeratePropertyCallback
- * @sa PropertiesBase::Enumerate()
- * @sa immediate-callback
+ * @param props the PropertiesBase that is being enumerated.
+ * @param name the next property name in the enumeration.
+ *
+ * @threadsafety PropertiesBase.Enumerate holds a lock on `props` during this
+ *               callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
  *
  * @cat immediate-callback
+ *
+ *
+ * @sa PropertiesBase.Enumerate
+ * @sa EnumeratePropertiesCallback
  */
 using EnumeratePropertiesCB =
   std::function<void(PropertiesRef props, const char* name)>;
@@ -36473,6 +36534,31 @@ using EGLint = SDL_EGLint;
 using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
 
 /**
+ * EGL platform attribute initialization callback.
+ *
+ * This is called when SDL is attempting to create an EGL context, to let the
+ * app add extra attributes to its eglGetPlatformDisplay() call.
+ *
+ * The callback should return a pointer to an EGL attribute array terminated
+ * with `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase
+ * process will fail gracefully.
+ *
+ * The returned pointer should be allocated with malloc() and will be
+ * passed to free().
+ *
+ * The arrays returned by each callback will be appended to the existing
+ * attribute arrays defined by SDL.
+ *
+ * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa EGL_SetAttributeCallbacks
+ * @sa EGLAttribArrayCallback
+ */
+using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
+
+/**
  * EGL surface/context attribute initialization callback types.
  *
  * This is called when SDL is attempting to create an EGL surface, to let the
@@ -36502,6 +36588,37 @@ using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
  * @sa EGL_SetAttributeCallbacks
  */
 using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
+
+/**
+ * EGL surface/context attribute initialization callback types.
+ *
+ * This is called when SDL is attempting to create an EGL surface, to let the
+ * app add extra attributes to its eglCreateWindowSurface() or
+ * eglCreateContext calls.
+ *
+ * For convenience, the EGLDisplay and EGLConfig to use are provided to the
+ * callback.
+ *
+ * The callback should return a pointer to an EGL attribute array terminated
+ * with `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase
+ * process will fail gracefully.
+ *
+ * The returned pointer should be allocated with malloc() and will be
+ * passed to free().
+ *
+ * The arrays returned by each callback will be appended to the existing
+ * attribute arrays defined by SDL.
+ *
+ * @param display the EGL display to be used.
+ * @param config the EGL config to be used.
+ * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa EGL_SetAttributeCallbacks
+ * @sa EGLIntArrayCallback
+ */
+using EGLIntArrayCB = std::function<SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)>;
 
 /**
  * @name GLAttrs

@@ -709,7 +709,7 @@ var searchData=
   ['setlanguage_706',['SetLanguage',['../structSDL_1_1FontBase.html#a94b1b70012d7ba70413b7ccbd7ab2e90',1,'SDL::FontBase']]],
   ['setlineskip_707',['SetLineSkip',['../structSDL_1_1FontBase.html#ab949c2b3d7dfd117f52bc14d03edc36d',1,'SDL::FontBase']]],
   ['setlogicalpresentation_708',['SetLogicalPresentation',['../structSDL_1_1RendererBase.html#a064ee4f626678ce8e0dbf3d500c15ca4',1,'SDL::RendererBase']]],
-  ['setlogoutputfunction_709',['setlogoutputfunction',['../group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d',1,'SDL::SetLogOutputFunction(LogOutputFunction callback, void *userdata)'],['../group__CategoryLog.html#ga06e1e1a45b237119f72c366bb7bd4f09',1,'SDL::SetLogOutputFunction(LogOutputFunctionCB callback)']]],
+  ['setlogoutputfunction_709',['setlogoutputfunction',['../group__CategoryLog.html#ga289db14fab774b210d34224e24cc534d',1,'SDL::SetLogOutputFunction(LogOutputFunction callback, void *userdata)'],['../group__CategoryLog.html#gaaf38a5a30c53684b5c0df27979d853b0',1,'SDL::SetLogOutputFunction(LogOutputCB callback)']]],
   ['setlogpriorities_710',['SetLogPriorities',['../classSDL_1_1LogCategory.html#aea4bbac0bfee6260e24ced6bd5502b47',1,'SDL::LogCategory']]],
   ['setlogpriority_711',['SetLogPriority',['../classSDL_1_1LogCategory.html#a011df65f656938057462aeb5ed7e2b91',1,'SDL::LogCategory']]],
   ['setlogpriorityprefix_712',['SetLogPriorityPrefix',['../group__CategoryLog.html#ga17098e2107cc8038245aa234ab84aba4',1,'SDL']]],

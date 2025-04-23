@@ -192,6 +192,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Nanoseconds</b>
 <tr class="memitem:gab5c634ea2ae9a102fa58cd7beac9f478" id="r_gab5c634ea2ae9a102fa58cd7beac9f478"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478">SDL::CompareCallback_r</a> = SDL_CompareCallback_r</td></tr>
 <tr class="memdesc:gab5c634ea2ae9a102fa58cd7beac9f478"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used with <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> sorting and binary search functions.  <br /></td></tr>
 <tr class="separator:gab5c634ea2ae9a102fa58cd7beac9f478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace0552be6b1d2bbc2eeba7e38d59f87a" id="r_gace0552be6b1d2bbc2eeba7e38d59f87a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gace0552be6b1d2bbc2eeba7e38d59f87a">SDL::CompareCallbackCB</a> = std::function&lt; int(const void *, const void *)&gt;</td></tr>
+<tr class="memdesc:gace0552be6b1d2bbc2eeba7e38d59f87a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used with <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> sorting and binary search functions.  <br /></td></tr>
+<tr class="separator:gace0552be6b1d2bbc2eeba7e38d59f87a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga379a3713730374c4737a2bfb2004fab7" id="r_ga379a3713730374c4737a2bfb2004fab7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">SDL::FunctionPointer</a> = SDL_FunctionPointer</td></tr>
 <tr class="memdesc:ga379a3713730374c4737a2bfb2004fab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A generic function pointer.  <br /></td></tr>
 <tr class="separator:ga379a3713730374c4737a2bfb2004fab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -802,7 +805,7 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 <div class="line">    SDL_COMPILE_TIME_ASSERT(<a class="code hl_define" href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a>, <span class="keyword">sizeof</span>(*(dst)) == <span class="keyword">sizeof</span>(*(src)));      \</div>
 <div class="line">  }                                                                            \</div>
 <div class="line">  SDL_memcpy((dst), (src), <span class="keyword">sizeof</span>(*(src)))</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaa20b552293de849b3c1c7576cb158e9e"><div class="ttname"><a href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a></div><div class="ttdeci">#define SDL_copyp(dst, src)</div><div class="ttdoc">A macro to copy memory between objects, with basic type checking.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1841</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaa20b552293de849b3c1c7576cb158e9e"><div class="ttname"><a href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a></div><div class="ttdeci">#define SDL_copyp(dst, src)</div><div class="ttdoc">A macro to copy memory between objects, with basic type checking.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1858</div></div>
 </div><!-- fragment --><p>memcpy and memmove do not care where you copy memory to and from, which can lead to bugs. This macro aims to avoid most of those bugs by making sure that the source and destination are both pointers to objects that are the same size. It does not check that the objects are the same <em>type</em>, just that the copy will not overflow either object.</p>
 <p>The size check happens at compile time, and the compiler will throw an error if the objects are different sizes.</p>
 <p>Generally this is intended to copy a single object, not an array.</p>
@@ -1194,6 +1197,34 @@ VirtualJoystickDesc </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2" title="Sort an array, passing a userdata pointer to the compare function.">qsort_r</a> </dd>
 <dd>
 <a class="el" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4" title="Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...">bsearch_r</a> </dd></dl>
+
+</div>
+</div>
+<a id="gace0552be6b1d2bbc2eeba7e38d59f87a" name="gace0552be6b1d2bbc2eeba7e38d59f87a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gace0552be6b1d2bbc2eeba7e38d59f87a">&#9670;&#160;</a></span>CompareCallbackCB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryStdinc.html#gace0552be6b1d2bbc2eeba7e38d59f87a">SDL::CompareCallbackCB</a> = typedef std::function&lt;int(const void*, const void*)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>a pointer to the first element being compared. </td></tr>
+    <tr><td class="paramname">b</td><td>a pointer to the second element being compared. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>-1 if <code>a</code> should be sorted before <code>b</code>, 1 if <code>b</code> should be sorted before <code>a</code>, 0 if they are equal. If two elements are equal, their order in the sorted array is undefined.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This callback is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2" title="Sort an array, passing a userdata pointer to the compare function.">qsort_r</a> </dd>
+<dd>
+<a class="el" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4" title="Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...">bsearch_r</a> </dd>
+<dd>
+<a class="el" href="group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478" title="A callback used with SDL sorting and binary search functions.">CompareCallback_r</a> </dd></dl>
 
 </div>
 </div>
@@ -2240,7 +2271,7 @@ SDL_strtoull </dd>
 <div class="line"> </div>
 <div class="line">data *result = <a class="code hl_function" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">bsearch_r</a>(&amp;key, values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]),</div>
 <div class="line">compare, (<span class="keyword">const</span> <span class="keywordtype">void</span> *)(uintptr_t)sort_increasing);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaf22f982867b4598c8caa2de8f5a9e0e4"><div class="ttname"><a href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a></div><div class="ttdeci">void * bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1349</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaf22f982867b4598c8caa2de8f5a9e0e4"><div class="ttname"><a href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a></div><div class="ttdeci">void * bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1366</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>a pointer to a key equal to the element being searched for. </td></tr>
@@ -5282,7 +5313,7 @@ template&lt;class T , class U &gt; </div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">qsort_r</a>(values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]), compare, (<span class="keyword">const</span> <span class="keywordtype">void</span></div>
 <div class="line">*)(uintptr_t)sort_increasing);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaa3b0083aa5cb6236224048d437834dd2"><div class="ttname"><a href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">SDL::qsort_r</a></div><div class="ttdeci">void qsort_r(void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Sort an array, passing a userdata pointer to the compare function.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1283</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaa3b0083aa5cb6236224048d437834dd2"><div class="ttname"><a href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">SDL::qsort_r</a></div><div class="ttdeci">void qsort_r(void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Sort an array, passing a userdata pointer to the compare function.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1300</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">base</td><td>a pointer to the start of the array. </td></tr>
