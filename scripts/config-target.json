@@ -14,6 +14,7 @@
     "SDL3pp_blendmode.h",
     "SDL3pp_rect.h",
     "SDL3pp_surface.h",
+    "SDL3pp_audio.h",
     "SDL3pp_events.h",
     "SDL3pp_keyboard.h",
     "SDL3pp_keycode.h",

@@ -37,7 +37,9 @@ Camera Support           | SDL3pp_camera.h
 
 ## Audio
 
-@todo Plan and implement Audio.
+Category            | Header
+------------------- | -----------------
+@ref CategoryAudio  | SDL3pp_audio.h
 
 ## Input Events
 
@@ -158,6 +160,8 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryRect
 @addtogroup CategorySurface
 @}
+
+@addtogroup CategoryAudio
 
 @defgroup CategoriesEvents Input Events
 @{

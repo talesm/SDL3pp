@@ -19080,6 +19080,13 @@
       "name": "SDL3pp_audio.h",
       "doc": "@defgroup CategoryAudio Category Audio\n\nAudio functionality for the SDL library.\n\nAll audio in SDL3 revolves around AudioStreamBase. Whether you want to play\nor record audio, convert it, stream it, buffer it, or mix it, you're going\nto be passing it through an audio stream.\n\nAudio streams are quite flexible; they can accept any amount of data at a\ntime, in any supported format, and output it as needed in any other format,\neven if the data format changes on either side halfway through.\n\nAn app opens an audio device and binds any number of audio streams to it,\nfeeding more data to the streams as available. When the device needs more\ndata, it will pull it from all bound streams and mix them together for\nplayback.\n\nAudio streams can also use an app-provided callback to supply data\non-demand, which maps pretty closely to the SDL2 audio model.\n\nSDL also provides a simple .WAV loader in LoadWAV (and LoadWAV\nif you aren't reading from a file) as a basic means to load sound data into\nyour program.\n\n## Logical audio devices\n\nIn SDL3, opening a physical device (like a SoundBlaster 16 Pro) gives you a\nlogical device ID that you can bind audio streams to. In almost all cases,\nlogical devices can be used anywhere in the API that a physical device is\nnormally used. However, since each device opening generates a new logical\ndevice, different parts of the program (say, a VoIP library, or\ntext-to-speech framework, or maybe some other sort of mixer on top of SDL)\ncan have their own device opens that do not interfere with each other; each\nlogical device will mix its separate audio down to a single buffer, fed to\nthe physical device, behind the scenes. As many logical devices as you like\ncan come and go; SDL will only have to open the physical device at the OS\nlevel once, and will manage all the logical devices on top of it\ninternally.\n\nOne other benefit of logical devices: if you don't open a specific physical\ndevice, instead opting for the default, SDL can automatically migrate those\nlogical devices to different hardware as circumstances change: a user\nplugged in headphones? The system default changed? SDL can transparently\nmigrate the logical devices to the correct physical device seamlessly and\nkeep playing; the app doesn't even have to know it happened if it doesn't\nwant to.\n\n## Simplified audio\n\nAs a simplified model for when a single source of audio is all that's\nneeded, an app can use AudioStreamBase.AudioStreamBase, which is a single\nfunction to open an audio device, create an audio stream, bind that stream\nto the newly-opened device, and (optionally) provide a callback for\nobtaining audio data. When using this function, the primary interface is\nthe AudioStreamBase and the device handle is mostly hidden away; destroying\na stream created through this function will also close the device, stream\nbindings cannot be changed, etc. One other quirk of this is that the device\nis started in a _paused_ state and must be explicitly resumed; this is\npartially to offer a clean migration for SDL2 apps and partially because\nthe app might have to do more setup before playback begins; in the\nnon-simplified form, nothing will play until a stream is bound to a device,\nso they start _unpaused_.\n\n## Channel layouts\n\nAudio data passing through SDL is uncompressed PCM data, interleaved. One\ncan provide their own decompression through an MP3, etc, decoder, but SDL\ndoes not provide this directly. Each interleaved channel of data is meant\nto be in a specific order.\n\nAbbreviations:\n\n- FRONT = single mono speaker\n- FL = front left speaker\n- FR = front right speaker\n- FC = front center speaker\n- BL = back left speaker\n- BR = back right speaker\n- SR = surround right speaker\n- SL = surround left speaker\n- BC = back center speaker\n- LFE = low-frequency speaker\n\nThese are listed in the order they are laid out in memory, so \"FL, FR\"\nmeans \"the front left speaker is laid out in memory first, then the front\nright, then it repeats for the next audio frame\".\n\n- 1 channel (mono) layout: FRONT\n- 2 channels (stereo) layout: FL, FR\n- 3 channels (2.1) layout: FL, FR, LFE\n- 4 channels (quad) layout: FL, FR, BL, BR\n- 5 channels (4.1) layout: FL, FR, LFE, BL, BR\n- 6 channels (5.1) layout: FL, FR, FC, LFE, BL, BR (last two can also be\n  SL, SR)\n- 7 channels (6.1) layout: FL, FR, FC, LFE, BC, SL, SR\n- 8 channels (7.1) layout: FL, FR, FC, LFE, BL, BR, SL, SR\n\nThis is the same order as DirectSound expects, but applied to all\nplatforms; SDL will swizzle the channels as necessary if a platform expects\nsomething different.\n\nAudioStreamBase can also be provided channel maps to change this ordering\nto whatever is necessary, in other audio processing scenarios.",
       "entries": {
+        "AudioSpec": {
+          "doc": "Format specifier for audio data.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AudioFormat",
+          "name": "AudioSpec",
+          "kind": "alias",
+          "sourceName": "SDL_AudioSpec",
+          "type": "SDL_AudioSpec"
+        },
         "AudioDeviceBase-forward": {
           "name": "AudioDeviceBase",
           "kind": "forward",
@@ -19188,7 +19195,7 @@
                 "parameters": [
                   {
                     "type": "bool",
-                    "name": "signed"
+                    "name": "sign"
                   },
                   {
                     "type": "bool",
@@ -19470,7 +19477,7 @@
         "AudioPostmixCB": {
           "kind": "alias",
           "name": "AudioPostmixCB",
-          "type": "std::function<void(const SDL_AudioSpec *, float *, int)>",
+          "type": "std::function<void(const SDL_AudioSpec &spec, std::span<float> buffer)>",
           "doc": "A callback that fires when data is about to be fed to an audio device.\n\nThis is useful for accessing the final mix, perhaps for writing a\nvisualizer or applying a final effect to the audio data before playback.\n\nThis callback should run as quickly as possible and not block for any\nsignificant time, as this callback delays submission of data to the audio\ndevice, which can cause audio playback problems.\n\nThe postmix callback _must_ be able to handle any audio data format\nspecified in `spec`, which can change between callbacks if the audio device\nchanged. However, this only covers frequency and channel count; data is\nalways provided here in AUDIO_F32 format.\n\nThe postmix callback runs _after_ logical device gain and audiostream gain\nhave been applied, which is to say you can make the output data louder at\nthis point than the gain settings would suggest.\n\n@param userdata a pointer provided by the app through\n                AudioDeviceBase.SetPostmixCallback, for its own use.\n@param spec the current format of audio that is to be submitted to the\n            audio device.\n@param buffer the buffer of audio samples to be submitted. The callback can\n              inspect and/or modify this data.\n@param buflen the size of `buffer` in bytes.\n\n@threadsafety This will run from a background thread owned by SDL. The\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.SetPostmixCallback\n@sa AudioPostmixCallback"
         },
         "AudioDeviceBase": {
@@ -19618,7 +19625,7 @@
               }
             },
             "BindAudioStreams": {
-              "doc": "Bind a list of audio streams to an audio device.\n\nAudio data will flow through any bound streams. For a playback device, data\nfor all bound streams will be mixed together and fed to the device. For a\nrecording device, a copy of recorded data will be provided to each bound\nstream.\n\nAudio streams can only be bound to an open device. This operation is\natomic--all streams bound in the same call will start processing at the\nsame time, so they can stay in sync. Also: either all streams will be bound\nor none of them will be.\n\nIt is an error to bind an already-bound stream; it must be explicitly\nunbound first.\n\nBinding a stream to a device will set its output format for playback\ndevices, and its input format for recording devices, so they match the\ndevice's settings. The caller is welcome to change the other end of the\nstream's format at any time with AudioStreamBase.SetFormat().\n\n@param streams an array of audio streams to bind.\n@param num_streams number streams listed in the `streams` array.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStreams\n@sa AudioDeviceBase.UnbindAudioStream\n@sa AudioStreamBase.GetDevice",
+              "doc": "Bind a list of audio streams to an audio device.\n\nAudio data will flow through any bound streams. For a playback device, data\nfor all bound streams will be mixed together and fed to the device. For a\nrecording device, a copy of recorded data will be provided to each bound\nstream.\n\nAudio streams can only be bound to an open device. This operation is\natomic--all streams bound in the same call will start processing at the\nsame time, so they can stay in sync. Also: either all streams will be bound\nor none of them will be.\n\nIt is an error to bind an already-bound stream; it must be explicitly\nunbound first.\n\nBinding a stream to a device will set its output format for playback\ndevices, and its input format for recording devices, so they match the\ndevice's settings. The caller is welcome to change the other end of the\nstream's format at any time with AudioStreamBase.SetFormat().\n\n@param streams an array of audio streams to bind.\n@param num_streams number streams listed in the `streams` array.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStreams\n@sa AudioStreamBase.Unbind\n@sa AudioStreamBase.GetDevice",
               "name": "BindAudioStreams",
               "kind": "function",
               "type": "void",
@@ -19635,7 +19642,7 @@
               "proto": true
             },
             "BindAudioStream": {
-              "doc": "Bind a single audio stream to an audio device.\n\nThis is a convenience function, equivalent to calling\n`AudioDeviceBase.BindAudioStreams(devid, &stream, 1)`.\n\n@param stream an audio stream to bind to a device.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStreams\n@sa AudioDeviceBase.UnbindAudioStream\n@sa AudioStreamBase.GetDevice",
+              "doc": "Bind a single audio stream to an audio device.\n\nThis is a convenience function, equivalent to calling\n`AudioDeviceBase.BindAudioStreams(devid, &stream, 1)`.\n\n@param stream an audio stream to bind to a device.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStreams\n@sa AudioStreamBase.Unbind\n@sa AudioStreamBase.GetDevice",
               "name": "BindAudioStream",
               "kind": "function",
               "type": "void",
@@ -19648,40 +19655,8 @@
               "sourceName": "SDL_BindAudioStream",
               "hints": {
                 "mayFail": true
-              }
-            },
-            "UnbindAudioStreams": {
-              "doc": "Unbind a list of audio streams from their audio devices.\n\nThe streams being unbound do not all have to be on the same device. All\nstreams on the same device will be unbound atomically (data will stop\nflowing through all unbound streams on the same device at the same time).\n\nUnbinding a stream that isn't bound to a device is a legal no-op.\n\n@param streams an array of audio streams to unbind. Can be nullptr or contain\n               nullptr.\n@param num_streams number streams listed in the `streams` array.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStreams",
-              "name": "UnbindAudioStreams",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "this",
-                  "type": "SDL_AudioStream *const *"
-                },
-                {
-                  "name": "num_streams",
-                  "type": "std::span<AudioStreamRef>"
-                }
-              ],
-              "sourceName": "SDL_UnbindAudioStreams",
-              "static": true,
+              },
               "proto": true
-            },
-            "UnbindAudioStream": {
-              "doc": "Unbind a single audio stream from its audio device.\n\nThis is a convenience function, equivalent to calling\n`AudioDeviceBase.UnbindAudioStreams(&stream, 1)`.\n\n@param stream an audio stream to unbind from a device. Can be nullptr.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStream",
-              "name": "UnbindAudioStream",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "stream",
-                  "type": "AudioStreamBase &"
-                }
-              ],
-              "sourceName": "SDL_UnbindAudioStream",
-              "static": true
             },
             "SetPostmixCallback": [
               {
@@ -19919,7 +19894,7 @@
           "value": "((SDL_AudioDeviceID) 0xFFFFFFFFu)",
           "sourceName": "SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK",
           "constexpr": true,
-          "type": "AudionDeviceRef"
+          "type": "AudioDeviceRef"
         },
         "AUDIO_DEVICE_DEFAULT_RECORDING": {
           "doc": "A value used to request a default recording audio device.\n\nSeveral functions that require an AudioDeviceBase will accept this value\nto signify the app just wants the system to choose a default device instead\nof the app providing a specific one.\n\n@since This macro is available since SDL 3.2.0.",
@@ -19928,14 +19903,7 @@
           "value": "((SDL_AudioDeviceID) 0xFFFFFFFEu)",
           "sourceName": "SDL_AUDIO_DEVICE_DEFAULT_RECORDING",
           "constexpr": true,
-          "type": "AudionDeviceRef"
-        },
-        "AudioSpec": {
-          "doc": "Format specifier for audio data.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AudioFormat",
-          "name": "AudioSpec",
-          "kind": "alias",
-          "sourceName": "SDL_AudioSpec",
-          "type": "SDL_AudioSpec"
+          "type": "AudioDeviceRef"
         },
         "AudioFrameSize": {
           "doc": "Calculate the size of each audio frame (in bytes) from an AudioSpec.\n\nThis reports on the size of an audio sample frame: stereo Sint16 data (2\nchannels of 2 bytes each) would be 4 bytes per frame, for example.\n\n@param x an AudioSpec to query.\n@returns the number of bytes used per sample frame.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -19953,7 +19921,7 @@
           "type": "int"
         },
         "AudioStreamCallback": {
-          "doc": "A callback that fires when data passes through an AudioStreamBase.\n\nApps can (optionally) register a callback with an audio stream that is\ncalled when data is added with AudioStreamBase.PutData, or requested with\nAudioStreamBase.GetData.\n\nTwo values are offered here: one is the amount of additional data needed to\nsatisfy the immediate request (which might be zero if the stream already\nhas enough data queued) and the other is the total amount being requested.\nIn a Get call triggering a Put callback, these values can be different. In\na Put call triggering a Get callback, these values are always the same.\n\nByte counts might be slightly overestimated due to buffering or resampling,\nand may change from call to call.\n\nThis callback is not required to do anything. Generally this is useful for\nadding/reading data on demand, and the app will often put/get data as\nappropriate, but the system goes on with the data currently available to it\nif this callback does nothing.\n\n@param stream the SDL audio stream associated with this callback.\n@param additional_amount the amount of data, in bytes, that is needed right\n                         now.\n@param total_amount the total amount of data requested, in bytes, that is\n                    requested or available.\n@param userdata an opaque pointer provided by the app for their personal\n                use.\n\n@threadsafety This callbacks may run from any thread, so if you need to\n              protect shared data, you should use AudioStreamLock.AudioStreamLock to\n              serialize access; this lock will be held before your callback\n              is called, so your callback does not need to manage the lock\n              explicitly.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AudioStreamBase.SetGetCallback\n@sa AudioStreamBase.SetPutCallback",
+          "doc": "A callback that fires when data passes through an AudioStreamBase.\n\nApps can (optionally) register a callback with an audio stream that is\ncalled when data is added with AudioStreamBase.PutData, or requested with\nAudioStreamBase.GetData.\n\nTwo values are offered here: one is the amount of additional data needed to\nsatisfy the immediate request (which might be zero if the stream already\nhas enough data queued) and the other is the total amount being requested.\nIn a Get call triggering a Put callback, these values can be different. In\na Put call triggering a Get callback, these values are always the same.\n\nByte counts might be slightly overestimated due to buffering or resampling,\nand may change from call to call.\n\nThis callback is not required to do anything. Generally this is useful for\nadding/reading data on demand, and the app will often put/get data as\nappropriate, but the system goes on with the data currently available to it\nif this callback does nothing.\n\n@param stream the SDL audio stream associated with this callback.\n@param additional_amount the amount of data, in bytes, that is needed right\n                         now.\n@param total_amount the total amount of data requested, in bytes, that is\n                    requested or available.\n@param userdata an opaque pointer provided by the app for their personal\n                use.\n\n@threadsafety This callbacks may run from any thread, so if you need to\n              protect shared data, you should use AudioStreamBase.Lock to\n              serialize access; this lock will be held before your callback\n              is called, so your callback does not need to manage the lock\n              explicitly.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AudioStreamBase.SetGetCallback\n@sa AudioStreamBase.SetPutCallback",
           "name": "AudioStreamCallback",
           "kind": "alias",
           "type": "SDL_AudioStreamCallback",
@@ -19962,8 +19930,8 @@
         "AudioStreamCB": {
           "kind": "alias",
           "name": "AudioStreamCB",
-          "type": "std::function<void(SDL_AudioStream *, int, int)>",
-          "doc": "A callback that fires when data passes through an AudioStreamBase.\n\nApps can (optionally) register a callback with an audio stream that is\ncalled when data is added with AudioStreamBase.PutData, or requested with\nAudioStreamBase.GetData.\n\nTwo values are offered here: one is the amount of additional data needed to\nsatisfy the immediate request (which might be zero if the stream already\nhas enough data queued) and the other is the total amount being requested.\nIn a Get call triggering a Put callback, these values can be different. In\na Put call triggering a Get callback, these values are always the same.\n\nByte counts might be slightly overestimated due to buffering or resampling,\nand may change from call to call.\n\nThis callback is not required to do anything. Generally this is useful for\nadding/reading data on demand, and the app will often put/get data as\nappropriate, but the system goes on with the data currently available to it\nif this callback does nothing.\n\n@param stream the SDL audio stream associated with this callback.\n@param additional_amount the amount of data, in bytes, that is needed right\n                         now.\n@param total_amount the total amount of data requested, in bytes, that is\n                    requested or available.\n@param userdata an opaque pointer provided by the app for their personal\n                use.\n\n@threadsafety This callbacks may run from any thread, so if you need to\n              protect shared data, you should use AudioStreamLock.AudioStreamLock to\n              serialize access; this lock will be held before your callback\n              is called, so your callback does not need to manage the lock\n              explicitly.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AudioStreamBase.SetGetCallback\n@sa AudioStreamBase.SetPutCallback\n@sa AudioStreamCallback"
+          "type": "std::function<void(AudioStreamRef stream, int additional_amount, int total_amount)>",
+          "doc": "A callback that fires when data passes through an AudioStreamBase.\n\nApps can (optionally) register a callback with an audio stream that is\ncalled when data is added with AudioStreamBase.PutData, or requested with\nAudioStreamBase.GetData.\n\nTwo values are offered here: one is the amount of additional data needed to\nsatisfy the immediate request (which might be zero if the stream already\nhas enough data queued) and the other is the total amount being requested.\nIn a Get call triggering a Put callback, these values can be different. In\na Put call triggering a Get callback, these values are always the same.\n\nByte counts might be slightly overestimated due to buffering or resampling,\nand may change from call to call.\n\nThis callback is not required to do anything. Generally this is useful for\nadding/reading data on demand, and the app will often put/get data as\nappropriate, but the system goes on with the data currently available to it\nif this callback does nothing.\n\n@param stream the SDL audio stream associated with this callback.\n@param additional_amount the amount of data, in bytes, that is needed right\n                         now.\n@param total_amount the total amount of data requested, in bytes, that is\n                    requested or available.\n@param userdata an opaque pointer provided by the app for their personal\n                use.\n\n@threadsafety This callbacks may run from any thread, so if you need to\n              protect shared data, you should use AudioStreamBase.Lock to\n              serialize access; this lock will be held before your callback\n              is called, so your callback does not need to manage the lock\n              explicitly.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AudioStreamBase.SetGetCallback\n@sa AudioStreamBase.SetPutCallback\n@sa AudioStreamCallback"
         },
         "AudioStreamBase": {
           "doc": "The opaque handle that represents an audio stream.\n\nAudioStreamBase is an audio conversion interface.\n\n- It can handle resampling data in chunks without generating artifacts,\n  when it doesn't have the complete buffer available.\n- It can handle incoming data in any variable size.\n- It can handle input/output format changes on the fly.\n- It can remap audio channels between inputs and outputs.\n- You push data as you have it, and pull it when you need it\n- It can also function as a basic audio data queue even if you just have\n  sound that needs to pass from one place to another.\n- You can hook callbacks up to them when more data is added or requested,\n  to manage data on-the-fly.\n\nAudio streams are the core of the SDL3 audio interface. You create one or\nmore of them, bind them to an opened audio device, and feed data to them\n(or for recording, consume data from them).\n\n@since This struct is available since SDL 3.2.0.\n\n@sa AudioStreamBase.AudioStreamBase\n\n@cat resource\n\n@sa AudioStream\n@sa AudioStreamRef",
@@ -19978,26 +19946,6 @@
               "doc": ""
             },
             "AudioStreamBase": [
-              {
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "devid",
-                    "type": "AudioDeviceBase &"
-                  },
-                  {
-                    "name": "spec",
-                    "type": "OptionalRef<const AudioSpec>"
-                  },
-                  {
-                    "name": "callback",
-                    "type": "AudioStreamCB"
-                  }
-                ],
-                "name": "AudioStreamBase",
-                "doc": ""
-              },
               {
                 "doc": "Create a new audio stream.\n\n@param src_spec the format details of the input audio.\n@param dst_spec the format details of the output audio.\n@post a new audio stream on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamBase.PutData\n@sa AudioStreamBase.GetData\n@sa AudioStreamBase.GetAvailable\n@sa AudioStreamBase.Flush\n@sa AudioStreamBase.Clear\n@sa AudioStreamBase.SetFormat\n@sa AudioStreamRef.reset",
                 "name": "AudioStreamBase",
@@ -20393,9 +20341,16 @@
               "immutable": true
             },
             "Lock": {
+              "doc": "Lock an audio stream for serialized access.\n\nEach AudioStreamBase has an internal mutex it uses to protect its data\nstructures from threading conflicts. This function allows an app to lock\nthat mutex, which could be useful if registering callbacks on this stream.\n\nOne does not need to lock a stream to use in it most cases, as the stream\nmanages this lock internally. However, this lock is held during callbacks,\nwhich may run from arbitrary threads at any time, so if an app needs to\nprotect shared data during those callbacks, locking the stream guarantees\nthat the callback is not running while the lock is held.\n\nAs this is just a wrapper over MutexBase.Lock for an internal lock; it has\nall the same attributes (recursive locks are allowed, etc).\n\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamLock.Unlock",
               "name": "Lock",
-              "kind": "def",
-              "doc": ""
+              "kind": "function",
+              "type": "AudioStreamLock",
+              "parameters": [],
+              "sourceName": "SDL_LockAudioStream",
+              "hints": {
+                "mayFail": true
+              },
+              "proto": true
             },
             "SetGetCallback": [
               {
@@ -20480,16 +20435,12 @@
               "name": "Bind"
             },
             "Unbind": {
+              "doc": "Unbind a single audio stream from its audio device.\n\nThis is a convenience function, equivalent to calling\n`UnbindAudioStreams(&stream, 1)`.\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStream",
+              "name": "Unbind",
               "kind": "function",
               "type": "void",
-              "doc": "@see AudioDeviceBase.UnbindAudioStream",
-              "parameters": [
-                {
-                  "type": "AudioDeviceBase &",
-                  "name": "devid"
-                }
-              ],
-              "name": "Unbind"
+              "parameters": [],
+              "sourceName": "SDL_UnbindAudioStream"
             },
             "GetDevice": {
               "doc": "Query an audio stream for its currently-bound device.\n\nThis reports the audio device that an audio stream is currently bound to.\n\nIf not bound, or invalid, this returns zero, which is not a valid device\nID.\n\n@returns the bound audio device, or 0 if not bound or invalid.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStream\n@sa AudioDeviceBase.BindAudioStreams",
@@ -20730,7 +20681,7 @@
                 "doc": "Move ctor",
                 "hints": {
                   "init": [
-                    "LockBase(std::move(other))"
+                    "LockBase(other.release())"
                   ]
                 },
                 "name": "AudioStreamLock"
@@ -20756,14 +20707,14 @@
               "kind": "function",
               "type": "",
               "parameters": [],
+              "doc": "Destructor",
               "hints": {
                 "body": "Unlock();"
               },
-              "name": "~AudioStreamLock",
-              "doc": ""
+              "name": "~AudioStreamLock"
             },
             "Unlock": {
-              "doc": "Unlock an audio stream for serialized access.\n\nThis unlocks an audio stream after a call to AudioStreamLock.AudioStreamLock.\n\n@throws Error on failure.\n\n@threadsafety You should only call this from the same thread that\n              previously called AudioStreamLock.AudioStreamLock.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamLock.AudioStreamLock",
+              "doc": "Unlock an audio stream for serialized access.\n\nThis unlocks an audio stream after a call to AudioStreamBase.Lock.\n\n@throws Error on failure.\n\n@threadsafety You should only call this from the same thread that\n              previously called AudioStreamBase.Lock.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamBase.Lock",
               "name": "Unlock",
               "kind": "function",
               "type": "void",
@@ -20771,7 +20722,7 @@
               "sourceName": "SDL_UnlockAudioStream",
               "hints": {
                 "mayFail": true,
-                "body": "CheckError(SDL_UnlockAudioStream());",
+                "body": "CheckError(SDL_UnlockAudioStream(release().get()));",
                 "removeParamThis": true
               },
               "static": false
@@ -20850,25 +20801,46 @@
             "mayFail": true
           }
         },
-        "AudioDeviceBase::UnbindAudioStreams": {
-          "name": "AudioDeviceBase::UnbindAudioStreams",
+        "AudioDeviceBase::BindAudioStream": {
+          "name": "AudioDeviceBase::BindAudioStream",
           "kind": "function",
           "type": "void",
           "parameters": [
             {
-              "name": "this",
-              "type": "SDL_AudioStream *const *"
-            },
-            {
-              "name": "num_streams",
-              "type": "std::span<AudioStreamRef>"
+              "name": "stream",
+              "type": "AudioStreamBase &"
             }
           ],
-          "sourceName": "SDL_UnbindAudioStreams",
+          "sourceName": "SDL_BindAudioStream",
           "hints": {
             "self": "get()",
             "super": "Resource",
-            "static": true
+            "mayFail": true
+          }
+        },
+        "UnbindAudioStreams": {
+          "doc": "Unbind a list of audio streams from their audio devices.\n\nThe streams being unbound do not all have to be on the same device. All\nstreams on the same device will be unbound atomically (data will stop\nflowing through all unbound streams on the same device at the same time).\n\nUnbinding a stream that isn't bound to a device is a legal no-op.\n\n@param streams an array of audio streams to unbind. Can be nullptr or contain\n               nullptr.\n@param num_streams number streams listed in the `streams` array.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.BindAudioStreams",
+          "name": "UnbindAudioStreams",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "streams",
+              "type": "std::span<AudioStreamRef>"
+            }
+          ],
+          "sourceName": "SDL_UnbindAudioStreams"
+        },
+        "AudioStreamBase::Lock": {
+          "name": "AudioStreamBase::Lock",
+          "kind": "function",
+          "type": "AudioStreamLock",
+          "parameters": [],
+          "sourceName": "SDL_LockAudioStream",
+          "hints": {
+            "self": "get()",
+            "super": "Resource",
+            "mayFail": true
           }
         },
         "LoadWAV": [
@@ -20979,7 +20951,7 @@
             },
             {
               "name": "src_data",
-              "type": "const Uint8 &"
+              "type": "std::span<const Uint8>"
             },
             {
               "name": "dst_spec",

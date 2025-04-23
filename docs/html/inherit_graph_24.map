@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1CursorBase.html" title="The structure used to identify an SDL cursor." alt="" coords="208,13,337,38"/>
-<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1CursorRef.html" title="Handle to a non owned cursor." alt="" coords="385,13,504,38"/>
-<area shape="poly" id="edge13_Node000001_Node000002" title=" " alt="" coords="351,23,385,23,385,28,351,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Cursor.html" title="Handle to an owned cursor." alt="" coords="552,13,649,38"/>
-<area shape="poly" id="edge14_Node000002_Node000003" title=" " alt="" coords="518,23,552,23,552,28,518,28"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,161,45"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1AnimationBase.html" title="Animated image support." alt="" coords="209,13,364,38"/>
+<area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="175,23,209,23,209,28,175,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1AnimationRef.html" title="Handle to a non owned animation." alt="" coords="412,13,556,38"/>
+<area shape="poly" id="edge8_Node000001_Node000002" title=" " alt="" coords="378,23,412,23,412,28,378,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Animation.html" title="Handle to an owned animation." alt="" coords="604,13,727,38"/>
+<area shape="poly" id="edge9_Node000002_Node000003" title=" " alt="" coords="570,23,603,23,603,28,570,28"/>
 </map>

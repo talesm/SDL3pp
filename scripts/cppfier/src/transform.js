@@ -99,6 +99,12 @@ class ApiContext {
     /** @type {StringMap} */
     this.nameMap = {};
 
+    /** 
+     * @type {Dict<ApiEntry>} 
+     * @private
+     */
+    this.glossary = {};// Map of all entered apis
+
     if (transform.prefixes?.length) {
       this.prefixToRemove = Array.isArray(transform.prefixes)
         ? RegExp(`^(${transform.prefixes.join("|")})`)
@@ -120,6 +126,25 @@ class ApiContext {
     this.types = {};
 
     this.enableException = false;
+  }
+
+  /**
+   * 
+   * @param {string} sourceName 
+   * @param {ApiEntry} entry 
+   */
+  addGlossary(sourceName, entry) {
+    this.glossary[sourceName] = JSON.parse(JSON.stringify(entry));
+  }
+
+  /**
+   * 
+   * @param {string} sourceName 
+   * @returns {ApiEntry|undefined}
+   */
+  checkGlossary(sourceName) {
+    const entry = this.glossary[sourceName];
+    if (entry) return JSON.parse(JSON.stringify(entry));
   }
 
   /**
@@ -246,8 +271,18 @@ function transformEntries(sourceEntries, file, context) {
       }));
     } else {
       const targetEntry = transformEntry(sourceEntry, context);
+      context.addGlossary(sourceName, targetEntry);
       const targetDelta = transformMap[sourceName];
       if (targetDelta) {
+        for (let link = targetDelta.link; link;) {
+          const linkedEntry = JSON.parse(JSON.stringify(targetEntry));
+          const nextLink = link.link;
+          delete link.link;
+          combineObject(linkedEntry, link);
+          insertEntryAndCheck(targetEntries, linkedEntry, context, file);
+          link = nextLink;
+        }
+        delete targetDelta.link;
         if (targetDelta.name) targetName = targetDelta.name;
         else targetDelta.name = targetName;
         combineObject(targetEntry, targetDelta);
@@ -859,20 +894,21 @@ function expandResources(sourceEntries, file, context) {
           constexpr: true,
           parameters: [{ type: `${lockEntry.name} &&`, name: "other" }],
           doc: "Move ctor",
-          hints: { init: ["LockBase(std::move(other))"] }
+          hints: { init: ["LockBase(other.release())"] }
         }],
         [lockFunctionName]: "ctor",
         [`~${lockEntry.name}`]: {
           kind: "function",
           type: "",
           parameters: [],
+          doc: "Destructor",
           hints: { body: "Unlock();" }
         },
         [unlockFunctionName]: {
           name: "Unlock",
           static: false,
           hints: {
-            body: `CheckError(${unlockFunctionName}());`,
+            body: `CheckError(${unlockFunctionName}(release().get()));`,
             removeParamThis: true,
           },
         },
@@ -1109,14 +1145,14 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
  * 
  * @param {ApiEntryTransform} targetEntry the entry we are inserting from
  * @param {ApiContext}        context 
- * @param {ApiFileTransform}  transform 
+ * @param {ApiFileTransform}  file 
  * @param {ApiEntries}        targetEntries
  */
-function transformSubEntries(targetEntry, context, transform, targetEntries) {
+function transformSubEntries(targetEntry, context, file, targetEntries) {
   /** @type {ApiEntries} */
   const entries = {};
   const type = targetEntry.name;
-  const defPrefix = transform.definitionPrefix;
+  const defPrefix = file.definitionPrefix;
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
     if (Array.isArray(entry)) {
       insertEntry(entries, /** @type {ApiEntry[]}*/(entry), key);
@@ -1135,18 +1171,15 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
       continue;
     }
     const nameChange = makeRenameEntry(entry, nameCandidate, type);
-    const currName = transform.transform[key]?.name ?? nameCandidate;
-    const currDefName = defPrefix + currName;
-    const currEntry = targetEntries[currName] ?? targetEntries[currDefName];
+    const currEntry = context.checkGlossary(key);
     if (currEntry) {
-      if (Array.isArray(currEntry)) {
-        currEntry.forEach(e => combineObject(e, nameChange));
-      } else {
-        combineObject(currEntry, nameChange);
-      }
+      combineObject(currEntry, nameChange);
       insertEntry(entries, currEntry);
-      delete targetEntries[currName];
-      delete targetEntries[currDefName];
+      const lastEntry = file.transform[key];
+      if (!lastEntry) {
+        delete targetEntries[nameCandidate];
+        delete targetEntries[defPrefix + nameCandidate];
+      }
     } else if (!entries[nameChange.name]) {
       insertEntry(entries, { name: nameChange.name, kind: "def" });
     }
@@ -1156,7 +1189,11 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
     } else {
       nameChange.name = `${type}.${nameChange.name}`;
     }
-    transform.transform[key] = nameChange;
+    if (file.transform[key]) {
+      file.transform[key].link = nameChange;
+    } else {
+      file.transform[key] = nameChange;
+    }
   }
   return entries;
 }

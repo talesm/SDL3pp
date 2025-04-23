@@ -110,6 +110,7 @@ export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>
 
 export interface ApiEntryTransform extends ApiEntryBase {
   entries?: ApiSubEntryTransformMap;
+  link?: ApiEntryTransform;
 }
 
 export interface ApiResource extends ApiEntryTransform {

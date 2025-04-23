@@ -286,6 +286,9 @@ const transform = {
         ],
       },
       includeAfter: {
+        "__begin": {
+          name: "AudioSpec"
+        },
         "SDL_MixAudio": {
           kind: "function",
           name: "MixAudio",
@@ -317,7 +320,7 @@ const transform = {
               name: "ctor",
               constexpr: true,
               parameters: [
-                { type: "bool", name: "signed" },
+                { type: "bool", name: "sign" },
                 { type: "bool", name: "bigendian" },
                 { type: "bool", name: "flt" },
                 { type: "Uint16", name: "size" },
@@ -439,15 +442,9 @@ const transform = {
                 { type: "std::span<AudioStreamRef>" }
               ]
             },
-            "SDL_BindAudioStream": "function",
-            "SDL_UnbindAudioStreams": {
-              proto: true,
-              parameters: [
-                { name: "this" },
-                { type: "std::span<AudioStreamRef>" }
-              ]
+            "SDL_BindAudioStream": {
+              proto: true
             },
-            "SDL_UnbindAudioStream": "function",
             "SetPostmixCallback": {
               kind: "function",
               type: "void",
@@ -466,24 +463,24 @@ const transform = {
           lockFunction: "SDL_LockAudioStream",
           unlockFunction: "SDL_UnlockAudioStream",
           entries: {
-            "AudioStreamBase": {
-              kind: "function",
-              type: "",
-              parameters: [
-                {
-                  name: "devid",
-                  type: "AudioDeviceBase &"
-                },
-                {
-                  name: "spec",
-                  type: "OptionalRef<const AudioSpec>"
-                },
-                {
-                  name: "callback",
-                  type: "AudioStreamCB"
-                }
-              ]
-            },
+            // "AudioStreamBase": {
+            //   kind: "function",
+            //   type: "",
+            //   parameters: [
+            //     {
+            //       name: "devid",
+            //       type: "AudioDeviceBase &"
+            //     },
+            //     {
+            //       name: "spec",
+            //       type: "OptionalRef<const AudioSpec>"
+            //     },
+            //     {
+            //       name: "callback",
+            //       type: "AudioStreamCB"
+            //     }
+            //   ]
+            // },
             "SDL_OpenAudioDeviceStream": {
               name: "ctor",
               parameters: [
@@ -609,29 +606,27 @@ const transform = {
                 name: "devid"
               }]
             },
-            "Unbind": {
-              kind: "function",
-              type: "void",
-              doc: "@see AudioDeviceBase.UnbindAudioStream",
-              parameters: [{
-                type: "AudioDeviceBase &",
-                name: "devid"
-              }]
-            },
+            "SDL_UnbindAudioStream": "function",
             "SDL_GetAudioStreamDevice": "immutable",
           }
         }
       },
       transform: {
+        "AudioPostmixCB": {
+          type: "std::function<void(const SDL_AudioSpec &spec, std::span<float> buffer)>"
+        },
+        "AudioStreamCB": {
+          type: "std::function<void(AudioStreamRef stream, int additional_amount, int total_amount)>"
+        },
         "SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK": {
           kind: "var",
           constexpr: true,
-          type: "AudionDeviceRef"
+          type: "AudioDeviceRef"
         },
         "SDL_AUDIO_DEVICE_DEFAULT_RECORDING": {
           kind: "var",
           constexpr: true,
-          type: "AudionDeviceRef"
+          type: "AudioDeviceRef"
         },
         "SDL_AUDIO_FRAMESIZE": {
           kind: "function",
@@ -650,6 +645,9 @@ const transform = {
         "SDL_GetAudioRecordingDevices": {
           type: "OwnArray<AudioDeviceRef>",
           parameters: []
+        },
+        "SDL_UnbindAudioStreams": {
+          parameters: [{ type: "std::span<AudioStreamRef>" }]
         },
         "SDL_LoadWAV_IO": {
           name: "LoadWAV",
@@ -695,7 +693,7 @@ const transform = {
             },
             {
               name: "src_data",
-              type: "const Uint8 &"
+              type: "std::span<const Uint8>"
             },
             {
               name: "dst_spec",

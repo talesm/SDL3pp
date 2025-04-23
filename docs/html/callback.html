@@ -90,21 +90,21 @@ $(function() {
 <h1><a class="anchor" id="immediate-callback"></a>
 Immediate callback</h1>
 <p>Immediate callback or synchronous callback is always invoked before the callee function returns. Because of this, there is no need to be store/marshal data as <a class="el" href="callback.html#delayed-callback">Delayed callback</a> does.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>list all immediate callbacks</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>list all immediate callbacks</dd></dl>
 <h1><a class="anchor" id="delayed-callback"></a>
 Delayed callback</h1>
 <p>Delayed or Asynchronous callback is a callback that may be invoked after the callee returns. This might be when some event occurs or when a given result available.</p>
 <h2><a class="anchor" id="result-callback"></a>
 Result callback</h2>
 <p>Result callback is invoked at single point and then discarded. This means that after its called it safe to free any memory it is holding. The CallbackWrapper is perfect to safely wrap it and avoid dangling pointer. An example of such uses is RunOnMainThread().</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>list all result callbacks</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>list all result callbacks</dd></dl>
 <h2><a class="anchor" id="listener-callback"></a>
 Listener callback</h2>
 <p>Listener callback is invoked multiple times whenever the event it subscripted happens. It's not safe to free memory after call, so a separate mechanism must be provided.</p>
 <p>When there is a single listener per program, like SetEventFilter(), you we can use UniqueWrapper, which makes sure only a single one per type exists.</p>
 <p>When there can be just a single callback listening per resource we can use KeyValueWrapper with a Resource pointer as key. An example of this technique is in WindowBase::SetHitTest(HitTestFunction). We need to make sure we call KeyValueWrapper.erase() on the equivalent <code>*.Destroy()</code> function, again the example is WindowBase::Destroy().</p>
 <p>When there is multiple callbacks simultaneously per program, we can use a combination of CallbackWrapper to wrap it and KeyValueWrapper to associate them with an id you can later use to remove it, as we use in both AddEventWatch() and AddTimer().</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd><p class="startdd">list all result callbacks </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd><p class="startdd">list all result callbacks </p>
 <p class="enddd">Allow listener handle to be stored into a RAII object. </p>
 </dd></dl>
 </div></div><!-- contents -->
