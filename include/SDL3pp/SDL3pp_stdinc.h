@@ -5,6 +5,7 @@
 #include <SDL3/SDL_stdinc.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
+#include "SDL3pp_lockBase.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_ownPtr.h"
 #include "SDL3pp_resource.h"

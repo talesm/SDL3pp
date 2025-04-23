@@ -1,11 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,23,160,63"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting." alt="" coords="208,31,344,56"/>
-<area shape="poly" id="edge54_Node000000_Node000001" title=" " alt="" coords="174,41,207,41,207,46,174,46"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1SurfaceRef.html" title="Handle to a non owned surface." alt="" coords="395,5,522,31"/>
-<area shape="poly" id="edge55_Node000001_Node000002" title=" " alt="" coords="357,29,395,24,395,29,358,35"/>
-<area shape="rect" id="Node000004" href="$classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels." alt="" coords="392,55,525,80"/>
-<area shape="poly" id="edge57_Node000001_Node000004" title=" " alt="" coords="358,51,392,56,391,61,358,57"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Surface.html" title="Handle to an owned surface." alt="" coords="573,5,677,31"/>
-<area shape="poly" id="edge56_Node000002_Node000003" title=" " alt="" coords="536,15,573,15,573,21,536,21"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1StorageBase.html" title="An abstract interface for filesystem access." alt="" coords="208,13,345,38"/>
+<area shape="poly" id="edge51_Node000000_Node000001" title=" " alt="" coords="174,23,207,23,207,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1StorageRef.html" title="Handle to a non owned storage." alt="" coords="393,13,520,38"/>
+<area shape="poly" id="edge52_Node000001_Node000002" title=" " alt="" coords="359,23,393,23,393,28,359,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Storage.html" title="Handle to an owned storage." alt="" coords="568,13,673,38"/>
+<area shape="poly" id="edge53_Node000002_Node000003" title=" " alt="" coords="534,23,568,23,568,28,534,28"/>
 </map>
