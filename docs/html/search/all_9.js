@@ -13,7 +13,7 @@ var searchData=
   ['images_20from_20several_20formats_10',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],
   ['imagetype_11',['ImageType',['../group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce84f001e074b8',1,'SDL']]],
   ['img_5fversion_12',['IMG_Version',['../group__CategorySDLImage.html#ga1e0107db9eb6bcb7870bb7863a82c89b',1,'SDL']]],
-  ['immediate_20callback_13',['immediate callback',['../callback.html#immediate-callback',1,'Immediate callback'],['../todo.html#_todo000003',1,'Immediate callback']]],
+  ['immediate_20callback_13',['immediate callback',['../callback.html#immediate-callback',1,'Immediate callback'],['../todo.html#_todo000001',1,'Immediate callback']]],
   ['info_14',['Locale Info',['../group__CategoryLocale.html',1,'']]],
   ['information_15',['information',['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information'],['../group__CategoriesPlatformAndCpuInformation.html',1,'Platform and CPU Information']]],
   ['init_5faudio_16',['INIT_AUDIO',['../group__InitFlags.html#ga65bdd3a913bd08eea41fd70fb49e5079',1,'SDL']]],

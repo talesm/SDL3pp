@@ -342,7 +342,7 @@ var searchData=
   ['globflags_339',['GlobFlags',['../group__CategoryFilesystem.html#gaa05ff4a5a5f7f2e5b5e18072766b6140',1,'SDL']]],
   ['glprofile_340',['GLProfile',['../group__CategoryVideo.html#gac00ff5755f5501dd94d9148208ecae30',1,'SDL']]],
   ['goals_341',['Goals',['../index.html#goals',1,'']]],
-  ['gpu_342',['gpu',['../todo.html#_todo000002',1,'GPU'],['../ApiByCategory.html#gpu',1,'GPU']]],
+  ['gpu_342',['GPU',['../ApiByCategory.html#gpu',1,'']]],
   ['gpu_5ftextengine_5fwinding_5fclockwise_343',['GPU_TEXTENGINE_WINDING_CLOCKWISE',['../group__CategorySDLTTF.html#gafe0eb36e626eac783a6882b286c0942a',1,'SDL']]],
   ['gpu_5ftextengine_5fwinding_5fcounter_5fclockwise_344',['GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE',['../group__CategorySDLTTF.html#ga1a28bad359f0dd3f6d3236f35cc0224f',1,'SDL']]],
   ['gpu_5ftextengine_5fwinding_5finvalid_345',['GPU_TEXTENGINE_WINDING_INVALID',['../group__CategorySDLTTF.html#gabdc8227b3b317ba7f71aabee6444c935',1,'SDL']]],

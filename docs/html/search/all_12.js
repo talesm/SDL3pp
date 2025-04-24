@@ -122,7 +122,7 @@ var searchData=
   ['resource_3c_20ttf_5ftext_20_2a_20_3e_119',['Resource&lt; TTF_Text * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['resource_3c_20ttf_5ftextengine_20_2a_20_3e_120',['Resource&lt; TTF_TextEngine * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['restore_121',['Restore',['../structSDL_1_1WindowBase.html#a6361b5e2364e1e294f2a46105971e86a',1,'SDL::WindowBase']]],
-  ['result_20callback_122',['result callback',['../callback.html#result-callback',1,'Result callback'],['../todo.html#_todo000004',1,'Result callback']]],
+  ['result_20callback_122',['result callback',['../callback.html#result-callback',1,'Result callback'],['../todo.html#_todo000002',1,'Result callback']]],
   ['resume_123',['Resume',['../structSDL_1_1AudioDeviceBase.html#a9ab9d5bae25df39fea222e257c5b1988',1,'SDL::AudioDeviceBase']]],
   ['resumedevice_124',['ResumeDevice',['../structSDL_1_1AudioStreamBase.html#acfba4e69b9647d75fa00a2e10cd378fd',1,'SDL::AudioStreamBase']]],
   ['round_125',['round',['../group__CategoryStdinc.html#ga7cf5cc4c422423a6f36915a012c13046',1,'SDL::round(float x)'],['../group__CategoryStdinc.html#ga58af56b2a9898c045c8ec62ec531c8e5',1,'SDL::round(double x)']]],

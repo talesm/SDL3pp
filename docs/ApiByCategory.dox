@@ -33,13 +33,15 @@ Camera Support           | SDL3pp_camera.h
 
 ## Force Feedback ("Haptic")
 
-@todo Plan and implement Force Feedback.
+Category                | Header
+----------------------- | -----------------
+Force Feedback Support  | SDL3pp_haptic.h
 
 ## Audio
 
-Category            | Header
-------------------- | -----------------
-@ref CategoryAudio  | SDL3pp_audio.h
+Category                      | Header
+----------------------------- | -----------------
+3D Rendering and GPU Compute  | SDL3pp_gpu.h
 
 ## Input Events
 
@@ -59,7 +61,9 @@ HIDAPI                   | SDL3pp_hidapi.h
 
 ## GPU
 
-@todo Plan and implement GPU. This is big and need some similarly big time to implement.
+Category            | Header
+------------------- | -----------------
+@ref CategoryAudio  | SDL3pp_audio.h
 
 ## Threads
 
