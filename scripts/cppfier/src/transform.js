@@ -1,5 +1,5 @@
 const { insertEntry } = require("./parse");
-const { system, combineObject, looksLikeFreeFunction } = require("./utils");
+const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint } from "./types"
@@ -134,7 +134,7 @@ class ApiContext {
    * @param {ApiEntry} entry 
    */
   addGlossary(sourceName, entry) {
-    this.glossary[sourceName] = JSON.parse(JSON.stringify(entry));
+    this.glossary[sourceName] = deepClone(entry);
   }
 
   /**
@@ -144,7 +144,7 @@ class ApiContext {
    */
   checkGlossary(sourceName) {
     const entry = this.glossary[sourceName];
-    if (entry) return JSON.parse(JSON.stringify(entry));
+    if (entry) return deepClone(entry);
   }
 
   /**
@@ -275,7 +275,7 @@ function transformEntries(sourceEntries, file, context) {
       const targetDelta = transformMap[sourceName];
       if (targetDelta) {
         for (let link = targetDelta.link; link;) {
-          const linkedEntry = JSON.parse(JSON.stringify(targetEntry));
+          const linkedEntry = deepClone(targetEntry);
           const nextLink = link.link;
           delete link.link;
           combineObject(linkedEntry, link);
