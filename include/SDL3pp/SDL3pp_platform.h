@@ -46,13 +46,6 @@ inline const char* GetPlatform() { return SDL_GetPlatform(); }
 #define SDL_PLATFORM_AIX 1
 
 /**
- * A preprocessor macro that is only defined if compiling for AIX.
- *
- * \since This macro is available since SDL 3.2.0.
- */
-#define SDL_PLATFORM_AIX 1
-
-/**
  * A preprocessor macro that is only defined if compiling for BSDi
  *
  * \since This macro is available since SDL 3.2.0.

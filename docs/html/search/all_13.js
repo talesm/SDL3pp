@@ -584,7 +584,7 @@ var searchData=
   ['sdl_5fnull_5fwhile_5floop_5fcondition_581',['SDL_NULL_WHILE_LOOP_CONDITION',['../group__CategoryAssert.html#ga2ffca06819acf027ec29d6fd14c94cbe',1,'SDL3pp_assert.h']]],
   ['sdl_5fpixelflag_582',['SDL_PIXELFLAG',['../group__CategoryPixels.html#ga8fd08febb4e52553ad2eed33d098b753',1,'SDL3pp_pixels.h']]],
   ['sdl_5fplatform_5f3ds_583',['SDL_PLATFORM_3DS',['../group__CategoryPlatform.html#ga6bca1a7ca9424b48131c6dbdbad8ad31',1,'SDL3pp_platform.h']]],
-  ['sdl_5fplatform_5faix_584',['sdl_platform_aix',['../group__CategoryPlatform.html#gab106409ccc442c852a5bf8c825277a0f',1,'SDL_PLATFORM_AIX:&#160;SDL3pp_platform.h'],['../group__CategoryPlatform.html#gab106409ccc442c852a5bf8c825277a0f',1,'SDL_PLATFORM_AIX:&#160;SDL3pp_platform.h']]],
+  ['sdl_5fplatform_5faix_584',['SDL_PLATFORM_AIX',['../group__CategoryPlatform.html#gab106409ccc442c852a5bf8c825277a0f',1,'SDL3pp_platform.h']]],
   ['sdl_5fplatform_5fandroid_585',['SDL_PLATFORM_ANDROID',['../group__CategoryPlatform.html#gadab269250307b7826062e65c1fbd2356',1,'SDL3pp_platform.h']]],
   ['sdl_5fplatform_5fapple_586',['SDL_PLATFORM_APPLE',['../group__CategoryPlatform.html#ga17dcebee1147cf0c84b16bec9d2cb16f',1,'SDL3pp_platform.h']]],
   ['sdl_5fplatform_5fbsdi_587',['SDL_PLATFORM_BSDI',['../group__CategoryPlatform.html#ga8778a668e2f2baca1cfa307f7d7a22fc',1,'SDL3pp_platform.h']]],
