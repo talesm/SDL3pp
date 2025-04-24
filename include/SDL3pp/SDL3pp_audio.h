@@ -1088,6 +1088,7 @@ struct AudioDeviceRef : AudioDeviceBase
    */
   void reset(SDL_AudioDeviceID newResource = {})
   {
+    KeyValueWrapper<AudioDeviceRef, AudioPostmixCB>::release(*this);
     SDL_CloseAudioDevice(release(newResource));
   }
 };
@@ -2486,6 +2487,8 @@ struct AudioStreamRef : AudioStreamBase
    */
   void reset(SDL_AudioStream* newResource = {})
   {
+    KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 0>::release(get());
+    KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 1>::release(get());
     SDL_DestroyAudioStream(release(newResource));
   }
 };
@@ -3049,7 +3052,7 @@ inline void AudioStreamBase::SetGetCallback(AudioStreamCB callback)
 
 inline void AudioStreamBase::SetPutCallback(AudioStreamCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
+  using Wrapper = KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
   if (!SDL_SetAudioStreamPutCallback(
         get(),
         [](void* userdata,
