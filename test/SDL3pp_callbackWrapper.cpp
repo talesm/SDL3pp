@@ -57,22 +57,21 @@ TEST_CASE("Size_t indexed KeyValueWrapper no params")
   CHECK(addCounterHandle != nullptr);
   SUBCASE("contains")
   {
-    CHECK(KeyValueWrapper::contains(addCounterHandle));
-    CHECK_FALSE(KeyValueWrapper::contains((void*)2));
+    CHECK(KeyValueWrapper::contains(1));
+    CHECK_FALSE(KeyValueWrapper::contains(2));
     void* otherHandle = KeyValueWrapper::Wrap(2, addCounterCB);
-    CHECK(KeyValueWrapper::contains(otherHandle));
-    CHECK(addCounterHandle != otherHandle);
+    CHECK(KeyValueWrapper::contains(2));
   }
   SUBCASE("Call")
   {
-    KeyValueWrapper::at(addCounterHandle)();
+    KeyValueWrapper::at(1)();
     CHECK(counter == 1);
-    CHECK(KeyValueWrapper::contains(addCounterHandle));
+    CHECK(KeyValueWrapper::contains(1));
   }
   SUBCASE("CallOnce")
   {
-    KeyValueWrapper::release(addCounterHandle)();
+    KeyValueWrapper::release(1)();
     CHECK(counter == 1);
-    CHECK_FALSE(KeyValueWrapper::contains(addCounterHandle));
+    CHECK_FALSE(KeyValueWrapper::contains(1));
   }
 }

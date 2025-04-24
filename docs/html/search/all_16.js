@@ -1,7 +1,7 @@
 var searchData=
 [
   ['valid_20paths_0',['Notes on valid paths',['../group__CategoryStorage.html#notes-on-valid-paths',1,'']]],
-  ['valuetype_1',['valuetype',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::ValueType'],['../structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae',1,'SDL::KeyValueWrapper::ValueType'],['../structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49',1,'SDL::UniqueWrapper::ValueType']]],
+  ['valuetype_1',['valuetype',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::ValueType'],['../structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919',1,'SDL::KeyValueWrapper::ValueType'],['../structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49',1,'SDL::UniqueWrapper::ValueType']]],
   ['variables_2',['Configuration Variables',['../group__CategoryHints.html',1,'']]],
   ['vasprintf_3',['vasprintf',['../group__CategoryStdinc.html#gabd658aed3baf56ca11c8148de5cd9480',1,'SDL']]],
   ['version_4',['Querying SDL Version',['../group__CategoryVersion.html',1,'']]],

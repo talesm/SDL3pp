@@ -1839,17 +1839,12 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
 inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 {
   using Wrapper = CallbackWrapper<EventFilterCB>;
-  using Store = KeyValueWrapper<size_t, EventFilterCB*>;
-
   auto cb = Wrapper::Wrap(std::move(filter));
   if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
-    delete cb;
+    Wrapper::release(cb);
     throw Error{};
   }
-
-  static std::atomic_size_t lastId = 0;
-  size_t id = ++lastId;
-  return EventWatchHandle{Store::Wrap(id, std::move(cb))};
+  return EventWatchHandle{cb};
 }
 
 /**
@@ -1889,8 +1884,8 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  */
 inline void RemoveEventWatch(EventWatchHandle handle)
 {
-  using Store = KeyValueWrapper<size_t, EventFilterCB*>;
-  delete Store::release(handle.get());
+  using Wrapper = CallbackWrapper<EventFilterCB>;
+  Wrapper::release(handle.get());
 }
 
 /**

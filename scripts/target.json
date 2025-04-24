@@ -19477,7 +19477,7 @@
         "AudioPostmixCB": {
           "kind": "alias",
           "name": "AudioPostmixCB",
-          "type": "std::function<void(const SDL_AudioSpec &spec, std::span<float> buffer)>",
+          "type": "std::function<void(const AudioSpec &spec, std::span<float> buffer)>",
           "doc": "A callback that fires when data is about to be fed to an audio device.\n\nThis is useful for accessing the final mix, perhaps for writing a\nvisualizer or applying a final effect to the audio data before playback.\n\nThis callback should run as quickly as possible and not block for any\nsignificant time, as this callback delays submission of data to the audio\ndevice, which can cause audio playback problems.\n\nThe postmix callback _must_ be able to handle any audio data format\nspecified in `spec`, which can change between callbacks if the audio device\nchanged. However, this only covers frequency and channel count; data is\nalways provided here in AUDIO_F32 format.\n\nThe postmix callback runs _after_ logical device gain and audiostream gain\nhave been applied, which is to say you can make the output data louder at\nthis point than the gain settings would suggest.\n\n@param userdata a pointer provided by the app through\n                AudioDeviceBase.SetPostmixCallback, for its own use.\n@param spec the current format of audio that is to be submitted to the\n            audio device.\n@param buffer the buffer of audio samples to be submitted. The callback can\n              inspect and/or modify this data.\n@param buflen the size of `buffer` in bytes.\n\n@threadsafety This will run from a background thread owned by SDL. The\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa AudioDeviceBase.SetPostmixCallback\n@sa AudioPostmixCallback"
         },
         "AudioDeviceBase": {
@@ -19513,6 +19513,23 @@
                 "mayFail": true
               },
               "proto": false
+            },
+            "operator<=>": {
+              "kind": "function",
+              "constexpr": true,
+              "immutable": true,
+              "type": "auto",
+              "parameters": [
+                {
+                  "type": "const AudioDeviceBase &",
+                  "name": "other"
+                }
+              ],
+              "hints": {
+                "default": true
+              },
+              "name": "operator<=>",
+              "doc": ""
             },
             "GetName": {
               "doc": "Get the human-readable name of a specific audio device.\n\n@returns the name of the audio device, or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAudioPlaybackDevices\n@sa GetAudioRecordingDevices",
@@ -19661,6 +19678,7 @@
             "SetPostmixCallback": [
               {
                 "kind": "function",
+                "proto": true,
                 "type": "void",
                 "parameters": [
                   {
@@ -19997,6 +20015,26 @@
                   "mayFail": true
                 },
                 "proto": false
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "name": "AudioStreamBase",
+                "parameters": [
+                  {
+                    "name": "devid",
+                    "type": "AudioDeviceBase &"
+                  },
+                  {
+                    "name": "spec",
+                    "type": "OptionalRef<const AudioSpec>"
+                  },
+                  {
+                    "name": "callback",
+                    "type": "AudioStreamCB"
+                  }
+                ],
+                "doc": ""
               }
             ],
             "GetProperties": {
@@ -20053,7 +20091,7 @@
               "type": "void",
               "parameters": [
                 {
-                  "type": "const SDL_AudioSpec &",
+                  "type": "const AudioSpec &",
                   "name": "spec"
                 }
               ],
@@ -20065,7 +20103,7 @@
               "type": "void",
               "parameters": [
                 {
-                  "type": "const SDL_AudioSpec &",
+                  "type": "const AudioSpec &",
                   "name": "spec"
                 }
               ],

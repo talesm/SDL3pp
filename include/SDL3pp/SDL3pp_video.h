@@ -4294,7 +4294,7 @@ inline void WindowBase::SetHitTest(HitTestCB callback)
   void* cbHandle = Wrapper::Wrap(get(), std::move(callback));
   SetHitTest(
     [](SDL_Window* win, const SDL_Point* area, void* data) {
-      auto& cb = Wrapper::at(data);
+      auto& cb = Wrapper::Unwrap(data);
       return cb(WindowRef{win}, Point(*area));
     },
     cbHandle);

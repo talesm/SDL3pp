@@ -8,13 +8,13 @@
 #include <exception>
 #include <format>
 #include <functional>
+#include <map>
 #include <memory>
 #include <optional>
 #include <ranges>
 #include <span>
 #include <string>
 #include <string_view>
-#include <unordered_map>
 #include <variant>
 #include <vector>
 #include <SDL3/SDL.h>
@@ -61,6 +61,12 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     return new ValueType(std::move(cb));
   }
 
+  /// Return unwrapped value of handle.
+  static const ValueType& Unwrap(void* handle)
+  {
+    return *static_cast<ValueType*>(handle);
+  }
+
   /// Call once and release.
   static Result CallOnce(void* handle, Args... args)
   {
@@ -97,9 +103,10 @@ struct CallbackWrapper<std::function<Result(Args...)>>
  *
  * @tparam KEY the key type.
  * @tparam VALUE the value type.
+ * @tparam VARIANT the variant, if more than one listener type is associated.
  *
  */
-template<class KEY, class VALUE>
+template<class KEY, class VALUE, size_t VARIANT = 0>
 struct KeyValueWrapper
 {
   static_assert(sizeof(KEY) <= sizeof(void*));
@@ -118,27 +125,30 @@ struct KeyValueWrapper
    * @param value
    * @return void*
    */
-  static void* Wrap(KeyType key, ValueType&& value)
-  {
-    {
-      auto lockGuard = lock();
-      Values().insert_or_assign(key, std::move(value));
-    }
-    return reinterpret_cast<void*>(key);
-  }
-
-  /// True if handle is stored.
-  static bool contains(void* handle)
+  static ValueType* Wrap(KeyType key, ValueType&& value)
   {
     auto lockGuard = lock();
-    return Values().contains((KeyType)(handle));
+    return &Values().insert_or_assign(key, std::move(value)).first->second;
   }
 
   /// Return unwrapped value of handle.
-  static const ValueType& at(void* handle)
+  static const ValueType& Unwrap(void* handle)
+  {
+    return *static_cast<ValueType*>(handle);
+  }
+
+  /// True if handle is stored.
+  static bool contains(KeyType handle)
   {
     auto lockGuard = lock();
-    return Values().at((KeyType)(handle));
+    return Values().contains(handle);
+  }
+
+  /// Return unwrapped value of handle.
+  static const ValueType& at(KeyType handle)
+  {
+    auto lockGuard = lock();
+    return Values().at(handle);
   }
 
   /// Return unwrapped value associated by key and remove association.
@@ -153,9 +163,6 @@ struct KeyValueWrapper
     return value;
   }
 
-  /// Return unwrapped value of handle and remove association.
-  static ValueType release(void* handle) { return release((KeyType)handle); }
-
   /**
    * Remove association.
    *
@@ -168,18 +175,10 @@ struct KeyValueWrapper
     return Values().erase(key);
   }
 
-  /**
-   * Remove association.
-   *
-   * @param handle the handle.
-   * @return true if the key was associated and was erased, false otherwise.
-   */
-  static bool erase(void* handle) { return erase((KeyType)handle); }
-
 private:
-  static std::unordered_map<KeyType, ValueType>& Values()
+  static std::map<KeyType, ValueType>& Values()
   {
-    static std::unordered_map<KeyType, ValueType> values;
+    static std::map<KeyType, ValueType> values;
     return values;
   }
 
@@ -28972,7 +28971,7 @@ using AudioPostmixCallback = SDL_AudioPostmixCallback;
  * @sa AudioPostmixCallback
  */
 using AudioPostmixCB =
-  std::function<void(const SDL_AudioSpec& spec, std::span<float> buffer)>;
+  std::function<void(const AudioSpec& spec, std::span<float> buffer)>;
 
 /**
  * SDL Audio Device instance IDs.
@@ -29068,6 +29067,12 @@ struct AudioDeviceBase : Resource<SDL_AudioDeviceID>
                   OptionalRef<const SDL_AudioSpec> spec = std::nullopt)
     : Resource(CheckError(SDL_OpenAudioDevice(devid.get(), spec)))
   {
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const AudioDeviceBase& other) const
+  {
+    return get() <=> other.get();
   }
 
   /**
@@ -29421,18 +29426,7 @@ struct AudioDeviceBase : Resource<SDL_AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetPostmixCallback(AudioPostmixCB callback)
-  {
-    // TODO
-    // using Wrapper = KeyValueWrapper<SDL_AudioDeviceID, AudioPostmixCB>;
-    // SetPostmixCallback(
-    //   [](void* userdata, const SDL_AudioSpec* spec, float* buffer, int
-    //   buflen) {
-    //     auto& cb = Wrapper::at(userdata);
-    //     cb(*spec, std::span<float>{buffer, size_t(buflen)});
-    //   },
-    //   Wrapper::Wrap(get(), std::move(callback)));
-  }
+  void SetPostmixCallback(AudioPostmixCB callback);
 
   /**
    * Set a callback that fires when data is about to be fed to an audio device.
@@ -29850,6 +29844,72 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
   }
 
   /**
+   * Convenience function for straightforward audio init for the common case.
+   *
+   * If all your app intends to do is provide a single source of PCM audio, this
+   * function allows you to do all your audio setup in a single call.
+   *
+   * This is also intended to be a clean means to migrate apps from SDL2.
+   *
+   * This function will open an audio device, create a stream and bind it.
+   * Unlike other methods of setup, the audio device will be closed when this
+   * stream is destroyed, so the app can treat the returned AudioStreamBase as
+   * the only object needed to manage audio playback.
+   *
+   * Also unlike other functions, the audio device begins paused. This is to map
+   * more closely to SDL2-style behavior, since there is no extra step here to
+   * bind a stream to begin audio flowing. The audio device should be resumed
+   * with `AudioStreamBase.ResumeDevice(stream);`
+   *
+   * This function works with both playback and recording devices.
+   *
+   * The `spec` parameter represents the app's side of the audio stream. That
+   * is, for recording audio, this will be the output format, and for playing
+   * audio, this will be the input format. If spec is nullptr, the system will
+   * choose the format, and the app can use AudioStreamBase.GetFormat() to
+   * obtain this information later.
+   *
+   * If you don't care about opening a specific audio device, you can (and
+   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
+   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
+   *
+   * One can optionally provide a callback function; if nullptr, the app is
+   * expected to queue audio data for playback (or unqueue audio data if
+   * capturing). Otherwise, the callback will begin to fire once the device is
+   * unpaused.
+   *
+   * Destroying the returned stream with AudioStreamRef.reset will also close
+   * the audio device associated with this stream.
+   *
+   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
+   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+   * @param spec the audio stream's data format. Can be std::nullopt.
+   * @param callback a callback where the app will provide new data for
+   *                 playback, or receive new data for recording. Can not be
+   *                 nullptr.
+   * @post an audio stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStreamBase.GetDevice
+   * @sa AudioStreamBase.ResumeDevice
+   */
+  AudioStreamBase(AudioDeviceBase& devid,
+                  OptionalRef<const AudioSpec> spec,
+                  AudioStreamCB callback)
+    : AudioStreamBase(devid, std::move(spec))
+  {
+    if (devid.IsPlayback()) {
+      SetGetCallback(std::move(callback));
+    } else {
+      SetPutCallback(std::move(callback));
+    }
+  }
+
+  /**
    * Get the properties associated with an audio stream.
    *
    * @returns a valid property ID on success.
@@ -29953,7 +30013,7 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetFormat
    * @sa AudioStreamBase.SetFrequencyRatio
    */
-  void SetInputFormat(const SDL_AudioSpec& spec)
+  void SetInputFormat(const AudioSpec& spec)
   {
     CheckError(SDL_SetAudioStreamFormat(get(), &spec, nullptr));
   }
@@ -29988,7 +30048,7 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetFormat
    * @sa AudioStreamBase.SetFrequencyRatio
    */
-  void SetOutputFormat(const SDL_AudioSpec& spec)
+  void SetOutputFormat(const AudioSpec& spec)
   {
     CheckError(SDL_SetAudioStreamFormat(get(), nullptr, &spec));
   }
@@ -30582,7 +30642,46 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamLock.Unlock
    */
   AudioStreamLock Lock();
-
+  /**
+   * Set a callback that runs when data is requested from an audio stream.
+   *
+   * This callback is called _before_ data is obtained from the stream, giving
+   * the callback the chance to add more on-demand.
+   *
+   * The callback can (optionally) call AudioStreamBase.PutData() to add more
+   * audio to the stream during this call; if needed, the request that triggered
+   * this callback will obtain the new data immediately.
+   *
+   * The callback's `additional_amount` argument is roughly how many bytes of
+   * _unconverted_ data (in the stream's input format) is needed by the caller,
+   * although this may overestimate a little for safety. This takes into account
+   * how much is already in the stream and only asks for any extra necessary to
+   * resolve the request, which means the callback may be asked for zero bytes,
+   * and a different amount on each call.
+   *
+   * The callback is not required to supply exact amounts; it is allowed to
+   * supply too much or too little or none at all. The caller will get what's
+   * available, up to the amount they requested, regardless of this callback's
+   * outcome.
+   *
+   * Clearing or flushing an audio stream does not call this callback.
+   *
+   * This function obtains the stream's lock, which means any existing callback
+   * (get or put) in progress will finish running before setting the new
+   * callback.
+   *
+   * Setting a nullptr function turns off the callback.
+   *
+   * @param callback the new callback function to call when data is requested
+   *                 from the stream.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStreamBase.SetPutCallback
+   */
   void SetGetCallback(AudioStreamCB callback);
 
   /**
@@ -30632,6 +30731,49 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
     CheckError(SDL_SetAudioStreamGetCallback(get(), callback, userdata));
   }
 
+  /**
+   * Set a callback that runs when data is added to an audio stream.
+   *
+   * This callback is called _after_ the data is added to the stream, giving the
+   * callback the chance to obtain it immediately.
+   *
+   * The callback can (optionally) call AudioStreamBase.GetData() to obtain
+   * audio from the stream during this call.
+   *
+   * The callback's `additional_amount` argument is how many bytes of
+   * _converted_ data (in the stream's output format) was provided by the
+   * caller, although this may underestimate a little for safety. This value
+   * might be less than what is currently available in the stream, if data was
+   * already there, and might be less than the caller provided if the stream
+   * needs to keep a buffer to aid in resampling. Which means the callback may
+   * be provided with zero bytes, and a different amount on each call.
+   *
+   * The callback may call AudioStreamBase.GetAvailable to see the total amount
+   * currently available to read from the stream, instead of the total provided
+   * by the current call.
+   *
+   * The callback is not required to obtain all data. It is allowed to read less
+   * or none at all. Anything not read now simply remains in the stream for
+   * later access.
+   *
+   * Clearing or flushing an audio stream does not call this callback.
+   *
+   * This function obtains the stream's lock, which means any existing callback
+   * (get or put) in progress will finish running before setting the new
+   * callback.
+   *
+   * Setting a nullptr function turns off the callback.
+   *
+   * @param callback the new callback function to call when data is added to the
+   *                 stream.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStreamBase.SetGetCallback
+   */
   void SetPutCallback(AudioStreamCB callback);
 
   /**
@@ -31330,8 +31472,59 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
     &src_spec, src_data.data(), src_data.size(), &dst_spec, &buf, &len));
   return OwnArray<Uint8>{buf, size_t(len)};
 }
-
+#pragma region impl
 /// @}
+
+inline void AudioDeviceBase::SetPostmixCallback(AudioPostmixCB callback)
+{
+  using Wrapper = KeyValueWrapper<AudioDeviceRef, AudioPostmixCB>;
+
+  CheckError(SDL_SetAudioPostmixCallback(
+    get(),
+    [](void* userdata, const AudioSpec* spec, float* buffer, int buflen) {
+      auto& cb = Wrapper::Unwrap(userdata);
+      cb(*spec, std::span{buffer, size_t(buflen)});
+    },
+    Wrapper::Wrap(get(), std::move(callback))));
+}
+
+inline void AudioStreamBase::SetGetCallback(AudioStreamCB callback)
+{
+  using Wrapper = KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
+  if (!SDL_SetAudioStreamGetCallback(
+        get(),
+        [](void* userdata,
+           SDL_AudioStream* stream,
+           int additional_amount,
+           int total_amount) {
+          auto& cb = Wrapper::Unwrap(userdata);
+          cb(stream, additional_amount, total_amount);
+        },
+        Wrapper::Wrap(get(), std::move(callback)))) {
+    Wrapper::release(get());
+    throw Error{};
+  }
+}
+
+inline void AudioStreamBase::SetPutCallback(AudioStreamCB callback)
+{
+  using Wrapper = KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
+  if (!SDL_SetAudioStreamPutCallback(
+        get(),
+        [](void* userdata,
+           SDL_AudioStream* stream,
+           int additional_amount,
+           int total_amount) {
+          auto& cb = Wrapper::Unwrap(userdata);
+          cb(stream, additional_amount, total_amount);
+        },
+        Wrapper::Wrap(get(), std::move(callback)))) {
+    Wrapper::release(get());
+    throw Error{};
+  }
+}
+
+#pragma endregion impl
 
 /**
  *
@@ -36196,7 +36389,7 @@ void TrayEntryBase::SetCallback(TrayCB callback)
   using Wrapper = KeyValueWrapper<SDL_TrayEntry*, TrayCB>;
   SetCallback(
     [](void* userdata, SDL_TrayEntry* entry) {
-      auto& f = Wrapper::at(userdata);
+      auto& f = Wrapper::Unwrap(userdata);
       f(TrayEntryRef{entry});
     },
     Wrapper::Wrap(get(), std::move(callback)));
@@ -40487,7 +40680,7 @@ inline void WindowBase::SetHitTest(HitTestCB callback)
   void* cbHandle = Wrapper::Wrap(get(), std::move(callback));
   SetHitTest(
     [](SDL_Window* win, const SDL_Point* area, void* data) {
-      auto& cb = Wrapper::at(data);
+      auto& cb = Wrapper::Unwrap(data);
       return cb(WindowRef{win}, Point(*area));
     },
     cbHandle);
@@ -42951,17 +43144,12 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
 inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 {
   using Wrapper = CallbackWrapper<EventFilterCB>;
-  using Store = KeyValueWrapper<size_t, EventFilterCB*>;
-
   auto cb = Wrapper::Wrap(std::move(filter));
   if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
-    delete cb;
+    Wrapper::release(cb);
     throw Error{};
   }
-
-  static std::atomic_size_t lastId = 0;
-  size_t id = ++lastId;
-  return EventWatchHandle{Store::Wrap(id, std::move(cb))};
+  return EventWatchHandle{cb};
 }
 
 /**
@@ -43001,8 +43189,8 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  */
 inline void RemoveEventWatch(EventWatchHandle handle)
 {
-  using Store = KeyValueWrapper<size_t, EventFilterCB*>;
-  delete Store::release(handle.get());
+  using Wrapper = CallbackWrapper<EventFilterCB>;
+  Wrapper::release(handle.get());
 }
 
 /**

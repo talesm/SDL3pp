@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SDL3pp: SDL::KeyValueWrapper&lt; KEY, VALUE &gt; Struct Template Reference</title>
+<title>SDL3pp: SDL::KeyValueWrapper&lt; KEY, VALUE, VARIANT &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -78,7 +78,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1KeyValueWrapper-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SDL::KeyValueWrapper&lt; KEY, VALUE &gt; Struct Template Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesCppSupport.html">C++ Support</a> &raquo; <a class="el" href="group__CategoryCallbackWrapper.html">Async callback helpers</a></div></div></div>
+  <div class="headertitle"><div class="title">SDL::KeyValueWrapper&lt; KEY, VALUE, VARIANT &gt; Struct Template Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesCppSupport.html">C++ Support</a> &raquo; <a class="el" href="group__CategoryCallbackWrapper.html">Async callback helpers</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -87,68 +87,66 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a11f2a644a95b3856bdc44d6db051788e" id="r_a11f2a644a95b3856bdc44d6db051788e"><td class="memItemLeft" align="right" valign="top"><a id="a11f2a644a95b3856bdc44d6db051788e" name="a11f2a644a95b3856bdc44d6db051788e"></a>
+<tr class="memitem:a45469a6c7969fef28b1a57ebd896da9e" id="r_a45469a6c7969fef28b1a57ebd896da9e"><td class="memItemLeft" align="right" valign="top"><a id="a45469a6c7969fef28b1a57ebd896da9e" name="a45469a6c7969fef28b1a57ebd896da9e"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>KeyType</b> = KEY</td></tr>
-<tr class="memdesc:a11f2a644a95b3856bdc44d6db051788e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type. <br /></td></tr>
-<tr class="separator:a11f2a644a95b3856bdc44d6db051788e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bc1fcfdd41ce15260876f16542908ae" id="r_a6bc1fcfdd41ce15260876f16542908ae"><td class="memItemLeft" align="right" valign="top"><a id="a6bc1fcfdd41ce15260876f16542908ae" name="a6bc1fcfdd41ce15260876f16542908ae"></a>
+<tr class="memdesc:a45469a6c7969fef28b1a57ebd896da9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type. <br /></td></tr>
+<tr class="separator:a45469a6c7969fef28b1a57ebd896da9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75deb75904721a3ccb2d4e43caad3919" id="r_a75deb75904721a3ccb2d4e43caad3919"><td class="memItemLeft" align="right" valign="top"><a id="a75deb75904721a3ccb2d4e43caad3919" name="a75deb75904721a3ccb2d4e43caad3919"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>ValueType</b> = VALUE</td></tr>
-<tr class="memdesc:a6bc1fcfdd41ce15260876f16542908ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value type. <br /></td></tr>
-<tr class="separator:a6bc1fcfdd41ce15260876f16542908ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a75deb75904721a3ccb2d4e43caad3919"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value type. <br /></td></tr>
+<tr class="separator:a75deb75904721a3ccb2d4e43caad3919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae29fe59075462eda69a321e76a216963" id="r_ae29fe59075462eda69a321e76a216963"><td class="memItemLeft" align="right" valign="top">static void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1KeyValueWrapper.html#ae29fe59075462eda69a321e76a216963">Wrap</a> (<a class="el" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a> key, <a class="el" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a> &amp;&amp;value)</td></tr>
-<tr class="memdesc:ae29fe59075462eda69a321e76a216963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the value into a void* pointer held by key.  <br /></td></tr>
-<tr class="separator:ae29fe59075462eda69a321e76a216963"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44e4c6e70475acf7a40f19876d582a1c" id="r_a44e4c6e70475acf7a40f19876d582a1c"><td class="memItemLeft" align="right" valign="top"><a id="a44e4c6e70475acf7a40f19876d582a1c" name="a44e4c6e70475acf7a40f19876d582a1c"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>contains</b> (void *handle)</td></tr>
-<tr class="memdesc:a44e4c6e70475acf7a40f19876d582a1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if handle is stored. <br /></td></tr>
-<tr class="separator:a44e4c6e70475acf7a40f19876d582a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5170ab6bea946d67ce7fccd462554cea" id="r_a5170ab6bea946d67ce7fccd462554cea"><td class="memItemLeft" align="right" valign="top"><a id="a5170ab6bea946d67ce7fccd462554cea" name="a5170ab6bea946d67ce7fccd462554cea"></a>
-static const <a class="el" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (void *handle)</td></tr>
-<tr class="memdesc:a5170ab6bea946d67ce7fccd462554cea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return unwrapped value of handle. <br /></td></tr>
-<tr class="separator:a5170ab6bea946d67ce7fccd462554cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6baae1afe60baa7aebc2a0008e31ec4" id="r_aa6baae1afe60baa7aebc2a0008e31ec4"><td class="memItemLeft" align="right" valign="top"><a id="aa6baae1afe60baa7aebc2a0008e31ec4" name="aa6baae1afe60baa7aebc2a0008e31ec4"></a>
-static <a class="el" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (<a class="el" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a> key)</td></tr>
-<tr class="memdesc:aa6baae1afe60baa7aebc2a0008e31ec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return unwrapped value associated by key and remove association. <br /></td></tr>
-<tr class="separator:aa6baae1afe60baa7aebc2a0008e31ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a17d0c5dd6d1ad5bbe854143087263d" id="r_a8a17d0c5dd6d1ad5bbe854143087263d"><td class="memItemLeft" align="right" valign="top"><a id="a8a17d0c5dd6d1ad5bbe854143087263d" name="a8a17d0c5dd6d1ad5bbe854143087263d"></a>
-static <a class="el" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (void *handle)</td></tr>
-<tr class="memdesc:a8a17d0c5dd6d1ad5bbe854143087263d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return unwrapped value of handle and remove association. <br /></td></tr>
-<tr class="separator:a8a17d0c5dd6d1ad5bbe854143087263d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae23782963b20d9f5bda738d54f31741b" id="r_ae23782963b20d9f5bda738d54f31741b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1KeyValueWrapper.html#ae23782963b20d9f5bda738d54f31741b">erase</a> (<a class="el" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a> key)</td></tr>
-<tr class="memdesc:ae23782963b20d9f5bda738d54f31741b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove association.  <br /></td></tr>
-<tr class="separator:ae23782963b20d9f5bda738d54f31741b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8ba46cf0280eba693994cbf8ccac050" id="r_ab8ba46cf0280eba693994cbf8ccac050"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050">erase</a> (void *handle)</td></tr>
-<tr class="memdesc:ab8ba46cf0280eba693994cbf8ccac050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove association.  <br /></td></tr>
-<tr class="separator:ab8ba46cf0280eba693994cbf8ccac050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae5a98b62e4c233ea6dcbfdf565fd7ec" id="r_aae5a98b62e4c233ea6dcbfdf565fd7ec"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1KeyValueWrapper.html#aae5a98b62e4c233ea6dcbfdf565fd7ec">Wrap</a> (<a class="el" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> key, <a class="el" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> &amp;&amp;value)</td></tr>
+<tr class="memdesc:aae5a98b62e4c233ea6dcbfdf565fd7ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the value into a void* pointer held by key.  <br /></td></tr>
+<tr class="separator:aae5a98b62e4c233ea6dcbfdf565fd7ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad237984d81a327f0ec11874fb9149181" id="r_ad237984d81a327f0ec11874fb9149181"><td class="memItemLeft" align="right" valign="top"><a id="ad237984d81a327f0ec11874fb9149181" name="ad237984d81a327f0ec11874fb9149181"></a>
+static const <a class="el" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Unwrap</b> (void *handle)</td></tr>
+<tr class="memdesc:ad237984d81a327f0ec11874fb9149181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return unwrapped value of handle. <br /></td></tr>
+<tr class="separator:ad237984d81a327f0ec11874fb9149181"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51504896015057ec86b6c341d5eea6c7" id="r_a51504896015057ec86b6c341d5eea6c7"><td class="memItemLeft" align="right" valign="top"><a id="a51504896015057ec86b6c341d5eea6c7" name="a51504896015057ec86b6c341d5eea6c7"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>contains</b> (<a class="el" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> handle)</td></tr>
+<tr class="memdesc:a51504896015057ec86b6c341d5eea6c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if handle is stored. <br /></td></tr>
+<tr class="separator:a51504896015057ec86b6c341d5eea6c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedf474e72dd4978fa7bb08e57e78669b" id="r_aedf474e72dd4978fa7bb08e57e78669b"><td class="memItemLeft" align="right" valign="top"><a id="aedf474e72dd4978fa7bb08e57e78669b" name="aedf474e72dd4978fa7bb08e57e78669b"></a>
+static const <a class="el" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (<a class="el" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> handle)</td></tr>
+<tr class="memdesc:aedf474e72dd4978fa7bb08e57e78669b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return unwrapped value of handle. <br /></td></tr>
+<tr class="separator:aedf474e72dd4978fa7bb08e57e78669b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a045d561210f467202833db72a173600f" id="r_a045d561210f467202833db72a173600f"><td class="memItemLeft" align="right" valign="top"><a id="a045d561210f467202833db72a173600f" name="a045d561210f467202833db72a173600f"></a>
+static <a class="el" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>release</b> (<a class="el" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> key)</td></tr>
+<tr class="memdesc:a045d561210f467202833db72a173600f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return unwrapped value associated by key and remove association. <br /></td></tr>
+<tr class="separator:a045d561210f467202833db72a173600f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45adcad9007225c591488e0c48728d28" id="r_a45adcad9007225c591488e0c48728d28"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1KeyValueWrapper.html#a45adcad9007225c591488e0c48728d28">erase</a> (<a class="el" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> key)</td></tr>
+<tr class="memdesc:a45adcad9007225c591488e0c48728d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove association.  <br /></td></tr>
+<tr class="separator:a45adcad9007225c591488e0c48728d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class KEY, class VALUE&gt;<br />
-struct SDL::KeyValueWrapper&lt; KEY, VALUE &gt;</div><dl class="tparams"><dt>Template Parameters</dt><dd>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class KEY, class VALUE, size_t VARIANT = 0&gt;<br />
+struct SDL::KeyValueWrapper&lt; KEY, VALUE, VARIANT &gt;</div><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">KEY</td><td>the key type. </td></tr>
     <tr><td class="paramname">VALUE</td><td>the value type. </td></tr>
+    <tr><td class="paramname">VARIANT</td><td>the variant, if more than one listener type is associated. </td></tr>
   </table>
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae23782963b20d9f5bda738d54f31741b" name="ae23782963b20d9f5bda738d54f31741b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae23782963b20d9f5bda738d54f31741b">&#9670;&#160;</a></span>erase() <span class="overload">[1/2]</span></h2>
+<a id="a45adcad9007225c591488e0c48728d28" name="a45adcad9007225c591488e0c48728d28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45adcad9007225c591488e0c48728d28">&#9670;&#160;</a></span>erase()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class KEY , class VALUE &gt; </div>
+template&lt;class KEY , class VALUE , size_t VARIANT = 0&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool <a class="el" href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a>&lt; KEY, VALUE &gt;::erase </td>
+          <td class="memname">static bool <a class="el" href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a>&lt; KEY, VALUE, VARIANT &gt;::erase </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a>&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
@@ -169,62 +167,27 @@ template&lt;class KEY , class VALUE &gt; </div>
 
 </div>
 </div>
-<a id="ab8ba46cf0280eba693994cbf8ccac050" name="ab8ba46cf0280eba693994cbf8ccac050"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8ba46cf0280eba693994cbf8ccac050">&#9670;&#160;</a></span>erase() <span class="overload">[2/2]</span></h2>
+<a id="aae5a98b62e4c233ea6dcbfdf565fd7ec" name="aae5a98b62e4c233ea6dcbfdf565fd7ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae5a98b62e4c233ea6dcbfdf565fd7ec">&#9670;&#160;</a></span>Wrap()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class KEY , class VALUE &gt; </div>
+template&lt;class KEY , class VALUE , size_t VARIANT = 0&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool <a class="el" href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a>&lt; KEY, VALUE &gt;::erase </td>
+          <td class="memname">static <a class="el" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> * <a class="el" href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a>&lt; KEY, VALUE, VARIANT &gt;::Wrap </td>
           <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>handle</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">handle</td><td>the handle. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the key was associated and was erased, false otherwise. </dd></dl>
-
-</div>
-</div>
-<a id="ae29fe59075462eda69a321e76a216963" name="ae29fe59075462eda69a321e76a216963"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae29fe59075462eda69a321e76a216963">&#9670;&#160;</a></span>Wrap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class KEY , class VALUE &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void * <a class="el" href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a>&lt; KEY, VALUE &gt;::Wrap </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a>&#160;</td>
           <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a> &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>

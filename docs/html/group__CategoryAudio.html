@@ -136,9 +136,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga2e483caf8bcf7944d6f995ad9ab1ffe7" id="r_ga2e483caf8bcf7944d6f995ad9ab1ffe7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga2e483caf8bcf7944d6f995ad9ab1ffe7">SDL::AudioPostmixCallback</a> = SDL_AudioPostmixCallback</td></tr>
 <tr class="memdesc:ga2e483caf8bcf7944d6f995ad9ab1ffe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback that fires when data is about to be fed to an audio device.  <br /></td></tr>
 <tr class="separator:ga2e483caf8bcf7944d6f995ad9ab1ffe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40741371bd78c5c3793e52ec86a80449" id="r_ga40741371bd78c5c3793e52ec86a80449"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga40741371bd78c5c3793e52ec86a80449">SDL::AudioPostmixCB</a> = std::function&lt; void(const SDL_AudioSpec &amp;spec, std::span&lt; float &gt; buffer)&gt;</td></tr>
-<tr class="memdesc:ga40741371bd78c5c3793e52ec86a80449"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback that fires when data is about to be fed to an audio device.  <br /></td></tr>
-<tr class="separator:ga40741371bd78c5c3793e52ec86a80449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9b9847647bcb90afe05f8d5cce8a128e" id="r_ga9b9847647bcb90afe05f8d5cce8a128e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga9b9847647bcb90afe05f8d5cce8a128e">SDL::AudioPostmixCB</a> = std::function&lt; void(const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;spec, std::span&lt; float &gt; buffer)&gt;</td></tr>
+<tr class="memdesc:ga9b9847647bcb90afe05f8d5cce8a128e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback that fires when data is about to be fed to an audio device.  <br /></td></tr>
+<tr class="separator:ga9b9847647bcb90afe05f8d5cce8a128e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf137bc28b994c19c9e4c214a512a15a1" id="r_gaf137bc28b994c19c9e4c214a512a15a1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">SDL::AudioStreamCallback</a> = SDL_AudioStreamCallback</td></tr>
 <tr class="memdesc:gaf137bc28b994c19c9e4c214a512a15a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback that fires when data passes through an <a class="el" href="structSDL_1_1AudioStreamBase.html" title="The opaque handle that represents an audio stream.">AudioStreamBase</a>.  <br /></td></tr>
 <tr class="separator:gaf137bc28b994c19c9e4c214a512a15a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -385,14 +385,14 @@ right, then it repeats for the next audio frame".</p>
 
 </div>
 </div>
-<a id="ga40741371bd78c5c3793e52ec86a80449" name="ga40741371bd78c5c3793e52ec86a80449"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga40741371bd78c5c3793e52ec86a80449">&#9670;&#160;</a></span>AudioPostmixCB</h2>
+<a id="ga9b9847647bcb90afe05f8d5cce8a128e" name="ga9b9847647bcb90afe05f8d5cce8a128e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9b9847647bcb90afe05f8d5cce8a128e">&#9670;&#160;</a></span>AudioPostmixCB</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryAudio.html#ga40741371bd78c5c3793e52ec86a80449">SDL::AudioPostmixCB</a> = typedef std::function&lt;void(const SDL_AudioSpec&amp; spec, std::span&lt;float&gt; buffer)&gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryAudio.html#ga9b9847647bcb90afe05f8d5cce8a128e">SDL::AudioPostmixCB</a> = typedef std::function&lt;void(const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a>&amp; spec, std::span&lt;float&gt; buffer)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -457,9 +457,9 @@ right, then it repeats for the next audio frame".</p>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This callbacks may run from any thread, so if you need to protect shared data, you should use <a class="el" href="structSDL_1_1AudioStreamLock.html#af8a8afb5c73f94277cff5492f95bbb5a" title="Creates an empty lock.">AudioStreamLock.AudioStreamLock</a> to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>AudioStreamBase.SetGetCallback </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#ad110c13c5a1ba75e4d0c4ab5ec93f583" title="Set a callback that runs when data is requested from an audio stream.">AudioStreamBase.SetGetCallback</a> </dd>
 <dd>
-AudioStreamBase.SetPutCallback </dd></dl>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#a97ab55463f04c764f54300e4084d3a31" title="Set a callback that runs when data is added to an audio stream.">AudioStreamBase.SetPutCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -488,9 +488,9 @@ AudioStreamBase.SetPutCallback </dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This callbacks may run from any thread, so if you need to protect shared data, you should use <a class="el" href="structSDL_1_1AudioStreamLock.html#af8a8afb5c73f94277cff5492f95bbb5a" title="Creates an empty lock.">AudioStreamLock.AudioStreamLock</a> to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>AudioStreamBase.SetGetCallback </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#ad110c13c5a1ba75e4d0c4ab5ec93f583" title="Set a callback that runs when data is requested from an audio stream.">AudioStreamBase.SetGetCallback</a> </dd>
 <dd>
-AudioStreamBase.SetPutCallback </dd>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#a97ab55463f04c764f54300e4084d3a31" title="Set a callback that runs when data is added to an audio stream.">AudioStreamBase.SetPutCallback</a> </dd>
 <dd>
 <a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1" title="A callback that fires when data passes through an AudioStreamBase.">AudioStreamCallback</a> </dd></dl>
 
@@ -914,7 +914,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
 <p>Example:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__CategoryAudio.html#ga7f1dcc9ccd8d5fd3d6391cddbd19c317">LoadWAV</a>(<a class="code hl_struct" href="structSDL_1_1IOStreamBase.html">IOStreamBase</a>.<a class="code hl_function" href="structSDL_1_1IOStreamBase.html#a9f95542b4f9ed519d181002e945df588">IOStreamBase</a>(<span class="stringliteral">&quot;sample.wav&quot;</span>, <span class="stringliteral">&quot;rb&quot;</span>), <span class="keyword">true</span>, &amp;spec, &amp;buf,</div>
 <div class="line">&amp;len);</div>
-<div class="ttc" id="agroup__CategoryAudio_html_ga7f1dcc9ccd8d5fd3d6391cddbd19c317"><div class="ttname"><a href="group__CategoryAudio.html#ga7f1dcc9ccd8d5fd3d6391cddbd19c317">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamBase &amp;src, AudioSpec *spec)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:2716</div></div>
+<div class="ttc" id="agroup__CategoryAudio_html_ga7f1dcc9ccd8d5fd3d6391cddbd19c317"><div class="ttname"><a href="group__CategoryAudio.html#ga7f1dcc9ccd8d5fd3d6391cddbd19c317">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamBase &amp;src, AudioSpec *spec)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:2859</div></div>
 <div class="ttc" id="astructSDL_1_1IOStreamBase_html"><div class="ttname"><a href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a></div><div class="ttdoc">The read/write operation structure.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:114</div></div>
 <div class="ttc" id="astructSDL_1_1IOStreamBase_html_a9f95542b4f9ed519d181002e945df588"><div class="ttname"><a href="structSDL_1_1IOStreamBase.html#a9f95542b4f9ed519d181002e945df588">SDL::IOStreamBase::IOStreamBase</a></div><div class="ttdeci">IOStreamBase(StringParam file, StringParam mode)</div><div class="ttdoc">Use this function to create a new IOStreamBase structure for reading from and/or writing to a named f...</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:199</div></div>
 </div><!-- fragment --><p>Note that the LoadWAV function does this same thing for you, but in a less messy way:</p>
