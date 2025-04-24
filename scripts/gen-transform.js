@@ -1176,42 +1176,11 @@ const transform = {
         },
         "SDL_EventFilter": [
           {
-            "doc": "Handle returned by AddEventWatch()",
-            "kind": "struct",
-            "name": "EventWatchHandle",
-            "entries": {
-              "id": {
-                "kind": "var",
-                "type": "void *"
-              },
-              "EventWatchHandle": {
-                "kind": "function",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "void *",
-                    "name": "id",
-                    "default": "nullptr"
-                  }
-                ]
-              },
-              "get": {
-                "kind": "function",
-                "type": "void *",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": []
-              },
-              "operator bool": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": []
-              }
-            }
+            doc: "Handle returned by AddEventWatch()",
+            kind: "struct",
+            name: "EventWatchHandle",
+            type: "CallbackHandle",
+            entries: { "CallbackHandle::CallbackHandle": "alias" }
           }
         ],
         "SDL_SetEventFilter": {
@@ -1468,6 +1437,40 @@ const transform = {
             "SDL_HINT_OVERRIDE"
           ]
         }
+      },
+      includeAfter: {
+        "SDL_HintCallback": {
+          doc: "Handle returned by AddHintCallback()",
+          kind: "struct",
+          name: "HintCallbackHandle",
+          type: "CallbackHandle",
+          entries: { "CallbackHandle::CallbackHandle": "alias" }
+        },
+        "SDL_AddHintCallback": {
+          kind: "function",
+          name: "AddHintCallback",
+          type: "HintCallbackHandle",
+          parameters: [{
+            name: "name",
+            type: "StringParam"
+          },
+          {
+            name: "callback",
+            type: "HintCB"
+          }],
+        },
+        "SDL_RemoveHintCallback": {
+          kind: "function",
+          name: "RemoveHintCallback",
+          type: "void",
+          parameters: [{
+            name: "name",
+            type: "StringParam"
+          }, {
+            type: "HintCallbackHandle",
+            name: "handle",
+          }],
+        },
       }
     },
     "SDL_init.h": {

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['lockbase_0',['LockBase',['../classSDL_1_1LockBase.html',1,'SDL']]],
-  ['lockbase_3c_20audiostreamref_20_3e_1',['LockBase&lt; AudioStreamRef &gt;',['../classSDL_1_1LockBase.html',1,'SDL']]],
-  ['logcategory_2',['LogCategory',['../classSDL_1_1LogCategory.html',1,'SDL']]]
+  ['keycode_0',['Keycode',['../classSDL_1_1Keycode.html',1,'SDL']]],
+  ['keyvaluewrapper_1',['KeyValueWrapper',['../structSDL_1_1KeyValueWrapper.html',1,'SDL']]]
 ];

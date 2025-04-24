@@ -1,0 +1,5 @@
+<map id="SDL::HintCallbackHandle" name="SDL::HintCallbackHandle">
+<area shape="rect" id="Node000001" title="Handle returned by AddHintCallback()" alt="" coords="5,79,189,104"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1CallbackHandle.html" title="A typesafe handle for callback." alt="" coords="19,5,176,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,44,100,79,95,79,95,44"/>
+</map>

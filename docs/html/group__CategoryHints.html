@@ -71,6 +71,7 @@ $(function() {
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
@@ -82,6 +83,12 @@ $(function() {
 <p>This file contains functions to set and get configuration hints, as well as listing each of them alphabetically.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1HintCallbackHandle.html">SDL::HintCallbackHandle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle returned by <a class="el" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c" title="Add a function to watch a particular hint.">AddHintCallback()</a>  <a href="structSDL_1_1HintCallbackHandle.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:gaef83d045c6a06f26c6df9a8116489bc3" id="r_gaef83d045c6a06f26c6df9a8116489bc3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#gaef83d045c6a06f26c6df9a8116489bc3">SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED</a>&#160;&#160;&#160;&quot;SDL_ALLOW_ALT_TAB_WHILE_GRABBED&quot;</td></tr>
@@ -834,9 +841,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3c56b1427e5b01579a845c214194c68c" id="r_ga3c56b1427e5b01579a845c214194c68c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c">SDL::AddHintCallback</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="el" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:ga3c56b1427e5b01579a845c214194c68c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a function to watch a particular hint.  <br /></td></tr>
 <tr class="separator:ga3c56b1427e5b01579a845c214194c68c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ec208b101deea61b7b9e3a61afc3d04" id="r_ga4ec208b101deea61b7b9e3a61afc3d04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1HintCallbackHandle.html">HintCallbackHandle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#ga4ec208b101deea61b7b9e3a61afc3d04">SDL::AddHintCallback</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="el" href="group__CategoryHints.html#ga9e6f04601e2174e6d2e8f7708483e1bc">HintCB</a> callback)</td></tr>
+<tr class="memdesc:ga4ec208b101deea61b7b9e3a61afc3d04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a function to watch a particular hint.  <br /></td></tr>
+<tr class="separator:ga4ec208b101deea61b7b9e3a61afc3d04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacd539b8e58b229520381376dda93705f" id="r_gacd539b8e58b229520381376dda93705f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">SDL::RemoveHintCallback</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="el" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:gacd539b8e58b229520381376dda93705f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a function watching a particular hint.  <br /></td></tr>
 <tr class="separator:gacd539b8e58b229520381376dda93705f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f339519318446a6abfde97a24937ba2" id="r_ga9f339519318446a6abfde97a24937ba2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#ga9f339519318446a6abfde97a24937ba2">SDL::RemoveHintCallback</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="el" href="structSDL_1_1HintCallbackHandle.html">HintCallbackHandle</a> handle)</td></tr>
+<tr class="memdesc:ga9f339519318446a6abfde97a24937ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a function watching a particular hint.  <br /></td></tr>
+<tr class="separator:ga9f339519318446a6abfde97a24937ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -1225,7 +1238,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
 <p>Some audio backends (such as PulseAudio) allow you to describe your audio stream. Among other things, this description might show up in a system control panel that lets the user adjust the volume on specific audio streams instead of using one giant master volume slider.</p>
 <p>This hints lets you transmit that information to the OS. The contents of this hint are used while opening an audio device. You should use a string that describes your what your program is playing ("audio stream" is probably sufficient in many cases, but this could be useful for something like "team chat" if you have a headset playing VoIP audio separately).</p>
 <p>Setting this to "" or leaving it unset will have <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> use a reasonable default: "audio stream" or something similar.</p>
-<p>Note that while this talks about audio streams, this is an OS-level concept, so it applies to a physical audio device in this case, and not an SDL_AudioStream, nor an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> logical audio device.</p>
+<p>Note that while this talks about audio streams, this is an OS-level concept, so it applies to a physical audio device in this case, and not an AudioStream, nor an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> logical audio device.</p>
 <p>This hint should be set before an audio device is opened.</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
@@ -1245,7 +1258,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
 <p>Some audio backends (such as Pipewire) allow you to describe the role of your audio stream. Among other things, this description might show up in a system control panel or software for displaying and manipulating media playback/recording graphs.</p>
 <p>This hints lets you transmit that information to the OS. The contents of this hint are used while opening an audio device. You should use a string that describes your what your program is playing (Game, Music, Movie, etc...).</p>
 <p>Setting this to "" or leaving it unset will have <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> use a reasonable default: "Game" or something similar.</p>
-<p>Note that while this talks about audio streams, this is an OS-level concept, so it applies to a physical audio device in this case, and not an SDL_AudioStream, nor an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> logical audio device.</p>
+<p>Note that while this talks about audio streams, this is an OS-level concept, so it applies to a physical audio device in this case, and not an AudioStream, nor an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> logical audio device.</p>
 <p>This hint should be set before an audio device is opened.</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
@@ -5371,7 +5384,7 @@ game" or "Watching a video".</p>
       </table>
 </div><div class="memdoc">
 <p>This sets an upper bound on the number of chunks in a WAVE file to avoid wasting time on malformed or corrupt WAVE files. This defaults to "10000".</p>
-<p>This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()</p>
+<p>This hint should be set before calling LoadWAV()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -5396,7 +5409,7 @@ game" or "Watching a video".</p>
 <li>"ignorezero" - Like "truncate", but ignore fact chunk if the number of samples is zero.</li>
 <li>"ignore" - Ignore fact chunk entirely. (default)</li>
 </ul>
-<p>This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()</p>
+<p>This hint should be set before calling LoadWAV()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -5421,7 +5434,7 @@ game" or "Watching a video".</p>
 <li>"ignore" - Ignore the RIFF chunk size and always search up to 4 GiB.</li>
 <li>"maximum" - Search for chunks until the end of file. (not recommended)</li>
 </ul>
-<p>This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()</p>
+<p>This hint should be set before calling LoadWAV()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -5445,7 +5458,7 @@ game" or "Watching a video".</p>
 <li>"dropframe" - Decode until the first incomplete sample frame.</li>
 <li>"dropblock" - Decode until the first incomplete block. (default)</li>
 </ul>
-<p>This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()</p>
+<p>This hint should be set before calling LoadWAV()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -5898,7 +5911,7 @@ game" or "Watching a video".</p>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga3c56b1427e5b01579a845c214194c68c" name="ga3c56b1427e5b01579a845c214194c68c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3c56b1427e5b01579a845c214194c68c">&#9670;&#160;</a></span>AddHintCallback()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3c56b1427e5b01579a845c214194c68c">&#9670;&#160;</a></span>AddHintCallback() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5945,6 +5958,60 @@ game" or "Watching a video".</p>
   </table>
   </dd>
 </dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f" title="Remove a function watching a particular hint.">RemoveHintCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga4ec208b101deea61b7b9e3a61afc3d04" name="ga4ec208b101deea61b7b9e3a61afc3d04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4ec208b101deea61b7b9e3a61afc3d04">&#9670;&#160;</a></span>AddHintCallback() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1HintCallbackHandle.html">HintCallbackHandle</a> SDL::AddHintCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryHints.html#ga9e6f04601e2174e6d2e8f7708483e1bc">HintCB</a>&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The callback function is called <em>during</em> this function, to provide it an initial value, and again each time the hint's value changes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>the hint to watch. </td></tr>
+    <tr><td class="paramname">callback</td><td>An HintCallback function that will be called when the hint value changes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a handle to be used on <a class="el" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f" title="Remove a function watching a particular hint.">RemoveHintCallback()</a> </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
@@ -6045,7 +6112,7 @@ game" or "Watching a video".</p>
 </div>
 </div>
 <a id="gacd539b8e58b229520381376dda93705f" name="gacd539b8e58b229520381376dda93705f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacd539b8e58b229520381376dda93705f">&#9670;&#160;</a></span>RemoveHintCallback()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gacd539b8e58b229520381376dda93705f">&#9670;&#160;</a></span>RemoveHintCallback() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6088,6 +6155,52 @@ game" or "Watching a video".</p>
     <tr><td class="paramname">name</td><td>the hint being watched. </td></tr>
     <tr><td class="paramname">callback</td><td>an HintCallback function that will be called when the hint value changes. </td></tr>
     <tr><td class="paramname">userdata</td><td>a pointer being passed to the callback function.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c" title="Add a function to watch a particular hint.">AddHintCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga9f339519318446a6abfde97a24937ba2" name="ga9f339519318446a6abfde97a24937ba2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9f339519318446a6abfde97a24937ba2">&#9670;&#160;</a></span>RemoveHintCallback() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::RemoveHintCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1HintCallbackHandle.html">HintCallbackHandle</a>&#160;</td>
+          <td class="paramname"><em>handle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>the hint being watched. </td></tr>
+    <tr><td class="paramname">handle</td><td>the handle for the HintCallback function to be removed</td></tr>
   </table>
   </dd>
 </dl>

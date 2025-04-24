@@ -29,6 +29,24 @@ namespace SDL {
  * @{
  */
 
+/** A typesafe handle for callback */
+class CallbackHandle
+{
+  void* id;
+
+public:
+  /// @private
+  constexpr explicit CallbackHandle(void* id = nullptr)
+    : id(id)
+  {
+  }
+  /// Get Internal id
+  constexpr void* get() const { return id; }
+
+  /// True if has a valid id
+  constexpr operator bool() const { return id != 0; }
+};
+
 template<class F>
 struct CallbackWrapper;
 
@@ -67,6 +85,12 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     return *static_cast<ValueType*>(handle);
   }
 
+  /// Return unwrapped value of handle.
+  static const ValueType& Unwrap(CallbackHandle handle)
+  {
+    return Unwrap(handle.get());
+  }
+
   /// Call once and release.
   static Result CallOnce(void* handle, Args... args)
   {
@@ -95,6 +119,12 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     ValueType value{std::move(*ptr)};
     delete ptr;
     return value;
+  }
+
+  /// Return unwrapped value of handle.
+  static const ValueType release(CallbackHandle handle)
+  {
+    return release(handle.get());
   }
 };
 
@@ -9775,7 +9805,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * Note that while this talks about audio streams, this is an OS-level
  * concept, so it applies to a physical audio device in this case, and not an
- * SDL_AudioStream, nor an SDL logical audio device.
+ * AudioStream, nor an SDL logical audio device.
  *
  * This hint should be set before an audio device is opened.
  *
@@ -9801,7 +9831,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * Note that while this talks about audio streams, this is an OS-level
  * concept, so it applies to a physical audio device in this case, and not an
- * SDL_AudioStream, nor an SDL logical audio device.
+ * AudioStream, nor an SDL logical audio device.
  *
  * This hint should be set before an audio device is opened.
  *
@@ -13320,7 +13350,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *   samples is zero.
  * - "ignore" - Ignore fact chunk entirely. (default)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -13332,7 +13362,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * This sets an upper bound on the number of chunks in a WAVE file to avoid
  * wasting time on malformed or corrupt WAVE files. This defaults to "10000".
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -13360,7 +13390,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * - "ignore" - Ignore the RIFF chunk size and always search up to 4 GiB.
  * - "maximum" - Search for chunks until the end of file. (not recommended)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -13380,7 +13410,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * - "dropframe" - Decode until the first incomplete sample frame.
  * - "dropblock" - Decode until the first incomplete block. (default)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -13937,6 +13967,14 @@ using HintCallback = SDL_HintCallback;
 using HintCB = std::function<void(const char*, const char*, const char*)>;
 
 /**
+ * Handle returned by AddHintCallback()
+ */
+struct HintCallbackHandle : CallbackHandle
+{
+  using CallbackHandle::CallbackHandle;
+};
+
+/**
  * Add a function to watch a particular hint.
  *
  * The callback function is called _during_ this function, to provide it an
@@ -13962,6 +14000,43 @@ inline void AddHintCallback(StringParam name,
 }
 
 /**
+ * Add a function to watch a particular hint.
+ *
+ * The callback function is called _during_ this function, to provide it an
+ * initial value, and again each time the hint's value changes.
+ *
+ * @param name the hint to watch.
+ * @param callback An HintCallback function that will be called when the
+ *                 hint value changes.
+ * @returns a handle to be used on RemoveHintCallback()
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveHintCallback
+ */
+inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
+{
+  using Wrapper = CallbackWrapper<HintCB>;
+  auto cb = Wrapper::Wrap(std::move(callback));
+  if (!SDL_AddHintCallback(
+        name,
+        [](void* userdata,
+           const char* name,
+           const char* oldValue,
+           const char* newValue) {
+          auto& cb = Wrapper::Unwrap(userdata);
+          cb(name, oldValue, newValue);
+        },
+        cb)) {
+    Wrapper::release(cb);
+  }
+  return HintCallbackHandle{cb};
+}
+
+/**
  * Remove a function watching a particular hint.
  *
  * @param name the hint being watched.
@@ -13980,6 +14055,23 @@ inline void RemoveHintCallback(StringParam name,
                                void* userdata)
 {
   SDL_RemoveHintCallback(name, callback, userdata);
+}
+
+/**
+ * Remove a function watching a particular hint.
+ *
+ * @param name the hint being watched.
+ * @param handle the handle for the HintCallback function to be removed
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddHintCallback
+ */
+inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
+{
+  CallbackWrapper<HintCB>::release(handle);
 }
 
 /// @}
@@ -42900,22 +42992,9 @@ using EventFilterCB = std::function<bool(const Event&)>;
  * This can be used later to remove the event filter
  * RemoveEventWatch(EventFilterHandle).
  */
-class EventWatchHandle
+struct EventWatchHandle : CallbackHandle
 {
-  void* id;
-
-public:
-  /// @private
-  constexpr explicit EventWatchHandle(void* id = nullptr)
-    : id(id)
-  {
-  }
-
-  /// Get Internal id
-  constexpr void* get() const { return id; }
-
-  /// True if has a valid id
-  constexpr operator bool() const { return id != 0; }
+  using CallbackHandle::CallbackHandle;
 };
 
 /**
@@ -43190,7 +43269,7 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
 inline void RemoveEventWatch(EventWatchHandle handle)
 {
   using Wrapper = CallbackWrapper<EventFilterCB>;
-  Wrapper::release(handle.get());
+  Wrapper::release(handle);
 }
 
 /**

@@ -1595,22 +1595,9 @@ using EventFilterCB = std::function<bool(const Event&)>;
  * This can be used later to remove the event filter
  * RemoveEventWatch(EventFilterHandle).
  */
-class EventWatchHandle
+struct EventWatchHandle : CallbackHandle
 {
-  void* id;
-
-public:
-  /// @private
-  constexpr explicit EventWatchHandle(void* id = nullptr)
-    : id(id)
-  {
-  }
-
-  /// Get Internal id
-  constexpr void* get() const { return id; }
-
-  /// True if has a valid id
-  constexpr operator bool() const { return id != 0; }
+  using CallbackHandle::CallbackHandle;
 };
 
 /**
@@ -1885,7 +1872,7 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
 inline void RemoveEventWatch(EventWatchHandle handle)
 {
   using Wrapper = CallbackWrapper<EventFilterCB>;
-  Wrapper::release(handle.get());
+  Wrapper::release(handle);
 }
 
 /**

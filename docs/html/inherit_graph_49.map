@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="rect" id="Node000001" href="$structSDL_1_1FontBase.html" title="The internal structure containing font information." alt="" coords="208,13,323,38"/>
-<area shape="poly" id="edge80_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="poly" id="edge82_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
 <area shape="rect" id="Node000002" href="$structSDL_1_1FontRef.html" title="Handle to a non owned font." alt="" coords="371,13,476,38"/>
-<area shape="poly" id="edge81_Node000001_Node000002" title=" " alt="" coords="336,23,371,23,371,28,336,28"/>
+<area shape="poly" id="edge83_Node000001_Node000002" title=" " alt="" coords="336,23,371,23,371,28,336,28"/>
 <area shape="rect" id="Node000003" href="$structSDL_1_1Font.html" title="Handle to an owned font." alt="" coords="524,13,607,38"/>
-<area shape="poly" id="edge82_Node000002_Node000003" title=" " alt="" coords="490,23,524,23,524,28,490,28"/>
+<area shape="poly" id="edge84_Node000002_Node000003" title=" " alt="" coords="490,23,524,23,524,28,490,28"/>
 </map>
