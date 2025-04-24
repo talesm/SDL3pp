@@ -186,9 +186,14 @@ endif (DOXYGEN_FOUND)
 #########################
 
 # Source SDL and libs state
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source_xml.json
     COMMAND node scripts/cppfier xml scripts/config-source.json ${SDL3PP_PARSE_DIR_PARAMS}
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config-source.json SDL3pp_SdlXml SDL3pp_SdlImageXml SDL3pp_SdlTtfXml
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
+    COMMAND node scripts/gen-source
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source_xml.json ${PROJECT_SOURCE_DIR}/scripts/gen-source.js
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
@@ -208,7 +213,9 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/transform.json
 # Target SDL3pp state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
     COMMAND node scripts/cppfier transform scripts/config-target.json
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json scripts/config-target.json ${PROJECT_SOURCE_DIR}/scripts/transform.json
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
+            ${PROJECT_SOURCE_DIR}/scripts/config-target.json 
+            ${PROJECT_SOURCE_DIR}/scripts/transform.json 
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 

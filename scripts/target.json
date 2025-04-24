@@ -37537,6 +37537,525 @@
         }
       }
     },
+    "SDL3pp_system.h": {
+      "name": "SDL3pp_system.h",
+      "doc": "@defgroup CategorySystem Category System\n\nPlatform-specific SDL API functions. These are functions that deal with\nneeds of specific operating systems, that didn't make sense to offer as\nplatform-independent, generic APIs.\n\nMost apps can make do without these functions, but they can be useful for\nintegrating with other parts of a specific system, adding platform-specific\npolish to an app, or solving problems that only affect one target.",
+      "entries": {
+        "XEvent": {
+          "doc": "",
+          "name": "XEvent",
+          "kind": "var",
+          "type": "typedef union _XEvent",
+          "sourceName": "XEvent"
+        },
+        "X11EventHook": {
+          "doc": "A callback to be used with SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to SetX11EventHook.\n@param xevent a pointer to an Xlib XEvent union to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetX11EventHook",
+          "name": "X11EventHook",
+          "kind": "alias",
+          "type": "SDL_X11EventHook",
+          "sourceName": "SDL_X11EventHook"
+        },
+        "X11EventHookCB": {
+          "kind": "alias",
+          "name": "X11EventHookCB",
+          "type": "std::function<bool(XEvent *)>",
+          "doc": "A callback to be used with SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to SetX11EventHook.\n@param xevent a pointer to an Xlib XEvent union to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetX11EventHook\n@sa X11EventHook"
+        },
+        "SetX11EventHook": {
+          "doc": "Set a callback for every X11 event.\n\nThe callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the X11EventHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "SetX11EventHook",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "callback",
+              "type": "X11EventHook"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_SetX11EventHook"
+        },
+        "IsTablet": {
+          "doc": "Query if the current device is a tablet.\n\nIf SDL can't determine this, it will return false.\n\n@returns true if the device is a tablet, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "IsTablet",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_IsTablet"
+        },
+        "IsTV": {
+          "doc": "Query if the current device is a TV.\n\nIf SDL can't determine this, it will return false.\n\n@returns true if the device is a TV, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "IsTV",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_IsTV"
+        },
+        "Sandbox": {
+          "doc": "Application sandbox environment.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "Sandbox",
+          "kind": "var",
+          "type": "typedef enum",
+          "sourceName": "SDL_Sandbox"
+        },
+        "GetSandbox": {
+          "doc": "Get the application sandbox environment, if any.\n\n@returns the application sandbox environment or SDL_SANDBOX_NONE if the\n         application is not running in a sandbox environment.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetSandbox",
+          "kind": "function",
+          "type": "SDL_Sandbox",
+          "parameters": [],
+          "sourceName": "SDL_GetSandbox"
+        },
+        "OnApplicationWillTerminate": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillTerminate.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationWillTerminate",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationWillTerminate"
+        },
+        "OnApplicationDidReceiveMemoryWarning": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidReceiveMemoryWarning.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationDidReceiveMemoryWarning",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationDidReceiveMemoryWarning"
+        },
+        "OnApplicationWillEnterBackground": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillResignActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationWillEnterBackground",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationWillEnterBackground"
+        },
+        "OnApplicationDidEnterBackground": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidEnterBackground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationDidEnterBackground",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationDidEnterBackground"
+        },
+        "OnApplicationWillEnterForeground": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillEnterForeground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationWillEnterForeground",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationWillEnterForeground"
+        },
+        "OnApplicationDidEnterForeground": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidBecomeActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationDidEnterForeground",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationDidEnterForeground"
+        },
+        "MSG": {
+          "doc": "",
+          "name": "MSG",
+          "kind": "var",
+          "type": "typedef struct tagMSG",
+          "sourceName": "MSG"
+        },
+        "SetWindowsMessageHook": {
+          "doc": "Set a callback for every Windows message, run before TranslateMessage().\n\nThe callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the SDL_WindowsMessageHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_WindowsMessageHook\n@sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
+          "name": "SetWindowsMessageHook",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "callback",
+              "type": "SDL_WindowsMessageHook"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_SetWindowsMessageHook"
+        },
+        "GetDirect3D9AdapterIndex": {
+          "doc": "Get the D3D9 adapter index that matches the specified display.\n\nThe returned adapter index can be passed to `IDirect3D9::CreateDevice` and\ncontrols on which monitor a full screen application will appear.\n\n@param displayID the instance of the display to query.\n@returns the D3D9 adapter index on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetDirect3D9AdapterIndex",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "displayID",
+              "type": "Display"
+            }
+          ],
+          "sourceName": "SDL_GetDirect3D9AdapterIndex",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "GetDXGIOutputInfo": {
+          "doc": "Get the DXGI Adapter and Output indices for the specified display.\n\nThe DXGI Adapter and Output indices can be passed to `EnumAdapters` and\n`EnumOutputs` respectively to get the objects required to create a DX10 or\nDX11 device and swap chain.\n\n@param displayID the instance of the display to query.\n@param adapterIndex a pointer to be filled in with the adapter index.\n@param outputIndex a pointer to be filled in with the output index.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetDXGIOutputInfo",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "displayID",
+              "type": "Display"
+            },
+            {
+              "name": "adapterIndex",
+              "type": "int *"
+            },
+            {
+              "name": "outputIndex",
+              "type": "int *"
+            }
+          ],
+          "sourceName": "SDL_GetDXGIOutputInfo",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SetLinuxThreadPriority": {
+          "doc": "Sets the UNIX nice value for a thread.\n\nThis uses setpriority() if possible, and RealtimeKit if available.\n\n@param threadID the Unix thread ID to change priority of.\n@param priority the new, Unix-specific, priority value.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "SetLinuxThreadPriority",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "threadID",
+              "type": "Sint64"
+            },
+            {
+              "name": "priority",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_SetLinuxThreadPriority",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SetLinuxThreadPriorityAndPolicy": {
+          "doc": "Sets the priority (not nice level) and scheduling policy for a thread.\n\nThis uses setpriority() if possible, and RealtimeKit if available.\n\n@param threadID the Unix thread ID to change priority of.\n@param sdlPriority the new ThreadPriority value.\n@param schedPolicy the new scheduling policy (SCHED_FIFO, SCHED_RR,\n                   SCHED_OTHER, etc...).\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "SetLinuxThreadPriorityAndPolicy",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "threadID",
+              "type": "Sint64"
+            },
+            {
+              "name": "sdlPriority",
+              "type": "int"
+            },
+            {
+              "name": "schedPolicy",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_SetLinuxThreadPriorityAndPolicy",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "void": [
+          {
+            "doc": "The prototype for an Apple iOS animation callback.\n\nThis datatype is only useful on Apple iOS.\n\nAfter passing a function pointer of this type to\nSetiOSAnimationCallback, the system will call that function pointer at\na regular interval.\n\n@param userdata what was passed as `callbackParam` to\n                SetiOSAnimationCallback as `callbackParam`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetiOSAnimationCallback",
+            "name": "void",
+            "kind": "function",
+            "type": "typedef",
+            "parameters": [
+              "*SDL_iOSAnimationCallback"
+            ],
+            "proto": true,
+            "sourceName": "void"
+          },
+          {
+            "doc": "Callback that presents a response from a RequestAndroidPermission call.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param permission the Android-specific permission name that was requested.\n@param granted true if permission is granted, false if denied.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa RequestAndroidPermission",
+            "name": "void",
+            "kind": "function",
+            "type": "typedef",
+            "parameters": [
+              "*SDL_RequestAndroidPermissionCallback"
+            ],
+            "proto": true,
+            "sourceName": "void"
+          }
+        ],
+        "SetiOSAnimationCallback": {
+          "doc": "Use this function to set the animation callback on Apple iOS.\n\nThe function prototype for `callback` is:\n\n```c\nvoid callback(void *callbackParam);\n```\n\nWhere its parameter, `callbackParam`, is what was passed as `callbackParam`\nto SetiOSAnimationCallback().\n\nThis function is only available on Apple iOS.\n\nFor more information see:\n\nhttps://wiki.libsdl.org/SDL3/README/ios\n\nNote that if you use the \"main callbacks\" instead of a standard C `main`\nfunction, you don't have to use this API, as SDL will manage this for you.\n\nDetails on main callbacks are here:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions\n\n@param window the window for which the animation callback should be set.\n@param interval the number of frames after which **callback** will be\n                called.\n@param callback the function to call for every frame.\n@param callbackParam a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetiOSEventPump",
+          "name": "SetiOSAnimationCallback",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowBase &"
+            },
+            {
+              "name": "interval",
+              "type": "int"
+            },
+            {
+              "name": "callback",
+              "type": "SDL_iOSAnimationCallback"
+            },
+            {
+              "name": "callbackParam",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_SetiOSAnimationCallback",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SetiOSEventPump": {
+          "doc": "Use this function to enable or disable the SDL event pump on Apple iOS.\n\nThis function is only available on Apple iOS.\n\n@param enabled true to enable the event pump, false to disable it.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetiOSAnimationCallback",
+          "name": "SetiOSEventPump",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_SetiOSEventPump"
+        },
+        "GetAndroidJNIEnv": {
+          "doc": "Get the Android Java Native Interface Environment of the current thread.\n\nThis is the JNIEnv one needs to access the Java virtual machine from native\ncode, and is needed for many Android APIs to be usable from C.\n\nThe prototype of the function in SDL's code actually declare a void* return\ntype, even if the implementation returns a pointer to a JNIEnv. The\nrationale being that the SDL headers can avoid including jni.h.\n\n@returns a pointer to Java native interface object (JNIEnv) to which the\n         current thread is attached, or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidActivity",
+          "name": "GetAndroidJNIEnv",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [],
+          "sourceName": "SDL_GetAndroidJNIEnv"
+        },
+        "GetAndroidActivity": {
+          "doc": "Retrieve the Java instance of the Android activity class.\n\nThe prototype of the function in SDL's code actually declares a void*\nreturn type, even if the implementation returns a jobject. The rationale\nbeing that the SDL headers can avoid including jni.h.\n\nThe jobject returned by the function is a local reference and must be\nreleased by the caller. See the PushLocalFrame() and PopLocalFrame() or\nDeleteLocalRef() functions of the Java native interface:\n\nhttps://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/functions.html\n\n@returns the jobject representing the instance of the Activity class of the\n         Android application, or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidJNIEnv",
+          "name": "GetAndroidActivity",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [],
+          "sourceName": "SDL_GetAndroidActivity"
+        },
+        "GetAndroidSDKVersion": {
+          "doc": "Query Android API level of the current device.\n\n- API level 35: Android 15 (VANILLA_ICE_CREAM)\n- API level 34: Android 14 (UPSIDE_DOWN_CAKE)\n- API level 33: Android 13 (TIRAMISU)\n- API level 32: Android 12L (S_V2)\n- API level 31: Android 12 (S)\n- API level 30: Android 11 (R)\n- API level 29: Android 10 (Q)\n- API level 28: Android 9 (P)\n- API level 27: Android 8.1 (O_MR1)\n- API level 26: Android 8.0 (O)\n- API level 25: Android 7.1 (N_MR1)\n- API level 24: Android 7.0 (N)\n- API level 23: Android 6.0 (M)\n- API level 22: Android 5.1 (LOLLIPOP_MR1)\n- API level 21: Android 5.0 (LOLLIPOP, L)\n- API level 20: Android 4.4W (KITKAT_WATCH)\n- API level 19: Android 4.4 (KITKAT)\n- API level 18: Android 4.3 (JELLY_BEAN_MR2)\n- API level 17: Android 4.2 (JELLY_BEAN_MR1)\n- API level 16: Android 4.1 (JELLY_BEAN)\n- API level 15: Android 4.0.3 (ICE_CREAM_SANDWICH_MR1)\n- API level 14: Android 4.0 (ICE_CREAM_SANDWICH)\n- API level 13: Android 3.2 (HONEYCOMB_MR2)\n- API level 12: Android 3.1 (HONEYCOMB_MR1)\n- API level 11: Android 3.0 (HONEYCOMB)\n- API level 10: Android 2.3.3 (GINGERBREAD_MR1)\n\n@returns the Android API level.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetAndroidSDKVersion",
+          "kind": "function",
+          "type": "int",
+          "parameters": [],
+          "sourceName": "SDL_GetAndroidSDKVersion"
+        },
+        "IsChromebook": {
+          "doc": "Query if the application is running on a Chromebook.\n\n@returns true if this is a Chromebook, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "IsChromebook",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_IsChromebook"
+        },
+        "IsDeXMode": {
+          "doc": "Query if the application is running on a Samsung DeX docking station.\n\n@returns true if this is a DeX docking station, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "IsDeXMode",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_IsDeXMode"
+        },
+        "SendAndroidBackButton": {
+          "doc": "Trigger the Android system back button behavior.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "SendAndroidBackButton",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_SendAndroidBackButton"
+        },
+        "SDL_ANDROID_EXTERNAL_STORAGE_READ": {
+          "doc": "See the official Android developer guide for more information:\nhttp://developer.android.com/guide/topics/data/data-storage.html\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ANDROID_EXTERNAL_STORAGE_READ",
+          "kind": "def",
+          "value": "0x01",
+          "sourceName": "SDL_ANDROID_EXTERNAL_STORAGE_READ"
+        },
+        "SDL_ANDROID_EXTERNAL_STORAGE_WRITE": {
+          "doc": "See the official Android developer guide for more information:\nhttp://developer.android.com/guide/topics/data/data-storage.html\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ANDROID_EXTERNAL_STORAGE_WRITE",
+          "kind": "def",
+          "value": "0x02",
+          "sourceName": "SDL_ANDROID_EXTERNAL_STORAGE_WRITE"
+        },
+        "GetAndroidInternalStoragePath": {
+          "doc": "Get the path used for internal storage for this Android application.\n\nThis path is unique to your application and cannot be written to by other\napplications.\n\nYour internal storage path is typically:\n`/data/data/your.app.package/files`.\n\nThis is a C wrapper over `android.content.Context.getFilesDir()`:\n\nhttps://developer.android.com/reference/android/content/Context#getFilesDir()\n\n@returns the path used for internal storage or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidExternalStoragePath\n@sa GetAndroidCachePath",
+          "name": "GetAndroidInternalStoragePath",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "sourceName": "SDL_GetAndroidInternalStoragePath"
+        },
+        "GetAndroidExternalStorageState": {
+          "doc": "Get the current state of external storage for this Android application.\n\nThe current state of external storage, a bitmask of these values:\n`SDL_ANDROID_EXTERNAL_STORAGE_READ`, `SDL_ANDROID_EXTERNAL_STORAGE_WRITE`.\n\nIf external storage is currently unavailable, this will return 0.\n\n@returns the current state of external storage, or 0 if external storage is\n         currently unavailable.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidExternalStoragePath",
+          "name": "GetAndroidExternalStorageState",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [],
+          "sourceName": "SDL_GetAndroidExternalStorageState"
+        },
+        "GetAndroidExternalStoragePath": {
+          "doc": "Get the path used for external storage for this Android application.\n\nThis path is unique to your application, but is public and can be written\nto by other applications.\n\nYour external storage path is typically:\n`/storage/sdcard0/Android/data/your.app.package/files`.\n\nThis is a C wrapper over `android.content.Context.getExternalFilesDir()`:\n\nhttps://developer.android.com/reference/android/content/Context#getExternalFilesDir()\n\n@returns the path used for external storage for this application on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidExternalStorageState\n@sa GetAndroidInternalStoragePath\n@sa GetAndroidCachePath",
+          "name": "GetAndroidExternalStoragePath",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "sourceName": "SDL_GetAndroidExternalStoragePath",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "GetAndroidCachePath": {
+          "doc": "Get the path used for caching data for this Android application.\n\nThis path is unique to your application, but is public and can be written\nto by other applications.\n\nYour cache path is typically: `/data/data/your.app.package/cache/`.\n\nThis is a C wrapper over `android.content.Context.getCacheDir()`:\n\nhttps://developer.android.com/reference/android/content/Context#getCacheDir()\n\n@returns the path used for caches for this application on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidInternalStoragePath\n@sa GetAndroidExternalStoragePath",
+          "name": "GetAndroidCachePath",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "sourceName": "SDL_GetAndroidCachePath",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "RequestAndroidPermission": {
+          "doc": "Request permissions at runtime, asynchronously.\n\nYou do not need to call this for built-in functionality of SDL; recording\nfrom a microphone or reading images from a camera, using standard SDL APIs,\nwill manage permission requests for you.\n\nThis function never blocks. Instead, the app-supplied callback will be\ncalled when a decision has been made. This callback may happen on a\ndifferent thread, and possibly much later, as it might wait on a user to\nrespond to a system dialog. If permission has already been granted for a\nspecific entitlement, the callback will still fire, probably on the current\nthread and before this function returns.\n\nIf the request submission fails, this function returns -1 and the callback\nwill NOT be called, but this should only happen in catastrophic conditions,\nlike memory running out. Normally there will be a yes or no to the request\nthrough the callback.\n\nFor the `permission` parameter, choose a value from here:\n\nhttps://developer.android.com/reference/android/Manifest.permission\n\n@param permission the permission to request.\n@param cb the callback to trigger when the request has a response.\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns true if the request was submitted, false if there was an error\n         submitting. The result of the request is only ever reported\n         through the callback, not this return value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "RequestAndroidPermission",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "permission",
+              "type": "StringParam"
+            },
+            {
+              "name": "cb",
+              "type": "SDL_RequestAndroidPermissionCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_RequestAndroidPermission"
+        },
+        "ShowAndroidToast": {
+          "doc": "Shows an Android toast notification.\n\nToasts are a sort of lightweight notification that are unique to Android.\n\nhttps://developer.android.com/guide/topics/ui/notifiers/toasts\n\nShows toast in UI thread.\n\nFor the `gravity` parameter, choose a value from here, or -1 if you don't\nhave a preference:\n\nhttps://developer.android.com/reference/android/view/Gravity\n\n@param message text message to be shown.\n@param duration 0=short, 1=long.\n@param gravity where the notification should appear on the screen.\n@param xoffset set this parameter only when gravity >=0.\n@param yoffset set this parameter only when gravity >=0.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ShowAndroidToast",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "message",
+              "type": "StringParam"
+            },
+            {
+              "name": "duration",
+              "type": "int"
+            },
+            {
+              "name": "gravity",
+              "type": "int"
+            },
+            {
+              "name": "xoffset",
+              "type": "int"
+            },
+            {
+              "name": "yoffset",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_ShowAndroidToast",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "SendAndroidMessage": {
+          "doc": "Send a user command to SDLActivity.\n\nOverride \"boolean onUnhandledMessage(Message msg)\" to handle the message.\n\n@param command user command that must be greater or equal to 0x8000.\n@param param user parameter.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "SendAndroidMessage",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "command",
+              "type": "Uint32"
+            },
+            {
+              "name": "param",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_SendAndroidMessage",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "OnApplicationDidChangeStatusBarOrientation": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidChangeStatusBarOrientation.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationDidChangeStatusBarOrientation",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationDidChangeStatusBarOrientation"
+        },
+        "XTaskQueueHandle": {
+          "doc": "",
+          "name": "XTaskQueueHandle",
+          "kind": "var",
+          "type": "typedef struct XTaskQueueObject *",
+          "sourceName": "XTaskQueueHandle"
+        },
+        "XUserHandle": {
+          "doc": "",
+          "name": "XUserHandle",
+          "kind": "var",
+          "type": "typedef struct XUser *",
+          "sourceName": "XUserHandle"
+        },
+        "GetGDKTaskQueue": {
+          "doc": "Gets a reference to the global async task queue handle for GDK,\ninitializing if needed.\n\nOnce you are done with the task queue, you should call\nXTaskQueueCloseHandle to reduce the reference count to avoid a resource\nleak.\n\n@param outTaskQueue a pointer to be filled in with task queue handle.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetGDKTaskQueue",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "outTaskQueue",
+              "type": "XTaskQueueHandle *"
+            }
+          ],
+          "sourceName": "SDL_GetGDKTaskQueue",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "GetGDKDefaultUser": {
+          "doc": "Gets a reference to the default user handle for GDK.\n\nThis is effectively a synchronous version of XUserAddAsync, which always\nprefers the default user and allows a sign-in UI.\n\n@param outUserHandle a pointer to be filled in with the default user\n                     handle.\n@returns true if success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetGDKDefaultUser",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "outUserHandle",
+              "type": "XUserHandle *"
+            }
+          ],
+          "sourceName": "SDL_GetGDKDefaultUser"
+        }
+      }
+    },
     "SDL3pp_stdinc.h": {
       "name": "SDL3pp_stdinc.h",
       "doc": "@defgroup CategoryStdinc Category Stdinc\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\ncrc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like strlcpy(), which functions as a safer form of strcpy().",

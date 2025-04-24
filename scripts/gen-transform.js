@@ -1,4 +1,3 @@
-const { type } = require("os");
 const { writeJSONSync } = require("./cppfier/src/utils");
 
 /**

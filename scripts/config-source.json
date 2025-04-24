@@ -40,6 +40,7 @@
     "SDL_dialog.h",
     "SDL_tray.h",
     "SDL_locale.h",
+    "SDL_system.h",
     "SDL_stdinc.h",
     "SDL_guid.h",
     "SDL_misc.h",
@@ -52,7 +53,7 @@
     "external/SDL_image/include/SDL3_image/",
     "external/SDL_ttf/include/SDL3_ttf/"
   ],
-  "outputFile": "scripts/source.json",
+  "outputFile": "scripts/source_xml.json",
   "sourceApi": "scripts/source.json",
   "transform": "scripts/transform.json"
 }
