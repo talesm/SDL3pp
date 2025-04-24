@@ -1595,22 +1595,9 @@ using EventFilterCB = std::function<bool(const Event&)>;
  * This can be used later to remove the event filter
  * RemoveEventWatch(EventFilterHandle).
  */
-class EventWatchHandle
+struct EventWatchHandle : CallbackHandle
 {
-  void* id;
-
-public:
-  /// @private
-  constexpr explicit EventWatchHandle(void* id = nullptr)
-    : id(id)
-  {
-  }
-
-  /// Get Internal id
-  constexpr void* get() const { return id; }
-
-  /// True if has a valid id
-  constexpr operator bool() const { return id != 0; }
+  using CallbackHandle::CallbackHandle;
 };
 
 /**
@@ -1839,17 +1826,12 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
 inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 {
   using Wrapper = CallbackWrapper<EventFilterCB>;
-  using Store = KeyValueWrapper<size_t, EventFilterCB*>;
-
   auto cb = Wrapper::Wrap(std::move(filter));
   if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
-    delete cb;
+    Wrapper::release(cb);
     throw Error{};
   }
-
-  static std::atomic_size_t lastId = 0;
-  size_t id = ++lastId;
-  return EventWatchHandle{Store::Wrap(id, std::move(cb))};
+  return EventWatchHandle{cb};
 }
 
 /**
@@ -1889,8 +1871,8 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  */
 inline void RemoveEventWatch(EventWatchHandle handle)
 {
-  using Store = KeyValueWrapper<size_t, EventFilterCB*>;
-  delete Store::release(handle.get());
+  using Wrapper = CallbackWrapper<EventFilterCB>;
+  Wrapper::release(handle);
 }
 
 /**

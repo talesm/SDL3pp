@@ -2,8 +2,8 @@
 #define SDL3PP_CALLBACK_WRAPPER_H_
 
 #include <functional>
+#include <map>
 #include <memory>
-#include <unordered_map>
 #include <SDL3/SDL_assert.h>
 
 namespace SDL {
@@ -15,6 +15,24 @@ namespace SDL {
  *
  * @{
  */
+
+/** A typesafe handle for callback */
+class CallbackHandle
+{
+  void* id;
+
+public:
+  /// @private
+  constexpr explicit CallbackHandle(void* id = nullptr)
+    : id(id)
+  {
+  }
+  /// Get Internal id
+  constexpr void* get() const { return id; }
+
+  /// True if has a valid id
+  constexpr operator bool() const { return id != 0; }
+};
 
 template<class F>
 struct CallbackWrapper;
@@ -48,6 +66,18 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     return new ValueType(std::move(cb));
   }
 
+  /// Return unwrapped value of handle.
+  static const ValueType& Unwrap(void* handle)
+  {
+    return *static_cast<ValueType*>(handle);
+  }
+
+  /// Return unwrapped value of handle.
+  static const ValueType& Unwrap(CallbackHandle handle)
+  {
+    return Unwrap(handle.get());
+  }
+
   /// Call once and release.
   static Result CallOnce(void* handle, Args... args)
   {
@@ -77,6 +107,12 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     delete ptr;
     return value;
   }
+
+  /// Return unwrapped value of handle.
+  static const ValueType release(CallbackHandle handle)
+  {
+    return release(handle.get());
+  }
 };
 
 /**
@@ -84,9 +120,10 @@ struct CallbackWrapper<std::function<Result(Args...)>>
  *
  * @tparam KEY the key type.
  * @tparam VALUE the value type.
+ * @tparam VARIANT the variant, if more than one listener type is associated.
  *
  */
-template<class KEY, class VALUE>
+template<class KEY, class VALUE, size_t VARIANT = 0>
 struct KeyValueWrapper
 {
   static_assert(sizeof(KEY) <= sizeof(void*));
@@ -105,27 +142,30 @@ struct KeyValueWrapper
    * @param value
    * @return void*
    */
-  static void* Wrap(KeyType key, ValueType&& value)
-  {
-    {
-      auto lockGuard = lock();
-      Values().insert_or_assign(key, std::move(value));
-    }
-    return reinterpret_cast<void*>(key);
-  }
-
-  /// True if handle is stored.
-  static bool contains(void* handle)
+  static ValueType* Wrap(KeyType key, ValueType&& value)
   {
     auto lockGuard = lock();
-    return Values().contains((KeyType)(handle));
+    return &Values().insert_or_assign(key, std::move(value)).first->second;
   }
 
   /// Return unwrapped value of handle.
-  static const ValueType& at(void* handle)
+  static const ValueType& Unwrap(void* handle)
+  {
+    return *static_cast<ValueType*>(handle);
+  }
+
+  /// True if handle is stored.
+  static bool contains(KeyType handle)
   {
     auto lockGuard = lock();
-    return Values().at((KeyType)(handle));
+    return Values().contains(handle);
+  }
+
+  /// Return unwrapped value of handle.
+  static const ValueType& at(KeyType handle)
+  {
+    auto lockGuard = lock();
+    return Values().at(handle);
   }
 
   /// Return unwrapped value associated by key and remove association.
@@ -140,9 +180,6 @@ struct KeyValueWrapper
     return value;
   }
 
-  /// Return unwrapped value of handle and remove association.
-  static ValueType release(void* handle) { return release((KeyType)handle); }
-
   /**
    * Remove association.
    *
@@ -155,18 +192,10 @@ struct KeyValueWrapper
     return Values().erase(key);
   }
 
-  /**
-   * Remove association.
-   *
-   * @param handle the handle.
-   * @return true if the key was associated and was erased, false otherwise.
-   */
-  static bool erase(void* handle) { return erase((KeyType)handle); }
-
 private:
-  static std::unordered_map<KeyType, ValueType>& Values()
+  static std::map<KeyType, ValueType>& Values()
   {
-    static std::unordered_map<KeyType, ValueType> values;
+    static std::map<KeyType, ValueType> values;
     return values;
   }
 

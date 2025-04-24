@@ -267,7 +267,7 @@ var searchData=
   ['keycode_5fz_264',['KEYCODE_Z',['../group__CategoryKeycode.html#ga0352b515e57b1c10bfa56a7054e59a43',1,'SDL']]],
   ['keycodes_265',['Keyboard Keycodes',['../group__CategoryKeycode.html',1,'']]],
   ['keymod_266',['Keymod',['../group__CategoryKeycode.html#ga2aae9984d8970054765ec69d3a58d89c',1,'SDL']]],
-  ['keytype_267',['KeyType',['../structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e',1,'SDL::KeyValueWrapper']]],
+  ['keytype_267',['KeyType',['../structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e',1,'SDL::KeyValueWrapper']]],
   ['keyvaluewrapper_268',['KeyValueWrapper',['../structSDL_1_1KeyValueWrapper.html',1,'SDL']]],
   ['kill_269',['Kill',['../structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca',1,'SDL::ProcessBase']]],
   ['kmod_5falt_270',['KMOD_ALT',['../group__CategoryKeycode.html#gabbb4960394f39cbcd1c04b3e03194280',1,'SDL']]],

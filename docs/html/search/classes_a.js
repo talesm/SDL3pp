@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['optionalref_0',['OptionalRef',['../classSDL_1_1OptionalRef.html',1,'SDL']]],
-  ['optionalresource_1',['OptionalResource',['../classSDL_1_1OptionalResource.html',1,'SDL']]],
-  ['ownarray_2',['OwnArray',['../classSDL_1_1OwnArray.html',1,'SDL']]],
-  ['ownarray_3c_20char_20_3e_3',['OwnArray&lt; char &gt;',['../classSDL_1_1OwnArray.html',1,'SDL']]]
+  ['messagebox_0',['MessageBox',['../structSDL_1_1MessageBox.html',1,'SDL']]],
+  ['mutex_1',['Mutex',['../structSDL_1_1Mutex.html',1,'SDL']]],
+  ['mutexbase_2',['MutexBase',['../structSDL_1_1MutexBase.html',1,'SDL']]],
+  ['mutexref_3',['MutexRef',['../structSDL_1_1MutexRef.html',1,'SDL']]]
 ];

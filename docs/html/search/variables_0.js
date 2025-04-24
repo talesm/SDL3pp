@@ -15,5 +15,19 @@ var searchData=
   ['assertion_5falways_5fignore_12',['ASSERTION_ALWAYS_IGNORE',['../group__CategoryAssert.html#gab10b16a2ed7f0cc68c1564c923b89b9f',1,'SDL']]],
   ['assertion_5fbreak_13',['ASSERTION_BREAK',['../group__CategoryAssert.html#ga80976eeeadb366c89a0c824b790dab89',1,'SDL']]],
   ['assertion_5fignore_14',['ASSERTION_IGNORE',['../group__CategoryAssert.html#ga3c761d2b3deaf94472d9d07940293adb',1,'SDL']]],
-  ['assertion_5fretry_15',['ASSERTION_RETRY',['../group__CategoryAssert.html#ga0f3168fa1ea9aedcbbdccaf0c69e9d77',1,'SDL']]]
+  ['assertion_5fretry_15',['ASSERTION_RETRY',['../group__CategoryAssert.html#ga0f3168fa1ea9aedcbbdccaf0c69e9d77',1,'SDL']]],
+  ['audio_5fdevice_5fdefault_5fplayback_16',['AUDIO_DEVICE_DEFAULT_PLAYBACK',['../group__CategoryAudio.html#ga3480f032a4bbe82de546e36cf1c857f2',1,'SDL']]],
+  ['audio_5fdevice_5fdefault_5frecording_17',['AUDIO_DEVICE_DEFAULT_RECORDING',['../group__CategoryAudio.html#ga6d825e059fc09f4000a6b6912b0760f1',1,'SDL']]],
+  ['audio_5ff32_18',['AUDIO_F32',['../group__CategoryAudio.html#gabf6dc213bbd435c8794ba087b18433ed',1,'SDL']]],
+  ['audio_5ff32be_19',['AUDIO_F32BE',['../group__CategoryAudio.html#gabeafa9fd7333b89b3e6299da5414b1e6',1,'SDL']]],
+  ['audio_5ff32le_20',['AUDIO_F32LE',['../group__CategoryAudio.html#ga333feb5232da4c53322fa2dfaf71cd58',1,'SDL']]],
+  ['audio_5fs16_21',['AUDIO_S16',['../group__CategoryAudio.html#ga30605dfbc485806ddaf82dc836cd06ef',1,'SDL']]],
+  ['audio_5fs16be_22',['AUDIO_S16BE',['../group__CategoryAudio.html#gad9bd2b738601f4841a9984416751beb7',1,'SDL']]],
+  ['audio_5fs16le_23',['AUDIO_S16LE',['../group__CategoryAudio.html#ga80ef9e5362cb2f734c0b40294dc0de45',1,'SDL']]],
+  ['audio_5fs32_24',['AUDIO_S32',['../group__CategoryAudio.html#ga770fe7bc67148352e1154ef133b6e73e',1,'SDL']]],
+  ['audio_5fs32be_25',['AUDIO_S32BE',['../group__CategoryAudio.html#ga96d968a52d9bbaee230aeefe4ad884f8',1,'SDL']]],
+  ['audio_5fs32le_26',['AUDIO_S32LE',['../group__CategoryAudio.html#gaa3669b9fb26cf049925f800574b6dc77',1,'SDL']]],
+  ['audio_5fs8_27',['AUDIO_S8',['../group__CategoryAudio.html#ga1f56a8e73d295cae370e7b82441389fd',1,'SDL']]],
+  ['audio_5fu8_28',['AUDIO_U8',['../group__CategoryAudio.html#ga656bb5ae92ef9521fef6096f6fc17da4',1,'SDL']]],
+  ['audio_5funknown_29',['AUDIO_UNKNOWN',['../group__CategoryAudio.html#ga07a90ed2cf3d56e187cc20bd70933504',1,'SDL']]]
 ];

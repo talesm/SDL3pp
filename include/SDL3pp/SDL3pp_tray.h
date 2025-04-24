@@ -869,7 +869,7 @@ void TrayEntryBase::SetCallback(TrayCB callback)
   using Wrapper = KeyValueWrapper<SDL_TrayEntry*, TrayCB>;
   SetCallback(
     [](void* userdata, SDL_TrayEntry* entry) {
-      auto& f = Wrapper::at(userdata);
+      auto& f = Wrapper::Unwrap(userdata);
       f(TrayEntryRef{entry});
     },
     Wrapper::Wrap(get(), std::move(callback)));

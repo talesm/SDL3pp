@@ -346,7 +346,7 @@ namespace SDL {
  *
  * Note that while this talks about audio streams, this is an OS-level
  * concept, so it applies to a physical audio device in this case, and not an
- * SDL_AudioStream, nor an SDL logical audio device.
+ * AudioStream, nor an SDL logical audio device.
  *
  * This hint should be set before an audio device is opened.
  *
@@ -372,7 +372,7 @@ namespace SDL {
  *
  * Note that while this talks about audio streams, this is an OS-level
  * concept, so it applies to a physical audio device in this case, and not an
- * SDL_AudioStream, nor an SDL logical audio device.
+ * AudioStream, nor an SDL logical audio device.
  *
  * This hint should be set before an audio device is opened.
  *
@@ -3891,7 +3891,7 @@ namespace SDL {
  *   samples is zero.
  * - "ignore" - Ignore fact chunk entirely. (default)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3903,7 +3903,7 @@ namespace SDL {
  * This sets an upper bound on the number of chunks in a WAVE file to avoid
  * wasting time on malformed or corrupt WAVE files. This defaults to "10000".
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3931,7 +3931,7 @@ namespace SDL {
  * - "ignore" - Ignore the RIFF chunk size and always search up to 4 GiB.
  * - "maximum" - Search for chunks until the end of file. (not recommended)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3951,7 +3951,7 @@ namespace SDL {
  * - "dropframe" - Decode until the first incomplete sample frame.
  * - "dropblock" - Decode until the first incomplete block. (default)
  *
- * This hint should be set before calling SDL_LoadWAV() or SDL_LoadWAV_IO()
+ * This hint should be set before calling LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -4486,6 +4486,36 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
 using HintCallback = SDL_HintCallback;
 
 /**
+ * A callback used to send notifications of hint value changes.
+ *
+ * This is called an initial time during AddHintCallback with the hint's
+ * current value, and then again each time the hint's value changes.
+ *
+ * @param userdata what was passed as `userdata` to AddHintCallback().
+ * @param name what was passed as `name` to AddHintCallback().
+ * @param oldValue the previous hint value.
+ * @param newValue the new value hint is to be set to.
+ *
+ * @threadsafety This callback is fired from whatever thread is setting a new
+ *               hint value. SDL holds a lock on the hint subsystem when
+ *               calling this callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddHintCallback
+ * @sa HintCallback
+ */
+using HintCB = std::function<void(const char*, const char*, const char*)>;
+
+/**
+ * Handle returned by AddHintCallback()
+ */
+struct HintCallbackHandle : CallbackHandle
+{
+  using CallbackHandle::CallbackHandle;
+};
+
+/**
  * Add a function to watch a particular hint.
  *
  * The callback function is called _during_ this function, to provide it an
@@ -4511,6 +4541,43 @@ inline void AddHintCallback(StringParam name,
 }
 
 /**
+ * Add a function to watch a particular hint.
+ *
+ * The callback function is called _during_ this function, to provide it an
+ * initial value, and again each time the hint's value changes.
+ *
+ * @param name the hint to watch.
+ * @param callback An HintCallback function that will be called when the
+ *                 hint value changes.
+ * @returns a handle to be used on RemoveHintCallback()
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveHintCallback
+ */
+inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
+{
+  using Wrapper = CallbackWrapper<HintCB>;
+  auto cb = Wrapper::Wrap(std::move(callback));
+  if (!SDL_AddHintCallback(
+        name,
+        [](void* userdata,
+           const char* name,
+           const char* oldValue,
+           const char* newValue) {
+          auto& cb = Wrapper::Unwrap(userdata);
+          cb(name, oldValue, newValue);
+        },
+        cb)) {
+    Wrapper::release(cb);
+  }
+  return HintCallbackHandle{cb};
+}
+
+/**
  * Remove a function watching a particular hint.
  *
  * @param name the hint being watched.
@@ -4529,6 +4596,23 @@ inline void RemoveHintCallback(StringParam name,
                                void* userdata)
 {
   SDL_RemoveHintCallback(name, callback, userdata);
+}
+
+/**
+ * Remove a function watching a particular hint.
+ *
+ * @param name the hint being watched.
+ * @param handle the handle for the HintCallback function to be removed
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddHintCallback
+ */
+inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
+{
+  CallbackWrapper<HintCB>::release(handle);
 }
 
 /// @}

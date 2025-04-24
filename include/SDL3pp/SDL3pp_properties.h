@@ -115,14 +115,22 @@ struct PropertiesRef;
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * This callback is called from PropertiesBase.Enumerate(), and is called once
  * per property in the set.
  *
- * @sa EnumeratePropertyCallback
- * @sa PropertiesBase::Enumerate()
- * @sa immediate-callback
+ * @param props the PropertiesBase that is being enumerated.
+ * @param name the next property name in the enumeration.
+ *
+ * @threadsafety PropertiesBase.Enumerate holds a lock on `props` during this
+ *               callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
  *
  * @cat immediate-callback
+ *
+ *
+ * @sa PropertiesBase.Enumerate
+ * @sa EnumeratePropertiesCallback
  */
 using EnumeratePropertiesCB =
   std::function<void(PropertiesRef props, const char* name)>;

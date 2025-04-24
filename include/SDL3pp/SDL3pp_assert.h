@@ -396,6 +396,8 @@ inline AssertState ReportAssertion(AssertData* data,
  */
 #define SDL_assert_always(condition) SDL_enabled_assert(condition)
 
+#endif // SDL3PP_DOC
+
 /**
  * A @ref callback that fires when an SDL assertion fails.
  *
@@ -410,6 +412,22 @@ inline AssertState ReportAssertion(AssertData* data,
  * @since This datatype is available since SDL 3.2.0.
  */
 using AssertionHandler = SDL_AssertionHandler;
+
+/**
+ * A callback that fires when an SDL assertion fails.
+ *
+ * @param data a pointer to the AssertData structure corresponding to the
+ *             current assertion.
+ * @returns an AssertState value indicating how to handle the failure.
+ *
+ * @threadsafety This callback may be called from any thread that triggers an
+ *               assert at any time.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ * @sa AssertionHandler
+ */
+using AssertionHandlerCB =
+  std::function<SDL_AssertState(const SDL_AssertData*)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -543,8 +561,6 @@ inline const AssertData* GetAssertionReport()
  * @sa SDL_GetAssertionReport
  */
 inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
-
-#endif // SDL3PP_DOC
 
 /// @}
 

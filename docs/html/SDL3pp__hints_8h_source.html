@@ -764,37 +764,76 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l04466" name="l04466"></a><span class="lineno"> 4466</span> </div>
 <div class="line"><a id="l04486" name="l04486"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798"> 4486</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> = SDL_HintCallback;</div>
 <div class="line"><a id="l04487" name="l04487"></a><span class="lineno"> 4487</span> </div>
-<div class="foldopen" id="foldopen04506" data-start="{" data-end="}">
-<div class="line"><a id="l04506" name="l04506"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c"> 4506</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c">AddHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
-<div class="line"><a id="l04507" name="l04507"></a><span class="lineno"> 4507</span>                            <a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback,</div>
-<div class="line"><a id="l04508" name="l04508"></a><span class="lineno"> 4508</span>                            <span class="keywordtype">void</span>* userdata)</div>
-<div class="line"><a id="l04509" name="l04509"></a><span class="lineno"> 4509</span>{</div>
-<div class="line"><a id="l04510" name="l04510"></a><span class="lineno"> 4510</span>  <a class="code hl_function" href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">CheckError</a>(SDL_AddHintCallback(name, callback, userdata));</div>
-<div class="line"><a id="l04511" name="l04511"></a><span class="lineno"> 4511</span>}</div>
+<div class="line"><a id="l04508" name="l04508"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga9e6f04601e2174e6d2e8f7708483e1bc"> 4508</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryHints.html#ga9e6f04601e2174e6d2e8f7708483e1bc">HintCB</a> = std::function&lt;void(<span class="keyword">const</span> <span class="keywordtype">char</span>*, <span class="keyword">const</span> <span class="keywordtype">char</span>*, <span class="keyword">const</span> <span class="keywordtype">char</span>*)&gt;;</div>
+<div class="line"><a id="l04509" name="l04509"></a><span class="lineno"> 4509</span> </div>
+<div class="foldopen" id="foldopen04513" data-start="{" data-end="};">
+<div class="line"><a id="l04513" name="l04513"></a><span class="lineno"><a class="line" href="structSDL_1_1HintCallbackHandle.html"> 4513</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1HintCallbackHandle.html">HintCallbackHandle</a> : <a class="code hl_class" href="classSDL_1_1CallbackHandle.html">CallbackHandle</a></div>
+<div class="line"><a id="l04514" name="l04514"></a><span class="lineno"> 4514</span>{</div>
+<div class="line"><a id="l04515" name="l04515"></a><span class="lineno"> 4515</span>  <span class="keyword">using </span>CallbackHandle::CallbackHandle;</div>
+<div class="line"><a id="l04516" name="l04516"></a><span class="lineno"> 4516</span>};</div>
 </div>
-<div class="line"><a id="l04512" name="l04512"></a><span class="lineno"> 4512</span> </div>
-<div class="foldopen" id="foldopen04527" data-start="{" data-end="}">
-<div class="line"><a id="l04527" name="l04527"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f"> 4527</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">RemoveHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
-<div class="line"><a id="l04528" name="l04528"></a><span class="lineno"> 4528</span>                               <a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback,</div>
-<div class="line"><a id="l04529" name="l04529"></a><span class="lineno"> 4529</span>                               <span class="keywordtype">void</span>* userdata)</div>
-<div class="line"><a id="l04530" name="l04530"></a><span class="lineno"> 4530</span>{</div>
-<div class="line"><a id="l04531" name="l04531"></a><span class="lineno"> 4531</span>  SDL_RemoveHintCallback(name, callback, userdata);</div>
-<div class="line"><a id="l04532" name="l04532"></a><span class="lineno"> 4532</span>}</div>
+<div class="line"><a id="l04517" name="l04517"></a><span class="lineno"> 4517</span> </div>
+<div class="foldopen" id="foldopen04536" data-start="{" data-end="}">
+<div class="line"><a id="l04536" name="l04536"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c"> 4536</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c">AddHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
+<div class="line"><a id="l04537" name="l04537"></a><span class="lineno"> 4537</span>                            <a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback,</div>
+<div class="line"><a id="l04538" name="l04538"></a><span class="lineno"> 4538</span>                            <span class="keywordtype">void</span>* userdata)</div>
+<div class="line"><a id="l04539" name="l04539"></a><span class="lineno"> 4539</span>{</div>
+<div class="line"><a id="l04540" name="l04540"></a><span class="lineno"> 4540</span>  <a class="code hl_function" href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">CheckError</a>(SDL_AddHintCallback(name, callback, userdata));</div>
+<div class="line"><a id="l04541" name="l04541"></a><span class="lineno"> 4541</span>}</div>
 </div>
-<div class="line"><a id="l04533" name="l04533"></a><span class="lineno"> 4533</span> </div>
-<div class="line"><a id="l04535" name="l04535"></a><span class="lineno"> 4535</span> </div>
-<div class="line"><a id="l04536" name="l04536"></a><span class="lineno"> 4536</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l04537" name="l04537"></a><span class="lineno"> 4537</span> </div>
-<div class="line"><a id="l04538" name="l04538"></a><span class="lineno"> 4538</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_HINTS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l04542" name="l04542"></a><span class="lineno"> 4542</span> </div>
+<div class="foldopen" id="foldopen04561" data-start="{" data-end="}">
+<div class="line"><a id="l04561" name="l04561"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga4ec208b101deea61b7b9e3a61afc3d04"> 4561</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1HintCallbackHandle.html">HintCallbackHandle</a> <a class="code hl_function" href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c">AddHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="code hl_typedef" href="group__CategoryHints.html#ga9e6f04601e2174e6d2e8f7708483e1bc">HintCB</a> callback)</div>
+<div class="line"><a id="l04562" name="l04562"></a><span class="lineno"> 4562</span>{</div>
+<div class="line"><a id="l04563" name="l04563"></a><span class="lineno"> 4563</span>  <span class="keyword">using </span>Wrapper = <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper&lt;HintCB&gt;</a>;</div>
+<div class="line"><a id="l04564" name="l04564"></a><span class="lineno"> 4564</span>  <span class="keyword">auto</span> cb = Wrapper::Wrap(std::move(callback));</div>
+<div class="line"><a id="l04565" name="l04565"></a><span class="lineno"> 4565</span>  <span class="keywordflow">if</span> (!SDL_AddHintCallback(</div>
+<div class="line"><a id="l04566" name="l04566"></a><span class="lineno"> 4566</span>        name,</div>
+<div class="line"><a id="l04567" name="l04567"></a><span class="lineno"> 4567</span>        [](<span class="keywordtype">void</span>* userdata,</div>
+<div class="line"><a id="l04568" name="l04568"></a><span class="lineno"> 4568</span>           <span class="keyword">const</span> <span class="keywordtype">char</span>* name,</div>
+<div class="line"><a id="l04569" name="l04569"></a><span class="lineno"> 4569</span>           <span class="keyword">const</span> <span class="keywordtype">char</span>* oldValue,</div>
+<div class="line"><a id="l04570" name="l04570"></a><span class="lineno"> 4570</span>           <span class="keyword">const</span> <span class="keywordtype">char</span>* newValue) {</div>
+<div class="line"><a id="l04571" name="l04571"></a><span class="lineno"> 4571</span>          <span class="keyword">auto</span>&amp; cb = Wrapper::Unwrap(userdata);</div>
+<div class="line"><a id="l04572" name="l04572"></a><span class="lineno"> 4572</span>          cb(name, oldValue, newValue);</div>
+<div class="line"><a id="l04573" name="l04573"></a><span class="lineno"> 4573</span>        },</div>
+<div class="line"><a id="l04574" name="l04574"></a><span class="lineno"> 4574</span>        cb)) {</div>
+<div class="line"><a id="l04575" name="l04575"></a><span class="lineno"> 4575</span>    Wrapper::release(cb);</div>
+<div class="line"><a id="l04576" name="l04576"></a><span class="lineno"> 4576</span>  }</div>
+<div class="line"><a id="l04577" name="l04577"></a><span class="lineno"> 4577</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1HintCallbackHandle.html">HintCallbackHandle</a>{cb};</div>
+<div class="line"><a id="l04578" name="l04578"></a><span class="lineno"> 4578</span>}</div>
+</div>
+<div class="line"><a id="l04579" name="l04579"></a><span class="lineno"> 4579</span> </div>
+<div class="foldopen" id="foldopen04594" data-start="{" data-end="}">
+<div class="line"><a id="l04594" name="l04594"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f"> 4594</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">RemoveHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name,</div>
+<div class="line"><a id="l04595" name="l04595"></a><span class="lineno"> 4595</span>                               <a class="code hl_typedef" href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">HintCallback</a> callback,</div>
+<div class="line"><a id="l04596" name="l04596"></a><span class="lineno"> 4596</span>                               <span class="keywordtype">void</span>* userdata)</div>
+<div class="line"><a id="l04597" name="l04597"></a><span class="lineno"> 4597</span>{</div>
+<div class="line"><a id="l04598" name="l04598"></a><span class="lineno"> 4598</span>  SDL_RemoveHintCallback(name, callback, userdata);</div>
+<div class="line"><a id="l04599" name="l04599"></a><span class="lineno"> 4599</span>}</div>
+</div>
+<div class="line"><a id="l04600" name="l04600"></a><span class="lineno"> 4600</span> </div>
+<div class="foldopen" id="foldopen04613" data-start="{" data-end="}">
+<div class="line"><a id="l04613" name="l04613"></a><span class="lineno"><a class="line" href="group__CategoryHints.html#ga9f339519318446a6abfde97a24937ba2"> 4613</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">RemoveHintCallback</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name, <a class="code hl_struct" href="structSDL_1_1HintCallbackHandle.html">HintCallbackHandle</a> handle)</div>
+<div class="line"><a id="l04614" name="l04614"></a><span class="lineno"> 4614</span>{</div>
+<div class="line"><a id="l04615" name="l04615"></a><span class="lineno"> 4615</span>  <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper&lt;HintCB&gt;::release</a>(handle);</div>
+<div class="line"><a id="l04616" name="l04616"></a><span class="lineno"> 4616</span>}</div>
+</div>
+<div class="line"><a id="l04617" name="l04617"></a><span class="lineno"> 4617</span> </div>
+<div class="line"><a id="l04619" name="l04619"></a><span class="lineno"> 4619</span> </div>
+<div class="line"><a id="l04620" name="l04620"></a><span class="lineno"> 4620</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l04621" name="l04621"></a><span class="lineno"> 4621</span> </div>
+<div class="line"><a id="l04622" name="l04622"></a><span class="lineno"> 4622</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_HINTS_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassSDL_1_1CallbackHandle_html"><div class="ttname"><a href="classSDL_1_1CallbackHandle.html">SDL::CallbackHandle</a></div><div class="ttdoc">A typesafe handle for callback.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:21</div></div>
 <div class="ttc" id="aclassSDL_1_1StringParam_html"><div class="ttname"><a href="classSDL_1_1StringParam.html">SDL::StringParam</a></div><div class="ttdoc">Helpers to use C++ strings parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_strings.h:42</div></div>
 <div class="ttc" id="agroup__CategoryError_html_ga95070a91dd4a8149c71efdbcd7bf9fbf"><div class="ttname"><a href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">SDL::CheckError</a></div><div class="ttdeci">constexpr void CheckError(bool result)</div><div class="ttdoc">Check and throw if returned value from SDL is an error.</div><div class="ttdef"><b>Definition</b> SDL3pp_error.h:206</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_ga27113047f34fea7af4380e3262da13e4"><div class="ttname"><a href="group__CategoryHints.html#ga27113047f34fea7af4380e3262da13e4">SDL::SetHint</a></div><div class="ttdeci">void SetHint(StringParam name, StringParam value)</div><div class="ttdoc">Set a hint with normal priority.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4388</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_ga3c56b1427e5b01579a845c214194c68c"><div class="ttname"><a href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c">SDL::AddHintCallback</a></div><div class="ttdeci">void AddHintCallback(StringParam name, HintCallback callback, void *userdata)</div><div class="ttdoc">Add a function to watch a particular hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4506</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_ga3c56b1427e5b01579a845c214194c68c"><div class="ttname"><a href="group__CategoryHints.html#ga3c56b1427e5b01579a845c214194c68c">SDL::AddHintCallback</a></div><div class="ttdeci">void AddHintCallback(StringParam name, HintCallback callback, void *userdata)</div><div class="ttdoc">Add a function to watch a particular hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4536</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_ga53bb03b57a92fd72221ae93adecb91f2"><div class="ttname"><a href="group__CategoryHints.html#ga53bb03b57a92fd72221ae93adecb91f2">SDL::HINT_NORMAL</a></div><div class="ttdeci">constexpr HintPriority HINT_NORMAL</div><div class="ttdoc">NORMAL.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4338</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_ga60e399222ae8f50f39227899325613c0"><div class="ttname"><a href="group__CategoryHints.html#ga60e399222ae8f50f39227899325613c0">SDL::HINT_OVERRIDE</a></div><div class="ttdeci">constexpr HintPriority HINT_OVERRIDE</div><div class="ttdoc">OVERRIDE.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4340</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_ga644d79b02ef6e68e46536a224a8fe5a1"><div class="ttname"><a href="group__CategoryHints.html#ga644d79b02ef6e68e46536a224a8fe5a1">SDL::GetHintBoolean</a></div><div class="ttdeci">bool GetHintBoolean(StringParam name, bool default_value)</div><div class="ttdoc">Get the boolean value of a hint variable.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4462</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_ga7318e38afab7866c97c660b14d3c7ee2"><div class="ttname"><a href="group__CategoryHints.html#ga7318e38afab7866c97c660b14d3c7ee2">SDL::SetHintWithPriority</a></div><div class="ttdeci">void SetHintWithPriority(StringParam name, StringParam value, HintPriority priority)</div><div class="ttdoc">Set a hint with a specific priority.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4362</div></div>
-<div class="ttc" id="agroup__CategoryHints_html_gacd539b8e58b229520381376dda93705f"><div class="ttname"><a href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">SDL::RemoveHintCallback</a></div><div class="ttdeci">void RemoveHintCallback(StringParam name, HintCallback callback, void *userdata)</div><div class="ttdoc">Remove a function watching a particular hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4527</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_ga9e6f04601e2174e6d2e8f7708483e1bc"><div class="ttname"><a href="group__CategoryHints.html#ga9e6f04601e2174e6d2e8f7708483e1bc">SDL::HintCB</a></div><div class="ttdeci">std::function&lt; void(const char *, const char *, const char *)&gt; HintCB</div><div class="ttdoc">A callback used to send notifications of hint value changes.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4508</div></div>
+<div class="ttc" id="agroup__CategoryHints_html_gacd539b8e58b229520381376dda93705f"><div class="ttname"><a href="group__CategoryHints.html#gacd539b8e58b229520381376dda93705f">SDL::RemoveHintCallback</a></div><div class="ttdeci">void RemoveHintCallback(StringParam name, HintCallback callback, void *userdata)</div><div class="ttdoc">Remove a function watching a particular hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4594</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_gad12209cf860f8f3e98d8d008e248a4c8"><div class="ttname"><a href="group__CategoryHints.html#gad12209cf860f8f3e98d8d008e248a4c8">SDL::GetHint</a></div><div class="ttdeci">const char * GetHint(StringParam name)</div><div class="ttdoc">Get the value of a hint.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4445</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_gad22ac57458cda2d468cf6863bdd43aac"><div class="ttname"><a href="group__CategoryHints.html#gad22ac57458cda2d468cf6863bdd43aac">SDL::ResetHint</a></div><div class="ttdeci">void ResetHint(StringParam name)</div><div class="ttdoc">Reset a hint to the default value.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4410</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_gad709e6b20dd2df0329eb643060abcf8e"><div class="ttname"><a href="group__CategoryHints.html#gad709e6b20dd2df0329eb643060abcf8e">SDL::ResetHints</a></div><div class="ttdeci">void ResetHints()</div><div class="ttdoc">Reset all hints to the default values.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4425</div></div>
@@ -802,6 +841,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryHints_html_gaf628a94c0c9bd6400059dc40cb975159"><div class="ttname"><a href="group__CategoryHints.html#gaf628a94c0c9bd6400059dc40cb975159">SDL::HINT_DEFAULT</a></div><div class="ttdeci">constexpr HintPriority HINT_DEFAULT</div><div class="ttdoc">DEFAULT.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4336</div></div>
 <div class="ttc" id="agroup__CategoryHints_html_gafca244836857d1f55905d488451a6798"><div class="ttname"><a href="group__CategoryHints.html#gafca244836857d1f55905d488451a6798">SDL::HintCallback</a></div><div class="ttdeci">SDL_HintCallback HintCallback</div><div class="ttdoc">A callback used to send notifications of hint value changes.</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4486</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_html"><div class="ttname"><a href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a></div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:38</div></div>
+<div class="ttc" id="astructSDL_1_1HintCallbackHandle_html"><div class="ttname"><a href="structSDL_1_1HintCallbackHandle.html">SDL::HintCallbackHandle</a></div><div class="ttdoc">Handle returned by AddHintCallback()</div><div class="ttdef"><b>Definition</b> SDL3pp_hints.h:4514</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

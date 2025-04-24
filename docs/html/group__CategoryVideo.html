@@ -170,9 +170,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga5e604d7daaf7ba4fa463a487bbaf4bdd" id="r_ga5e604d7daaf7ba4fa463a487bbaf4bdd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga5e604d7daaf7ba4fa463a487bbaf4bdd">SDL::EGLAttribArrayCallback</a> = SDL_EGLAttribArrayCallback</td></tr>
 <tr class="memdesc:ga5e604d7daaf7ba4fa463a487bbaf4bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">EGL platform attribute initialization callback.  <br /></td></tr>
 <tr class="separator:ga5e604d7daaf7ba4fa463a487bbaf4bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadff937d398fca63a5b75406dc98a2e44" id="r_gadff937d398fca63a5b75406dc98a2e44"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gadff937d398fca63a5b75406dc98a2e44">SDL::EGLAttribArrayCB</a> = std::function&lt; SDL_EGLAttrib *()&gt;</td></tr>
+<tr class="memdesc:gadff937d398fca63a5b75406dc98a2e44"><td class="mdescLeft">&#160;</td><td class="mdescRight">EGL platform attribute initialization callback.  <br /></td></tr>
+<tr class="separator:gadff937d398fca63a5b75406dc98a2e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaff230867e34e519fce23045e208f158c" id="r_gaff230867e34e519fce23045e208f158c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c">SDL::EGLIntArrayCallback</a> = SDL_EGLIntArrayCallback</td></tr>
 <tr class="memdesc:gaff230867e34e519fce23045e208f158c"><td class="mdescLeft">&#160;</td><td class="mdescRight">EGL surface/context attribute initialization callback types.  <br /></td></tr>
 <tr class="separator:gaff230867e34e519fce23045e208f158c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4f4ce9ccb3be39143fbef33fb99abc2" id="r_gaf4f4ce9ccb3be39143fbef33fb99abc2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaf4f4ce9ccb3be39143fbef33fb99abc2">SDL::EGLIntArrayCB</a> = std::function&lt; SDL_EGLint *(SDL_EGLDisplay, SDL_EGLConfig)&gt;</td></tr>
+<tr class="memdesc:gaf4f4ce9ccb3be39143fbef33fb99abc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">EGL surface/context attribute initialization callback types.  <br /></td></tr>
+<tr class="separator:gaf4f4ce9ccb3be39143fbef33fb99abc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -878,6 +884,29 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 
 </div>
 </div>
+<a id="gadff937d398fca63a5b75406dc98a2e44" name="gadff937d398fca63a5b75406dc98a2e44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadff937d398fca63a5b75406dc98a2e44">&#9670;&#160;</a></span>EGLAttribArrayCB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryVideo.html#gadff937d398fca63a5b75406dc98a2e44">SDL::EGLAttribArrayCB</a> = typedef std::function&lt;SDL_EGLAttrib*()&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL context, to let the app add extra attributes to its eglGetPlatformDisplay() call.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
+<p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
+<p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>a newly-allocated array of attributes, terminated with <code>EGL_NONE</code>.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683" title="Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.">EGL_SetAttributeCallbacks</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga5e604d7daaf7ba4fa463a487bbaf4bdd" title="EGL platform attribute initialization callback.">EGLAttribArrayCallback</a> </dd></dl>
+
+</div>
+</div>
 <a id="gaa0b23ee28081be6c3bc984e1e676383b" name="gaa0b23ee28081be6c3bc984e1e676383b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa0b23ee28081be6c3bc984e1e676383b">&#9670;&#160;</a></span>EGLConfig</h2>
 
@@ -950,6 +979,37 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 <dl class="section return"><dt>Returns</dt><dd>a newly-allocated array of attributes, terminated with <code>EGL_NONE</code>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683" title="Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.">EGL_SetAttributeCallbacks</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf4f4ce9ccb3be39143fbef33fb99abc2" name="gaf4f4ce9ccb3be39143fbef33fb99abc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf4f4ce9ccb3be39143fbef33fb99abc2">&#9670;&#160;</a></span>EGLIntArrayCB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryVideo.html#gaf4f4ce9ccb3be39143fbef33fb99abc2">SDL::EGLIntArrayCB</a> = typedef std::function&lt;SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL surface, to let the app add extra attributes to its eglCreateWindowSurface() or eglCreateContext calls.</p>
+<p>For convenience, the EGLDisplay and EGLConfig to use are provided to the callback.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
+<p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
+<p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">display</td><td>the EGL display to be used. </td></tr>
+    <tr><td class="paramname">config</td><td>the EGL config to be used. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a newly-allocated array of attributes, terminated with <code>EGL_NONE</code>.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683" title="Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.">EGL_SetAttributeCallbacks</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c" title="EGL surface/context attribute initialization callback types.">EGLIntArrayCallback</a> </dd></dl>
 
 </div>
 </div>

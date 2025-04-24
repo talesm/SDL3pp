@@ -5,6 +5,7 @@ var searchData=
   ['manipulation_2',['Bit Manipulation',['../group__CategoryBits.html',1,'']]],
   ['message_20boxes_3',['Message Boxes',['../group__CategoryMessagebox.html',1,'']]],
   ['miscellaneous_4',['Miscellaneous',['../group__CategoryMisc.html',1,'']]],
-  ['modes_5',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
-  ['mouse_20support_6',['Mouse Support',['../group__CategoryMouse.html',1,'']]]
+  ['mixing_5',['Audio Playback, Recording, and Mixing',['../group__CategoryAudio.html',1,'']]],
+  ['modes_6',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
+  ['mouse_20support_7',['Mouse Support',['../group__CategoryMouse.html',1,'']]]
 ];

@@ -86,238 +86,279 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define SDL3PP_CALLBACK_WRAPPER_H_</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;SDL3/SDL_assert.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper.html">   20</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper</a>;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">template</span>&lt;<span class="keyword">class </span>Result, <span class="keyword">class</span>... Args&gt;</div>
-<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html">   33</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper</a>&lt;std::function&lt;Result(Args...)&gt;&gt;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper</a>() = <span class="keyword">delete</span>;</div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classSDL_1_1CallbackHandle.html">   20</a></span><span class="keyword">class </span><a class="code hl_class" href="classSDL_1_1CallbackHandle.html">CallbackHandle</a></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>{</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordtype">void</span>* id;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keyword">constexpr</span> <span class="keyword">explicit</span> <a class="code hl_class" href="classSDL_1_1CallbackHandle.html">CallbackHandle</a>(<span class="keywordtype">void</span>* <span class="keywordtype">id</span> = <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    : id(<span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classSDL_1_1CallbackHandle.html#a94681847e8be21acc8f6971f154d1277">   31</a></span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span>* <a class="code hl_function" href="classSDL_1_1CallbackHandle.html#a94681847e8be21acc8f6971f154d1277">get</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> id; }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classSDL_1_1CallbackHandle.html#a8b9e8076dc17b583b1d48198d87c9366">   34</a></span>  <span class="keyword">constexpr</span> <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">id</span> != 0; }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
+</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">   38</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> = std::function&lt;Result(Args...)&gt;;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper.html">   38</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper</a>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">   46</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>* <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">Wrap</a>(<a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>&amp;&amp; cb)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>(std::move(cb));</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
-</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a23ffb37123f536c10bf57c177d541b5a">   52</a></span>  <span class="keyword">static</span> Result <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a23ffb37123f536c10bf57c177d541b5a">CallOnce</a>(<span class="keywordtype">void</span>* handle, Args... args)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">auto</span> f = release(handle);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> f(args...);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
-</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">template</span>&lt;<span class="keyword">class </span>Result, <span class="keyword">class</span>... Args&gt;</div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="};">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html">   51</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper</a>&lt;std::function&lt;Result(Args...)&gt;&gt;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>{</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">   56</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> = std::function&lt;Result(Args...)&gt;;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a52275d6ea5de9b6a8cb695788f17ab5b">   59</a></span>  <span class="keyword">static</span> Result <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a52275d6ea5de9b6a8cb695788f17ab5b">CallOnceSuffixed</a>(Args... args, <span class="keywordtype">void</span>* handle)</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">auto</span> f = release(handle);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">return</span> f(args...);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">   64</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>* <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">Wrap</a>(<a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>&amp;&amp; cb)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>(std::move(cb));</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
 </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">   72</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">release</a>(<span class="keywordtype">void</span>* handle)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">if</span> (handle == <span class="keyword">nullptr</span>) <span class="keywordflow">return</span> {};</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">auto</span> ptr = <span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>*<span class="keyword">&gt;</span>(handle);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> value{std::move(*ptr)};</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">delete</span> ptr;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#acd5034ed92ec289ba6ff5e7a72075241">   70</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>&amp; <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#acd5034ed92ec289ba6ff5e7a72075241">Unwrap</a>(<span class="keywordtype">void</span>* handle)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> *<span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>*<span class="keyword">&gt;</span>(handle);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
+</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a02d34f0d4b1f746e408a77b2b6d44d6a">   76</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>&amp; <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a02d34f0d4b1f746e408a77b2b6d44d6a">Unwrap</a>(<a class="code hl_class" href="classSDL_1_1CallbackHandle.html">CallbackHandle</a> handle)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">return</span> Unwrap(handle.<a class="code hl_function" href="classSDL_1_1CallbackHandle.html#a94681847e8be21acc8f6971f154d1277">get</a>());</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  }</div>
 </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a23ffb37123f536c10bf57c177d541b5a">   82</a></span>  <span class="keyword">static</span> Result <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a23ffb37123f536c10bf57c177d541b5a">CallOnce</a>(<span class="keywordtype">void</span>* handle, Args... args)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keyword">auto</span> f = release(handle);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">return</span> f(args...);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  }</div>
 </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> KEY, <span class="keyword">class</span> VALUE&gt;</div>
-<div class="foldopen" id="foldopen00090" data-start="{" data-end="};">
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html">   90</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1KeyValueWrapper.html">KeyValueWrapper</a></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>{</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(KEY) &lt;= <span class="keyword">sizeof</span>(<span class="keywordtype">void</span>*));</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <a class="code hl_struct" href="structSDL_1_1KeyValueWrapper.html">KeyValueWrapper</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a52275d6ea5de9b6a8cb695788f17ab5b">   89</a></span>  <span class="keyword">static</span> Result <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a52275d6ea5de9b6a8cb695788f17ab5b">CallOnceSuffixed</a>(Args... args, <span class="keywordtype">void</span>* handle)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keyword">auto</span> f = release(handle);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">return</span> f(args...);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  }</div>
+</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">   96</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a> = KEY;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">   99</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a> = VALUE;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="foldopen" id="foldopen00108" data-start="{" data-end="}">
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#ae29fe59075462eda69a321e76a216963">  108</a></span>  <span class="keyword">static</span> <span class="keywordtype">void</span>* <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#ae29fe59075462eda69a321e76a216963">Wrap</a>(<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a> key, <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a>&amp;&amp; value)</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  {</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      Values().insert_or_assign(key, std::move(value));</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    }</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(key);</div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">  102</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">release</a>(<span class="keywordtype">void</span>* handle)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">if</span> (handle == <span class="keyword">nullptr</span>) <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">auto</span> ptr = <span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a>*<span class="keyword">&gt;</span>(handle);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> value{std::move(*ptr)};</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">delete</span> ptr;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  }</div>
+</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="foldopen" id="foldopen00112" data-start="{" data-end="}">
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#ac71b6d0ded27a24511e4374734fbcaac">  112</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">ValueType</a> <a class="code hl_function" href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#ac71b6d0ded27a24511e4374734fbcaac">release</a>(<a class="code hl_class" href="classSDL_1_1CallbackHandle.html">CallbackHandle</a> handle)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">return</span> release(handle.<a class="code hl_function" href="classSDL_1_1CallbackHandle.html#a94681847e8be21acc8f6971f154d1277">get</a>());</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  }</div>
 </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a44e4c6e70475acf7a40f19876d582a1c">  118</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a44e4c6e70475acf7a40f19876d582a1c">contains</a>(<span class="keywordtype">void</span>* handle)</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  {</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordflow">return</span> Values().contains((<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a>)(handle));</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>};</div>
 </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="foldopen" id="foldopen00125" data-start="{" data-end="}">
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a5170ab6bea946d67ce7fccd462554cea">  125</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a>&amp; <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a5170ab6bea946d67ce7fccd462554cea">at</a>(<span class="keywordtype">void</span>* handle)</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  {</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">return</span> Values().at((<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a>)(handle));</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  }</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> KEY, <span class="keyword">class</span> VALUE, <span class="keywordtype">size_t</span> VARIANT = 0&gt;</div>
+<div class="foldopen" id="foldopen00127" data-start="{" data-end="};">
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html">  127</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1KeyValueWrapper.html">KeyValueWrapper</a></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>{</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(KEY) &lt;= <span class="keyword">sizeof</span>(<span class="keywordtype">void</span>*));</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <a class="code hl_struct" href="structSDL_1_1KeyValueWrapper.html">KeyValueWrapper</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">  133</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> = KEY;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">  136</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> = VALUE;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00145" data-start="{" data-end="}">
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#aae5a98b62e4c233ea6dcbfdf565fd7ec">  145</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a>* <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#aae5a98b62e4c233ea6dcbfdf565fd7ec">Wrap</a>(<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> key, <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a>&amp;&amp; value)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  {</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordflow">return</span> &amp;Values().insert_or_assign(key, std::move(value)).first-&gt;second;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  }</div>
 </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="foldopen" id="foldopen00132" data-start="{" data-end="}">
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#aa6baae1afe60baa7aebc2a0008e31ec4">  132</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#aa6baae1afe60baa7aebc2a0008e31ec4">release</a>(<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a> key)</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  {</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keyword">auto</span>&amp; values = Values();</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keyword">auto</span> it = values.find(key);</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">if</span> (it == values.end()) <span class="keywordflow">return</span> {};</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a> value{std::move(it-&gt;second)};</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    values.erase(it);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  }</div>
-</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a8a17d0c5dd6d1ad5bbe854143087263d">  144</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">ValueType</a> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a8a17d0c5dd6d1ad5bbe854143087263d">release</a>(<span class="keywordtype">void</span>* handle) { <span class="keywordflow">return</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a8a17d0c5dd6d1ad5bbe854143087263d">release</a>((<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a>)handle); }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
 <div class="foldopen" id="foldopen00152" data-start="{" data-end="}">
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#ae23782963b20d9f5bda738d54f31741b">  152</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#ae23782963b20d9f5bda738d54f31741b">erase</a>(<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a> key)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#ad237984d81a327f0ec11874fb9149181">  152</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a>&amp; <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#ad237984d81a327f0ec11874fb9149181">Unwrap</a>(<span class="keywordtype">void</span>* handle)</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  {</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">return</span> Values().erase(key);</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  }</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordflow">return</span> *<span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a>*<span class="keyword">&gt;</span>(handle);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  }</div>
 </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050">  164</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050">erase</a>(<span class="keywordtype">void</span>* handle) { <span class="keywordflow">return</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050">erase</a>((<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">KeyType</a>)handle); }</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="keyword">static</span> std::unordered_map&lt;KeyType, ValueType&gt;&amp; Values()</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  {</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">static</span> std::unordered_map&lt;KeyType, ValueType&gt; values;</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keywordflow">return</span> values;</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  }</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="keyword">static</span> std::lock_guard&lt;std::mutex&gt; lock()</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  {</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keyword">static</span> std::mutex uniqueMutex;</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordflow">return</span> std::lock_guard{uniqueMutex};</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  }</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>};</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="foldopen" id="foldopen00158" data-start="{" data-end="}">
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a51504896015057ec86b6c341d5eea6c7">  158</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a51504896015057ec86b6c341d5eea6c7">contains</a>(<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> handle)</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  {</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">return</span> Values().contains(handle);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  }</div>
 </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> VALUE&gt;</div>
-<div class="foldopen" id="foldopen00186" data-start="{" data-end="};">
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html">  186</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1UniqueWrapper.html">UniqueWrapper</a></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>{</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <a class="code hl_struct" href="structSDL_1_1UniqueWrapper.html">UniqueWrapper</a>() = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">  191</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a> = VALUE;</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
-<div class="foldopen" id="foldopen00199" data-start="{" data-end="}">
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#acdd6c54ca9b5f5d8840afbdbc59754f2">  199</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a>* <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#acdd6c54ca9b5f5d8840afbdbc59754f2">Wrap</a>(<a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a>&amp;&amp; value)</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  {</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    v = std::move(value);</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="keywordflow">return</span> &amp;v;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  }</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#aedf474e72dd4978fa7bb08e57e78669b">  165</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a>&amp; <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#aedf474e72dd4978fa7bb08e57e78669b">at</a>(<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> handle)</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">return</span> Values().at(handle);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  }</div>
 </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="foldopen" id="foldopen00208" data-start="{" data-end="}">
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#a871060a4b407370e1b02dc110be2c0b6">  208</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#a871060a4b407370e1b02dc110be2c0b6">contains</a>(<span class="keywordtype">void</span>* handle)</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  {</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keywordflow">return</span> bool(v) &amp;&amp; &amp;v == handle;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  }</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="foldopen" id="foldopen00172" data-start="{" data-end="}">
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a045d561210f467202833db72a173600f">  172</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a045d561210f467202833db72a173600f">release</a>(<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> key)</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  {</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keyword">auto</span>&amp; values = Values();</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keyword">auto</span> it = values.find(key);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keywordflow">if</span> (it == values.end()) <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">ValueType</a> value{std::move(it-&gt;second)};</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    values.erase(it);</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  }</div>
 </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="foldopen" id="foldopen00216" data-start="{" data-end="}">
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#a88a27d2e726d340a160b9aa352f9ad78">  216</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a>&amp; <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#a88a27d2e726d340a160b9aa352f9ad78">at</a>(<span class="keywordtype">void</span>* handle)</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  {</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <a class="code hl_define" href="group__CategoryAssert.html#ga4cc20db7eed29c5cd0e83f4f3d10860a">SDL_assert_paranoid</a>(&amp;v == handle);</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="keywordflow">return</span> v;</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  }</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="foldopen" id="foldopen00189" data-start="{" data-end="}">
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="structSDL_1_1KeyValueWrapper.html#a45adcad9007225c591488e0c48728d28">  189</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a45adcad9007225c591488e0c48728d28">erase</a>(<a class="code hl_typedef" href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">KeyType</a> key)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  {</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="keywordflow">return</span> Values().erase(key);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  }</div>
 </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="foldopen" id="foldopen00225" data-start="{" data-end="}">
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#a4aaeeda338b3b00aea46dabd0c209d79">  225</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a> <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#a4aaeeda338b3b00aea46dabd0c209d79">release</a>(<span class="keywordtype">void</span>* handle)</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  {</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <a class="code hl_define" href="group__CategoryAssert.html#ga4cc20db7eed29c5cd0e83f4f3d10860a">SDL_assert_paranoid</a>(&amp;v == handle);</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a> value{std::move(v)};</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  }</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="keyword">static</span> std::map&lt;KeyType, ValueType&gt;&amp; Values()</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keyword">static</span> std::map&lt;KeyType, ValueType&gt; values;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keywordflow">return</span> values;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="keyword">static</span> std::lock_guard&lt;std::mutex&gt; lock()</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  {</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="keyword">static</span> std::mutex uniqueMutex;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">return</span> std::lock_guard{uniqueMutex};</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  }</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>};</div>
 </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
-<div class="foldopen" id="foldopen00236" data-start="{" data-end="}">
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597">  236</a></span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597">erase</a>()</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  {</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    Value() = {};</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> VALUE&gt;</div>
+<div class="foldopen" id="foldopen00215" data-start="{" data-end="};">
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html">  215</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1UniqueWrapper.html">UniqueWrapper</a></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>{</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  <a class="code hl_struct" href="structSDL_1_1UniqueWrapper.html">UniqueWrapper</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">  220</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a> = VALUE;</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="foldopen" id="foldopen00228" data-start="{" data-end="}">
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#acdd6c54ca9b5f5d8840afbdbc59754f2">  228</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a>* <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#acdd6c54ca9b5f5d8840afbdbc59754f2">Wrap</a>(<a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a>&amp;&amp; value)</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    v = std::move(value);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keywordflow">return</span> &amp;v;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  }</div>
 </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a>&amp; Value()</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  {</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a> value;</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  }</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keyword">static</span> std::lock_guard&lt;std::mutex&gt; lock()</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  {</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keyword">static</span> std::mutex uniqueMutex;</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keywordflow">return</span> std::lock_guard{uniqueMutex};</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  }</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>};</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
+<div class="foldopen" id="foldopen00237" data-start="{" data-end="}">
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#a871060a4b407370e1b02dc110be2c0b6">  237</a></span>  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#a871060a4b407370e1b02dc110be2c0b6">contains</a>(<span class="keywordtype">void</span>* handle)</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  {</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordflow">return</span> bool(v) &amp;&amp; &amp;v == handle;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  }</div>
 </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="foldopen" id="foldopen00245" data-start="{" data-end="}">
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#a88a27d2e726d340a160b9aa352f9ad78">  245</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a>&amp; <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#a88a27d2e726d340a160b9aa352f9ad78">at</a>(<span class="keywordtype">void</span>* handle)</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  {</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <a class="code hl_define" href="group__CategoryAssert.html#ga4cc20db7eed29c5cd0e83f4f3d10860a">SDL_assert_paranoid</a>(&amp;v == handle);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordflow">return</span> v;</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  }</div>
+</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
+<div class="foldopen" id="foldopen00254" data-start="{" data-end="}">
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#a4aaeeda338b3b00aea46dabd0c209d79">  254</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a> <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#a4aaeeda338b3b00aea46dabd0c209d79">release</a>(<span class="keywordtype">void</span>* handle)</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  {</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <a class="code hl_define" href="group__CategoryAssert.html#ga4cc20db7eed29c5cd0e83f4f3d10860a">SDL_assert_paranoid</a>(&amp;v == handle);</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_CALLBACK_WRAPPER_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a> value{std::move(v)};</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  }</div>
+</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="foldopen" id="foldopen00265" data-start="{" data-end="}">
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597">  265</a></span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597">erase</a>()</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  {</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    Value() = {};</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  }</div>
+</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a>&amp; Value()</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  {</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="keyword">static</span> <a class="code hl_typedef" href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">ValueType</a> value;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  }</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="keyword">static</span> std::lock_guard&lt;std::mutex&gt; lock()</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keyword">static</span> std::mutex uniqueMutex;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keywordflow">return</span> std::lock_guard{uniqueMutex};</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  }</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>};</div>
+</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_CALLBACK_WRAPPER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassSDL_1_1CallbackHandle_html"><div class="ttname"><a href="classSDL_1_1CallbackHandle.html">SDL::CallbackHandle</a></div><div class="ttdoc">A typesafe handle for callback.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:21</div></div>
+<div class="ttc" id="aclassSDL_1_1CallbackHandle_html_a94681847e8be21acc8f6971f154d1277"><div class="ttname"><a href="classSDL_1_1CallbackHandle.html#a94681847e8be21acc8f6971f154d1277">SDL::CallbackHandle::get</a></div><div class="ttdeci">constexpr void * get() const</div><div class="ttdoc">Get Internal id.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:31</div></div>
 <div class="ttc" id="agroup__CategoryAssert_html_ga4cc20db7eed29c5cd0e83f4f3d10860a"><div class="ttname"><a href="group__CategoryAssert.html#ga4cc20db7eed29c5cd0e83f4f3d10860a">SDL_assert_paranoid</a></div><div class="ttdeci">#define SDL_assert_paranoid(condition)</div><div class="ttdoc">An assertion test that is performed only when built with paranoid settings.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:374</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
-<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a23ffb37123f536c10bf57c177d541b5a"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a23ffb37123f536c10bf57c177d541b5a">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::CallOnce</a></div><div class="ttdeci">static Result CallOnce(void *handle, Args... args)</div><div class="ttdoc">Call once and release.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:52</div></div>
-<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a2aa8ec0153862902dfe98f0ec6b9c47c"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::release</a></div><div class="ttdeci">static ValueType release(void *handle)</div><div class="ttdoc">Transfer ownership from the function and delete handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:72</div></div>
-<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a52275d6ea5de9b6a8cb695788f17ab5b"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a52275d6ea5de9b6a8cb695788f17ab5b">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::CallOnceSuffixed</a></div><div class="ttdeci">static Result CallOnceSuffixed(Args... args, void *handle)</div><div class="ttdoc">Call once and release with suffix handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:59</div></div>
-<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a7eb5d8619da99489183c9ae4fb2ffdff"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::Wrap</a></div><div class="ttdeci">static ValueType * Wrap(ValueType &amp;&amp;cb)</div><div class="ttdoc">Change the callback into a void* pointer.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:46</div></div>
-<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_aec3b3e063c680d493ea7ff389b854f02"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::ValueType</a></div><div class="ttdeci">std::function&lt; Result(Args...)&gt; ValueType</div><div class="ttdoc">The wrapped std::function type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:38</div></div>
-<div class="ttc" id="astructSDL_1_1CallbackWrapper_html"><div class="ttname"><a href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a></div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:20</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a></div><div class="ttdoc">Wrapper key to value result callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:91</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a11f2a644a95b3856bdc44d6db051788e"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a11f2a644a95b3856bdc44d6db051788e">SDL::KeyValueWrapper::KeyType</a></div><div class="ttdeci">KEY KeyType</div><div class="ttdoc">Key type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:96</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a44e4c6e70475acf7a40f19876d582a1c"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a44e4c6e70475acf7a40f19876d582a1c">SDL::KeyValueWrapper::contains</a></div><div class="ttdeci">static bool contains(void *handle)</div><div class="ttdoc">True if handle is stored.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:118</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a5170ab6bea946d67ce7fccd462554cea"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a5170ab6bea946d67ce7fccd462554cea">SDL::KeyValueWrapper::at</a></div><div class="ttdeci">static const ValueType &amp; at(void *handle)</div><div class="ttdoc">Return unwrapped value of handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:125</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a6bc1fcfdd41ce15260876f16542908ae"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a6bc1fcfdd41ce15260876f16542908ae">SDL::KeyValueWrapper::ValueType</a></div><div class="ttdeci">VALUE ValueType</div><div class="ttdoc">Value type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:99</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a8a17d0c5dd6d1ad5bbe854143087263d"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a8a17d0c5dd6d1ad5bbe854143087263d">SDL::KeyValueWrapper::release</a></div><div class="ttdeci">static ValueType release(void *handle)</div><div class="ttdoc">Return unwrapped value of handle and remove association.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:144</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_aa6baae1afe60baa7aebc2a0008e31ec4"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#aa6baae1afe60baa7aebc2a0008e31ec4">SDL::KeyValueWrapper::release</a></div><div class="ttdeci">static ValueType release(KeyType key)</div><div class="ttdoc">Return unwrapped value associated by key and remove association.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:132</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_ab8ba46cf0280eba693994cbf8ccac050"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050">SDL::KeyValueWrapper::erase</a></div><div class="ttdeci">static bool erase(void *handle)</div><div class="ttdoc">Remove association.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:164</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_ae23782963b20d9f5bda738d54f31741b"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#ae23782963b20d9f5bda738d54f31741b">SDL::KeyValueWrapper::erase</a></div><div class="ttdeci">static bool erase(KeyType key)</div><div class="ttdoc">Remove association.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:152</div></div>
-<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_ae29fe59075462eda69a321e76a216963"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#ae29fe59075462eda69a321e76a216963">SDL::KeyValueWrapper::Wrap</a></div><div class="ttdeci">static void * Wrap(KeyType key, ValueType &amp;&amp;value)</div><div class="ttdoc">Change the value into a void* pointer held by key.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:108</div></div>
-<div class="ttc" id="astructSDL_1_1UniqueWrapper_html"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html">SDL::UniqueWrapper</a></div><div class="ttdoc">Stored Wrapper unique by type result callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:187</div></div>
-<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_a2be0b7665deecffb51de97d909c3db49"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">SDL::UniqueWrapper::ValueType</a></div><div class="ttdeci">VALUE ValueType</div><div class="ttdoc">Wrapped type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:191</div></div>
-<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_a4aaeeda338b3b00aea46dabd0c209d79"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#a4aaeeda338b3b00aea46dabd0c209d79">SDL::UniqueWrapper::release</a></div><div class="ttdeci">static ValueType release(void *handle)</div><div class="ttdoc">Return wrapped type and erase it from store.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:225</div></div>
-<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_a871060a4b407370e1b02dc110be2c0b6"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#a871060a4b407370e1b02dc110be2c0b6">SDL::UniqueWrapper::contains</a></div><div class="ttdeci">static bool contains(void *handle)</div><div class="ttdoc">True if handle equals to wrapped value.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:208</div></div>
-<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_a88a27d2e726d340a160b9aa352f9ad78"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#a88a27d2e726d340a160b9aa352f9ad78">SDL::UniqueWrapper::at</a></div><div class="ttdeci">static const ValueType &amp; at(void *handle)</div><div class="ttdoc">Return wrapped type, if handle is contained.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:216</div></div>
-<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_acdd6c54ca9b5f5d8840afbdbc59754f2"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#acdd6c54ca9b5f5d8840afbdbc59754f2">SDL::UniqueWrapper::Wrap</a></div><div class="ttdeci">static ValueType * Wrap(ValueType &amp;&amp;value)</div><div class="ttdoc">Change the value into a void* pointer held uniquely by this type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:199</div></div>
-<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_ad40be15b116d0b9c7b2fd66d72ceb597"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597">SDL::UniqueWrapper::erase</a></div><div class="ttdeci">static void erase()</div><div class="ttdoc">Erase value from store.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:236</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a02d34f0d4b1f746e408a77b2b6d44d6a"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a02d34f0d4b1f746e408a77b2b6d44d6a">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::Unwrap</a></div><div class="ttdeci">static const ValueType &amp; Unwrap(CallbackHandle handle)</div><div class="ttdoc">Return unwrapped value of handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:76</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a23ffb37123f536c10bf57c177d541b5a"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a23ffb37123f536c10bf57c177d541b5a">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::CallOnce</a></div><div class="ttdeci">static Result CallOnce(void *handle, Args... args)</div><div class="ttdoc">Call once and release.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:82</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a2aa8ec0153862902dfe98f0ec6b9c47c"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::release</a></div><div class="ttdeci">static ValueType release(void *handle)</div><div class="ttdoc">Transfer ownership from the function and delete handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:102</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a52275d6ea5de9b6a8cb695788f17ab5b"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a52275d6ea5de9b6a8cb695788f17ab5b">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::CallOnceSuffixed</a></div><div class="ttdeci">static Result CallOnceSuffixed(Args... args, void *handle)</div><div class="ttdoc">Call once and release with suffix handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:89</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a7eb5d8619da99489183c9ae4fb2ffdff"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::Wrap</a></div><div class="ttdeci">static ValueType * Wrap(ValueType &amp;&amp;cb)</div><div class="ttdoc">Change the callback into a void* pointer.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:64</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_ac71b6d0ded27a24511e4374734fbcaac"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#ac71b6d0ded27a24511e4374734fbcaac">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::release</a></div><div class="ttdeci">static const ValueType release(CallbackHandle handle)</div><div class="ttdoc">Return unwrapped value of handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:112</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_acd5034ed92ec289ba6ff5e7a72075241"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#acd5034ed92ec289ba6ff5e7a72075241">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::Unwrap</a></div><div class="ttdeci">static const ValueType &amp; Unwrap(void *handle)</div><div class="ttdoc">Return unwrapped value of handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:70</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_aec3b3e063c680d493ea7ff389b854f02"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aec3b3e063c680d493ea7ff389b854f02">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::ValueType</a></div><div class="ttdeci">std::function&lt; Result(Args...)&gt; ValueType</div><div class="ttdoc">The wrapped std::function type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:56</div></div>
+<div class="ttc" id="astructSDL_1_1CallbackWrapper_html"><div class="ttname"><a href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a></div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:38</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a></div><div class="ttdoc">Wrapper key to value result callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:128</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a045d561210f467202833db72a173600f"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a045d561210f467202833db72a173600f">SDL::KeyValueWrapper::release</a></div><div class="ttdeci">static ValueType release(KeyType key)</div><div class="ttdoc">Return unwrapped value associated by key and remove association.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:172</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a45469a6c7969fef28b1a57ebd896da9e"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a45469a6c7969fef28b1a57ebd896da9e">SDL::KeyValueWrapper::KeyType</a></div><div class="ttdeci">KEY KeyType</div><div class="ttdoc">Key type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:133</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a45adcad9007225c591488e0c48728d28"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a45adcad9007225c591488e0c48728d28">SDL::KeyValueWrapper::erase</a></div><div class="ttdeci">static bool erase(KeyType key)</div><div class="ttdoc">Remove association.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:189</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a51504896015057ec86b6c341d5eea6c7"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a51504896015057ec86b6c341d5eea6c7">SDL::KeyValueWrapper::contains</a></div><div class="ttdeci">static bool contains(KeyType handle)</div><div class="ttdoc">True if handle is stored.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:158</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_a75deb75904721a3ccb2d4e43caad3919"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#a75deb75904721a3ccb2d4e43caad3919">SDL::KeyValueWrapper::ValueType</a></div><div class="ttdeci">VALUE ValueType</div><div class="ttdoc">Value type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:136</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_aae5a98b62e4c233ea6dcbfdf565fd7ec"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#aae5a98b62e4c233ea6dcbfdf565fd7ec">SDL::KeyValueWrapper::Wrap</a></div><div class="ttdeci">static ValueType * Wrap(KeyType key, ValueType &amp;&amp;value)</div><div class="ttdoc">Change the value into a void* pointer held by key.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:145</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_ad237984d81a327f0ec11874fb9149181"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#ad237984d81a327f0ec11874fb9149181">SDL::KeyValueWrapper::Unwrap</a></div><div class="ttdeci">static const ValueType &amp; Unwrap(void *handle)</div><div class="ttdoc">Return unwrapped value of handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:152</div></div>
+<div class="ttc" id="astructSDL_1_1KeyValueWrapper_html_aedf474e72dd4978fa7bb08e57e78669b"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html#aedf474e72dd4978fa7bb08e57e78669b">SDL::KeyValueWrapper::at</a></div><div class="ttdeci">static const ValueType &amp; at(KeyType handle)</div><div class="ttdoc">Return unwrapped value of handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:165</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html">SDL::UniqueWrapper</a></div><div class="ttdoc">Stored Wrapper unique by type result callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:216</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_a2be0b7665deecffb51de97d909c3db49"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#a2be0b7665deecffb51de97d909c3db49">SDL::UniqueWrapper::ValueType</a></div><div class="ttdeci">VALUE ValueType</div><div class="ttdoc">Wrapped type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:220</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_a4aaeeda338b3b00aea46dabd0c209d79"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#a4aaeeda338b3b00aea46dabd0c209d79">SDL::UniqueWrapper::release</a></div><div class="ttdeci">static ValueType release(void *handle)</div><div class="ttdoc">Return wrapped type and erase it from store.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:254</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_a871060a4b407370e1b02dc110be2c0b6"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#a871060a4b407370e1b02dc110be2c0b6">SDL::UniqueWrapper::contains</a></div><div class="ttdeci">static bool contains(void *handle)</div><div class="ttdoc">True if handle equals to wrapped value.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:237</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_a88a27d2e726d340a160b9aa352f9ad78"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#a88a27d2e726d340a160b9aa352f9ad78">SDL::UniqueWrapper::at</a></div><div class="ttdeci">static const ValueType &amp; at(void *handle)</div><div class="ttdoc">Return wrapped type, if handle is contained.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:245</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_acdd6c54ca9b5f5d8840afbdbc59754f2"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#acdd6c54ca9b5f5d8840afbdbc59754f2">SDL::UniqueWrapper::Wrap</a></div><div class="ttdeci">static ValueType * Wrap(ValueType &amp;&amp;value)</div><div class="ttdoc">Change the value into a void* pointer held uniquely by this type.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:228</div></div>
+<div class="ttc" id="astructSDL_1_1UniqueWrapper_html_ad40be15b116d0b9c7b2fd66d72ceb597"><div class="ttname"><a href="structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597">SDL::UniqueWrapper::erase</a></div><div class="ttdeci">static void erase()</div><div class="ttdoc">Erase value from store.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:265</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
