@@ -1917,10 +1917,10 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetData
    * @sa AudioStreamBase.GetQueued
    */
-  template<class T>
-  void PutData(std::span<T> buf)
+  void PutData(std::span<const char> buf)
   {
-    static_assert(false, "Not implemented");
+    SDL_assert_paranoid(buf.size() < MAX_SINT32);
+    PutData(buf.data(), buf.size_bytes());
   }
 
   /**
@@ -1980,10 +1980,9 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetAvailable
    * @sa AudioStreamBase.PutData
    */
-  template<class T>
-  int GetData(std::span<T> buf)
+  int GetData(std::span<char> buf)
   {
-    return GetDat(buf.data(), buf.size_bytes());
+    return GetData(buf.data(), buf.size_bytes());
   }
 
   /**

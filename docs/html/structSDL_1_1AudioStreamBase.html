@@ -154,17 +154,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad09b84cfd64bc37263a765f7cf95d9af" id="r_ad09b84cfd64bc37263a765f7cf95d9af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ad09b84cfd64bc37263a765f7cf95d9af">SetOutputChannelMap</a> (std::span&lt; int &gt; chmap)</td></tr>
 <tr class="memdesc:ad09b84cfd64bc37263a765f7cf95d9af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current output channel map of an audio stream.  <br /></td></tr>
 <tr class="separator:ad09b84cfd64bc37263a765f7cf95d9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34af7562d4a093a32c6e14cb34425644" id="r_a34af7562d4a093a32c6e14cb34425644"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a34af7562d4a093a32c6e14cb34425644"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644">PutData</a> (std::span&lt; T &gt; buf)</td></tr>
-<tr class="memdesc:a34af7562d4a093a32c6e14cb34425644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
-<tr class="separator:a34af7562d4a093a32c6e14cb34425644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00aafbb242a8a5f46016e34e894c089d" id="r_a00aafbb242a8a5f46016e34e894c089d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d">PutData</a> (std::span&lt; const char &gt; buf)</td></tr>
+<tr class="memdesc:a00aafbb242a8a5f46016e34e894c089d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
+<tr class="separator:a00aafbb242a8a5f46016e34e894c089d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ee688466bfca1318560b386bd9d2f42" id="r_a4ee688466bfca1318560b386bd9d2f42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a4ee688466bfca1318560b386bd9d2f42">PutData</a> (const void *buf, int len)</td></tr>
 <tr class="memdesc:a4ee688466bfca1318560b386bd9d2f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
 <tr class="separator:a4ee688466bfca1318560b386bd9d2f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abecbea75f0bb9ba624e374e01c468a1f" id="r_abecbea75f0bb9ba624e374e01c468a1f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:abecbea75f0bb9ba624e374e01c468a1f"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f">GetData</a> (std::span&lt; T &gt; buf)</td></tr>
-<tr class="memdesc:abecbea75f0bb9ba624e374e01c468a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get converted/resampled data from the stream.  <br /></td></tr>
-<tr class="separator:abecbea75f0bb9ba624e374e01c468a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabe4f8048b6986500e8862b1c804ff92" id="r_aabe4f8048b6986500e8862b1c804ff92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92">GetData</a> (std::span&lt; char &gt; buf)</td></tr>
+<tr class="memdesc:aabe4f8048b6986500e8862b1c804ff92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get converted/resampled data from the stream.  <br /></td></tr>
+<tr class="separator:aabe4f8048b6986500e8862b1c804ff92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ecfb1430e61e30bd4d1173ea6ea2dfd" id="r_a5ecfb1430e61e30bd4d1173ea6ea2dfd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a5ecfb1430e61e30bd4d1173ea6ea2dfd">GetData</a> (void *buf, int len)</td></tr>
 <tr class="memdesc:a5ecfb1430e61e30bd4d1173ea6ea2dfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get converted/resampled data from the stream.  <br /></td></tr>
 <tr class="separator:a5ecfb1430e61e30bd4d1173ea6ea2dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -357,9 +355,9 @@ constexpr SDL_AudioStream *&#160;</td><td class="memItemRight" valign="bottom"><
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> </dd>
 <dd>
@@ -429,7 +427,7 @@ constexpr SDL_AudioStream *&#160;</td><td class="memItemRight" valign="bottom"><
   <table class="params">
     <tr><td class="paramname">devid</td><td>an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING. </td></tr>
     <tr><td class="paramname">spec</td><td>the audio stream's data format. Can be std::nullopt. </td></tr>
-    <tr><td class="paramname">callback</td><td>a callback where the app will provide new data for playback, or receive new data for recording. Can be nullptr, in which case the app will need to call <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> or <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> as necessary. </td></tr>
+    <tr><td class="paramname">callback</td><td>a callback where the app will provide new data for playback, or receive new data for recording. Can be nullptr, in which case the app will need to call <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> or <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> as necessary. </td></tr>
     <tr><td class="paramname">userdata</td><td>app-controlled pointer passed to callback. Can be nullptr. Ignored if callback is nullptr. </td></tr>
   </table>
   </dd>
@@ -602,11 +600,11 @@ AudioDeviceBase.UnbindAudioStream </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#a7047dbd239dbd1a07448a6061b5aa357" title="Get the number of bytes currently queued.">AudioStreamBase.GetQueued</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
 
 </div>
 </div>
@@ -673,7 +671,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
 
 </div>
 </div>
@@ -700,23 +698,21 @@ AudioDeviceBase.UnbindAudioStream </dd>
 </table>
 </div><div class="memdoc">
 <p>The stream may be buffering data behind the scenes until it has enough to resample correctly, so this number might be lower than what you expect, or even be zero. Add more data or flush the stream if you need the data now.</p>
-<p>If the stream has so much data that it would overflow an int, the return value is clamped to a maximum value, but no queued data is lost; if there are gigabytes of data queued, the app might need to read some of it with <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> before this function's return value is no longer clamped.</p>
+<p>If the stream has so much data that it would overflow an int, the return value is clamped to a maximum value, but no queued data is lost; if there are gigabytes of data queued, the app might need to read some of it with <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> before this function's return value is no longer clamped.</p>
 <dl class="section return"><dt>Returns</dt><dd>the number of converted/resampled bytes available or -1 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
 
 </div>
 </div>
-<a id="abecbea75f0bb9ba624e374e01c468a1f" name="abecbea75f0bb9ba624e374e01c468a1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abecbea75f0bb9ba624e374e01c468a1f">&#9670;&#160;</a></span>GetData() <span class="overload">[1/2]</span></h2>
+<a id="aabe4f8048b6986500e8862b1c804ff92" name="aabe4f8048b6986500e8862b1c804ff92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabe4f8048b6986500e8862b1c804ff92">&#9670;&#160;</a></span>GetData() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -724,7 +720,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">int SDL::AudioStreamBase::GetData </td>
           <td>(</td>
-          <td class="paramtype">std::span&lt; T &gt;&#160;</td>
+          <td class="paramtype">std::span&lt; char &gt;&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
           <td></td>
         </tr>
@@ -736,7 +732,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>The input/output data format/channels/samplerate is specified when creating the stream, and can be changed after creation by calling <a class="el" href="structSDL_1_1AudioStreamBase.html#ab483fdbee991a12687479240988e435f" title="Change the input and output formats of an audio stream.">AudioStreamBase.SetFormat</a>.</p>
-<p>Note that any conversion and resampling necessary is done during this call, and <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> simply queues unconverted data for later. This is different than SDL2, where that work was done while inputting new data to the stream and requesting the output just copied the converted data.</p>
+<p>Note that any conversion and resampling necessary is done during this call, and <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> simply queues unconverted data for later. This is different than SDL2, where that work was done while inputting new data to the stream and requesting the output just copied the converted data.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buf</td><td>a buffer to fill with audio data. </td></tr>
@@ -750,7 +746,7 @@ template&lt;class T &gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
 
 </div>
 </div>
@@ -788,7 +784,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>The input/output data format/channels/samplerate is specified when creating the stream, and can be changed after creation by calling <a class="el" href="structSDL_1_1AudioStreamBase.html#ab483fdbee991a12687479240988e435f" title="Change the input and output formats of an audio stream.">AudioStreamBase.SetFormat</a>.</p>
-<p>Note that any conversion and resampling necessary is done during this call, and <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> simply queues unconverted data for later. This is different than SDL2, where that work was done while inputting new data to the stream and requesting the output just copied the converted data.</p>
+<p>Note that any conversion and resampling necessary is done during this call, and <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> simply queues unconverted data for later. This is different than SDL2, where that work was done while inputting new data to the stream and requesting the output just copied the converted data.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buf</td><td>a buffer to fill with audio data. </td></tr>
@@ -803,7 +799,7 @@ template&lt;class T &gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd></dl>
 
 </div>
 </div>
@@ -1142,12 +1138,12 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p>This is the number of bytes put into a stream as input, not the number that can be retrieved as output. Because of several details, it's not possible to calculate one number directly from the other. If you need to know how much usable data can be retrieved right now, you should use <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable()</a> and not this function.</p>
 <p>Note that audio streams can change their input format at any time, even if there is still data queued in a different format, so the returned byte count will not necessarily match the number of <em>sample frames</em> available. Users of this API should be aware of format changes they make when feeding a stream and plan accordingly.</p>
-<p>Queued data is not converted until it is consumed by <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>, so this value should be representative of the exact data that was put into the stream.</p>
-<p>If the stream has so much data that it would overflow an int, the return value is clamped to a maximum value, but no queued data is lost; if there are gigabytes of data queued, the app might need to read some of it with <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> before this function's return value is no longer clamped.</p>
+<p>Queued data is not converted until it is consumed by <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>, so this value should be representative of the exact data that was put into the stream.</p>
+<p>If the stream has so much data that it would overflow an int, the return value is clamped to a maximum value, but no queued data is lost; if there are gigabytes of data queued, the app might need to read some of it with <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> before this function's return value is no longer clamped.</p>
 <dl class="section return"><dt>Returns</dt><dd>the number of bytes queued or -1 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#a35175215684d600010042918f5f29ca4" title="Clear any pending data in the stream.">AudioStreamBase.Clear</a> </dd></dl>
 
@@ -1243,19 +1239,17 @@ template&lt;class T &gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#a97aa378f25c2fc536e53491067c027c1" title="Tell the stream that you&#39;re done sending data, and anything being buffered should be converted/resamp...">AudioStreamBase.Flush</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#a7047dbd239dbd1a07448a6061b5aa357" title="Get the number of bytes currently queued.">AudioStreamBase.GetQueued</a> </dd></dl>
 
 </div>
 </div>
-<a id="a34af7562d4a093a32c6e14cb34425644" name="a34af7562d4a093a32c6e14cb34425644"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34af7562d4a093a32c6e14cb34425644">&#9670;&#160;</a></span>PutData() <span class="overload">[2/2]</span></h2>
+<a id="a00aafbb242a8a5f46016e34e894c089d" name="a00aafbb242a8a5f46016e34e894c089d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00aafbb242a8a5f46016e34e894c089d">&#9670;&#160;</a></span>PutData() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1263,7 +1257,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">void SDL::AudioStreamBase::PutData </td>
           <td>(</td>
-          <td class="paramtype">std::span&lt; T &gt;&#160;</td>
+          <td class="paramtype">std::span&lt; const char &gt;&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1294,7 +1288,7 @@ template&lt;class T &gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#a97aa378f25c2fc536e53491067c027c1" title="Tell the stream that you&#39;re done sending data, and anything being buffered should be converted/resamp...">AudioStreamBase.Flush</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
+<a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#a7047dbd239dbd1a07448a6061b5aa357" title="Get the number of bytes currently queued.">AudioStreamBase.GetQueued</a> </dd></dl>
 
@@ -1369,7 +1363,7 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Future calls to and <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> and <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> will reflect the new format, and future calls to <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> must provide data in the new input formats.</p>
+<p>Future calls to and <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> and <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> will reflect the new format, and future calls to <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> must provide data in the new input formats.</p>
 <p>Data that was previously queued in the stream will still be operated on in the format that was current when it was added, which is to say you can put the end of a sound file in one format to a stream, change formats for the next sound file, and start putting that new data while the previous sound file is still queued, and everything will still play back correctly.</p>
 <p>If a stream is bound to a device, then the format of the side of the stream bound to a device cannot be changed (src_spec for recording devices, dst_spec for playback devices). Attempts to make a change to this side will be ignored, but this will not report an error. The other side's format can be changed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1417,7 +1411,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>The frequency ratio is used to adjust the rate at which input data is consumed. Changing this effectively modifies the speed and pitch of the audio. A value greater than 1.0 will play the audio faster, and at a higher pitch. A value less than 1.0 will play the audio slower, and at a lower pitch.</p>
-<p>This is applied during <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>, and can be continuously changed to create various effects.</p>
+<p>This is applied during <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>, and can be continuously changed to create various effects.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ratio</td><td>the frequency ratio. 1.0 is normal speed. Must be between 0.01 and 100. </td></tr>
@@ -1463,7 +1457,7 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p>The gain of a stream is its volume; a larger gain means a louder output, with a gain of zero being silence.</p>
 <p>Audio streams default to a gain of 1.0f (no change in output).</p>
-<p>This is applied during <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>, and can be continuously changed to create various effects.</p>
+<p>This is applied during <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>, and can be continuously changed to create various effects.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gain</td><td>the gain. 1.0f is no change, 0.0f is silence. </td></tr>
@@ -1516,7 +1510,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>This callback is called <em>before</em> data is obtained from the stream, giving the callback the chance to add more on-demand.</p>
-<p>The callback can (optionally) call <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData()</a> to add more audio to the stream during this call; if needed, the request that triggered this callback will obtain the new data immediately.</p>
+<p>The callback can (optionally) call <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData()</a> to add more audio to the stream during this call; if needed, the request that triggered this callback will obtain the new data immediately.</p>
 <p>The callback's <code>additional_amount</code> argument is roughly how many bytes of <em>unconverted</em> data (in the stream's input format) is needed by the caller, although this may overestimate a little for safety. This takes into account how much is already in the stream and only asks for any extra necessary to resolve the request, which means the callback may be asked for zero bytes, and a different amount on each call.</p>
 <p>The callback is not required to supply exact amounts; it is allowed to supply too much or too little or none at all. The caller will get what's available, up to the amount they requested, regardless of this callback's outcome.</p>
 <p>Clearing or flushing an audio stream does not call this callback.</p>
@@ -1565,7 +1559,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>This callback is called <em>before</em> data is obtained from the stream, giving the callback the chance to add more on-demand.</p>
-<p>The callback can (optionally) call <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData()</a> to add more audio to the stream during this call; if needed, the request that triggered this callback will obtain the new data immediately.</p>
+<p>The callback can (optionally) call <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData()</a> to add more audio to the stream during this call; if needed, the request that triggered this callback will obtain the new data immediately.</p>
 <p>The callback's <code>additional_amount</code> argument is roughly how many bytes of <em>unconverted</em> data (in the stream's input format) is needed by the caller, although this may overestimate a little for safety. This takes into account how much is already in the stream and only asks for any extra necessary to resolve the request, which means the callback may be asked for zero bytes, and a different amount on each call.</p>
 <p>The callback is not required to supply exact amounts; it is allowed to supply too much or too little or none at all. The caller will get what's available, up to the amount they requested, regardless of this callback's outcome.</p>
 <p>Clearing or flushing an audio stream does not call this callback.</p>
@@ -1613,7 +1607,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Channel maps are optional; most things do not need them, instead passing data in the <a href="CategoryAudio#channel-layouts">order that SDL expects</a>.</p>
-<p>The input channel map reorders data that is added to a stream via <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a>. Future calls to <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> must provide data in the new channel order.</p>
+<p>The input channel map reorders data that is added to a stream via <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a>. Future calls to <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> must provide data in the new channel order.</p>
 <p>Each item in the array represents an input channel, and its value is the channel that it should be remapped to. To reverse a stereo signal's left and right values, you'd have an array of <code>{ 1, 0 }</code>. It is legal to remap multiple channels to the same thing, so <code>{ 1, 1 }</code> would duplicate the right channel to both channels of a stereo signal. An element in the channel map set to -1 instead of a valid channel will mute that channel, setting it to a silence value.</p>
 <p>You cannot change the number of channels through a channel map, just reorder/mute them.</p>
 <p>Data that was previously queued in the stream will still be operated on in the order that was current when it was added, which is to say you can put the end of a sound file in one order to a stream, change orders for the next sound file, and start putting that new data while the previous sound file is still queued, and everything will still play back correctly.</p>
@@ -1662,7 +1656,7 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Future calls to and <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> and <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> will reflect the new format, and future calls to <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> must provide data in the new input formats.</p>
+<p>Future calls to and <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> and <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> will reflect the new format, and future calls to <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> must provide data in the new input formats.</p>
 <p>Data that was previously queued in the stream will still be operated on in the format that was current when it was added, which is to say you can put the end of a sound file in one format to a stream, change formats for the next sound file, and start putting that new data while the previous sound file is still queued, and everything will still play back correctly.</p>
 <p>If a stream is bound to a device, then the format of the side of the stream bound to a device cannot be changed (src_spec for recording devices, dst_spec for playback devices). Attempts to make a change to this side will be ignored, but this will not report an error. The other side's format can be changed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1709,10 +1703,10 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Channel maps are optional; most things do not need them, instead passing data in the <a href="CategoryAudio#channel-layouts">order that SDL expects</a>.</p>
-<p>The output channel map reorders data that leaving a stream via <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>.</p>
+<p>The output channel map reorders data that leaving a stream via <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>.</p>
 <p>Each item in the array represents an input channel, and its value is the channel that it should be remapped to. To reverse a stereo signal's left and right values, you'd have an array of <code>{ 1, 0 }</code>. It is legal to remap multiple channels to the same thing, so <code>{ 1, 1 }</code> would duplicate the right channel to both channels of a stereo signal. An element in the channel map set to -1 instead of a valid channel will mute that channel, setting it to a silence value.</p>
 <p>You cannot change the number of channels through a channel map, just reorder/mute them.</p>
-<p>The output channel map can be changed at any time, as output remapping is applied during <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>.</p>
+<p>The output channel map can be changed at any time, as output remapping is applied during <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>.</p>
 <p>Audio streams default to no remapping applied. Passing a nullptr channel map is legal, and turns off remapping.</p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will copy the channel map; the caller does not have to save this array after this call.</p>
 <p>If <code>count</code> is not equal to the current number of channels in the audio stream's format, this will fail. This is a safety measure to make sure a race condition hasn't changed the format while this call is setting the channel map.</p>
@@ -1758,7 +1752,7 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Future calls to and <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> and <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> will reflect the new format, and future calls to <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> must provide data in the new input formats.</p>
+<p>Future calls to and <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> and <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> will reflect the new format, and future calls to <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a> must provide data in the new input formats.</p>
 <p>Data that was previously queued in the stream will still be operated on in the format that was current when it was added, which is to say you can put the end of a sound file in one format to a stream, change formats for the next sound file, and start putting that new data while the previous sound file is still queued, and everything will still play back correctly.</p>
 <p>If a stream is bound to a device, then the format of the side of the stream bound to a device cannot be changed (src_spec for recording devices, dst_spec for playback devices). Attempts to make a change to this side will be ignored, but this will not report an error. The other side's format can be changed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1815,7 +1809,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>This callback is called <em>after</em> the data is added to the stream, giving the callback the chance to obtain it immediately.</p>
-<p>The callback can (optionally) call <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData()</a> to obtain audio from the stream during this call.</p>
+<p>The callback can (optionally) call <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData()</a> to obtain audio from the stream during this call.</p>
 <p>The callback's <code>additional_amount</code> argument is how many bytes of <em>converted</em> data (in the stream's output format) was provided by the caller, although this may underestimate a little for safety. This value might be less than what is currently available in the stream, if data was already there, and might be less than the caller provided if the stream needs to keep a buffer to aid in resampling. Which means the callback may be provided with zero bytes, and a different amount on each call.</p>
 <p>The callback may call <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> to see the total amount currently available to read from the stream, instead of the total provided by the current call.</p>
 <p>The callback is not required to obtain all data. It is allowed to read less or none at all. Anything not read now simply remains in the stream for later access.</p>
@@ -1865,7 +1859,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>This callback is called <em>after</em> the data is added to the stream, giving the callback the chance to obtain it immediately.</p>
-<p>The callback can (optionally) call <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData()</a> to obtain audio from the stream during this call.</p>
+<p>The callback can (optionally) call <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData()</a> to obtain audio from the stream during this call.</p>
 <p>The callback's <code>additional_amount</code> argument is how many bytes of <em>converted</em> data (in the stream's output format) was provided by the caller, although this may underestimate a little for safety. This value might be less than what is currently available in the stream, if data was already there, and might be less than the caller provided if the stream needs to keep a buffer to aid in resampling. Which means the callback may be provided with zero bytes, and a different amount on each call.</p>
 <p>The callback may call <a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9" title="Get the number of converted/resampled bytes available.">AudioStreamBase.GetAvailable</a> to see the total amount currently available to read from the stream, instead of the total provided by the current call.</p>
 <p>The callback is not required to obtain all data. It is allowed to read less or none at all. Anything not read now simply remains in the stream for later access.</p>

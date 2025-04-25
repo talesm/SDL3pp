@@ -179,5 +179,5 @@ var searchData=
   ['ptrdeleter_176',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]],
   ['pumpevents_177',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
   ['pushevent_178',['pushevent',['../group__CategoryEvents.html#ga09dbb5157cd6a2c4ee0e3b586df8cdf2',1,'SDL::PushEvent(const Event &amp;event)'],['../group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f',1,'SDL::PushEvent(Event *event)']]],
-  ['putdata_179',['putdata',['../structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644',1,'SDL::AudioStreamBase::PutData(std::span&lt; T &gt; buf)'],['../structSDL_1_1AudioStreamBase.html#a4ee688466bfca1318560b386bd9d2f42',1,'SDL::AudioStreamBase::PutData(const void *buf, int len)']]]
+  ['putdata_179',['putdata',['../structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d',1,'SDL::AudioStreamBase::PutData(std::span&lt; const char &gt; buf)'],['../structSDL_1_1AudioStreamBase.html#a4ee688466bfca1318560b386bd9d2f42',1,'SDL::AudioStreamBase::PutData(const void *buf, int len)']]]
 ];

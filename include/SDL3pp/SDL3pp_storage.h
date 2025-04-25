@@ -439,8 +439,7 @@ struct StorageBase : Resource<SDL_Storage*>
   {
     auto sz = GetFileSize(path.c_str());
     if (!sz || *sz == 0) return {};
-    std::string buffer;
-    buffer.resize(*sz);
+    std::string buffer(*sz, 0);
     if (ReadFile(std::move(path), buffer.data(), buffer.size())) {
       return buffer;
     }
@@ -466,11 +465,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.Ready
    * @sa StorageBase.WriteFile
    */
-  template<class T>
-  bool ReadFile(StringParam path, std::span<T> destination) const
+  bool ReadFile(StringParam path, std::span<char> destination) const
   {
-    static_assert(std::is_convertible_v<T*, void*>,
-                  "destination can not be assigned");
     return ReadFile(
       std::move(path), destination.data(), destination.size_bytes());
   }
@@ -501,21 +497,31 @@ struct StorageBase : Resource<SDL_Storage*>
   }
 
   /**
-   * Synchronously write a file from client memory into a storage container.
+   * Synchronously read a file from a storage container into a client-provided
+   * buffer.
    *
-   * @param path the relative path of the file to write.
-   * @param source a client-provided buffer to write from.
-   * @throws Error on failure.
+   * The value of `length` must match the length of the file exactly; call
+   * StorageBase.GetFileSize() to get this value. This behavior may be relaxed
+   * in a future release.
+   *
+   * @param path the relative path of the file to read.
+   * @returns the content if the file was read or empty string on failure; call
+   *          GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.GetSpaceRemaining
-   * @sa StorageBase.ReadFile
+   * @sa StorageBase.GetFileSize
    * @sa StorageBase.Ready
+   * @sa StorageBase.WriteFile
    */
-  void WriteFile(StringParam path, std::string_view source)
+  template<class T>
+  std::vector<T> ReadFileAs(StringParam path) const
   {
-    return WriteFile(std::move(path), source.data(), source.size());
+    auto sz = GetFileSize(path.c_str());
+    if (!sz || *sz == 0) return {};
+    std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
+    if (ReadFile(std::move(path), buffer.data(), *sz)) return buffer;
+    return {};
   }
 
   /**
@@ -531,11 +537,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.ReadFile
    * @sa StorageBase.Ready
    */
-  template<class T>
-  void WriteFile(StringParam path, std::span<T> source)
+  void WriteFile(StringParam path, std::span<const char> source)
   {
-    static_assert(std::is_convertible_v<T*, const void*>,
-                  "destination can not be assigned");
     WriteFile(std::move(path), source.data(), source.size_bytes());
   }
 

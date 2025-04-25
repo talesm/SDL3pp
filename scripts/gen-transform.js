@@ -565,15 +565,13 @@ const transform = {
             "PutData": {
               kind: "function",
               type: "void",
-              template: [{ type: "class", name: "T" }],
-              parameters: [{ type: "std::span<T>", name: "buf" }]
+              parameters: [{ type: "std::span<const char>", name: "buf" }]
             },
             "SDL_PutAudioStreamData": "function",
             "GetData": {
               kind: "function",
               type: "int",
-              template: [{ type: "class", name: "T" }],
-              parameters: [{ type: "std::span<T>", name: "buf" }]
+              parameters: [{ type: "std::span<char>", name: "buf" }]
             },
             "SDL_GetAudioStreamData": "function",
             "SDL_GetAudioStreamAvailable": "immutable",
@@ -1778,62 +1776,50 @@ const transform = {
             doc: "@cat constructor-tag"
           }
         ],
-        "SDL_OpenIO": {
-          "name": "IOStreamBase.IOStreamBase",
-          "kind": "function",
-          "type": "",
-          "static": false,
-          "template": [
+        "SDL_OpenIO": [{
+          name: "IOStreamBase.IOStreamBase",
+          kind: "function",
+          type: "",
+          static: false,
+          parameters: [{
+            type: "std::span<char>",
+            name: "mem"
+          }]
+        }, {
+          name: "IOStreamBase.IOStreamBase",
+          kind: "function",
+          type: "",
+          static: false,
+          parameters: [{
+            type: "std::span<const char>",
+            name: "mem"
+          }]
+        }],
+        "SDL_LoadFile": {
+          name: "LoadFileAs",
+          kind: "function",
+          template: [{ type: "class", name: "T" }],
+          type: "OwnArray<T>",
+          parameters: [{
+            type: "StringParam",
+            name: "file"
+          }]
+        },
+        "SDL_SaveFile": {
+          kind: "function",
+          name: "SaveFile",
+          type: "void",
+          parameters: [
             {
-              "type": "class",
-              "name": "U"
-            }
-          ],
-          "parameters": [
+              type: "StringParam",
+              name: "file"
+            },
             {
-              "type": "std::span<U>",
-              "name": "mem"
+              type: "std::span<const char>",
+              name: "data"
             }
           ]
         },
-        "SDL_SaveFile": [
-          {
-            kind: "function",
-            name: "SaveFile",
-            type: "void",
-            template: [
-              {
-                "type": "class",
-                "name": "T"
-              }
-            ],
-            parameters: [
-              {
-                "type": "StringParam",
-                "name": "file"
-              },
-              {
-                "type": "std::span<T>",
-                "name": "data"
-              }
-            ]
-          },
-          {
-            kind: "function",
-            name: "SaveFile",
-            type: "void",
-            parameters: [
-              {
-                "type": "StringParam",
-                "name": "file"
-              },
-              {
-                "type": "std::string_view",
-                "name": "str"
-              }
-            ]
-          }
-        ]
       },
       resources: {
         "SDL_IOStream": {
@@ -1868,7 +1854,7 @@ const transform = {
               "name": "Tell",
               "immutable": true
             },
-            "Read": {
+            "Read": [{
               kind: "function",
               type: "std::string",
               parameters: [{
@@ -1876,34 +1862,25 @@ const transform = {
                 name: "size",
                 default: "-1"
               }],
-            },
+            }, {
+              kind: "function",
+              type: "size_t",
+              parameters: [{
+                type: "std::span<char>",
+                name: "buf"
+              }],
+            }],
             "SDL_ReadIO": { name: "Read" },
-            "Write": [
-              {
-                kind: "function",
-                type: "size_t",
-                template: [
-                  {
-                    type: "class",
-                    name: "U"
-                  }
-                ],
-                parameters: [{
-                  type: "std::span<U>",
-                  name: "data"
-                }]
-              },
-              {
-                kind: "function",
-                type: "size_t",
-                parameters: [{
-                  type: "std::string_view",
-                  name: "str"
-                }]
-              }
-            ],
+            "Write": {
+              kind: "function",
+              type: "size_t",
+              parameters: [{
+                type: "std::span<const char>",
+                name: "buf"
+              }]
+            },
             "SDL_WriteIO": {
-              "name": "Write"
+              name: "Write"
             },
             "print": {
               "kind": "function",
@@ -1945,42 +1922,29 @@ const transform = {
               "name": "Flush"
             },
             "SDL_LoadFile_IO": {
-              "name": "LoadFile",
-              "type": "StringResult",
-              "static": false,
-              "parameters": []
+              name: "LoadFile",
+              type: "StringResult",
+              parameters: [{}]
             },
-            "SaveFile": [
-              {
-                kind: "function",
-                type: "void",
-                template: [
-                  {
-                    "type": "class",
-                    "name": "U"
-                  }
-                ],
-                parameters: [
-                  {
-                    "type": "std::span<U>",
-                    "name": "data"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "void",
-                parameters: [
-                  {
-                    "type": "std::string_view",
-                    "name": "str"
-                  }
-                ]
-              }
-            ],
+            "LoadFileAs": {
+              kind: "function",
+              template: [{ type: "class", name: "T" }],
+              type: "OwnArray<T>",
+              parameters: []
+            },
+            "SaveFile": {
+              kind: "function",
+              type: "void",
+              parameters: [
+                {
+                  "type": "std::span<const char>",
+                  "name": "data"
+                }
+              ]
+            },
             "SDL_SaveFile_IO": {
-              "name": "SaveFile",
-              "parameters": [
+              name: "SaveFile",
+              parameters: [
                 {},
                 {},
                 {}
@@ -5824,10 +5788,6 @@ const transform = {
               kind: "function",
               type: "bool",
               immutable: true,
-              template: [{
-                type: "class",
-                name: "T"
-              }],
               parameters: [
                 {
                   name: "path",
@@ -5835,12 +5795,24 @@ const transform = {
                 },
                 {
                   name: "destination",
-                  type: "std::span<T>"
+                  type: "std::span<char>"
                 }
               ],
             }],
             "SDL_ReadStorageFile": "immutable",
-            "WriteFile": [{
+            "ReadFileAs": {
+              kind: "function",
+              template: [{ type: "class", name: "T" }],
+              type: "std::vector<T>",
+              immutable: true,
+              parameters: [
+                {
+                  name: "path",
+                  type: "StringParam"
+                }
+              ],
+            },
+            "WriteFile": {
               kind: "function",
               type: "void",
               parameters: [
@@ -5850,27 +5822,10 @@ const transform = {
                 },
                 {
                   name: "source",
-                  type: "std::string_view",
+                  type: "std::span<const char>",
                 }
               ]
-            }, {
-              kind: "function",
-              type: "void",
-              template: [{
-                type: "class",
-                name: "T"
-              }],
-              parameters: [
-                {
-                  name: "path",
-                  type: "StringParam",
-                },
-                {
-                  name: "source",
-                  type: "std::span<T>",
-                }
-              ]
-            }],
+            },
             "SDL_WriteStorageFile": { type: "void" },
             "SDL_CreateStorageDirectory": "function",
             "EnumerateDirectory": [{

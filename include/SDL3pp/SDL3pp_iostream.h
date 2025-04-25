@@ -356,17 +356,87 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to prepare a memory buffer for use with IOStreamBase.
+   * Use this function to prepare a read-write memory buffer for use with
+   * IOStreamBase.
    *
-   * @tparam U
-   * @param mem the span of memory to use as buffer. If const we get read-only,
-   * otherwise we get a read-write buffer.
+   * This function sets up an IOStreamBase struct based on a memory area of a
+   * certain size, for both read and write access.
    *
+   * This memory buffer is not copied by the IOStreamBase; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to make sure the IOStreamBase never writes to the memory
+   * buffer, you should use IOStreamBase.IOStreamBase() with a read-only buffer
+   * of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop::IOStream.MEMORY_POINTER`: this will be the data of `mem` parameter
+   *   that was passed to this function.
+   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the size of `mem`
+   *   parameter that was passed to this function.
+   *
+   * @param mem a buffer to feed an IOStreamBase stream.
    * @post the object is convertible to true if valid or false on failure; call
    *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Flush
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   * @sa IOStreamBase.Write
    */
-  template<class U>
-  IOStreamBase(std::span<U> mem)
+  IOStreamBase(std::span<char> mem)
+    : IOStreamBase(mem.data(), mem.size_bytes())
+  {
+  }
+
+  /**
+   * Use this function to prepare a read-only memory buffer for use with
+   * IOStreamBase.
+   *
+   * This function sets up an IOStreamBase struct based on a memory area of a
+   * certain size. It assumes the memory area is not writable.
+   *
+   * Attempting to write to this IOStreamBase stream will report an error
+   * without writing to the memory buffer.
+   *
+   * This memory buffer is not copied by the IOStreamBase; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to write to a memory buffer, you should use
+   * IOStreamBase.IOStreamBase() with a writable buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop::IOStream.MEMORY_POINTER`: this will be the data of `mem` parameter
+   *   that was passed to this function.
+   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the size of `mem`
+   *   parameter that was passed to this function.
+   *
+   * @param mem a pointer to a read-only buffer to feed an IOStreamBase stream.
+   * @post the object is convertible to true if valid or false on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamRef.Close
+   * @sa IOStreamBase.Read
+   * @sa IOStreamBase.Seek
+   * @sa IOStreamBase.Tell
+   */
+  IOStreamBase(std::span<const char> mem)
     : IOStreamBase(mem.data(), mem.size_bytes())
   {
   }
@@ -495,7 +565,6 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    */
   std::string Read(size_t size = -1)
   {
-    std::string result;
     Sint64 pos = Tell();
     auto curSize = SDL_GetIOSize(get());
     if ((curSize < 0 || pos < 0)) {
@@ -505,10 +574,37 @@ struct IOStreamBase : Resource<SDL_IOStream*>
     } else if (curSize - pos < size) {
       size = curSize - pos;
     }
-    result.resize(size);
-    auto actualSize = Read(result.data(), size);
+    std::string result(size, 0);
+    auto actualSize = Read(result);
     if (actualSize < size) result.resize(actualSize);
     return result;
+  }
+
+  /**
+   * Read from a data source.
+   *
+   * This function reads up `size` bytes from the data source to the area
+   * pointed at by `ptr`. This function may read less bytes than requested.
+   *
+   * This function will return zero when the data stream is completely read, and
+   * IOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and
+   * the stream is not at EOF, IOStreamBase.GetStatus() will return a different
+   * error value and GetError() will offer a human-readable message.
+   *
+   * @param buf the buffer to read data into.
+   * @returns the number of bytes read, or 0 on end of file or other failure;
+   *          call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamBase.Write
+   * @sa IOStreamBase.GetStatus
+   */
+  size_t Read(std::span<char> buf)
+  {
+    return Read(buf.data(), buf.size_bytes());
   }
 
   /**
@@ -550,7 +646,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * recoverable, such as a non-blocking write that can simply be retried later,
    * or a fatal error.
    *
-   * @param data the bytes to write to
+   * @param buf the bytes to write to
    * @returns the number of bytes written, which will be less than `size` on
    *          failure; call GetError() for more information.
    *
@@ -564,41 +660,10 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa IOStreamBase.Flush
    * @sa IOStreamBase.GetStatus
    */
-  template<class U>
-  size_t Write(std::span<U> data)
+  size_t Write(std::span<const char> buf)
   {
-    return Write(data.data(), data.size_bytes());
+    return Write(buf.data(), buf.size_bytes());
   }
-
-  /**
-   * Write to an IOStreamBase data stream.
-   *
-   * This function writes exactly `size` bytes from the area pointed at by `ptr`
-   * to the stream. If this fails for any reason, it'll return less than `size`
-   * to demonstrate how far the write progressed. On success, it returns `size`.
-   *
-   * On error, this function still attempts to write as much as possible, so it
-   * might return a positive value less than the requested write size.
-   *
-   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
-   * recoverable, such as a non-blocking write that can simply be retried later,
-   * or a fatal error.
-   *
-   * @param str the bytes to write to
-   * @returns the number of bytes written, which will be less than `size` on
-   *          failure; call GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.printf
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Flush
-   * @sa IOStreamBase.GetStatus
-   */
-  size_t Write(std::string_view str) { return Write(str.data(), str.size()); }
 
   /**
    * Write to an IOStreamBase data stream.
@@ -751,29 +816,34 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Save all the data into an SDL data stream.
+   * Load all the data from an SDL data stream.
    *
-   * @param data the data to be written. If datasize is 0, may be nullptr or a
-   *             invalid pointer.
+   * The data is allocated with a zero byte at the end (null terminated) for
+   * convenience. This extra byte is not included in the value reported via
+   * `datasize`.
+   *
+   * @returns the data in bytes
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SaveFile
-   * @sa IOStreamBase.LoadFile
+   * @sa LoadFile
+   * @sa IOStreamBase.SaveFile
    */
-  template<class U>
-  void SaveFile(std::span<U> data)
+  template<class T>
+  OwnArray<T> LoadFileAs()
   {
-    return SaveFile(data.data(), data.size_bytes());
+    size_t datasize = 0;
+    auto data = static_cast<T*>(SDL_LoadFile_IO(get(), &datasize, false));
+    return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
   }
 
   /**
    * Save all the data into an SDL data stream.
    *
-   * @param str the data to be written. If datasize is 0, may be nullptr or a
+   * @param data the buf to be written. If datasize is 0, may be nullptr or a
    *            invalid pointer.
    * @throws Error on failure.
    *
@@ -784,9 +854,9 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa SaveFile
    * @sa IOStreamBase.LoadFile
    */
-  void SaveFile(std::string_view str)
+  void SaveFile(std::span<const char> data)
   {
-    return SaveFile(str.data(), str.size());
+    return SaveFile(data.data(), data.size_bytes());
   }
 
   /**
@@ -1917,6 +1987,32 @@ inline StringResult LoadFile(StringParam file)
 }
 
 /**
+ * Load all the data from a file path.
+ *
+ * The data is allocated with a zero byte at the end (null terminated) for
+ * convenience. This extra byte is not included in the value reported via
+ * `datasize`.
+ *
+ * @param file the path to read all available data from.
+ * @returns the data.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IOStreamBase.LoadFile
+ * @sa SaveFile
+ */
+template<class T>
+inline OwnArray<T> LoadFileAs(StringParam file)
+{
+  size_t datasize = 0;
+  auto data = static_cast<T*>(SDL_LoadFile(file, &datasize));
+  return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
+}
+
+/**
  * Save all the data into a file path.
  *
  * @param file the path to write all available data into.
@@ -1951,29 +2047,9 @@ inline void SaveFile(StringParam file, const void* data, size_t datasize)
  * @sa IOStreamBase.SaveFile
  * @sa LoadFile
  */
-template<class T>
-inline void SaveFile(StringParam file, std::span<T> data)
+inline void SaveFile(StringParam file, std::span<const char> data)
 {
-  return SaveFile(file, data.data(), data.size_bytes());
-}
-
-/**
- * Save all the data into a file path.
- *
- * @param file the path to write all available data into.
- * @param str the data to be written.
- * @throws Error on failure.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOStreamBase.SaveFile
- * @sa LoadFile
- */
-inline void SaveFile(StringParam file, std::string_view str)
-{
-  return SaveFile(std::move(file), str.data(), str.size());
+  return SaveFile(std::move(file), data.data(), data.size_bytes());
 }
 
 #pragma region impl

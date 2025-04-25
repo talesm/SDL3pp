@@ -20283,15 +20283,9 @@
               {
                 "kind": "function",
                 "type": "void",
-                "template": [
-                  {
-                    "type": "class",
-                    "name": "T"
-                  }
-                ],
                 "parameters": [
                   {
-                    "type": "std::span<T>",
+                    "type": "std::span<const char>",
                     "name": "buf"
                   }
                 ],
@@ -20323,15 +20317,9 @@
               {
                 "kind": "function",
                 "type": "int",
-                "template": [
-                  {
-                    "type": "class",
-                    "name": "T"
-                  }
-                ],
                 "parameters": [
                   {
-                    "type": "std::span<T>",
+                    "type": "std::span<char>",
                     "name": "buf"
                   }
                 ],
@@ -32690,12 +32678,6 @@
                 "kind": "function",
                 "type": "bool",
                 "immutable": true,
-                "template": [
-                  {
-                    "type": "class",
-                    "name": "T"
-                  }
-                ],
                 "parameters": [
                   {
                     "name": "path",
@@ -32703,7 +32685,7 @@
                   },
                   {
                     "name": "destination",
-                    "type": "std::span<T>"
+                    "type": "std::span<char>"
                   }
                 ],
                 "name": "ReadFile",
@@ -32732,6 +32714,25 @@
                 "immutable": true
               }
             ],
+            "ReadFileAs": {
+              "kind": "function",
+              "template": [
+                {
+                  "type": "class",
+                  "name": "T"
+                }
+              ],
+              "type": "std::vector<T>",
+              "immutable": true,
+              "parameters": [
+                {
+                  "name": "path",
+                  "type": "StringParam"
+                }
+              ],
+              "name": "ReadFileAs",
+              "doc": ""
+            },
             "WriteFile": [
               {
                 "kind": "function",
@@ -32743,29 +32744,7 @@
                   },
                   {
                     "name": "source",
-                    "type": "std::string_view"
-                  }
-                ],
-                "name": "WriteFile",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "void",
-                "template": [
-                  {
-                    "type": "class",
-                    "name": "T"
-                  }
-                ],
-                "parameters": [
-                  {
-                    "name": "path",
-                    "type": "StringParam"
-                  },
-                  {
-                    "name": "source",
-                    "type": "std::span<T>"
+                    "type": "std::span<const char>"
                   }
                 ],
                 "name": "WriteFile",
@@ -33396,15 +33375,22 @@
                 "kind": "function",
                 "type": "",
                 "static": false,
-                "template": [
-                  {
-                    "type": "class",
-                    "name": "U"
-                  }
-                ],
                 "parameters": [
                   {
-                    "type": "std::span<U>",
+                    "type": "std::span<char>",
+                    "name": "mem"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "name": "IOStreamBase",
+                "kind": "function",
+                "type": "",
+                "static": false,
+                "parameters": [
+                  {
+                    "type": "std::span<const char>",
                     "name": "mem"
                   }
                 ],
@@ -33485,6 +33471,18 @@
                 "doc": ""
               },
               {
+                "kind": "function",
+                "type": "size_t",
+                "parameters": [
+                  {
+                    "type": "std::span<char>",
+                    "name": "buf"
+                  }
+                ],
+                "name": "Read",
+                "doc": ""
+              },
+              {
                 "doc": "Read from a data source.\n\nThis function reads up `size` bytes from the data source to the area\npointed at by `ptr`. This function may read less bytes than requested.\n\nThis function will return zero when the data stream is completely read, and\nIOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and\nthe stream is not at EOF, IOStreamBase.GetStatus() will return a different error\nvalue and GetError() will offer a human-readable message.\n\n@param ptr a pointer to a buffer to read data into.\n@param size the number of bytes to read from the data source.\n@returns the number of bytes read, or 0 on end of file or other failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.Write\n@sa IOStreamBase.GetStatus",
                 "name": "Read",
                 "kind": "function",
@@ -33506,28 +33504,10 @@
               {
                 "kind": "function",
                 "type": "size_t",
-                "template": [
-                  {
-                    "type": "class",
-                    "name": "U"
-                  }
-                ],
                 "parameters": [
                   {
-                    "type": "std::span<U>",
-                    "name": "data"
-                  }
-                ],
-                "name": "Write",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "size_t",
-                "parameters": [
-                  {
-                    "type": "std::string_view",
-                    "name": "str"
+                    "type": "std::span<const char>",
+                    "name": "buf"
                   }
                 ],
                 "name": "Write",
@@ -33626,40 +33606,34 @@
               }
             },
             "LoadFile": {
-              "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param src the IOStreamBase to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStreamBase.SaveFile",
+              "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param datasize a pointer filled in with the number of bytes read, may be\n                nullptr.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFile\n@sa IOStreamBase.SaveFile",
               "name": "LoadFile",
               "kind": "function",
               "type": "StringResult",
               "parameters": [],
-              "sourceName": "SDL_LoadFile_IO",
-              "static": false
+              "sourceName": "SDL_LoadFile_IO"
+            },
+            "LoadFileAs": {
+              "kind": "function",
+              "template": [
+                {
+                  "type": "class",
+                  "name": "T"
+                }
+              ],
+              "type": "OwnArray<T>",
+              "parameters": [],
+              "name": "LoadFileAs",
+              "doc": ""
             },
             "SaveFile": [
               {
                 "kind": "function",
                 "type": "void",
-                "template": [
-                  {
-                    "type": "class",
-                    "name": "U"
-                  }
-                ],
                 "parameters": [
                   {
-                    "type": "std::span<U>",
+                    "type": "std::span<const char>",
                     "name": "data"
-                  }
-                ],
-                "name": "SaveFile",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "type": "std::string_view",
-                    "name": "str"
                   }
                 ],
                 "name": "SaveFile",
@@ -34463,6 +34437,24 @@
           ],
           "sourceName": "SDL_LoadFile"
         },
+        "LoadFileAs": {
+          "name": "LoadFileAs",
+          "kind": "function",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "type": "OwnArray<T>",
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "file"
+            }
+          ],
+          "doc": ""
+        },
         "SaveFile": [
           {
             "doc": "Save all the data into a file path.\n\n@param file the path to write all available data into.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.SaveFile\n@sa LoadFile",
@@ -34492,36 +34484,14 @@
             "kind": "function",
             "name": "SaveFile",
             "type": "void",
-            "template": [
-              {
-                "type": "class",
-                "name": "T"
-              }
-            ],
             "parameters": [
               {
                 "type": "StringParam",
                 "name": "file"
               },
               {
-                "type": "std::span<T>",
+                "type": "std::span<const char>",
                 "name": "data"
-              }
-            ],
-            "doc": ""
-          },
-          {
-            "kind": "function",
-            "name": "SaveFile",
-            "type": "void",
-            "parameters": [
-              {
-                "type": "StringParam",
-                "name": "file"
-              },
-              {
-                "type": "std::string_view",
-                "name": "str"
               }
             ],
             "doc": ""
