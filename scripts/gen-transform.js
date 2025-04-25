@@ -6849,7 +6849,7 @@ const transform = {
         "SDL_RequestAndroidPermission": {
           name: "RequestAndroidPermission",
           kind: "function",
-          type: "void",
+          type: "bool",
           parameters: [
             {
               name: "permission",

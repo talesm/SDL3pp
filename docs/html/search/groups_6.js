@@ -9,6 +9,6 @@ var searchData=
   ['formats_6',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],
   ['formats_20and_20conversion_20routines_7',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
   ['from_20several_20formats_8',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],
-  ['functionality_9',['functionality',['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality'],['../group__CategoryStdinc.html',1,'Standard Library Functionality']]],
+  ['functionality_9',['functionality',['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality'],['../group__CategorySystem.html',1,'Platform-specific Functionality'],['../group__CategoryStdinc.html',1,'Standard Library Functionality']]],
   ['functions_10',['Rectangle Functions',['../group__CategoryRect.html',1,'']]]
 ];
