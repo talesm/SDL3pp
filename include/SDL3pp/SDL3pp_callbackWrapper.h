@@ -34,6 +34,34 @@ public:
   constexpr operator bool() const { return id != 0; }
 };
 
+/// Base class for callback wrappers
+template<class Result, class... Args>
+struct CallbackWrapperBase
+{
+  /// The wrapped std::function type
+  using ValueType = std::function<Result(Args...)>;
+
+  /// Return unwrapped value of handle.
+  static const ValueType& Unwrap(void* handle)
+  {
+    return *static_cast<ValueType*>(handle);
+  }
+
+  /// Call
+  static Result Call(void* handle, Args... args)
+  {
+    auto& f = Unwrap(handle);
+    return f(args...);
+  }
+
+  /// Call with suffix handle.
+  static Result CallSuffixed(Args... args, void* handle)
+  {
+    auto& f = Unwrap(handle);
+    return f(args...);
+  }
+};
+
 template<class F>
 struct CallbackWrapper;
 
@@ -49,6 +77,7 @@ struct CallbackWrapper;
  */
 template<class Result, class... Args>
 struct CallbackWrapper<std::function<Result(Args...)>>
+  : CallbackWrapperBase<Result, Args...>
 {
   CallbackWrapper() = delete;
 
@@ -64,18 +93,6 @@ struct CallbackWrapper<std::function<Result(Args...)>>
   static ValueType* Wrap(ValueType&& cb)
   {
     return new ValueType(std::move(cb));
-  }
-
-  /// Return unwrapped value of handle.
-  static const ValueType& Unwrap(void* handle)
-  {
-    return *static_cast<ValueType*>(handle);
-  }
-
-  /// Return unwrapped value of handle.
-  static const ValueType& Unwrap(CallbackHandle handle)
-  {
-    return Unwrap(handle.get());
   }
 
   /// Call once and release.
@@ -148,12 +165,6 @@ struct KeyValueWrapper
     return &Values().insert_or_assign(key, std::move(value)).first->second;
   }
 
-  /// Return unwrapped value of handle.
-  static const ValueType& Unwrap(void* handle)
-  {
-    return *static_cast<ValueType*>(handle);
-  }
-
   /// True if handle is stored.
   static bool contains(KeyType handle)
   {
@@ -206,18 +217,41 @@ private:
   }
 };
 
+/// Store callbacks by key
+template<class KEY, class VALUE, size_t VARIANT = 0>
+struct KeyValueCallbackWrapper;
+
+/// Store callbacks by key
+template<class KEY, class Result, class... Args, size_t VARIANT>
+struct KeyValueCallbackWrapper<KEY, std::function<Result(Args...)>, VARIANT>
+  : CallbackWrapperBase<Result, Args...>
+  , KeyValueWrapper<KEY, std::function<Result(Args...)>, VARIANT>
+{
+  KeyValueCallbackWrapper() = delete;
+
+  /// Wrapped type.
+  using ValueType = std::function<Result(Args...)>;
+};
+
 /**
  * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
  *
  * @tparam VALUE the function type.
  */
 template<class VALUE>
-struct UniqueWrapper
+struct UniqueCallbackWrapper;
+
+/**
+ * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
+ */
+template<class Result, class... Args>
+struct UniqueCallbackWrapper<std::function<Result(Args...)>>
+  : CallbackWrapperBase<Result, Args...>
 {
-  UniqueWrapper() = delete;
+  UniqueCallbackWrapper() = delete;
 
   /// Wrapped type.
-  using ValueType = VALUE;
+  using ValueType = std::function<Result(Args...)>;
 
   /**
    * @brief Change the value into a void* pointer held uniquely by this type.
@@ -242,23 +276,34 @@ struct UniqueWrapper
   }
 
   /// Return wrapped type, if handle is contained.
-  static const ValueType& at(void* handle)
+  static ValueType at(void* handle)
+  {
+    if (&get() == handle) {
+      return CallbackWrapperBase<Result, Args...>::Unwrap(handle);
+    }
+    return {};
+  }
+
+  /// Return wrapped type, if handle is contained.
+  static const ValueType& get()
   {
     auto lockGuard = lock();
-    auto& v = Value();
-    SDL_assert_paranoid(&v == handle);
-    return v;
+    return Value();
+  }
+
+  /// Return wrapped type and erase it from store.
+  static ValueType release()
+  {
+    auto lockGuard = lock();
+    ValueType value{std::move(Value())};
+    return value;
   }
 
   /// Return wrapped type and erase it from store.
   static ValueType release(void* handle)
   {
-    auto lockGuard = lock();
-    auto& v = Value();
-    SDL_assert_paranoid(&v == handle);
-
-    ValueType value{std::move(v)};
-    return value;
+    SDL_assert_paranoid(&get() == handle);
+    return release();
   }
 
   /// Erase value from store.

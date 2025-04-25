@@ -114,7 +114,7 @@ Category                            | Header
 @ref CategoryDialog                 | SDL3pp_dialog.h         
 @ref CategoryTray                   | SDL3pp_tray.h             
 @ref CategoryLocale                 | SDL3pp_locale.h
-~~Platform-specific Functionality~~ | SDL3pp_system.h 
+@ref CategorySystem                 | SDL3pp_system.h 
 @ref CategoryStdinc                 | SDL3pp_stdinc.h
 @ref CategoryGUID                   | SDL3pp_guid.h
 @ref CategoryMisc                   | SDL3pp_misc.h
@@ -219,6 +219,7 @@ thread facilities.
 @addtogroup CategoryDialog
 @addtogroup CategoryTray
 @addtogroup CategoryLocale
+@addtogroup CategorySystem
 @addtogroup CategoryStdinc
 @addtogroup CategoryGUID
 @addtogroup CategoryMisc

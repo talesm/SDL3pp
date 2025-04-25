@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Scancode.html" title="The SDL keyboard scancode representation." alt="" coords="5,5,123,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1TextBase.html" title="Text created with TextBase.TextBase()" alt="" coords="208,13,323,38"/>
+<area shape="poly" id="edge89_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1TextRef.html" title="Handle to a non owned text." alt="" coords="371,13,475,38"/>
+<area shape="poly" id="edge90_Node000001_Node000002" title=" " alt="" coords="336,23,370,23,370,28,336,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Text.html" title="Handle to an owned text." alt="" coords="523,13,605,38"/>
+<area shape="poly" id="edge91_Node000002_Node000003" title=" " alt="" coords="488,23,522,23,522,28,488,28"/>
 </map>

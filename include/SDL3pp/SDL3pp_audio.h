@@ -3021,28 +3021,30 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
 
 inline void AudioDeviceBase::SetPostmixCallback(AudioPostmixCB callback)
 {
-  using Wrapper = KeyValueWrapper<AudioDeviceRef, AudioPostmixCB>;
+  using Wrapper = KeyValueCallbackWrapper<AudioDeviceRef, AudioPostmixCB>;
 
-  CheckError(SDL_SetAudioPostmixCallback(
-    get(),
-    [](void* userdata, const AudioSpec* spec, float* buffer, int buflen) {
-      auto& cb = Wrapper::Unwrap(userdata);
-      cb(*spec, std::span{buffer, size_t(buflen)});
-    },
-    Wrapper::Wrap(get(), std::move(callback))));
+  auto cb = Wrapper::Wrap(get(), std::move(callback));
+  if (!SDL_SetAudioPostmixCallback(
+        get(),
+        [](void* userdata, const AudioSpec* spec, float* buffer, int buflen) {
+          Wrapper::Call(userdata, *spec, std::span{buffer, size_t(buflen)});
+        },
+        cb)) {
+    Wrapper::release(get());
+    throw Error{};
+  }
 }
 
 inline void AudioStreamBase::SetGetCallback(AudioStreamCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
+  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
   if (!SDL_SetAudioStreamGetCallback(
         get(),
         [](void* userdata,
            SDL_AudioStream* stream,
            int additional_amount,
            int total_amount) {
-          auto& cb = Wrapper::Unwrap(userdata);
-          cb(stream, additional_amount, total_amount);
+          Wrapper::Call(userdata, stream, additional_amount, total_amount);
         },
         Wrapper::Wrap(get(), std::move(callback)))) {
     Wrapper::release(get());
@@ -3052,15 +3054,14 @@ inline void AudioStreamBase::SetGetCallback(AudioStreamCB callback)
 
 inline void AudioStreamBase::SetPutCallback(AudioStreamCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
+  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
   if (!SDL_SetAudioStreamPutCallback(
         get(),
         [](void* userdata,
            SDL_AudioStream* stream,
            int additional_amount,
            int total_amount) {
-          auto& cb = Wrapper::Unwrap(userdata);
-          cb(stream, additional_amount, total_amount);
+          Wrapper::Call(userdata, stream, additional_amount, total_amount);
         },
         Wrapper::Wrap(get(), std::move(callback)))) {
     Wrapper::release(get());

@@ -866,11 +866,10 @@ inline DetachedTrayEntry TrayMenu::AppendEntry(StringParam label,
 
 void TrayEntryBase::SetCallback(TrayCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_TrayEntry*, TrayCB>;
+  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
   SetCallback(
     [](void* userdata, SDL_TrayEntry* entry) {
-      auto& f = Wrapper::Unwrap(userdata);
-      f(TrayEntryRef{entry});
+      Wrapper::Call(userdata, TrayEntryRef{entry});
     },
     Wrapper::Wrap(get(), std::move(callback)));
 }

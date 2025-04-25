@@ -168,11 +168,18 @@ class Tokenizer {
     } else if (m = /^(?:struct|class|enum|union)\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.name = m[1];
-    } else if (m = /^enum\s+(\w+)/.exec(line)) {
+    } else if (m = /^typedef\s+(?:struct|class|enum|union)\s+(\w+)\s+(\*+\s*)?(\w+);/.exec(line)) {
+      token.kind = "alias";
+      token.name = m[3];
+      token.type = m[1] + (m[2]?.trim() ?? "");
+    } else if (m = /^(?:typedef\s+)?union\s+(\w+)/.exec(line)) {
+      token.kind = "union";
+      token.name = m[1];
+    } else if (m = /^(?:typedef\s+)?enum\s+(\w+)/.exec(line)) {
       token.kind = "enum";
       token.name = m[1];
       if (!line.endsWith("{")) this.nextLine();
-    } else if ((m = /^(?:constexpr )?(?:struct|class)\s+([\w<>]+)\s*(:\s*([\w<>:,\s*]+))?/.exec(line)) && !line.includes(";")) {
+    } else if ((m = /^(?:(?:constexpr|typedef)\s+)?(?:struct|class)\s+([\w<>]+)\s*(:\s*([\w<>:,\s*]+))?/.exec(line)) && !line.includes(";")) {
       token.kind = "struct";
       token.name = m[1];
       if (m[3]) {
@@ -206,6 +213,11 @@ class Tokenizer {
         if (ln === null) break;
       }
       return this.next();
+    } else if (m = /^typedef\s+(.*)\s*\(SDLCALL\s+\*(\w+)\)\(/.exec(line)) {
+      token.kind = "callback";
+      token.name = m[2];
+      token.type = m[1];
+      this.tokenizeParameters(token, line.slice(m[0].length));
     } else {
       const member = line.replaceAll(ignoreInSignature, "").trimStart();
       m = /^(([\w*&:<>,\[\]]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%/*]{1,2})|[\w*&~:<>]+)(\s*\()?/.exec(member);
@@ -247,28 +259,7 @@ class Tokenizer {
 
       if (m[4]) {
         token.kind = "function";
-        let parameters = member.slice(m[0].length);
-        const endBracket = parameters.indexOf(")");
-        if (endBracket < 0) {
-          let line;
-          while ((line = this.nextLine()) !== null) {
-            const m = /\)\s*(const)?(&{0,2});?$/.exec(line);
-            if (m) {
-              parameters += '\n' + line.slice(0, line.length - m[0].length);
-              if (m[1]) token.immutable = true;
-              if (m?.[2]) token.reference = m[2].length;
-              break;
-            }
-            parameters += '\n' + line;
-          }
-        } else {
-          const details = parameters.slice(endBracket + 1);
-          parameters = parameters.slice(0, endBracket);
-          const m = /^\s+(const)?(&{0,2})/.exec(details);
-          if (m?.[1]) token.immutable = true;
-          if (m?.[2]) token.reference = m[2].length;
-        }
-        token.parameters = parameters;
+        this.tokenizeParameters(token, member.slice(m[0].length));
         if (type.startsWith("operator")) {
           token.type = "";
           token.name = type + " " + (token.name.replace(/(\w+)([*&])/g, "$1 $2"));
@@ -295,6 +286,35 @@ class Tokenizer {
       system.warn(`Warning: Token at ${token.begin} seems very large ${token.name ?? token.value} (${token.end - token.begin} lines)`);
     }
     return token;
+  }
+
+  /**
+   * Tokenize parameters
+   * @param {FileToken} token 
+   * @param {string}    parameters 
+   */
+  tokenizeParameters(token, parameters) {
+    const endBracket = parameters.indexOf(")");
+    if (endBracket < 0) {
+      let line;
+      while ((line = this.nextLine()) !== null) {
+        const m = /\)\s*(const)?(&{0,2});?$/.exec(line);
+        if (m) {
+          parameters += '\n' + line.slice(0, line.length - m[0].length);
+          if (m[1]) token.immutable = true;
+          if (m?.[2]) token.reference = m[2].length;
+          break;
+        }
+        parameters += '\n' + line;
+      }
+    } else {
+      const details = parameters.slice(endBracket + 1);
+      parameters = parameters.slice(0, endBracket);
+      const m = /^\s+(const)?(&{0,2})/.exec(details);
+      if (m?.[1]) token.immutable = true;
+      if (m?.[2]) token.reference = m[2].length;
+    }
+    token.parameters = parameters;
   }
 
   extendToNextStart() {

@@ -1641,7 +1641,7 @@ struct EventWatchHandle : CallbackHandle
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
-  UniqueWrapper<EventFilterCB>::erase();
+  UniqueCallbackWrapper<EventFilterCB>::erase();
   return SDL_SetEventFilter(filter, userdata);
 }
 
@@ -1688,10 +1688,10 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  */
 inline void SetEventFilter(EventFilterCB filter = {})
 {
-  using Wrapper = UniqueWrapper<EventFilterCB>;
+  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
   SDL_SetEventFilter(
     [](void* userdata, SDL_Event* event) {
-      return Wrapper::at(userdata)(*event);
+      return Wrapper::Call(userdata, *event);
     },
     Wrapper::Wrap(std::move(filter)));
 }
@@ -1738,11 +1738,15 @@ inline void GetEventFilter(EventFilter* filter, void** userdata)
  */
 inline EventFilterCB GetEventFilter()
 {
-  using Wrapper = UniqueWrapper<EventFilterCB>;
+  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
 
   EventFilter filter;
   void* userdata;
-  if (!SDL_GetEventFilter(&filter, &userdata)) return {};
+  GetEventFilter(&filter, &userdata);
+  if (!userdata)
+    return [filter](const Event& event) {
+      return filter(nullptr, const_cast<Event*>(&event));
+    };
   if (auto cb = Wrapper::at(userdata)) return cb;
   return [filter, userdata](const Event& event) {
     return filter(userdata, const_cast<Event*>(&event));

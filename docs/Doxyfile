@@ -2443,7 +2443,38 @@ INCLUDE_FILE_PATTERNS  =
 PREDEFINED             = "SDL_VERSION_ATLEAST(x,y,z)=1" \
                          "SDL_TTF_VERSION_ATLEAST(x,y,z)=1" \
                          "SDL_IMAGE_VERSION_ATLEAST(x,y,z)=1" \
-                         "SDL3PP_DOC=1"
+                         "SDL3PP_DOC=1" \
+                         "SDL_PLATFORM_AIX=1" \
+                         "SDL_PLATFORM_BSDI=1" \
+                         "SDL_PLATFORM_FREEBSD=1" \
+                         "SDL_PLATFORM_HPUX=1" \
+                         "SDL_PLATFORM_IRIX=1" \
+                         "SDL_PLATFORM_LINUX=1" \
+                         "SDL_PLATFORM_ANDROID=1" \
+                         "SDL_PLATFORM_UNIX=1" \
+                         "SDL_PLATFORM_APPLE=1" \
+                         "SDL_PLATFORM_TVOS=1" \
+                         "SDL_PLATFORM_VISIONOS=1" \
+                         "SDL_PLATFORM_IOS=1" \
+                         "SDL_PLATFORM_MACOS=1" \
+                         "SDL_PLATFORM_EMSCRIPTEN=1" \
+                         "SDL_PLATFORM_NETBSD=1" \
+                         "SDL_PLATFORM_OPENBSD=1" \
+                         "SDL_PLATFORM_OS2=1" \
+                         "SDL_PLATFORM_OSF=1" \
+                         "SDL_PLATFORM_QNXNTO=1" \
+                         "SDL_PLATFORM_RISCOS=1" \
+                         "SDL_PLATFORM_SOLARIS=1" \
+                         "SDL_PLATFORM_CYGWIN=1" \
+                         "SDL_PLATFORM_WINDOWS=1" \
+                         "SDL_PLATFORM_WINGDK=1" \
+                         "SDL_PLATFORM_XBOXSERIES=1" \
+                         "SDL_PLATFORM_WIN32=1" \
+                         "SDL_PLATFORM_GDK=1" \
+                         "SDL_PLATFORM_PSP=1" \
+                         "SDL_PLATFORM_PS2=1" \
+                         "SDL_PLATFORM_VITA=1" \
+                         "SDL_PLATFORM_3DS=1"
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

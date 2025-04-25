@@ -1,50 +1,50 @@
 #include "SDL3pp/SDL3pp_callbackWrapper.h"
 #include "doctest.h"
 
-TEST_CASE("UniqueWrapper no params")
+TEST_CASE("UniqueCallbackWrapper no params")
 {
   using CallbackType = std::function<void()>;
   int counter = 0;
   auto addCounterCB = [&]() { counter++; };
-  using UniqueWrapper = SDL::UniqueWrapper<CallbackType>;
-  void* addCounterHandle = UniqueWrapper::Wrap(addCounterCB);
+  using UniqueCallbackWrapper = SDL::UniqueCallbackWrapper<CallbackType>;
+  void* addCounterHandle = UniqueCallbackWrapper::Wrap(addCounterCB);
   CHECK(addCounterHandle != nullptr);
   SUBCASE("contains")
   {
-    CHECK(UniqueWrapper::contains(addCounterHandle));
-    CHECK_FALSE(UniqueWrapper::contains(nullptr));
-    UniqueWrapper::erase();
-    CHECK_FALSE(UniqueWrapper::contains(addCounterHandle));
+    CHECK(UniqueCallbackWrapper::contains(addCounterHandle));
+    CHECK_FALSE(UniqueCallbackWrapper::contains(nullptr));
+    UniqueCallbackWrapper::erase();
+    CHECK_FALSE(UniqueCallbackWrapper::contains(addCounterHandle));
   }
   SUBCASE("Call")
   {
-    UniqueWrapper::at(addCounterHandle)();
+    UniqueCallbackWrapper::at(addCounterHandle)();
     CHECK(counter == 1);
-    CHECK(UniqueWrapper::contains(addCounterHandle));
+    CHECK(UniqueCallbackWrapper::contains(addCounterHandle));
   }
   SUBCASE("CallOnce")
   {
-    UniqueWrapper::release(addCounterHandle)();
+    UniqueCallbackWrapper::release(addCounterHandle)();
     CHECK(counter == 1);
-    CHECK_FALSE(UniqueWrapper::contains(addCounterHandle));
+    CHECK_FALSE(UniqueCallbackWrapper::contains(addCounterHandle));
   }
 }
-TEST_CASE("UniqueWrapper with params")
+TEST_CASE("UniqueCallbackWrapper with params")
 {
   using CallbackType = std::function<int(int)>;
   auto addTwoCB = [](int v) { return v + 2; };
-  using UniqueWrapper = SDL::UniqueWrapper<CallbackType>;
-  void* addTwoHandle = UniqueWrapper::Wrap(addTwoCB);
+  using UniqueCallbackWrapper = SDL::UniqueCallbackWrapper<CallbackType>;
+  void* addTwoHandle = UniqueCallbackWrapper::Wrap(addTwoCB);
   CHECK(addTwoHandle != nullptr);
   SUBCASE("Call")
   {
-    CHECK(UniqueWrapper::at(addTwoHandle)(42) == 44);
-    CHECK(UniqueWrapper::contains(addTwoHandle));
+    CHECK(UniqueCallbackWrapper::at(addTwoHandle)(42) == 44);
+    CHECK(UniqueCallbackWrapper::contains(addTwoHandle));
   }
   SUBCASE("CallOnce")
   {
-    CHECK(UniqueWrapper::release(addTwoHandle)(13) == 15);
-    CHECK_FALSE(UniqueWrapper::contains(addTwoHandle));
+    CHECK(UniqueCallbackWrapper::release(addTwoHandle)(13) == 15);
+    CHECK_FALSE(UniqueCallbackWrapper::contains(addTwoHandle));
   }
 }
 TEST_CASE("Size_t indexed KeyValueWrapper no params")

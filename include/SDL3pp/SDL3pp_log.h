@@ -711,21 +711,19 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  */
 inline LogOutputCB GetLogOutputFunction()
 {
-  using Wrapper = UniqueWrapper<LogOutputCB>;
+  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
   LogOutputFunction cb;
   void* userdata;
+  GetLogOutputFunction(&cb, &userdata);
   if (userdata == nullptr) {
     return [cb](LogCategory c, LogPriority p, StringParam m) {
       cb(nullptr, c, p, m);
     };
   }
-  GetLogOutputFunction(&cb, &userdata);
-  if (!Wrapper::contains(userdata)) {
-    return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
-      cb(userdata, c, p, m);
-    };
-  }
-  return Wrapper::at(userdata);
+  if (auto cb = Wrapper::at(userdata)) return cb;
+  return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
+    cb(userdata, c, p, m);
+  };
 }
 
 /**
@@ -744,7 +742,7 @@ inline LogOutputCB GetLogOutputFunction()
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
-  UniqueWrapper<LogOutputCB>::erase();
+  UniqueCallbackWrapper<LogOutputCB>::erase();
   return SDL_SetLogOutputFunction(callback, userdata);
 }
 
@@ -766,11 +764,11 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  */
 inline void SetLogOutputFunction(LogOutputCB callback)
 {
-  using Wrapper = UniqueWrapper<LogOutputCB>;
+  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
   SDL_SetLogOutputFunction(
     [](
       void* userdata, int category, LogPriority priority, const char* message) {
-      return Wrapper::at(userdata)(LogCategory{category}, priority, message);
+      return Wrapper::Call(userdata, LogCategory{category}, priority, message);
     },
     Wrapper::Wrap(std::move(callback)));
 }
