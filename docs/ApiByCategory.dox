@@ -39,6 +39,12 @@ Force Feedback Support  | SDL3pp_haptic.h
 
 ## Audio
 
+Category            | Header
+------------------- | -----------------
+@ref CategoryAudio  | SDL3pp_audio.h
+
+## GPU
+
 Category                      | Header
 ----------------------------- | -----------------
 3D Rendering and GPU Compute  | SDL3pp_gpu.h
@@ -58,12 +64,6 @@ Touch Support            | SDL3pp_touch.h
 Pen Support              | SDL3pp_pen.h
 Sensors                  | SDL3pp_sensor.h
 HIDAPI                   | SDL3pp_hidapi.h
-
-## GPU
-
-Category            | Header
-------------------- | -----------------
-@ref CategoryAudio  | SDL3pp_audio.h
 
 ## Threads
 
