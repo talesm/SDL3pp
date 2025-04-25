@@ -26200,31 +26200,25 @@
         "MSG": {
           "doc": "",
           "name": "MSG",
-          "kind": "var",
-          "type": "typedef struct tagMSG"
+          "kind": "alias",
+          "type": "tagMSG"
         },
-        "bool": [
-          {
-            "doc": "A callback to be used with SDL_SetWindowsMessageHook.\n\nThis callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing a message directly from the Windows event loop, this\ncallback should do the minimum required work and return quickly.\n\n\\param userdata the app-defined pointer provided to\n                SDL_SetWindowsMessageHook.\n\\param msg a pointer to a Win32 event structure to process.\n\\returns true to let event continue on, false to drop it.\n\n\\threadsafety This may only be called (by SDL) from the thread handling the\n              Windows event loop.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetWindowsMessageHook\n\\sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
-            "name": "bool",
-            "kind": "function",
-            "type": "typedef",
-            "parameters": [
-              "*SDL_WindowsMessageHook"
-            ],
-            "proto": true
-          },
-          {
-            "doc": "A callback to be used with SDL_SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n\\param userdata the app-defined pointer provided to SDL_SetX11EventHook.\n\\param xevent a pointer to an Xlib XEvent union to process.\n\\returns true to let event continue on, false to drop it.\n\n\\threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetX11EventHook",
-            "name": "bool",
-            "kind": "function",
-            "type": "typedef",
-            "parameters": [
-              "*SDL_X11EventHook"
-            ],
-            "proto": true
-          }
-        ],
+        "SDL_WindowsMessageHook": {
+          "doc": "A callback to be used with SDL_SetWindowsMessageHook.\n\nThis callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing a message directly from the Windows event loop, this\ncallback should do the minimum required work and return quickly.\n\n\\param userdata the app-defined pointer provided to\n                SDL_SetWindowsMessageHook.\n\\param msg a pointer to a Win32 event structure to process.\n\\returns true to let event continue on, false to drop it.\n\n\\threadsafety This may only be called (by SDL) from the thread handling the\n              Windows event loop.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetWindowsMessageHook\n\\sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
+          "name": "SDL_WindowsMessageHook",
+          "kind": "callback",
+          "type": "bool ",
+          "parameters": [
+            {
+              "name": "userdata",
+              "type": "void *"
+            },
+            {
+              "name": "msg",
+              "type": "MSG *"
+            }
+          ]
+        },
         "SDL_SetWindowsMessageHook": {
           "doc": "Set a callback for every Windows message, run before TranslateMessage().\n\nThe callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\n\\param callback the SDL_WindowsMessageHook function to call.\n\\param userdata a pointer to pass to every iteration of `callback`.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_WindowsMessageHook\n\\sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
           "name": "SDL_SetWindowsMessageHook",
@@ -26279,6 +26273,22 @@
           "kind": "alias",
           "type": "union _XEvent"
         },
+        "SDL_X11EventHook": {
+          "doc": "A callback to be used with SDL_SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n\\param userdata the app-defined pointer provided to SDL_SetX11EventHook.\n\\param xevent a pointer to an Xlib XEvent union to process.\n\\returns true to let event continue on, false to drop it.\n\n\\threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetX11EventHook",
+          "name": "SDL_X11EventHook",
+          "kind": "callback",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "userdata",
+              "type": "void *"
+            },
+            {
+              "name": "xevent",
+              "type": "XEvent *"
+            }
+          ]
+        },
         "SDL_SetX11EventHook": {
           "doc": "Set a callback for every X11 event.\n\nThe callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\n\\param callback the SDL_X11EventHook function to call.\n\\param userdata a pointer to pass to every iteration of `callback`.\n\n\\since This function is available since SDL 3.2.0.",
           "name": "SDL_SetX11EventHook",
@@ -26331,28 +26341,18 @@
             }
           ]
         },
-        "void": [
-          {
-            "doc": "The prototype for an Apple iOS animation callback.\n\nThis datatype is only useful on Apple iOS.\n\nAfter passing a function pointer of this type to\nSDL_SetiOSAnimationCallback, the system will call that function pointer at\na regular interval.\n\n\\param userdata what was passed as `callbackParam` to\n                SDL_SetiOSAnimationCallback as `callbackParam`.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetiOSAnimationCallback",
-            "name": "void",
-            "kind": "function",
-            "type": "typedef",
-            "parameters": [
-              "*SDL_iOSAnimationCallback"
-            ],
-            "proto": true
-          },
-          {
-            "doc": "Callback that presents a response from a SDL_RequestAndroidPermission call.\n\n\\param userdata an app-controlled pointer that is passed to the callback.\n\\param permission the Android-specific permission name that was requested.\n\\param granted true if permission is granted, false if denied.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_RequestAndroidPermission",
-            "name": "void",
-            "kind": "function",
-            "type": "typedef",
-            "parameters": [
-              "*SDL_RequestAndroidPermissionCallback"
-            ],
-            "proto": true
-          }
-        ],
+        "SDL_iOSAnimationCallback": {
+          "doc": "The prototype for an Apple iOS animation callback.\n\nThis datatype is only useful on Apple iOS.\n\nAfter passing a function pointer of this type to\nSDL_SetiOSAnimationCallback, the system will call that function pointer at\na regular interval.\n\n\\param userdata what was passed as `callbackParam` to\n                SDL_SetiOSAnimationCallback as `callbackParam`.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetiOSAnimationCallback",
+          "name": "SDL_iOSAnimationCallback",
+          "kind": "callback",
+          "type": "void ",
+          "parameters": [
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ]
+        },
         "SDL_SetiOSAnimationCallback": {
           "doc": "Use this function to set the animation callback on Apple iOS.\n\nThe function prototype for `callback` is:\n\n```c\nvoid callback(void *callbackParam);\n```\n\nWhere its parameter, `callbackParam`, is what was passed as `callbackParam`\nto SDL_SetiOSAnimationCallback().\n\nThis function is only available on Apple iOS.\n\nFor more information see:\n\nhttps://wiki.libsdl.org/SDL3/README/ios\n\nNote that if you use the \"main callbacks\" instead of a standard C `main`\nfunction, you don't have to use this API, as SDL will manage this for you.\n\nDetails on main callbacks are here:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions\n\n\\param window the window for which the animation callback should be set.\n\\param interval the number of frames after which **callback** will be\n                called.\n\\param callback the function to call for every frame.\n\\param callbackParam a pointer that is passed to `callback`.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetiOSEventPump",
           "name": "SDL_SetiOSAnimationCallback",
@@ -26470,6 +26470,26 @@
           "kind": "function",
           "type": "const char *",
           "parameters": []
+        },
+        "SDL_RequestAndroidPermissionCallback": {
+          "doc": "Callback that presents a response from a SDL_RequestAndroidPermission call.\n\n\\param userdata an app-controlled pointer that is passed to the callback.\n\\param permission the Android-specific permission name that was requested.\n\\param granted true if permission is granted, false if denied.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_RequestAndroidPermission",
+          "name": "SDL_RequestAndroidPermissionCallback",
+          "kind": "callback",
+          "type": "void ",
+          "parameters": [
+            {
+              "name": "userdata",
+              "type": "void *"
+            },
+            {
+              "name": "permission",
+              "type": "const char *"
+            },
+            {
+              "name": "granted",
+              "type": "bool"
+            }
+          ]
         },
         "SDL_RequestAndroidPermission": {
           "doc": "Request permissions at runtime, asynchronously.\n\nYou do not need to call this for built-in functionality of SDL; recording\nfrom a microphone or reading images from a camera, using standard SDL APIs,\nwill manage permission requests for you.\n\nThis function never blocks. Instead, the app-supplied callback will be\ncalled when a decision has been made. This callback may happen on a\ndifferent thread, and possibly much later, as it might wait on a user to\nrespond to a system dialog. If permission has already been granted for a\nspecific entitlement, the callback will still fire, probably on the current\nthread and before this function returns.\n\nIf the request submission fails, this function returns -1 and the callback\nwill NOT be called, but this should only happen in catastrophic conditions,\nlike memory running out. Normally there will be a yes or no to the request\nthrough the callback.\n\nFor the `permission` parameter, choose a value from here:\n\nhttps://developer.android.com/reference/android/Manifest.permission\n\n\\param permission the permission to request.\n\\param cb the callback to trigger when the request has a response.\n\\param userdata an app-controlled pointer that is passed to the callback.\n\\returns true if the request was submitted, false if there was an error\n         submitting. The result of the request is only ever reported\n         through the callback, not this return value.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -26675,22 +26695,6 @@
             {
               "name": "outUserHandle",
               "type": "XUserHandle *"
-            }
-          ]
-        },
-        "SDL_X11EventHook": {
-          "doc": "A callback to be used with SDL_SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n\\param userdata the app-defined pointer provided to SDL_SetX11EventHook.\n\\param xevent a pointer to an Xlib XEvent union to process.\n\\returns true to let event continue on, false to drop it.\n\n\\threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetX11EventHook",
-          "name": "SDL_X11EventHook",
-          "kind": "callback",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "userdata",
-              "type": "void *"
-            },
-            {
-              "name": "xevent",
-              "type": "XEvent *"
             }
           ]
         }
