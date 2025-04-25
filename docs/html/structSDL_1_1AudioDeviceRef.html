@@ -343,12 +343,6 @@ constexpr SDL_AudioDeviceID&#160;</td><td class="memItemRight" valign="bottom"><
 </div><div class="memdoc">
 <p>The application should close open audio devices once they are no longer needed.</p>
 <p>This function may block briefly while pending audio data is played by the hardware, so that applications don't drop the last buffer of data they supplied if terminating immediately afterwards.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">devid</td><td>an audio device id previously returned by <a class="el" href="structSDL_1_1AudioDeviceBase.html#a1f8260b84993e1a762c58f37575115f2" title="Open a specific audio device.">AudioDeviceBase.AudioDeviceBase()</a>.</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioDeviceBase.html#a1f8260b84993e1a762c58f37575115f2" title="Open a specific audio device.">AudioDeviceBase.AudioDeviceBase</a> </dd></dl>

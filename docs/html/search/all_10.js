@@ -133,7 +133,7 @@ var searchData=
   ['pixeltype_5fpacked32_130',['PIXELTYPE_PACKED32',['../group__CategoryPixels.html#ga27af5b3b6938a2cac0c31befd4314b0c',1,'SDL']]],
   ['pixeltype_5fpacked8_131',['PIXELTYPE_PACKED8',['../group__CategoryPixels.html#ga0a7f409461c96b777b878ab2d6623f6e',1,'SDL']]],
   ['pixeltype_5funknown_132',['PIXELTYPE_UNKNOWN',['../group__CategoryPixels.html#ga7d8d0ee0b48339aaaace7aa1f4dc95bf',1,'SDL']]],
-  ['platform_20and_20cpu_20information_133',['platform and cpu information',['../group__CategoriesPlatformAndCpuInformation.html',1,'Platform and CPU Information'],['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information']]],
+  ['platform_20and_20cpu_20information_133',['platform and cpu information',['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information'],['../group__CategoriesPlatformAndCpuInformation.html',1,'Platform and CPU Information']]],
   ['platform_20detection_134',['Platform Detection',['../group__CategoryPlatform.html',1,'']]],
   ['platform_20specific_20functionality_135',['Platform-specific Functionality',['../group__CategorySystem.html',1,'']]],
   ['playback_20recording_20and_20mixing_136',['Audio Playback, Recording, and Mixing',['../group__CategoryAudio.html',1,'']]],
@@ -141,7 +141,7 @@ var searchData=
   ['pointer_20wrapper_20to_20sdl_3a_3afree_138',['Pointer wrapper to SDL::free()',['../group__CategoryOwnPtr.html',1,'']]],
   ['points_139',['Application entry points',['../group__CategoryMain.html',1,'']]],
   ['pollevent_140',['pollevent',['../group__CategoryEvents.html#ga9fe4acc517213fe44e3d4e3fb8ea37f3',1,'SDL::PollEvent(Event *event)'],['../group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12',1,'SDL::PollEvent()']]],
-  ['pow_141',['pow',['../group__CategoryStdinc.html#gac3b22877237dc964d05f19e5d7c93659',1,'SDL::pow(float x, float y)'],['../group__CategoryStdinc.html#ga6cfca7e593d97a56d7fca043af3ac2ce',1,'SDL::pow(double x, double y)']]],
+  ['pow_141',['pow',['../group__CategoryStdinc.html#ga6cfca7e593d97a56d7fca043af3ac2ce',1,'SDL::pow(double x, double y)'],['../group__CategoryStdinc.html#gac3b22877237dc964d05f19e5d7c93659',1,'SDL::pow(float x, float y)']]],
   ['power_20management_20status_142',['Power Management Status',['../group__CategoryPower.html',1,'']]],
   ['powerstate_143',['PowerState',['../group__CategoryPower.html#ga0e25d3bc6ae4cd0d3659b86b7c56f886',1,'SDL']]],
   ['powerstate_5fcharged_144',['POWERSTATE_CHARGED',['../group__CategoryPower.html#gae47d88e86d33e1593726159042d0b489',1,'SDL']]],
@@ -167,8 +167,8 @@ var searchData=
   ['processref_164',['processref',['../structSDL_1_1ProcessRef.html',1,'SDL::ProcessRef'],['../structSDL_1_1ProcessRef.html#a648b540dae7140cfa0307f347bfda306',1,'SDL::ProcessRef::ProcessRef(const ProcessRef &amp;other)'],['../structSDL_1_1ProcessRef.html#a7a47b2b9dbc10a343b2be7b358867ba9',1,'SDL::ProcessRef::ProcessRef(ProcessRef &amp;&amp;other)'],['../structSDL_1_1Process.html#a648b540dae7140cfa0307f347bfda306',1,'SDL::Process::ProcessRef(const ProcessRef &amp;other)'],['../structSDL_1_1Process.html#a7a47b2b9dbc10a343b2be7b358867ba9',1,'SDL::Process::ProcessRef(ProcessRef &amp;&amp;other)']]],
   ['properties_165',['properties',['../group__CategoryProperties.html',1,'Object Properties'],['../structSDL_1_1Properties.html#a5acd6793568e8ef1987b384363605d80',1,'SDL::Properties::Properties()'],['../structSDL_1_1Properties.html#a466f9eba0334d993a744896d2400f24a',1,'SDL::Properties::Properties(Properties &amp;&amp;other)=default'],['../structSDL_1_1Properties.html#a8be9675e6bb645926407372794d2cc05',1,'SDL::Properties::Properties(SDL_PropertiesID resource={})'],['../structSDL_1_1Properties.html',1,'SDL::Properties']]],
   ['propertiesbase_166',['PropertiesBase',['../structSDL_1_1PropertiesBase.html',1,'SDL']]],
-  ['propertieslock_167',['propertieslock',['../classSDL_1_1PropertiesLock.html#adacdec5b1374935554b6a70640abb69b',1,'SDL::PropertiesLock::PropertiesLock(PropertiesLock &amp;&amp;other)'],['../classSDL_1_1PropertiesLock.html#a52bd8b36a47a669c13ca60eff04f3825',1,'SDL::PropertiesLock::PropertiesLock()=default'],['../classSDL_1_1PropertiesLock.html',1,'SDL::PropertiesLock']]],
-  ['propertiesref_168',['propertiesref',['../structSDL_1_1PropertiesRef.html#ad66e4158add8485064f202fb198b3652',1,'SDL::PropertiesRef::PropertiesRef()'],['../structSDL_1_1Properties.html#ad66e4158add8485064f202fb198b3652',1,'SDL::Properties::PropertiesRef()'],['../structSDL_1_1PropertiesRef.html',1,'SDL::PropertiesRef'],['../structSDL_1_1Properties.html#a3fca0119fe2cdd9e9c089f5a20f30135',1,'SDL::Properties::PropertiesRef()'],['../structSDL_1_1PropertiesRef.html#a3fca0119fe2cdd9e9c089f5a20f30135',1,'SDL::PropertiesRef::PropertiesRef()']]],
+  ['propertieslock_167',['propertieslock',['../classSDL_1_1PropertiesLock.html',1,'SDL::PropertiesLock'],['../classSDL_1_1PropertiesLock.html#adacdec5b1374935554b6a70640abb69b',1,'SDL::PropertiesLock::PropertiesLock(PropertiesLock &amp;&amp;other)'],['../classSDL_1_1PropertiesLock.html#a52bd8b36a47a669c13ca60eff04f3825',1,'SDL::PropertiesLock::PropertiesLock()=default']]],
+  ['propertiesref_168',['propertiesref',['../structSDL_1_1Properties.html#a3fca0119fe2cdd9e9c089f5a20f30135',1,'SDL::Properties::PropertiesRef()'],['../structSDL_1_1PropertiesRef.html',1,'SDL::PropertiesRef'],['../structSDL_1_1Properties.html#ad66e4158add8485064f202fb198b3652',1,'SDL::Properties::PropertiesRef()'],['../structSDL_1_1PropertiesRef.html#a3fca0119fe2cdd9e9c089f5a20f30135',1,'SDL::PropertiesRef::PropertiesRef(const PropertiesRef &amp;other)'],['../structSDL_1_1PropertiesRef.html#ad66e4158add8485064f202fb198b3652',1,'SDL::PropertiesRef::PropertiesRef(PropertiesRef &amp;&amp;other)']]],
   ['property_5ftype_5fboolean_169',['PROPERTY_TYPE_BOOLEAN',['../group__CategoryProperties.html#ga025458181fc191644ae8cc11537aea63',1,'SDL']]],
   ['property_5ftype_5ffloat_170',['PROPERTY_TYPE_FLOAT',['../group__CategoryProperties.html#ga9839a1da3c23357a87438ee8f5d16169',1,'SDL']]],
   ['property_5ftype_5finvalid_171',['PROPERTY_TYPE_INVALID',['../group__CategoryProperties.html#ga93217b69771e54cce530e9bca787b24e',1,'SDL']]],
@@ -178,6 +178,6 @@ var searchData=
   ['propertytype_175',['PropertyType',['../group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f',1,'SDL']]],
   ['ptrdeleter_176',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]],
   ['pumpevents_177',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
-  ['pushevent_178',['pushevent',['../group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f',1,'SDL::PushEvent(Event *event)'],['../group__CategoryEvents.html#ga09dbb5157cd6a2c4ee0e3b586df8cdf2',1,'SDL::PushEvent(const Event &amp;event)']]],
-  ['putdata_179',['PutData',['../structSDL_1_1AudioStreamBase.html#a4ee688466bfca1318560b386bd9d2f42',1,'SDL::AudioStreamBase']]]
+  ['pushevent_178',['pushevent',['../group__CategoryEvents.html#ga09dbb5157cd6a2c4ee0e3b586df8cdf2',1,'SDL::PushEvent(const Event &amp;event)'],['../group__CategoryEvents.html#gaa592df4d4939fbfb3c89ff6718c7184f',1,'SDL::PushEvent(Event *event)']]],
+  ['putdata_179',['putdata',['../structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644',1,'SDL::AudioStreamBase::PutData(std::span&lt; T &gt; buf)'],['../structSDL_1_1AudioStreamBase.html#a4ee688466bfca1318560b386bd9d2f42',1,'SDL::AudioStreamBase::PutData(const void *buf, int len)']]]
 ];

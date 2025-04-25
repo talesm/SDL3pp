@@ -183,9 +183,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~AudioStreamRef<
 <tr class="memitem:ad09b84cfd64bc37263a765f7cf95d9af inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ad09b84cfd64bc37263a765f7cf95d9af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ad09b84cfd64bc37263a765f7cf95d9af">SetOutputChannelMap</a> (std::span&lt; int &gt; chmap)</td></tr>
 <tr class="memdesc:ad09b84cfd64bc37263a765f7cf95d9af inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current output channel map of an audio stream.  <br /></td></tr>
 <tr class="separator:ad09b84cfd64bc37263a765f7cf95d9af inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34af7562d4a093a32c6e14cb34425644 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a34af7562d4a093a32c6e14cb34425644"><td class="memTemplParams" colspan="2">
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:a34af7562d4a093a32c6e14cb34425644 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>PutData</b> (std::span&lt; T &gt; buf)</td></tr>
+<tr class="memitem:a34af7562d4a093a32c6e14cb34425644 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a34af7562d4a093a32c6e14cb34425644"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a34af7562d4a093a32c6e14cb34425644 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644">PutData</a> (std::span&lt; T &gt; buf)</td></tr>
+<tr class="memdesc:a34af7562d4a093a32c6e14cb34425644 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
 <tr class="separator:a34af7562d4a093a32c6e14cb34425644 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ee688466bfca1318560b386bd9d2f42 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a4ee688466bfca1318560b386bd9d2f42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a4ee688466bfca1318560b386bd9d2f42">PutData</a> (const void *buf, int len)</td></tr>
 <tr class="memdesc:a4ee688466bfca1318560b386bd9d2f42 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
@@ -453,7 +453,7 @@ constexpr SDL_AudioStream *&#160;</td><td class="memItemRight" valign="bottom"><
   <table class="params">
     <tr><td class="paramname">devid</td><td>an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING. </td></tr>
     <tr><td class="paramname">spec</td><td>the audio stream's data format. Can be std::nullopt. </td></tr>
-    <tr><td class="paramname">callback</td><td>a callback where the app will provide new data for playback, or receive new data for recording. Can be nullptr, in which case the app will need to call AudioStreamBase.PutData or <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> as necessary. </td></tr>
+    <tr><td class="paramname">callback</td><td>a callback where the app will provide new data for playback, or receive new data for recording. Can be nullptr, in which case the app will need to call <a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> or <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> as necessary. </td></tr>
     <tr><td class="paramname">userdata</td><td>app-controlled pointer passed to callback. Can be nullptr. Ignored if callback is nullptr. </td></tr>
   </table>
   </dd>
@@ -522,7 +522,7 @@ constexpr SDL_AudioStream *&#160;</td><td class="memItemRight" valign="bottom"><
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>AudioStreamBase.PutData </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#a34af7562d4a093a32c6e14cb34425644" title="Add data to the stream.">AudioStreamBase.PutData</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamBase.html#abecbea75f0bb9ba624e374e01c468a1f" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a> </dd>
 <dd>
@@ -561,12 +561,6 @@ constexpr SDL_AudioStream *&#160;</td><td class="memItemRight" valign="bottom"><
 </div><div class="memdoc">
 <p>This will release all allocated data, including any audio that is still queued. You do not need to manually clear the stream first.</p>
 <p>If this stream was bound to an audio device, it is unbound during this call. If this stream was created with <a class="el" href="structSDL_1_1AudioStreamBase.html#ae2507d0f032bac52df6b4c00e480bd22" title="Create a new audio stream.">AudioStreamBase.AudioStreamBase</a>, the audio device that was opened alongside this stream's creation will be closed, too.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">stream</td><td>the audio stream to destroy.</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html#ae2507d0f032bac52df6b4c00e480bd22" title="Create a new audio stream.">AudioStreamBase.AudioStreamBase</a> </dd></dl>

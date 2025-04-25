@@ -885,7 +885,6 @@ struct AudioDeviceBase : Resource<SDL_AudioDeviceID>
    * stream's format at any time with AudioStreamBase.SetFormat().
    *
    * @param streams an array of audio streams to bind.
-   * @param num_streams number streams listed in the `streams` array.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -960,7 +959,6 @@ struct AudioDeviceBase : Resource<SDL_AudioDeviceID>
    * Setting a nullptr callback function disables any previously-set callback.
    *
    * @param callback a callback function to be called. Can be nullptr.
-   * @param userdata app-controlled pointer passed to callback. Can be nullptr.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -1076,9 +1074,6 @@ struct AudioDeviceRef : AudioDeviceBase
    * This function may block briefly while pending audio data is played by the
    * hardware, so that applications don't drop the last buffer of data they
    * supplied if terminating immediately afterwards.
-   *
-   * @param devid an audio device id previously returned by
-   *              AudioDeviceBase.AudioDeviceBase().
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1897,6 +1892,31 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
       SDL_SetAudioStreamOutputChannelMap(get(), chmap.data(), chmap.size()));
   }
 
+  /**
+   * Add data to the stream.
+   *
+   * This data must match the format/channels/samplerate specified in the latest
+   * call to AudioStreamBase.SetFormat, or the format specified when creating
+   * the stream if it hasn't been changed.
+   *
+   * Note that this call simply copies the unconverted data for later. This is
+   * different than SDL2, where data was converted during the Put call and the
+   * Get call would just dequeue the previously-converted data.
+   *
+   * @param buf a span with the audio data to add.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, but if the
+   *               stream has a callback set, the caller might need to manage
+   *               extra locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStreamBase.Clear
+   * @sa AudioStreamBase.Flush
+   * @sa AudioStreamBase.GetData
+   * @sa AudioStreamBase.GetQueued
+   */
   template<class T>
   void PutData(std::span<T> buf)
   {
@@ -2477,8 +2497,6 @@ struct AudioStreamRef : AudioStreamBase
    * audio device that was opened alongside this stream's creation will be
    * closed, too.
    *
-   * @param stream the audio stream to destroy.
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -2772,7 +2790,6 @@ inline void AudioDeviceBase::BindAudioStream(AudioStreamBase& stream)
  *
  * @param streams an array of audio streams to unbind. Can be nullptr or contain
  *                nullptr.
- * @param num_streams number streams listed in the `streams` array.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
