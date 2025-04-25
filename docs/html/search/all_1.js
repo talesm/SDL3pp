@@ -64,7 +64,7 @@ var searchData=
   ['assertions_61',['Assertions',['../group__CategoryAssert.html',1,'']]],
   ['assertstate_62',['AssertState',['../group__CategoryAssert.html#ga6cef7fc19a80762bc63c2eba129c8758',1,'SDL']]],
   ['async_20callback_20helpers_63',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
-  ['at_64',['at',['../structSDL_1_1UniqueWrapper.html#a88a27d2e726d340a160b9aa352f9ad78',1,'SDL::UniqueWrapper::at()'],['../structSDL_1_1KeyValueWrapper.html#aedf474e72dd4978fa7bb08e57e78669b',1,'SDL::KeyValueWrapper::at()']]],
+  ['at_64',['at',['../structSDL_1_1UniqueCallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a8cac159f68bf2e7948cff1514c162e15',1,'SDL::UniqueCallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::at()'],['../structSDL_1_1KeyValueWrapper.html#aedf474e72dd4978fa7bb08e57e78669b',1,'SDL::KeyValueWrapper::at()']]],
   ['atan_65',['atan',['../group__CategoryStdinc.html#ga11d0eaba28baba36fc8050f8541c8ee5',1,'SDL::atan(double x)'],['../group__CategoryStdinc.html#gac79b3402c34e7ee5cfb6b99e61cb2986',1,'SDL::atan(float x)']]],
   ['atan2_66',['atan2',['../group__CategoryStdinc.html#gab6e37f048360d49896fe3562d15e0b26',1,'SDL::atan2(float y, float x)'],['../group__CategoryStdinc.html#gae0884b892c70d428cf50522d9791eb61',1,'SDL::atan2(double y, double x)']]],
   ['atof_67',['atof',['../group__CategoryStdinc.html#gaeecdd7ec80c303a7474d59b641a892f7',1,'SDL']]],

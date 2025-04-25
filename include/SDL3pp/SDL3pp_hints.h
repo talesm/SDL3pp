@@ -4562,17 +4562,9 @@ inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
 {
   using Wrapper = CallbackWrapper<HintCB>;
   auto cb = Wrapper::Wrap(std::move(callback));
-  if (!SDL_AddHintCallback(
-        name,
-        [](void* userdata,
-           const char* name,
-           const char* oldValue,
-           const char* newValue) {
-          auto& cb = Wrapper::Unwrap(userdata);
-          cb(name, oldValue, newValue);
-        },
-        cb)) {
+  if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
     Wrapper::release(cb);
+    throw Error{};
   }
   return HintCallbackHandle{cb};
 }

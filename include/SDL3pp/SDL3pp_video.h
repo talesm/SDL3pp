@@ -4290,12 +4290,11 @@ inline void GL_SwapWindow(WindowBase& window)
 
 inline void WindowBase::SetHitTest(HitTestCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_Window*, HitTestCB>;
+  using Wrapper = KeyValueCallbackWrapper<SDL_Window*, HitTestCB>;
   void* cbHandle = Wrapper::Wrap(get(), std::move(callback));
   SetHitTest(
     [](SDL_Window* win, const SDL_Point* area, void* data) {
-      auto& cb = Wrapper::Unwrap(data);
-      return cb(WindowRef{win}, Point(*area));
+      return Wrapper::Call(data, WindowRef{win}, Point(*area));
     },
     cbHandle);
 }

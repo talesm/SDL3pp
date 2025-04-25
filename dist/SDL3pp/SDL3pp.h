@@ -47,6 +47,34 @@ public:
   constexpr operator bool() const { return id != 0; }
 };
 
+/// Base class for callback wrappers
+template<class Result, class... Args>
+struct CallbackWrapperBase
+{
+  /// The wrapped std::function type
+  using ValueType = std::function<Result(Args...)>;
+
+  /// Return unwrapped value of handle.
+  static const ValueType& Unwrap(void* handle)
+  {
+    return *static_cast<ValueType*>(handle);
+  }
+
+  /// Call
+  static Result Call(void* handle, Args... args)
+  {
+    auto& f = Unwrap(handle);
+    return f(args...);
+  }
+
+  /// Call with suffix handle.
+  static Result CallSuffixed(Args... args, void* handle)
+  {
+    auto& f = Unwrap(handle);
+    return f(args...);
+  }
+};
+
 template<class F>
 struct CallbackWrapper;
 
@@ -62,6 +90,7 @@ struct CallbackWrapper;
  */
 template<class Result, class... Args>
 struct CallbackWrapper<std::function<Result(Args...)>>
+  : CallbackWrapperBase<Result, Args...>
 {
   CallbackWrapper() = delete;
 
@@ -77,18 +106,6 @@ struct CallbackWrapper<std::function<Result(Args...)>>
   static ValueType* Wrap(ValueType&& cb)
   {
     return new ValueType(std::move(cb));
-  }
-
-  /// Return unwrapped value of handle.
-  static const ValueType& Unwrap(void* handle)
-  {
-    return *static_cast<ValueType*>(handle);
-  }
-
-  /// Return unwrapped value of handle.
-  static const ValueType& Unwrap(CallbackHandle handle)
-  {
-    return Unwrap(handle.get());
   }
 
   /// Call once and release.
@@ -161,12 +178,6 @@ struct KeyValueWrapper
     return &Values().insert_or_assign(key, std::move(value)).first->second;
   }
 
-  /// Return unwrapped value of handle.
-  static const ValueType& Unwrap(void* handle)
-  {
-    return *static_cast<ValueType*>(handle);
-  }
-
   /// True if handle is stored.
   static bool contains(KeyType handle)
   {
@@ -219,18 +230,41 @@ private:
   }
 };
 
+/// Store callbacks by key
+template<class KEY, class VALUE, size_t VARIANT = 0>
+struct KeyValueCallbackWrapper;
+
+/// Store callbacks by key
+template<class KEY, class Result, class... Args, size_t VARIANT>
+struct KeyValueCallbackWrapper<KEY, std::function<Result(Args...)>, VARIANT>
+  : CallbackWrapperBase<Result, Args...>
+  , KeyValueWrapper<KEY, std::function<Result(Args...)>, VARIANT>
+{
+  KeyValueCallbackWrapper() = delete;
+
+  /// Wrapped type.
+  using ValueType = std::function<Result(Args...)>;
+};
+
 /**
  * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
  *
  * @tparam VALUE the function type.
  */
 template<class VALUE>
-struct UniqueWrapper
+struct UniqueCallbackWrapper;
+
+/**
+ * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
+ */
+template<class Result, class... Args>
+struct UniqueCallbackWrapper<std::function<Result(Args...)>>
+  : CallbackWrapperBase<Result, Args...>
 {
-  UniqueWrapper() = delete;
+  UniqueCallbackWrapper() = delete;
 
   /// Wrapped type.
-  using ValueType = VALUE;
+  using ValueType = std::function<Result(Args...)>;
 
   /**
    * @brief Change the value into a void* pointer held uniquely by this type.
@@ -255,23 +289,34 @@ struct UniqueWrapper
   }
 
   /// Return wrapped type, if handle is contained.
-  static const ValueType& at(void* handle)
+  static ValueType at(void* handle)
+  {
+    if (&get() == handle) {
+      return CallbackWrapperBase<Result, Args...>::Unwrap(handle);
+    }
+    return {};
+  }
+
+  /// Return wrapped type, if handle is contained.
+  static const ValueType& get()
   {
     auto lockGuard = lock();
-    auto& v = Value();
-    SDL_assert_paranoid(&v == handle);
-    return v;
+    return Value();
+  }
+
+  /// Return wrapped type and erase it from store.
+  static ValueType release()
+  {
+    auto lockGuard = lock();
+    ValueType value{std::move(Value())};
+    return value;
   }
 
   /// Return wrapped type and erase it from store.
   static ValueType release(void* handle)
   {
-    auto lockGuard = lock();
-    auto& v = Value();
-    SDL_assert_paranoid(&v == handle);
-
-    ValueType value{std::move(v)};
-    return value;
+    SDL_assert_paranoid(&get() == handle);
+    return release();
   }
 
   /// Erase value from store.
@@ -14021,17 +14066,9 @@ inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
 {
   using Wrapper = CallbackWrapper<HintCB>;
   auto cb = Wrapper::Wrap(std::move(callback));
-  if (!SDL_AddHintCallback(
-        name,
-        [](void* userdata,
-           const char* name,
-           const char* oldValue,
-           const char* newValue) {
-          auto& cb = Wrapper::Unwrap(userdata);
-          cb(name, oldValue, newValue);
-        },
-        cb)) {
+  if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
     Wrapper::release(cb);
+    throw Error{};
   }
   return HintCallbackHandle{cb};
 }
@@ -15336,21 +15373,19 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  */
 inline LogOutputCB GetLogOutputFunction()
 {
-  using Wrapper = UniqueWrapper<LogOutputCB>;
+  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
   LogOutputFunction cb;
   void* userdata;
+  GetLogOutputFunction(&cb, &userdata);
   if (userdata == nullptr) {
     return [cb](LogCategory c, LogPriority p, StringParam m) {
       cb(nullptr, c, p, m);
     };
   }
-  GetLogOutputFunction(&cb, &userdata);
-  if (!Wrapper::contains(userdata)) {
-    return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
-      cb(userdata, c, p, m);
-    };
-  }
-  return Wrapper::at(userdata);
+  if (auto cb = Wrapper::at(userdata)) return cb;
+  return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
+    cb(userdata, c, p, m);
+  };
 }
 
 /**
@@ -15369,7 +15404,7 @@ inline LogOutputCB GetLogOutputFunction()
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
-  UniqueWrapper<LogOutputCB>::erase();
+  UniqueCallbackWrapper<LogOutputCB>::erase();
   return SDL_SetLogOutputFunction(callback, userdata);
 }
 
@@ -15391,11 +15426,11 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  */
 inline void SetLogOutputFunction(LogOutputCB callback)
 {
-  using Wrapper = UniqueWrapper<LogOutputCB>;
+  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
   SDL_SetLogOutputFunction(
     [](
       void* userdata, int category, LogPriority priority, const char* message) {
-      return Wrapper::at(userdata)(LogCategory{category}, priority, message);
+      return Wrapper::Call(userdata, LogCategory{category}, priority, message);
     },
     Wrapper::Wrap(std::move(callback)));
 }
@@ -31565,28 +31600,30 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
 
 inline void AudioDeviceBase::SetPostmixCallback(AudioPostmixCB callback)
 {
-  using Wrapper = KeyValueWrapper<AudioDeviceRef, AudioPostmixCB>;
+  using Wrapper = KeyValueCallbackWrapper<AudioDeviceRef, AudioPostmixCB>;
 
-  CheckError(SDL_SetAudioPostmixCallback(
-    get(),
-    [](void* userdata, const AudioSpec* spec, float* buffer, int buflen) {
-      auto& cb = Wrapper::Unwrap(userdata);
-      cb(*spec, std::span{buffer, size_t(buflen)});
-    },
-    Wrapper::Wrap(get(), std::move(callback))));
+  auto cb = Wrapper::Wrap(get(), std::move(callback));
+  if (!SDL_SetAudioPostmixCallback(
+        get(),
+        [](void* userdata, const AudioSpec* spec, float* buffer, int buflen) {
+          Wrapper::Call(userdata, *spec, std::span{buffer, size_t(buflen)});
+        },
+        cb)) {
+    Wrapper::release(get());
+    throw Error{};
+  }
 }
 
 inline void AudioStreamBase::SetGetCallback(AudioStreamCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
+  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
   if (!SDL_SetAudioStreamGetCallback(
         get(),
         [](void* userdata,
            SDL_AudioStream* stream,
            int additional_amount,
            int total_amount) {
-          auto& cb = Wrapper::Unwrap(userdata);
-          cb(stream, additional_amount, total_amount);
+          Wrapper::Call(userdata, stream, additional_amount, total_amount);
         },
         Wrapper::Wrap(get(), std::move(callback)))) {
     Wrapper::release(get());
@@ -31596,15 +31633,14 @@ inline void AudioStreamBase::SetGetCallback(AudioStreamCB callback)
 
 inline void AudioStreamBase::SetPutCallback(AudioStreamCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
+  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
   if (!SDL_SetAudioStreamPutCallback(
         get(),
         [](void* userdata,
            SDL_AudioStream* stream,
            int additional_amount,
            int total_amount) {
-          auto& cb = Wrapper::Unwrap(userdata);
-          cb(stream, additional_amount, total_amount);
+          Wrapper::Call(userdata, stream, additional_amount, total_amount);
         },
         Wrapper::Wrap(get(), std::move(callback)))) {
     Wrapper::release(get());
@@ -36474,11 +36510,10 @@ inline DetachedTrayEntry TrayMenu::AppendEntry(StringParam label,
 
 void TrayEntryBase::SetCallback(TrayCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_TrayEntry*, TrayCB>;
+  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
   SetCallback(
     [](void* userdata, SDL_TrayEntry* entry) {
-      auto& f = Wrapper::Unwrap(userdata);
-      f(TrayEntryRef{entry});
+      Wrapper::Call(userdata, TrayEntryRef{entry});
     },
     Wrapper::Wrap(get(), std::move(callback)));
 }
@@ -40764,12 +40799,11 @@ inline void GL_SwapWindow(WindowBase& window)
 
 inline void WindowBase::SetHitTest(HitTestCB callback)
 {
-  using Wrapper = KeyValueWrapper<SDL_Window*, HitTestCB>;
+  using Wrapper = KeyValueCallbackWrapper<SDL_Window*, HitTestCB>;
   void* cbHandle = Wrapper::Wrap(get(), std::move(callback));
   SetHitTest(
     [](SDL_Window* win, const SDL_Point* area, void* data) {
-      auto& cb = Wrapper::Unwrap(data);
-      return cb(WindowRef{win}, Point(*area));
+      return Wrapper::Call(data, WindowRef{win}, Point(*area));
     },
     cbHandle);
 }
@@ -43034,7 +43068,7 @@ struct EventWatchHandle : CallbackHandle
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
-  UniqueWrapper<EventFilterCB>::erase();
+  UniqueCallbackWrapper<EventFilterCB>::erase();
   return SDL_SetEventFilter(filter, userdata);
 }
 
@@ -43081,10 +43115,10 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  */
 inline void SetEventFilter(EventFilterCB filter = {})
 {
-  using Wrapper = UniqueWrapper<EventFilterCB>;
+  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
   SDL_SetEventFilter(
     [](void* userdata, SDL_Event* event) {
-      return Wrapper::at(userdata)(*event);
+      return Wrapper::Call(userdata, *event);
     },
     Wrapper::Wrap(std::move(filter)));
 }
@@ -43131,11 +43165,15 @@ inline void GetEventFilter(EventFilter* filter, void** userdata)
  */
 inline EventFilterCB GetEventFilter()
 {
-  using Wrapper = UniqueWrapper<EventFilterCB>;
+  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
 
   EventFilter filter;
   void* userdata;
-  if (!SDL_GetEventFilter(&filter, &userdata)) return {};
+  GetEventFilter(&filter, &userdata);
+  if (!userdata)
+    return [filter](const Event& event) {
+      return filter(nullptr, const_cast<Event*>(&event));
+    };
   if (auto cb = Wrapper::at(userdata)) return cb;
   return [filter, userdata](const Event& event) {
     return filter(userdata, const_cast<Event*>(&event));
