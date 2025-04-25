@@ -7,9 +7,13 @@ const api = parseApi({
   ...sourceConfig,
   sources: ["SDL_system.h"]
 });
-for (const entry of Object.values(api.files["SDL_system.h"].entries)) {
-  if (Array.isArray(entry)) continue;
-  delete entry.proto;
+for (const [key, file] of Object.entries(api.files)) {
+  for (const entry of Object.values(file.entries)) {
+    if (Array.isArray(entry)) continue;
+    delete entry.proto;
+  }
+  combineObject(file, sourceXml.files[key]);
+  sourceXml.files[key] = file;
 }
 
-writeJSONSync("scripts/source.json", combineObject(sourceXml, api));
+writeJSONSync("scripts/source.json", sourceXml);

@@ -37541,122 +37541,6 @@
       "name": "SDL3pp_system.h",
       "doc": "@defgroup CategorySystem Category System\n\nPlatform-specific SDL API functions. These are functions that deal with\nneeds of specific operating systems, that didn't make sense to offer as\nplatform-independent, generic APIs.\n\nMost apps can make do without these functions, but they can be useful for\nintegrating with other parts of a specific system, adding platform-specific\npolish to an app, or solving problems that only affect one target.",
       "entries": {
-        "XEvent": {
-          "doc": "",
-          "name": "XEvent",
-          "kind": "var",
-          "type": "typedef union _XEvent",
-          "sourceName": "XEvent"
-        },
-        "X11EventHook": {
-          "doc": "A callback to be used with SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to SetX11EventHook.\n@param xevent a pointer to an Xlib XEvent union to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetX11EventHook",
-          "name": "X11EventHook",
-          "kind": "alias",
-          "type": "SDL_X11EventHook",
-          "sourceName": "SDL_X11EventHook"
-        },
-        "X11EventHookCB": {
-          "kind": "alias",
-          "name": "X11EventHookCB",
-          "type": "std::function<bool(XEvent *)>",
-          "doc": "A callback to be used with SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to SetX11EventHook.\n@param xevent a pointer to an Xlib XEvent union to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetX11EventHook\n@sa X11EventHook"
-        },
-        "SetX11EventHook": {
-          "doc": "Set a callback for every X11 event.\n\nThe callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the X11EventHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "SetX11EventHook",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "X11EventHook"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_SetX11EventHook"
-        },
-        "IsTablet": {
-          "doc": "Query if the current device is a tablet.\n\nIf SDL can't determine this, it will return false.\n\n@returns true if the device is a tablet, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "IsTablet",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [],
-          "sourceName": "SDL_IsTablet"
-        },
-        "IsTV": {
-          "doc": "Query if the current device is a TV.\n\nIf SDL can't determine this, it will return false.\n\n@returns true if the device is a TV, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "IsTV",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [],
-          "sourceName": "SDL_IsTV"
-        },
-        "Sandbox": {
-          "doc": "Application sandbox environment.\n\n@since This enum is available since SDL 3.2.0.",
-          "name": "Sandbox",
-          "kind": "var",
-          "type": "typedef enum",
-          "sourceName": "SDL_Sandbox"
-        },
-        "GetSandbox": {
-          "doc": "Get the application sandbox environment, if any.\n\n@returns the application sandbox environment or SDL_SANDBOX_NONE if the\n         application is not running in a sandbox environment.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "GetSandbox",
-          "kind": "function",
-          "type": "SDL_Sandbox",
-          "parameters": [],
-          "sourceName": "SDL_GetSandbox"
-        },
-        "OnApplicationWillTerminate": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationWillTerminate.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "OnApplicationWillTerminate",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "SDL_OnApplicationWillTerminate"
-        },
-        "OnApplicationDidReceiveMemoryWarning": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationDidReceiveMemoryWarning.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "OnApplicationDidReceiveMemoryWarning",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "SDL_OnApplicationDidReceiveMemoryWarning"
-        },
-        "OnApplicationWillEnterBackground": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationWillResignActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "OnApplicationWillEnterBackground",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "SDL_OnApplicationWillEnterBackground"
-        },
-        "OnApplicationDidEnterBackground": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationDidEnterBackground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "OnApplicationDidEnterBackground",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "SDL_OnApplicationDidEnterBackground"
-        },
-        "OnApplicationWillEnterForeground": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationWillEnterForeground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "OnApplicationWillEnterForeground",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "SDL_OnApplicationWillEnterForeground"
-        },
-        "OnApplicationDidEnterForeground": {
-          "doc": "Let iOS apps with external event handling report\nonApplicationDidBecomeActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "OnApplicationDidEnterForeground",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "SDL_OnApplicationDidEnterForeground"
-        },
         "MSG": {
           "doc": "",
           "name": "MSG",
@@ -37720,6 +37604,23 @@
           "hints": {
             "mayFail": true
           }
+        },
+        "SetX11EventHook": {
+          "doc": "Set a callback for every X11 event.\n\nThe callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the X11EventHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "SetX11EventHook",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "callback",
+              "type": "X11EventHook"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_SetX11EventHook"
         },
         "SetLinuxThreadPriority": {
           "doc": "Sets the UNIX nice value for a thread.\n\nThis uses setpriority() if possible, and RealtimeKit if available.\n\n@param threadID the Unix thread ID to change priority of.\n@param priority the new, Unix-specific, priority value.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
@@ -38003,6 +37904,125 @@
             "mayFail": true
           }
         },
+        "IsTablet": {
+          "doc": "Query if the current device is a tablet.\n\nIf SDL can't determine this, it will return false.\n\n@returns true if the device is a tablet, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "IsTablet",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_IsTablet"
+        },
+        "IsTV": {
+          "doc": "Query if the current device is a TV.\n\nIf SDL can't determine this, it will return false.\n\n@returns true if the device is a TV, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "IsTV",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_IsTV"
+        },
+        "Sandbox": {
+          "doc": "Application sandbox environment.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "Sandbox",
+          "kind": "alias",
+          "sourceName": "SDL_Sandbox",
+          "type": "SDL_Sandbox"
+        },
+        "SANDBOX_NONE": {
+          "kind": "var",
+          "name": "SANDBOX_NONE",
+          "constexpr": true,
+          "type": "Sandbox",
+          "doc": "NONE",
+          "sourceName": "SDL_SANDBOX_NONE"
+        },
+        "SANDBOX_UNKNOWN_CONTAINER": {
+          "kind": "var",
+          "name": "SANDBOX_UNKNOWN_CONTAINER",
+          "constexpr": true,
+          "type": "Sandbox",
+          "doc": "UNKNOWN_CONTAINER",
+          "sourceName": "SDL_SANDBOX_UNKNOWN_CONTAINER"
+        },
+        "SANDBOX_FLATPAK": {
+          "kind": "var",
+          "name": "SANDBOX_FLATPAK",
+          "constexpr": true,
+          "type": "Sandbox",
+          "doc": "FLATPAK",
+          "sourceName": "SDL_SANDBOX_FLATPAK"
+        },
+        "SANDBOX_SNAP": {
+          "kind": "var",
+          "name": "SANDBOX_SNAP",
+          "constexpr": true,
+          "type": "Sandbox",
+          "doc": "SNAP",
+          "sourceName": "SDL_SANDBOX_SNAP"
+        },
+        "SANDBOX_MACOS": {
+          "kind": "var",
+          "name": "SANDBOX_MACOS",
+          "constexpr": true,
+          "type": "Sandbox",
+          "doc": "MACOS",
+          "sourceName": "SDL_SANDBOX_MACOS"
+        },
+        "GetSandbox": {
+          "doc": "Get the application sandbox environment, if any.\n\n@returns the application sandbox environment or SANDBOX_NONE if the\n         application is not running in a sandbox environment.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetSandbox",
+          "kind": "function",
+          "type": "Sandbox",
+          "parameters": [],
+          "sourceName": "SDL_GetSandbox"
+        },
+        "OnApplicationWillTerminate": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillTerminate.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationWillTerminate",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationWillTerminate"
+        },
+        "OnApplicationDidReceiveMemoryWarning": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidReceiveMemoryWarning.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationDidReceiveMemoryWarning",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationDidReceiveMemoryWarning"
+        },
+        "OnApplicationWillEnterBackground": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillResignActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationWillEnterBackground",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationWillEnterBackground"
+        },
+        "OnApplicationDidEnterBackground": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidEnterBackground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationDidEnterBackground",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationDidEnterBackground"
+        },
+        "OnApplicationWillEnterForeground": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationWillEnterForeground.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationWillEnterForeground",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationWillEnterForeground"
+        },
+        "OnApplicationDidEnterForeground": {
+          "doc": "Let iOS apps with external event handling report\nonApplicationDidBecomeActive.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OnApplicationDidEnterForeground",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_OnApplicationDidEnterForeground"
+        },
         "OnApplicationDidChangeStatusBarOrientation": {
           "doc": "Let iOS apps with external event handling report\nonApplicationDidChangeStatusBarOrientation.\n\nThis functions allows iOS apps that have their own event handling to hook\ninto SDL to generate SDL events. This maps directly to an iOS-specific\nevent, but since it doesn't do anything iOS-specific internally, it is\navailable on all platforms, in case it might be useful for some specific\nparadigm. Most apps do not need to use this directly; SDL's internal event\ncode will handle all this for windows created by WindowBase.WindowBase!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OnApplicationDidChangeStatusBarOrientation",
@@ -38053,6 +38073,19 @@
             }
           ],
           "sourceName": "SDL_GetGDKDefaultUser"
+        },
+        "X11EventHook": {
+          "doc": "A callback to be used with SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to SetX11EventHook.\n@param xevent a pointer to an Xlib XEvent union to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetX11EventHook",
+          "name": "X11EventHook",
+          "kind": "alias",
+          "type": "SDL_X11EventHook",
+          "sourceName": "SDL_X11EventHook"
+        },
+        "X11EventHookCB": {
+          "kind": "alias",
+          "name": "X11EventHookCB",
+          "type": "std::function<bool(XEvent *)>",
+          "doc": "A callback to be used with SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to SetX11EventHook.\n@param xevent a pointer to an Xlib XEvent union to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetX11EventHook\n@sa X11EventHook"
         }
       }
     },
