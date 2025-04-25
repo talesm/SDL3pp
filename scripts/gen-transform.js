@@ -6803,6 +6803,78 @@ const transform = {
         }
       }
     },
+    "SDL_system.h": {
+      includeAfter: {
+        "SDL_SetWindowsMessageHook": {
+          name: "SetWindowsMessageHook",
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              name: "callback",
+              type: "WindowsMessageHookCB"
+            }
+          ],
+        },
+        "SDL_SetX11EventHook": {
+          name: "SetX11EventHook",
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              name: "callback",
+              type: "X11EventHookCB"
+            }
+          ],
+        },
+        "SDL_SetiOSAnimationCallback": {
+          name: "SetiOSAnimationCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              name: "window",
+              type: "WindowBase &"
+            },
+            {
+              name: "interval",
+              type: "int"
+            },
+            {
+              name: "callback",
+              type: "iOSAnimationCB"
+            }
+          ],
+        },
+        "SDL_RequestAndroidPermission": {
+          name: "RequestAndroidPermission",
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              name: "permission",
+              type: "StringParam"
+            },
+            {
+              name: "cb",
+              type: "RequestAndroidPermissionCB"
+            }
+          ],
+        },
+      },
+      transform: {
+        "SDL_ANDROID_EXTERNAL_STORAGE_READ": {
+          kind: "var",
+          type: "Uint32",
+          constexpr: true,
+        },
+        "SDL_ANDROID_EXTERNAL_STORAGE_WRITE": {
+          kind: "var",
+          type: "Uint32",
+          constexpr: true,
+        },
+      }
+    },
     "SDL_thread.h": {
       includeAfter: {
         "__begin": [

@@ -26665,14 +26665,14 @@
         "XTaskQueueHandle": {
           "doc": "",
           "name": "XTaskQueueHandle",
-          "kind": "var",
-          "type": "typedef struct XTaskQueueObject *"
+          "kind": "alias",
+          "type": "XTaskQueueObject *"
         },
         "XUserHandle": {
           "doc": "",
           "name": "XUserHandle",
-          "kind": "var",
-          "type": "typedef struct XUser *"
+          "kind": "alias",
+          "type": "XUser *"
         },
         "SDL_GetGDKTaskQueue": {
           "doc": "Gets a reference to the global async task queue handle for GDK,\ninitializing if needed.\n\nOnce you are done with the task queue, you should call\nXTaskQueueCloseHandle to reduce the reference count to avoid a resource\nleak.\n\n\\param outTaskQueue a pointer to be filled in with task queue handle.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",

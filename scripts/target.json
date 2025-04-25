@@ -37554,23 +37554,37 @@
           "type": "std::function<bool (MSG *)>",
           "doc": "A callback to be used with SetWindowsMessageHook.\n\nThis callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing a message directly from the Windows event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to\n                SetWindowsMessageHook.\n@param msg a pointer to a Win32 event structure to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              Windows event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetWindowsMessageHook\n@sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP\n@sa WindowsMessageHook"
         },
-        "SetWindowsMessageHook": {
-          "doc": "Set a callback for every Windows message, run before TranslateMessage().\n\nThe callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the WindowsMessageHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowsMessageHook\n@sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
-          "name": "SetWindowsMessageHook",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "WindowsMessageHook"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_SetWindowsMessageHook"
-        },
+        "SetWindowsMessageHook": [
+          {
+            "doc": "Set a callback for every Windows message, run before TranslateMessage().\n\nThe callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the WindowsMessageHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowsMessageHook\n@sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
+            "name": "SetWindowsMessageHook",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "WindowsMessageHook"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_SetWindowsMessageHook"
+          },
+          {
+            "name": "SetWindowsMessageHook",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "WindowsMessageHookCB"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "GetDirect3D9AdapterIndex": {
           "doc": "Get the D3D9 adapter index that matches the specified display.\n\nThe returned adapter index can be passed to `IDirect3D9::CreateDevice` and\ncontrols on which monitor a full screen application will appear.\n\n@param displayID the instance of the display to query.\n@returns the D3D9 adapter index on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetDirect3D9AdapterIndex",
@@ -37624,23 +37638,37 @@
           "type": "std::function<bool(XEvent *)>",
           "doc": "A callback to be used with SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n@param userdata the app-defined pointer provided to SetX11EventHook.\n@param xevent a pointer to an Xlib XEvent union to process.\n@returns true to let event continue on, false to drop it.\n\n@threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetX11EventHook\n@sa X11EventHook"
         },
-        "SetX11EventHook": {
-          "doc": "Set a callback for every X11 event.\n\nThe callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the X11EventHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "SetX11EventHook",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "X11EventHook"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_SetX11EventHook"
-        },
+        "SetX11EventHook": [
+          {
+            "doc": "Set a callback for every X11 event.\n\nThe callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\n@param callback the X11EventHook function to call.\n@param userdata a pointer to pass to every iteration of `callback`.\n\n@since This function is available since SDL 3.2.0.",
+            "name": "SetX11EventHook",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "X11EventHook"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_SetX11EventHook"
+          },
+          {
+            "name": "SetX11EventHook",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "X11EventHookCB"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "SetLinuxThreadPriority": {
           "doc": "Sets the UNIX nice value for a thread.\n\nThis uses setpriority() if possible, and RealtimeKit if available.\n\n@param threadID the Unix thread ID to change priority of.\n@param priority the new, Unix-specific, priority value.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
           "name": "SetLinuxThreadPriority",
@@ -37698,34 +37726,56 @@
           "type": "std::function<void ()>",
           "doc": "The prototype for an Apple iOS animation callback.\n\nThis datatype is only useful on Apple iOS.\n\nAfter passing a function pointer of this type to\nSetiOSAnimationCallback, the system will call that function pointer at\na regular interval.\n\n@param userdata what was passed as `callbackParam` to\n                SetiOSAnimationCallback as `callbackParam`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SetiOSAnimationCallback\n@sa iOSAnimationCallback"
         },
-        "SetiOSAnimationCallback": {
-          "doc": "Use this function to set the animation callback on Apple iOS.\n\nThe function prototype for `callback` is:\n\n```c\nvoid callback(void *callbackParam);\n```\n\nWhere its parameter, `callbackParam`, is what was passed as `callbackParam`\nto SetiOSAnimationCallback().\n\nThis function is only available on Apple iOS.\n\nFor more information see:\n\nhttps://wiki.libsdl.org/SDL3/README/ios\n\nNote that if you use the \"main callbacks\" instead of a standard C `main`\nfunction, you don't have to use this API, as SDL will manage this for you.\n\nDetails on main callbacks are here:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions\n\n@param window the window for which the animation callback should be set.\n@param interval the number of frames after which **callback** will be\n                called.\n@param callback the function to call for every frame.\n@param callbackParam a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetiOSEventPump",
-          "name": "SetiOSAnimationCallback",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowBase &"
-            },
-            {
-              "name": "interval",
-              "type": "int"
-            },
-            {
-              "name": "callback",
-              "type": "iOSAnimationCallback"
-            },
-            {
-              "name": "callbackParam",
-              "type": "void *"
+        "SetiOSAnimationCallback": [
+          {
+            "doc": "Use this function to set the animation callback on Apple iOS.\n\nThe function prototype for `callback` is:\n\n```c\nvoid callback(void *callbackParam);\n```\n\nWhere its parameter, `callbackParam`, is what was passed as `callbackParam`\nto SetiOSAnimationCallback().\n\nThis function is only available on Apple iOS.\n\nFor more information see:\n\nhttps://wiki.libsdl.org/SDL3/README/ios\n\nNote that if you use the \"main callbacks\" instead of a standard C `main`\nfunction, you don't have to use this API, as SDL will manage this for you.\n\nDetails on main callbacks are here:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions\n\n@param window the window for which the animation callback should be set.\n@param interval the number of frames after which **callback** will be\n                called.\n@param callback the function to call for every frame.\n@param callbackParam a pointer that is passed to `callback`.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetiOSEventPump",
+            "name": "SetiOSAnimationCallback",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "window",
+                "type": "WindowBase &"
+              },
+              {
+                "name": "interval",
+                "type": "int"
+              },
+              {
+                "name": "callback",
+                "type": "iOSAnimationCallback"
+              },
+              {
+                "name": "callbackParam",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_SetiOSAnimationCallback",
+            "hints": {
+              "mayFail": true
             }
-          ],
-          "sourceName": "SDL_SetiOSAnimationCallback",
-          "hints": {
-            "mayFail": true
+          },
+          {
+            "name": "SetiOSAnimationCallback",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "window",
+                "type": "WindowBase &"
+              },
+              {
+                "name": "interval",
+                "type": "int"
+              },
+              {
+                "name": "callback",
+                "type": "iOSAnimationCB"
+              }
+            ],
+            "doc": ""
           }
-        },
+        ],
         "SetiOSEventPump": {
           "doc": "Use this function to enable or disable the SDL event pump on Apple iOS.\n\nThis function is only available on Apple iOS.\n\n@param enabled true to enable the event pump, false to disable it.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetiOSAnimationCallback",
           "name": "SetiOSEventPump",
@@ -37787,19 +37837,23 @@
           "parameters": [],
           "sourceName": "SDL_SendAndroidBackButton"
         },
-        "SDL_ANDROID_EXTERNAL_STORAGE_READ": {
+        "ANDROID_EXTERNAL_STORAGE_READ": {
           "doc": "See the official Android developer guide for more information:\nhttp://developer.android.com/guide/topics/data/data-storage.html\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ANDROID_EXTERNAL_STORAGE_READ",
-          "kind": "def",
+          "name": "ANDROID_EXTERNAL_STORAGE_READ",
+          "kind": "var",
           "value": "0x01",
-          "sourceName": "SDL_ANDROID_EXTERNAL_STORAGE_READ"
+          "sourceName": "SDL_ANDROID_EXTERNAL_STORAGE_READ",
+          "type": "Uint32",
+          "constexpr": true
         },
-        "SDL_ANDROID_EXTERNAL_STORAGE_WRITE": {
+        "ANDROID_EXTERNAL_STORAGE_WRITE": {
           "doc": "See the official Android developer guide for more information:\nhttp://developer.android.com/guide/topics/data/data-storage.html\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ANDROID_EXTERNAL_STORAGE_WRITE",
-          "kind": "def",
+          "name": "ANDROID_EXTERNAL_STORAGE_WRITE",
+          "kind": "var",
           "value": "0x02",
-          "sourceName": "SDL_ANDROID_EXTERNAL_STORAGE_WRITE"
+          "sourceName": "SDL_ANDROID_EXTERNAL_STORAGE_WRITE",
+          "type": "Uint32",
+          "constexpr": true
         },
         "GetAndroidInternalStoragePath": {
           "doc": "Get the path used for internal storage for this Android application.\n\nThis path is unique to your application and cannot be written to by other\napplications.\n\nYour internal storage path is typically:\n`/data/data/your.app.package/files`.\n\nThis is a C wrapper over `android.content.Context.getFilesDir()`:\n\nhttps://developer.android.com/reference/android/content/Context#getFilesDir()\n\n@returns the path used for internal storage or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidExternalStoragePath\n@sa GetAndroidCachePath",
@@ -37810,7 +37864,7 @@
           "sourceName": "SDL_GetAndroidInternalStoragePath"
         },
         "GetAndroidExternalStorageState": {
-          "doc": "Get the current state of external storage for this Android application.\n\nThe current state of external storage, a bitmask of these values:\n`SDL_ANDROID_EXTERNAL_STORAGE_READ`, `SDL_ANDROID_EXTERNAL_STORAGE_WRITE`.\n\nIf external storage is currently unavailable, this will return 0.\n\n@returns the current state of external storage, or 0 if external storage is\n         currently unavailable.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidExternalStoragePath",
+          "doc": "Get the current state of external storage for this Android application.\n\nThe current state of external storage, a bitmask of these values:\n`ANDROID_EXTERNAL_STORAGE_READ`, `ANDROID_EXTERNAL_STORAGE_WRITE`.\n\nIf external storage is currently unavailable, this will return 0.\n\n@returns the current state of external storage, or 0 if external storage is\n         currently unavailable.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAndroidExternalStoragePath",
           "name": "GetAndroidExternalStorageState",
           "kind": "function",
           "type": "Uint32",
@@ -37852,27 +37906,45 @@
           "type": "std::function<void (const char *, bool)>",
           "doc": "Callback that presents a response from a RequestAndroidPermission call.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param permission the Android-specific permission name that was requested.\n@param granted true if permission is granted, false if denied.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa RequestAndroidPermission\n@sa RequestAndroidPermissionCallback"
         },
-        "RequestAndroidPermission": {
-          "doc": "Request permissions at runtime, asynchronously.\n\nYou do not need to call this for built-in functionality of SDL; recording\nfrom a microphone or reading images from a camera, using standard SDL APIs,\nwill manage permission requests for you.\n\nThis function never blocks. Instead, the app-supplied callback will be\ncalled when a decision has been made. This callback may happen on a\ndifferent thread, and possibly much later, as it might wait on a user to\nrespond to a system dialog. If permission has already been granted for a\nspecific entitlement, the callback will still fire, probably on the current\nthread and before this function returns.\n\nIf the request submission fails, this function returns -1 and the callback\nwill NOT be called, but this should only happen in catastrophic conditions,\nlike memory running out. Normally there will be a yes or no to the request\nthrough the callback.\n\nFor the `permission` parameter, choose a value from here:\n\nhttps://developer.android.com/reference/android/Manifest.permission\n\n@param permission the permission to request.\n@param cb the callback to trigger when the request has a response.\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns true if the request was submitted, false if there was an error\n         submitting. The result of the request is only ever reported\n         through the callback, not this return value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "RequestAndroidPermission",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "permission",
-              "type": "StringParam"
-            },
-            {
-              "name": "cb",
-              "type": "RequestAndroidPermissionCallback"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_RequestAndroidPermission"
-        },
+        "RequestAndroidPermission": [
+          {
+            "doc": "Request permissions at runtime, asynchronously.\n\nYou do not need to call this for built-in functionality of SDL; recording\nfrom a microphone or reading images from a camera, using standard SDL APIs,\nwill manage permission requests for you.\n\nThis function never blocks. Instead, the app-supplied callback will be\ncalled when a decision has been made. This callback may happen on a\ndifferent thread, and possibly much later, as it might wait on a user to\nrespond to a system dialog. If permission has already been granted for a\nspecific entitlement, the callback will still fire, probably on the current\nthread and before this function returns.\n\nIf the request submission fails, this function returns -1 and the callback\nwill NOT be called, but this should only happen in catastrophic conditions,\nlike memory running out. Normally there will be a yes or no to the request\nthrough the callback.\n\nFor the `permission` parameter, choose a value from here:\n\nhttps://developer.android.com/reference/android/Manifest.permission\n\n@param permission the permission to request.\n@param cb the callback to trigger when the request has a response.\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns true if the request was submitted, false if there was an error\n         submitting. The result of the request is only ever reported\n         through the callback, not this return value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+            "name": "RequestAndroidPermission",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "permission",
+                "type": "StringParam"
+              },
+              {
+                "name": "cb",
+                "type": "RequestAndroidPermissionCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_RequestAndroidPermission"
+          },
+          {
+            "name": "RequestAndroidPermission",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "permission",
+                "type": "StringParam"
+              },
+              {
+                "name": "cb",
+                "type": "RequestAndroidPermissionCB"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "ShowAndroidToast": {
           "doc": "Shows an Android toast notification.\n\nToasts are a sort of lightweight notification that are unique to Android.\n\nhttps://developer.android.com/guide/topics/ui/notifiers/toasts\n\nShows toast in UI thread.\n\nFor the `gravity` parameter, choose a value from here, or -1 if you don't\nhave a preference:\n\nhttps://developer.android.com/reference/android/view/Gravity\n\n@param message text message to be shown.\n@param duration 0=short, 1=long.\n@param gravity where the notification should appear on the screen.\n@param xoffset set this parameter only when gravity >=0.\n@param yoffset set this parameter only when gravity >=0.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "ShowAndroidToast",
@@ -38051,20 +38123,6 @@
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_OnApplicationDidChangeStatusBarOrientation"
-        },
-        "XTaskQueueHandle": {
-          "doc": "",
-          "name": "XTaskQueueHandle",
-          "kind": "var",
-          "type": "typedef struct XTaskQueueObject *",
-          "sourceName": "XTaskQueueHandle"
-        },
-        "XUserHandle": {
-          "doc": "",
-          "name": "XUserHandle",
-          "kind": "var",
-          "type": "typedef struct XUser *",
-          "sourceName": "XUserHandle"
         },
         "GetGDKTaskQueue": {
           "doc": "Gets a reference to the global async task queue handle for GDK,\ninitializing if needed.\n\nOnce you are done with the task queue, you should call\nXTaskQueueCloseHandle to reduce the reference count to avoid a resource\nleak.\n\n@param outTaskQueue a pointer to be filled in with task queue handle.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",

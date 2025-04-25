@@ -168,10 +168,10 @@ class Tokenizer {
     } else if (m = /^(?:struct|class|enum|union)\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.name = m[1];
-    } else if (m = /^typedef\s+(?:struct|class|enum|union)\s+(\w+)\s+(\w+);/.exec(line)) {
+    } else if (m = /^typedef\s+(?:struct|class|enum|union)\s+(\w+)\s+(\*+\s*)?(\w+);/.exec(line)) {
       token.kind = "alias";
-      token.name = m[2];
-      token.type = m[1];
+      token.name = m[3];
+      token.type = m[1] + (m[2]?.trim() ?? "");
     } else if (m = /^(?:typedef\s+)?union\s+(\w+)/.exec(line)) {
       token.kind = "union";
       token.name = m[1];
