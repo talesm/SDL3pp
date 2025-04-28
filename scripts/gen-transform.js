@@ -5248,7 +5248,57 @@ const transform = {
               "parameters": []
             }
           }
-        }
+        },
+        "SDL_qsort_r": {
+          name: "qsort_r",
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              name: "base",
+              type: "void *"
+            },
+            {
+              name: "nmemb",
+              type: "size_t"
+            },
+            {
+              name: "size",
+              type: "size_t"
+            },
+            {
+              name: "compare",
+              type: "CompareCB"
+            }
+          ]
+        },
+        "SDL_bsearch_r": {
+          name: "bsearch_r",
+          kind: "function",
+          type: "void *",
+          parameters: [
+            {
+              name: "key",
+              type: "const void *"
+            },
+            {
+              name: "base",
+              type: "const void *"
+            },
+            {
+              name: "nmemb",
+              type: "size_t"
+            },
+            {
+              name: "size",
+              type: "size_t"
+            },
+            {
+              name: "compare",
+              type: "CompareCB"
+            }
+          ]
+        },
       },
       includeBefore: {
         "SDL_Time": [{
@@ -5350,7 +5400,7 @@ const transform = {
         }
       },
       transform: {
-        "CompareCallback_rCB": { name: "CompareCallbackCB" },
+        "CompareCallback_rCB": { name: "CompareCB" },
         "SDL_Time": {
           kind: "struct",
           type: "",

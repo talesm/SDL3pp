@@ -192,9 +192,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Nanoseconds</b>
 <tr class="memitem:gab5c634ea2ae9a102fa58cd7beac9f478" id="r_gab5c634ea2ae9a102fa58cd7beac9f478"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478">SDL::CompareCallback_r</a> = SDL_CompareCallback_r</td></tr>
 <tr class="memdesc:gab5c634ea2ae9a102fa58cd7beac9f478"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used with <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> sorting and binary search functions.  <br /></td></tr>
 <tr class="separator:gab5c634ea2ae9a102fa58cd7beac9f478"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gace0552be6b1d2bbc2eeba7e38d59f87a" id="r_gace0552be6b1d2bbc2eeba7e38d59f87a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gace0552be6b1d2bbc2eeba7e38d59f87a">SDL::CompareCallbackCB</a> = std::function&lt; int(const void *, const void *)&gt;</td></tr>
-<tr class="memdesc:gace0552be6b1d2bbc2eeba7e38d59f87a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used with <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> sorting and binary search functions.  <br /></td></tr>
-<tr class="separator:gace0552be6b1d2bbc2eeba7e38d59f87a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7dc5ada5f1f8fe87900b8fa72e94abca" id="r_ga7dc5ada5f1f8fe87900b8fa72e94abca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca">SDL::CompareCB</a> = std::function&lt; int(const void *, const void *)&gt;</td></tr>
+<tr class="memdesc:ga7dc5ada5f1f8fe87900b8fa72e94abca"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used with <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> sorting and binary search functions.  <br /></td></tr>
+<tr class="separator:ga7dc5ada5f1f8fe87900b8fa72e94abca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga379a3713730374c4737a2bfb2004fab7" id="r_ga379a3713730374c4737a2bfb2004fab7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">SDL::FunctionPointer</a> = SDL_FunctionPointer</td></tr>
 <tr class="memdesc:ga379a3713730374c4737a2bfb2004fab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A generic function pointer.  <br /></td></tr>
 <tr class="separator:ga379a3713730374c4737a2bfb2004fab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,9 +278,15 @@ constexpr <a class="el" href="group__CategoryStdinc.html#ga70b3f6375d1dd34a431d5
 <tr class="memitem:gaa3b0083aa5cb6236224048d437834dd2" id="r_gaa3b0083aa5cb6236224048d437834dd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">SDL::qsort_r</a> (void *base, size_t nmemb, size_t size, <a class="el" href="group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478">CompareCallback_r</a> compare, void *userdata)</td></tr>
 <tr class="memdesc:gaa3b0083aa5cb6236224048d437834dd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort an array, passing a userdata pointer to the compare function.  <br /></td></tr>
 <tr class="separator:gaa3b0083aa5cb6236224048d437834dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga702a78756e29c4f8babdb6df497d36fa" id="r_ga702a78756e29c4f8babdb6df497d36fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga702a78756e29c4f8babdb6df497d36fa">SDL::qsort_r</a> (void *base, size_t nmemb, size_t size, <a class="el" href="group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca">CompareCB</a> compare)</td></tr>
+<tr class="memdesc:ga702a78756e29c4f8babdb6df497d36fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort an array, passing a userdata pointer to the compare function.  <br /></td></tr>
+<tr class="separator:ga702a78756e29c4f8babdb6df497d36fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf22f982867b4598c8caa2de8f5a9e0e4" id="r_gaf22f982867b4598c8caa2de8f5a9e0e4"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a> (const void *key, const void *base, size_t nmemb, size_t size, <a class="el" href="group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478">CompareCallback_r</a> compare, void *userdata)</td></tr>
 <tr class="memdesc:gaf22f982867b4598c8caa2de8f5a9e0e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare function.  <br /></td></tr>
 <tr class="separator:gaf22f982867b4598c8caa2de8f5a9e0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga23c5948242cf76d2bcbc0a52c6c53ed8" id="r_ga23c5948242cf76d2bcbc0a52c6c53ed8"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga23c5948242cf76d2bcbc0a52c6c53ed8">SDL::bsearch_r</a> (const void *key, const void *base, size_t nmemb, size_t size, <a class="el" href="group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca">CompareCB</a> compare)</td></tr>
+<tr class="memdesc:ga23c5948242cf76d2bcbc0a52c6c53ed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare function.  <br /></td></tr>
+<tr class="separator:ga23c5948242cf76d2bcbc0a52c6c53ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab188f3aa930df339c851b95bf2c4030b" id="r_gab188f3aa930df339c851b95bf2c4030b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gab188f3aa930df339c851b95bf2c4030b">SDL::abs</a> (int x)</td></tr>
 <tr class="memdesc:gab188f3aa930df339c851b95bf2c4030b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the absolute value of <code>x</code>.  <br /></td></tr>
 <tr class="separator:gab188f3aa930df339c851b95bf2c4030b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -805,7 +811,7 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 <div class="line">    SDL_COMPILE_TIME_ASSERT(<a class="code hl_define" href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a>, <span class="keyword">sizeof</span>(*(dst)) == <span class="keyword">sizeof</span>(*(src)));      \</div>
 <div class="line">  }                                                                            \</div>
 <div class="line">  SDL_memcpy((dst), (src), <span class="keyword">sizeof</span>(*(src)))</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaa20b552293de849b3c1c7576cb158e9e"><div class="ttname"><a href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a></div><div class="ttdeci">#define SDL_copyp(dst, src)</div><div class="ttdoc">A macro to copy memory between objects, with basic type checking.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1858</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaa20b552293de849b3c1c7576cb158e9e"><div class="ttname"><a href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a></div><div class="ttdeci">#define SDL_copyp(dst, src)</div><div class="ttdoc">A macro to copy memory between objects, with basic type checking.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1996</div></div>
 </div><!-- fragment --><p>memcpy and memmove do not care where you copy memory to and from, which can lead to bugs. This macro aims to avoid most of those bugs by making sure that the source and destination are both pointers to objects that are the same size. It does not check that the objects are the same <em>type</em>, just that the copy will not overflow either object.</p>
 <p>The size check happens at compile time, and the compiler will throw an error if the objects are different sizes.</p>
 <p>Generally this is intended to copy a single object, not an array.</p>
@@ -1200,14 +1206,14 @@ VirtualJoystickDesc </dd></dl>
 
 </div>
 </div>
-<a id="gace0552be6b1d2bbc2eeba7e38d59f87a" name="gace0552be6b1d2bbc2eeba7e38d59f87a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gace0552be6b1d2bbc2eeba7e38d59f87a">&#9670;&#160;</a></span>CompareCallbackCB</h2>
+<a id="ga7dc5ada5f1f8fe87900b8fa72e94abca" name="ga7dc5ada5f1f8fe87900b8fa72e94abca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7dc5ada5f1f8fe87900b8fa72e94abca">&#9670;&#160;</a></span>CompareCB</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryStdinc.html#gace0552be6b1d2bbc2eeba7e38d59f87a">SDL::CompareCallbackCB</a> = typedef std::function&lt;int(const void*, const void*)&gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca">SDL::CompareCB</a> = typedef std::function&lt;int(const void*, const void*)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2182,7 +2188,7 @@ SDL_strtoull </dd>
 </div>
 </div>
 <a id="gaf22f982867b4598c8caa2de8f5a9e0e4" name="gaf22f982867b4598c8caa2de8f5a9e0e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf22f982867b4598c8caa2de8f5a9e0e4">&#9670;&#160;</a></span>bsearch_r()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf22f982867b4598c8caa2de8f5a9e0e4">&#9670;&#160;</a></span>bsearch_r() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2271,7 +2277,7 @@ SDL_strtoull </dd>
 <div class="line"> </div>
 <div class="line">data *result = <a class="code hl_function" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">bsearch_r</a>(&amp;key, values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]),</div>
 <div class="line">compare, (<span class="keyword">const</span> <span class="keywordtype">void</span> *)(uintptr_t)sort_increasing);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaf22f982867b4598c8caa2de8f5a9e0e4"><div class="ttname"><a href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a></div><div class="ttdeci">void * bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1366</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaf22f982867b4598c8caa2de8f5a9e0e4"><div class="ttname"><a href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a></div><div class="ttdeci">void * bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1430</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>a pointer to a key equal to the element being searched for. </td></tr>
@@ -2280,6 +2286,109 @@ SDL_strtoull </dd>
     <tr><td class="paramname">size</td><td>the size of the elements in the array. </td></tr>
     <tr><td class="paramname">compare</td><td>a function used to compare elements in the array. </td></tr>
     <tr><td class="paramname">userdata</td><td>a pointer to pass to the compare function. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the matching element in the array, or nullptr if not found.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541" title="Perform a binary search on a previously sorted array.">bsearch</a> </dd>
+<dd>
+<a class="el" href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2" title="Sort an array, passing a userdata pointer to the compare function.">qsort_r</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga23c5948242cf76d2bcbc0a52c6c53ed8" name="ga23c5948242cf76d2bcbc0a52c6c53ed8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga23c5948242cf76d2bcbc0a52c6c53ed8">&#9670;&#160;</a></span>bsearch_r() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * SDL::bsearch_r </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nmemb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca">CompareCB</a>&#160;</td>
+          <td class="paramname"><em>compare</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>For example:</p>
+<div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line">    sort_increasing,</div>
+<div class="line">    sort_decreasing,</div>
+<div class="line">} sort_method;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line">    <span class="keywordtype">int</span> key;</div>
+<div class="line">    <span class="keyword">const</span> <span class="keywordtype">char</span> *string;</div>
+<div class="line">} data;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> SDLCALL compare(<span class="keyword">const</span> <span class="keywordtype">void</span> *userdata, <span class="keyword">const</span> <span class="keywordtype">void</span> *a, <span class="keyword">const</span> <span class="keywordtype">void</span> *b)</div>
+<div class="line">{</div>
+<div class="line">    sort_method method = (sort_method)(uintptr_t)userdata;</div>
+<div class="line">    <span class="keyword">const</span> data *A = (<span class="keyword">const</span> data *)a;</div>
+<div class="line">    <span class="keyword">const</span> data *B = (<span class="keyword">const</span> data *)b;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (A-&gt;key &lt; B-&gt;key) {</div>
+<div class="line">        <span class="keywordflow">return</span> (method == sort_increasing) ? -1 : 1;</div>
+<div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (B-&gt;key &lt; A-&gt;key) {</div>
+<div class="line">        <span class="keywordflow">return</span> (method == sort_increasing) ? 1 : -1;</div>
+<div class="line">    } <span class="keywordflow">else</span> {</div>
+<div class="line">        <span class="keywordflow">return</span> 0;</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">data values[] = {</div>
+<div class="line">    { 1, <span class="stringliteral">&quot;first&quot;</span> }, { 2, <span class="stringliteral">&quot;second&quot;</span> }, { 3, <span class="stringliteral">&quot;third&quot;</span> }</div>
+<div class="line">};</div>
+<div class="line">data key = { 2, <span class="keyword">nullptr</span> };</div>
+<div class="line"> </div>
+<div class="line">data *result = <a class="code hl_function" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">bsearch_r</a>(&amp;key, values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]),</div>
+<div class="line">compare, (<span class="keyword">const</span> <span class="keywordtype">void</span> *)(uintptr_t)sort_increasing);</div>
+</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>a pointer to a key equal to the element being searched for. </td></tr>
+    <tr><td class="paramname">base</td><td>a pointer to the start of the array. </td></tr>
+    <tr><td class="paramname">nmemb</td><td>the number of elements in the array. </td></tr>
+    <tr><td class="paramname">size</td><td>the size of the elements in the array. </td></tr>
+    <tr><td class="paramname">compare</td><td>a function used to compare elements in the array. </td></tr>
   </table>
   </dd>
 </dl>
@@ -5231,7 +5340,7 @@ template&lt;class T , class U &gt; </div>
 </div>
 </div>
 <a id="gaa3b0083aa5cb6236224048d437834dd2" name="gaa3b0083aa5cb6236224048d437834dd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa3b0083aa5cb6236224048d437834dd2">&#9670;&#160;</a></span>qsort_r()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa3b0083aa5cb6236224048d437834dd2">&#9670;&#160;</a></span>qsort_r() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5321,6 +5430,100 @@ template&lt;class T , class U &gt; </div>
     <tr><td class="paramname">size</td><td>the size of the elements in the array. </td></tr>
     <tr><td class="paramname">compare</td><td>a function used to compare elements in the array. </td></tr>
     <tr><td class="paramname">userdata</td><td>a pointer to pass to the compare function.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4" title="Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...">bsearch_r</a> </dd>
+<dd>
+<a class="el" href="group__CategoryStdinc.html#gab52a0ec3d96fb4c04972b1b322f75857" title="Sort an array.">qsort</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga702a78756e29c4f8babdb6df497d36fa" name="ga702a78756e29c4f8babdb6df497d36fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga702a78756e29c4f8babdb6df497d36fa">&#9670;&#160;</a></span>qsort_r() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::qsort_r </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nmemb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca">CompareCB</a>&#160;</td>
+          <td class="paramname"><em>compare</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>For example:</p>
+<div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line">    sort_increasing,</div>
+<div class="line">    sort_decreasing,</div>
+<div class="line">} sort_method;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line">    <span class="keywordtype">int</span> key;</div>
+<div class="line">    <span class="keyword">const</span> <span class="keywordtype">char</span> *string;</div>
+<div class="line">} data;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> SDLCALL compare(<span class="keyword">const</span> <span class="keywordtype">void</span> *userdata, <span class="keyword">const</span> <span class="keywordtype">void</span> *a, <span class="keyword">const</span> <span class="keywordtype">void</span> *b)</div>
+<div class="line">{</div>
+<div class="line">    sort_method method = (sort_method)(uintptr_t)userdata;</div>
+<div class="line">    <span class="keyword">const</span> data *A = (<span class="keyword">const</span> data *)a;</div>
+<div class="line">    <span class="keyword">const</span> data *B = (<span class="keyword">const</span> data *)b;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (A-&gt;key &lt; B-&gt;key) {</div>
+<div class="line">        <span class="keywordflow">return</span> (method == sort_increasing) ? -1 : 1;</div>
+<div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (B-&gt;key &lt; A-&gt;key) {</div>
+<div class="line">        <span class="keywordflow">return</span> (method == sort_increasing) ? 1 : -1;</div>
+<div class="line">    } <span class="keywordflow">else</span> {</div>
+<div class="line">        <span class="keywordflow">return</span> 0;</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">data values[] = {</div>
+<div class="line">    { 3, <span class="stringliteral">&quot;third&quot;</span> }, { 1, <span class="stringliteral">&quot;first&quot;</span> }, { 2, <span class="stringliteral">&quot;second&quot;</span> }</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_function" href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">qsort_r</a>(values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]), compare, (<span class="keyword">const</span> <span class="keywordtype">void</span></div>
+<div class="line">*)(uintptr_t)sort_increasing);</div>
+</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">base</td><td>a pointer to the start of the array. </td></tr>
+    <tr><td class="paramname">nmemb</td><td>the number of elements in the array. </td></tr>
+    <tr><td class="paramname">size</td><td>the size of the elements in the array. </td></tr>
+    <tr><td class="paramname">compare</td><td>a function used to compare elements in the array.</td></tr>
   </table>
   </dd>
 </dl>

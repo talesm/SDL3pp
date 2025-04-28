@@ -15,6 +15,6 @@ var searchData=
   ['blituncheckedscaled_12',['BlitUncheckedScaled',['../structSDL_1_1SurfaceBase.html#a89b5b1361fb18402286b4b8435d290a0',1,'SDL::SurfaceBase']]],
   ['broadcast_13',['Broadcast',['../structSDL_1_1ConditionBase.html#ad02e742efd604e19717220879a56545d',1,'SDL::ConditionBase']]],
   ['bsearch_14',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
-  ['bsearch_5fr_15',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
+  ['bsearch_5fr_15',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL::bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)'],['../group__CategoryStdinc.html#ga23c5948242cf76d2bcbc0a52c6c53ed8',1,'SDL::bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCB compare)']]],
   ['buttonmask_16',['ButtonMask',['../group__CategoryMouse.html#ga448ef317015b55e139bbb4e1e4a31ed6',1,'SDL']]]
 ];

@@ -90,7 +90,7 @@ var searchData=
   ['compareandswap_87',['compareandswap',['../classSDL_1_1AtomicU32.html#a12f232107f77b856499a2bc3f048d6ce',1,'SDL::AtomicU32::CompareAndSwap()'],['../classSDL_1_1AtomicInt.html#a16701ba4af31f536491f1241f3f986e8',1,'SDL::AtomicInt::CompareAndSwap()'],['../classSDL_1_1AtomicPointer.html#ab43864a06ef7797bbcb638e38207ed88',1,'SDL::AtomicPointer::CompareAndSwap()']]],
   ['comparecallback_88',['CompareCallback',['../group__CategoryStdinc.html#gabc94be94823c25031d6dd9210ef3e81a',1,'SDL']]],
   ['comparecallback_5fr_89',['CompareCallback_r',['../group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478',1,'SDL']]],
-  ['comparecallbackcb_90',['CompareCallbackCB',['../group__CategoryStdinc.html#gace0552be6b1d2bbc2eeba7e38d59f87a',1,'SDL']]],
+  ['comparecb_90',['CompareCB',['../group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca',1,'SDL']]],
   ['compiler_20intrinsics_20detection_91',['Compiler Intrinsics Detection',['../group__CategoryIntrinsics.html',1,'']]],
   ['composecustomblendmode_92',['ComposeCustomBlendMode',['../group__CategoryBlendmode.html#gaec8c6ddb8b4963d1597c2ccfbb451839',1,'SDL']]],
   ['condition_93',['condition',['../structSDL_1_1Condition.html',1,'SDL::Condition'],['../structSDL_1_1Condition.html#a1777d3813e51bb52cfe1349df3063692',1,'SDL::Condition::Condition(SDL_Condition *resource={})'],['../structSDL_1_1Condition.html#a9503bd490158a64ef9172c5104ed1b6c',1,'SDL::Condition::Condition(Condition &amp;&amp;other)=default']]],

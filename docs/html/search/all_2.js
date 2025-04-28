@@ -49,7 +49,7 @@ var searchData=
   ['boxes_46',['Message Boxes',['../group__CategoryMessagebox.html',1,'']]],
   ['broadcast_47',['Broadcast',['../structSDL_1_1ConditionBase.html#ad02e742efd604e19717220879a56545d',1,'SDL::ConditionBase']]],
   ['bsearch_48',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
-  ['bsearch_5fr_49',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
+  ['bsearch_5fr_49',['bsearch_r',['../group__CategoryStdinc.html#ga23c5948242cf76d2bcbc0a52c6c53ed8',1,'SDL::bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCB compare)'],['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL::bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)']]],
   ['building_50',['Building',['../index.html#building',1,'']]],
   ['button_5fleft_51',['BUTTON_LEFT',['../group__CategoryMouse.html#ga7f91419c89f5f6f78d921faf8712251c',1,'SDL']]],
   ['button_5flmask_52',['BUTTON_LMASK',['../group__CategoryMouse.html#ga85dfcc1f14c1a06ade41b5f34d813093',1,'SDL']]],

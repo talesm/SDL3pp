@@ -2565,7 +2565,7 @@ using CompareCallback_r = SDL_CompareCallback_r;
  * @sa bsearch_r
  * @sa CompareCallback_r
  */
-using CompareCallbackCB = std::function<int(const void*, const void*)>;
+using CompareCB = std::function<int(const void*, const void*)>;
 
 /**
  * Sort an array, passing a userdata pointer to the compare function.
@@ -2626,6 +2626,70 @@ inline void qsort_r(void* base,
                     void* userdata)
 {
   SDL_qsort_r(base, nmemb, size, compare, userdata);
+}
+
+/**
+ * Sort an array, passing a userdata pointer to the compare function.
+ *
+ * For example:
+ *
+ * ```c
+ * typedef enum {
+ *     sort_increasing,
+ *     sort_decreasing,
+ * } sort_method;
+ *
+ * typedef struct {
+ *     int key;
+ *     const char *string;
+ * } data;
+ *
+ * int SDLCALL compare(const void *userdata, const void *a, const void *b)
+ * {
+ *     sort_method method = (sort_method)(uintptr_t)userdata;
+ *     const data *A = (const data *)a;
+ *     const data *B = (const data *)b;
+ *
+ *     if (A->key < B->key) {
+ *         return (method == sort_increasing) ? -1 : 1;
+ *     } else if (B->key < A->key) {
+ *         return (method == sort_increasing) ? 1 : -1;
+ *     } else {
+ *         return 0;
+ *     }
+ * }
+ *
+ * data values[] = {
+ *     { 3, "third" }, { 1, "first" }, { 2, "second" }
+ * };
+ *
+ * qsort_r(values, arraysize(values), sizeof(values[0]), compare, (const void
+ * *)(uintptr_t)sort_increasing);
+ * ```
+ *
+ * @param base a pointer to the start of the array.
+ * @param nmemb the number of elements in the array.
+ * @param size the size of the elements in the array.
+ * @param compare a function used to compare elements in the array.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa bsearch_r
+ * @sa qsort
+ */
+inline void qsort_r(void* base, size_t nmemb, size_t size, CompareCB compare)
+{
+  return qsort_r(
+    base,
+    nmemb,
+    size,
+    [](void* userdata, const void* a, const void* b) {
+      auto& cb = *static_cast<CompareCB*>(userdata);
+      return cb(a, b);
+    },
+    &compare);
 }
 
 /**
@@ -2693,6 +2757,80 @@ inline void* bsearch_r(const void* key,
                        void* userdata)
 {
   return SDL_bsearch_r(key, base, nmemb, size, compare, userdata);
+}
+
+/**
+ * Perform a binary search on a previously sorted array, passing a userdata
+ * pointer to the compare function.
+ *
+ * For example:
+ *
+ * ```c
+ * typedef enum {
+ *     sort_increasing,
+ *     sort_decreasing,
+ * } sort_method;
+ *
+ * typedef struct {
+ *     int key;
+ *     const char *string;
+ * } data;
+ *
+ * int SDLCALL compare(const void *userdata, const void *a, const void *b)
+ * {
+ *     sort_method method = (sort_method)(uintptr_t)userdata;
+ *     const data *A = (const data *)a;
+ *     const data *B = (const data *)b;
+ *
+ *     if (A->key < B->key) {
+ *         return (method == sort_increasing) ? -1 : 1;
+ *     } else if (B->key < A->key) {
+ *         return (method == sort_increasing) ? 1 : -1;
+ *     } else {
+ *         return 0;
+ *     }
+ * }
+ *
+ * data values[] = {
+ *     { 1, "first" }, { 2, "second" }, { 3, "third" }
+ * };
+ * data key = { 2, nullptr };
+ *
+ * data *result = bsearch_r(&key, values, arraysize(values), sizeof(values[0]),
+ * compare, (const void *)(uintptr_t)sort_increasing);
+ * ```
+ *
+ * @param key a pointer to a key equal to the element being searched for.
+ * @param base a pointer to the start of the array.
+ * @param nmemb the number of elements in the array.
+ * @param size the size of the elements in the array.
+ * @param compare a function used to compare elements in the array.
+ * @returns a pointer to the matching element in the array, or nullptr if not
+ *          found.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa bsearch
+ * @sa qsort_r
+ */
+inline void* bsearch_r(const void* key,
+                       const void* base,
+                       size_t nmemb,
+                       size_t size,
+                       CompareCB compare)
+{
+  return bsearch_r(
+    key,
+    base,
+    nmemb,
+    size,
+    [](void* userdata, const void* a, const void* b) {
+      auto& cb = *static_cast<CompareCB*>(userdata);
+      return cb(a, b);
+    },
+    &compare);
 }
 
 /**

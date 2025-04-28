@@ -39377,74 +39377,130 @@
           "type": "SDL_CompareCallback_r",
           "sourceName": "SDL_CompareCallback_r"
         },
-        "CompareCallbackCB": {
+        "CompareCB": {
           "kind": "alias",
-          "name": "CompareCallbackCB",
+          "name": "CompareCB",
           "type": "std::function<int(const void *, const void *)>",
           "doc": "A callback used with SDL sorting and binary search functions.\n\n@param userdata the `userdata` pointer passed to the sort function.\n@param a a pointer to the first element being compared.\n@param b a pointer to the second element being compared.\n@returns -1 if `a` should be sorted before `b`, 1 if `b` should be sorted\n         before `a`, 0 if they are equal. If two elements are equal, their\n         order in the sorted array is undefined.\n\n@since This callback is available since SDL 3.2.0.\n\n@sa qsort_r\n@sa bsearch_r\n@sa CompareCallback_r"
         },
-        "qsort_r": {
-          "doc": "Sort an array, passing a userdata pointer to the compare function.\n\nFor example:\n\n```c\ntypedef enum {\n    sort_increasing,\n    sort_decreasing,\n} sort_method;\n\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *userdata, const void *a, const void *b)\n{\n    sort_method method = (sort_method)(uintptr_t)userdata;\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->key < B->key) {\n        return (method == sort_increasing) ? -1 : 1;\n    } else if (B->key < A->key) {\n        return (method == sort_increasing) ? 1 : -1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 3, \"third\" }, { 1, \"first\" }, { 2, \"second\" }\n};\n\nqsort_r(values, arraysize(values), sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);\n```\n\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n@param userdata a pointer to pass to the compare function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa bsearch_r\n@sa qsort",
-          "name": "qsort_r",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "base",
-              "type": "void *"
-            },
-            {
-              "name": "nmemb",
-              "type": "size_t"
-            },
-            {
-              "name": "size",
-              "type": "size_t"
-            },
-            {
-              "name": "compare",
-              "type": "CompareCallback_r"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_qsort_r"
-        },
-        "bsearch_r": {
-          "doc": "Perform a binary search on a previously sorted array, passing a userdata\npointer to the compare function.\n\nFor example:\n\n```c\ntypedef enum {\n    sort_increasing,\n    sort_decreasing,\n} sort_method;\n\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *userdata, const void *a, const void *b)\n{\n    sort_method method = (sort_method)(uintptr_t)userdata;\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->key < B->key) {\n        return (method == sort_increasing) ? -1 : 1;\n    } else if (B->key < A->key) {\n        return (method == sort_increasing) ? 1 : -1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 1, \"first\" }, { 2, \"second\" }, { 3, \"third\" }\n};\ndata key = { 2, nullptr };\n\ndata *result = bsearch_r(&key, values, arraysize(values), sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);\n```\n\n@param key a pointer to a key equal to the element being searched for.\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n@param userdata a pointer to pass to the compare function.\n@returns a pointer to the matching element in the array, or nullptr if not\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa bsearch\n@sa qsort_r",
-          "name": "bsearch_r",
-          "kind": "function",
-          "type": "void *",
-          "parameters": [
-            {
-              "name": "key",
-              "type": "const void *"
-            },
-            {
-              "name": "base",
-              "type": "const void *"
-            },
-            {
-              "name": "nmemb",
-              "type": "size_t"
-            },
-            {
-              "name": "size",
-              "type": "size_t"
-            },
-            {
-              "name": "compare",
-              "type": "CompareCallback_r"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_bsearch_r"
-        },
+        "qsort_r": [
+          {
+            "doc": "Sort an array, passing a userdata pointer to the compare function.\n\nFor example:\n\n```c\ntypedef enum {\n    sort_increasing,\n    sort_decreasing,\n} sort_method;\n\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *userdata, const void *a, const void *b)\n{\n    sort_method method = (sort_method)(uintptr_t)userdata;\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->key < B->key) {\n        return (method == sort_increasing) ? -1 : 1;\n    } else if (B->key < A->key) {\n        return (method == sort_increasing) ? 1 : -1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 3, \"third\" }, { 1, \"first\" }, { 2, \"second\" }\n};\n\nqsort_r(values, arraysize(values), sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);\n```\n\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n@param userdata a pointer to pass to the compare function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa bsearch_r\n@sa qsort",
+            "name": "qsort_r",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "base",
+                "type": "void *"
+              },
+              {
+                "name": "nmemb",
+                "type": "size_t"
+              },
+              {
+                "name": "size",
+                "type": "size_t"
+              },
+              {
+                "name": "compare",
+                "type": "CompareCallback_r"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_qsort_r"
+          },
+          {
+            "name": "qsort_r",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "base",
+                "type": "void *"
+              },
+              {
+                "name": "nmemb",
+                "type": "size_t"
+              },
+              {
+                "name": "size",
+                "type": "size_t"
+              },
+              {
+                "name": "compare",
+                "type": "CompareCB"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "bsearch_r": [
+          {
+            "doc": "Perform a binary search on a previously sorted array, passing a userdata\npointer to the compare function.\n\nFor example:\n\n```c\ntypedef enum {\n    sort_increasing,\n    sort_decreasing,\n} sort_method;\n\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *userdata, const void *a, const void *b)\n{\n    sort_method method = (sort_method)(uintptr_t)userdata;\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->key < B->key) {\n        return (method == sort_increasing) ? -1 : 1;\n    } else if (B->key < A->key) {\n        return (method == sort_increasing) ? 1 : -1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 1, \"first\" }, { 2, \"second\" }, { 3, \"third\" }\n};\ndata key = { 2, nullptr };\n\ndata *result = bsearch_r(&key, values, arraysize(values), sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);\n```\n\n@param key a pointer to a key equal to the element being searched for.\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n@param userdata a pointer to pass to the compare function.\n@returns a pointer to the matching element in the array, or nullptr if not\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa bsearch\n@sa qsort_r",
+            "name": "bsearch_r",
+            "kind": "function",
+            "type": "void *",
+            "parameters": [
+              {
+                "name": "key",
+                "type": "const void *"
+              },
+              {
+                "name": "base",
+                "type": "const void *"
+              },
+              {
+                "name": "nmemb",
+                "type": "size_t"
+              },
+              {
+                "name": "size",
+                "type": "size_t"
+              },
+              {
+                "name": "compare",
+                "type": "CompareCallback_r"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_bsearch_r"
+          },
+          {
+            "name": "bsearch_r",
+            "kind": "function",
+            "type": "void *",
+            "parameters": [
+              {
+                "name": "key",
+                "type": "const void *"
+              },
+              {
+                "name": "base",
+                "type": "const void *"
+              },
+              {
+                "name": "nmemb",
+                "type": "size_t"
+              },
+              {
+                "name": "size",
+                "type": "size_t"
+              },
+              {
+                "name": "compare",
+                "type": "CompareCB"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "abs": [
           {
             "doc": "Compute the absolute value of `x`.\n\n@param x an integer value.\n@returns the absolute value of x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",

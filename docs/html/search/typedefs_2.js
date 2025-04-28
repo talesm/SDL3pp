@@ -13,5 +13,5 @@ var searchData=
   ['commonevent_10',['CommonEvent',['../group__CategoryEvents.html#gacd7d68741f6b72245ec445fd09335554',1,'SDL']]],
   ['comparecallback_11',['CompareCallback',['../group__CategoryStdinc.html#gabc94be94823c25031d6dd9210ef3e81a',1,'SDL']]],
   ['comparecallback_5fr_12',['CompareCallback_r',['../group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478',1,'SDL']]],
-  ['comparecallbackcb_13',['CompareCallbackCB',['../group__CategoryStdinc.html#gace0552be6b1d2bbc2eeba7e38d59f87a',1,'SDL']]]
+  ['comparecb_13',['CompareCB',['../group__CategoryStdinc.html#ga7dc5ada5f1f8fe87900b8fa72e94abca',1,'SDL']]]
 ];
