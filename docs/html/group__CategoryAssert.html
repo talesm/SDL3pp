@@ -147,12 +147,18 @@ Functions</h2></td></tr>
 <tr class="memitem:gadc28db02e4fc8cf22d9e839c1780c16a" id="r_gadc28db02e4fc8cf22d9e839c1780c16a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a">SDL::SetAssertionHandler</a> (<a class="el" href="group__CategoryAssert.html#gaa96234b976cffe73f8c2d3fa30b47a23">AssertionHandler</a> handler, void *userdata)</td></tr>
 <tr class="memdesc:gadc28db02e4fc8cf22d9e839c1780c16a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an application-defined assertion handler.  <br /></td></tr>
 <tr class="separator:gadc28db02e4fc8cf22d9e839c1780c16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga374f2300266f42585bc5f5f8ed532fdf" id="r_ga374f2300266f42585bc5f5f8ed532fdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga374f2300266f42585bc5f5f8ed532fdf">SDL::SetAssertionHandler</a> (<a class="el" href="group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979">AssertionHandlerCB</a> handler)</td></tr>
+<tr class="memdesc:ga374f2300266f42585bc5f5f8ed532fdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an application-defined assertion handler.  <br /></td></tr>
+<tr class="separator:ga374f2300266f42585bc5f5f8ed532fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7708a866b6b0b9c221a16f7e5c5c04ac" id="r_ga7708a866b6b0b9c221a16f7e5c5c04ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryAssert.html#gaa96234b976cffe73f8c2d3fa30b47a23">AssertionHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga7708a866b6b0b9c221a16f7e5c5c04ac">SDL::GetDefaultAssertionHandler</a> ()</td></tr>
 <tr class="memdesc:ga7708a866b6b0b9c221a16f7e5c5c04ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the default assertion handler.  <br /></td></tr>
 <tr class="separator:ga7708a866b6b0b9c221a16f7e5c5c04ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6bdef0173cfd4f9241f2e0dd24029b57" id="r_ga6bdef0173cfd4f9241f2e0dd24029b57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryAssert.html#gaa96234b976cffe73f8c2d3fa30b47a23">AssertionHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga6bdef0173cfd4f9241f2e0dd24029b57">SDL::GetAssertionHandler</a> (void **puserdata)</td></tr>
 <tr class="memdesc:ga6bdef0173cfd4f9241f2e0dd24029b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current assertion handler.  <br /></td></tr>
 <tr class="separator:ga6bdef0173cfd4f9241f2e0dd24029b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae41c089f14043779e761f3ff07c9fdae" id="r_gae41c089f14043779e761f3ff07c9fdae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979">AssertionHandlerCB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#gae41c089f14043779e761f3ff07c9fdae">SDL::GetAssertionHandler</a> ()</td></tr>
+<tr class="memdesc:gae41c089f14043779e761f3ff07c9fdae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current assertion handler.  <br /></td></tr>
+<tr class="separator:gae41c089f14043779e761f3ff07c9fdae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1762888858d7ecdaad03f39e260f8dc8" id="r_ga1762888858d7ecdaad03f39e260f8dc8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">AssertData</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8">SDL::GetAssertionReport</a> ()</td></tr>
 <tr class="memdesc:ga1762888858d7ecdaad03f39e260f8dc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a list of all assertion failures.  <br /></td></tr>
 <tr class="separator:ga1762888858d7ecdaad03f39e260f8dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -557,7 +563,7 @@ constexpr <a class="el" href="group__CategoryAssert.html#ga6cef7fc19a80762bc63c2
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>a pointer to the SDL_AssertData structure corresponding to the current assertion. </td></tr>
-    <tr><td class="paramname">userdata</td><td>what was passed as <code>userdata</code> to SDL_SetAssertionHandler(). </td></tr>
+    <tr><td class="paramname">userdata</td><td>what was passed as <code>userdata</code> to <a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler()</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -609,8 +615,39 @@ constexpr <a class="el" href="group__CategoryAssert.html#ga6cef7fc19a80762bc63c2
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gae41c089f14043779e761f3ff07c9fdae" name="gae41c089f14043779e761f3ff07c9fdae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae41c089f14043779e761f3ff07c9fdae">&#9670;&#160;</a></span>GetAssertionHandler() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979">AssertionHandlerCB</a> SDL::GetAssertionHandler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This returns the function pointer that is called when an assertion is triggered. This is either the value last passed to SDL_SetAssertionHandler(), or if no application-specified function is set, is equivalent to calling SDL_GetDefaultAssertionHandler().</p>
+<p>The parameter <code>puserdata</code> is a pointer to a void*, which will store the "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value will always be nullptr for the default handler. If you don't care about this data, it is safe to pass a nullptr pointer to this function to ignore it.</p>
+<dl class="section return"><dt>Returns</dt><dd>the AssertionHandlerCB that is called when an assert triggers.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler</a> </dd></dl>
+
+</div>
+</div>
 <a id="ga6bdef0173cfd4f9241f2e0dd24029b57" name="ga6bdef0173cfd4f9241f2e0dd24029b57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6bdef0173cfd4f9241f2e0dd24029b57">&#9670;&#160;</a></span>GetAssertionHandler()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6bdef0173cfd4f9241f2e0dd24029b57">&#9670;&#160;</a></span>GetAssertionHandler() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -632,18 +669,18 @@ constexpr <a class="el" href="group__CategoryAssert.html#ga6cef7fc19a80762bc63c2
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This returns the function pointer that is called when an assertion is triggered. This is either the value last passed to SDL_SetAssertionHandler(), or if no application-specified function is set, is equivalent to calling SDL_GetDefaultAssertionHandler().</p>
-<p>The parameter <code>puserdata</code> is a pointer to a void*, which will store the "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value will always be NULL for the default handler. If you don't care about this data, it is safe to pass a NULL pointer to this function to ignore it.</p>
+<p>This returns the function pointer that is called when an assertion is triggered. This is either the value last passed to SDL_SetAssertionHandler(), or if no application-specified function is set, is equivalent to calling <a class="el" href="group__CategoryAssert.html#ga7708a866b6b0b9c221a16f7e5c5c04ac" title="Get the default assertion handler.">GetDefaultAssertionHandler()</a>.</p>
+<p>The parameter <code>puserdata</code> is a pointer to a void*, which will store the "userdata" pointer that was passed to <a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler()</a>. This value will always be nullptr for the default handler. If you don't care about this data, it is safe to pass a nullptr pointer to this function to ignore it.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">puserdata</td><td>pointer which is filled with the "userdata" pointer that was passed to SDL_SetAssertionHandler(). </td></tr>
+    <tr><td class="paramname">puserdata</td><td>pointer which is filled with the "userdata" pointer that was passed to <a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler()</a>. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the SDL_AssertionHandler that is called when an assert triggers.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the AssertionHandler that is called when an assert triggers.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetAssertionHandler </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler</a> </dd></dl>
 
 </div>
 </div>
@@ -679,7 +716,7 @@ constexpr <a class="el" href="group__CategoryAssert.html#ga6cef7fc19a80762bc63c2
 <div class="line">          item-&gt;always_ignore ? <span class="stringliteral">&quot;yes&quot;</span> : <span class="stringliteral">&quot;no&quot;</span>);</div>
 <div class="line">   item = item-&gt;next;</div>
 <div class="line">}</div>
-</div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>a list of all failed assertions or NULL if the list is empty. This memory should not be modified or freed by the application. This pointer remains valid until the next call to SDL_Quit() or SDL_ResetAssertionReport().</dd></dl>
+</div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>a list of all failed assertions or nullptr if the list is empty. This memory should not be modified or freed by the application. This pointer remains valid until the next call to <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> or <a class="el" href="group__CategoryAssert.html#ga2b6d3ba74888bd9cc5a7634cb0511652" title="Clear the list of all assertion failures.">ResetAssertionReport()</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe. Other threads calling SDL_ResetAssertionReport() simultaneously, may render the returned pointer invalid.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_ResetAssertionReport </dd></dl>
@@ -708,11 +745,11 @@ constexpr <a class="el" href="group__CategoryAssert.html#ga6cef7fc19a80762bc63c2
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This returns the function pointer that is called by default when an assertion is triggered. This is an internal function provided by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>, that is used for assertions when SDL_SetAssertionHandler() hasn't been used to provide a different function.</p>
-<dl class="section return"><dt>Returns</dt><dd>the default SDL_AssertionHandler that is called when an assert triggers.</dd></dl>
+<p>This returns the function pointer that is called by default when an assertion is triggered. This is an internal function provided by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>, that is used for assertions when <a class="el" href="group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a" title="Set an application-defined assertion handler.">SetAssertionHandler()</a> hasn't been used to provide a different function.</p>
+<dl class="section return"><dt>Returns</dt><dd>the default AssertionHandler that is called when an assert triggers.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetAssertionHandler </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga6bdef0173cfd4f9241f2e0dd24029b57" title="Get the current assertion handler.">GetAssertionHandler</a> </dd></dl>
 
 </div>
 </div>
@@ -807,7 +844,7 @@ constexpr <a class="el" href="group__CategoryAssert.html#ga6cef7fc19a80762bc63c2
 </div>
 </div>
 <a id="gadc28db02e4fc8cf22d9e839c1780c16a" name="gadc28db02e4fc8cf22d9e839c1780c16a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadc28db02e4fc8cf22d9e839c1780c16a">&#9670;&#160;</a></span>SetAssertionHandler()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gadc28db02e4fc8cf22d9e839c1780c16a">&#9670;&#160;</a></span>SetAssertionHandler() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -841,17 +878,55 @@ constexpr <a class="el" href="group__CategoryAssert.html#ga6cef7fc19a80762bc63c2
 </div><div class="memdoc">
 <p>This function allows an application to show its own assertion UI and/or force the response to an assertion failure. If the application doesn't provide this, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will try to do the right thing, popping up a system-specific GUI dialog, and probably minimizing any fullscreen windows.</p>
 <p>This callback may fire from any thread, but it runs wrapped in a mutex, so it will only fire from one thread at a time.</p>
-<p>This callback is NOT reset to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s internal handler upon SDL_Quit()!</p>
+<p>This callback is NOT reset to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s internal handler upon <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handler</td><td>the SDL_AssertionHandler function to call when an assertion fails or NULL for the default handler. </td></tr>
+    <tr><td class="paramname">handler</td><td>the SDL_AssertionHandler function to call when an assertion fails or nullptr for the default handler. </td></tr>
     <tr><td class="paramname">userdata</td><td>a pointer that is passed to <code>handler</code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetAssertionHandler </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga6bdef0173cfd4f9241f2e0dd24029b57" title="Get the current assertion handler.">GetAssertionHandler</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga374f2300266f42585bc5f5f8ed532fdf" name="ga374f2300266f42585bc5f5f8ed532fdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga374f2300266f42585bc5f5f8ed532fdf">&#9670;&#160;</a></span>SetAssertionHandler() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::SetAssertionHandler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979">AssertionHandlerCB</a>&#160;</td>
+          <td class="paramname"><em>handler</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function allows an application to show its own assertion UI and/or force the response to an assertion failure. If the application doesn't provide this, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will try to do the right thing, popping up a system-specific GUI dialog, and probably minimizing any fullscreen windows.</p>
+<p>This callback may fire from any thread, but it runs wrapped in a mutex, so it will only fire from one thread at a time.</p>
+<p>This callback is NOT reset to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s internal handler upon SDL_Quit()!</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handler</td><td>the SDL_AssertionHandler function to call when an assertion fails.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga6bdef0173cfd4f9241f2e0dd24029b57" title="Get the current assertion handler.">GetAssertionHandler</a> </dd></dl>
 
 </div>
 </div>

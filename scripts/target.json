@@ -4646,23 +4646,37 @@
           "type": "std::function<SDL_AssertState(const SDL_AssertData *)>",
           "doc": "A callback that fires when an SDL assertion fails.\n\n@param data a pointer to the AssertData structure corresponding to the\n            current assertion.\n@param userdata what was passed as `userdata` to SetAssertionHandler().\n@returns an AssertState value indicating how to handle the failure.\n\n@threadsafety This callback may be called from any thread that triggers an\n              assert at any time.\n\n@since This datatype is available since SDL 3.2.0.\n@sa AssertionHandler"
         },
-        "SetAssertionHandler": {
-          "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
-          "name": "SetAssertionHandler",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "handler",
-              "type": "AssertionHandler"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_SetAssertionHandler"
-        },
+        "SetAssertionHandler": [
+          {
+            "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon Quit()!\n\n@param handler the AssertionHandler function to call when an assertion\n               fails or nullptr for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
+            "name": "SetAssertionHandler",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "handler",
+                "type": "AssertionHandler"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_SetAssertionHandler"
+          },
+          {
+            "kind": "function",
+            "name": "SetAssertionHandler",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "AssertionHandlerCB",
+                "name": "handler"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "GetDefaultAssertionHandler": {
           "doc": "Get the default assertion handler.\n\nThis returns the function pointer that is called by default when an\nassertion is triggered. This is an internal function provided by SDL, that\nis used for assertions when SetAssertionHandler() hasn't been used to\nprovide a different function.\n\n@returns the default AssertionHandler that is called when an assert\n         triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetAssertionHandler",
           "name": "GetDefaultAssertionHandler",
@@ -4671,19 +4685,28 @@
           "parameters": [],
           "sourceName": "SDL_GetDefaultAssertionHandler"
         },
-        "GetAssertionHandler": {
-          "doc": "Get the current assertion handler.\n\nThis returns the function pointer that is called when an assertion is\ntriggered. This is either the value last passed to\nSetAssertionHandler(), or if no application-specified function is set,\nis equivalent to calling GetDefaultAssertionHandler().\n\nThe parameter `puserdata` is a pointer to a void*, which will store the\n\"userdata\" pointer that was passed to SetAssertionHandler(). This value\nwill always be nullptr for the default handler. If you don't care about this\ndata, it is safe to pass a nullptr pointer to this function to ignore it.\n\n@param puserdata pointer which is filled with the \"userdata\" pointer that\n                 was passed to SetAssertionHandler().\n@returns the AssertionHandler that is called when an assert triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAssertionHandler",
-          "name": "GetAssertionHandler",
-          "kind": "function",
-          "type": "AssertionHandler",
-          "parameters": [
-            {
-              "name": "puserdata",
-              "type": "void **"
-            }
-          ],
-          "sourceName": "SDL_GetAssertionHandler"
-        },
+        "GetAssertionHandler": [
+          {
+            "doc": "Get the current assertion handler.\n\nThis returns the function pointer that is called when an assertion is\ntriggered. This is either the value last passed to\nSetAssertionHandler(), or if no application-specified function is set,\nis equivalent to calling GetDefaultAssertionHandler().\n\nThe parameter `puserdata` is a pointer to a void*, which will store the\n\"userdata\" pointer that was passed to SetAssertionHandler(). This value\nwill always be nullptr for the default handler. If you don't care about this\ndata, it is safe to pass a nullptr pointer to this function to ignore it.\n\n@param puserdata pointer which is filled with the \"userdata\" pointer that\n                 was passed to SetAssertionHandler().\n@returns the AssertionHandler that is called when an assert triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetAssertionHandler",
+            "name": "GetAssertionHandler",
+            "kind": "function",
+            "type": "AssertionHandler",
+            "parameters": [
+              {
+                "name": "puserdata",
+                "type": "void **"
+              }
+            ],
+            "sourceName": "SDL_GetAssertionHandler"
+          },
+          {
+            "kind": "function",
+            "name": "GetAssertionHandler",
+            "type": "AssertionHandlerCB",
+            "parameters": [],
+            "doc": ""
+          }
+        ],
         "GetAssertionReport": {
           "doc": "Get a list of all assertion failures.\n\nThis function gets all assertions triggered since the last call to\nResetAssertionReport(), or the start of the program.\n\nThe proper way to examine this data looks something like this:\n\n```c\nconst AssertData *item = GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\@n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```\n\n@returns a list of all failed assertions or nullptr if the list is empty. This\n         memory should not be modified or freed by the application. This\n         pointer remains valid until the next call to Quit() or\n         ResetAssertionReport().\n\n@threadsafety This function is not thread safe. Other threads calling\n              ResetAssertionReport() simultaneously, may render the\n              returned pointer invalid.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ResetAssertionReport",
           "name": "GetAssertionReport",

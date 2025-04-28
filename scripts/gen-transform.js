@@ -34,6 +34,20 @@ const transform = {
       ignoreEntries: [
         "__debugbreak"
       ],
+      includeAfter: {
+        "SDL_SetAssertionHandler": {
+          kind: "function",
+          name: "SetAssertionHandler",
+          type: "void",
+          parameters: [{ type: "AssertionHandlerCB", name: "handler" }]
+        },
+        "SDL_GetAssertionHandler": {
+          kind: "function",
+          name: "GetAssertionHandler",
+          type: "AssertionHandlerCB",
+          parameters: []
+        },
+      },
       transform: {
         "SDL_ReportAssertion": {
           "parameters": [
