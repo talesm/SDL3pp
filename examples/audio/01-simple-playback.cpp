@@ -43,8 +43,7 @@ struct Main
 
       // feed the new data to the stream. It will queue at the end, and trickle
       // out as the hardware needs more data.
-      stream.PutData(
-        std::span<char>{reinterpret_cast<char*>(samples), sizeof(samples)});
+      stream.PutData(samples);
     }
 
     // we're not doing anything with the renderer, so just blank it out.

@@ -102,7 +102,7 @@ var searchData=
   ['control_99',['Process Control',['../group__CategoryProcess.html',1,'']]],
   ['conversion_20routines_100',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
   ['convert_101',['convert',['../group__CategorySurface.html#ga07a85c47200e1a8dbb9d494f9c641a84',1,'SDL::SurfaceBase::Convert(PixelFormat format) const'],['../group__CategorySurface.html#ga749789d4cb045e6d6069e135033b32b1',1,'SDL::SurfaceBase::Convert(PixelFormat format, PaletteBase &amp;palette, Colorspace colorspace, PropertiesBase &amp;props) const']]],
-  ['convertaudiosamples_102',['ConvertAudioSamples',['../group__CategoryAudio.html#ga92405cdffe850ab2c575d7c605f46731',1,'SDL']]],
+  ['convertaudiosamples_102',['ConvertAudioSamples',['../group__CategoryAudio.html#ga21787c751aa8f17579f1dca4a1b8b8ff',1,'SDL']]],
   ['converteventtorendercoordinates_103',['ConvertEventToRenderCoordinates',['../structSDL_1_1RendererBase.html#a478ab74f6eabf08ce8da38461abc16ea',1,'SDL::RendererBase']]],
   ['convertpixels_104',['ConvertPixels',['../group__CategorySurface.html#ga2e0582a8edc370955aa64e33c5efcf59',1,'SDL']]],
   ['convertpixelsandcolorspace_105',['ConvertPixelsAndColorspace',['../group__CategorySurface.html#gac93acca678be154b634252304b696f7e',1,'SDL']]],

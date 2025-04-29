@@ -64,7 +64,7 @@ var searchData=
   ['min_61',['min',['../group__CategoryStdinc.html#ga37591dc3dcb6bb89de19a61acdec4ef3',1,'SDL']]],
   ['minimize_62',['Minimize',['../structSDL_1_1WindowBase.html#ac1fc6049741099d2d3f132821acf2786',1,'SDL::WindowBase']]],
   ['miscellaneous_63',['Miscellaneous',['../group__CategoryMisc.html',1,'']]],
-  ['mixaudio_64',['mixaudio',['../group__CategoryAudio.html#gaaa3a027ac7360f48d9a5178dd385e5df',1,'SDL::MixAudio(Uint8 *dst, std::span&lt; const Uint8 &gt; src, AudioFormat format, float volume)'],['../group__CategoryAudio.html#gad789fb1d19202cb1682b200e915c7ff4',1,'SDL::MixAudio(std::span&lt; Uint8 &gt; dst, std::span&lt; const Uint8 &gt; src, AudioFormat format, float volume)']]],
+  ['mixaudio_64',['mixaudio',['../group__CategoryAudio.html#gaaa8a066451543172b07d02bf4eff8882',1,'SDL::MixAudio(Uint8 *dst, SourceBytes src, AudioFormat format, float volume)'],['../group__CategoryAudio.html#ga90ebbeaafbf2f69bbd771abbd5b94f23',1,'SDL::MixAudio(TargetBytes dst, SourceBytes src, AudioFormat format, float volume)']]],
   ['mixing_65',['Audio Playback, Recording, and Mixing',['../group__CategoryAudio.html',1,'']]],
   ['modes_66',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
   ['modf_67',['modf',['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL::modf(double x, double *y)'],['../group__CategoryStdinc.html#ga5a30a1c10942df28de78ce3f482dec53',1,'SDL::modf(float x, float *y)']]],

@@ -381,7 +381,6 @@ function expandCallbacks(sourceEntries, file, context) {
           ...(file.transform[callbackName] ?? {})
         };
         prependIncludeAfter(callbackEntry, file, sourceName);
-        if (callbackEntry.name === "EventFilterCB") console.log(file.includeAfter[sourceName]);
         break;
       }
     }

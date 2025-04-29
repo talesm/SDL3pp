@@ -20302,71 +20302,35 @@
                 "mayFail": true
               }
             },
-            "PutData": [
-              {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "type": "std::span<const char>",
-                    "name": "buf"
-                  }
-                ],
-                "name": "PutData",
-                "doc": ""
-              },
-              {
-                "doc": "Add data to the stream.\n\nThis data must match the format/channels/samplerate specified in the latest\ncall to AudioStreamBase.SetFormat, or the format specified when creating the\nstream if it hasn't been changed.\n\nNote that this call simply copies the unconverted data for later. This is\ndifferent than SDL2, where data was converted during the Put call and the\nGet call would just dequeue the previously-converted data.\n\n@param buf a pointer to the audio data to add.\n@param len the number of bytes to write to the stream.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread, but if the\n              stream has a callback set, the caller might need to manage\n              extra locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamBase.Clear\n@sa AudioStreamBase.Flush\n@sa AudioStreamBase.GetData\n@sa AudioStreamBase.GetQueued",
-                "name": "PutData",
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "name": "buf",
-                    "type": "const void *"
-                  },
-                  {
-                    "name": "len",
-                    "type": "int"
-                  }
-                ],
-                "sourceName": "SDL_PutAudioStreamData",
-                "hints": {
-                  "mayFail": true
+            "PutData": {
+              "doc": "Add data to the stream.\n\nThis data must match the format/channels/samplerate specified in the latest\ncall to AudioStreamBase.SetFormat, or the format specified when creating the\nstream if it hasn't been changed.\n\nNote that this call simply copies the unconverted data for later. This is\ndifferent than SDL2, where data was converted during the Put call and the\nGet call would just dequeue the previously-converted data.\n\n@param buf a pointer to the audio data to add.\n@param len the number of bytes to write to the stream.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread, but if the\n              stream has a callback set, the caller might need to manage\n              extra locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamBase.Clear\n@sa AudioStreamBase.Flush\n@sa AudioStreamBase.GetData\n@sa AudioStreamBase.GetQueued",
+              "name": "PutData",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "buf",
+                  "type": "SourceBytes"
                 }
+              ],
+              "sourceName": "SDL_PutAudioStreamData",
+              "hints": {
+                "mayFail": true
               }
-            ],
-            "GetData": [
-              {
-                "kind": "function",
-                "type": "int",
-                "parameters": [
-                  {
-                    "type": "std::span<char>",
-                    "name": "buf"
-                  }
-                ],
-                "name": "GetData",
-                "doc": ""
-              },
-              {
-                "doc": "Get converted/resampled data from the stream.\n\nThe input/output data format/channels/samplerate is specified when creating\nthe stream, and can be changed after creation by calling\nAudioStreamBase.SetFormat.\n\nNote that any conversion and resampling necessary is done during this call,\nand AudioStreamBase.PutData simply queues unconverted data for later. This\nis different than SDL2, where that work was done while inputting new data\nto the stream and requesting the output just copied the converted data.\n\n@param buf a buffer to fill with audio data.\n@param len the maximum number of bytes to fill.\n@returns the number of bytes read from the stream or -1 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread, but if the\n              stream has a callback set, the caller might need to manage\n              extra locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamBase.Clear\n@sa AudioStreamBase.GetAvailable\n@sa AudioStreamBase.PutData",
-                "name": "GetData",
-                "kind": "function",
-                "type": "int",
-                "parameters": [
-                  {
-                    "name": "buf",
-                    "type": "void *"
-                  },
-                  {
-                    "name": "len",
-                    "type": "int"
-                  }
-                ],
-                "sourceName": "SDL_GetAudioStreamData"
-              }
-            ],
+            },
+            "GetData": {
+              "doc": "Get converted/resampled data from the stream.\n\nThe input/output data format/channels/samplerate is specified when creating\nthe stream, and can be changed after creation by calling\nAudioStreamBase.SetFormat.\n\nNote that any conversion and resampling necessary is done during this call,\nand AudioStreamBase.PutData simply queues unconverted data for later. This\nis different than SDL2, where that work was done while inputting new data\nto the stream and requesting the output just copied the converted data.\n\n@param buf a buffer to fill with audio data.\n@param len the maximum number of bytes to fill.\n@returns the number of bytes read from the stream or -1 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread, but if the\n              stream has a callback set, the caller might need to manage\n              extra locking.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamBase.Clear\n@sa AudioStreamBase.GetAvailable\n@sa AudioStreamBase.PutData",
+              "name": "GetData",
+              "kind": "function",
+              "type": "int",
+              "parameters": [
+                {
+                  "name": "buf",
+                  "type": "TargetBytes"
+                }
+              ],
+              "sourceName": "SDL_GetAudioStreamData"
+            },
             "GetAvailable": {
               "doc": "Get the number of converted/resampled bytes available.\n\nThe stream may be buffering data behind the scenes until it has enough to\nresample correctly, so this number might be lower than what you expect, or\neven be zero. Add more data or flush the stream if you need the data now.\n\nIf the stream has so much data that it would overflow an int, the return\nvalue is clamped to a maximum value, but no queued data is lost; if there\nare gigabytes of data queued, the app might need to read some of it with\nAudioStreamBase.GetData before this function's return value is no longer\nclamped.\n\n@returns the number of converted/resampled bytes available or -1 on\n         failure; call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamBase.GetData\n@sa AudioStreamBase.PutData",
               "name": "GetAvailable",
@@ -20996,7 +20960,7 @@
               },
               {
                 "name": "src",
-                "type": "std::span<const Uint8>"
+                "type": "SourceBytes"
               },
               {
                 "name": "format",
@@ -21019,11 +20983,11 @@
             "parameters": [
               {
                 "name": "dst",
-                "type": "std::span<Uint8>"
+                "type": "TargetBytes"
               },
               {
                 "name": "src",
-                "type": "std::span<const Uint8>"
+                "type": "SourceBytes"
               },
               {
                 "name": "format",
@@ -21049,7 +21013,7 @@
             },
             {
               "name": "src_data",
-              "type": "std::span<const Uint8>"
+              "type": "SourceBytes"
             },
             {
               "name": "dst_spec",
@@ -32698,23 +32662,6 @@
                 "doc": ""
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "name": "path",
-                    "type": "StringParam"
-                  },
-                  {
-                    "name": "destination",
-                    "type": "std::span<char>"
-                  }
-                ],
-                "name": "ReadFile",
-                "doc": ""
-              },
-              {
                 "doc": "Synchronously read a file from a storage container into a client-provided\nbuffer.\n\nThe value of `length` must match the length of the file exactly; call\nStorageBase.GetFileSize() to get this value. This behavior may be relaxed in\na future release.\n\n@param path the relative path of the file to read.\n@param destination a client-provided buffer to read the file into.\n@param length the length of the destination buffer.\n@returns true if the file was read or false on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.GetFileSize\n@sa StorageBase.Ready\n@sa StorageBase.WriteFile",
                 "name": "ReadFile",
                 "kind": "function",
@@ -32726,11 +32673,7 @@
                   },
                   {
                     "name": "destination",
-                    "type": "void *"
-                  },
-                  {
-                    "name": "length",
-                    "type": "Uint64"
+                    "type": "TargetBytes"
                   }
                 ],
                 "sourceName": "SDL_ReadStorageFile",
@@ -32756,45 +32699,23 @@
               "name": "ReadFileAs",
               "doc": ""
             },
-            "WriteFile": [
-              {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "name": "path",
-                    "type": "StringParam"
-                  },
-                  {
-                    "name": "source",
-                    "type": "std::span<const char>"
-                  }
-                ],
-                "name": "WriteFile",
-                "doc": ""
-              },
-              {
-                "doc": "Synchronously write a file from client memory into a storage container.\n\n@param path the relative path of the file to write.\n@param source a client-provided buffer to write from.\n@param length the length of the source buffer.\n@returns true if the file was written or false on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.GetSpaceRemaining\n@sa StorageBase.ReadFile\n@sa StorageBase.Ready",
-                "name": "WriteFile",
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "name": "path",
-                    "type": "StringParam"
-                  },
-                  {
-                    "name": "source",
-                    "type": "const void *"
-                  },
-                  {
-                    "name": "length",
-                    "type": "Uint64"
-                  }
-                ],
-                "sourceName": "SDL_WriteStorageFile"
-              }
-            ],
+            "WriteFile": {
+              "doc": "Synchronously write a file from client memory into a storage container.\n\n@param path the relative path of the file to write.\n@param source a client-provided buffer to write from.\n@param length the length of the source buffer.\n@returns true if the file was written or false on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.GetSpaceRemaining\n@sa StorageBase.ReadFile\n@sa StorageBase.Ready",
+              "name": "WriteFile",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "path",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "source",
+                  "type": "SourceBytes"
+                }
+              ],
+              "sourceName": "SDL_WriteStorageFile"
+            },
             "CreateDirectory": {
               "doc": "Create a directory in a writable storage container.\n\n@param path the path of the directory to create.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageBase.Ready",
               "name": "CreateDirectory",

@@ -175,15 +175,15 @@ Functions</h2></td></tr>
 <tr class="memitem:gaaff063971ee474fedad66da38c10ec43" id="r_gaaff063971ee474fedad66da38c10ec43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; Uint8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaaff063971ee474fedad66da38c10ec43">SDL::LoadWAV</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path, <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> *spec)</td></tr>
 <tr class="memdesc:gaaff063971ee474fedad66da38c10ec43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a WAV from a file path.  <br /></td></tr>
 <tr class="separator:gaaff063971ee474fedad66da38c10ec43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaa3a027ac7360f48d9a5178dd385e5df" id="r_gaaa3a027ac7360f48d9a5178dd385e5df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaaa3a027ac7360f48d9a5178dd385e5df">SDL::MixAudio</a> (Uint8 *dst, std::span&lt; const Uint8 &gt; src, <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a> format, float volume)</td></tr>
-<tr class="memdesc:gaaa3a027ac7360f48d9a5178dd385e5df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mix audio data in a specified format.  <br /></td></tr>
-<tr class="separator:gaaa3a027ac7360f48d9a5178dd385e5df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad789fb1d19202cb1682b200e915c7ff4" id="r_gad789fb1d19202cb1682b200e915c7ff4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gad789fb1d19202cb1682b200e915c7ff4">SDL::MixAudio</a> (std::span&lt; Uint8 &gt; dst, std::span&lt; const Uint8 &gt; src, <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a> format, float volume)</td></tr>
-<tr class="memdesc:gad789fb1d19202cb1682b200e915c7ff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mix audio data in a specified format.  <br /></td></tr>
-<tr class="separator:gad789fb1d19202cb1682b200e915c7ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga92405cdffe850ab2c575d7c605f46731" id="r_ga92405cdffe850ab2c575d7c605f46731"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; Uint8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga92405cdffe850ab2c575d7c605f46731">SDL::ConvertAudioSamples</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;src_spec, std::span&lt; const Uint8 &gt; src_data, const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;dst_spec)</td></tr>
-<tr class="memdesc:ga92405cdffe850ab2c575d7c605f46731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert some audio data of one format to another format.  <br /></td></tr>
-<tr class="separator:ga92405cdffe850ab2c575d7c605f46731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaa8a066451543172b07d02bf4eff8882" id="r_gaaa8a066451543172b07d02bf4eff8882"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaaa8a066451543172b07d02bf4eff8882">SDL::MixAudio</a> (Uint8 *dst, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> src, <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a> format, float volume)</td></tr>
+<tr class="memdesc:gaaa8a066451543172b07d02bf4eff8882"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mix audio data in a specified format.  <br /></td></tr>
+<tr class="separator:gaaa8a066451543172b07d02bf4eff8882"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga90ebbeaafbf2f69bbd771abbd5b94f23" id="r_ga90ebbeaafbf2f69bbd771abbd5b94f23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga90ebbeaafbf2f69bbd771abbd5b94f23">SDL::MixAudio</a> (<a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> dst, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> src, <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a> format, float volume)</td></tr>
+<tr class="memdesc:ga90ebbeaafbf2f69bbd771abbd5b94f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mix audio data in a specified format.  <br /></td></tr>
+<tr class="separator:ga90ebbeaafbf2f69bbd771abbd5b94f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga21787c751aa8f17579f1dca4a1b8b8ff" id="r_ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; Uint8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga21787c751aa8f17579f1dca4a1b8b8ff">SDL::ConvertAudioSamples</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;src_spec, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> src_data, const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;dst_spec)</td></tr>
+<tr class="memdesc:ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert some audio data of one format to another format.  <br /></td></tr>
+<tr class="separator:ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga46ce94c7d1acf411de212752151d645a" id="r_ga46ce94c7d1acf411de212752151d645a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga46ce94c7d1acf411de212752151d645a">SDL::AudioDeviceBase::BindAudioStreams</a> (std::span&lt; <a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> &gt; streams)</td></tr>
 <tr class="memdesc:ga46ce94c7d1acf411de212752151d645a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind a list of audio streams to an audio device.  <br /></td></tr>
 <tr class="separator:ga46ce94c7d1acf411de212752151d645a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -442,7 +442,7 @@ right, then it repeats for the next audio frame".</p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Apps can (optionally) register a callback with an audio stream that is called when data is added with <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a>, or requested with <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>.</p>
+<p>Apps can (optionally) register a callback with an audio stream that is called when data is added with <a class="el" href="structSDL_1_1AudioStreamBase.html#a1c794d44b3bd7bc0060a91eec4a8bae9" title="Add data to the stream.">AudioStreamBase.PutData</a>, or requested with <a class="el" href="structSDL_1_1AudioStreamBase.html#a3164d08d12fec31905b45e7d1acb47c7" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>.</p>
 <p>Two values are offered here: one is the amount of additional data needed to satisfy the immediate request (which might be zero if the stream already has enough data queued) and the other is the total amount being requested. In a Get call triggering a Put callback, these values can be different. In a Put call triggering a Get callback, these values are always the same.</p>
 <p>Byte counts might be slightly overestimated due to buffering or resampling, and may change from call to call.</p>
 <p>This callback is not required to do anything. Generally this is useful for adding/reading data on demand, and the app will often put/get data as appropriate, but the system goes on with the data currently available to it if this callback does nothing.</p>
@@ -474,7 +474,7 @@ right, then it repeats for the next audio frame".</p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Apps can (optionally) register a callback with an audio stream that is called when data is added with <a class="el" href="structSDL_1_1AudioStreamBase.html#a00aafbb242a8a5f46016e34e894c089d" title="Add data to the stream.">AudioStreamBase.PutData</a>, or requested with <a class="el" href="structSDL_1_1AudioStreamBase.html#aabe4f8048b6986500e8862b1c804ff92" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>.</p>
+<p>Apps can (optionally) register a callback with an audio stream that is called when data is added with <a class="el" href="structSDL_1_1AudioStreamBase.html#a1c794d44b3bd7bc0060a91eec4a8bae9" title="Add data to the stream.">AudioStreamBase.PutData</a>, or requested with <a class="el" href="structSDL_1_1AudioStreamBase.html#a3164d08d12fec31905b45e7d1acb47c7" title="Get converted/resampled data from the stream.">AudioStreamBase.GetData</a>.</p>
 <p>Two values are offered here: one is the amount of additional data needed to satisfy the immediate request (which might be zero if the stream already has enough data queued) and the other is the total amount being requested. In a Get call triggering a Put callback, these values can be different. In a Put call triggering a Get callback, these values are always the same.</p>
 <p>Byte counts might be slightly overestimated due to buffering or resampling, and may change from call to call.</p>
 <p>This callback is not required to do anything. Generally this is useful for adding/reading data on demand, and the app will often put/get data as appropriate, but the system goes on with the data currently available to it if this callback does nothing.</p>
@@ -643,8 +643,8 @@ AudioDeviceBase.UnbindAudioStream </dd>
 
 </div>
 </div>
-<a id="ga92405cdffe850ab2c575d7c605f46731" name="ga92405cdffe850ab2c575d7c605f46731"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga92405cdffe850ab2c575d7c605f46731">&#9670;&#160;</a></span>ConvertAudioSamples()</h2>
+<a id="ga21787c751aa8f17579f1dca4a1b8b8ff" name="ga21787c751aa8f17579f1dca4a1b8b8ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga21787c751aa8f17579f1dca4a1b8b8ff">&#9670;&#160;</a></span>ConvertAudioSamples()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -661,7 +661,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::span&lt; const Uint8 &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>src_data</em>, </td>
         </tr>
         <tr>
@@ -913,7 +913,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
 <p>Example:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__CategoryAudio.html#ga7f1dcc9ccd8d5fd3d6391cddbd19c317">LoadWAV</a>(<a class="code hl_struct" href="structSDL_1_1IOStreamBase.html">IOStreamBase</a>.<a class="code hl_function" href="structSDL_1_1IOStreamBase.html#a9f95542b4f9ed519d181002e945df588">IOStreamBase</a>(<span class="stringliteral">&quot;sample.wav&quot;</span>, <span class="stringliteral">&quot;rb&quot;</span>), <span class="keyword">true</span>, &amp;spec, &amp;buf,</div>
 <div class="line">&amp;len);</div>
-<div class="ttc" id="agroup__CategoryAudio_html_ga7f1dcc9ccd8d5fd3d6391cddbd19c317"><div class="ttname"><a href="group__CategoryAudio.html#ga7f1dcc9ccd8d5fd3d6391cddbd19c317">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamBase &amp;src, AudioSpec *spec)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:2885</div></div>
+<div class="ttc" id="agroup__CategoryAudio_html_ga7f1dcc9ccd8d5fd3d6391cddbd19c317"><div class="ttname"><a href="group__CategoryAudio.html#ga7f1dcc9ccd8d5fd3d6391cddbd19c317">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamBase &amp;src, AudioSpec *spec)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:2821</div></div>
 <div class="ttc" id="astructSDL_1_1IOStreamBase_html"><div class="ttname"><a href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a></div><div class="ttdoc">The read/write operation structure.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:114</div></div>
 <div class="ttc" id="astructSDL_1_1IOStreamBase_html_a9f95542b4f9ed519d181002e945df588"><div class="ttname"><a href="structSDL_1_1IOStreamBase.html#a9f95542b4f9ed519d181002e945df588">SDL::IOStreamBase::IOStreamBase</a></div><div class="ttdeci">IOStreamBase(StringParam file, StringParam mode)</div><div class="ttdoc">Use this function to create a new IOStreamBase structure for reading from and/or writing to a named f...</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:199</div></div>
 </div><!-- fragment --><p>Note that the LoadWAV function does this same thing for you, but in a less messy way:</p>
@@ -925,13 +925,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the audio data on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>the audio data on success or nullptr on failure.</dd></dl>
 <p>This function throws false if the .WAV file cannot be opened, uses an unknown data format, or is corrupt,</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
@@ -982,13 +976,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the audio data on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>the audio data on success or nullptr on failure.</dd></dl>
 <p>This function throws false if the .WAV file cannot be opened, uses an unknown data format, or is corrupt,</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
@@ -1033,8 +1021,8 @@ AudioDeviceBase.UnbindAudioStream </dd>
 
 </div>
 </div>
-<a id="gad789fb1d19202cb1682b200e915c7ff4" name="gad789fb1d19202cb1682b200e915c7ff4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad789fb1d19202cb1682b200e915c7ff4">&#9670;&#160;</a></span>MixAudio() <span class="overload">[1/2]</span></h2>
+<a id="ga90ebbeaafbf2f69bbd771abbd5b94f23" name="ga90ebbeaafbf2f69bbd771abbd5b94f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga90ebbeaafbf2f69bbd771abbd5b94f23">&#9670;&#160;</a></span>MixAudio() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1045,13 +1033,13 @@ AudioDeviceBase.UnbindAudioStream </dd>
         <tr>
           <td class="memname">void SDL::MixAudio </td>
           <td>(</td>
-          <td class="paramtype">std::span&lt; Uint8 &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a>&#160;</td>
           <td class="paramname"><em>dst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::span&lt; const Uint8 &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -1081,7 +1069,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
 <p>This takes an audio buffer <code>src</code> of <code>len</code> bytes of <code>format</code> data and mixes it into <code>dst</code>, performing addition, volume adjustment, and overflow clipping. The buffer pointed to by <code>dst</code> must also be <code>len</code> bytes of <code>format</code> data.</p>
 <p>This is provided for convenience &ndash; you can mix your own audio data.</p>
 <p>Do not use this function for mixing together more than two streams of sample data. The output from repeated application of this function may be distorted by clipping, because there is no accumulator with greater range than the input (not to mention this being an inefficient way of doing it).</p>
-<p>It is a common misconception that this function is required to write audio data to an output stream in an audio callback. While you can do that, <a class="el" href="group__CategoryAudio.html#gaaa3a027ac7360f48d9a5178dd385e5df" title="Mix audio data in a specified format.">MixAudio()</a> is really only needed when you're mixing a single audio stream with a volume adjustment.</p>
+<p>It is a common misconception that this function is required to write audio data to an output stream in an audio callback. While you can do that, <a class="el" href="group__CategoryAudio.html#gaaa8a066451543172b07d02bf4eff8882" title="Mix audio data in a specified format.">MixAudio()</a> is really only needed when you're mixing a single audio stream with a volume adjustment.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dst</td><td>the destination for the mixed audio. </td></tr>
@@ -1102,8 +1090,8 @@ AudioDeviceBase.UnbindAudioStream </dd>
 
 </div>
 </div>
-<a id="gaaa3a027ac7360f48d9a5178dd385e5df" name="gaaa3a027ac7360f48d9a5178dd385e5df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaa3a027ac7360f48d9a5178dd385e5df">&#9670;&#160;</a></span>MixAudio() <span class="overload">[2/2]</span></h2>
+<a id="gaaa8a066451543172b07d02bf4eff8882" name="gaaa8a066451543172b07d02bf4eff8882"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaa8a066451543172b07d02bf4eff8882">&#9670;&#160;</a></span>MixAudio() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1120,7 +1108,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::span&lt; const Uint8 &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -1150,7 +1138,7 @@ AudioDeviceBase.UnbindAudioStream </dd>
 <p>This takes an audio buffer <code>src</code> of <code>len</code> bytes of <code>format</code> data and mixes it into <code>dst</code>, performing addition, volume adjustment, and overflow clipping. The buffer pointed to by <code>dst</code> must also be <code>len</code> bytes of <code>format</code> data.</p>
 <p>This is provided for convenience &ndash; you can mix your own audio data.</p>
 <p>Do not use this function for mixing together more than two streams of sample data. The output from repeated application of this function may be distorted by clipping, because there is no accumulator with greater range than the input (not to mention this being an inefficient way of doing it).</p>
-<p>It is a common misconception that this function is required to write audio data to an output stream in an audio callback. While you can do that, <a class="el" href="group__CategoryAudio.html#gaaa3a027ac7360f48d9a5178dd385e5df" title="Mix audio data in a specified format.">MixAudio()</a> is really only needed when you're mixing a single audio stream with a volume adjustment.</p>
+<p>It is a common misconception that this function is required to write audio data to an output stream in an audio callback. While you can do that, <a class="el" href="group__CategoryAudio.html#gaaa8a066451543172b07d02bf4eff8882" title="Mix audio data in a specified format.">MixAudio()</a> is really only needed when you're mixing a single audio stream with a volume adjustment.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dst</td><td>the destination for the mixed audio. </td></tr>

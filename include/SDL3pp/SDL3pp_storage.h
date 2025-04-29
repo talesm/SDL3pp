@@ -440,9 +440,7 @@ struct StorageBase : Resource<SDL_Storage*>
     auto sz = GetFileSize(path.c_str());
     if (!sz || *sz == 0) return {};
     std::string buffer(*sz, 0);
-    if (ReadFile(std::move(path), buffer.data(), buffer.size())) {
-      return buffer;
-    }
+    if (ReadFile(std::move(path), buffer)) return buffer;
     return {};
   }
 
@@ -465,35 +463,10 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.Ready
    * @sa StorageBase.WriteFile
    */
-  bool ReadFile(StringParam path, std::span<char> destination) const
+  bool ReadFile(StringParam path, TargetBytes destination) const
   {
-    return ReadFile(
-      std::move(path), destination.data(), destination.size_bytes());
-  }
-
-  /**
-   * Synchronously read a file from a storage container into a client-provided
-   * buffer.
-   *
-   * The value of `length` must match the length of the file exactly; call
-   * StorageBase.GetFileSize() to get this value. This behavior may be relaxed
-   * in a future release.
-   *
-   * @param path the relative path of the file to read.
-   * @param destination a client-provided buffer to read the file into.
-   * @param length the length of the destination buffer.
-   * @returns true if the file was read or false on failure; call GetError()
-   *          for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.Ready
-   * @sa StorageBase.WriteFile
-   */
-  bool ReadFile(StringParam path, void* destination, Uint64 length) const
-  {
-    return SDL_ReadStorageFile(get(), path, destination, length);
+    return SDL_ReadStorageFile(
+      get(), path, destination.data, destination.size_bytes);
   }
 
   /**
@@ -520,7 +493,7 @@ struct StorageBase : Resource<SDL_Storage*>
     auto sz = GetFileSize(path.c_str());
     if (!sz || *sz == 0) return {};
     std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
-    if (ReadFile(std::move(path), buffer.data(), *sz)) return buffer;
+    if (ReadFile(std::move(path), {buffer.data(), *sz})) return buffer;
     return {};
   }
 
@@ -537,28 +510,9 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.ReadFile
    * @sa StorageBase.Ready
    */
-  void WriteFile(StringParam path, std::span<const char> source)
+  void WriteFile(StringParam path, SourceBytes source)
   {
-    WriteFile(std::move(path), source.data(), source.size_bytes());
-  }
-
-  /**
-   * Synchronously write a file from client memory into a storage container.
-   *
-   * @param path the relative path of the file to write.
-   * @param source a client-provided buffer to write from.
-   * @param length the length of the source buffer.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageBase.GetSpaceRemaining
-   * @sa StorageBase.ReadFile
-   * @sa StorageBase.Ready
-   */
-  void WriteFile(StringParam path, const void* source, Uint64 length)
-  {
-    CheckError(SDL_WriteStorageFile(get(), path, source, length));
+    SDL_WriteStorageFile(get(), path, source.data, source.size_bytes);
   }
 
   /**

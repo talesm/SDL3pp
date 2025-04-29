@@ -309,11 +309,11 @@ const transform = {
           parameters: [
             {
               name: "dst",
-              type: "std::span<Uint8>"
+              type: "TargetBytes"
             },
             {
               name: "src",
-              type: "std::span<const Uint8>"
+              type: "SourceBytes"
             },
             {
               name: "format",
@@ -576,18 +576,12 @@ const transform = {
               type: "void",
               parameters: [{}, { type: "std::span<int>" }]
             },
-            "PutData": {
-              kind: "function",
-              type: "void",
-              parameters: [{ type: "std::span<const char>", name: "buf" }]
+            "SDL_PutAudioStreamData": {
+              parameters: [{}, { type: "SourceBytes", name: "buf" }]
             },
-            "SDL_PutAudioStreamData": "function",
-            "GetData": {
-              kind: "function",
-              type: "int",
-              parameters: [{ type: "std::span<char>", name: "buf" }]
+            "SDL_GetAudioStreamData": {
+              parameters: [{}, { type: "TargetBytes", name: "buf" }]
             },
-            "SDL_GetAudioStreamData": "function",
             "SDL_GetAudioStreamAvailable": "immutable",
             "SDL_GetAudioStreamQueued": "immutable",
             "SDL_FlushAudioStream": "function",
@@ -693,7 +687,7 @@ const transform = {
             },
             {
               name: "src",
-              type: "std::span<const Uint8>"
+              type: "SourceBytes"
             },
             {
               name: "format",
@@ -714,7 +708,7 @@ const transform = {
             },
             {
               name: "src_data",
-              type: "std::span<const Uint8>"
+              type: "SourceBytes"
             },
             {
               name: "dst_spec",
@@ -5838,7 +5832,7 @@ const transform = {
               type: "std::optional<Uint64>",
               parameters: [{}, {}]
             },
-            "ReadFile": [{
+            "ReadFile": {
               kind: "function",
               type: "std::string",
               immutable: true,
@@ -5848,22 +5842,15 @@ const transform = {
                   type: "StringParam"
                 }
               ],
-            }, {
-              kind: "function",
-              type: "bool",
+            },
+            "SDL_ReadStorageFile": {
               immutable: true,
               parameters: [
-                {
-                  name: "path",
-                  type: "StringParam"
-                },
-                {
-                  name: "destination",
-                  type: "std::span<char>"
-                }
-              ],
-            }],
-            "SDL_ReadStorageFile": "immutable",
+                { name: "this" },
+                { name: "path", type: "StringParam" },
+                { name: "destination", type: "TargetBytes" }
+              ]
+            },
             "ReadFileAs": {
               kind: "function",
               template: [{ type: "class", name: "T" }],
@@ -5876,21 +5863,14 @@ const transform = {
                 }
               ],
             },
-            "WriteFile": {
-              kind: "function",
+            "SDL_WriteStorageFile": {
               type: "void",
               parameters: [
-                {
-                  name: "path",
-                  type: "StringParam",
-                },
-                {
-                  name: "source",
-                  type: "std::span<const char>",
-                }
+                { name: "this" },
+                { name: "path", type: "StringParam" },
+                { name: "source", type: "SourceBytes" }
               ]
             },
-            "SDL_WriteStorageFile": { type: "void" },
             "SDL_CreateStorageDirectory": "function",
             "EnumerateDirectory": [{
               kind: "function",

@@ -27909,9 +27909,7 @@ struct StorageBase : Resource<SDL_Storage*>
     auto sz = GetFileSize(path.c_str());
     if (!sz || *sz == 0) return {};
     std::string buffer(*sz, 0);
-    if (ReadFile(std::move(path), buffer.data(), buffer.size())) {
-      return buffer;
-    }
+    if (ReadFile(std::move(path), buffer)) return buffer;
     return {};
   }
 
@@ -27934,35 +27932,10 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.Ready
    * @sa StorageBase.WriteFile
    */
-  bool ReadFile(StringParam path, std::span<char> destination) const
+  bool ReadFile(StringParam path, TargetBytes destination) const
   {
-    return ReadFile(
-      std::move(path), destination.data(), destination.size_bytes());
-  }
-
-  /**
-   * Synchronously read a file from a storage container into a client-provided
-   * buffer.
-   *
-   * The value of `length` must match the length of the file exactly; call
-   * StorageBase.GetFileSize() to get this value. This behavior may be relaxed
-   * in a future release.
-   *
-   * @param path the relative path of the file to read.
-   * @param destination a client-provided buffer to read the file into.
-   * @param length the length of the destination buffer.
-   * @returns true if the file was read or false on failure; call GetError()
-   *          for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.Ready
-   * @sa StorageBase.WriteFile
-   */
-  bool ReadFile(StringParam path, void* destination, Uint64 length) const
-  {
-    return SDL_ReadStorageFile(get(), path, destination, length);
+    return SDL_ReadStorageFile(
+      get(), path, destination.data, destination.size_bytes);
   }
 
   /**
@@ -27989,7 +27962,7 @@ struct StorageBase : Resource<SDL_Storage*>
     auto sz = GetFileSize(path.c_str());
     if (!sz || *sz == 0) return {};
     std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
-    if (ReadFile(std::move(path), buffer.data(), *sz)) return buffer;
+    if (ReadFile(std::move(path), {buffer.data(), *sz})) return buffer;
     return {};
   }
 
@@ -28006,28 +27979,9 @@ struct StorageBase : Resource<SDL_Storage*>
    * @sa StorageBase.ReadFile
    * @sa StorageBase.Ready
    */
-  void WriteFile(StringParam path, std::span<const char> source)
+  void WriteFile(StringParam path, SourceBytes source)
   {
-    WriteFile(std::move(path), source.data(), source.size_bytes());
-  }
-
-  /**
-   * Synchronously write a file from client memory into a storage container.
-   *
-   * @param path the relative path of the file to write.
-   * @param source a client-provided buffer to write from.
-   * @param length the length of the source buffer.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageBase.GetSpaceRemaining
-   * @sa StorageBase.ReadFile
-   * @sa StorageBase.Ready
-   */
-  void WriteFile(StringParam path, const void* source, Uint64 length)
-  {
-    CheckError(SDL_WriteStorageFile(get(), path, source, length));
+    SDL_WriteStorageFile(get(), path, source.data, source.size_bytes);
   }
 
   /**
@@ -30917,41 +30871,10 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetData
    * @sa AudioStreamBase.GetQueued
    */
-  void PutData(std::span<const char> buf)
+  void PutData(SourceBytes buf)
   {
-    SDL_assert_paranoid(buf.size() < MAX_SINT32);
-    PutData(buf.data(), buf.size_bytes());
-  }
-
-  /**
-   * Add data to the stream.
-   *
-   * This data must match the format/channels/samplerate specified in the latest
-   * call to AudioStreamBase.SetFormat, or the format specified when creating
-   * the stream if it hasn't been changed.
-   *
-   * Note that this call simply copies the unconverted data for later. This is
-   * different than SDL2, where data was converted during the Put call and the
-   * Get call would just dequeue the previously-converted data.
-   *
-   * @param buf a pointer to the audio data to add.
-   * @param len the number of bytes to write to the stream.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread, but if the
-   *               stream has a callback set, the caller might need to manage
-   *               extra locking.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStreamBase.Clear
-   * @sa AudioStreamBase.Flush
-   * @sa AudioStreamBase.GetData
-   * @sa AudioStreamBase.GetQueued
-   */
-  void PutData(const void* buf, int len)
-  {
-    CheckError(SDL_PutAudioStreamData(get(), buf, len));
+    SDL_assert_paranoid(buf.size_bytes < MAX_SINT32);
+    CheckError(SDL_PutAudioStreamData(get(), buf.data, buf.size_bytes));
   }
 
   /**
@@ -30980,41 +30903,9 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetAvailable
    * @sa AudioStreamBase.PutData
    */
-  int GetData(std::span<char> buf)
+  int GetData(TargetBytes buf)
   {
-    return GetData(buf.data(), buf.size_bytes());
-  }
-
-  /**
-   * Get converted/resampled data from the stream.
-   *
-   * The input/output data format/channels/samplerate is specified when creating
-   * the stream, and can be changed after creation by calling
-   * AudioStreamBase.SetFormat.
-   *
-   * Note that any conversion and resampling necessary is done during this call,
-   * and AudioStreamBase.PutData simply queues unconverted data for later. This
-   * is different than SDL2, where that work was done while inputting new data
-   * to the stream and requesting the output just copied the converted data.
-   *
-   * @param buf a buffer to fill with audio data.
-   * @param len the maximum number of bytes to fill.
-   * @returns the number of bytes read from the stream or -1 on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread, but if the
-   *               stream has a callback set, the caller might need to manage
-   *               extra locking.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStreamBase.Clear
-   * @sa AudioStreamBase.GetAvailable
-   * @sa AudioStreamBase.PutData
-   */
-  int GetData(void* buf, int len)
-  {
-    return SDL_GetAudioStreamData(get(), buf, len);
+    return SDL_GetAudioStreamData(get(), buf.data, buf.size_bytes);
   }
 
   /**
@@ -31863,8 +31754,7 @@ inline AudioStreamLock AudioStreamBase::Lock()
  * @param src the data source for the WAVE data.
  * @param spec a pointer to an AudioSpec that will be set to the WAVE
  *             data's format details on successful return.
- * @returns the audio data on success.
- * @throws Error on failure.
+ * @returns the audio data on success or nullptr on failure.
  *
  * This function throws false if the .WAV file cannot be opened,
  * uses an unknown data format, or is corrupt,
@@ -31879,7 +31769,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamBase& src, AudioSpec* spec)
 {
   Uint8* buf;
   Uint32 len;
-  CheckError(SDL_LoadWAV_IO(src.get(), false, spec, &buf, &len));
+  if (!SDL_LoadWAV_IO(src.get(), false, spec, &buf, &len)) return {};
   return OwnArray<Uint8>{buf, size_t(len)};
 }
 
@@ -31896,8 +31786,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamBase& src, AudioSpec* spec)
  * @param path the file path of the WAV file to open.
  * @param spec a pointer to an AudioSpec that will be set to the WAVE
  *             data's format details on successful return.
- * @returns the audio data on success.
- * @throws Error on failure.
+ * @returns the audio data on success or nullptr on failure.
  *
  * This function throws false if the .WAV file cannot be opened,
  * uses an unknown data format, or is corrupt,
@@ -31912,7 +31801,7 @@ inline OwnArray<Uint8> LoadWAV(StringParam path, AudioSpec* spec)
 {
   Uint8* buf;
   Uint32 len;
-  CheckError(SDL_LoadWAV(path, spec, &buf, &len));
+  if (!SDL_LoadWAV(path, spec, &buf, &len)) return {};
   return OwnArray<Uint8>{buf, size_t(len)};
 }
 
@@ -31949,12 +31838,13 @@ inline OwnArray<Uint8> LoadWAV(StringParam path, AudioSpec* spec)
  * @since This function is available since SDL 3.2.0.
  */
 inline void MixAudio(Uint8* dst,
-                     std::span<const Uint8> src,
+                     SourceBytes src,
                      AudioFormat format,
                      float volume)
 {
-  SDL_assert_paranoid(src.size() < SDL_MAX_SINT32);
-  CheckError(SDL_MixAudio(dst, src.data(), format, src.size(), volume));
+  SDL_assert_paranoid(src.size_bytes < SDL_MAX_SINT32);
+  CheckError(SDL_MixAudio(
+    dst, static_cast<const Uint8*>(src.data), format, src.size_bytes, volume));
 }
 
 /**
@@ -31989,13 +31879,13 @@ inline void MixAudio(Uint8* dst,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void MixAudio(std::span<Uint8> dst,
-                     std::span<const Uint8> src,
+inline void MixAudio(TargetBytes dst,
+                     SourceBytes src,
                      AudioFormat format,
                      float volume)
 {
-  if (dst.size() < src.size()) src = src.subspan(0, dst.size());
-  MixAudio(dst.data(), src, format, volume);
+  if (dst.size_bytes < src.size_bytes) src.size_bytes = dst.size_bytes;
+  MixAudio(static_cast<Uint8*>(dst.data), src, format, volume);
 }
 
 /**
@@ -32022,14 +31912,18 @@ inline void MixAudio(std::span<Uint8> dst,
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
-                                           std::span<const Uint8> src_data,
+                                           SourceBytes src_data,
                                            const AudioSpec& dst_spec)
 {
-  SDL_assert_paranoid(src_data.size() < SDL_MAX_SINT32);
+  SDL_assert_paranoid(src_data.size_bytes < SDL_MAX_SINT32);
   Uint8* buf;
   int len;
-  CheckError(SDL_ConvertAudioSamples(
-    &src_spec, src_data.data(), src_data.size(), &dst_spec, &buf, &len));
+  CheckError(SDL_ConvertAudioSamples(&src_spec,
+                                     static_cast<const Uint8*>(src_data.data),
+                                     src_data.size_bytes,
+                                     &dst_spec,
+                                     &buf,
+                                     &len));
   return OwnArray<Uint8>{buf, size_t(len)};
 }
 #pragma region impl
