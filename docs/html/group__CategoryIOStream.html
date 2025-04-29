@@ -84,8 +84,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOFromDynamicMem__CtorTag.html">SDL::IOFromDynamicMem_CtorTag</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The read/write operation structure.  <a href="structSDL_1_1IOStreamBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,6 +108,15 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ga0ab32e06de9f87b1e8a61ac39f5b2bdd" id="r_ga0ab32e06de9f87b1e8a61ac39f5b2bdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStream.html">IOStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga0ab32e06de9f87b1e8a61ac39f5b2bdd">SDL::IOFromMem</a> (<a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> mem)</td></tr>
+<tr class="memdesc:ga0ab32e06de9f87b1e8a61ac39f5b2bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to prepare a read-write memory buffer for use with <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a>.  <br /></td></tr>
+<tr class="separator:ga0ab32e06de9f87b1e8a61ac39f5b2bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a4eff43e61e78e8ea35fdaf3c64be0f" id="r_ga4a4eff43e61e78e8ea35fdaf3c64be0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStream.html">IOStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga4a4eff43e61e78e8ea35fdaf3c64be0f">SDL::IOFromConstMem</a> (<a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> mem)</td></tr>
+<tr class="memdesc:ga4a4eff43e61e78e8ea35fdaf3c64be0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to prepare a read-only memory buffer for use with <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a>.  <br /></td></tr>
+<tr class="separator:ga4a4eff43e61e78e8ea35fdaf3c64be0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5f81384af9d626d4672f576ae5a98eea" id="r_ga5f81384af9d626d4672f576ae5a98eea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1IOStream.html">IOStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga5f81384af9d626d4672f576ae5a98eea">SDL::IOFromDynamicMem</a> ()</td></tr>
+<tr class="memdesc:ga5f81384af9d626d4672f576ae5a98eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to create an <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> that is backed by dynamically allocated memory.  <br /></td></tr>
+<tr class="separator:ga5f81384af9d626d4672f576ae5a98eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga179e9ae2bbdd6a280757e2fae6157156" id="r_ga179e9ae2bbdd6a280757e2fae6157156"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1StringResult.html">StringResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga179e9ae2bbdd6a280757e2fae6157156">SDL::LoadFile</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
 <tr class="memdesc:ga179e9ae2bbdd6a280757e2fae6157156"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all the data from a file path.  <br /></td></tr>
 <tr class="separator:ga179e9ae2bbdd6a280757e2fae6157156"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,19 +124,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga604a573a52fe5cd9b686f2965939f93b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga604a573a52fe5cd9b686f2965939f93b">SDL::LoadFileAs</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
 <tr class="memdesc:ga604a573a52fe5cd9b686f2965939f93b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all the data from a file path.  <br /></td></tr>
 <tr class="separator:ga604a573a52fe5cd9b686f2965939f93b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae6deb25281def51dd52739bfda12b37b" id="r_gae6deb25281def51dd52739bfda12b37b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gae6deb25281def51dd52739bfda12b37b">SDL::SaveFile</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file, const void *data, size_t datasize)</td></tr>
-<tr class="memdesc:gae6deb25281def51dd52739bfda12b37b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save all the data into a file path.  <br /></td></tr>
-<tr class="separator:gae6deb25281def51dd52739bfda12b37b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9304e34b30bb4e52e4e1c72cfecdaeeb" id="r_ga9304e34b30bb4e52e4e1c72cfecdaeeb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#ga9304e34b30bb4e52e4e1c72cfecdaeeb">SDL::SaveFile</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file, std::span&lt; const char &gt; data)</td></tr>
-<tr class="memdesc:ga9304e34b30bb4e52e4e1c72cfecdaeeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save all the data into a file path.  <br /></td></tr>
-<tr class="separator:ga9304e34b30bb4e52e4e1c72cfecdaeeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab86cae34b796b5bc0a2bacd2eb8193b8" id="r_gab86cae34b796b5bc0a2bacd2eb8193b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gab86cae34b796b5bc0a2bacd2eb8193b8">SDL::SaveFile</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> data)</td></tr>
+<tr class="memdesc:gab86cae34b796b5bc0a2bacd2eb8193b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save all the data into a file path.  <br /></td></tr>
+<tr class="separator:gab86cae34b796b5bc0a2bacd2eb8193b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:gacaa9988b2fc00136dccf5f557222bcaa" id="r_gacaa9988b2fc00136dccf5f557222bcaa"><td class="memItemLeft" align="right" valign="top"><a id="gacaa9988b2fc00136dccf5f557222bcaa" name="gacaa9988b2fc00136dccf5f557222bcaa"></a>
-constexpr struct <a class="el" href="structSDL_1_1IOFromDynamicMem__CtorTag.html">SDL::IOFromDynamicMem_CtorTag</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::IOFromDynamicMem</b></td></tr>
-<tr class="memdesc:gacaa9988b2fc00136dccf5f557222bcaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">DynamicMem tag. <br /></td></tr>
-<tr class="separator:gacaa9988b2fc00136dccf5f557222bcaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadca1e808b43d37fa4bcfedac6abdd125" id="r_gadca1e808b43d37fa4bcfedac6abdd125"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056f3a597416c642">IOStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryIOStream.html#gadca1e808b43d37fa4bcfedac6abdd125">SDL::IO_STATUS_READY</a></td></tr>
 <tr class="memdesc:gadca1e808b43d37fa4bcfedac6abdd125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything is ready (no errors and not EOF).  <br /></td></tr>
 <tr class="separator:gadca1e808b43d37fa4bcfedac6abdd125"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,6 +213,175 @@ constexpr <a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga4a4eff43e61e78e8ea35fdaf3c64be0f" name="ga4a4eff43e61e78e8ea35fdaf3c64be0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4a4eff43e61e78e8ea35fdaf3c64be0f">&#9670;&#160;</a></span>IOFromConstMem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1IOStream.html">IOStream</a> SDL::IOFromConstMem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
+          <td class="paramname"><em>mem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function sets up an <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> struct based on a memory area of a certain size. It assumes the memory area is not writable.</p>
+<p>Attempting to write to this <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> stream will report an error without writing to the memory buffer.</p>
+<p>This memory buffer is not copied by the <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a>; the pointer you provide must remain valid until you close the stream. Closing the stream will not free the original buffer.</p>
+<p>If you need to write to a memory buffer, you should use <a class="el" href="group__CategoryIOStream.html#ga0ab32e06de9f87b1e8a61ac39f5b2bdd" title="Use this function to prepare a read-write memory buffer for use with IOStreamBase.">IOFromMem()</a> with a writable buffer of memory instead.</p>
+<p>The following properties will be set at creation time by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>:</p>
+<ul>
+<li><code>prop::IOStream.MEMORY_POINTER</code>: this will be the <code>mem</code> parameter that was passed to this function.</li>
+<li><code>prop::IOStream.MEMORY_SIZE_NUMBER</code>: this will be the <code>size</code> parameter that was passed to this function.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mem</td><td>a read-only buffer to feed an <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> stream. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIOStream.html#ga0ab32e06de9f87b1e8a61ac39f5b2bdd" title="Use this function to prepare a read-write memory buffer for use with IOStreamBase.">IOFromMem</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5" title="Close and free an allocated IOStreamBase structure.">IOStreamRef.Close</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a0e2c7cc905b7cc86b3b73d4cd43e36e5" title="Read from a data source.">IOStreamBase.Read</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a321af73522ca05cf2e7973626e063e11" title="Seek within an IOStreamBase data stream.">IOStreamBase.Seek</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#ab94a635dc7a2ddaa1aba1381fac1fe33" title="Determine the current read/write offset in an IOStreamBase data stream.">IOStreamBase.Tell</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga5f81384af9d626d4672f576ae5a98eea" name="ga5f81384af9d626d4672f576ae5a98eea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5f81384af9d626d4672f576ae5a98eea">&#9670;&#160;</a></span>IOFromDynamicMem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1IOStream.html">IOStream</a> SDL::IOFromDynamicMem </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This supports the following properties to provide access to the memory and control over allocations:</p>
+<ul>
+<li><code>prop::IOStream.DYNAMIC_MEMORY_POINTER</code>: a pointer to the internal memory of the stream. This can be set to nullptr to transfer ownership of the memory to the application, which should free the memory with <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>. If this is done, the next operation on the stream must be <a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5" title="Close and free an allocated IOStreamBase structure.">IOStreamRef.Close()</a>.</li>
+<li><code>prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER</code>: memory will be allocated in multiples of this size, defaulting to 1024.</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>a valid <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5" title="Close and free an allocated IOStreamBase structure.">IOStreamRef.Close</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a0e2c7cc905b7cc86b3b73d4cd43e36e5" title="Read from a data source.">IOStreamBase.Read</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a321af73522ca05cf2e7973626e063e11" title="Seek within an IOStreamBase data stream.">IOStreamBase.Seek</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#ab94a635dc7a2ddaa1aba1381fac1fe33" title="Determine the current read/write offset in an IOStreamBase data stream.">IOStreamBase.Tell</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a3b5dda29bfb90580d495d52bcb90eb2e" title="Write to an IOStreamBase data stream.">IOStreamBase.Write</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga0ab32e06de9f87b1e8a61ac39f5b2bdd" name="ga0ab32e06de9f87b1e8a61ac39f5b2bdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0ab32e06de9f87b1e8a61ac39f5b2bdd">&#9670;&#160;</a></span>IOFromMem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1IOStream.html">IOStream</a> SDL::IOFromMem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a>&#160;</td>
+          <td class="paramname"><em>mem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function sets up an <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> struct based on a memory area of a certain size, for both read and write access.</p>
+<p>This memory buffer is not copied by the <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a>; the pointer you provide must remain valid until you close the stream. Closing the stream will not free the original buffer.</p>
+<p>If you need to make sure the <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> never writes to the memory buffer, you should use <a class="el" href="group__CategoryIOStream.html#ga4a4eff43e61e78e8ea35fdaf3c64be0f" title="Use this function to prepare a read-only memory buffer for use with IOStreamBase.">IOFromConstMem()</a> with a read-only buffer of memory instead.</p>
+<p>The following properties will be set at creation time by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>:</p>
+<ul>
+<li><code>prop::IOStream.MEMORY_POINTER</code>: this will be the <code>mem</code> parameter that was passed to this function.</li>
+<li><code>prop::IOStream.MEMORY_SIZE_NUMBER</code>: this will be the <code>size</code> parameter that was passed to this function.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mem</td><td>a buffer to feed an <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> stream. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a> on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryIOStream.html#ga4a4eff43e61e78e8ea35fdaf3c64be0f" title="Use this function to prepare a read-only memory buffer for use with IOStreamBase.">IOFromConstMem</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5" title="Close and free an allocated IOStreamBase structure.">IOStreamRef.Close</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a86dfb5c7ea703f3b11ee9fcff35b7fc4" title="Flush any buffered data in the stream.">IOStreamBase.Flush</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a0e2c7cc905b7cc86b3b73d4cd43e36e5" title="Read from a data source.">IOStreamBase.Read</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a321af73522ca05cf2e7973626e063e11" title="Seek within an IOStreamBase data stream.">IOStreamBase.Seek</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#ab94a635dc7a2ddaa1aba1381fac1fe33" title="Determine the current read/write offset in an IOStreamBase data stream.">IOStreamBase.Tell</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IOStreamBase.html#a3b5dda29bfb90580d495d52bcb90eb2e" title="Write to an IOStreamBase data stream.">IOStreamBase.Write</a> </dd></dl>
+
+</div>
+</div>
 <a id="ga179e9ae2bbdd6a280757e2fae6157156" name="ga179e9ae2bbdd6a280757e2fae6157156"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga179e9ae2bbdd6a280757e2fae6157156">&#9670;&#160;</a></span>LoadFile()</h2>
 
@@ -254,7 +423,7 @@ constexpr <a class="el" href="group__CategoryIOStream.html#gac6fe4a8e6aa95d60056
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#a44c3bbe68e506e10506899ff0689d9b1" title="Load all the data from an SDL data stream.">IOStreamBase.LoadFile</a> </dd>
 <dd>
-<a class="el" href="group__CategoryIOStream.html#gae6deb25281def51dd52739bfda12b37b" title="Save all the data into a file path.">SaveFile</a> </dd></dl>
+<a class="el" href="group__CategoryIOStream.html#gab86cae34b796b5bc0a2bacd2eb8193b8" title="Save all the data into a file path.">SaveFile</a> </dd></dl>
 
 </div>
 </div>
@@ -301,73 +470,12 @@ template&lt;class T &gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#a44c3bbe68e506e10506899ff0689d9b1" title="Load all the data from an SDL data stream.">IOStreamBase.LoadFile</a> </dd>
 <dd>
-<a class="el" href="group__CategoryIOStream.html#gae6deb25281def51dd52739bfda12b37b" title="Save all the data into a file path.">SaveFile</a> </dd></dl>
+<a class="el" href="group__CategoryIOStream.html#gab86cae34b796b5bc0a2bacd2eb8193b8" title="Save all the data into a file path.">SaveFile</a> </dd></dl>
 
 </div>
 </div>
-<a id="gae6deb25281def51dd52739bfda12b37b" name="gae6deb25281def51dd52739bfda12b37b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae6deb25281def51dd52739bfda12b37b">&#9670;&#160;</a></span>SaveFile() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::SaveFile </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>datasize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>the path to write all available data into. </td></tr>
-    <tr><td class="paramname">data</td><td>the data to be written. If datasize is 0, may be nullptr or a invalid pointer. </td></tr>
-    <tr><td class="paramname">datasize</td><td>the number of bytes to be written. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#aa348086911093ccd0b6847b9481855d6" title="Save all the data into an SDL data stream.">IOStreamBase.SaveFile</a> </dd>
-<dd>
-<a class="el" href="group__CategoryIOStream.html#ga179e9ae2bbdd6a280757e2fae6157156" title="Load all the data from a file path.">LoadFile</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga9304e34b30bb4e52e4e1c72cfecdaeeb" name="ga9304e34b30bb4e52e4e1c72cfecdaeeb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9304e34b30bb4e52e4e1c72cfecdaeeb">&#9670;&#160;</a></span>SaveFile() <span class="overload">[2/2]</span></h2>
+<a id="gab86cae34b796b5bc0a2bacd2eb8193b8" name="gab86cae34b796b5bc0a2bacd2eb8193b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab86cae34b796b5bc0a2bacd2eb8193b8">&#9670;&#160;</a></span>SaveFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -384,7 +492,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::span&lt; const char &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
@@ -402,7 +510,7 @@ template&lt;class T &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file</td><td>the path to write all available data into. </td></tr>
-    <tr><td class="paramname">data</td><td>the data to be written. </td></tr>
+    <tr><td class="paramname">data</td><td>the data to be written. If datasize is 0, may be nullptr or a invalid pointer. </td></tr>
   </table>
   </dd>
 </dl>
@@ -414,7 +522,7 @@ template&lt;class T &gt; </div>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#aa348086911093ccd0b6847b9481855d6" title="Save all the data into an SDL data stream.">IOStreamBase.SaveFile</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IOStreamBase.html#ae577e1a4d3c48abcbc36b75794a7be02" title="Save all the data into an SDL data stream.">IOStreamBase.SaveFile</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIOStream.html#ga179e9ae2bbdd6a280757e2fae6157156" title="Load all the data from a file path.">LoadFile</a> </dd></dl>
 

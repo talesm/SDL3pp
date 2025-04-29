@@ -33106,12 +33106,6 @@
       "name": "SDL3pp_iostream.h",
       "doc": "@defgroup CategoryIOStream Category IOStream\n\nSDL provides an abstract interface for reading and writing data streams. It\noffers implementations for files, memory, etc, and the app can provide\ntheir own implementations, too.\n\nIOStreamBase is not related to the standard C++ iostream class, other than\nboth are abstract interfaces to read/write data.",
       "entries": {
-        "IOFromDynamicMem_CtorTag": {
-          "name": "IOFromDynamicMem_CtorTag",
-          "kind": "struct",
-          "doc": "@cat constructor-tag",
-          "entries": {}
-        },
         "IOStreamBase-forward": {
           "name": "IOStreamBase",
           "kind": "forward",
@@ -33214,7 +33208,7 @@
           "sourceName": "SDL_IO_SEEK_END"
         },
         "IOStreamInterface": {
-          "doc": "The function pointers that drive an IOStreamBase.\n\nApplications can provide this struct to IOStreamBase.IOStreamBase() to create their own\nimplementation of IOStreamBase. This is not necessarily required, as SDL\nalready offers several common types of I/O streams, via functions like\nIOStreamBase.IOStreamBase() and IOStreamBase.IOStreamBase().\n\nThis structure should be initialized using SDL_INIT_INTERFACE()\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_INIT_INTERFACE",
+          "doc": "The function pointers that drive an IOStreamBase.\n\nApplications can provide this struct to IOStreamBase.IOStreamBase() to create their own\nimplementation of IOStreamBase. This is not necessarily required, as SDL\nalready offers several common types of I/O streams, via functions like\nIOStreamBase.IOStreamBase() and IOFromMem().\n\nThis structure should be initialized using SDL_INIT_INTERFACE()\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_INIT_INTERFACE",
           "name": "IOStreamInterface",
           "kind": "alias",
           "sourceName": "SDL_IOStreamInterface",
@@ -33251,51 +33245,7 @@
                 "sourceName": "SDL_IOFromFile"
               },
               {
-                "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStreamBase.\n\nThis function sets up an IOStreamBase struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStreamBase; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStreamBase never writes to the memory\nbuffer, you should use IOStreamBase.IOStreamBase() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStreamBase stream.\n@param size the buffer size, in bytes.\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamRef.Close\n@sa IOStreamBase.Flush\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
-                "name": "IOStreamBase",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "mem",
-                    "type": "void *"
-                  },
-                  {
-                    "name": "size",
-                    "type": "size_t"
-                  }
-                ],
-                "sourceName": "SDL_IOFromMem"
-              },
-              {
-                "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStreamBase.\n\nThis function sets up an IOStreamBase struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStreamBase stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStreamBase; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOStreamBase.IOStreamBase()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStreamBase stream.\n@param size the buffer size, in bytes.\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamRef.Close\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell",
-                "name": "IOStreamBase",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "mem",
-                    "type": "const void *"
-                  },
-                  {
-                    "name": "size",
-                    "type": "size_t"
-                  }
-                ],
-                "sourceName": "SDL_IOFromConstMem"
-              },
-              {
-                "doc": "Use this function to create an IOStreamBase that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStreamRef.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@post a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
-                "name": "IOStreamBase",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  "IOFromDynamicMem_CtorTag"
-                ],
-                "sourceName": "SDL_IOFromDynamicMem"
-              },
-              {
-                "doc": "Create a custom IOStreamBase.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStreamBase implementation. If you just need an IOStreamBase to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStreamBase.IOStreamBase() or IOStreamBase.IOStreamBase(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStreamBase, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@post a pointer to the allocated memory on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa SDL_INIT_INTERFACE\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamBase.IOStreamBase\n@sa IOStreamBase.IOStreamBase",
+                "doc": "Create a custom IOStreamBase.\n\nApplications do not need to use this function unless they are providing\ntheir own IOStreamBase implementation. If you just need an IOStreamBase to\nread/write a common data source, you should use the built-in\nimplementations in SDL, like IOStreamBase.IOStreamBase() or IOFromMem(), etc.\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this IOStreamBase, initialized\n             using SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@post a pointer to the allocated memory on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa SDL_INIT_INTERFACE\n@sa IOFromConstMem\n@sa IOStreamBase.IOStreamBase\n@sa IOFromMem",
                 "name": "IOStreamBase",
                 "kind": "function",
                 "type": "",
@@ -33313,32 +33263,6 @@
                 "hints": {
                   "mayFail": true
                 }
-              },
-              {
-                "name": "IOStreamBase",
-                "kind": "function",
-                "type": "",
-                "static": false,
-                "parameters": [
-                  {
-                    "type": "std::span<char>",
-                    "name": "mem"
-                  }
-                ],
-                "doc": ""
-              },
-              {
-                "name": "IOStreamBase",
-                "kind": "function",
-                "type": "",
-                "static": false,
-                "parameters": [
-                  {
-                    "type": "std::span<const char>",
-                    "name": "mem"
-                  }
-                ],
-                "doc": ""
               }
             ],
             "GetProperties": {
@@ -33415,66 +33339,32 @@
                 "doc": ""
               },
               {
-                "kind": "function",
-                "type": "size_t",
-                "parameters": [
-                  {
-                    "type": "std::span<char>",
-                    "name": "buf"
-                  }
-                ],
-                "name": "Read",
-                "doc": ""
-              },
-              {
                 "doc": "Read from a data source.\n\nThis function reads up `size` bytes from the data source to the area\npointed at by `ptr`. This function may read less bytes than requested.\n\nThis function will return zero when the data stream is completely read, and\nIOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and\nthe stream is not at EOF, IOStreamBase.GetStatus() will return a different error\nvalue and GetError() will offer a human-readable message.\n\n@param ptr a pointer to a buffer to read data into.\n@param size the number of bytes to read from the data source.\n@returns the number of bytes read, or 0 on end of file or other failure;\n         call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.Write\n@sa IOStreamBase.GetStatus",
                 "name": "Read",
                 "kind": "function",
                 "type": "size_t",
                 "parameters": [
                   {
-                    "name": "ptr",
-                    "type": "void *"
-                  },
-                  {
-                    "name": "size",
-                    "type": "size_t"
+                    "name": "buf",
+                    "type": "TargetBytes"
                   }
                 ],
                 "sourceName": "SDL_ReadIO"
               }
             ],
-            "Write": [
-              {
-                "kind": "function",
-                "type": "size_t",
-                "parameters": [
-                  {
-                    "type": "std::span<const char>",
-                    "name": "buf"
-                  }
-                ],
-                "name": "Write",
-                "doc": ""
-              },
-              {
-                "doc": "Write to an IOStreamBase data stream.\n\nThis function writes exactly `size` bytes from the area pointed at by `ptr`\nto the stream. If this fails for any reason, it'll return less than `size`\nto demonstrate how far the write progressed. On success, it returns `size`.\n\nOn error, this function still attempts to write as much as possible, so it\nmight return a positive value less than the requested write size.\n\nThe caller can use IOStreamBase.GetStatus() to determine if the problem is\nrecoverable, such as a non-blocking write that can simply be retried later,\nor a fatal error.\n\n@param ptr a pointer to a buffer containing data to write.\n@param size the number of bytes to write.\n@returns the number of bytes written, which will be less than `size` on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.printf\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Flush\n@sa IOStreamBase.GetStatus",
-                "name": "Write",
-                "kind": "function",
-                "type": "size_t",
-                "parameters": [
-                  {
-                    "name": "ptr",
-                    "type": "const void *"
-                  },
-                  {
-                    "name": "size",
-                    "type": "size_t"
-                  }
-                ],
-                "sourceName": "SDL_WriteIO"
-              }
-            ],
+            "Write": {
+              "doc": "Write to an IOStreamBase data stream.\n\nThis function writes exactly `size` bytes from the area pointed at by `ptr`\nto the stream. If this fails for any reason, it'll return less than `size`\nto demonstrate how far the write progressed. On success, it returns `size`.\n\nOn error, this function still attempts to write as much as possible, so it\nmight return a positive value less than the requested write size.\n\nThe caller can use IOStreamBase.GetStatus() to determine if the problem is\nrecoverable, such as a non-blocking write that can simply be retried later,\nor a fatal error.\n\n@param ptr a pointer to a buffer containing data to write.\n@param size the number of bytes to write.\n@returns the number of bytes written, which will be less than `size` on\n         failure; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.printf\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Flush\n@sa IOStreamBase.GetStatus",
+              "name": "Write",
+              "kind": "function",
+              "type": "size_t",
+              "parameters": [
+                {
+                  "name": "buf",
+                  "type": "SourceBytes"
+                }
+              ],
+              "sourceName": "SDL_WriteIO"
+            },
             "print": {
               "kind": "function",
               "type": "size_t",
@@ -33570,40 +33460,22 @@
               "name": "LoadFileAs",
               "doc": ""
             },
-            "SaveFile": [
-              {
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "type": "std::span<const char>",
-                    "name": "data"
-                  }
-                ],
-                "name": "SaveFile",
-                "doc": ""
-              },
-              {
-                "doc": "Save all the data into an SDL data stream.\n\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStreamBase.LoadFile",
-                "name": "SaveFile",
-                "kind": "function",
-                "type": "void",
-                "parameters": [
-                  {
-                    "name": "data",
-                    "type": "const void *"
-                  },
-                  {
-                    "name": "datasize",
-                    "type": "size_t"
-                  }
-                ],
-                "sourceName": "SDL_SaveFile_IO",
-                "hints": {
-                  "mayFail": true
+            "SaveFile": {
+              "doc": "Save all the data into an SDL data stream.\n\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@param closeio if true, calls IOStreamRef.Close() on `src` before returning, even\n               in the case of an error.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SaveFile\n@sa IOStreamBase.LoadFile",
+              "name": "SaveFile",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "SourceBytes"
                 }
+              ],
+              "sourceName": "SDL_SaveFile_IO",
+              "hints": {
+                "mayFail": true
               }
-            ],
+            },
             "ReadU8": {
               "doc": "Use this function to read a byte from an IOStreamBase.\n\nThis function will return false when the data stream is completely read,\nand IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is returned\nand the stream is not at EOF, IOStreamBase.GetStatus() will return a different\nerror value and GetError() will offer a human-readable message.\n\n@param src the IOStreamBase to read from.\n@param value a pointer filled in with the data read.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
               "name": "ReadU8",
@@ -34368,6 +34240,40 @@
           },
           "doc": ""
         },
+        "IOFromMem": {
+          "doc": "Use this function to prepare a read-write memory buffer for use with\nIOStreamBase.\n\nThis function sets up an IOStreamBase struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the IOStreamBase; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the IOStreamBase never writes to the memory\nbuffer, you should use IOFromConstMem() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an IOStreamBase stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOFromConstMem\n@sa IOStreamRef.Close\n@sa IOStreamBase.Flush\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
+          "name": "IOFromMem",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "mem",
+              "type": "TargetBytes"
+            }
+          ],
+          "sourceName": "SDL_IOFromMem"
+        },
+        "IOFromConstMem": {
+          "doc": "Use this function to prepare a read-only memory buffer for use with\nIOStreamBase.\n\nThis function sets up an IOStreamBase struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this IOStreamBase stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the IOStreamBase; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use IOFromMem()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an IOStreamBase stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOFromMem\n@sa IOStreamRef.Close\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell",
+          "name": "IOFromConstMem",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [
+            {
+              "name": "mem",
+              "type": "SourceBytes"
+            }
+          ],
+          "sourceName": "SDL_IOFromConstMem"
+        },
+        "IOFromDynamicMem": {
+          "doc": "Use this function to create an IOStreamBase that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to nullptr to transfer ownership of\n  the memory to the application, which should free the memory with\n  free(). If this is done, the next operation on the stream must be\n  IOStreamRef.Close().\n- `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@returns a pointer to a new IOStreamBase structure or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamRef.Close\n@sa IOStreamBase.Read\n@sa IOStreamBase.Seek\n@sa IOStreamBase.Tell\n@sa IOStreamBase.Write",
+          "name": "IOFromDynamicMem",
+          "kind": "function",
+          "type": "IOStream",
+          "parameters": [],
+          "sourceName": "SDL_IOFromDynamicMem"
+        },
         "LoadFile": {
           "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with free().\n\n@param file the path to read all available data from.\n@param datasize if not nullptr, will store the number of bytes read.\n@returns the data or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.LoadFile\n@sa SaveFile",
           "name": "LoadFile",
@@ -34399,48 +34305,26 @@
           ],
           "doc": ""
         },
-        "SaveFile": [
-          {
-            "doc": "Save all the data into a file path.\n\n@param file the path to write all available data into.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.SaveFile\n@sa LoadFile",
-            "name": "SaveFile",
-            "kind": "function",
-            "type": "void",
-            "parameters": [
-              {
-                "name": "file",
-                "type": "StringParam"
-              },
-              {
-                "name": "data",
-                "type": "const void *"
-              },
-              {
-                "name": "datasize",
-                "type": "size_t"
-              }
-            ],
-            "sourceName": "SDL_SaveFile",
-            "hints": {
-              "mayFail": true
+        "SaveFile": {
+          "doc": "Save all the data into a file path.\n\n@param file the path to write all available data into.\n@param data the data to be written. If datasize is 0, may be nullptr or a\n            invalid pointer.\n@param datasize the number of bytes to be written.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IOStreamBase.SaveFile\n@sa LoadFile",
+          "name": "SaveFile",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "StringParam"
+            },
+            {
+              "name": "data",
+              "type": "SourceBytes"
             }
-          },
-          {
-            "kind": "function",
-            "name": "SaveFile",
-            "type": "void",
-            "parameters": [
-              {
-                "type": "StringParam",
-                "name": "file"
-              },
-              {
-                "type": "std::span<const char>",
-                "name": "data"
-              }
-            ],
-            "doc": ""
+          ],
+          "sourceName": "SDL_SaveFile",
+          "hints": {
+            "mayFail": true
           }
-        ]
+        }
       }
     },
     "SDL3pp_platform.h": {

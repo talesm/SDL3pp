@@ -1777,32 +1777,6 @@ const transform = {
     },
     "SDL_iostream.h": {
       includeAfter: {
-        "__begin": [
-          {
-            name: "IOFromDynamicMem_CtorTag",
-            kind: "struct",
-            doc: "@cat constructor-tag"
-          }
-        ],
-        "SDL_OpenIO": [{
-          name: "IOStreamBase.IOStreamBase",
-          kind: "function",
-          type: "",
-          static: false,
-          parameters: [{
-            type: "std::span<char>",
-            name: "mem"
-          }]
-        }, {
-          name: "IOStreamBase.IOStreamBase",
-          kind: "function",
-          type: "",
-          static: false,
-          parameters: [{
-            type: "std::span<const char>",
-            name: "mem"
-          }]
-        }],
         "SDL_LoadFile": {
           name: "LoadFileAs",
           kind: "function",
@@ -1813,35 +1787,11 @@ const transform = {
             name: "file"
           }]
         },
-        "SDL_SaveFile": {
-          kind: "function",
-          name: "SaveFile",
-          type: "void",
-          parameters: [
-            {
-              type: "StringParam",
-              name: "file"
-            },
-            {
-              type: "std::span<const char>",
-              name: "data"
-            }
-          ]
-        },
       },
       resources: {
         "SDL_IOStream": {
           entries: {
             "SDL_IOFromFile": "ctor",
-            "SDL_IOFromMem": "ctor",
-            "SDL_IOFromConstMem": "ctor",
-            "SDL_IOFromDynamicMem": {
-              "name": "IOStreamBase",
-              "type": "",
-              "parameters": [
-                "IOFromDynamicMem_CtorTag"
-              ]
-            },
             "SDL_OpenIO": "ctor",
             "SDL_GetIOProperties": {
               "name": "GetProperties",
@@ -1862,7 +1812,7 @@ const transform = {
               "name": "Tell",
               "immutable": true
             },
-            "Read": [{
+            "Read": {
               kind: "function",
               type: "std::string",
               parameters: [{
@@ -1870,25 +1820,14 @@ const transform = {
                 name: "size",
                 default: "-1"
               }],
-            }, {
-              kind: "function",
-              type: "size_t",
-              parameters: [{
-                type: "std::span<char>",
-                name: "buf"
-              }],
-            }],
-            "SDL_ReadIO": { name: "Read" },
-            "Write": {
-              kind: "function",
-              type: "size_t",
-              parameters: [{
-                type: "std::span<const char>",
-                name: "buf"
-              }]
+            },
+            "SDL_ReadIO": {
+              name: "Read",
+              parameters: [{}, { type: "TargetBytes", name: "buf" }],
             },
             "SDL_WriteIO": {
-              name: "Write"
+              name: "Write",
+              parameters: [{}, { type: "SourceBytes", name: "buf" }]
             },
             "print": {
               "kind": "function",
@@ -1940,23 +1879,9 @@ const transform = {
               type: "OwnArray<T>",
               parameters: []
             },
-            "SaveFile": {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  "type": "std::span<const char>",
-                  "name": "data"
-                }
-              ]
-            },
             "SDL_SaveFile_IO": {
               name: "SaveFile",
-              parameters: [
-                {},
-                {},
-                {}
-              ]
+              parameters: [{}, { type: "SourceBytes", name: "data" }]
             },
             "SDL_ReadU8": {
               type: "Uint8",
@@ -2105,6 +2030,15 @@ const transform = {
         "SDL_PROP_IOSTREAM_": "prop::IOStream"
       },
       transform: {
+        "SDL_IOFromMem": {
+          type: "IOStream",
+          parameters: [{ type: "TargetBytes", name: "mem" }]
+        },
+        "SDL_IOFromConstMem": {
+          type: "IOStream",
+          parameters: [{ type: "SourceBytes", name: "mem" }]
+        },
+        "SDL_IOFromDynamicMem": { type: "IOStream" },
         "SDL_LoadFile": {
           type: "StringResult",
           parameters: [{}]
@@ -2115,7 +2049,20 @@ const transform = {
           static: false,
           parameters: [],
           hints: { body: "return reset();" }
-        }
+        },
+        "SDL_SaveFile": {
+          type: "void",
+          parameters: [
+            {
+              type: "StringParam",
+              name: "file"
+            },
+            {
+              type: "SourceBytes",
+              name: "data"
+            }
+          ]
+        },
       }
     },
     "SDL_keyboard.h": {

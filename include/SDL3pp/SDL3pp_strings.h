@@ -256,7 +256,7 @@ struct SourceBytes
    *
    */
   template<class T, size_t N>
-  constexpr SourceBytes(std::span<T, N> span)
+  constexpr SourceBytes(std::span<const T, N> span)
     : SourceBytes(span.data(), span.size_bytes())
   {
   }
@@ -277,8 +277,8 @@ struct SourceBytes
    * @param data the data.
    */
   template<class T, size_t N>
-  constexpr SourceBytes(T (&data)[N])
-    : SourceBytes(std::span<T, N>{static_cast<T*>(data), N})
+  constexpr SourceBytes(const T (&data)[N])
+    : SourceBytes(std::span<const T, N>{static_cast<const T*>(data), N})
   {
   }
 
@@ -315,13 +315,6 @@ struct TargetBytes
   {
   }
 
-  /// Just to have better error message
-  template<class T, size_t N>
-  constexpr TargetBytes(std::span<const T, N> span)
-  {
-    static_assert(false, "Non-const type is required");
-  }
-
   /**
    * From span
    *
@@ -329,6 +322,7 @@ struct TargetBytes
    *
    */
   template<class T, size_t N>
+    requires std::convertible_to<T*, void*>
   constexpr TargetBytes(std::span<T, N> span)
     : TargetBytes(span.data(), span.size_bytes())
   {
@@ -350,6 +344,7 @@ struct TargetBytes
    * @param data the data.
    */
   template<class T, size_t N>
+    requires std::convertible_to<T*, void*>
   constexpr TargetBytes(T (&data)[N])
     : TargetBytes(std::span<T, N>{static_cast<T*>(data), N})
   {
