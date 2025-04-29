@@ -412,6 +412,13 @@ public:
   }
 };
 
+// Unfortunate name clash with SDL_oldnames.h
+#undef AUDIO_U8
+#undef AUDIO_S8
+#undef AUDIO_S16
+#undef AUDIO_S32
+#undef AUDIO_F32
+
 constexpr AudioFormat AUDIO_UNKNOWN =
   SDL_AUDIO_UNKNOWN; ///< Unspecified audio format.
 
@@ -1371,7 +1378,7 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetDevice
    * @sa AudioStreamBase.ResumeDevice
    */
-  AudioStreamBase(AudioDeviceBase& devid,
+  AudioStreamBase(const AudioDeviceBase& devid,
                   OptionalRef<const AudioSpec> spec = std::nullopt,
                   AudioStreamCallback callback = nullptr,
                   void* userdata = nullptr)
@@ -1434,7 +1441,7 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetDevice
    * @sa AudioStreamBase.ResumeDevice
    */
-  AudioStreamBase(AudioDeviceBase& devid,
+  AudioStreamBase(const AudioDeviceBase& devid,
                   OptionalRef<const AudioSpec> spec,
                   AudioStreamCB callback)
     : AudioStreamBase(devid, std::move(spec))

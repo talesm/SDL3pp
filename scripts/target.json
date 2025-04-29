@@ -20064,7 +20064,7 @@
                 "parameters": [
                   {
                     "name": "devid",
-                    "type": "AudioDeviceBase &"
+                    "type": "const AudioDeviceBase &"
                   },
                   {
                     "name": "spec",
@@ -20095,7 +20095,7 @@
                 "parameters": [
                   {
                     "name": "devid",
-                    "type": "AudioDeviceBase &"
+                    "type": "const AudioDeviceBase &"
                   },
                   {
                     "name": "spec",

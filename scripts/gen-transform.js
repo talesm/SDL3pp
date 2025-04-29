@@ -332,7 +332,7 @@ const transform = {
           parameters: [
             {
               name: "devid",
-              type: "AudioDeviceBase &"
+              type: "const AudioDeviceBase &"
             },
             {
               name: "spec",
@@ -509,7 +509,7 @@ const transform = {
               parameters: [
                 {
                   name: "devid",
-                  type: "AudioDeviceBase &"
+                  type: "const AudioDeviceBase &"
                 },
                 {
                   name: "spec",
