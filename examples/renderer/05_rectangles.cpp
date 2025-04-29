@@ -9,9 +9,8 @@
 
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_THIS_CLASS Main
-#define SDL3PP_MAIN_USE_THIS_APPNAME "Example Renderer Rectangles"
-#define SDL3PP_MAIN_USE_THIS_APPID "com.example.renderer-rectangles"
+#define SDL3PP_MAIN_USE_CALLBACKS
+#include <SDL3pp/SDL3pp_main.h>
 
 struct Main
 {
@@ -85,4 +84,7 @@ struct Main
   }
 };
 
-#include <SDL3pp/SDL3pp_main.h>
+SDL3PP_DEFINE_CALLBACKS(Main,
+                        "Example Renderer Rectangles",
+                        "1.0",
+                        "com.example.renderer-rectangles")

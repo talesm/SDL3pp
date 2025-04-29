@@ -6,12 +6,9 @@
 #define SDL_MAIN_HANDLED
 #endif // SDL3PP_MAIN_HANDLED
 
-#if defined(SDL3PP_MAIN_USE_CALLBACKS) || defined(SDL3PP_MAIN_USE_THIS_CLASS)
+#ifdef SDL3PP_MAIN_USE_CALLBACKS
 #define SDL_MAIN_USE_CALLBACKS
-#ifdef SDL3PP_MAIN_USE_THIS_CLASS
-#include <stdexcept>
-#endif // SDL3PP_MAIN_USE_THIS_CLASS
-#endif
+#endif // SDL3PP_MAIN_USE_CALLBACKS
 
 #include <SDL3/SDL_main.h>
 
@@ -202,51 +199,39 @@ inline int EnterAppMainCallbacks(int argc,
  */
 inline void GDKSuspendComplete() { return SDL_GDKSuspendComplete(); }
 
+/**
+ * Use this to define the callbacks for given class
+ * @param CLASS The class to wrap in callbacks.
+ * @param APPNAME the app name. If not nullptr it calls SetAppMetadata to
+ *                initialize. If nullptr the user is responsible to set it.
+ * @param APPVERSION the app version. If nullptr defaults to "1.0".
+ * @param APPID The app id. If nullptr it defaults to APPNAME.
+ */
+#define SDL3PP_DEFINE_CALLBACKS(CLASS, APPNAME, APPVERSION, APPID)             \
+  static_assert(SDL::HasIterateFunction<CLASS>, "Main class not compatible");  \
+  inline SDL::AppResult SDL_AppInit(void** appstate, int argc, char* argv[])   \
+  {                                                                            \
+    if (APPNAME) {                                                             \
+      SDL::SetAppMetadata(APPNAME, APPVERSION ?: "1.0", APPID ?: APPNAME);     \
+    }                                                                          \
+    return SDL::InitClass(reinterpret_cast<CLASS**>(appstate),                 \
+                          SDL::AppArgs{argv, size_t(argc)});                   \
+  }                                                                            \
+  inline SDL::AppResult SDL_AppIterate(void* appstate)                         \
+  {                                                                            \
+    return SDL::IterateClass(static_cast<CLASS*>(appstate));                   \
+  }                                                                            \
+  inline SDL::AppResult SDL_AppEvent(void* appstate, SDL::Event* event)        \
+  {                                                                            \
+    return SDL::EventClass(static_cast<CLASS*>(appstate), *event);             \
+  }                                                                            \
+  inline void SDL_AppQuit(void* appstate, SDL::AppResult result)               \
+  {                                                                            \
+    SDL::QuitClass(static_cast<CLASS*>(appstate), result);                     \
+  }
+
 /// @}
 
 } // namespace SDL
-
-#ifdef SDL3PP_MAIN_USE_THIS_CLASS
-
-static_assert(SDL::HasIterateFunction<SDL3PP_MAIN_USE_THIS_CLASS>,
-              "Main class not compatible");
-
-#define SDL3PP_APP_CLASS SDL3PP_MAIN_USE_THIS_CLASS
-
-inline SDL::AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
-{
-#ifdef SDL3PP_MAIN_USE_THIS_APPID
-#ifndef SDL3PP_MAIN_USE_THIS_APPNAME
-#define SDL3PP_MAIN_USE_THIS_APPNAME SDL3PP_MAIN_USE_THIS_APPID
-#endif // SDL3PP_MAIN_USE_THIS_APPNAME
-#ifndef SDL3PP_MAIN_USE_THIS_APPVERSION
-#define SDL3PP_MAIN_USE_THIS_APPVERSION "1.0"
-#endif // SDL3PP_MAIN_USE_THIS_APPVERSION
-  SDL::SetAppMetadata(SDL3PP_MAIN_USE_THIS_APPNAME,
-                      SDL3PP_MAIN_USE_THIS_APPVERSION,
-                      SDL3PP_MAIN_USE_THIS_APPID);
-#endif // SDL3PP_MAIN_USE_THIS_APPID
-
-  return SDL::InitClass(reinterpret_cast<SDL3PP_APP_CLASS**>(appstate),
-                        SDL::AppArgs{argv, size_t(argc)});
-}
-
-inline SDL::AppResult SDL_AppIterate(void* appstate)
-{
-  return SDL::IterateClass(static_cast<SDL3PP_APP_CLASS*>(appstate));
-}
-
-inline SDL::AppResult SDL_AppEvent(void* appstate, SDL::Event* event)
-{
-  return SDL::EventClass(static_cast<SDL3PP_APP_CLASS*>(appstate), *event);
-}
-
-inline void SDL_AppQuit(void* appstate, SDL::AppResult result)
-{
-  SDL::QuitClass(static_cast<SDL3PP_APP_CLASS*>(appstate), result);
-}
-#undef SDL3PP_APP_CLASS
-
-#endif // SDL3PP_MAIN_USE_THIS_CLASS
 
 #endif /* SDL3PP_MAIN_H_ */

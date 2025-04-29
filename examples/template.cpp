@@ -1,10 +1,9 @@
 #include <SDL3pp/SDL3pp.h>
 
-using namespace std::chrono_literals;
+#define SDL3PP_MAIN_USE_CALLBACKS
+#include <SDL3pp/SDL3pp_main.h>
 
-#define SDL3PP_MAIN_USE_THIS_CLASS Main
-#define SDL3PP_MAIN_USE_THIS_APPNAME "Example Template"
-#define SDL3PP_MAIN_USE_THIS_APPID "com.example.template"
+using namespace std::chrono_literals;
 
 struct Main
 {
@@ -26,4 +25,4 @@ struct Main
   }
 };
 
-#include <SDL3pp/SDL3pp_main.h>
+SDL3PP_DEFINE_CALLBACKS(Main, "Example Template", "1.0", "com.example.template")
