@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['data_0',['data',['../classSDL_1_1OwnArray.html#afd861fe7aa8df55c4c8f5efe023af4e6',1,'SDL::OwnArray::data()'],['../classSDL_1_1OwnArray.html#a7eb9f1bb3310984f12c229e6b28a3b0b',1,'SDL::OwnArray::data() const']]],
+  ['data_0',['data',['../structSDL_1_1SourceBytes.html#a9201ebff024eb0e51c7dbdc0dbae8dcb',1,'SDL::SourceBytes::data'],['../structSDL_1_1TargetBytes.html#ab8abdd8643e3d331f153317b17f24754',1,'SDL::TargetBytes::data'],['../classSDL_1_1OwnArray.html#afd861fe7aa8df55c4c8f5efe023af4e6',1,'SDL::OwnArray::data()'],['../classSDL_1_1OwnArray.html#a7eb9f1bb3310984f12c229e6b28a3b0b',1,'SDL::OwnArray::data() const']]],
   ['date_20and_20time_1',['Date and Time',['../group__CategoryTime.html',1,'']]],
   ['date_5fformat_5fddmmyyyy_2',['DATE_FORMAT_DDMMYYYY',['../group__CategoryTime.html#ga5eb6af9540557e89e7bc86669ab70947',1,'SDL']]],
   ['date_5fformat_5fmmddyyyy_3',['DATE_FORMAT_MMDDYYYY',['../group__CategoryTime.html#ga7b42f5094b291a966fc046f2c5802e84',1,'SDL']]],
   ['date_5fformat_5fyyyymmdd_4',['DATE_FORMAT_YYYYMMDD',['../group__CategoryTime.html#ga90728736f5773a552089ac95a27f376a',1,'SDL']]],
   ['dateformat_5',['DateFormat',['../group__CategoryTime.html#ga86eaf56d5f97fd776764c55f03e9eb6f',1,'SDL']]],
-  ['datetime_6',['datetime',['../structSDL_1_1DateTime.html',1,'SDL::DateTime'],['../structSDL_1_1DateTime.html#a4e2c345a8dd24dbc1ac7f98dbbc9525c',1,'SDL::DateTime::DateTime(const SDL_DateTime &amp;dateTime={})'],['../structSDL_1_1DateTime.html#aee00aebad97035b43d0169e7f5cfef0a',1,'SDL::DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int nanosecond, int day_of_week, int utc_offset)'],['../structSDL_1_1DateTime.html#ae847319a174d7457b73a4c7b1cba76c8',1,'SDL::DateTime::DateTime(Time ticks, bool localTime=true)']]],
+  ['datetime_6',['datetime',['../structSDL_1_1DateTime.html#a4e2c345a8dd24dbc1ac7f98dbbc9525c',1,'SDL::DateTime::DateTime(const SDL_DateTime &amp;dateTime={})'],['../structSDL_1_1DateTime.html#aee00aebad97035b43d0169e7f5cfef0a',1,'SDL::DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int nanosecond, int day_of_week, int utc_offset)'],['../structSDL_1_1DateTime.html#ae847319a174d7457b73a4c7b1cba76c8',1,'SDL::DateTime::DateTime(Time ticks, bool localTime=true)'],['../structSDL_1_1DateTime.html',1,'SDL::DateTime']]],
   ['defaultclassdestroy_7',['DefaultClassDestroy',['../group__CategoryInit.html#gaab9867564fcaf4a3954fd7aa6b6a524a',1,'SDL']]],
   ['defaultcreateclass_8',['DefaultCreateClass',['../group__CategoryInit.html#ga4dd42c4b0db483c8dea2ed5389d3613b',1,'SDL']]],
   ['defaulteventclass_9',['DefaultEventClass',['../group__CategoryInit.html#gaa96159d38c2548461aec892f0fed66f2',1,'SDL']]],
@@ -17,7 +17,7 @@ var searchData=
   ['design_20notes_14',['Design notes',['../DesignNotes.html',1,'']]],
   ['destroysurface_15',['DestroySurface',['../structSDL_1_1WindowBase.html#a9ac429daa5f101ebc76e0ceb992fd8d0',1,'SDL::WindowBase']]],
   ['detach_16',['Detach',['../structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7',1,'SDL::ThreadRef']]],
-  ['detachedresource_17',['detachedresource',['../structSDL_1_1DetachedResource.html',1,'SDL::DetachedResource&lt; REF, UNIQUE &gt;'],['../structSDL_1_1DetachedResource.html#aa3eb758009be4ebfd667b8fba835ce30',1,'SDL::DetachedResource::DetachedResource()']]],
+  ['detachedresource_17',['detachedresource',['../structSDL_1_1DetachedResource.html#aa3eb758009be4ebfd667b8fba835ce30',1,'SDL::DetachedResource::DetachedResource()'],['../structSDL_1_1DetachedResource.html',1,'SDL::DetachedResource&lt; REF, UNIQUE &gt;']]],
   ['detachedtrayentry_18',['DetachedTrayEntry',['../group__CategoryTray.html#ga09846ccb66f1082da677241536b268c8',1,'SDL']]],
   ['detection_19',['detection',['../group__CategoryIntrinsics.html',1,'Compiler Intrinsics Detection'],['../group__CategoryCPUInfo.html',1,'CPU Feature Detection'],['../group__CategoryPlatform.html',1,'Platform Detection']]],
   ['devicepaused_20',['DevicePaused',['../structSDL_1_1AudioStreamBase.html#ad56e9928ffb8e4c8726c871cc915d9f5',1,'SDL::AudioStreamBase']]],

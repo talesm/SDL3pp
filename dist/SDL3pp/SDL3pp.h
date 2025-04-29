@@ -780,7 +780,7 @@ public:
 };
 
 /**
- * @defgroup CategoryStrings Helpers to use C++ strings with SDL
+ * @defgroup CategoryStrings Helpers to use C++ strings and byte arrays.
  *
  * It has StringParam to use on parameters and StringResult to have
  * a simple std::string-like interface for SDL allocated strings.
@@ -996,6 +996,145 @@ struct StringResult : OwnArray<char>
   {
     if (empty()) return "";
     return data();
+  }
+};
+
+/**
+ * Source byte stream.
+ *
+ * Source byte stream, tipically used as source where bytes are copied from.
+ */
+struct SourceBytes
+{
+  const void* data;  ///< The data copied from
+  size_t size_bytes; ///< The size in bytes
+
+  /// Default ctor
+  constexpr SourceBytes() = default;
+
+  /// Disambiguate between multiple pointer types.
+  constexpr SourceBytes(std::nullptr_t)
+    : SourceBytes()
+  {
+  }
+
+  /**
+   * From span
+   *
+   * @param span the data.
+   *
+   */
+  template<class T, size_t N>
+  constexpr SourceBytes(std::span<T, N> span)
+    : SourceBytes(span.data(), span.size_bytes())
+  {
+  }
+
+  /**
+   * From container-like
+   *
+   * @param data the data.
+   */
+  template<class T>
+  constexpr SourceBytes(const T& data)
+    : SourceBytes(std::span{data.data(), data.size()})
+  {
+  }
+  /**
+   * From array
+   *
+   * @param data the data.
+   */
+  template<class T, size_t N>
+  constexpr SourceBytes(T (&data)[N])
+    : SourceBytes(std::span<T, N>{static_cast<T*>(data), N})
+  {
+  }
+
+  /**
+   * From data + size in bytes.
+   *
+   * @param data the data.
+   * @param size_bytes size in @b bytes!
+   *
+   */
+  constexpr SourceBytes(const void* data, size_t size_bytes)
+    : data(size_bytes > 0 ? data : nullptr)
+    , size_bytes(data != nullptr ? size_bytes : 0)
+  {
+  }
+};
+
+/**
+ * Target byte stream.
+ *
+ * Target byte stream, tipically used as target where bytes are copied to.
+ */
+struct TargetBytes
+{
+  void* data;        ///< The address to have data copied to it
+  size_t size_bytes; ///< The size in bytes
+
+  /// Default ctor
+  constexpr TargetBytes() = default;
+
+  /// Disambiguate between multiple pointer types.
+  constexpr TargetBytes(std::nullptr_t)
+    : TargetBytes()
+  {
+  }
+
+  /// Just to have better error message
+  template<class T, size_t N>
+  constexpr TargetBytes(std::span<const T, N> span)
+  {
+    static_assert(false, "Non-const type is required");
+  }
+
+  /**
+   * From span
+   *
+   * @param span the data.
+   *
+   */
+  template<class T, size_t N>
+  constexpr TargetBytes(std::span<T, N> span)
+    : TargetBytes(span.data(), span.size_bytes())
+  {
+  }
+
+  /**
+   * From container-like
+   *
+   * @param data the data.
+   */
+  template<class T>
+  constexpr TargetBytes(T& data)
+    : TargetBytes(std::span{data.data(), data.size()})
+  {
+  }
+  /**
+   * From array
+   *
+   * @param data the data.
+   */
+  template<class T, size_t N>
+  constexpr TargetBytes(T (&data)[N])
+    : TargetBytes(std::span<T, N>{static_cast<T*>(data), N})
+  {
+  }
+
+  /**
+   * From data + size in bytes.
+   *
+   * @param data the data.
+   * @param size_bytes size in @b bytes!
+   *
+   */
+  constexpr TargetBytes(void* data, size_t size_bytes)
+    : data(size_bytes > 0 ? data : nullptr)
+    , size_bytes(data != nullptr ? size_bytes : 0)
+  {
   }
 };
 

@@ -30,7 +30,7 @@ var searchData=
   ['hassse42_27',['HasSSE42',['../group__CategoryCPUInfo.html#ga2d8283115443720d4e331571ef79aa9a',1,'SDL']]],
   ['hassurface_28',['HasSurface',['../structSDL_1_1WindowBase.html#aff856522495fae0879ab8fdc71cdf09d',1,'SDL::WindowBase']]],
   ['helpers_29',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
-  ['helpers_20to_20use_20c_20strings_20with_20sdl_30',['Helpers to use C++ strings with SDL',['../group__CategoryStrings.html',1,'']]],
+  ['helpers_20to_20use_20c_20strings_20and_20byte_20arrays_30',['Helpers to use C++ strings and byte arrays.',['../group__CategoryStrings.html',1,'']]],
   ['hide_31',['Hide',['../structSDL_1_1WindowBase.html#a7622ac74097d8da590653b0bc553546f',1,'SDL::WindowBase']]],
   ['hidecursor_32',['HideCursor',['../group__CategoryMouse.html#gaf0f9b4279e667e985373bed9f896385e',1,'SDL']]],
   ['hint_5fdefault_33',['HINT_DEFAULT',['../group__CategoryHints.html#gaf628a94c0c9bd6400059dc40cb975159',1,'SDL']]],

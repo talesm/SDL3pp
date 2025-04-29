@@ -1,5 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,93,31"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1Color.html" title="A structure that represents a color as RGBA components." alt="" coords="141,5,231,31"/>
-<area shape="poly" id="edge95_Node000000_Node000001" title=" " alt="" coords="107,15,141,15,141,21,107,21"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1TrayMenu.html" title="An opaque handle representing a menu/submenu on a system tray object." alt="" coords="5,5,124,31"/>
 </map>

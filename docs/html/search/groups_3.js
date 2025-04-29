@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['c_20strings_20with_20sdl_0',['Helpers to use C++ strings with SDL',['../group__CategoryStrings.html',1,'']]],
+  ['c_20strings_20and_20byte_20arrays_0',['Helpers to use C++ strings and byte arrays.',['../group__CategoryStrings.html',1,'']]],
   ['c_20support_1',['C++ Support',['../group__CategoriesCppSupport.html',1,'']]],
   ['callback_20helpers_2',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
   ['categories_3',['Categories',['../group__Categories.html',1,'']]],

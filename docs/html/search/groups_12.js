@@ -6,7 +6,7 @@ var searchData=
   ['time_3',['time',['../group__CategoryTime.html',1,'Date and Time'],['../group__CategoriesTime.html',1,'Time']]],
   ['timer_20support_4',['Timer Support',['../group__CategoryTimer.html',1,'']]],
   ['to_20sdl_3a_3afree_5',['Pointer wrapper to SDL::free()',['../group__CategoryOwnPtr.html',1,'']]],
-  ['to_20use_20c_20strings_20with_20sdl_6',['Helpers to use C++ strings with SDL',['../group__CategoryStrings.html',1,'']]],
+  ['to_20use_20c_20strings_20and_20byte_20arrays_6',['Helpers to use C++ strings and byte arrays.',['../group__CategoryStrings.html',1,'']]],
   ['tray_7',['System Tray',['../group__CategoryTray.html',1,'']]],
   ['true_20type_20font_20support_8',['True type font support',['../group__CategorySDLTTF.html',1,'']]],
   ['type_20font_20support_9',['True type font support',['../group__CategorySDLTTF.html',1,'']]],
