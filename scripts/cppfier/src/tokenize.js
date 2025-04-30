@@ -179,7 +179,7 @@ class Tokenizer {
       token.kind = "enum";
       token.name = m[1];
       if (!line.endsWith("{")) this.nextLine();
-    } else if ((m = /^(?:(?:constexpr|typedef)\s+)?(?:struct|class)\s+([\w<>]+)\s*(:\s*([\w<>:,\s*]+))?/.exec(line)) && !line.includes(";")) {
+    } else if ((m = /^(?:(?:constexpr|typedef)\s+)?(?:struct|class)\s+([\w<>]+)\s*(:\s*(?:public\s+)?([\w<>:,\s*]+))?/.exec(line)) && !line.includes(";")) {
       token.kind = "struct";
       token.name = m[1];
       if (m[3]) {

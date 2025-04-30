@@ -17,7 +17,7 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
-  SDL::Window window{"Test", windowSz};
+  SDL::Window window{"examples/audio/simple-playback", windowSz};
   SDL::Renderer renderer{window};
   SDL::AudioStream stream{
     SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK,
@@ -63,4 +63,7 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main, "Example Template", "1.0", "com.example.template")
+SDL3PP_DEFINE_CALLBACKS(Main,
+                        "Example Simple Audio Simple Playback",
+                        "1.0",
+                        "com.example.audio-simple-playback")

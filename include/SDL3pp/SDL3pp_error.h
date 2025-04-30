@@ -163,7 +163,7 @@ inline const char* GetError() { return SDL_GetError(); }
  * An exception that returns GetError()
  *
  */
-class Error : std::exception
+class Error : public std::exception
 {
   std::string m_message;
 
