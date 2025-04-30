@@ -438,7 +438,7 @@ const transform = {
             "SDL_OpenAudioDevice": {
               name: "ctor",
               parameters: [
-                {},
+                { type: "const AudioDeviceBase &" },
                 { type: "OptionalRef<const SDL_AudioSpec>", default: "std::nullopt" }
               ]
             },
@@ -528,7 +528,13 @@ const transform = {
                 }
               ],
             },
-            "SDL_CreateAudioStream": "ctor",
+            "SDL_CreateAudioStream": {
+              name: "ctor",
+              parameters: [
+                { type: "OptionalRef<const AudioSpec>" },
+                { type: "OptionalRef<const AudioSpec>" },
+              ]
+            },
             "SDL_GetAudioStreamProperties": "immutable",
             "GetInputFormat": {
               kind: "function",
@@ -553,7 +559,13 @@ const transform = {
               type: "void",
               parameters: [{ type: "const AudioSpec &", name: "spec" }]
             },
-            "SDL_SetAudioStreamFormat": "function",
+            "SDL_SetAudioStreamFormat": {
+              parameters: [
+                { name: "this" },
+                { type: "OptionalRef<const AudioSpec>" },
+                { type: "OptionalRef<const AudioSpec>" },
+              ]
+            },
             "SDL_GetAudioStreamFrequencyRatio": "immutable",
             "SDL_SetAudioStreamFrequencyRatio": "function",
             "SDL_GetAudioStreamGain": "immutable",

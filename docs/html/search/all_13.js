@@ -704,7 +704,7 @@ var searchData=
   ['setfloat_701',['SetFloat',['../structSDL_1_1PropertiesBase.html#a2a751b68bfbde99ce5414599ec29c218',1,'SDL::PropertiesBase']]],
   ['setfocusable_702',['SetFocusable',['../structSDL_1_1WindowBase.html#a2d28d89f25d57f15526506414df78538',1,'SDL::WindowBase']]],
   ['setfont_703',['SetFont',['../structSDL_1_1TextBase.html#ab43beaf2155a6d1de6f3506ad56cc5d4',1,'SDL::TextBase']]],
-  ['setformat_704',['SetFormat',['../structSDL_1_1AudioStreamBase.html#ab483fdbee991a12687479240988e435f',1,'SDL::AudioStreamBase']]],
+  ['setformat_704',['SetFormat',['../structSDL_1_1AudioStreamBase.html#a6c97546574bceb41fa4c0e1add9446e2',1,'SDL::AudioStreamBase']]],
   ['setfrequencyratio_705',['SetFrequencyRatio',['../structSDL_1_1AudioStreamBase.html#aba7a3e02f2b409ced4dfd7feea991fd8',1,'SDL::AudioStreamBase']]],
   ['setfullscreen_706',['SetFullscreen',['../structSDL_1_1WindowBase.html#a999c1d7b53f0f91f080be6fbb85fe1c1',1,'SDL::WindowBase']]],
   ['setfullscreenmode_707',['SetFullscreenMode',['../structSDL_1_1WindowBase.html#a59ef8423638df326d356cb93690dda0c',1,'SDL::WindowBase']]],

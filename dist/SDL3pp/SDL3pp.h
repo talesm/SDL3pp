@@ -29361,8 +29361,8 @@ struct AudioDeviceBase : Resource<SDL_AudioDeviceID>
    * @sa AudioDeviceRef.reset
    * @sa AudioDeviceBase.GetFormat
    */
-  AudioDeviceBase(AudioDeviceBase& devid,
-                  OptionalRef<const SDL_AudioSpec> spec = std::nullopt)
+  AudioDeviceBase(const AudioDeviceBase& devid,
+                  OptionalRef<const SDL_AudioSpec> spec)
     : Resource(CheckError(SDL_OpenAudioDevice(devid.get(), spec)))
   {
   }
@@ -30065,8 +30065,9 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.Clear
    * @sa AudioStreamBase.SetFormat
    */
-  AudioStreamBase(const AudioSpec& src_spec, const AudioSpec& dst_spec)
-    : Resource(CheckError(SDL_CreateAudioStream(&src_spec, &dst_spec)))
+  AudioStreamBase(OptionalRef<const AudioSpec> src_spec,
+                  OptionalRef<const AudioSpec> dst_spec)
+    : Resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
   {
   }
 
@@ -30307,10 +30308,7 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetFormat
    * @sa AudioStreamBase.SetFrequencyRatio
    */
-  void SetInputFormat(const AudioSpec& spec)
-  {
-    CheckError(SDL_SetAudioStreamFormat(get(), &spec, nullptr));
-  }
+  void SetInputFormat(const AudioSpec& spec) { SetFormat(spec, std::nullopt); }
 
   /**
    * Change the output format of an audio stream.
@@ -30342,10 +30340,7 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetFormat
    * @sa AudioStreamBase.SetFrequencyRatio
    */
-  void SetOutputFormat(const AudioSpec& spec)
-  {
-    CheckError(SDL_SetAudioStreamFormat(get(), nullptr, &spec));
-  }
+  void SetOutputFormat(const AudioSpec& spec) { SetFormat(std::nullopt, spec); }
 
   /**
    * Change the input and output formats of an audio stream.
@@ -30366,8 +30361,10 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * be ignored, but this will not report an error. The other side's format can
    * be changed.
    *
-   * @param src_spec the new format of the audio input.
-   * @param dst_spec the new format of the audio output.
+   * @param src_spec the new format of the audio input; if std::nullopt, it is
+   *                 not changed.
+   * @param dst_spec the new format of the audio output; if std::nullopt, it is
+   *                 not changed.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread, as it holds
@@ -30378,9 +30375,10 @@ struct AudioStreamBase : Resource<SDL_AudioStream*>
    * @sa AudioStreamBase.GetFormat
    * @sa AudioStreamBase.SetFrequencyRatio
    */
-  void SetFormat(const AudioSpec& src_spec, const AudioSpec& dst_spec)
+  void SetFormat(OptionalRef<const AudioSpec> src_spec,
+                 OptionalRef<const AudioSpec> dst_spec)
   {
-    CheckError(SDL_SetAudioStreamFormat(get(), &src_spec, &dst_spec));
+    CheckError(SDL_SetAudioStreamFormat(get(), src_spec, dst_spec));
   }
 
   /**
