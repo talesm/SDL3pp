@@ -2214,11 +2214,12 @@ const transform = {
     "SDL_log.h": {
       enumerations: {
         "SDL_LogPriority": {
-          "includeAfter": "__begin",
-          "prefix": "SDL_LOG_PRIORITY_"
+          includeAfter: "__begin",
+          prefix: "SDL_LOG_PRIORITY_"
         },
         "SDL_LogCategory": {
-          "prefix": "SDL_LOG_CATEGORY_"
+          prefix: "SDL_LOG_CATEGORY_",
+          valueType: "LogCategory"
         }
       },
       includeAfter: {
@@ -3267,6 +3268,7 @@ const transform = {
           invalidState: false,
           genCtor: false,
           genMembers: false,
+          comparable: false,
           entries: {
             "InitState": {
               kind: "function",
@@ -3559,6 +3561,7 @@ const transform = {
       wrappers: {
         "SDL_Point": {
           attribute: "p",
+          comparable: true,
           entries: {
             "Point": {
               kind: "function",
@@ -3590,6 +3593,7 @@ const transform = {
         },
         "SDL_FPoint": {
           attribute: "p",
+          comparable: true,
           entries: {
             "SDL_PointInRectFloat": {
               kind: "function",
@@ -3609,6 +3613,7 @@ const transform = {
         },
         "SDL_Rect": {
           attribute: "r",
+          comparable: true,
           entries: {
             "Rect": {
               kind: "function",
@@ -3851,8 +3856,9 @@ const transform = {
           }
         },
         "SDL_FRect": {
-          "attribute": "r",
-          "entries": {
+          attribute: "r",
+          comparable: true,
+          entries: {
             "FRect": {
               "kind": "function",
               "type": "",
@@ -6898,7 +6904,7 @@ const transform = {
     "SDL_time.h": {
       wrappers: {
         "SDL_DateTime": {
-          "ordered": true,
+          // "ordered": true,
           "entries": {
             "SDL_TimeToDateTime": {
               "name": "DateTime",

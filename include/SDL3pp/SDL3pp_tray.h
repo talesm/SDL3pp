@@ -347,6 +347,14 @@ public:
   constexpr bool operator==(const TrayMenu& other) const = default;
 
   /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(SDL_TrayMenu* trayMenu) const
+  {
+    return operator==(TrayMenu(trayMenu));
+  }
+
+  /**
    * Unwraps to the underlying TrayMenu.
    *
    * @returns the underlying TrayMenu *.

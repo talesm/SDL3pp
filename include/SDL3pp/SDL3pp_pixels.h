@@ -424,6 +424,14 @@ public:
   constexpr bool operator==(const PixelFormat& other) const = default;
 
   /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(SDL_PixelFormat format) const
+  {
+    return operator==(PixelFormat(format));
+  }
+
+  /**
    * Unwraps to the underlying PixelFormat.
    *
    * @returns the underlying PixelFormat.
@@ -746,207 +754,224 @@ public:
   inline Color Get(Uint32 pixel, PaletteRef palette) const;
 };
 
-constexpr PixelFormat PIXELFORMAT_UNKNOWN =
+constexpr SDL_PixelFormat PIXELFORMAT_UNKNOWN =
   SDL_PIXELFORMAT_UNKNOWN; ///< UNKNOWN
 
-constexpr PixelFormat PIXELFORMAT_INDEX1LSB =
+constexpr SDL_PixelFormat PIXELFORMAT_INDEX1LSB =
   SDL_PIXELFORMAT_INDEX1LSB; ///< INDEX1LSB
 
-constexpr PixelFormat PIXELFORMAT_INDEX1MSB =
+constexpr SDL_PixelFormat PIXELFORMAT_INDEX1MSB =
   SDL_PIXELFORMAT_INDEX1MSB; ///< INDEX1MSB
 
-constexpr PixelFormat PIXELFORMAT_INDEX2LSB =
+constexpr SDL_PixelFormat PIXELFORMAT_INDEX2LSB =
   SDL_PIXELFORMAT_INDEX2LSB; ///< INDEX2LSB
 
-constexpr PixelFormat PIXELFORMAT_INDEX2MSB =
+constexpr SDL_PixelFormat PIXELFORMAT_INDEX2MSB =
   SDL_PIXELFORMAT_INDEX2MSB; ///< INDEX2MSB
 
-constexpr PixelFormat PIXELFORMAT_INDEX4LSB =
+constexpr SDL_PixelFormat PIXELFORMAT_INDEX4LSB =
   SDL_PIXELFORMAT_INDEX4LSB; ///< INDEX4LSB
 
-constexpr PixelFormat PIXELFORMAT_INDEX4MSB =
+constexpr SDL_PixelFormat PIXELFORMAT_INDEX4MSB =
   SDL_PIXELFORMAT_INDEX4MSB; ///< INDEX4MSB
 
-constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8; ///< INDEX8
+constexpr SDL_PixelFormat PIXELFORMAT_INDEX8 =
+  SDL_PIXELFORMAT_INDEX8; ///< INDEX8
 
-constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332; ///< RGB332
+constexpr SDL_PixelFormat PIXELFORMAT_RGB332 =
+  SDL_PIXELFORMAT_RGB332; ///< RGB332
 
-constexpr PixelFormat PIXELFORMAT_XRGB4444 =
+constexpr SDL_PixelFormat PIXELFORMAT_XRGB4444 =
   SDL_PIXELFORMAT_XRGB4444; ///< XRGB4444
 
-constexpr PixelFormat PIXELFORMAT_XBGR4444 =
+constexpr SDL_PixelFormat PIXELFORMAT_XBGR4444 =
   SDL_PIXELFORMAT_XBGR4444; ///< XBGR4444
 
-constexpr PixelFormat PIXELFORMAT_XRGB1555 =
+constexpr SDL_PixelFormat PIXELFORMAT_XRGB1555 =
   SDL_PIXELFORMAT_XRGB1555; ///< XRGB1555
 
-constexpr PixelFormat PIXELFORMAT_XBGR1555 =
+constexpr SDL_PixelFormat PIXELFORMAT_XBGR1555 =
   SDL_PIXELFORMAT_XBGR1555; ///< XBGR1555
 
-constexpr PixelFormat PIXELFORMAT_ARGB4444 =
+constexpr SDL_PixelFormat PIXELFORMAT_ARGB4444 =
   SDL_PIXELFORMAT_ARGB4444; ///< ARGB4444
 
-constexpr PixelFormat PIXELFORMAT_RGBA4444 =
+constexpr SDL_PixelFormat PIXELFORMAT_RGBA4444 =
   SDL_PIXELFORMAT_RGBA4444; ///< RGBA4444
 
-constexpr PixelFormat PIXELFORMAT_ABGR4444 =
+constexpr SDL_PixelFormat PIXELFORMAT_ABGR4444 =
   SDL_PIXELFORMAT_ABGR4444; ///< ABGR4444
 
-constexpr PixelFormat PIXELFORMAT_BGRA4444 =
+constexpr SDL_PixelFormat PIXELFORMAT_BGRA4444 =
   SDL_PIXELFORMAT_BGRA4444; ///< BGRA4444
 
-constexpr PixelFormat PIXELFORMAT_ARGB1555 =
+constexpr SDL_PixelFormat PIXELFORMAT_ARGB1555 =
   SDL_PIXELFORMAT_ARGB1555; ///< ARGB1555
 
-constexpr PixelFormat PIXELFORMAT_RGBA5551 =
+constexpr SDL_PixelFormat PIXELFORMAT_RGBA5551 =
   SDL_PIXELFORMAT_RGBA5551; ///< RGBA5551
 
-constexpr PixelFormat PIXELFORMAT_ABGR1555 =
+constexpr SDL_PixelFormat PIXELFORMAT_ABGR1555 =
   SDL_PIXELFORMAT_ABGR1555; ///< ABGR1555
 
-constexpr PixelFormat PIXELFORMAT_BGRA5551 =
+constexpr SDL_PixelFormat PIXELFORMAT_BGRA5551 =
   SDL_PIXELFORMAT_BGRA5551; ///< BGRA5551
 
-constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565; ///< RGB565
+constexpr SDL_PixelFormat PIXELFORMAT_RGB565 =
+  SDL_PIXELFORMAT_RGB565; ///< RGB565
 
-constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565; ///< BGR565
+constexpr SDL_PixelFormat PIXELFORMAT_BGR565 =
+  SDL_PIXELFORMAT_BGR565; ///< BGR565
 
-constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24; ///< RGB24
+constexpr SDL_PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24; ///< RGB24
 
-constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24; ///< BGR24
+constexpr SDL_PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24; ///< BGR24
 
-constexpr PixelFormat PIXELFORMAT_XRGB8888 =
+constexpr SDL_PixelFormat PIXELFORMAT_XRGB8888 =
   SDL_PIXELFORMAT_XRGB8888; ///< XRGB8888
 
-constexpr PixelFormat PIXELFORMAT_RGBX8888 =
+constexpr SDL_PixelFormat PIXELFORMAT_RGBX8888 =
   SDL_PIXELFORMAT_RGBX8888; ///< RGBX8888
 
-constexpr PixelFormat PIXELFORMAT_XBGR8888 =
+constexpr SDL_PixelFormat PIXELFORMAT_XBGR8888 =
   SDL_PIXELFORMAT_XBGR8888; ///< XBGR8888
 
-constexpr PixelFormat PIXELFORMAT_BGRX8888 =
+constexpr SDL_PixelFormat PIXELFORMAT_BGRX8888 =
   SDL_PIXELFORMAT_BGRX8888; ///< BGRX8888
 
-constexpr PixelFormat PIXELFORMAT_ARGB8888 =
+constexpr SDL_PixelFormat PIXELFORMAT_ARGB8888 =
   SDL_PIXELFORMAT_ARGB8888; ///< ARGB8888
 
-constexpr PixelFormat PIXELFORMAT_RGBA8888 =
+constexpr SDL_PixelFormat PIXELFORMAT_RGBA8888 =
   SDL_PIXELFORMAT_RGBA8888; ///< RGBA8888
 
-constexpr PixelFormat PIXELFORMAT_ABGR8888 =
+constexpr SDL_PixelFormat PIXELFORMAT_ABGR8888 =
   SDL_PIXELFORMAT_ABGR8888; ///< ABGR8888
 
-constexpr PixelFormat PIXELFORMAT_BGRA8888 =
+constexpr SDL_PixelFormat PIXELFORMAT_BGRA8888 =
   SDL_PIXELFORMAT_BGRA8888; ///< BGRA8888
 
-constexpr PixelFormat PIXELFORMAT_XRGB2101010 =
+constexpr SDL_PixelFormat PIXELFORMAT_XRGB2101010 =
   SDL_PIXELFORMAT_XRGB2101010; ///< XRGB2101010
 
-constexpr PixelFormat PIXELFORMAT_XBGR2101010 =
+constexpr SDL_PixelFormat PIXELFORMAT_XBGR2101010 =
   SDL_PIXELFORMAT_XBGR2101010; ///< XBGR2101010
 
-constexpr PixelFormat PIXELFORMAT_ARGB2101010 =
+constexpr SDL_PixelFormat PIXELFORMAT_ARGB2101010 =
   SDL_PIXELFORMAT_ARGB2101010; ///< ARGB2101010
 
-constexpr PixelFormat PIXELFORMAT_ABGR2101010 =
+constexpr SDL_PixelFormat PIXELFORMAT_ABGR2101010 =
   SDL_PIXELFORMAT_ABGR2101010; ///< ABGR2101010
 
-constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48; ///< RGB48
+constexpr SDL_PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48; ///< RGB48
 
-constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48; ///< BGR48
+constexpr SDL_PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48; ///< BGR48
 
-constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64; ///< RGBA64
+constexpr SDL_PixelFormat PIXELFORMAT_RGBA64 =
+  SDL_PIXELFORMAT_RGBA64; ///< RGBA64
 
-constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64; ///< ARGB64
+constexpr SDL_PixelFormat PIXELFORMAT_ARGB64 =
+  SDL_PIXELFORMAT_ARGB64; ///< ARGB64
 
-constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64; ///< BGRA64
+constexpr SDL_PixelFormat PIXELFORMAT_BGRA64 =
+  SDL_PIXELFORMAT_BGRA64; ///< BGRA64
 
-constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64; ///< ABGR64
+constexpr SDL_PixelFormat PIXELFORMAT_ABGR64 =
+  SDL_PIXELFORMAT_ABGR64; ///< ABGR64
 
-constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_RGB48_FLOAT =
   SDL_PIXELFORMAT_RGB48_FLOAT; ///< RGB48_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_BGR48_FLOAT =
   SDL_PIXELFORMAT_BGR48_FLOAT; ///< BGR48_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_RGBA64_FLOAT =
   SDL_PIXELFORMAT_RGBA64_FLOAT; ///< RGBA64_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_ARGB64_FLOAT =
   SDL_PIXELFORMAT_ARGB64_FLOAT; ///< ARGB64_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_BGRA64_FLOAT =
   SDL_PIXELFORMAT_BGRA64_FLOAT; ///< BGRA64_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_ABGR64_FLOAT =
   SDL_PIXELFORMAT_ABGR64_FLOAT; ///< ABGR64_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_RGB96_FLOAT =
   SDL_PIXELFORMAT_RGB96_FLOAT; ///< RGB96_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_BGR96_FLOAT =
   SDL_PIXELFORMAT_BGR96_FLOAT; ///< BGR96_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_RGBA128_FLOAT =
   SDL_PIXELFORMAT_RGBA128_FLOAT; ///< RGBA128_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_ARGB128_FLOAT =
   SDL_PIXELFORMAT_ARGB128_FLOAT; ///< ARGB128_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_BGRA128_FLOAT =
   SDL_PIXELFORMAT_BGRA128_FLOAT; ///< BGRA128_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT =
+constexpr SDL_PixelFormat PIXELFORMAT_ABGR128_FLOAT =
   SDL_PIXELFORMAT_ABGR128_FLOAT; ///< ABGR128_FLOAT
 
-constexpr PixelFormat PIXELFORMAT_YV12 =
+constexpr SDL_PixelFormat PIXELFORMAT_YV12 =
   SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U (3 planes)
 
-constexpr PixelFormat PIXELFORMAT_IYUV =
+constexpr SDL_PixelFormat PIXELFORMAT_IYUV =
   SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V (3 planes)
 
-constexpr PixelFormat PIXELFORMAT_YUY2 =
+constexpr SDL_PixelFormat PIXELFORMAT_YUY2 =
   SDL_PIXELFORMAT_YUY2; ///< Packed mode: Y0+U0+Y1+V0 (1 plane)
 
-constexpr PixelFormat PIXELFORMAT_UYVY =
+constexpr SDL_PixelFormat PIXELFORMAT_UYVY =
   SDL_PIXELFORMAT_UYVY; ///< Packed mode: U0+Y0+V0+Y1 (1 plane)
 
-constexpr PixelFormat PIXELFORMAT_YVYU =
+constexpr SDL_PixelFormat PIXELFORMAT_YVYU =
   SDL_PIXELFORMAT_YVYU; ///< Packed mode: Y0+V0+Y1+U0 (1 plane)
 
-constexpr PixelFormat PIXELFORMAT_NV12 =
+constexpr SDL_PixelFormat PIXELFORMAT_NV12 =
   SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved (2 planes)
 
-constexpr PixelFormat PIXELFORMAT_NV21 =
+constexpr SDL_PixelFormat PIXELFORMAT_NV21 =
   SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved (2 planes)
 
-constexpr PixelFormat PIXELFORMAT_P010 =
+constexpr SDL_PixelFormat PIXELFORMAT_P010 =
   SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved (2 planes)
 
-constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES =
+constexpr SDL_PixelFormat PIXELFORMAT_EXTERNAL_OES =
   SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format.
 
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
-constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
+constexpr SDL_PixelFormat PIXELFORMAT_MJPG =
+  SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
-constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32; ///< RGBA32
+constexpr SDL_PixelFormat PIXELFORMAT_RGBA32 =
+  SDL_PIXELFORMAT_RGBA32; ///< RGBA32
 
-constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32; ///< ARGB32
+constexpr SDL_PixelFormat PIXELFORMAT_ARGB32 =
+  SDL_PIXELFORMAT_ARGB32; ///< ARGB32
 
-constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32; ///< BGRA32
+constexpr SDL_PixelFormat PIXELFORMAT_BGRA32 =
+  SDL_PIXELFORMAT_BGRA32; ///< BGRA32
 
-constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32; ///< ABGR32
+constexpr SDL_PixelFormat PIXELFORMAT_ABGR32 =
+  SDL_PIXELFORMAT_ABGR32; ///< ABGR32
 
-constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32; ///< RGBX32
+constexpr SDL_PixelFormat PIXELFORMAT_RGBX32 =
+  SDL_PIXELFORMAT_RGBX32; ///< RGBX32
 
-constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32; ///< XRGB32
+constexpr SDL_PixelFormat PIXELFORMAT_XRGB32 =
+  SDL_PIXELFORMAT_XRGB32; ///< XRGB32
 
-constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32; ///< BGRX32
+constexpr SDL_PixelFormat PIXELFORMAT_BGRX32 =
+  SDL_PIXELFORMAT_BGRX32; ///< BGRX32
 
-constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32; ///< XBGR32
+constexpr SDL_PixelFormat PIXELFORMAT_XBGR32 =
+  SDL_PIXELFORMAT_XBGR32; ///< XBGR32
 
 /// @}
 
@@ -1337,6 +1362,14 @@ public:
    */
   constexpr bool operator==(const Colorspace& other) const = default;
 
+  /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(SDL_Colorspace colorspace) const
+  {
+    return operator==(Colorspace(colorspace));
+  }
+
   /// True if a valid colorspace
   /**
    * Unwraps to the underlying Colorspace.
@@ -1507,63 +1540,67 @@ public:
   }
 };
 
-constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
+constexpr SDL_Colorspace COLORSPACE_UNKNOWN =
+  SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
  */
-constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
+constexpr SDL_Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
 
-constexpr Colorspace COLORSPACE_SRGB_LINEAR =
+constexpr SDL_Colorspace COLORSPACE_SRGB_LINEAR =
   SDL_COLORSPACE_SRGB_LINEAR; ///< [object Object]
 
-constexpr Colorspace COLORSPACE_HDR10 =
+constexpr SDL_Colorspace COLORSPACE_HDR10 =
   SDL_COLORSPACE_HDR10; ///< [object Object]
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
  */
-constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
+constexpr SDL_Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
  */
-constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
+constexpr SDL_Colorspace COLORSPACE_BT601_LIMITED =
+  SDL_COLORSPACE_BT601_LIMITED;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
  */
-constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
+constexpr SDL_Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
  */
-constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
+constexpr SDL_Colorspace COLORSPACE_BT709_LIMITED =
+  SDL_COLORSPACE_BT709_LIMITED;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
  */
-constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
+constexpr SDL_Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
  */
-constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
+constexpr SDL_Colorspace COLORSPACE_BT2020_LIMITED =
+  SDL_COLORSPACE_BT2020_LIMITED;
 
 /**
  * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
  */
-constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
+constexpr SDL_Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
 
 /**
  * The default colorspace for RGB surfaces if no colorspace is specified.
  */
-constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
+constexpr SDL_Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
 
 /**
  * The default colorspace for YUV surfaces if no colorspace is specified.
  */
-constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
+constexpr SDL_Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
 
 /// @}
 
@@ -1608,8 +1645,24 @@ struct Color : SDL_Color
   /**
    * Default comparison operator
    */
-  constexpr auto operator<=>(const Color& other) const = default;
+  constexpr auto operator<=>(const Color& other) const
+  {
+    auto c = r <=> other.r;
+    if (c != std::strong_ordering::equal) return c;
+    c = g <=> other.g;
+    if (c != std::strong_ordering::equal) return c;
+    c = b <=> other.b;
+    if (c != std::strong_ordering::equal) return c;
+    return a <=> other.a;
+  }
 
+  /**
+   * Compares with the underlying type
+   */
+  constexpr auto operator<=>(const SDL_Color& color) const
+  {
+    return operator<=>(Color(color));
+  }
   /**
    * Get the red component from the color.
    *
@@ -1787,8 +1840,24 @@ struct FColor : SDL_FColor
   /**
    * Default comparison operator
    */
-  constexpr auto operator<=>(const FColor& other) const = default;
+  constexpr auto operator<=>(const FColor& other) const
+  {
+    auto c = r <=> other.r;
+    if (c != std::partial_ordering::equivalent) return c;
+    c = g <=> other.g;
+    if (c != std::partial_ordering::equivalent) return c;
+    c = b <=> other.b;
+    if (c != std::partial_ordering::equivalent) return c;
+    return a <=> other.a;
+  }
 
+  /**
+   * Compares with the underlying type
+   */
+  constexpr auto operator<=>(const SDL_FColor& color) const
+  {
+    return operator<=>(FColor(color));
+  }
   /**
    * Get the red component from the color.
    *

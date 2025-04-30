@@ -393,6 +393,14 @@ public:
   constexpr bool operator==(const Display& other) const = default;
 
   /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(SDL_DisplayID displayID) const
+  {
+    return operator==(Display(displayID));
+  }
+
+  /**
    * Unwraps to the underlying Display.
    *
    * @returns the underlying Display.

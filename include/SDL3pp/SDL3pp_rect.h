@@ -77,6 +77,13 @@ struct Point : SDL_Point
   }
 
   /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(const SDL_Point& p) const
+  {
+    return operator==(Point(p));
+  }
+  /**
    * Check if valid.
    *
    * @returns True if valid state, false otherwise.
@@ -500,6 +507,14 @@ struct FPoint : SDL_FPoint
   }
 
   /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(const SDL_FPoint& p) const
+  {
+    return operator==(FPoint(p));
+  }
+
+  /**
    * Check if valid.
    *
    * @returns True if valid state, false otherwise.
@@ -838,6 +853,14 @@ struct Rect : SDL_Rect
    * @sa Equal()
    */
   constexpr bool operator==(const Rect& other) const { return Equal(other); }
+
+  /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(const SDL_Rect& r) const
+  {
+    return operator==(Rect(r));
+  }
 
   /**
    * @sa Empty()
@@ -1447,6 +1470,14 @@ struct FRect : SDL_FRect
    * @sa Equal()
    */
   constexpr bool operator==(const FRect& other) const { return Equal(other); }
+
+  /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(const SDL_FRect& r) const
+  {
+    return operator==(FRect(r));
+  }
 
   /**
    * @sa Empty()

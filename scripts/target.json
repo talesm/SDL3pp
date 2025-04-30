@@ -5334,23 +5334,42 @@
                 ]
               }
             },
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const Display &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Display &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_DisplayID",
+                    "name": "displayID"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(Display(displayID));"
+                }
               }
-            },
+            ],
             "operator SDL_DisplayID": {
               "kind": "function",
               "name": "operator SDL_DisplayID",
@@ -12846,23 +12865,42 @@
                 "constexpr": true
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const PixelFormat &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const PixelFormat &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_PixelFormat",
+                    "name": "format"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(PixelFormat(format));"
+                }
               }
-            },
+            ],
             "operator SDL_PixelFormat": {
               "kind": "function",
               "name": "operator SDL_PixelFormat",
@@ -13146,7 +13184,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_UNKNOWN",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "UNKNOWN",
           "sourceName": "SDL_PIXELFORMAT_UNKNOWN"
         },
@@ -13154,7 +13192,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX1LSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX1LSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX1LSB"
         },
@@ -13162,7 +13200,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX1MSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX1MSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX1MSB"
         },
@@ -13170,7 +13208,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX2LSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX2LSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX2LSB"
         },
@@ -13178,7 +13216,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX2MSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX2MSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX2MSB"
         },
@@ -13186,7 +13224,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX4LSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX4LSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX4LSB"
         },
@@ -13194,7 +13232,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX4MSB",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX4MSB",
           "sourceName": "SDL_PIXELFORMAT_INDEX4MSB"
         },
@@ -13202,7 +13240,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_INDEX8",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "INDEX8",
           "sourceName": "SDL_PIXELFORMAT_INDEX8"
         },
@@ -13210,7 +13248,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB332",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB332",
           "sourceName": "SDL_PIXELFORMAT_RGB332"
         },
@@ -13218,7 +13256,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB4444",
           "sourceName": "SDL_PIXELFORMAT_XRGB4444"
         },
@@ -13226,7 +13264,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR4444",
           "sourceName": "SDL_PIXELFORMAT_XBGR4444"
         },
@@ -13234,7 +13272,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB1555",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB1555",
           "sourceName": "SDL_PIXELFORMAT_XRGB1555"
         },
@@ -13242,7 +13280,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR1555",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR1555",
           "sourceName": "SDL_PIXELFORMAT_XBGR1555"
         },
@@ -13250,7 +13288,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB4444",
           "sourceName": "SDL_PIXELFORMAT_ARGB4444"
         },
@@ -13258,7 +13296,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA4444",
           "sourceName": "SDL_PIXELFORMAT_RGBA4444"
         },
@@ -13266,7 +13304,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR4444",
           "sourceName": "SDL_PIXELFORMAT_ABGR4444"
         },
@@ -13274,7 +13312,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA4444",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA4444",
           "sourceName": "SDL_PIXELFORMAT_BGRA4444"
         },
@@ -13282,7 +13320,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB1555",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB1555",
           "sourceName": "SDL_PIXELFORMAT_ARGB1555"
         },
@@ -13290,7 +13328,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA5551",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA5551",
           "sourceName": "SDL_PIXELFORMAT_RGBA5551"
         },
@@ -13298,7 +13336,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR1555",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR1555",
           "sourceName": "SDL_PIXELFORMAT_ABGR1555"
         },
@@ -13306,7 +13344,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA5551",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA5551",
           "sourceName": "SDL_PIXELFORMAT_BGRA5551"
         },
@@ -13314,7 +13352,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB565",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB565",
           "sourceName": "SDL_PIXELFORMAT_RGB565"
         },
@@ -13322,7 +13360,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR565",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR565",
           "sourceName": "SDL_PIXELFORMAT_BGR565"
         },
@@ -13330,7 +13368,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB24",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB24",
           "sourceName": "SDL_PIXELFORMAT_RGB24"
         },
@@ -13338,7 +13376,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR24",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR24",
           "sourceName": "SDL_PIXELFORMAT_BGR24"
         },
@@ -13346,7 +13384,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB8888",
           "sourceName": "SDL_PIXELFORMAT_XRGB8888"
         },
@@ -13354,7 +13392,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBX8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBX8888",
           "sourceName": "SDL_PIXELFORMAT_RGBX8888"
         },
@@ -13362,7 +13400,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR8888",
           "sourceName": "SDL_PIXELFORMAT_XBGR8888"
         },
@@ -13370,7 +13408,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRX8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRX8888",
           "sourceName": "SDL_PIXELFORMAT_BGRX8888"
         },
@@ -13378,7 +13416,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB8888",
           "sourceName": "SDL_PIXELFORMAT_ARGB8888"
         },
@@ -13386,7 +13424,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA8888",
           "sourceName": "SDL_PIXELFORMAT_RGBA8888"
         },
@@ -13394,7 +13432,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR8888",
           "sourceName": "SDL_PIXELFORMAT_ABGR8888"
         },
@@ -13402,7 +13440,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA8888",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA8888",
           "sourceName": "SDL_PIXELFORMAT_BGRA8888"
         },
@@ -13410,7 +13448,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB2101010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB2101010",
           "sourceName": "SDL_PIXELFORMAT_XRGB2101010"
         },
@@ -13418,7 +13456,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR2101010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR2101010",
           "sourceName": "SDL_PIXELFORMAT_XBGR2101010"
         },
@@ -13426,7 +13464,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB2101010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB2101010",
           "sourceName": "SDL_PIXELFORMAT_ARGB2101010"
         },
@@ -13434,7 +13472,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR2101010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR2101010",
           "sourceName": "SDL_PIXELFORMAT_ABGR2101010"
         },
@@ -13442,7 +13480,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB48",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB48",
           "sourceName": "SDL_PIXELFORMAT_RGB48"
         },
@@ -13450,7 +13488,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR48",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR48",
           "sourceName": "SDL_PIXELFORMAT_BGR48"
         },
@@ -13458,7 +13496,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA64",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA64",
           "sourceName": "SDL_PIXELFORMAT_RGBA64"
         },
@@ -13466,7 +13504,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB64",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB64",
           "sourceName": "SDL_PIXELFORMAT_ARGB64"
         },
@@ -13474,7 +13512,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA64",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA64",
           "sourceName": "SDL_PIXELFORMAT_BGRA64"
         },
@@ -13482,7 +13520,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR64",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR64",
           "sourceName": "SDL_PIXELFORMAT_ABGR64"
         },
@@ -13490,7 +13528,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB48_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB48_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_RGB48_FLOAT"
         },
@@ -13498,7 +13536,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR48_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR48_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_BGR48_FLOAT"
         },
@@ -13506,7 +13544,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA64_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA64_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_RGBA64_FLOAT"
         },
@@ -13514,7 +13552,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB64_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB64_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_ARGB64_FLOAT"
         },
@@ -13522,7 +13560,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA64_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA64_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_BGRA64_FLOAT"
         },
@@ -13530,7 +13568,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR64_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR64_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_ABGR64_FLOAT"
         },
@@ -13538,7 +13576,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGB96_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGB96_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_RGB96_FLOAT"
         },
@@ -13546,7 +13584,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGR96_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGR96_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_BGR96_FLOAT"
         },
@@ -13554,7 +13592,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA128_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA128_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_RGBA128_FLOAT"
         },
@@ -13562,7 +13600,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB128_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB128_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_ARGB128_FLOAT"
         },
@@ -13570,7 +13608,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA128_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA128_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_BGRA128_FLOAT"
         },
@@ -13578,7 +13616,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR128_FLOAT",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR128_FLOAT",
           "sourceName": "SDL_PIXELFORMAT_ABGR128_FLOAT"
         },
@@ -13586,7 +13624,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_YV12",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + V + U (3 planes)",
           "sourceName": "SDL_PIXELFORMAT_YV12"
         },
@@ -13594,7 +13632,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_IYUV",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + U + V (3 planes)",
           "sourceName": "SDL_PIXELFORMAT_IYUV"
         },
@@ -13602,7 +13640,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_YUY2",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Packed mode: Y0+U0+Y1+V0 (1 plane)",
           "sourceName": "SDL_PIXELFORMAT_YUY2"
         },
@@ -13610,7 +13648,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_UYVY",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Packed mode: U0+Y0+V0+Y1 (1 plane)",
           "sourceName": "SDL_PIXELFORMAT_UYVY"
         },
@@ -13618,7 +13656,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_YVYU",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Packed mode: Y0+V0+Y1+U0 (1 plane)",
           "sourceName": "SDL_PIXELFORMAT_YVYU"
         },
@@ -13626,7 +13664,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_NV12",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + U/V interleaved (2 planes)",
           "sourceName": "SDL_PIXELFORMAT_NV12"
         },
@@ -13634,7 +13672,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_NV21",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + V/U interleaved (2 planes)",
           "sourceName": "SDL_PIXELFORMAT_NV21"
         },
@@ -13642,7 +13680,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_P010",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Planar mode: Y + U/V interleaved (2 planes)",
           "sourceName": "SDL_PIXELFORMAT_P010"
         },
@@ -13650,7 +13688,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_EXTERNAL_OES",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Android video texture format.",
           "sourceName": "SDL_PIXELFORMAT_EXTERNAL_OES"
         },
@@ -13658,7 +13696,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_MJPG",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "Motion JPEG.",
           "sourceName": "SDL_PIXELFORMAT_MJPG"
         },
@@ -13666,7 +13704,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBA32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBA32",
           "sourceName": "SDL_PIXELFORMAT_RGBA32"
         },
@@ -13674,7 +13712,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ARGB32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ARGB32",
           "sourceName": "SDL_PIXELFORMAT_ARGB32"
         },
@@ -13682,7 +13720,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRA32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRA32",
           "sourceName": "SDL_PIXELFORMAT_BGRA32"
         },
@@ -13690,7 +13728,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_ABGR32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "ABGR32",
           "sourceName": "SDL_PIXELFORMAT_ABGR32"
         },
@@ -13698,7 +13736,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_RGBX32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "RGBX32",
           "sourceName": "SDL_PIXELFORMAT_RGBX32"
         },
@@ -13706,7 +13744,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XRGB32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XRGB32",
           "sourceName": "SDL_PIXELFORMAT_XRGB32"
         },
@@ -13714,7 +13752,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_BGRX32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "BGRX32",
           "sourceName": "SDL_PIXELFORMAT_BGRX32"
         },
@@ -13722,7 +13760,7 @@
           "kind": "var",
           "name": "PIXELFORMAT_XBGR32",
           "constexpr": true,
-          "type": "PixelFormat",
+          "type": "SDL_PixelFormat",
           "doc": "XBGR32",
           "sourceName": "SDL_PIXELFORMAT_XBGR32"
         },
@@ -14301,23 +14339,42 @@
                 "constexpr": true
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const Colorspace &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Colorspace &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Colorspace",
+                    "name": "colorspace"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(Colorspace(colorspace));"
+                }
               }
-            },
+            ],
             "operator SDL_Colorspace": {
               "kind": "function",
               "name": "operator SDL_Colorspace",
@@ -14473,7 +14530,7 @@
           "kind": "var",
           "name": "COLORSPACE_UNKNOWN",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "UNKNOWN",
           "sourceName": "SDL_COLORSPACE_UNKNOWN"
         },
@@ -14481,7 +14538,7 @@
           "kind": "var",
           "name": "COLORSPACE_SRGB",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.",
           "sourceName": "SDL_COLORSPACE_SRGB"
         },
@@ -14489,7 +14546,7 @@
           "kind": "var",
           "name": "COLORSPACE_SRGB_LINEAR",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "[object Object]",
           "sourceName": "SDL_COLORSPACE_SRGB_LINEAR"
         },
@@ -14497,7 +14554,7 @@
           "kind": "var",
           "name": "COLORSPACE_HDR10",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "[object Object]",
           "sourceName": "SDL_COLORSPACE_HDR10"
         },
@@ -14505,7 +14562,7 @@
           "kind": "var",
           "name": "COLORSPACE_JPEG",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.",
           "sourceName": "SDL_COLORSPACE_JPEG"
         },
@@ -14513,7 +14570,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT601_LIMITED",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.",
           "sourceName": "SDL_COLORSPACE_BT601_LIMITED"
         },
@@ -14521,7 +14578,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT601_FULL",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.",
           "sourceName": "SDL_COLORSPACE_BT601_FULL"
         },
@@ -14529,7 +14586,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT709_LIMITED",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.",
           "sourceName": "SDL_COLORSPACE_BT709_LIMITED"
         },
@@ -14537,7 +14594,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT709_FULL",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.",
           "sourceName": "SDL_COLORSPACE_BT709_FULL"
         },
@@ -14545,7 +14602,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT2020_LIMITED",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.",
           "sourceName": "SDL_COLORSPACE_BT2020_LIMITED"
         },
@@ -14553,7 +14610,7 @@
           "kind": "var",
           "name": "COLORSPACE_BT2020_FULL",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.",
           "sourceName": "SDL_COLORSPACE_BT2020_FULL"
         },
@@ -14561,7 +14618,7 @@
           "kind": "var",
           "name": "COLORSPACE_RGB_DEFAULT",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "The default colorspace for RGB surfaces if no colorspace is specified.",
           "sourceName": "SDL_COLORSPACE_RGB_DEFAULT"
         },
@@ -14569,7 +14626,7 @@
           "kind": "var",
           "name": "COLORSPACE_YUV_DEFAULT",
           "constexpr": true,
-          "type": "Colorspace",
+          "type": "SDL_Colorspace",
           "doc": "The default colorspace for YUV surfaces if no colorspace is specified.",
           "sourceName": "SDL_COLORSPACE_YUV_DEFAULT"
         },
@@ -14635,23 +14692,42 @@
                 }
               }
             ],
-            "operator<=>": {
-              "kind": "function",
-              "name": "operator<=>",
-              "type": "auto",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const Color &",
-                  "name": "other"
+            "operator<=>": [
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Color &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Color &",
+                    "name": "color"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator<=>(Color(color));"
+                }
               }
-            },
+            ],
             "GetR": {
               "kind": "function",
               "name": "GetR",
@@ -14828,23 +14904,42 @@
                 }
               }
             ],
-            "operator<=>": {
-              "kind": "function",
-              "name": "operator<=>",
-              "type": "auto",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const FColor &",
-                  "name": "other"
+            "operator<=>": [
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const FColor &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FColor &",
+                    "name": "color"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator<=>(FColor(color));"
+                }
               }
-            },
+            ],
             "GetR": {
               "kind": "function",
               "name": "GetR",
@@ -15714,23 +15809,42 @@
                 "doc": ""
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const Point &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Point &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Point &",
+                    "name": "p"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(Point(p));"
+                }
               }
-            },
+            ],
             "operator bool": {
               "kind": "function",
               "name": "operator bool",
@@ -15872,23 +15986,42 @@
                 }
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const FPoint &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const FPoint &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FPoint &",
+                    "name": "p"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(FPoint(p));"
+                }
               }
-            },
+            ],
             "operator bool": {
               "kind": "function",
               "name": "operator bool",
@@ -16054,23 +16187,42 @@
                 "doc": ""
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const Rect &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Rect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Rect &",
+                    "name": "r"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(Rect(r));"
+                }
               }
-            },
+            ],
             "operator bool": {
               "doc": "@sa Empty()",
               "kind": "function",
@@ -16581,23 +16733,42 @@
                 "doc": ""
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const FRect &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const FRect &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FRect &",
+                    "name": "r"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(FRect(r));"
+                }
               }
-            },
+            ],
             "operator bool": {
               "doc": "@sa Empty()",
               "kind": "function",
@@ -19289,23 +19460,42 @@
                 "proto": false
               }
             ],
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const AudioFormat &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const AudioFormat &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_AudioFormat",
+                    "name": "audioFormat"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(AudioFormat(audioFormat));"
+                }
               }
-            },
+            ],
             "operator SDL_AudioFormat": {
               "kind": "function",
               "name": "operator SDL_AudioFormat",
@@ -19447,7 +19637,7 @@
           "kind": "var",
           "name": "AUDIO_UNKNOWN",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "Unspecified audio format.",
           "sourceName": "SDL_AUDIO_UNKNOWN"
         },
@@ -19455,7 +19645,7 @@
           "kind": "var",
           "name": "AUDIO_U8",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "Unsigned 8-bit samples.",
           "sourceName": "SDL_AUDIO_U8"
         },
@@ -19463,7 +19653,7 @@
           "kind": "var",
           "name": "AUDIO_S8",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "Signed 8-bit samples.",
           "sourceName": "SDL_AUDIO_S8"
         },
@@ -19471,7 +19661,7 @@
           "kind": "var",
           "name": "AUDIO_S16LE",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "Signed 16-bit samples.",
           "sourceName": "SDL_AUDIO_S16LE"
         },
@@ -19479,7 +19669,7 @@
           "kind": "var",
           "name": "AUDIO_S16BE",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "As above, but big-endian byte order.",
           "sourceName": "SDL_AUDIO_S16BE"
         },
@@ -19487,7 +19677,7 @@
           "kind": "var",
           "name": "AUDIO_S32LE",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "32-bit integer samples",
           "sourceName": "SDL_AUDIO_S32LE"
         },
@@ -19495,7 +19685,7 @@
           "kind": "var",
           "name": "AUDIO_S32BE",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "As above, but big-endian byte order.",
           "sourceName": "SDL_AUDIO_S32BE"
         },
@@ -19503,7 +19693,7 @@
           "kind": "var",
           "name": "AUDIO_F32LE",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "32-bit floating point samples",
           "sourceName": "SDL_AUDIO_F32LE"
         },
@@ -19511,7 +19701,7 @@
           "kind": "var",
           "name": "AUDIO_F32BE",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "As above, but big-endian byte order.",
           "sourceName": "SDL_AUDIO_F32BE"
         },
@@ -19519,7 +19709,7 @@
           "kind": "var",
           "name": "AUDIO_S16",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "AUDIO_S16",
           "sourceName": "SDL_AUDIO_S16"
         },
@@ -19527,7 +19717,7 @@
           "kind": "var",
           "name": "AUDIO_S32",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "AUDIO_S32",
           "sourceName": "SDL_AUDIO_S32"
         },
@@ -19535,7 +19725,7 @@
           "kind": "var",
           "name": "AUDIO_F32",
           "constexpr": true,
-          "type": "AudioFormat",
+          "type": "SDL_AudioFormat",
           "doc": "AUDIO_F32",
           "sourceName": "SDL_AUDIO_F32"
         },
@@ -23536,23 +23726,42 @@
                 "proto": true
               }
             ],
-            "operator<=>": {
-              "kind": "function",
-              "name": "operator<=>",
-              "type": "auto",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const Keycode &",
-                  "name": "other"
+            "operator<=>": [
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Keycode &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Keycode",
+                    "name": "keycode"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator<=>(Keycode(keycode));"
+                }
               }
-            },
+            ],
             "operator SDL_Keycode": {
               "kind": "function",
               "name": "operator SDL_Keycode",
@@ -23633,7 +23842,7 @@
           "value": "(1u << 29)",
           "sourceName": "SDLK_EXTENDED_MASK",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SCANCODE_MASK": {
           "doc": "SCANCODE_MASK",
@@ -23642,7 +23851,7 @@
           "value": "(1u << 30)",
           "sourceName": "SDLK_SCANCODE_MASK",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "ScancodeToKeycode": {
           "doc": "",
@@ -23666,7 +23875,7 @@
           "value": "0x00000000u",
           "sourceName": "SDLK_UNKNOWN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RETURN": {
           "doc": "'\\r'",
@@ -23675,7 +23884,7 @@
           "value": "0x0000000du",
           "sourceName": "SDLK_RETURN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_ESCAPE": {
           "doc": "'\\x1B'",
@@ -23684,7 +23893,7 @@
           "value": "0x0000001bu",
           "sourceName": "SDLK_ESCAPE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_BACKSPACE": {
           "doc": "'\\b'",
@@ -23693,7 +23902,7 @@
           "value": "0x00000008u",
           "sourceName": "SDLK_BACKSPACE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_TAB": {
           "doc": "'\\t'",
@@ -23702,7 +23911,7 @@
           "value": "0x00000009u",
           "sourceName": "SDLK_TAB",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SPACE": {
           "doc": "' '",
@@ -23711,7 +23920,7 @@
           "value": "0x00000020u",
           "sourceName": "SDLK_SPACE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_EXCLAIM": {
           "doc": "'!'",
@@ -23720,7 +23929,7 @@
           "value": "0x00000021u",
           "sourceName": "SDLK_EXCLAIM",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_DBLAPOSTROPHE": {
           "doc": "'\"'",
@@ -23729,7 +23938,7 @@
           "value": "0x00000022u",
           "sourceName": "SDLK_DBLAPOSTROPHE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_HASH": {
           "doc": "'#'",
@@ -23738,7 +23947,7 @@
           "value": "0x00000023u",
           "sourceName": "SDLK_HASH",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_DOLLAR": {
           "doc": "'$'",
@@ -23747,7 +23956,7 @@
           "value": "0x00000024u",
           "sourceName": "SDLK_DOLLAR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PERCENT": {
           "doc": "'%'",
@@ -23756,7 +23965,7 @@
           "value": "0x00000025u",
           "sourceName": "SDLK_PERCENT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AMPERSAND": {
           "doc": "'&'",
@@ -23765,7 +23974,7 @@
           "value": "0x00000026u",
           "sourceName": "SDLK_AMPERSAND",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_APOSTROPHE": {
           "doc": "'\\''",
@@ -23774,7 +23983,7 @@
           "value": "0x00000027u",
           "sourceName": "SDLK_APOSTROPHE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LEFTPAREN": {
           "doc": "'('",
@@ -23783,7 +23992,7 @@
           "value": "0x00000028u",
           "sourceName": "SDLK_LEFTPAREN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RIGHTPAREN": {
           "doc": "')'",
@@ -23792,7 +24001,7 @@
           "value": "0x00000029u",
           "sourceName": "SDLK_RIGHTPAREN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_ASTERISK": {
           "doc": "'*'",
@@ -23801,7 +24010,7 @@
           "value": "0x0000002au",
           "sourceName": "SDLK_ASTERISK",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PLUS": {
           "doc": "'+'",
@@ -23810,7 +24019,7 @@
           "value": "0x0000002bu",
           "sourceName": "SDLK_PLUS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_COMMA": {
           "doc": "','",
@@ -23819,7 +24028,7 @@
           "value": "0x0000002cu",
           "sourceName": "SDLK_COMMA",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MINUS": {
           "doc": "'-'",
@@ -23828,7 +24037,7 @@
           "value": "0x0000002du",
           "sourceName": "SDLK_MINUS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PERIOD": {
           "doc": "'.'",
@@ -23837,7 +24046,7 @@
           "value": "0x0000002eu",
           "sourceName": "SDLK_PERIOD",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SLASH": {
           "doc": "'/'",
@@ -23846,7 +24055,7 @@
           "value": "0x0000002fu",
           "sourceName": "SDLK_SLASH",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_0": {
           "doc": "'0'",
@@ -23855,7 +24064,7 @@
           "value": "0x00000030u",
           "sourceName": "SDLK_0",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_1": {
           "doc": "'1'",
@@ -23864,7 +24073,7 @@
           "value": "0x00000031u",
           "sourceName": "SDLK_1",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_2": {
           "doc": "'2'",
@@ -23873,7 +24082,7 @@
           "value": "0x00000032u",
           "sourceName": "SDLK_2",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_3": {
           "doc": "'3'",
@@ -23882,7 +24091,7 @@
           "value": "0x00000033u",
           "sourceName": "SDLK_3",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_4": {
           "doc": "'4'",
@@ -23891,7 +24100,7 @@
           "value": "0x00000034u",
           "sourceName": "SDLK_4",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_5": {
           "doc": "'5'",
@@ -23900,7 +24109,7 @@
           "value": "0x00000035u",
           "sourceName": "SDLK_5",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_6": {
           "doc": "'6'",
@@ -23909,7 +24118,7 @@
           "value": "0x00000036u",
           "sourceName": "SDLK_6",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_7": {
           "doc": "'7'",
@@ -23918,7 +24127,7 @@
           "value": "0x00000037u",
           "sourceName": "SDLK_7",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_8": {
           "doc": "'8'",
@@ -23927,7 +24136,7 @@
           "value": "0x00000038u",
           "sourceName": "SDLK_8",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_9": {
           "doc": "'9'",
@@ -23936,7 +24145,7 @@
           "value": "0x00000039u",
           "sourceName": "SDLK_9",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_COLON": {
           "doc": "':'",
@@ -23945,7 +24154,7 @@
           "value": "0x0000003au",
           "sourceName": "SDLK_COLON",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SEMICOLON": {
           "doc": "';'",
@@ -23954,7 +24163,7 @@
           "value": "0x0000003bu",
           "sourceName": "SDLK_SEMICOLON",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LESS": {
           "doc": "'<'",
@@ -23963,7 +24172,7 @@
           "value": "0x0000003cu",
           "sourceName": "SDLK_LESS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_EQUALS": {
           "doc": "'='",
@@ -23972,7 +24181,7 @@
           "value": "0x0000003du",
           "sourceName": "SDLK_EQUALS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_GREATER": {
           "doc": "'>'",
@@ -23981,7 +24190,7 @@
           "value": "0x0000003eu",
           "sourceName": "SDLK_GREATER",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_QUESTION": {
           "doc": "'?'",
@@ -23990,7 +24199,7 @@
           "value": "0x0000003fu",
           "sourceName": "SDLK_QUESTION",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AT": {
           "doc": "'@'",
@@ -23999,7 +24208,7 @@
           "value": "0x00000040u",
           "sourceName": "SDLK_AT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LEFTBRACKET": {
           "doc": "'['",
@@ -24008,7 +24217,7 @@
           "value": "0x0000005bu",
           "sourceName": "SDLK_LEFTBRACKET",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_BACKSLASH": {
           "doc": "'\\\\'",
@@ -24017,7 +24226,7 @@
           "value": "0x0000005cu",
           "sourceName": "SDLK_BACKSLASH",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RIGHTBRACKET": {
           "doc": "']'",
@@ -24026,7 +24235,7 @@
           "value": "0x0000005du",
           "sourceName": "SDLK_RIGHTBRACKET",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CARET": {
           "doc": "'^'",
@@ -24035,7 +24244,7 @@
           "value": "0x0000005eu",
           "sourceName": "SDLK_CARET",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_UNDERSCORE": {
           "doc": "'_'",
@@ -24044,7 +24253,7 @@
           "value": "0x0000005fu",
           "sourceName": "SDLK_UNDERSCORE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_GRAVE": {
           "doc": "'`'",
@@ -24053,7 +24262,7 @@
           "value": "0x00000060u",
           "sourceName": "SDLK_GRAVE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_A": {
           "doc": "'a'",
@@ -24062,7 +24271,7 @@
           "value": "0x00000061u",
           "sourceName": "SDLK_A",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_B": {
           "doc": "'b'",
@@ -24071,7 +24280,7 @@
           "value": "0x00000062u",
           "sourceName": "SDLK_B",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_C": {
           "doc": "'c'",
@@ -24080,7 +24289,7 @@
           "value": "0x00000063u",
           "sourceName": "SDLK_C",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_D": {
           "doc": "'d'",
@@ -24089,7 +24298,7 @@
           "value": "0x00000064u",
           "sourceName": "SDLK_D",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_E": {
           "doc": "'e'",
@@ -24098,7 +24307,7 @@
           "value": "0x00000065u",
           "sourceName": "SDLK_E",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F": {
           "doc": "'f'",
@@ -24107,7 +24316,7 @@
           "value": "0x00000066u",
           "sourceName": "SDLK_F",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_G": {
           "doc": "'g'",
@@ -24116,7 +24325,7 @@
           "value": "0x00000067u",
           "sourceName": "SDLK_G",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_H": {
           "doc": "'h'",
@@ -24125,7 +24334,7 @@
           "value": "0x00000068u",
           "sourceName": "SDLK_H",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_I": {
           "doc": "'i'",
@@ -24134,7 +24343,7 @@
           "value": "0x00000069u",
           "sourceName": "SDLK_I",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_J": {
           "doc": "'j'",
@@ -24143,7 +24352,7 @@
           "value": "0x0000006au",
           "sourceName": "SDLK_J",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_K": {
           "doc": "'k'",
@@ -24152,7 +24361,7 @@
           "value": "0x0000006bu",
           "sourceName": "SDLK_K",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_L": {
           "doc": "'l'",
@@ -24161,7 +24370,7 @@
           "value": "0x0000006cu",
           "sourceName": "SDLK_L",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_M": {
           "doc": "'m'",
@@ -24170,7 +24379,7 @@
           "value": "0x0000006du",
           "sourceName": "SDLK_M",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_N": {
           "doc": "'n'",
@@ -24179,7 +24388,7 @@
           "value": "0x0000006eu",
           "sourceName": "SDLK_N",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_O": {
           "doc": "'o'",
@@ -24188,7 +24397,7 @@
           "value": "0x0000006fu",
           "sourceName": "SDLK_O",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_P": {
           "doc": "'p'",
@@ -24197,7 +24406,7 @@
           "value": "0x00000070u",
           "sourceName": "SDLK_P",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_Q": {
           "doc": "'q'",
@@ -24206,7 +24415,7 @@
           "value": "0x00000071u",
           "sourceName": "SDLK_Q",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_R": {
           "doc": "'r'",
@@ -24215,7 +24424,7 @@
           "value": "0x00000072u",
           "sourceName": "SDLK_R",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_S": {
           "doc": "'s'",
@@ -24224,7 +24433,7 @@
           "value": "0x00000073u",
           "sourceName": "SDLK_S",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_T": {
           "doc": "'t'",
@@ -24233,7 +24442,7 @@
           "value": "0x00000074u",
           "sourceName": "SDLK_T",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_U": {
           "doc": "'u'",
@@ -24242,7 +24451,7 @@
           "value": "0x00000075u",
           "sourceName": "SDLK_U",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_V": {
           "doc": "'v'",
@@ -24251,7 +24460,7 @@
           "value": "0x00000076u",
           "sourceName": "SDLK_V",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_W": {
           "doc": "'w'",
@@ -24260,7 +24469,7 @@
           "value": "0x00000077u",
           "sourceName": "SDLK_W",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_X": {
           "doc": "'x'",
@@ -24269,7 +24478,7 @@
           "value": "0x00000078u",
           "sourceName": "SDLK_X",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_Y": {
           "doc": "'y'",
@@ -24278,7 +24487,7 @@
           "value": "0x00000079u",
           "sourceName": "SDLK_Y",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_Z": {
           "doc": "'z'",
@@ -24287,7 +24496,7 @@
           "value": "0x0000007au",
           "sourceName": "SDLK_Z",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LEFTBRACE": {
           "doc": "'{'",
@@ -24296,7 +24505,7 @@
           "value": "0x0000007bu",
           "sourceName": "SDLK_LEFTBRACE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PIPE": {
           "doc": "'|'",
@@ -24305,7 +24514,7 @@
           "value": "0x0000007cu",
           "sourceName": "SDLK_PIPE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RIGHTBRACE": {
           "doc": "'}'",
@@ -24314,7 +24523,7 @@
           "value": "0x0000007du",
           "sourceName": "SDLK_RIGHTBRACE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_TILDE": {
           "doc": "'~'",
@@ -24323,7 +24532,7 @@
           "value": "0x0000007eu",
           "sourceName": "SDLK_TILDE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_DELETE": {
           "doc": "'\\x7F'",
@@ -24332,7 +24541,7 @@
           "value": "0x0000007fu",
           "sourceName": "SDLK_DELETE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PLUSMINUS": {
           "doc": "'\\xB1'",
@@ -24341,7 +24550,7 @@
           "value": "0x000000b1u",
           "sourceName": "SDLK_PLUSMINUS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CAPSLOCK": {
           "doc": "ScancodeToKeycode(SCANCODE_CAPSLOCK)",
@@ -24350,7 +24559,7 @@
           "value": "0x40000039u",
           "sourceName": "SDLK_CAPSLOCK",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F1": {
           "doc": "ScancodeToKeycode(SCANCODE_F1)",
@@ -24359,7 +24568,7 @@
           "value": "0x4000003au",
           "sourceName": "SDLK_F1",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F2": {
           "doc": "ScancodeToKeycode(SCANCODE_F2)",
@@ -24368,7 +24577,7 @@
           "value": "0x4000003bu",
           "sourceName": "SDLK_F2",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F3": {
           "doc": "ScancodeToKeycode(SCANCODE_F3)",
@@ -24377,7 +24586,7 @@
           "value": "0x4000003cu",
           "sourceName": "SDLK_F3",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F4": {
           "doc": "ScancodeToKeycode(SCANCODE_F4)",
@@ -24386,7 +24595,7 @@
           "value": "0x4000003du",
           "sourceName": "SDLK_F4",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F5": {
           "doc": "ScancodeToKeycode(SCANCODE_F5)",
@@ -24395,7 +24604,7 @@
           "value": "0x4000003eu",
           "sourceName": "SDLK_F5",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F6": {
           "doc": "ScancodeToKeycode(SCANCODE_F6)",
@@ -24404,7 +24613,7 @@
           "value": "0x4000003fu",
           "sourceName": "SDLK_F6",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F7": {
           "doc": "ScancodeToKeycode(SCANCODE_F7)",
@@ -24413,7 +24622,7 @@
           "value": "0x40000040u",
           "sourceName": "SDLK_F7",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F8": {
           "doc": "ScancodeToKeycode(SCANCODE_F8)",
@@ -24422,7 +24631,7 @@
           "value": "0x40000041u",
           "sourceName": "SDLK_F8",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F9": {
           "doc": "ScancodeToKeycode(SCANCODE_F9)",
@@ -24431,7 +24640,7 @@
           "value": "0x40000042u",
           "sourceName": "SDLK_F9",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F10": {
           "doc": "ScancodeToKeycode(SCANCODE_F10)",
@@ -24440,7 +24649,7 @@
           "value": "0x40000043u",
           "sourceName": "SDLK_F10",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F11": {
           "doc": "ScancodeToKeycode(SCANCODE_F11)",
@@ -24449,7 +24658,7 @@
           "value": "0x40000044u",
           "sourceName": "SDLK_F11",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F12": {
           "doc": "ScancodeToKeycode(SCANCODE_F12)",
@@ -24458,7 +24667,7 @@
           "value": "0x40000045u",
           "sourceName": "SDLK_F12",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PRINTSCREEN": {
           "doc": "ScancodeToKeycode(SCANCODE_PRINTSCREEN)",
@@ -24467,7 +24676,7 @@
           "value": "0x40000046u",
           "sourceName": "SDLK_PRINTSCREEN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SCROLLLOCK": {
           "doc": "ScancodeToKeycode(SCANCODE_SCROLLLOCK)",
@@ -24476,7 +24685,7 @@
           "value": "0x40000047u",
           "sourceName": "SDLK_SCROLLLOCK",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PAUSE": {
           "doc": "ScancodeToKeycode(SCANCODE_PAUSE)",
@@ -24485,7 +24694,7 @@
           "value": "0x40000048u",
           "sourceName": "SDLK_PAUSE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_INSERT": {
           "doc": "ScancodeToKeycode(SCANCODE_INSERT)",
@@ -24494,7 +24703,7 @@
           "value": "0x40000049u",
           "sourceName": "SDLK_INSERT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_HOME": {
           "doc": "ScancodeToKeycode(SCANCODE_HOME)",
@@ -24503,7 +24712,7 @@
           "value": "0x4000004au",
           "sourceName": "SDLK_HOME",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PAGEUP": {
           "doc": "ScancodeToKeycode(SCANCODE_PAGEUP)",
@@ -24512,7 +24721,7 @@
           "value": "0x4000004bu",
           "sourceName": "SDLK_PAGEUP",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_END": {
           "doc": "ScancodeToKeycode(SCANCODE_END)",
@@ -24521,7 +24730,7 @@
           "value": "0x4000004du",
           "sourceName": "SDLK_END",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PAGEDOWN": {
           "doc": "ScancodeToKeycode(SCANCODE_PAGEDOWN)",
@@ -24530,7 +24739,7 @@
           "value": "0x4000004eu",
           "sourceName": "SDLK_PAGEDOWN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RIGHT": {
           "doc": "ScancodeToKeycode(SCANCODE_RIGHT)",
@@ -24539,7 +24748,7 @@
           "value": "0x4000004fu",
           "sourceName": "SDLK_RIGHT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LEFT": {
           "doc": "ScancodeToKeycode(SCANCODE_LEFT)",
@@ -24548,7 +24757,7 @@
           "value": "0x40000050u",
           "sourceName": "SDLK_LEFT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_DOWN": {
           "doc": "ScancodeToKeycode(SCANCODE_DOWN)",
@@ -24557,7 +24766,7 @@
           "value": "0x40000051u",
           "sourceName": "SDLK_DOWN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_UP": {
           "doc": "ScancodeToKeycode(SCANCODE_UP)",
@@ -24566,7 +24775,7 @@
           "value": "0x40000052u",
           "sourceName": "SDLK_UP",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_NUMLOCKCLEAR": {
           "doc": "ScancodeToKeycode(SCANCODE_NUMLOCKCLEAR)",
@@ -24575,7 +24784,7 @@
           "value": "0x40000053u",
           "sourceName": "SDLK_NUMLOCKCLEAR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_DIVIDE": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_DIVIDE)",
@@ -24584,7 +24793,7 @@
           "value": "0x40000054u",
           "sourceName": "SDLK_KP_DIVIDE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MULTIPLY": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MULTIPLY)",
@@ -24593,7 +24802,7 @@
           "value": "0x40000055u",
           "sourceName": "SDLK_KP_MULTIPLY",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MINUS": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MINUS)",
@@ -24602,7 +24811,7 @@
           "value": "0x40000056u",
           "sourceName": "SDLK_KP_MINUS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_PLUS": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_PLUS)",
@@ -24611,7 +24820,7 @@
           "value": "0x40000057u",
           "sourceName": "SDLK_KP_PLUS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_ENTER": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_ENTER)",
@@ -24620,7 +24829,7 @@
           "value": "0x40000058u",
           "sourceName": "SDLK_KP_ENTER",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_1": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_1)",
@@ -24629,7 +24838,7 @@
           "value": "0x40000059u",
           "sourceName": "SDLK_KP_1",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_2": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_2)",
@@ -24638,7 +24847,7 @@
           "value": "0x4000005au",
           "sourceName": "SDLK_KP_2",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_3": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_3)",
@@ -24647,7 +24856,7 @@
           "value": "0x4000005bu",
           "sourceName": "SDLK_KP_3",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_4": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_4)",
@@ -24656,7 +24865,7 @@
           "value": "0x4000005cu",
           "sourceName": "SDLK_KP_4",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_5": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_5)",
@@ -24665,7 +24874,7 @@
           "value": "0x4000005du",
           "sourceName": "SDLK_KP_5",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_6": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_6)",
@@ -24674,7 +24883,7 @@
           "value": "0x4000005eu",
           "sourceName": "SDLK_KP_6",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_7": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_7)",
@@ -24683,7 +24892,7 @@
           "value": "0x4000005fu",
           "sourceName": "SDLK_KP_7",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_8": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_8)",
@@ -24692,7 +24901,7 @@
           "value": "0x40000060u",
           "sourceName": "SDLK_KP_8",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_9": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_9)",
@@ -24701,7 +24910,7 @@
           "value": "0x40000061u",
           "sourceName": "SDLK_KP_9",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_0": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_0)",
@@ -24710,7 +24919,7 @@
           "value": "0x40000062u",
           "sourceName": "SDLK_KP_0",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_PERIOD": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_PERIOD)",
@@ -24719,7 +24928,7 @@
           "value": "0x40000063u",
           "sourceName": "SDLK_KP_PERIOD",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_APPLICATION": {
           "doc": "ScancodeToKeycode(SCANCODE_APPLICATION)",
@@ -24728,7 +24937,7 @@
           "value": "0x40000065u",
           "sourceName": "SDLK_APPLICATION",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_POWER": {
           "doc": "ScancodeToKeycode(SCANCODE_POWER)",
@@ -24737,7 +24946,7 @@
           "value": "0x40000066u",
           "sourceName": "SDLK_POWER",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_EQUALS": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_EQUALS)",
@@ -24746,7 +24955,7 @@
           "value": "0x40000067u",
           "sourceName": "SDLK_KP_EQUALS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F13": {
           "doc": "ScancodeToKeycode(SCANCODE_F13)",
@@ -24755,7 +24964,7 @@
           "value": "0x40000068u",
           "sourceName": "SDLK_F13",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F14": {
           "doc": "ScancodeToKeycode(SCANCODE_F14)",
@@ -24764,7 +24973,7 @@
           "value": "0x40000069u",
           "sourceName": "SDLK_F14",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F15": {
           "doc": "ScancodeToKeycode(SCANCODE_F15)",
@@ -24773,7 +24982,7 @@
           "value": "0x4000006au",
           "sourceName": "SDLK_F15",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F16": {
           "doc": "ScancodeToKeycode(SCANCODE_F16)",
@@ -24782,7 +24991,7 @@
           "value": "0x4000006bu",
           "sourceName": "SDLK_F16",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F17": {
           "doc": "ScancodeToKeycode(SCANCODE_F17)",
@@ -24791,7 +25000,7 @@
           "value": "0x4000006cu",
           "sourceName": "SDLK_F17",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F18": {
           "doc": "ScancodeToKeycode(SCANCODE_F18)",
@@ -24800,7 +25009,7 @@
           "value": "0x4000006du",
           "sourceName": "SDLK_F18",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F19": {
           "doc": "ScancodeToKeycode(SCANCODE_F19)",
@@ -24809,7 +25018,7 @@
           "value": "0x4000006eu",
           "sourceName": "SDLK_F19",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F20": {
           "doc": "ScancodeToKeycode(SCANCODE_F20)",
@@ -24818,7 +25027,7 @@
           "value": "0x4000006fu",
           "sourceName": "SDLK_F20",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F21": {
           "doc": "ScancodeToKeycode(SCANCODE_F21)",
@@ -24827,7 +25036,7 @@
           "value": "0x40000070u",
           "sourceName": "SDLK_F21",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F22": {
           "doc": "ScancodeToKeycode(SCANCODE_F22)",
@@ -24836,7 +25045,7 @@
           "value": "0x40000071u",
           "sourceName": "SDLK_F22",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F23": {
           "doc": "ScancodeToKeycode(SCANCODE_F23)",
@@ -24845,7 +25054,7 @@
           "value": "0x40000072u",
           "sourceName": "SDLK_F23",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_F24": {
           "doc": "ScancodeToKeycode(SCANCODE_F24)",
@@ -24854,7 +25063,7 @@
           "value": "0x40000073u",
           "sourceName": "SDLK_F24",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_EXECUTE": {
           "doc": "ScancodeToKeycode(SCANCODE_EXECUTE)",
@@ -24863,7 +25072,7 @@
           "value": "0x40000074u",
           "sourceName": "SDLK_EXECUTE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_HELP": {
           "doc": "ScancodeToKeycode(SCANCODE_HELP)",
@@ -24872,7 +25081,7 @@
           "value": "0x40000075u",
           "sourceName": "SDLK_HELP",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MENU": {
           "doc": "ScancodeToKeycode(SCANCODE_MENU)",
@@ -24881,7 +25090,7 @@
           "value": "0x40000076u",
           "sourceName": "SDLK_MENU",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SELECT": {
           "doc": "ScancodeToKeycode(SCANCODE_SELECT)",
@@ -24890,7 +25099,7 @@
           "value": "0x40000077u",
           "sourceName": "SDLK_SELECT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_STOP": {
           "doc": "ScancodeToKeycode(SCANCODE_STOP)",
@@ -24899,7 +25108,7 @@
           "value": "0x40000078u",
           "sourceName": "SDLK_STOP",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AGAIN": {
           "doc": "ScancodeToKeycode(SCANCODE_AGAIN)",
@@ -24908,7 +25117,7 @@
           "value": "0x40000079u",
           "sourceName": "SDLK_AGAIN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_UNDO": {
           "doc": "ScancodeToKeycode(SCANCODE_UNDO)",
@@ -24917,7 +25126,7 @@
           "value": "0x4000007au",
           "sourceName": "SDLK_UNDO",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CUT": {
           "doc": "ScancodeToKeycode(SCANCODE_CUT)",
@@ -24926,7 +25135,7 @@
           "value": "0x4000007bu",
           "sourceName": "SDLK_CUT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_COPY": {
           "doc": "ScancodeToKeycode(SCANCODE_COPY)",
@@ -24935,7 +25144,7 @@
           "value": "0x4000007cu",
           "sourceName": "SDLK_COPY",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PASTE": {
           "doc": "ScancodeToKeycode(SCANCODE_PASTE)",
@@ -24944,7 +25153,7 @@
           "value": "0x4000007du",
           "sourceName": "SDLK_PASTE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_FIND": {
           "doc": "ScancodeToKeycode(SCANCODE_FIND)",
@@ -24953,7 +25162,7 @@
           "value": "0x4000007eu",
           "sourceName": "SDLK_FIND",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MUTE": {
           "doc": "ScancodeToKeycode(SCANCODE_MUTE)",
@@ -24962,7 +25171,7 @@
           "value": "0x4000007fu",
           "sourceName": "SDLK_MUTE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_VOLUMEUP": {
           "doc": "ScancodeToKeycode(SCANCODE_VOLUMEUP)",
@@ -24971,7 +25180,7 @@
           "value": "0x40000080u",
           "sourceName": "SDLK_VOLUMEUP",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_VOLUMEDOWN": {
           "doc": "ScancodeToKeycode(SCANCODE_VOLUMEDOWN)",
@@ -24980,7 +25189,7 @@
           "value": "0x40000081u",
           "sourceName": "SDLK_VOLUMEDOWN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_COMMA": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_COMMA)",
@@ -24989,7 +25198,7 @@
           "value": "0x40000085u",
           "sourceName": "SDLK_KP_COMMA",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_EQUALSAS400": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_EQUALSAS400)",
@@ -24998,7 +25207,7 @@
           "value": "0x40000086u",
           "sourceName": "SDLK_KP_EQUALSAS400",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_ALTERASE": {
           "doc": "ScancodeToKeycode(SCANCODE_ALTERASE)",
@@ -25007,7 +25216,7 @@
           "value": "0x40000099u",
           "sourceName": "SDLK_ALTERASE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SYSREQ": {
           "doc": "ScancodeToKeycode(SCANCODE_SYSREQ)",
@@ -25016,7 +25225,7 @@
           "value": "0x4000009au",
           "sourceName": "SDLK_SYSREQ",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CANCEL": {
           "doc": "ScancodeToKeycode(SCANCODE_CANCEL)",
@@ -25025,7 +25234,7 @@
           "value": "0x4000009bu",
           "sourceName": "SDLK_CANCEL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CLEAR": {
           "doc": "ScancodeToKeycode(SCANCODE_CLEAR)",
@@ -25034,7 +25243,7 @@
           "value": "0x4000009cu",
           "sourceName": "SDLK_CLEAR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_PRIOR": {
           "doc": "ScancodeToKeycode(SCANCODE_PRIOR)",
@@ -25043,7 +25252,7 @@
           "value": "0x4000009du",
           "sourceName": "SDLK_PRIOR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RETURN2": {
           "doc": "ScancodeToKeycode(SCANCODE_RETURN2)",
@@ -25052,7 +25261,7 @@
           "value": "0x4000009eu",
           "sourceName": "SDLK_RETURN2",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SEPARATOR": {
           "doc": "ScancodeToKeycode(SCANCODE_SEPARATOR)",
@@ -25061,7 +25270,7 @@
           "value": "0x4000009fu",
           "sourceName": "SDLK_SEPARATOR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_OUT": {
           "doc": "ScancodeToKeycode(SCANCODE_OUT)",
@@ -25070,7 +25279,7 @@
           "value": "0x400000a0u",
           "sourceName": "SDLK_OUT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_OPER": {
           "doc": "ScancodeToKeycode(SCANCODE_OPER)",
@@ -25079,7 +25288,7 @@
           "value": "0x400000a1u",
           "sourceName": "SDLK_OPER",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CLEARAGAIN": {
           "doc": "ScancodeToKeycode(SCANCODE_CLEARAGAIN)",
@@ -25088,7 +25297,7 @@
           "value": "0x400000a2u",
           "sourceName": "SDLK_CLEARAGAIN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CRSEL": {
           "doc": "ScancodeToKeycode(SCANCODE_CRSEL)",
@@ -25097,7 +25306,7 @@
           "value": "0x400000a3u",
           "sourceName": "SDLK_CRSEL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_EXSEL": {
           "doc": "ScancodeToKeycode(SCANCODE_EXSEL)",
@@ -25106,7 +25315,7 @@
           "value": "0x400000a4u",
           "sourceName": "SDLK_EXSEL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_00": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_00)",
@@ -25115,7 +25324,7 @@
           "value": "0x400000b0u",
           "sourceName": "SDLK_KP_00",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_000": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_000)",
@@ -25124,7 +25333,7 @@
           "value": "0x400000b1u",
           "sourceName": "SDLK_KP_000",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_THOUSANDSSEPARATOR": {
           "doc": "ScancodeToKeycode(SCANCODE_THOUSANDSSEPARATOR)",
@@ -25133,7 +25342,7 @@
           "value": "0x400000b2u",
           "sourceName": "SDLK_THOUSANDSSEPARATOR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_DECIMALSEPARATOR": {
           "doc": "ScancodeToKeycode(SCANCODE_DECIMALSEPARATOR)",
@@ -25142,7 +25351,7 @@
           "value": "0x400000b3u",
           "sourceName": "SDLK_DECIMALSEPARATOR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CURRENCYUNIT": {
           "doc": "ScancodeToKeycode(SCANCODE_CURRENCYUNIT)",
@@ -25151,7 +25360,7 @@
           "value": "0x400000b4u",
           "sourceName": "SDLK_CURRENCYUNIT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CURRENCYSUBUNIT": {
           "doc": "ScancodeToKeycode(SCANCODE_CURRENCYSUBUNIT)",
@@ -25160,7 +25369,7 @@
           "value": "0x400000b5u",
           "sourceName": "SDLK_CURRENCYSUBUNIT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_LEFTPAREN": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_LEFTPAREN)",
@@ -25169,7 +25378,7 @@
           "value": "0x400000b6u",
           "sourceName": "SDLK_KP_LEFTPAREN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_RIGHTPAREN": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_RIGHTPAREN)",
@@ -25178,7 +25387,7 @@
           "value": "0x400000b7u",
           "sourceName": "SDLK_KP_RIGHTPAREN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_LEFTBRACE": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_LEFTBRACE)",
@@ -25187,7 +25396,7 @@
           "value": "0x400000b8u",
           "sourceName": "SDLK_KP_LEFTBRACE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_RIGHTBRACE": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_RIGHTBRACE)",
@@ -25196,7 +25405,7 @@
           "value": "0x400000b9u",
           "sourceName": "SDLK_KP_RIGHTBRACE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_TAB": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_TAB)",
@@ -25205,7 +25414,7 @@
           "value": "0x400000bau",
           "sourceName": "SDLK_KP_TAB",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_BACKSPACE": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_BACKSPACE)",
@@ -25214,7 +25423,7 @@
           "value": "0x400000bbu",
           "sourceName": "SDLK_KP_BACKSPACE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_A": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_A)",
@@ -25223,7 +25432,7 @@
           "value": "0x400000bcu",
           "sourceName": "SDLK_KP_A",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_B": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_B)",
@@ -25232,7 +25441,7 @@
           "value": "0x400000bdu",
           "sourceName": "SDLK_KP_B",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_C": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_C)",
@@ -25241,7 +25450,7 @@
           "value": "0x400000beu",
           "sourceName": "SDLK_KP_C",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_D": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_D)",
@@ -25250,7 +25459,7 @@
           "value": "0x400000bfu",
           "sourceName": "SDLK_KP_D",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_E": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_E)",
@@ -25259,7 +25468,7 @@
           "value": "0x400000c0u",
           "sourceName": "SDLK_KP_E",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_F": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_F)",
@@ -25268,7 +25477,7 @@
           "value": "0x400000c1u",
           "sourceName": "SDLK_KP_F",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_XOR": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_XOR)",
@@ -25277,7 +25486,7 @@
           "value": "0x400000c2u",
           "sourceName": "SDLK_KP_XOR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_POWER": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_POWER)",
@@ -25286,7 +25495,7 @@
           "value": "0x400000c3u",
           "sourceName": "SDLK_KP_POWER",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_PERCENT": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_PERCENT)",
@@ -25295,7 +25504,7 @@
           "value": "0x400000c4u",
           "sourceName": "SDLK_KP_PERCENT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_LESS": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_LESS)",
@@ -25304,7 +25513,7 @@
           "value": "0x400000c5u",
           "sourceName": "SDLK_KP_LESS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_GREATER": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_GREATER)",
@@ -25313,7 +25522,7 @@
           "value": "0x400000c6u",
           "sourceName": "SDLK_KP_GREATER",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_AMPERSAND": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_AMPERSAND)",
@@ -25322,7 +25531,7 @@
           "value": "0x400000c7u",
           "sourceName": "SDLK_KP_AMPERSAND",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_DBLAMPERSAND": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_DBLAMPERSAND)",
@@ -25331,7 +25540,7 @@
           "value": "0x400000c8u",
           "sourceName": "SDLK_KP_DBLAMPERSAND",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_VERTICALBAR": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_VERTICALBAR)",
@@ -25340,7 +25549,7 @@
           "value": "0x400000c9u",
           "sourceName": "SDLK_KP_VERTICALBAR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_DBLVERTICALBAR": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_DBLVERTICALBAR)",
@@ -25349,7 +25558,7 @@
           "value": "0x400000cau",
           "sourceName": "SDLK_KP_DBLVERTICALBAR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_COLON": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_COLON)",
@@ -25358,7 +25567,7 @@
           "value": "0x400000cbu",
           "sourceName": "SDLK_KP_COLON",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_HASH": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_HASH)",
@@ -25367,7 +25576,7 @@
           "value": "0x400000ccu",
           "sourceName": "SDLK_KP_HASH",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_SPACE": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_SPACE)",
@@ -25376,7 +25585,7 @@
           "value": "0x400000cdu",
           "sourceName": "SDLK_KP_SPACE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_AT": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_AT)",
@@ -25385,7 +25594,7 @@
           "value": "0x400000ceu",
           "sourceName": "SDLK_KP_AT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_EXCLAM": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_EXCLAM)",
@@ -25394,7 +25603,7 @@
           "value": "0x400000cfu",
           "sourceName": "SDLK_KP_EXCLAM",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MEMSTORE": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MEMSTORE)",
@@ -25403,7 +25612,7 @@
           "value": "0x400000d0u",
           "sourceName": "SDLK_KP_MEMSTORE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MEMRECALL": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MEMRECALL)",
@@ -25412,7 +25621,7 @@
           "value": "0x400000d1u",
           "sourceName": "SDLK_KP_MEMRECALL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MEMCLEAR": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MEMCLEAR)",
@@ -25421,7 +25630,7 @@
           "value": "0x400000d2u",
           "sourceName": "SDLK_KP_MEMCLEAR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MEMADD": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MEMADD)",
@@ -25430,7 +25639,7 @@
           "value": "0x400000d3u",
           "sourceName": "SDLK_KP_MEMADD",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MEMSUBTRACT": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MEMSUBTRACT)",
@@ -25439,7 +25648,7 @@
           "value": "0x400000d4u",
           "sourceName": "SDLK_KP_MEMSUBTRACT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MEMMULTIPLY": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MEMMULTIPLY)",
@@ -25448,7 +25657,7 @@
           "value": "0x400000d5u",
           "sourceName": "SDLK_KP_MEMMULTIPLY",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_MEMDIVIDE": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_MEMDIVIDE)",
@@ -25457,7 +25666,7 @@
           "value": "0x400000d6u",
           "sourceName": "SDLK_KP_MEMDIVIDE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_PLUSMINUS": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_PLUSMINUS)",
@@ -25466,7 +25675,7 @@
           "value": "0x400000d7u",
           "sourceName": "SDLK_KP_PLUSMINUS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_CLEAR": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_CLEAR)",
@@ -25475,7 +25684,7 @@
           "value": "0x400000d8u",
           "sourceName": "SDLK_KP_CLEAR",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_CLEARENTRY": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_CLEARENTRY)",
@@ -25484,7 +25693,7 @@
           "value": "0x400000d9u",
           "sourceName": "SDLK_KP_CLEARENTRY",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_BINARY": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_BINARY)",
@@ -25493,7 +25702,7 @@
           "value": "0x400000dau",
           "sourceName": "SDLK_KP_BINARY",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_OCTAL": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_OCTAL)",
@@ -25502,7 +25711,7 @@
           "value": "0x400000dbu",
           "sourceName": "SDLK_KP_OCTAL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_DECIMAL": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_DECIMAL)",
@@ -25511,7 +25720,7 @@
           "value": "0x400000dcu",
           "sourceName": "SDLK_KP_DECIMAL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_KP_HEXADECIMAL": {
           "doc": "ScancodeToKeycode(SCANCODE_KP_HEXADECIMAL)",
@@ -25520,7 +25729,7 @@
           "value": "0x400000ddu",
           "sourceName": "SDLK_KP_HEXADECIMAL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LCTRL": {
           "doc": "ScancodeToKeycode(SCANCODE_LCTRL)",
@@ -25529,7 +25738,7 @@
           "value": "0x400000e0u",
           "sourceName": "SDLK_LCTRL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LSHIFT": {
           "doc": "ScancodeToKeycode(SCANCODE_LSHIFT)",
@@ -25538,7 +25747,7 @@
           "value": "0x400000e1u",
           "sourceName": "SDLK_LSHIFT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LALT": {
           "doc": "ScancodeToKeycode(SCANCODE_LALT)",
@@ -25547,7 +25756,7 @@
           "value": "0x400000e2u",
           "sourceName": "SDLK_LALT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LGUI": {
           "doc": "ScancodeToKeycode(SCANCODE_LGUI)",
@@ -25556,7 +25765,7 @@
           "value": "0x400000e3u",
           "sourceName": "SDLK_LGUI",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RCTRL": {
           "doc": "ScancodeToKeycode(SCANCODE_RCTRL)",
@@ -25565,7 +25774,7 @@
           "value": "0x400000e4u",
           "sourceName": "SDLK_RCTRL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RSHIFT": {
           "doc": "ScancodeToKeycode(SCANCODE_RSHIFT)",
@@ -25574,7 +25783,7 @@
           "value": "0x400000e5u",
           "sourceName": "SDLK_RSHIFT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RALT": {
           "doc": "ScancodeToKeycode(SCANCODE_RALT)",
@@ -25583,7 +25792,7 @@
           "value": "0x400000e6u",
           "sourceName": "SDLK_RALT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RGUI": {
           "doc": "ScancodeToKeycode(SCANCODE_RGUI)",
@@ -25592,7 +25801,7 @@
           "value": "0x400000e7u",
           "sourceName": "SDLK_RGUI",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MODE": {
           "doc": "ScancodeToKeycode(SCANCODE_MODE)",
@@ -25601,7 +25810,7 @@
           "value": "0x40000101u",
           "sourceName": "SDLK_MODE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SLEEP": {
           "doc": "ScancodeToKeycode(SCANCODE_SLEEP)",
@@ -25610,7 +25819,7 @@
           "value": "0x40000102u",
           "sourceName": "SDLK_SLEEP",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_WAKE": {
           "doc": "ScancodeToKeycode(SCANCODE_WAKE)",
@@ -25619,7 +25828,7 @@
           "value": "0x40000103u",
           "sourceName": "SDLK_WAKE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CHANNEL_INCREMENT": {
           "doc": "ScancodeToKeycode(SCANCODE_CHANNEL_INCREMENT)",
@@ -25628,7 +25837,7 @@
           "value": "0x40000104u",
           "sourceName": "SDLK_CHANNEL_INCREMENT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CHANNEL_DECREMENT": {
           "doc": "ScancodeToKeycode(SCANCODE_CHANNEL_DECREMENT)",
@@ -25637,7 +25846,7 @@
           "value": "0x40000105u",
           "sourceName": "SDLK_CHANNEL_DECREMENT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_PLAY": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PLAY)",
@@ -25646,7 +25855,7 @@
           "value": "0x40000106u",
           "sourceName": "SDLK_MEDIA_PLAY",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_PAUSE": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PAUSE)",
@@ -25655,7 +25864,7 @@
           "value": "0x40000107u",
           "sourceName": "SDLK_MEDIA_PAUSE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_RECORD": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_RECORD)",
@@ -25664,7 +25873,7 @@
           "value": "0x40000108u",
           "sourceName": "SDLK_MEDIA_RECORD",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_FAST_FORWARD": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_FAST_FORWARD)",
@@ -25673,7 +25882,7 @@
           "value": "0x40000109u",
           "sourceName": "SDLK_MEDIA_FAST_FORWARD",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_REWIND": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_REWIND)",
@@ -25682,7 +25891,7 @@
           "value": "0x4000010au",
           "sourceName": "SDLK_MEDIA_REWIND",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_NEXT_TRACK": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_NEXT_TRACK)",
@@ -25691,7 +25900,7 @@
           "value": "0x4000010bu",
           "sourceName": "SDLK_MEDIA_NEXT_TRACK",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_PREVIOUS_TRACK": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PREVIOUS_TRACK)",
@@ -25700,7 +25909,7 @@
           "value": "0x4000010cu",
           "sourceName": "SDLK_MEDIA_PREVIOUS_TRACK",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_STOP": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_STOP)",
@@ -25709,7 +25918,7 @@
           "value": "0x4000010du",
           "sourceName": "SDLK_MEDIA_STOP",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_EJECT": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_EJECT)",
@@ -25718,7 +25927,7 @@
           "value": "0x4000010eu",
           "sourceName": "SDLK_MEDIA_EJECT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_PLAY_PAUSE": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PLAY_PAUSE)",
@@ -25727,7 +25936,7 @@
           "value": "0x4000010fu",
           "sourceName": "SDLK_MEDIA_PLAY_PAUSE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MEDIA_SELECT": {
           "doc": "ScancodeToKeycode(SCANCODE_MEDIA_SELECT)",
@@ -25736,7 +25945,7 @@
           "value": "0x40000110u",
           "sourceName": "SDLK_MEDIA_SELECT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_NEW": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_NEW)",
@@ -25745,7 +25954,7 @@
           "value": "0x40000111u",
           "sourceName": "SDLK_AC_NEW",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_OPEN": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_OPEN)",
@@ -25754,7 +25963,7 @@
           "value": "0x40000112u",
           "sourceName": "SDLK_AC_OPEN",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_CLOSE": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_CLOSE)",
@@ -25763,7 +25972,7 @@
           "value": "0x40000113u",
           "sourceName": "SDLK_AC_CLOSE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_EXIT": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_EXIT)",
@@ -25772,7 +25981,7 @@
           "value": "0x40000114u",
           "sourceName": "SDLK_AC_EXIT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_SAVE": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_SAVE)",
@@ -25781,7 +25990,7 @@
           "value": "0x40000115u",
           "sourceName": "SDLK_AC_SAVE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_PRINT": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_PRINT)",
@@ -25790,7 +25999,7 @@
           "value": "0x40000116u",
           "sourceName": "SDLK_AC_PRINT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_PROPERTIES": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_PROPERTIES)",
@@ -25799,7 +26008,7 @@
           "value": "0x40000117u",
           "sourceName": "SDLK_AC_PROPERTIES",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_SEARCH": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_SEARCH)",
@@ -25808,7 +26017,7 @@
           "value": "0x40000118u",
           "sourceName": "SDLK_AC_SEARCH",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_HOME": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_HOME)",
@@ -25817,7 +26026,7 @@
           "value": "0x40000119u",
           "sourceName": "SDLK_AC_HOME",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_BACK": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_BACK)",
@@ -25826,7 +26035,7 @@
           "value": "0x4000011au",
           "sourceName": "SDLK_AC_BACK",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_FORWARD": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_FORWARD)",
@@ -25835,7 +26044,7 @@
           "value": "0x4000011bu",
           "sourceName": "SDLK_AC_FORWARD",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_STOP": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_STOP)",
@@ -25844,7 +26053,7 @@
           "value": "0x4000011cu",
           "sourceName": "SDLK_AC_STOP",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_REFRESH": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_REFRESH)",
@@ -25853,7 +26062,7 @@
           "value": "0x4000011du",
           "sourceName": "SDLK_AC_REFRESH",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_AC_BOOKMARKS": {
           "doc": "ScancodeToKeycode(SCANCODE_AC_BOOKMARKS)",
@@ -25862,7 +26071,7 @@
           "value": "0x4000011eu",
           "sourceName": "SDLK_AC_BOOKMARKS",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SOFTLEFT": {
           "doc": "ScancodeToKeycode(SCANCODE_SOFTLEFT)",
@@ -25871,7 +26080,7 @@
           "value": "0x4000011fu",
           "sourceName": "SDLK_SOFTLEFT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_SOFTRIGHT": {
           "doc": "ScancodeToKeycode(SCANCODE_SOFTRIGHT)",
@@ -25880,7 +26089,7 @@
           "value": "0x40000120u",
           "sourceName": "SDLK_SOFTRIGHT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_CALL": {
           "doc": "ScancodeToKeycode(SCANCODE_CALL)",
@@ -25889,7 +26098,7 @@
           "value": "0x40000121u",
           "sourceName": "SDLK_CALL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_ENDCALL": {
           "doc": "ScancodeToKeycode(SCANCODE_ENDCALL)",
@@ -25898,7 +26107,7 @@
           "value": "0x40000122u",
           "sourceName": "SDLK_ENDCALL",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LEFT_TAB": {
           "doc": "Extended key Left Tab",
@@ -25907,7 +26116,7 @@
           "value": "0x20000001u",
           "sourceName": "SDLK_LEFT_TAB",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LEVEL5_SHIFT": {
           "doc": "Extended key Level 5 Shift",
@@ -25916,7 +26125,7 @@
           "value": "0x20000002u",
           "sourceName": "SDLK_LEVEL5_SHIFT",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_MULTI_KEY_COMPOSE": {
           "doc": "Extended key Multi-key Compose",
@@ -25925,7 +26134,7 @@
           "value": "0x20000003u",
           "sourceName": "SDLK_MULTI_KEY_COMPOSE",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LMETA": {
           "doc": "Extended key Left Meta",
@@ -25934,7 +26143,7 @@
           "value": "0x20000004u",
           "sourceName": "SDLK_LMETA",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RMETA": {
           "doc": "Extended key Right Meta",
@@ -25943,7 +26152,7 @@
           "value": "0x20000005u",
           "sourceName": "SDLK_RMETA",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_LHYPER": {
           "doc": "Extended key Left Hyper",
@@ -25952,7 +26161,7 @@
           "value": "0x20000006u",
           "sourceName": "SDLK_LHYPER",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         },
         "KEYCODE_RHYPER": {
           "doc": "Extended key Right Hyper",
@@ -25961,7 +26170,7 @@
           "value": "0x20000007u",
           "sourceName": "SDLK_RHYPER",
           "constexpr": true,
-          "type": "Keycode"
+          "type": "SDL_Keycode"
         }
       }
     },
@@ -26025,23 +26234,42 @@
                 "proto": true
               }
             ],
-            "operator<=>": {
-              "kind": "function",
-              "name": "operator<=>",
-              "type": "auto",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const Scancode &",
-                  "name": "other"
+            "operator<=>": [
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const Scancode &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator<=>",
+                "type": "auto",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Scancode",
+                    "name": "scancode"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator<=>(Scancode(scancode));"
+                }
               }
-            },
+            ],
             "operator SDL_Scancode": {
               "kind": "function",
               "name": "operator SDL_Scancode",
@@ -26100,7 +26328,7 @@
           "kind": "var",
           "name": "SCANCODE_UNKNOWN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "UNKNOWN",
           "sourceName": "SDL_SCANCODE_UNKNOWN"
         },
@@ -26108,7 +26336,7 @@
           "kind": "var",
           "name": "SCANCODE_A",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "A",
           "sourceName": "SDL_SCANCODE_A"
         },
@@ -26116,7 +26344,7 @@
           "kind": "var",
           "name": "SCANCODE_B",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "B",
           "sourceName": "SDL_SCANCODE_B"
         },
@@ -26124,7 +26352,7 @@
           "kind": "var",
           "name": "SCANCODE_C",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "C",
           "sourceName": "SDL_SCANCODE_C"
         },
@@ -26132,7 +26360,7 @@
           "kind": "var",
           "name": "SCANCODE_D",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "D",
           "sourceName": "SDL_SCANCODE_D"
         },
@@ -26140,7 +26368,7 @@
           "kind": "var",
           "name": "SCANCODE_E",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "E",
           "sourceName": "SDL_SCANCODE_E"
         },
@@ -26148,7 +26376,7 @@
           "kind": "var",
           "name": "SCANCODE_F",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F",
           "sourceName": "SDL_SCANCODE_F"
         },
@@ -26156,7 +26384,7 @@
           "kind": "var",
           "name": "SCANCODE_G",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "G",
           "sourceName": "SDL_SCANCODE_G"
         },
@@ -26164,7 +26392,7 @@
           "kind": "var",
           "name": "SCANCODE_H",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "H",
           "sourceName": "SDL_SCANCODE_H"
         },
@@ -26172,7 +26400,7 @@
           "kind": "var",
           "name": "SCANCODE_I",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "I",
           "sourceName": "SDL_SCANCODE_I"
         },
@@ -26180,7 +26408,7 @@
           "kind": "var",
           "name": "SCANCODE_J",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "J",
           "sourceName": "SDL_SCANCODE_J"
         },
@@ -26188,7 +26416,7 @@
           "kind": "var",
           "name": "SCANCODE_K",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "K",
           "sourceName": "SDL_SCANCODE_K"
         },
@@ -26196,7 +26424,7 @@
           "kind": "var",
           "name": "SCANCODE_L",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "L",
           "sourceName": "SDL_SCANCODE_L"
         },
@@ -26204,7 +26432,7 @@
           "kind": "var",
           "name": "SCANCODE_M",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "M",
           "sourceName": "SDL_SCANCODE_M"
         },
@@ -26212,7 +26440,7 @@
           "kind": "var",
           "name": "SCANCODE_N",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "N",
           "sourceName": "SDL_SCANCODE_N"
         },
@@ -26220,7 +26448,7 @@
           "kind": "var",
           "name": "SCANCODE_O",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "O",
           "sourceName": "SDL_SCANCODE_O"
         },
@@ -26228,7 +26456,7 @@
           "kind": "var",
           "name": "SCANCODE_P",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "P",
           "sourceName": "SDL_SCANCODE_P"
         },
@@ -26236,7 +26464,7 @@
           "kind": "var",
           "name": "SCANCODE_Q",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Q",
           "sourceName": "SDL_SCANCODE_Q"
         },
@@ -26244,7 +26472,7 @@
           "kind": "var",
           "name": "SCANCODE_R",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "R",
           "sourceName": "SDL_SCANCODE_R"
         },
@@ -26252,7 +26480,7 @@
           "kind": "var",
           "name": "SCANCODE_S",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "S",
           "sourceName": "SDL_SCANCODE_S"
         },
@@ -26260,7 +26488,7 @@
           "kind": "var",
           "name": "SCANCODE_T",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "T",
           "sourceName": "SDL_SCANCODE_T"
         },
@@ -26268,7 +26496,7 @@
           "kind": "var",
           "name": "SCANCODE_U",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "U",
           "sourceName": "SDL_SCANCODE_U"
         },
@@ -26276,7 +26504,7 @@
           "kind": "var",
           "name": "SCANCODE_V",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "V",
           "sourceName": "SDL_SCANCODE_V"
         },
@@ -26284,7 +26512,7 @@
           "kind": "var",
           "name": "SCANCODE_W",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "W",
           "sourceName": "SDL_SCANCODE_W"
         },
@@ -26292,7 +26520,7 @@
           "kind": "var",
           "name": "SCANCODE_X",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "X",
           "sourceName": "SDL_SCANCODE_X"
         },
@@ -26300,7 +26528,7 @@
           "kind": "var",
           "name": "SCANCODE_Y",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Y",
           "sourceName": "SDL_SCANCODE_Y"
         },
@@ -26308,7 +26536,7 @@
           "kind": "var",
           "name": "SCANCODE_Z",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Z",
           "sourceName": "SDL_SCANCODE_Z"
         },
@@ -26316,7 +26544,7 @@
           "kind": "var",
           "name": "SCANCODE_1",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "1",
           "sourceName": "SDL_SCANCODE_1"
         },
@@ -26324,7 +26552,7 @@
           "kind": "var",
           "name": "SCANCODE_2",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "2",
           "sourceName": "SDL_SCANCODE_2"
         },
@@ -26332,7 +26560,7 @@
           "kind": "var",
           "name": "SCANCODE_3",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "3",
           "sourceName": "SDL_SCANCODE_3"
         },
@@ -26340,7 +26568,7 @@
           "kind": "var",
           "name": "SCANCODE_4",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "4",
           "sourceName": "SDL_SCANCODE_4"
         },
@@ -26348,7 +26576,7 @@
           "kind": "var",
           "name": "SCANCODE_5",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "5",
           "sourceName": "SDL_SCANCODE_5"
         },
@@ -26356,7 +26584,7 @@
           "kind": "var",
           "name": "SCANCODE_6",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "6",
           "sourceName": "SDL_SCANCODE_6"
         },
@@ -26364,7 +26592,7 @@
           "kind": "var",
           "name": "SCANCODE_7",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "7",
           "sourceName": "SDL_SCANCODE_7"
         },
@@ -26372,7 +26600,7 @@
           "kind": "var",
           "name": "SCANCODE_8",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "8",
           "sourceName": "SDL_SCANCODE_8"
         },
@@ -26380,7 +26608,7 @@
           "kind": "var",
           "name": "SCANCODE_9",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "9",
           "sourceName": "SDL_SCANCODE_9"
         },
@@ -26388,7 +26616,7 @@
           "kind": "var",
           "name": "SCANCODE_0",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "0",
           "sourceName": "SDL_SCANCODE_0"
         },
@@ -26396,7 +26624,7 @@
           "kind": "var",
           "name": "SCANCODE_RETURN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "RETURN",
           "sourceName": "SDL_SCANCODE_RETURN"
         },
@@ -26404,7 +26632,7 @@
           "kind": "var",
           "name": "SCANCODE_ESCAPE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "ESCAPE",
           "sourceName": "SDL_SCANCODE_ESCAPE"
         },
@@ -26412,7 +26640,7 @@
           "kind": "var",
           "name": "SCANCODE_BACKSPACE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "BACKSPACE",
           "sourceName": "SDL_SCANCODE_BACKSPACE"
         },
@@ -26420,7 +26648,7 @@
           "kind": "var",
           "name": "SCANCODE_TAB",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "TAB",
           "sourceName": "SDL_SCANCODE_TAB"
         },
@@ -26428,7 +26656,7 @@
           "kind": "var",
           "name": "SCANCODE_SPACE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "SPACE",
           "sourceName": "SDL_SCANCODE_SPACE"
         },
@@ -26436,7 +26664,7 @@
           "kind": "var",
           "name": "SCANCODE_MINUS",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "MINUS",
           "sourceName": "SDL_SCANCODE_MINUS"
         },
@@ -26444,7 +26672,7 @@
           "kind": "var",
           "name": "SCANCODE_EQUALS",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "EQUALS",
           "sourceName": "SDL_SCANCODE_EQUALS"
         },
@@ -26452,7 +26680,7 @@
           "kind": "var",
           "name": "SCANCODE_LEFTBRACKET",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "LEFTBRACKET",
           "sourceName": "SDL_SCANCODE_LEFTBRACKET"
         },
@@ -26460,7 +26688,7 @@
           "kind": "var",
           "name": "SCANCODE_RIGHTBRACKET",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "RIGHTBRACKET",
           "sourceName": "SDL_SCANCODE_RIGHTBRACKET"
         },
@@ -26468,7 +26696,7 @@
           "kind": "var",
           "name": "SCANCODE_BACKSLASH",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Located at the lower left of the return key on ISO keyboards and at the right end of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR SIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a German layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and ASTERISK and MICRO SIGN in a French Windows layout.",
           "sourceName": "SDL_SCANCODE_BACKSLASH"
         },
@@ -26476,7 +26704,7 @@
           "kind": "var",
           "name": "SCANCODE_NONUSHASH",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "ISO USB keyboards actually use this code instead of 49 for the same key, but all OSes I've seen treat the two codes identically.  So, as an implementor, unless your keyboard generates both of those codes and your OS treats them differently, you should generate SCANCODE_BACKSLASH instead of this code. As a user, you should not rely on this code because SDL will never generate it with most (all?) keyboards.",
           "sourceName": "SDL_SCANCODE_NONUSHASH"
         },
@@ -26484,7 +26712,7 @@
           "kind": "var",
           "name": "SCANCODE_SEMICOLON",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "SEMICOLON",
           "sourceName": "SDL_SCANCODE_SEMICOLON"
         },
@@ -26492,7 +26720,7 @@
           "kind": "var",
           "name": "SCANCODE_APOSTROPHE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "APOSTROPHE",
           "sourceName": "SDL_SCANCODE_APOSTROPHE"
         },
@@ -26500,7 +26728,7 @@
           "kind": "var",
           "name": "SCANCODE_GRAVE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Located in the top left corner (on both ANSI and ISO keyboards).  Produces GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards), CIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO keyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on ANSI keyboards.",
           "sourceName": "SDL_SCANCODE_GRAVE"
         },
@@ -26508,7 +26736,7 @@
           "kind": "var",
           "name": "SCANCODE_COMMA",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "COMMA",
           "sourceName": "SDL_SCANCODE_COMMA"
         },
@@ -26516,7 +26744,7 @@
           "kind": "var",
           "name": "SCANCODE_PERIOD",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "PERIOD",
           "sourceName": "SDL_SCANCODE_PERIOD"
         },
@@ -26524,7 +26752,7 @@
           "kind": "var",
           "name": "SCANCODE_SLASH",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "SLASH",
           "sourceName": "SDL_SCANCODE_SLASH"
         },
@@ -26532,7 +26760,7 @@
           "kind": "var",
           "name": "SCANCODE_CAPSLOCK",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "CAPSLOCK",
           "sourceName": "SDL_SCANCODE_CAPSLOCK"
         },
@@ -26540,7 +26768,7 @@
           "kind": "var",
           "name": "SCANCODE_F1",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F1",
           "sourceName": "SDL_SCANCODE_F1"
         },
@@ -26548,7 +26776,7 @@
           "kind": "var",
           "name": "SCANCODE_F2",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F2",
           "sourceName": "SDL_SCANCODE_F2"
         },
@@ -26556,7 +26784,7 @@
           "kind": "var",
           "name": "SCANCODE_F3",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F3",
           "sourceName": "SDL_SCANCODE_F3"
         },
@@ -26564,7 +26792,7 @@
           "kind": "var",
           "name": "SCANCODE_F4",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F4",
           "sourceName": "SDL_SCANCODE_F4"
         },
@@ -26572,7 +26800,7 @@
           "kind": "var",
           "name": "SCANCODE_F5",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F5",
           "sourceName": "SDL_SCANCODE_F5"
         },
@@ -26580,7 +26808,7 @@
           "kind": "var",
           "name": "SCANCODE_F6",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F6",
           "sourceName": "SDL_SCANCODE_F6"
         },
@@ -26588,7 +26816,7 @@
           "kind": "var",
           "name": "SCANCODE_F7",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F7",
           "sourceName": "SDL_SCANCODE_F7"
         },
@@ -26596,7 +26824,7 @@
           "kind": "var",
           "name": "SCANCODE_F8",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F8",
           "sourceName": "SDL_SCANCODE_F8"
         },
@@ -26604,7 +26832,7 @@
           "kind": "var",
           "name": "SCANCODE_F9",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F9",
           "sourceName": "SDL_SCANCODE_F9"
         },
@@ -26612,7 +26840,7 @@
           "kind": "var",
           "name": "SCANCODE_F10",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F10",
           "sourceName": "SDL_SCANCODE_F10"
         },
@@ -26620,7 +26848,7 @@
           "kind": "var",
           "name": "SCANCODE_F11",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F11",
           "sourceName": "SDL_SCANCODE_F11"
         },
@@ -26628,7 +26856,7 @@
           "kind": "var",
           "name": "SCANCODE_F12",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F12",
           "sourceName": "SDL_SCANCODE_F12"
         },
@@ -26636,7 +26864,7 @@
           "kind": "var",
           "name": "SCANCODE_PRINTSCREEN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "PRINTSCREEN",
           "sourceName": "SDL_SCANCODE_PRINTSCREEN"
         },
@@ -26644,7 +26872,7 @@
           "kind": "var",
           "name": "SCANCODE_SCROLLLOCK",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "SCROLLLOCK",
           "sourceName": "SDL_SCANCODE_SCROLLLOCK"
         },
@@ -26652,7 +26880,7 @@
           "kind": "var",
           "name": "SCANCODE_PAUSE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "PAUSE",
           "sourceName": "SDL_SCANCODE_PAUSE"
         },
@@ -26660,7 +26888,7 @@
           "kind": "var",
           "name": "SCANCODE_INSERT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "insert on PC, help on some Mac keyboards (but does send code 73, not 117)",
           "sourceName": "SDL_SCANCODE_INSERT"
         },
@@ -26668,7 +26896,7 @@
           "kind": "var",
           "name": "SCANCODE_HOME",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "HOME",
           "sourceName": "SDL_SCANCODE_HOME"
         },
@@ -26676,7 +26904,7 @@
           "kind": "var",
           "name": "SCANCODE_PAGEUP",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "PAGEUP",
           "sourceName": "SDL_SCANCODE_PAGEUP"
         },
@@ -26684,7 +26912,7 @@
           "kind": "var",
           "name": "SCANCODE_DELETE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "DELETE",
           "sourceName": "SDL_SCANCODE_DELETE"
         },
@@ -26692,7 +26920,7 @@
           "kind": "var",
           "name": "SCANCODE_END",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "END",
           "sourceName": "SDL_SCANCODE_END"
         },
@@ -26700,7 +26928,7 @@
           "kind": "var",
           "name": "SCANCODE_PAGEDOWN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "PAGEDOWN",
           "sourceName": "SDL_SCANCODE_PAGEDOWN"
         },
@@ -26708,7 +26936,7 @@
           "kind": "var",
           "name": "SCANCODE_RIGHT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "RIGHT",
           "sourceName": "SDL_SCANCODE_RIGHT"
         },
@@ -26716,7 +26944,7 @@
           "kind": "var",
           "name": "SCANCODE_LEFT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "LEFT",
           "sourceName": "SDL_SCANCODE_LEFT"
         },
@@ -26724,7 +26952,7 @@
           "kind": "var",
           "name": "SCANCODE_DOWN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "DOWN",
           "sourceName": "SDL_SCANCODE_DOWN"
         },
@@ -26732,7 +26960,7 @@
           "kind": "var",
           "name": "SCANCODE_UP",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "UP",
           "sourceName": "SDL_SCANCODE_UP"
         },
@@ -26740,7 +26968,7 @@
           "kind": "var",
           "name": "SCANCODE_NUMLOCKCLEAR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "num lock on PC, clear on Mac keyboards",
           "sourceName": "SDL_SCANCODE_NUMLOCKCLEAR"
         },
@@ -26748,7 +26976,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_DIVIDE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_DIVIDE",
           "sourceName": "SDL_SCANCODE_KP_DIVIDE"
         },
@@ -26756,7 +26984,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MULTIPLY",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MULTIPLY",
           "sourceName": "SDL_SCANCODE_KP_MULTIPLY"
         },
@@ -26764,7 +26992,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MINUS",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MINUS",
           "sourceName": "SDL_SCANCODE_KP_MINUS"
         },
@@ -26772,7 +27000,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_PLUS",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_PLUS",
           "sourceName": "SDL_SCANCODE_KP_PLUS"
         },
@@ -26780,7 +27008,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_ENTER",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_ENTER",
           "sourceName": "SDL_SCANCODE_KP_ENTER"
         },
@@ -26788,7 +27016,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_1",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_1",
           "sourceName": "SDL_SCANCODE_KP_1"
         },
@@ -26796,7 +27024,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_2",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_2",
           "sourceName": "SDL_SCANCODE_KP_2"
         },
@@ -26804,7 +27032,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_3",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_3",
           "sourceName": "SDL_SCANCODE_KP_3"
         },
@@ -26812,7 +27040,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_4",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_4",
           "sourceName": "SDL_SCANCODE_KP_4"
         },
@@ -26820,7 +27048,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_5",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_5",
           "sourceName": "SDL_SCANCODE_KP_5"
         },
@@ -26828,7 +27056,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_6",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_6",
           "sourceName": "SDL_SCANCODE_KP_6"
         },
@@ -26836,7 +27064,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_7",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_7",
           "sourceName": "SDL_SCANCODE_KP_7"
         },
@@ -26844,7 +27072,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_8",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_8",
           "sourceName": "SDL_SCANCODE_KP_8"
         },
@@ -26852,7 +27080,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_9",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_9",
           "sourceName": "SDL_SCANCODE_KP_9"
         },
@@ -26860,7 +27088,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_0",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_0",
           "sourceName": "SDL_SCANCODE_KP_0"
         },
@@ -26868,7 +27096,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_PERIOD",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_PERIOD",
           "sourceName": "SDL_SCANCODE_KP_PERIOD"
         },
@@ -26876,7 +27104,7 @@
           "kind": "var",
           "name": "SCANCODE_NONUSBACKSLASH",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "This is the additional key that ISO keyboards have over ANSI ones, located between left shift and Y.  Produces GRAVE ACCENT and TILDE in a US or UK Mac layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German, or French layout.",
           "sourceName": "SDL_SCANCODE_NONUSBACKSLASH"
         },
@@ -26884,7 +27112,7 @@
           "kind": "var",
           "name": "SCANCODE_APPLICATION",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "windows contextual menu, compose",
           "sourceName": "SDL_SCANCODE_APPLICATION"
         },
@@ -26892,7 +27120,7 @@
           "kind": "var",
           "name": "SCANCODE_POWER",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "The USB document says this is a status flag, not a physical key - but some Mac keyboards do have a power key.",
           "sourceName": "SDL_SCANCODE_POWER"
         },
@@ -26900,7 +27128,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_EQUALS",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_EQUALS",
           "sourceName": "SDL_SCANCODE_KP_EQUALS"
         },
@@ -26908,7 +27136,7 @@
           "kind": "var",
           "name": "SCANCODE_F13",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F13",
           "sourceName": "SDL_SCANCODE_F13"
         },
@@ -26916,7 +27144,7 @@
           "kind": "var",
           "name": "SCANCODE_F14",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F14",
           "sourceName": "SDL_SCANCODE_F14"
         },
@@ -26924,7 +27152,7 @@
           "kind": "var",
           "name": "SCANCODE_F15",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F15",
           "sourceName": "SDL_SCANCODE_F15"
         },
@@ -26932,7 +27160,7 @@
           "kind": "var",
           "name": "SCANCODE_F16",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F16",
           "sourceName": "SDL_SCANCODE_F16"
         },
@@ -26940,7 +27168,7 @@
           "kind": "var",
           "name": "SCANCODE_F17",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F17",
           "sourceName": "SDL_SCANCODE_F17"
         },
@@ -26948,7 +27176,7 @@
           "kind": "var",
           "name": "SCANCODE_F18",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F18",
           "sourceName": "SDL_SCANCODE_F18"
         },
@@ -26956,7 +27184,7 @@
           "kind": "var",
           "name": "SCANCODE_F19",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F19",
           "sourceName": "SDL_SCANCODE_F19"
         },
@@ -26964,7 +27192,7 @@
           "kind": "var",
           "name": "SCANCODE_F20",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F20",
           "sourceName": "SDL_SCANCODE_F20"
         },
@@ -26972,7 +27200,7 @@
           "kind": "var",
           "name": "SCANCODE_F21",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F21",
           "sourceName": "SDL_SCANCODE_F21"
         },
@@ -26980,7 +27208,7 @@
           "kind": "var",
           "name": "SCANCODE_F22",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F22",
           "sourceName": "SDL_SCANCODE_F22"
         },
@@ -26988,7 +27216,7 @@
           "kind": "var",
           "name": "SCANCODE_F23",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F23",
           "sourceName": "SDL_SCANCODE_F23"
         },
@@ -26996,7 +27224,7 @@
           "kind": "var",
           "name": "SCANCODE_F24",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "F24",
           "sourceName": "SDL_SCANCODE_F24"
         },
@@ -27004,7 +27232,7 @@
           "kind": "var",
           "name": "SCANCODE_EXECUTE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "EXECUTE",
           "sourceName": "SDL_SCANCODE_EXECUTE"
         },
@@ -27012,7 +27240,7 @@
           "kind": "var",
           "name": "SCANCODE_HELP",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AL Integrated Help Center.",
           "sourceName": "SDL_SCANCODE_HELP"
         },
@@ -27020,7 +27248,7 @@
           "kind": "var",
           "name": "SCANCODE_MENU",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Menu (show menu)",
           "sourceName": "SDL_SCANCODE_MENU"
         },
@@ -27028,7 +27256,7 @@
           "kind": "var",
           "name": "SCANCODE_SELECT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "SELECT",
           "sourceName": "SDL_SCANCODE_SELECT"
         },
@@ -27036,7 +27264,7 @@
           "kind": "var",
           "name": "SCANCODE_STOP",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Stop.",
           "sourceName": "SDL_SCANCODE_STOP"
         },
@@ -27044,7 +27272,7 @@
           "kind": "var",
           "name": "SCANCODE_AGAIN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Redo/Repeat.",
           "sourceName": "SDL_SCANCODE_AGAIN"
         },
@@ -27052,7 +27280,7 @@
           "kind": "var",
           "name": "SCANCODE_UNDO",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Undo.",
           "sourceName": "SDL_SCANCODE_UNDO"
         },
@@ -27060,7 +27288,7 @@
           "kind": "var",
           "name": "SCANCODE_CUT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Cut.",
           "sourceName": "SDL_SCANCODE_CUT"
         },
@@ -27068,7 +27296,7 @@
           "kind": "var",
           "name": "SCANCODE_COPY",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Copy.",
           "sourceName": "SDL_SCANCODE_COPY"
         },
@@ -27076,7 +27304,7 @@
           "kind": "var",
           "name": "SCANCODE_PASTE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Paste.",
           "sourceName": "SDL_SCANCODE_PASTE"
         },
@@ -27084,7 +27312,7 @@
           "kind": "var",
           "name": "SCANCODE_FIND",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Find.",
           "sourceName": "SDL_SCANCODE_FIND"
         },
@@ -27092,7 +27320,7 @@
           "kind": "var",
           "name": "SCANCODE_MUTE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "MUTE",
           "sourceName": "SDL_SCANCODE_MUTE"
         },
@@ -27100,7 +27328,7 @@
           "kind": "var",
           "name": "SCANCODE_VOLUMEUP",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "VOLUMEUP",
           "sourceName": "SDL_SCANCODE_VOLUMEUP"
         },
@@ -27108,7 +27336,7 @@
           "kind": "var",
           "name": "SCANCODE_VOLUMEDOWN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "VOLUMEDOWN",
           "sourceName": "SDL_SCANCODE_VOLUMEDOWN"
         },
@@ -27116,7 +27344,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_COMMA",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_COMMA",
           "sourceName": "SDL_SCANCODE_KP_COMMA"
         },
@@ -27124,7 +27352,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_EQUALSAS400",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_EQUALSAS400",
           "sourceName": "SDL_SCANCODE_KP_EQUALSAS400"
         },
@@ -27132,7 +27360,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL1",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "used on Asian keyboards, see footnotes in USB doc",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL1"
         },
@@ -27140,7 +27368,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL2",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "INTERNATIONAL2",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL2"
         },
@@ -27148,7 +27376,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL3",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Yen.",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL3"
         },
@@ -27156,7 +27384,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL4",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "INTERNATIONAL4",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL4"
         },
@@ -27164,7 +27392,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL5",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "INTERNATIONAL5",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL5"
         },
@@ -27172,7 +27400,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL6",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "INTERNATIONAL6",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL6"
         },
@@ -27180,7 +27408,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL7",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "INTERNATIONAL7",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL7"
         },
@@ -27188,7 +27416,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL8",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "INTERNATIONAL8",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL8"
         },
@@ -27196,7 +27424,7 @@
           "kind": "var",
           "name": "SCANCODE_INTERNATIONAL9",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "INTERNATIONAL9",
           "sourceName": "SDL_SCANCODE_INTERNATIONAL9"
         },
@@ -27204,7 +27432,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG1",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Hangul/English toggle.",
           "sourceName": "SDL_SCANCODE_LANG1"
         },
@@ -27212,7 +27440,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG2",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Hanja conversion.",
           "sourceName": "SDL_SCANCODE_LANG2"
         },
@@ -27220,7 +27448,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG3",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Katakana.",
           "sourceName": "SDL_SCANCODE_LANG3"
         },
@@ -27228,7 +27456,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG4",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Hiragana.",
           "sourceName": "SDL_SCANCODE_LANG4"
         },
@@ -27236,7 +27464,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG5",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Zenkaku/Hankaku.",
           "sourceName": "SDL_SCANCODE_LANG5"
         },
@@ -27244,7 +27472,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG6",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "reserved",
           "sourceName": "SDL_SCANCODE_LANG6"
         },
@@ -27252,7 +27480,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG7",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "reserved",
           "sourceName": "SDL_SCANCODE_LANG7"
         },
@@ -27260,7 +27488,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG8",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "reserved",
           "sourceName": "SDL_SCANCODE_LANG8"
         },
@@ -27268,7 +27496,7 @@
           "kind": "var",
           "name": "SCANCODE_LANG9",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "reserved",
           "sourceName": "SDL_SCANCODE_LANG9"
         },
@@ -27276,7 +27504,7 @@
           "kind": "var",
           "name": "SCANCODE_ALTERASE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Erase-Eaze.",
           "sourceName": "SDL_SCANCODE_ALTERASE"
         },
@@ -27284,7 +27512,7 @@
           "kind": "var",
           "name": "SCANCODE_SYSREQ",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "SYSREQ",
           "sourceName": "SDL_SCANCODE_SYSREQ"
         },
@@ -27292,7 +27520,7 @@
           "kind": "var",
           "name": "SCANCODE_CANCEL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Cancel.",
           "sourceName": "SDL_SCANCODE_CANCEL"
         },
@@ -27300,7 +27528,7 @@
           "kind": "var",
           "name": "SCANCODE_CLEAR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "CLEAR",
           "sourceName": "SDL_SCANCODE_CLEAR"
         },
@@ -27308,7 +27536,7 @@
           "kind": "var",
           "name": "SCANCODE_PRIOR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "PRIOR",
           "sourceName": "SDL_SCANCODE_PRIOR"
         },
@@ -27316,7 +27544,7 @@
           "kind": "var",
           "name": "SCANCODE_RETURN2",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "RETURN2",
           "sourceName": "SDL_SCANCODE_RETURN2"
         },
@@ -27324,7 +27552,7 @@
           "kind": "var",
           "name": "SCANCODE_SEPARATOR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "SEPARATOR",
           "sourceName": "SDL_SCANCODE_SEPARATOR"
         },
@@ -27332,7 +27560,7 @@
           "kind": "var",
           "name": "SCANCODE_OUT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "OUT",
           "sourceName": "SDL_SCANCODE_OUT"
         },
@@ -27340,7 +27568,7 @@
           "kind": "var",
           "name": "SCANCODE_OPER",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "OPER",
           "sourceName": "SDL_SCANCODE_OPER"
         },
@@ -27348,7 +27576,7 @@
           "kind": "var",
           "name": "SCANCODE_CLEARAGAIN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "CLEARAGAIN",
           "sourceName": "SDL_SCANCODE_CLEARAGAIN"
         },
@@ -27356,7 +27584,7 @@
           "kind": "var",
           "name": "SCANCODE_CRSEL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "CRSEL",
           "sourceName": "SDL_SCANCODE_CRSEL"
         },
@@ -27364,7 +27592,7 @@
           "kind": "var",
           "name": "SCANCODE_EXSEL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "EXSEL",
           "sourceName": "SDL_SCANCODE_EXSEL"
         },
@@ -27372,7 +27600,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_00",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_00",
           "sourceName": "SDL_SCANCODE_KP_00"
         },
@@ -27380,7 +27608,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_000",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_000",
           "sourceName": "SDL_SCANCODE_KP_000"
         },
@@ -27388,7 +27616,7 @@
           "kind": "var",
           "name": "SCANCODE_THOUSANDSSEPARATOR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "THOUSANDSSEPARATOR",
           "sourceName": "SDL_SCANCODE_THOUSANDSSEPARATOR"
         },
@@ -27396,7 +27624,7 @@
           "kind": "var",
           "name": "SCANCODE_DECIMALSEPARATOR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "DECIMALSEPARATOR",
           "sourceName": "SDL_SCANCODE_DECIMALSEPARATOR"
         },
@@ -27404,7 +27632,7 @@
           "kind": "var",
           "name": "SCANCODE_CURRENCYUNIT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "CURRENCYUNIT",
           "sourceName": "SDL_SCANCODE_CURRENCYUNIT"
         },
@@ -27412,7 +27640,7 @@
           "kind": "var",
           "name": "SCANCODE_CURRENCYSUBUNIT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "CURRENCYSUBUNIT",
           "sourceName": "SDL_SCANCODE_CURRENCYSUBUNIT"
         },
@@ -27420,7 +27648,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_LEFTPAREN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_LEFTPAREN",
           "sourceName": "SDL_SCANCODE_KP_LEFTPAREN"
         },
@@ -27428,7 +27656,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_RIGHTPAREN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_RIGHTPAREN",
           "sourceName": "SDL_SCANCODE_KP_RIGHTPAREN"
         },
@@ -27436,7 +27664,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_LEFTBRACE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_LEFTBRACE",
           "sourceName": "SDL_SCANCODE_KP_LEFTBRACE"
         },
@@ -27444,7 +27672,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_RIGHTBRACE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_RIGHTBRACE",
           "sourceName": "SDL_SCANCODE_KP_RIGHTBRACE"
         },
@@ -27452,7 +27680,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_TAB",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_TAB",
           "sourceName": "SDL_SCANCODE_KP_TAB"
         },
@@ -27460,7 +27688,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_BACKSPACE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_BACKSPACE",
           "sourceName": "SDL_SCANCODE_KP_BACKSPACE"
         },
@@ -27468,7 +27696,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_A",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_A",
           "sourceName": "SDL_SCANCODE_KP_A"
         },
@@ -27476,7 +27704,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_B",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_B",
           "sourceName": "SDL_SCANCODE_KP_B"
         },
@@ -27484,7 +27712,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_C",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_C",
           "sourceName": "SDL_SCANCODE_KP_C"
         },
@@ -27492,7 +27720,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_D",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_D",
           "sourceName": "SDL_SCANCODE_KP_D"
         },
@@ -27500,7 +27728,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_E",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_E",
           "sourceName": "SDL_SCANCODE_KP_E"
         },
@@ -27508,7 +27736,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_F",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_F",
           "sourceName": "SDL_SCANCODE_KP_F"
         },
@@ -27516,7 +27744,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_XOR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_XOR",
           "sourceName": "SDL_SCANCODE_KP_XOR"
         },
@@ -27524,7 +27752,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_POWER",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_POWER",
           "sourceName": "SDL_SCANCODE_KP_POWER"
         },
@@ -27532,7 +27760,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_PERCENT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_PERCENT",
           "sourceName": "SDL_SCANCODE_KP_PERCENT"
         },
@@ -27540,7 +27768,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_LESS",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_LESS",
           "sourceName": "SDL_SCANCODE_KP_LESS"
         },
@@ -27548,7 +27776,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_GREATER",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_GREATER",
           "sourceName": "SDL_SCANCODE_KP_GREATER"
         },
@@ -27556,7 +27784,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_AMPERSAND",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_AMPERSAND",
           "sourceName": "SDL_SCANCODE_KP_AMPERSAND"
         },
@@ -27564,7 +27792,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_DBLAMPERSAND",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_DBLAMPERSAND",
           "sourceName": "SDL_SCANCODE_KP_DBLAMPERSAND"
         },
@@ -27572,7 +27800,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_VERTICALBAR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_VERTICALBAR",
           "sourceName": "SDL_SCANCODE_KP_VERTICALBAR"
         },
@@ -27580,7 +27808,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_DBLVERTICALBAR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_DBLVERTICALBAR",
           "sourceName": "SDL_SCANCODE_KP_DBLVERTICALBAR"
         },
@@ -27588,7 +27816,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_COLON",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_COLON",
           "sourceName": "SDL_SCANCODE_KP_COLON"
         },
@@ -27596,7 +27824,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_HASH",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_HASH",
           "sourceName": "SDL_SCANCODE_KP_HASH"
         },
@@ -27604,7 +27832,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_SPACE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_SPACE",
           "sourceName": "SDL_SCANCODE_KP_SPACE"
         },
@@ -27612,7 +27840,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_AT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_AT",
           "sourceName": "SDL_SCANCODE_KP_AT"
         },
@@ -27620,7 +27848,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_EXCLAM",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_EXCLAM",
           "sourceName": "SDL_SCANCODE_KP_EXCLAM"
         },
@@ -27628,7 +27856,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MEMSTORE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MEMSTORE",
           "sourceName": "SDL_SCANCODE_KP_MEMSTORE"
         },
@@ -27636,7 +27864,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MEMRECALL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MEMRECALL",
           "sourceName": "SDL_SCANCODE_KP_MEMRECALL"
         },
@@ -27644,7 +27872,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MEMCLEAR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MEMCLEAR",
           "sourceName": "SDL_SCANCODE_KP_MEMCLEAR"
         },
@@ -27652,7 +27880,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MEMADD",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MEMADD",
           "sourceName": "SDL_SCANCODE_KP_MEMADD"
         },
@@ -27660,7 +27888,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MEMSUBTRACT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MEMSUBTRACT",
           "sourceName": "SDL_SCANCODE_KP_MEMSUBTRACT"
         },
@@ -27668,7 +27896,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MEMMULTIPLY",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MEMMULTIPLY",
           "sourceName": "SDL_SCANCODE_KP_MEMMULTIPLY"
         },
@@ -27676,7 +27904,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_MEMDIVIDE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_MEMDIVIDE",
           "sourceName": "SDL_SCANCODE_KP_MEMDIVIDE"
         },
@@ -27684,7 +27912,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_PLUSMINUS",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_PLUSMINUS",
           "sourceName": "SDL_SCANCODE_KP_PLUSMINUS"
         },
@@ -27692,7 +27920,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_CLEAR",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_CLEAR",
           "sourceName": "SDL_SCANCODE_KP_CLEAR"
         },
@@ -27700,7 +27928,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_CLEARENTRY",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_CLEARENTRY",
           "sourceName": "SDL_SCANCODE_KP_CLEARENTRY"
         },
@@ -27708,7 +27936,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_BINARY",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_BINARY",
           "sourceName": "SDL_SCANCODE_KP_BINARY"
         },
@@ -27716,7 +27944,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_OCTAL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_OCTAL",
           "sourceName": "SDL_SCANCODE_KP_OCTAL"
         },
@@ -27724,7 +27952,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_DECIMAL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_DECIMAL",
           "sourceName": "SDL_SCANCODE_KP_DECIMAL"
         },
@@ -27732,7 +27960,7 @@
           "kind": "var",
           "name": "SCANCODE_KP_HEXADECIMAL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "KP_HEXADECIMAL",
           "sourceName": "SDL_SCANCODE_KP_HEXADECIMAL"
         },
@@ -27740,7 +27968,7 @@
           "kind": "var",
           "name": "SCANCODE_LCTRL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "LCTRL",
           "sourceName": "SDL_SCANCODE_LCTRL"
         },
@@ -27748,7 +27976,7 @@
           "kind": "var",
           "name": "SCANCODE_LSHIFT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "LSHIFT",
           "sourceName": "SDL_SCANCODE_LSHIFT"
         },
@@ -27756,7 +27984,7 @@
           "kind": "var",
           "name": "SCANCODE_LALT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "alt, option",
           "sourceName": "SDL_SCANCODE_LALT"
         },
@@ -27764,7 +27992,7 @@
           "kind": "var",
           "name": "SCANCODE_LGUI",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "windows, command (apple), meta",
           "sourceName": "SDL_SCANCODE_LGUI"
         },
@@ -27772,7 +28000,7 @@
           "kind": "var",
           "name": "SCANCODE_RCTRL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "RCTRL",
           "sourceName": "SDL_SCANCODE_RCTRL"
         },
@@ -27780,7 +28008,7 @@
           "kind": "var",
           "name": "SCANCODE_RSHIFT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "RSHIFT",
           "sourceName": "SDL_SCANCODE_RSHIFT"
         },
@@ -27788,7 +28016,7 @@
           "kind": "var",
           "name": "SCANCODE_RALT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "alt gr, option",
           "sourceName": "SDL_SCANCODE_RALT"
         },
@@ -27796,7 +28024,7 @@
           "kind": "var",
           "name": "SCANCODE_RGUI",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "windows, command (apple), meta",
           "sourceName": "SDL_SCANCODE_RGUI"
         },
@@ -27804,7 +28032,7 @@
           "kind": "var",
           "name": "SCANCODE_MODE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "I'm not sure if this is really not covered by any of the above, but since there's a special KMOD_MODE for it I'm adding it here.",
           "sourceName": "SDL_SCANCODE_MODE"
         },
@@ -27812,7 +28040,7 @@
           "kind": "var",
           "name": "SCANCODE_SLEEP",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Sleep.",
           "sourceName": "SDL_SCANCODE_SLEEP"
         },
@@ -27820,7 +28048,7 @@
           "kind": "var",
           "name": "SCANCODE_WAKE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Wake.",
           "sourceName": "SDL_SCANCODE_WAKE"
         },
@@ -27828,7 +28056,7 @@
           "kind": "var",
           "name": "SCANCODE_CHANNEL_INCREMENT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Channel Increment.",
           "sourceName": "SDL_SCANCODE_CHANNEL_INCREMENT"
         },
@@ -27836,7 +28064,7 @@
           "kind": "var",
           "name": "SCANCODE_CHANNEL_DECREMENT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Channel Decrement.",
           "sourceName": "SDL_SCANCODE_CHANNEL_DECREMENT"
         },
@@ -27844,7 +28072,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_PLAY",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Play.",
           "sourceName": "SDL_SCANCODE_MEDIA_PLAY"
         },
@@ -27852,7 +28080,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_PAUSE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Pause.",
           "sourceName": "SDL_SCANCODE_MEDIA_PAUSE"
         },
@@ -27860,7 +28088,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_RECORD",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Record.",
           "sourceName": "SDL_SCANCODE_MEDIA_RECORD"
         },
@@ -27868,7 +28096,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_FAST_FORWARD",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Fast Forward.",
           "sourceName": "SDL_SCANCODE_MEDIA_FAST_FORWARD"
         },
@@ -27876,7 +28104,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_REWIND",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Rewind.",
           "sourceName": "SDL_SCANCODE_MEDIA_REWIND"
         },
@@ -27884,7 +28112,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_NEXT_TRACK",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Next Track.",
           "sourceName": "SDL_SCANCODE_MEDIA_NEXT_TRACK"
         },
@@ -27892,7 +28120,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_PREVIOUS_TRACK",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Previous Track.",
           "sourceName": "SDL_SCANCODE_MEDIA_PREVIOUS_TRACK"
         },
@@ -27900,7 +28128,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_STOP",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Stop.",
           "sourceName": "SDL_SCANCODE_MEDIA_STOP"
         },
@@ -27908,7 +28136,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_EJECT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Eject.",
           "sourceName": "SDL_SCANCODE_MEDIA_EJECT"
         },
@@ -27916,7 +28144,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_PLAY_PAUSE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Play / Pause.",
           "sourceName": "SDL_SCANCODE_MEDIA_PLAY_PAUSE"
         },
@@ -27924,7 +28152,7 @@
           "kind": "var",
           "name": "SCANCODE_MEDIA_SELECT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "MEDIA_SELECT",
           "sourceName": "SDL_SCANCODE_MEDIA_SELECT"
         },
@@ -27932,7 +28160,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_NEW",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC New.",
           "sourceName": "SDL_SCANCODE_AC_NEW"
         },
@@ -27940,7 +28168,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_OPEN",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Open.",
           "sourceName": "SDL_SCANCODE_AC_OPEN"
         },
@@ -27948,7 +28176,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_CLOSE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Close.",
           "sourceName": "SDL_SCANCODE_AC_CLOSE"
         },
@@ -27956,7 +28184,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_EXIT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Exit.",
           "sourceName": "SDL_SCANCODE_AC_EXIT"
         },
@@ -27964,7 +28192,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_SAVE",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Save.",
           "sourceName": "SDL_SCANCODE_AC_SAVE"
         },
@@ -27972,7 +28200,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_PRINT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Print.",
           "sourceName": "SDL_SCANCODE_AC_PRINT"
         },
@@ -27980,7 +28208,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_PROPERTIES",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Properties.",
           "sourceName": "SDL_SCANCODE_AC_PROPERTIES"
         },
@@ -27988,7 +28216,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_SEARCH",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Search.",
           "sourceName": "SDL_SCANCODE_AC_SEARCH"
         },
@@ -27996,7 +28224,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_HOME",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Home.",
           "sourceName": "SDL_SCANCODE_AC_HOME"
         },
@@ -28004,7 +28232,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_BACK",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Back.",
           "sourceName": "SDL_SCANCODE_AC_BACK"
         },
@@ -28012,7 +28240,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_FORWARD",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Forward.",
           "sourceName": "SDL_SCANCODE_AC_FORWARD"
         },
@@ -28020,7 +28248,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_STOP",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Stop.",
           "sourceName": "SDL_SCANCODE_AC_STOP"
         },
@@ -28028,7 +28256,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_REFRESH",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Refresh.",
           "sourceName": "SDL_SCANCODE_AC_REFRESH"
         },
@@ -28036,7 +28264,7 @@
           "kind": "var",
           "name": "SCANCODE_AC_BOOKMARKS",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "AC Bookmarks.",
           "sourceName": "SDL_SCANCODE_AC_BOOKMARKS"
         },
@@ -28044,7 +28272,7 @@
           "kind": "var",
           "name": "SCANCODE_SOFTLEFT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Usually situated below the display on phones and used as a multi-function feature key for selecting a software defined function shown on the bottom left of the display.",
           "sourceName": "SDL_SCANCODE_SOFTLEFT"
         },
@@ -28052,7 +28280,7 @@
           "kind": "var",
           "name": "SCANCODE_SOFTRIGHT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Usually situated below the display on phones and used as a multi-function feature key for selecting a software defined function shown on the bottom right of the display.",
           "sourceName": "SDL_SCANCODE_SOFTRIGHT"
         },
@@ -28060,7 +28288,7 @@
           "kind": "var",
           "name": "SCANCODE_CALL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Used for accepting phone calls.",
           "sourceName": "SDL_SCANCODE_CALL"
         },
@@ -28068,7 +28296,7 @@
           "kind": "var",
           "name": "SCANCODE_ENDCALL",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "Used for rejecting phone calls.",
           "sourceName": "SDL_SCANCODE_ENDCALL"
         },
@@ -28076,7 +28304,7 @@
           "kind": "var",
           "name": "SCANCODE_RESERVED",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "400-500 reserved for dynamic keycodes",
           "sourceName": "SDL_SCANCODE_RESERVED"
         },
@@ -28084,7 +28312,7 @@
           "kind": "var",
           "name": "SCANCODE_COUNT",
           "constexpr": true,
-          "type": "Scancode",
+          "type": "SDL_Scancode",
           "doc": "not a key, just marks the number of scancodes for array bounds",
           "sourceName": "SDL_SCANCODE_COUNT"
         }
@@ -30664,23 +30892,6 @@
           "kind": "struct",
           "sourceName": "SDL_InitState",
           "entries": {
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const InitState &",
-                  "name": "other"
-                }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
-              }
-            },
             "InitState": {
               "kind": "function",
               "type": "",
@@ -31430,23 +31641,6 @@
                 }
               }
             ],
-            "operator<=>": {
-              "kind": "function",
-              "name": "operator<=>",
-              "type": "auto",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const DateTime &",
-                  "name": "other"
-                }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
-              }
-            },
             "operator bool": {
               "kind": "function",
               "name": "operator bool",
@@ -32221,39 +32415,23 @@
                 ]
               }
             },
-            "operator==": [
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "const PathInfo &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Default comparison operator",
-                "hints": {
-                  "default": true
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "std::nullptr_t",
+                  "name": "_"
                 }
-              },
-              {
-                "kind": "function",
-                "name": "operator==",
-                "type": "bool",
-                "constexpr": true,
-                "immutable": true,
-                "parameters": [
-                  "std::nullptr_t"
-                ],
-                "doc": "Compare with nullptr.\n\n@returns True if invalid state, false otherwise.",
-                "hints": {
-                  "body": "return !bool(*this);"
-                }
+              ],
+              "doc": "Compare with nullptr.\n\n@returns True if invalid state, false otherwise.",
+              "hints": {
+                "body": "return !bool(*this);"
               }
-            ],
+            },
             "operator bool": {
               "kind": "function",
               "name": "operator bool",
@@ -36761,23 +36939,42 @@
                 ]
               }
             },
-            "operator==": {
-              "kind": "function",
-              "name": "operator==",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "const TrayMenu &",
-                  "name": "other"
+            "operator==": [
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "const TrayMenu &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Default comparison operator",
+                "hints": {
+                  "default": true
                 }
-              ],
-              "doc": "Default comparison operator",
-              "hints": {
-                "default": true
+              },
+              {
+                "kind": "function",
+                "name": "operator==",
+                "type": "bool",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_TrayMenu *",
+                    "name": "trayMenu"
+                  }
+                ],
+                "doc": "Compares with the underlying type",
+                "hints": {
+                  "body": "return operator==(TrayMenu(trayMenu));"
+                }
               }
-            },
+            ],
             "operator SDL_TrayMenu *": {
               "kind": "function",
               "name": "operator SDL_TrayMenu *",

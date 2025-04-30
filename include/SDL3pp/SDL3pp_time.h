@@ -91,11 +91,6 @@ struct DateTime : SDL_DateTime
   }
 
   /**
-   * Default comparison operator
-   */
-  constexpr auto operator<=>(const DateTime& other) const = default;
-
-  /**
    * Check if valid.
    *
    * @returns True if valid state, false otherwise.

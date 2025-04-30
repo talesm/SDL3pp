@@ -261,6 +261,14 @@ public:
   constexpr bool operator==(const AudioFormat& other) const = default;
 
   /**
+   * Compares with the underlying type
+   */
+  constexpr bool operator==(SDL_AudioFormat audioFormat) const
+  {
+    return operator==(AudioFormat(audioFormat));
+  }
+
+  /**
    * Unwraps to the underlying AudioFormat.
    *
    * @returns the underlying AudioFormat.
@@ -419,34 +427,36 @@ public:
 #undef AUDIO_S32
 #undef AUDIO_F32
 
-constexpr AudioFormat AUDIO_UNKNOWN =
+constexpr SDL_AudioFormat AUDIO_UNKNOWN =
   SDL_AUDIO_UNKNOWN; ///< Unspecified audio format.
 
-constexpr AudioFormat AUDIO_U8 = SDL_AUDIO_U8; ///< Unsigned 8-bit samples.
+constexpr SDL_AudioFormat AUDIO_U8 = SDL_AUDIO_U8; ///< Unsigned 8-bit samples.
 
-constexpr AudioFormat AUDIO_S8 = SDL_AUDIO_S8; ///< Signed 8-bit samples.
+constexpr SDL_AudioFormat AUDIO_S8 = SDL_AUDIO_S8; ///< Signed 8-bit samples.
 
-constexpr AudioFormat AUDIO_S16LE = SDL_AUDIO_S16LE; ///< Signed 16-bit samples.
+constexpr SDL_AudioFormat AUDIO_S16LE =
+  SDL_AUDIO_S16LE; ///< Signed 16-bit samples.
 
-constexpr AudioFormat AUDIO_S16BE =
+constexpr SDL_AudioFormat AUDIO_S16BE =
   SDL_AUDIO_S16BE; ///< As above, but big-endian byte order.
 
-constexpr AudioFormat AUDIO_S32LE = SDL_AUDIO_S32LE; ///< 32-bit integer samples
+constexpr SDL_AudioFormat AUDIO_S32LE =
+  SDL_AUDIO_S32LE; ///< 32-bit integer samples
 
-constexpr AudioFormat AUDIO_S32BE =
+constexpr SDL_AudioFormat AUDIO_S32BE =
   SDL_AUDIO_S32BE; ///< As above, but big-endian byte order.
 
-constexpr AudioFormat AUDIO_F32LE =
+constexpr SDL_AudioFormat AUDIO_F32LE =
   SDL_AUDIO_F32LE; ///< 32-bit floating point samples
 
-constexpr AudioFormat AUDIO_F32BE =
+constexpr SDL_AudioFormat AUDIO_F32BE =
   SDL_AUDIO_F32BE; ///< As above, but big-endian byte order.
 
-constexpr AudioFormat AUDIO_S16 = SDL_AUDIO_S16; ///< AUDIO_S16
+constexpr SDL_AudioFormat AUDIO_S16 = SDL_AUDIO_S16; ///< AUDIO_S16
 
-constexpr AudioFormat AUDIO_S32 = SDL_AUDIO_S32; ///< AUDIO_S32
+constexpr SDL_AudioFormat AUDIO_S32 = SDL_AUDIO_S32; ///< AUDIO_S32
 
-constexpr AudioFormat AUDIO_F32 = SDL_AUDIO_F32; ///< AUDIO_F32
+constexpr SDL_AudioFormat AUDIO_F32 = SDL_AUDIO_F32; ///< AUDIO_F32
 
 /**
  * A callback that fires when data is about to be fed to an audio device.

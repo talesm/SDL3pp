@@ -355,16 +355,11 @@ struct PathInfo : SDL_PathInfo
   }
 
   /**
-   * Default comparison operator
-   */
-  constexpr bool operator==(const PathInfo& other) const = default;
-
-  /**
    * Compare with nullptr.
    *
    * @returns True if invalid state, false otherwise.
    */
-  constexpr bool operator==(std::nullptr_t) const { return !bool(*this); }
+  constexpr bool operator==(std::nullptr_t _) const { return !bool(*this); }
 
   /**
    * Check if valid.

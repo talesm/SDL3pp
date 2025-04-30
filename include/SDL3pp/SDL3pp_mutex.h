@@ -1129,11 +1129,6 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
 struct InitState : SDL_InitState
 {
   /**
-   * Default comparison operator
-   */
-  constexpr bool operator==(const InitState& other) const = default;
-
-  /**
    * Constructor
    */
   constexpr InitState()

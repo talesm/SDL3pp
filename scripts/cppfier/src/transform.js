@@ -438,8 +438,9 @@ function expandWrappers(sourceEntries, transform, context) {
 
     const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
     const constexpr = wrapper.constexpr !== false;
-    const param = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
-    const attribute = "m_" + param;
+    const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
+    const paramType = isStruct ? `const ${type} &` : type;
+    const attribute = "m_" + paramName;
 
     if (isStruct) {
       addHints(wrapper, {
@@ -466,17 +467,17 @@ function expandWrappers(sourceEntries, transform, context) {
       type: "",
       constexpr,
       parameters: [{
-        type: isStruct ? `const ${type} &` : type,
-        name: param,
+        type: paramType,
+        name: paramName,
         default: wrapper.defaultValue ?? "{}"
       }],
-      doc: `Wraps ${sourceType}.\n\n@param ${param} the value to be wrapped`,
+      doc: `Wraps ${sourceType}.\n\n@param ${paramName} the value to be wrapped`,
       hints: {
-        init: [`${isStruct ? sourceType : attribute}(${param})`]
+        init: [`${isStruct ? sourceType : attribute}(${paramName})`]
       }
     });
     if (wrapper.ordered) {
-      insertEntry(entries, {
+      insertEntry(entries, [{
         kind: "function",
         name: "operator<=>",
         type: "auto",
@@ -488,9 +489,21 @@ function expandWrappers(sourceEntries, transform, context) {
         }],
         doc: "Default comparison operator",
         hints: { default: true, }
-      });
-    } else {
-      insertEntry(entries, {
+      }, {
+        kind: "function",
+        name: "operator<=>",
+        type: "auto",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: paramType,
+          name: paramName,
+        }],
+        doc: "Compares with the underlying type",
+        hints: { body: `return operator<=>(${targetType}(${paramName}));`, }
+      }]);
+    } else if (wrapper.comparable || !isStruct) {
+      insertEntry(entries, [{
         kind: "function",
         name: "operator==",
         type: "bool",
@@ -502,7 +515,19 @@ function expandWrappers(sourceEntries, transform, context) {
         }],
         doc: "Default comparison operator",
         hints: { default: true, }
-      });
+      }, {
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: paramType,
+          name: paramName,
+        }],
+        doc: "Compares with the underlying type",
+        hints: { body: `return operator==(${targetType}(${paramName}));`, }
+      }]);
     }
     if (wrapper.nullable) insertEntry(entries, {
       kind: "function",
@@ -510,7 +535,7 @@ function expandWrappers(sourceEntries, transform, context) {
       type: "bool",
       constexpr,
       immutable: true,
-      parameters: ["std::nullptr_t"],
+      parameters: [{ type: "std::nullptr_t", name: "_" }],
       doc: `Compare with nullptr.\n\n@returns True if invalid state, false otherwise.`,
       hints: { body: "return !bool(*this);" }
     });
@@ -605,6 +630,7 @@ function expandWrappers(sourceEntries, transform, context) {
     delete wrapper.includeAfter;
     delete wrapper.nullable;
     delete wrapper.ordered;
+    delete wrapper.comparable;
     delete wrapper.genCtor;
     delete wrapper.genMembers;
   }
@@ -987,7 +1013,8 @@ function expandEnumerations(sourceEntries, file, context) {
       }
     }
 
-    if (!enumTransform.kind && sourceEntry.kind !== "alias") {
+    const valueType = enumTransform.valueType ?? (enumTransform.kind === "struct" ? type : targetType);
+    if (!enumTransform.kind && !enumTransform.type && sourceEntry?.kind !== "alias") {
       enumTransform.kind = "alias";
       enumTransform.type = type;
     }
@@ -1017,7 +1044,7 @@ function expandEnumerations(sourceEntries, file, context) {
         kind: "var",
         name: file.transform[value]?.name ?? newNames[value] ?? transformName(value, context),
         constexpr: true,
-        type: targetType,
+        type: valueType,
       };
       combineObject(entry, file.transform[value] || {});
       if (!entry.doc) {
@@ -1042,6 +1069,7 @@ function expandEnumerations(sourceEntries, file, context) {
 
     delete enumTransform.values;
     delete enumTransform.prefix;
+    delete enumTransform.valueType;
     delete enumTransform.includeAfter;
     delete enumTransform.newPrefix;
   }

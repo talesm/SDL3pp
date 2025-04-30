@@ -195,15 +195,15 @@ struct Main
   {
     switch (key_code) {
       /* Quit. */
-    case SDL_SCANCODE_ESCAPE:
-    case SDL_SCANCODE_Q: return SDL::APP_SUCCESS;
+    case SDL::SCANCODE_ESCAPE:
+    case SDL::SCANCODE_Q: return SDL::APP_SUCCESS;
     /* Restart the game as if the program was launched. */
-    case SDL_SCANCODE_R: snake_ctx = SnakeContext{}; break;
+    case SDL::SCANCODE_R: snake_ctx = SnakeContext{}; break;
     /* Decide new direction of the snake. */
-    case SDL_SCANCODE_RIGHT: snake_ctx.redir(SnakeDirection::RIGHT); break;
-    case SDL_SCANCODE_UP: snake_ctx.redir(SnakeDirection::UP); break;
-    case SDL_SCANCODE_LEFT: snake_ctx.redir(SnakeDirection::LEFT); break;
-    case SDL_SCANCODE_DOWN: snake_ctx.redir(SnakeDirection::DOWN); break;
+    case SDL::SCANCODE_RIGHT: snake_ctx.redir(SnakeDirection::RIGHT); break;
+    case SDL::SCANCODE_UP: snake_ctx.redir(SnakeDirection::UP); break;
+    case SDL::SCANCODE_LEFT: snake_ctx.redir(SnakeDirection::LEFT); break;
+    case SDL::SCANCODE_DOWN: snake_ctx.redir(SnakeDirection::DOWN); break;
     default: break;
     }
     return SDL::APP_CONTINUE;

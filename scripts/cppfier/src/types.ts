@@ -212,6 +212,11 @@ export interface ApiWrapper extends ApiEntryTransform {
    * Defaults to true if alias to anything but `void *`, false otherwise.
    */
   ordered?: boolean
+
+  /** 
+   * Defaults to true if ordered is false and not a struct
+   */
+  comparable?: boolean
 }
 
 export interface ApiEnumeration extends ApiEntryTransform {
@@ -220,6 +225,7 @@ export interface ApiEnumeration extends ApiEntryTransform {
   newPrefix?: string;
   values?: string[];
   includeAfter?: string;
+  valueType?: string;
 }
 
 export type QuickTransform = "immutable" | "ctor" | ApiEntryKind;
