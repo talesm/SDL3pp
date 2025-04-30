@@ -95,20 +95,23 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TargetBytes</b> 
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TargetBytes</b> (std::nullptr_t)</td></tr>
 <tr class="memdesc:a404c23857f5d87ecd93ded922446ab5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disambiguate between multiple pointer types. <br /></td></tr>
 <tr class="separator:a404c23857f5d87ecd93ded922446ab5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa737052a279ee1d958912ffc1aa0fd8e" id="r_aa737052a279ee1d958912ffc1aa0fd8e"><td class="memTemplParams" colspan="2">template&lt;class T , size_t N&gt; <br />
-requires std::convertible_to&lt;T*, void*&gt;</td></tr>
-<tr class="memitem:aa737052a279ee1d958912ffc1aa0fd8e"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1TargetBytes.html#aa737052a279ee1d958912ffc1aa0fd8e">TargetBytes</a> (std::span&lt; T, N &gt; span)</td></tr>
-<tr class="memdesc:aa737052a279ee1d958912ffc1aa0fd8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">From span.  <br /></td></tr>
-<tr class="separator:aa737052a279ee1d958912ffc1aa0fd8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0f9a66ea062acfdcbc63220afe72ba1" id="r_ae0f9a66ea062acfdcbc63220afe72ba1"><td class="memTemplParams" colspan="2"><a id="ae0f9a66ea062acfdcbc63220afe72ba1" name="ae0f9a66ea062acfdcbc63220afe72ba1"></a>
+template&lt;class T , size_t N&gt; </td></tr>
+<tr class="memitem:ae0f9a66ea062acfdcbc63220afe72ba1"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>TargetBytes</b> (std::span&lt; const T, N &gt; span)</td></tr>
+<tr class="memdesc:ae0f9a66ea062acfdcbc63220afe72ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just to have better error message. <br /></td></tr>
+<tr class="separator:ae0f9a66ea062acfdcbc63220afe72ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14344c2a1e697fa8d5566cf9d1c7d08f" id="r_a14344c2a1e697fa8d5566cf9d1c7d08f"><td class="memTemplParams" colspan="2">template&lt;class T , size_t N&gt; </td></tr>
+<tr class="memitem:a14344c2a1e697fa8d5566cf9d1c7d08f"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1TargetBytes.html#a14344c2a1e697fa8d5566cf9d1c7d08f">TargetBytes</a> (std::span&lt; T, N &gt; span)</td></tr>
+<tr class="memdesc:a14344c2a1e697fa8d5566cf9d1c7d08f"><td class="mdescLeft">&#160;</td><td class="mdescRight">From span.  <br /></td></tr>
+<tr class="separator:a14344c2a1e697fa8d5566cf9d1c7d08f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08dbe7eeadc1e42a2dbd797c65106cee" id="r_a08dbe7eeadc1e42a2dbd797c65106cee"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a08dbe7eeadc1e42a2dbd797c65106cee"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1TargetBytes.html#a08dbe7eeadc1e42a2dbd797c65106cee">TargetBytes</a> (T &amp;<a class="el" href="structSDL_1_1TargetBytes.html#ab8abdd8643e3d331f153317b17f24754">data</a>)</td></tr>
 <tr class="memdesc:a08dbe7eeadc1e42a2dbd797c65106cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">From container-like.  <br /></td></tr>
 <tr class="separator:a08dbe7eeadc1e42a2dbd797c65106cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3572ddbdd8c9bf999edea87983e34ce" id="r_af3572ddbdd8c9bf999edea87983e34ce"><td class="memTemplParams" colspan="2">template&lt;class T , size_t N&gt; <br />
-requires std::convertible_to&lt;T*, void*&gt;</td></tr>
-<tr class="memitem:af3572ddbdd8c9bf999edea87983e34ce"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1TargetBytes.html#af3572ddbdd8c9bf999edea87983e34ce">TargetBytes</a> (T(&amp;<a class="el" href="structSDL_1_1TargetBytes.html#ab8abdd8643e3d331f153317b17f24754">data</a>)[N])</td></tr>
-<tr class="memdesc:af3572ddbdd8c9bf999edea87983e34ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">From array.  <br /></td></tr>
-<tr class="separator:af3572ddbdd8c9bf999edea87983e34ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a581911a9d59bd013cb6b7dd6adfbec8a" id="r_a581911a9d59bd013cb6b7dd6adfbec8a"><td class="memTemplParams" colspan="2">template&lt;class T , size_t N&gt; </td></tr>
+<tr class="memitem:a581911a9d59bd013cb6b7dd6adfbec8a"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1TargetBytes.html#a581911a9d59bd013cb6b7dd6adfbec8a">TargetBytes</a> (T(&amp;<a class="el" href="structSDL_1_1TargetBytes.html#ab8abdd8643e3d331f153317b17f24754">data</a>)[N])</td></tr>
+<tr class="memdesc:a581911a9d59bd013cb6b7dd6adfbec8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">From array.  <br /></td></tr>
+<tr class="separator:a581911a9d59bd013cb6b7dd6adfbec8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1579742785ee82d122c16ca3f441a61" id="r_ad1579742785ee82d122c16ca3f441a61"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TargetBytes.html#ad1579742785ee82d122c16ca3f441a61">TargetBytes</a> (void *<a class="el" href="structSDL_1_1TargetBytes.html#ab8abdd8643e3d331f153317b17f24754">data</a>, size_t <a class="el" href="structSDL_1_1TargetBytes.html#a83dee61abd3e0664a293c07d21757f05">size_bytes</a>)</td></tr>
 <tr class="memdesc:ad1579742785ee82d122c16ca3f441a61"><td class="mdescLeft">&#160;</td><td class="mdescRight">From data + size in bytes.  <br /></td></tr>
 <tr class="separator:ad1579742785ee82d122c16ca3f441a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,14 +130,13 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size_bytes</b></td>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Target byte stream, tipically used as target where bytes are copied to. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa737052a279ee1d958912ffc1aa0fd8e" name="aa737052a279ee1d958912ffc1aa0fd8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa737052a279ee1d958912ffc1aa0fd8e">&#9670;&#160;</a></span>TargetBytes() <span class="overload">[1/4]</span></h2>
+<a id="a14344c2a1e697fa8d5566cf9d1c7d08f" name="a14344c2a1e697fa8d5566cf9d1c7d08f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14344c2a1e697fa8d5566cf9d1c7d08f">&#9670;&#160;</a></span>TargetBytes() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , size_t N&gt; <br />
-requires std::convertible_to&lt;T*, void*&gt;</div>
+template&lt;class T , size_t N&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -196,14 +198,13 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="af3572ddbdd8c9bf999edea87983e34ce" name="af3572ddbdd8c9bf999edea87983e34ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3572ddbdd8c9bf999edea87983e34ce">&#9670;&#160;</a></span>TargetBytes() <span class="overload">[3/4]</span></h2>
+<a id="a581911a9d59bd013cb6b7dd6adfbec8a" name="a581911a9d59bd013cb6b7dd6adfbec8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a581911a9d59bd013cb6b7dd6adfbec8a">&#9670;&#160;</a></span>TargetBytes() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , size_t N&gt; <br />
-requires std::convertible_to&lt;T*, void*&gt;</div>
+template&lt;class T , size_t N&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
