@@ -10,7 +10,8 @@ int main(int argc, char** argv)
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
 
-  SDL::Texture characterTexture{renderer, "assets/smiley.png"};
+  SDL::Texture characterTexture{
+    renderer, std::format("{}../assets/smiley.png", SDL::GetBasePath())};
   SDL::FRect characterRect(SDL::FPoint(WINDOW_SZ) / 2 - SDL::FPoint{64, 64},
                            {128, 128});
 

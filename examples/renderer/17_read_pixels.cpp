@@ -28,8 +28,9 @@ struct Main
   /* Textures are pixel data that we upload to the video hardware for fast
     drawing. Lots of 2D engines refer to these as "sprites." We'll do a static
     texture (upload once, draw many times) with data from a bitmap file. */
-  SDL::Texture texture{renderer,
-                       std::format("{}/assets/sample.bmp", SDL::GetBasePath())};
+  SDL::Texture texture{
+    renderer,
+    std::format("{}../assets/sample.bmp", SDL::GetBasePath())};
   SDL::Point textureSz = texture.GetSize();
   SDL::Texture converted_texture;
   SDL::Point converted_textureSz;

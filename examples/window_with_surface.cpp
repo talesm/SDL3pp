@@ -19,7 +19,8 @@ int main(int argc, char** argv)
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   SDL::Window window{"Test", WINDOW_SZ};
   SDL::SurfaceRef screen = window.GetSurface();
-  SDL::Surface smileyImg("assets/smiley.bmp");
+  SDL::Surface smileyImg(
+    std::format("{}../assets/smiley.bmp", SDL::GetBasePath()));
 
   constexpr int WW = 64;
 
