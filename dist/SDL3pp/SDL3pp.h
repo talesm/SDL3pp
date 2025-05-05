@@ -26230,6 +26230,25 @@ inline void SaveFile(StringParam file, SourceBytes data)
  */
 using Keymod = Uint16;
 
+// To remove clash with old names:
+#undef KMOD_ALT
+#undef KMOD_CAPS
+#undef KMOD_CTRL
+#undef KMOD_GUI
+#undef KMOD_LALT
+#undef KMOD_LCTRL
+#undef KMOD_LGUI
+#undef KMOD_LSHIFT
+#undef KMOD_MODE
+#undef KMOD_NONE
+#undef KMOD_NUM
+#undef KMOD_RALT
+#undef KMOD_RCTRL
+#undef KMOD_RGUI
+#undef KMOD_RSHIFT
+#undef KMOD_SCROLL
+#undef KMOD_SHIFT
+
 /**
  * no modifier is applicable.
  */
