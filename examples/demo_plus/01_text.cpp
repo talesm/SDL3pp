@@ -282,6 +282,11 @@ struct Main
     case SDL::KEYCODE_BACKSPACE: text.backspace(cursor, ctrl); break;
     case SDL::KEYCODE_DELETE: text.deleteNext(cursor, ctrl); break;
     case SDL::KEYCODE_INSERT: replaceMode = !replaceMode; break;
+    case SDL::KEYCODE_V:
+      if (ctrl && SDL::HasClipboardText()) {
+        text.insertText(cursor, SDL::GetClipboardText());
+      }
+      break;
 
     default: break;
     }
