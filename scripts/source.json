@@ -3465,7 +3465,7 @@
           "doc": "The current micro (or patchlevel) version of the SDL headers.\n\nIf this were SDL version 3.2.1, this value would be 1.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "11"
+          "value": "13"
         },
         "SDL_VERSIONNUM": {
           "doc": "This macro turns the version numbers into a numeric value.\n\n(1,2,3) becomes 1002003.\n\n\\param major the major version number.\n\\param minor the minorversion number.\n\\param patch the patch version number.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -15265,6 +15265,18 @@
               "name": "mouse_y",
               "kind": "var",
               "type": "float"
+            },
+            "integer_x": {
+              "doc": "The amount scrolled horizontally, accumulated to whole scroll \"ticks\" (added in 3.2.12)",
+              "name": "integer_x",
+              "kind": "var",
+              "type": "Sint32"
+            },
+            "integer_y": {
+              "doc": "The amount scrolled vertically, accumulated to whole scroll \"ticks\" (added in 3.2.12)",
+              "name": "integer_y",
+              "kind": "var",
+              "type": "Sint32"
             }
           }
         },
