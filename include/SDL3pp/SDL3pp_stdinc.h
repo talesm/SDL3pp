@@ -1964,7 +1964,11 @@ inline Uint32 murmur3_32(const void* data, size_t len, Uint32 seed)
  */
 inline void* memcpy(void* dst, const void* src, size_t len)
 {
+#ifdef SDL_SLOW_MEMCPY
   return SDL_memcpy(dst, src, len);
+#else
+  return ::memcpy(dst, src, len);
+#endif // SDL_SLOW_MEMCPY
 }
 
 #ifdef SDL3PP_DOC
@@ -2020,7 +2024,11 @@ inline void* memcpy(void* dst, const void* src, size_t len)
  */
 inline void* memmove(void* dst, const void* src, size_t len)
 {
+#ifdef SDL_SLOW_MEMMOVE
   return SDL_memmove(dst, src, len);
+#else
+  return ::memmove(dst, src, len);
+#endif // SDL_SLOW_MEMMOVE
 }
 
 /**
@@ -2043,7 +2051,11 @@ inline void* memmove(void* dst, const void* src, size_t len)
  */
 inline void* memset(void* dst, int c, size_t len)
 {
+#ifdef SDL_SLOW_MEMSET
   return SDL_memset(dst, c, len);
+#else
+  return ::memset(dst, c, len);
+#endif // SDL_SLOW_MEMSET
 }
 
 /**

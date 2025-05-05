@@ -357,7 +357,9 @@ class Tokenizer {
           } else if (line.slice(indentation).startsWith("}") && opened) {
             this.nextLine();
             return line;
-          } else return lastLine;
+          } else if (!line.startsWith('#') || !opened) {
+            return lastLine;
+          }
         }
         lastLine = line;
       }

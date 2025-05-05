@@ -18,7 +18,7 @@ public:
       for (auto& ch : row) ch = ' ';
     }
   }
-  constexpr void insertChar(SDL::Point& p, char ch)
+  constexpr void replaceChar(SDL::Point& p, char ch)
   {
     if (p.x < 0 || p.y < 0 || (ch & 0x80) || ch < ' ') return;
     if (p.x >= textMaxSz.x) {
@@ -27,6 +27,22 @@ public:
     }
     if (p.y >= textMaxSz.y) return;
     m_text[p.y][p.x++] = ch;
+  }
+
+  constexpr void replaceText(SDL::Point& p, std::string_view v)
+  {
+    for (auto ch : v) replaceChar(p, ch);
+  }
+
+  constexpr void insertText(SDL::Point& p, std::string_view v)
+  {
+    if (p.y < 0 || p.y >= textMaxSz.y) return;
+    std::string remainder = getRowAfter(p);
+    replaceText(p, v);
+    if (!remainder.empty()) {
+      SDL::Point rPoint = p;
+      replaceText(rPoint, remainder);
+    }
   }
 
   constexpr bool moveUp(SDL::Point& p)
@@ -45,22 +61,35 @@ public:
 
   constexpr bool moveLeft(SDL::Point& p, bool word)
   {
-    if (p.x > 0)
-      p.x--;
-    else if (moveUp(p))
+    if (p.x <= 0) {
+      if (!moveUp(p)) return false;
       moveEnd(p, false);
-    else
-      return false;
+    } else if (word) {
+      if (p.y < 0 || p.y >= textMaxSz.y) return false;
+      while (--p.x > 0) {
+        if (m_text[p.y][p.x] > ' ' && m_text[p.y][p.x - 1] <= ' ') break;
+      }
+    } else {
+      p.x--;
+    }
     return true;
   }
+
   constexpr bool moveRight(SDL::Point& p, bool word)
   {
-    if (p.x < textMaxSz.x - 1)
-      p.x++;
-    else if (moveDown(p))
+    if (p.y < 0 || p.y >= textMaxSz.y) return false;
+    int endCol = lastCol(p.y);
+    if (endCol < textMaxSz.x && m_text[p.y][endCol] > ' ') endCol++;
+    if (p.x >= endCol) {
+      if (!moveDown(p)) return false;
       moveHome(p, false);
-    else
-      return false;
+    } else if (word) {
+      while (++p.x < endCol) {
+        if (m_text[p.y][p.x - 1] > ' ' && m_text[p.y][p.x] <= ' ') break;
+      }
+    } else {
+      p.x++;
+    }
     return true;
   }
 
@@ -70,25 +99,38 @@ public:
     if (yAxis) p.y = 0;
   }
 
+  constexpr int lastCol(int row) const
+  {
+    if (row < 0 || row >= textMaxSz.y) return 0;
+    for (int col = textMaxSz.x - 1; col > 0; col--) {
+      if (m_text[row][col] > ' ') return col;
+    }
+    return 0;
+  }
+
   constexpr void moveEnd(SDL::Point& p, bool yAxis)
   {
-    p.x = textMaxSz.x - 1;
     if (yAxis)
       p.y = textMaxSz.y - 1;
     else if (p.y < 0 || p.y >= textMaxSz.y)
       return;
-    if (m_text[p.y][p.x] > ' ') return;
-    while (p.x > 0) {
-      if (m_text[p.y][p.x - 1] > ' ') break;
-      p.x--;
-    }
+    p.x = lastCol(p.y);
+    if (p.x < (textMaxSz.x - 1) && m_text[p.y][p.x] > ' ') p.x++;
   }
 
   constexpr bool backspace(SDL::Point& p, bool word = false)
   {
-    SDL::Point prev = p;
+    SDL::Point end = p;
     if (!moveLeft(p, word)) return false;
-    doErase(p, prev);
+    doErase(p, end);
+    return true;
+  }
+
+  constexpr bool deleteNext(SDL::Point p, bool word = false)
+  {
+    SDL::Point beg = p;
+    if (!moveRight(p, word)) return false;
+    doErase(beg, p);
     return true;
   }
 
@@ -101,33 +143,65 @@ public:
       for (; begin.x < textMaxSz.x; begin.x++) {
         m_text[begin.y][begin.x] = ' ';
       }
-      // TODO if line becomes empty
     } else {
-      // TODO
+      std::string remainder = getRowAfter(end);
+      removeRows(begin.y + 1, end.y - begin.y);
+      if (!remainder.empty()) replaceText(begin, remainder);
     }
   }
 
-  constexpr void newLine(SDL::Point& p, bool blank, bool above)
+  constexpr void removeRows(int begin, int size)
   {
-    moveDown(p);
-    moveHome(p, false);
-  }
-
-  constexpr void insertText(SDL::Point& p, std::string_view v)
-  {
-    for (auto ch : v) insertChar(p, ch);
-  }
-
-  std::string getRow(int row) const
-  {
-    if (row < 0 || row > textMaxSz.y) return {};
-    std::string_view sv{m_text[row], textMaxSz.x};
-    int lastCol = textMaxSz.x - 1;
-    for (int col = lastCol; col >= 0; col--) {
-      if (sv[col] > ' ') return std::string{sv.substr(0, col + 1)};
+    if (size <= 0 || begin < 0 || begin >= textMaxSz.y) return;
+    int limit = textMaxSz.y - size;
+    for (int i = begin; i < limit; i++) {
+      SDL::memcpy(m_text[i], m_text[i + size], textMaxSz.x);
     }
-    return {};
+    for (int i = limit; i < textMaxSz.y; i++) {
+      SDL::memset(m_text[i], ' ', textMaxSz.x);
+    }
   }
+
+  constexpr void insertRow(int begin, int size = 1)
+  {
+    if (size <= 0 || begin < 0 || begin >= textMaxSz.y) return;
+    int limit = textMaxSz.y - size;
+    for (int i = limit - 1; i >= begin; i--) {
+      SDL::memcpy(m_text[i + size], m_text[i], textMaxSz.x);
+    }
+    for (int i = begin; i < std::min(begin + size, textMaxSz.y); i++) {
+      SDL::memset(m_text[i], ' ', textMaxSz.x);
+    }
+  }
+
+  constexpr void newLine(SDL::Point& p)
+  {
+    std::string remainder = getRowAfter(p);
+    if (!remainder.empty() && p.x >= 0) {
+      SDL::memset(m_text[p.y] + p.x, ' ', textMaxSz.x - p.x);
+    }
+    if (moveDown(p)) {
+      moveHome(p, false);
+      insertRow(p.y, 1);
+      if (!remainder.empty()) {
+        SDL::Point rPoint = p;
+        replaceText(rPoint, remainder);
+      }
+    }
+  }
+
+  constexpr std::string getRowAfter(SDL::Point p) const
+  {
+    if (p.y < 0 || p.y >= textMaxSz.y) return {};
+    std::string_view sv{m_text[p.y], textMaxSz.x};
+    int limit = lastCol(p.y);
+    int col = SDL::clamp(p.x, 0, textMaxSz.x - 1);
+    if (limit < textMaxSz.x - 1 && m_text[p.y][limit] > ' ') limit++;
+    if (limit <= col) return {};
+    return std::string{sv.substr(col, limit - col)};
+  }
+
+  constexpr std::string getRow(int row) const { return getRowAfter({0, row}); }
 };
 
 struct Main
@@ -138,6 +212,7 @@ struct Main
   SDL::Renderer renderer{window};
   Text text;
   SDL::Point cursor{0, 0};
+  bool replaceMode = false;
 
   Main() { window.StartTextInput(); }
 
@@ -170,7 +245,12 @@ struct Main
       cursor = SDL::Point{int(event.button.x), int(event.button.y)} /
                SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
       break;
-    case SDL::EVENT_TEXT_INPUT: text.insertText(cursor, event.text.text); break;
+    case SDL::EVENT_TEXT_INPUT:
+      if (replaceMode)
+        text.replaceText(cursor, event.text.text);
+      else
+        text.insertText(cursor, event.text.text);
+      break;
 
     default: break;
     }
@@ -184,14 +264,24 @@ struct Main
     switch (key.key) {
     case SDL::KEYCODE_UP: text.moveUp(cursor); break;
     case SDL::KEYCODE_DOWN: text.moveDown(cursor); break;
-    case SDL::KEYCODE_BACKSPACE: text.backspace(cursor, ctrl); break;
     case SDL::KEYCODE_LEFT: text.moveLeft(cursor, ctrl); break;
     case SDL::KEYCODE_RIGHT: text.moveRight(cursor, ctrl); break;
     case SDL::KEYCODE_HOME: text.moveHome(cursor, ctrl); break;
     case SDL::KEYCODE_END: text.moveEnd(cursor, ctrl); break;
     case SDL::KEYCODE_RETURN:
     case SDL::KEYCODE_RETURN2:
-    case SDL::KEYCODE_KP_ENTER: text.newLine(cursor, ctrl, shift); break;
+    case SDL::KEYCODE_KP_ENTER:
+      if (ctrl) {
+        text.moveHome(cursor, false);
+        if (!shift && !text.moveDown(cursor)) break;
+        text.insertRow(cursor.y);
+      } else {
+        text.newLine(cursor);
+      }
+      break;
+    case SDL::KEYCODE_BACKSPACE: text.backspace(cursor, ctrl); break;
+    case SDL::KEYCODE_DELETE: text.deleteNext(cursor, ctrl); break;
+    case SDL::KEYCODE_INSERT: replaceMode = !replaceMode; break;
 
     default: break;
     }
