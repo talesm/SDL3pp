@@ -19,8 +19,9 @@ var searchData=
   ['updatetrays_16',['UpdateTrays',['../group__CategoryTray.html#ga0f8f034d2e3e425ad9ca58325e78e810',1,'SDL']]],
   ['updateyuv_17',['UpdateYUV',['../structSDL_1_1TextureBase.html#a50f9fe7bf9c2b14ff7ef5569db0062b5',1,'SDL::TextureBase']]],
   ['use_20c_20strings_20and_20byte_20arrays_18',['Helpers to use C++ strings and byte arrays.',['../group__CategoryStrings.html',1,'']]],
-  ['userevent_19',['UserEvent',['../group__CategoryEvents.html#ga9523397a5d659447d2161f638046880a',1,'SDL']]],
-  ['utf8strlcpy_20',['utf8strlcpy',['../group__CategoryStdinc.html#ga8ae726c47fde58d11167345dfda765a4',1,'SDL']]],
-  ['utf8strlen_21',['utf8strlen',['../group__CategoryStdinc.html#ga81767a08005a153d60b63896c58c106f',1,'SDL']]],
-  ['utf8strnlen_22',['utf8strnlen',['../group__CategoryStdinc.html#ga82960b752efedfdd3cbfcf166d06161e',1,'SDL']]]
+  ['use_20text_19',['Basic use (text)',['../group__CategoryClipboard.html#basic-use-text',1,'']]],
+  ['userevent_20',['UserEvent',['../group__CategoryEvents.html#ga9523397a5d659447d2161f638046880a',1,'SDL']]],
+  ['utf8strlcpy_21',['utf8strlcpy',['../group__CategoryStdinc.html#ga8ae726c47fde58d11167345dfda765a4',1,'SDL']]],
+  ['utf8strlen_22',['utf8strlen',['../group__CategoryStdinc.html#ga81767a08005a153d60b63896c58c106f',1,'SDL']]],
+  ['utf8strnlen_23',['utf8strnlen',['../group__CategoryStdinc.html#ga82960b752efedfdd3cbfcf166d06161e',1,'SDL']]]
 ];

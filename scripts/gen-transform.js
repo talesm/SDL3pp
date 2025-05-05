@@ -737,6 +737,80 @@ const transform = {
         }
       }
     },
+    "SDL_clipboard.h": {
+      includeAfter: {
+        "SDL_SetClipboardData": {
+          name: "SetClipboardData",
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              name: "callback",
+              type: "ClipboardDataCB"
+            },
+            {
+              name: "cleanup",
+              type: "ClipboardCleanupCB"
+            },
+            {
+              name: "mime_types",
+              type: "std::span<const char *>"
+            }
+          ]
+        },
+        "SDL_GetClipboardData": {
+          name: "GetClipboardDataAs",
+          kind: "function",
+          template: [{
+            type: "class",
+            name: "T"
+          }],
+          type: "OwnArray<T>",
+          parameters: [{
+            name: "mime_type",
+            type: "StringParam"
+          }]
+        },
+      },
+      transform: {
+        "SDL_GetClipboardText": { type: "StringResult" },
+        "SDL_GetPrimarySelectionText": { type: "StringResult" },
+        "ClipboardDataCB": {
+          type: "std::function<SourceBytes(const char *mime_type)>"
+        },
+        "SDL_SetClipboardData": {
+          parameters: [
+            {
+              name: "callback",
+              type: "ClipboardDataCallback"
+            },
+            {
+              name: "cleanup",
+              type: "ClipboardCleanupCallback"
+            },
+            {
+              name: "userdata",
+              type: "void *"
+            },
+            {
+              name: "mime_types",
+              type: "std::span<const char *>"
+            }
+          ]
+        },
+        "SDL_GetClipboardData": {
+          type: "StringResult",
+          parameters: [{
+            name: "mime_type",
+            type: "StringParam"
+          }]
+        },
+        "SDL_GetClipboardMimeTypes": {
+          type: "OwnArray<char *>",
+          parameters: []
+        }
+      }
+    },
     "SDL_cpuinfo.h": {
       transform: {
         "SDL_CACHELINE_SIZE": {

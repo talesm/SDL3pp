@@ -26,7 +26,7 @@ Category                 | Header
 @ref CategoryBlendmode   | SDL3pp_blendmode.h
 @ref CategoryRect        | SDL3pp_rect.h
 @ref CategorySurface     | SDL3pp_surface.h
-Clipboard Handling       | SDL3pp_clipboard.h
+@ref CategoryClipboard   | SDL3pp_clipboard.h
 Vulkan Support           | SDL3pp_vulkan.h
 Metal Support            | SDL3pp_metal.h
 Camera Support           | SDL3pp_camera.h
@@ -163,6 +163,7 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryBlendmode
 @addtogroup CategoryRect
 @addtogroup CategorySurface
+@addtogroup CategoryClipboard
 @}
 
 @addtogroup CategoryAudio
