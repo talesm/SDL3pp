@@ -14,6 +14,7 @@
     "SDL_blendmode.h",
     "SDL_rect.h",
     "SDL_surface.h",
+    "SDL_clipboard.h",
     "SDL_audio.h",
     "SDL_events.h",
     "SDL_keyboard.h",
