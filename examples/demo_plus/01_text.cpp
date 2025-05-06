@@ -20,6 +20,10 @@ public:
   }
   constexpr void replaceChar(SDL::Point& p, char ch)
   {
+    if (ch == '\n') {
+      newLine(p);
+      return;
+    }
     if (p.x < 0 || p.y < 0 || (ch & 0x80) || ch < ' ') return;
     if (p.x >= textMaxSz.x) {
       p.x = 0;
@@ -285,6 +289,19 @@ struct Main
     case SDL::KEYCODE_V:
       if (ctrl && SDL::HasClipboardText()) {
         text.insertText(cursor, SDL::GetClipboardText());
+      }
+      break;
+    case SDL::KEYCODE_C:
+      if (ctrl) {
+        text.moveHome(cursor, false);
+        SDL::SetClipboardText(text.getRow(cursor.y) + '\n');
+      }
+      break;
+    case SDL::KEYCODE_X:
+      if (ctrl) {
+        text.moveHome(cursor, false);
+        SDL::SetClipboardText(text.getRow(cursor.y) + '\n');
+        text.removeRows(cursor.y, 1);
       }
       break;
 
