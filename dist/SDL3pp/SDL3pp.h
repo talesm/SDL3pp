@@ -35808,9 +35808,13 @@ constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT;
 constexpr auto TONEMAP_OPERATOR_STRING =
   SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING;
 
+#if SDL_VERSION_ATLEAST(3, 2, 6)
+
 constexpr auto HOTSPOT_X_NUMBER = SDL_PROP_SURFACE_HOTSPOT_X_NUMBER;
 
 constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
 } // namespace prop::Surface
 
@@ -52625,7 +52629,7 @@ inline SurfaceBase::SurfaceBase(IOStreamBase& src)
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
-  : Resource(CheckError(LoadTextureBMP(renderer, file).release()))
+  : Resource(CheckError(LoadTextureBMP(renderer, std::move(file)).release()))
 {
 }
 

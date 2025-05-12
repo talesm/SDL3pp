@@ -2225,7 +2225,7 @@ inline SurfaceBase::SurfaceBase(IOStreamBase& src)
 }
 
 inline TextureBase::TextureBase(RendererBase& renderer, StringParam file)
-  : Resource(CheckError(LoadTextureBMP(renderer, file).release()))
+  : Resource(CheckError(LoadTextureBMP(renderer, std::move(file)).release()))
 {
 }
 

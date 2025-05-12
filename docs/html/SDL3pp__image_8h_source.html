@@ -569,7 +569,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l02225" name="l02225"></a><span class="lineno"> 2225</span>}</div>
 <div class="line"><a id="l02226" name="l02226"></a><span class="lineno"> 2226</span> </div>
 <div class="line"><a id="l02227" name="l02227"></a><span class="lineno"> 2227</span><span class="keyword">inline</span> <a class="code hl_function" href="structSDL_1_1TextureBase.html#a13f8b564e445e6e1ce001084f1ef405e">TextureBase::TextureBase</a>(RendererBase&amp; renderer, StringParam file)</div>
-<div class="line"><a id="l02228" name="l02228"></a><span class="lineno"> 2228</span>  : Resource(<a class="code hl_function" href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">CheckError</a>(<a class="code hl_function" href="group__CategoryRender.html#ga17e441a70ad744717f480bec33fe25da">LoadTextureBMP</a>(renderer, file).release()))</div>
+<div class="line"><a id="l02228" name="l02228"></a><span class="lineno"> 2228</span>  : Resource(<a class="code hl_function" href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">CheckError</a>(<a class="code hl_function" href="group__CategoryRender.html#ga17e441a70ad744717f480bec33fe25da">LoadTextureBMP</a>(renderer, std::move(file)).release()))</div>
 <div class="line"><a id="l02229" name="l02229"></a><span class="lineno"> 2229</span>{</div>
 <div class="line"><a id="l02230" name="l02230"></a><span class="lineno"> 2230</span>}</div>
 <div class="line"><a id="l02231" name="l02231"></a><span class="lineno"> 2231</span> </div>
