@@ -36933,7 +36933,7 @@ inline DetachedTrayEntry TrayMenu::AppendEntry(StringParam label,
   return InsertEntry(-1, std::move(label), flags);
 }
 
-void TrayEntryBase::SetCallback(TrayCB callback)
+inline void TrayEntryBase::SetCallback(TrayCB callback)
 {
   using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
   SetCallback(
