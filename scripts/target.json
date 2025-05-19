@@ -44290,7 +44290,7 @@
                 }
               },
               {
-                "doc": "Create a font with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an\n  IOStreamBase isn't being used. This is required if\n  `prop::Font.CREATE_IOSTREAM_POINTER` and\n  `prop::Font.CREATE_EXISTING_FONT` aren't set.\n- `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamBase containing the\n  font to be opened. This should not be closed until the font is closed.\n  This is required if `prop::Font.CREATE_FILENAME_STRING` and\n  `prop::Font.CREATE_EXISTING_FONT` aren't set.\n- `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream\n  for the beginning of the font, defaults to 0.\n- `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the\n  font should also close the associated IOStreamBase.\n- `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon\n  fonts will have several sizes embedded in the file, so the point size\n  becomes the index of choosing which size. If the value is too high, the\n  last indexed size will be the default.\n- `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the\n  font contains multiple font faces.\n- `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use\n  for font rendering, defaults to\n  `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.\n- `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for\n  font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`\n  if set, or 72 otherwise.\n- `prop::Font.CREATE_EXISTING_FONT`: an optional FontBase that, if set,\n  will be used as the font data source and the initial size and style of\n  the new font.\n\n@param props the properties to use.\n@post a valid FontBase on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
+                "doc": "Create a font with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an\n  IOStreamBase isn't being used. This is required if\n  `prop::Font.CREATE_IOSTREAM_POINTER` and\n  `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.\n- `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamBase containing the\n  font to be opened. This should not be closed until the font is closed.\n  This is required if `prop::Font.CREATE_FILENAME_STRING` and\n  `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.\n- `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream\n  for the beginning of the font, defaults to 0.\n- `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the\n  font should also close the associated IOStreamBase.\n- `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon\n  fonts will have several sizes embedded in the file, so the point size\n  becomes the index of choosing which size. If the value is too high, the\n  last indexed size will be the default.\n- `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the\n  font contains multiple font faces.\n- `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use\n  for font rendering, defaults to\n  `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.\n- `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for\n  font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`\n  if set, or 72 otherwise.\n- `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional FontBase that, if set,\n  will be used as the font data source and the initial size and style of\n  the new font.\n\n@param props the properties to use.\n@post a valid FontBase on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.reset",
                 "name": "FontBase",
                 "kind": "function",
                 "type": "",
@@ -45826,14 +45826,14 @@
               "constexpr": true,
               "sourceName": "TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER"
             },
-            "CREATE_EXISTING_FONT": {
+            "CREATE_EXISTING_FONT_POINTER": {
               "doc": "",
-              "name": "CREATE_EXISTING_FONT",
+              "name": "CREATE_EXISTING_FONT_POINTER",
               "kind": "var",
               "value": "\"SDL_ttf.font.create.existing_font\"",
               "type": "auto",
               "constexpr": true,
-              "sourceName": "TTF_PROP_FONT_CREATE_EXISTING_FONT"
+              "sourceName": "TTF_PROP_FONT_CREATE_EXISTING_FONT_POINTER"
             },
             "OUTLINE_LINE_CAP_NUMBER": {
               "doc": "",
@@ -47055,7 +47055,7 @@
           "sourceName": "TTF_CreateRendererTextEngine"
         },
         "CreateRendererTextEngineWithProperties": {
-          "doc": "Create a text engine for drawing text on an SDL renderer, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `prop::RendererTextEngine.RENDERER`: the renderer to use for\n  creating textures and drawing text\n- `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the\n  texture atlas\n\n@param props the properties to use.\n@returns a TextEngineBase object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              renderer.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateRendererTextEngine\n@sa TTF_DestroyRendererTextEngine\n@sa TextBase.DrawRenderer",
+          "doc": "Create a text engine for drawing text on an SDL renderer, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for\n  creating textures and drawing text\n- `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the\n  texture atlas\n\n@param props the properties to use.\n@returns a TextEngineBase object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              renderer.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateRendererTextEngine\n@sa TTF_DestroyRendererTextEngine\n@sa TextBase.DrawRenderer",
           "name": "CreateRendererTextEngineWithProperties",
           "kind": "function",
           "type": "TextEngine",
@@ -47071,23 +47071,23 @@
           "kind": "ns",
           "name": "prop::RendererTextEngine",
           "entries": {
-            "RENDERER": {
+            "RENDERER_POINTER": {
               "doc": "",
-              "name": "RENDERER",
+              "name": "RENDERER_POINTER",
               "kind": "var",
               "value": "\"SDL_ttf.renderer_text_engine.create.renderer\"",
               "type": "auto",
               "constexpr": true,
-              "sourceName": "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER"
+              "sourceName": "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER_POINTER"
             },
-            "ATLAS_TEXTURE_SIZE": {
+            "ATLAS_TEXTURE_SIZE_NUMBER": {
               "doc": "",
-              "name": "ATLAS_TEXTURE_SIZE",
+              "name": "ATLAS_TEXTURE_SIZE_NUMBER",
               "kind": "var",
               "value": "\"SDL_ttf.renderer_text_engine.create.atlas_texture_size\"",
               "type": "auto",
               "constexpr": true,
-              "sourceName": "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE"
+              "sourceName": "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER"
             }
           },
           "doc": ""
@@ -47106,7 +47106,7 @@
           "sourceName": "TTF_CreateGPUTextEngine"
         },
         "CreateGPUTextEngineWithProperties": {
-          "doc": "Create a text engine for drawing text with the SDL GPU API, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `prop::GpuTextEngine.DEVICE`: the SDL_GPUDevice to use for creating\n  textures and drawing text.\n- `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture\n  atlas\n\n@param props the properties to use.\n@returns a TextEngineBase object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateGPUTextEngine\n@sa TTF_DestroyGPUTextEngine\n@sa TextBase.GetGPUDrawData",
+          "doc": "Create a text engine for drawing text with the SDL GPU API, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `prop::GpuTextEngine.DEVICE_POINTER`: the SDL_GPUDevice to use for creating\n  textures and drawing text.\n- `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture\n  atlas\n\n@param props the properties to use.\n@returns a TextEngineBase object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateGPUTextEngine\n@sa TTF_DestroyGPUTextEngine\n@sa TextBase.GetGPUDrawData",
           "name": "CreateGPUTextEngineWithProperties",
           "kind": "function",
           "type": "TextEngine",
@@ -47122,23 +47122,23 @@
           "kind": "ns",
           "name": "prop::GpuTextEngine",
           "entries": {
-            "DEVICE": {
+            "DEVICE_POINTER": {
               "doc": "",
-              "name": "DEVICE",
+              "name": "DEVICE_POINTER",
               "kind": "var",
               "value": "\"SDL_ttf.gpu_text_engine.create.device\"",
               "type": "auto",
               "constexpr": true,
-              "sourceName": "TTF_PROP_GPU_TEXT_ENGINE_DEVICE"
+              "sourceName": "TTF_PROP_GPU_TEXT_ENGINE_DEVICE_POINTER"
             },
-            "ATLAS_TEXTURE_SIZE": {
+            "ATLAS_TEXTURE_SIZE_NUMBER": {
               "doc": "",
-              "name": "ATLAS_TEXTURE_SIZE",
+              "name": "ATLAS_TEXTURE_SIZE_NUMBER",
               "kind": "var",
               "value": "\"SDL_ttf.gpu_text_engine.create.atlas_texture_size\"",
               "type": "auto",
               "constexpr": true,
-              "sourceName": "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE"
+              "sourceName": "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER"
             }
           },
           "doc": ""
