@@ -869,7 +869,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
       </table>
 </div><div class="memdoc">
 <p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL context, to let the app add extra attributes to its eglGetPlatformDisplay() call.</p>
-<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a4e6d84565f26e9d550ef400f9cbe5825" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
 <p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
 <p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -896,7 +896,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
       </table>
 </div><div class="memdoc">
 <p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL context, to let the app add extra attributes to its eglGetPlatformDisplay() call.</p>
-<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a4e6d84565f26e9d550ef400f9cbe5825" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
 <p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
 <p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>a newly-allocated array of attributes, terminated with <code>EGL_NONE</code>.</dd></dl>
@@ -965,7 +965,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 </div><div class="memdoc">
 <p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL surface, to let the app add extra attributes to its eglCreateWindowSurface() or eglCreateContext calls.</p>
 <p>For convenience, the EGLDisplay and EGLConfig to use are provided to the callback.</p>
-<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a4e6d84565f26e9d550ef400f9cbe5825" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
 <p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
 <p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -995,7 +995,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 </div><div class="memdoc">
 <p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL surface, to let the app add extra attributes to its eglCreateWindowSurface() or eglCreateContext calls.</p>
 <p>For convenience, the EGLDisplay and EGLConfig to use are provided to the callback.</p>
-<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns nullptr, the <a class="el" href="structSDL_1_1WindowBase.html#a4e6d84565f26e9d550ef400f9cbe5825" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> process will fail gracefully.</p>
 <p>The returned pointer should be allocated with <a class="el" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70" title="Allocate uninitialized memory.">malloc()</a> and will be passed to <a class="el" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6" title="Free allocated memory.">free()</a>.</p>
 <p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1233,7 +1233,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
         </tr>
       </table>
 </div><div class="memdoc">
-<p>These cover a lot of true/false, or on/off, window state. Some of it is immutable after being set through <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase()</a>, some of it can be changed on existing windows by the app, and some of it might be altered by the user or system outside of the app's control.</p>
+<p>These cover a lot of true/false, or on/off, window state. Some of it is immutable after being set through <a class="el" href="structSDL_1_1WindowBase.html#a4e6d84565f26e9d550ef400f9cbe5825" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase()</a>, some of it can be changed on existing windows by the app, and some of it might be altered by the user or system outside of the app's control.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#aad32204219fdb86377f048275117ac2a" title="Get the window flags.">WindowBase.GetFlags</a> </dd></dl>
 
@@ -1697,7 +1697,7 @@ constexpr <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fe
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a4e6d84565f26e9d550ef400f9cbe5825" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> </dd></dl>
 
 </div>
 </div>

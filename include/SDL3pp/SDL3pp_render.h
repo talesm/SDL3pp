@@ -602,7 +602,8 @@ struct RendererBase : Resource<SDL_Renderer*>
    * @sa RendererBase.GetLogicalPresentation
    * @sa RendererBase.GetLogicalPresentationRect
    */
-  void SetLogicalPresentation(SDL_Point size, RendererLogicalPresentation mode)
+  void SetLogicalPresentation(const SDL_Point& size,
+                              RendererLogicalPresentation mode)
   {
     CheckError(SDL_SetRenderLogicalPresentation(get(), size.x, size.y, mode));
   }
@@ -998,7 +999,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.GetScale
    */
-  void SetScale(SDL_FPoint scale)
+  void SetScale(const SDL_FPoint& scale)
   {
     CheckError(SDL_SetRenderScale(get(), scale.x, scale.y));
   }
@@ -1304,7 +1305,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderPoints
    */
-  void RenderPoint(SDL_FPoint p)
+  void RenderPoint(const SDL_FPoint& p)
   {
     CheckError(SDL_RenderPoint(get(), p.x, p.y));
   }
@@ -1340,7 +1341,7 @@ struct RendererBase : Resource<SDL_Renderer*>
    *
    * @sa RendererBase.RenderLines
    */
-  void RenderLine(SDL_FPoint p1, SDL_FPoint p2)
+  void RenderLine(const SDL_FPoint& p1, const SDL_FPoint& p2)
   {
     CheckError(SDL_RenderLine(get(), p1.x, p1.y, p2.x, p2.y));
   }
@@ -3109,7 +3110,7 @@ inline const char* GetRenderDriver(int index)
  */
 inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   StringParam title,
-  SDL_Point size,
+  const SDL_Point& size,
   WindowFlags window_flags = 0)
 {
   SDL_Window* window;

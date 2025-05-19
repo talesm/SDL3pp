@@ -4341,16 +4341,16 @@ const transform = {
               name: "GetTarget"
             },
             "SDL_SetRenderLogicalPresentation": {
-              "name": "SetLogicalPresentation",
-              "static": false,
-              "parameters": [
+              name: "SetLogicalPresentation",
+              static: false,
+              parameters: [
                 {
-                  "type": "SDL_Point",
-                  "name": "size"
+                  type: "const SDL_Point &",
+                  name: "size"
                 },
                 {
-                  "name": "mode",
-                  "type": "RendererLogicalPresentation"
+                  name: "mode",
+                  type: "RendererLogicalPresentation"
                 }
               ]
             },
@@ -4458,12 +4458,12 @@ const transform = {
               "name": "IsClipEnabled"
             },
             "SDL_SetRenderScale": {
-              "name": "SetScale",
-              "static": false,
-              "parameters": [
+              name: "SetScale",
+              static: false,
+              parameters: [
                 {
-                  "type": "SDL_FPoint",
-                  "name": "scale"
+                  type: "const SDL_FPoint &",
+                  name: "scale"
                 }
               ]
             },
@@ -4558,7 +4558,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_FPoint",
+                  "type": "const SDL_FPoint &",
                   "name": "p"
                 }
               ]
@@ -4576,11 +4576,11 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_FPoint",
+                  "type": "const SDL_FPoint &",
                   "name": "p1"
                 },
                 {
-                  "type": "SDL_FPoint",
+                  "type": "const SDL_FPoint &",
                   "name": "p2"
                 }
               ]
@@ -5160,7 +5160,7 @@ const transform = {
           parameters: [
             {},
             {
-              type: "SDL_Point",
+              type: "const SDL_Point &",
               name: "size"
             },
             {
@@ -7460,7 +7460,7 @@ const transform = {
                 },
                 {
                   name: "size",
-                  type: "SDL_Point"
+                  type: "const SDL_Point &"
                 },
                 {
                   name: "flags",
@@ -7480,11 +7480,11 @@ const transform = {
                 },
                 {
                   name: "offset",
-                  type: "SDL_Point"
+                  type: "const SDL_Point &"
                 },
                 {
                   name: "size",
-                  type: "SDL_Point"
+                  type: "const SDL_Point &"
                 },
                 {
                   name: "flags",
@@ -7544,7 +7544,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_Point",
+                  "type": "const SDL_Point &",
                   "name": "p"
                 }
               ]
@@ -7560,7 +7560,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_Point",
+                  "type": "const SDL_Point &",
                   "name": "p"
                 }
               ]
@@ -7592,7 +7592,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_Point",
+                  "type": "const SDL_Point &",
                   "name": "p"
                 }
               ]
@@ -7602,7 +7602,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_Point",
+                  "type": "const SDL_Point &",
                   "name": "p"
                 }
               ]
@@ -7665,7 +7665,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "SDL_Point",
+                  "type": "const SDL_Point &",
                   "name": "p"
                 }
               ]

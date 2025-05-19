@@ -133,7 +133,7 @@ var searchData=
   ['createrenderertextenginewithproperties_130',['CreateRendererTextEngineWithProperties',['../group__CategorySDLTTF.html#ga98ed95e1ff704a2d2e9068af7bb3f1ce',1,'SDL']]],
   ['createsubmenu_131',['CreateSubmenu',['../structSDL_1_1TrayEntryBase.html#a400adbdd241d006b02bd508b4a171d91',1,'SDL::TrayEntryBase']]],
   ['createsurfacetextengine_132',['CreateSurfaceTextEngine',['../group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896',1,'SDL']]],
-  ['createwindowandrenderer_133',['CreateWindowAndRenderer',['../group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d',1,'SDL']]],
+  ['createwindowandrenderer_133',['CreateWindowAndRenderer',['../group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4',1,'SDL']]],
   ['creation_20and_20simple_20drawing_134',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
   ['current_135',['Current',['../group__CategoryTime.html#ga185f1c1c0b9c344738ba7a3f0ec57f15',1,'SDL::Time']]],
   ['cursor_136',['cursor',['../structSDL_1_1Cursor.html#a1b18bf86942b1c698f06c165a6ede9c7',1,'SDL::Cursor::Cursor()'],['../structSDL_1_1Cursor.html',1,'SDL::Cursor'],['../structSDL_1_1Cursor.html#a1e13082d1cbf3ce1754be95e87b16157',1,'SDL::Cursor::Cursor()']]],

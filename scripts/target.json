@@ -5654,7 +5654,7 @@
                   },
                   {
                     "name": "size",
-                    "type": "SDL_Point"
+                    "type": "const SDL_Point &"
                   },
                   {
                     "name": "flags",
@@ -5677,11 +5677,11 @@
                   },
                   {
                     "name": "offset",
-                    "type": "SDL_Point"
+                    "type": "const SDL_Point &"
                   },
                   {
                     "name": "size",
-                    "type": "SDL_Point"
+                    "type": "const SDL_Point &"
                   },
                   {
                     "name": "flags",
@@ -5901,7 +5901,7 @@
               "parameters": [
                 {
                   "name": "p",
-                  "type": "SDL_Point"
+                  "type": "const SDL_Point &"
                 }
               ],
               "sourceName": "SDL_SetWindowPosition",
@@ -5949,7 +5949,7 @@
               "parameters": [
                 {
                   "name": "p",
-                  "type": "SDL_Point"
+                  "type": "const SDL_Point &"
                 }
               ],
               "sourceName": "SDL_SetWindowSize",
@@ -6110,7 +6110,7 @@
               "parameters": [
                 {
                   "name": "p",
-                  "type": "SDL_Point"
+                  "type": "const SDL_Point &"
                 }
               ],
               "sourceName": "SDL_SetWindowMinimumSize",
@@ -6148,7 +6148,7 @@
               "parameters": [
                 {
                   "name": "p",
-                  "type": "SDL_Point"
+                  "type": "const SDL_Point &"
                 }
               ],
               "sourceName": "SDL_SetWindowMaximumSize",
@@ -6558,7 +6558,7 @@
               "parameters": [
                 {
                   "name": "p",
-                  "type": "SDL_Point"
+                  "type": "const SDL_Point &"
                 }
               ],
               "sourceName": "SDL_ShowWindowSystemMenu",
@@ -9108,7 +9108,7 @@
               "parameters": [
                 {
                   "name": "size",
-                  "type": "SDL_Point"
+                  "type": "const SDL_Point &"
                 },
                 {
                   "name": "mode",
@@ -9339,7 +9339,7 @@
               "parameters": [
                 {
                   "name": "scale",
-                  "type": "SDL_FPoint"
+                  "type": "const SDL_FPoint &"
                 }
               ],
               "sourceName": "SDL_SetRenderScale",
@@ -9584,7 +9584,7 @@
               "parameters": [
                 {
                   "name": "p",
-                  "type": "SDL_FPoint"
+                  "type": "const SDL_FPoint &"
                 }
               ],
               "sourceName": "SDL_RenderPoint",
@@ -9618,11 +9618,11 @@
               "parameters": [
                 {
                   "name": "p1",
-                  "type": "SDL_FPoint"
+                  "type": "const SDL_FPoint &"
                 },
                 {
                   "name": "p2",
-                  "type": "SDL_FPoint"
+                  "type": "const SDL_FPoint &"
                 }
               ],
               "sourceName": "SDL_RenderLine",
@@ -11195,7 +11195,7 @@
             },
             {
               "name": "size",
-              "type": "SDL_Point"
+              "type": "const SDL_Point &"
             },
             {
               "name": "window_flags",

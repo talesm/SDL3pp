@@ -147,9 +147,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaec060bae8c84c9565bf316e335b36c5a" id="r_gaec060bae8c84c9565bf316e335b36c5a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a">SDL::GetRenderDriver</a> (int index)</td></tr>
 <tr class="memdesc:gaec060bae8c84c9565bf316e335b36c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to get the name of a built in 2D rendering driver.  <br /></td></tr>
 <tr class="separator:gaec060bae8c84c9565bf316e335b36c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga46a4e94c9436427b1e58a045f9ac177d" id="r_ga46a4e94c9436427b1e58a045f9ac177d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="structSDL_1_1Window.html">Window</a>, <a class="el" href="structSDL_1_1Renderer.html">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> window_flags=0)</td></tr>
-<tr class="memdesc:ga46a4e94c9436427b1e58a045f9ac177d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window and default renderer.  <br /></td></tr>
-<tr class="separator:ga46a4e94c9436427b1e58a045f9ac177d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f561280a8311744b01c0615614072e4" id="r_ga6f561280a8311744b01c0615614072e4"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="structSDL_1_1Window.html">Window</a>, <a class="el" href="structSDL_1_1Renderer.html">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4">SDL::CreateWindowAndRenderer</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> title, const SDL_Point &amp;size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> window_flags=0)</td></tr>
+<tr class="memdesc:ga6f561280a8311744b01c0615614072e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window and default renderer.  <br /></td></tr>
+<tr class="separator:ga6f561280a8311744b01c0615614072e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga62bc5a223508e704621041de4092d770" id="r_ga62bc5a223508e704621041de4092d770"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga62bc5a223508e704621041de4092d770">SDL::GetRenderMetalLayer</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer)</td></tr>
 <tr class="memdesc:ga62bc5a223508e704621041de4092d770"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the CAMetalLayer associated with the given Metal renderer.  <br /></td></tr>
 <tr class="separator:ga62bc5a223508e704621041de4092d770"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -404,8 +404,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ga46a4e94c9436427b1e58a045f9ac177d" name="ga46a4e94c9436427b1e58a045f9ac177d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga46a4e94c9436427b1e58a045f9ac177d">&#9670;&#160;</a></span>CreateWindowAndRenderer()</h2>
+<a id="ga6f561280a8311744b01c0615614072e4" name="ga6f561280a8311744b01c0615614072e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f561280a8311744b01c0615614072e4">&#9670;&#160;</a></span>CreateWindowAndRenderer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -422,7 +422,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">SDL_Point&#160;</td>
+          <td class="paramtype">const SDL_Point &amp;&#160;</td>
           <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
@@ -447,7 +447,7 @@ Variables</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">title</td><td>the title of the window, in UTF-8 encoding. </td></tr>
     <tr><td class="paramname">size</td><td>the width and height of the window. </td></tr>
-    <tr><td class="paramname">window_flags</td><td>the flags used to create the window (see <a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase()</a>). </td></tr>
+    <tr><td class="paramname">window_flags</td><td>the flags used to create the window (see <a class="el" href="structSDL_1_1WindowBase.html#a4e6d84565f26e9d550ef400f9cbe5825" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase()</a>). </td></tr>
   </table>
   </dd>
 </dl>
@@ -462,7 +462,7 @@ Variables</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a71dcf1733934a35d778e9cae26778b65" title="Create a 2D rendering context for a window.">RendererBase.RendererBase</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1WindowBase.html#a8cbe9f53ee4f1e8cf54e8161f56d78cc" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a4e6d84565f26e9d550ef400f9cbe5825" title="Create a window with the specified dimensions and flags.">WindowBase.WindowBase</a> </dd></dl>
 
 </div>
 </div>

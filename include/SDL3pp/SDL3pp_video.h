@@ -923,7 +923,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa CreateWindowAndRenderer()
    */
-  WindowBase(StringParam title, SDL_Point size, WindowFlags flags = 0)
+  WindowBase(StringParam title, const SDL_Point& size, WindowFlags flags = 0)
     : Resource(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)))
   {
   }
@@ -987,8 +987,8 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetParent
    */
   WindowBase(WindowBase& parent,
-             SDL_Point offset,
-             SDL_Point size,
+             const SDL_Point& offset,
+             const SDL_Point& size,
              WindowFlags flags = 0)
     : Resource(CheckError(SDL_CreatePopupWindow(parent.get(),
                                                 offset.x,
@@ -1566,7 +1566,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetPosition
    * @sa WindowBase.Sync
    */
-  void SetPosition(SDL_Point p)
+  void SetPosition(const SDL_Point& p)
   {
     CheckError(SDL_SetWindowPosition(get(), p.x, p.y));
   }
@@ -1652,7 +1652,10 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.SetFullscreenMode
    * @sa WindowBase.Sync
    */
-  void SetSize(SDL_Point p) { CheckError(SDL_SetWindowSize(get(), p.x, p.y)); }
+  void SetSize(const SDL_Point& p)
+  {
+    CheckError(SDL_SetWindowSize(get(), p.x, p.y));
+  }
 
   /**
    * Get the size of a window's client area.
@@ -1881,7 +1884,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetMinimumSize
    * @sa WindowBase.SetMaximumSize
    */
-  void SetMinimumSize(SDL_Point p)
+  void SetMinimumSize(const SDL_Point& p)
   {
     CheckError(SDL_SetWindowMinimumSize(get(), p.x, p.y));
   }
@@ -1920,7 +1923,7 @@ struct WindowBase : Resource<SDL_Window*>
    * @sa WindowBase.GetMaximumSize
    * @sa WindowBase.SetMinimumSize
    */
-  void SetMaximumSize(SDL_Point p)
+  void SetMaximumSize(const SDL_Point& p)
   {
     CheckError(SDL_SetWindowMaximumSize(get(), p.x, p.y));
   }
@@ -2604,7 +2607,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ShowSystemMenu(SDL_Point p)
+  void ShowSystemMenu(const SDL_Point& p)
   {
     CheckError(SDL_ShowWindowSystemMenu(get(), p.x, p.y));
   }
