@@ -22,14 +22,14 @@ namespace SDL {
  * For certain games, it's useful to disassociate the mouse cursor from mouse
  * input. An FPS, for example, would not want the player's motion to stop as
  * the mouse hits the edge of the window. For these scenarios, use
- * WindowBase.SetRelativeMouseMode(), which hides the cursor, grabs mouse input
+ * WindowRef.SetRelativeMouseMode(), which hides the cursor, grabs mouse input
  * to the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
  * cursor can use HideCursor() and ShowCursor(). It might be more
  * efficient to let the system manage the cursor, if possible, using
- * SetCursor() with a custom image made through CursorBase.CursorBase(),
- * or perhaps just a specific system cursor from CursorBase.CursorBase().
+ * SetCursor() with a custom image made through CursorRef.CursorRef(),
+ * or perhaps just a specific system cursor from CursorRef.CursorRef().
  *
  * SDL can, on many platforms, differentiate between multiple connected mice,
  * allowing for interesting input scenarios and multiplayer games. They can be
@@ -46,16 +46,13 @@ namespace SDL {
  */
 
 // Forward decl
-struct CursorBase;
-
-// Forward decl
 struct CursorRef;
 
 // Forward decl
 struct Cursor;
 
 /**
- * Cursor types for CursorBase.CursorBase().
+ * Cursor types for CursorRef.CursorRef().
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -164,11 +161,26 @@ using MouseID = SDL_MouseID;
  * @cat resource
  *
  * @sa Cursor
- * @sa CursorRef
  */
-struct CursorBase : Resource<SDL_Cursor*>
+struct CursorRef : Resource<SDL_Cursor*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr CursorRef(const CursorRef& other)
+    : CursorRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr CursorRef(CursorRef&& other)
+    : CursorRef(other.release())
+  {
+  }
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -184,14 +196,12 @@ struct CursorBase : Resource<SDL_Cursor*>
    * - data=0, mask=0: transparent
    * - data=1, mask=0: inverted color if possible, black if not.
    *
-   * Cursors created with this function must be freed with CursorRef.reset().
-   *
    * If you want to have a color cursor, or create your cursor from an
-   * SurfaceBase, you should use CursorBase.CursorBase(). Alternately, you can
+   * SurfaceRef, you should use CursorRef.CursorRef(). Alternately, you can
    * hide the cursor and draw your own as part of your game's rendering, but it
    * will be bound to the framerate.
    *
-   * Also, CursorBase.CursorBase() is available, which provides several
+   * Also, CursorRef.CursorRef() is available, which provides several
    * readily-available system cursors to pick from.
    *
    * @param data the color value for each pixel of the cursor.
@@ -209,17 +219,16 @@ struct CursorBase : Resource<SDL_Cursor*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorBase.CursorBase
-   * @sa CursorBase.CursorBase
-   * @sa CursorRef.reset
+   * @sa CursorRef.CursorRef
+   * @sa CursorRef.Destroy
    * @sa SetCursor
    */
-  CursorBase(const Uint8* data,
-             const Uint8* mask,
-             int w,
-             int h,
-             int hot_x,
-             int hot_y)
+  CursorRef(const Uint8* data,
+            const Uint8* mask,
+            int w,
+            int h,
+            int hot_x,
+            int hot_y)
     : Resource(CheckError(SDL_CreateCursor(data, mask, w, h, hot_x, hot_y)))
   {
   }
@@ -237,7 +246,7 @@ struct CursorBase : Resource<SDL_Cursor*>
    * appropriate size and be used instead, if available. Otherwise, the closest
    * smaller image will be upscaled and be used instead.
    *
-   * @param surface an SurfaceBase structure representing the cursor image.
+   * @param surface an SurfaceRef structure representing the cursor image.
    * @param hot_x the x position of the cursor hot spot.
    * @param hot_y the y position of the cursor hot spot.
    * @post the new cursor on success.
@@ -247,12 +256,11 @@ struct CursorBase : Resource<SDL_Cursor*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorBase.CursorBase
-   * @sa CursorBase.CursorBase
-   * @sa CursorRef.reset
+   * @sa CursorRef.CursorRef
+   * @sa CursorRef.Destroy
    * @sa SetCursor
    */
-  CursorBase(SurfaceBase& surface, int hot_x, int hot_y)
+  CursorRef(SurfaceRef& surface, int hot_x, int hot_y)
     : Resource(CheckError(SDL_CreateColorCursor(surface.get(), hot_x, hot_y)))
   {
   }
@@ -268,46 +276,12 @@ struct CursorBase : Resource<SDL_Cursor*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.reset
+   * @sa CursorRef.Destroy
    */
-  CursorBase(SystemCursor id)
+  CursorRef(SystemCursor id)
     : Resource(CheckError(SDL_CreateSystemCursor(id)))
   {
   }
-};
-
-/**
- * Handle to a non owned cursor
- *
- * @cat resource
- *
- * @sa CursorBase
- * @sa Cursor
- */
-struct CursorRef : CursorBase
-{
-  using CursorBase::CursorBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr CursorRef(const CursorRef& other)
-    : CursorBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr CursorRef(CursorRef&& other)
-    : CursorBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~CursorRef() = default;
 
   /**
    * Assignment operator.
@@ -322,14 +296,29 @@ struct CursorRef : CursorBase
    * Free a previously-created cursor.
    *
    * Use this function to free cursor resources created with
-   * CursorBase.CursorBase(), CursorBase.CursorBase() or
-   * CursorBase.CursorBase().
+   * CursorRef.CursorRef(), CursorRef.CursorRef() or
+   * CursorRef.CursorRef().
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorBase.CursorBase
+   * @sa CursorRef.CursorRef
+   */
+  void Destroy() { reset(); }
+
+  /**
+   * Free a previously-created cursor.
+   *
+   * Use this function to free cursor resources created with
+   * CursorRef.CursorRef(), CursorRef.CursorRef() or
+   * CursorRef.CursorRef().
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CursorRef.CursorRef
    */
   void reset(SDL_Cursor* newResource = {})
   {
@@ -342,7 +331,6 @@ struct CursorRef : CursorBase
  *
  * @cat resource
  *
- * @sa CursorBase
  * @sa CursorRef
  */
 struct Cursor : CursorRef
@@ -535,7 +523,7 @@ inline WindowRef GetMouseFocus() { return SDL_GetMouseFocus(); }
  *
  * In Relative Mode, the SDL-cursor's position usually contradicts the
  * platform-cursor's position as manually calculated from
- * GetGlobalMouseState() and WindowBase.GetPosition.
+ * GetGlobalMouseState() and WindowRef.GetPosition.
  *
  * @param x a pointer to receive the SDL-cursor's x-position from the focused
  *          window's top left corner, can be nullptr if unused.
@@ -569,7 +557,7 @@ inline MouseButtonFlags GetMouseState(float* x, float* y)
  *
  * In Relative Mode, the platform-cursor's position usually contradicts the
  * SDL-cursor's position as manually calculated from GetMouseState() and
- * WindowBase.GetPosition.
+ * WindowRef.GetPosition.
  *
  * This function can be useful if you need to track the mouse outside of a
  * specific window and CaptureMouse() doesn't fit your needs. For example,
@@ -654,7 +642,7 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
  *
  * @sa WarpMouse
  */
-inline void WindowBase::WarpMouse(float x, float y)
+inline void WindowRef::WarpMouse(float x, float y)
 {
   SDL_WarpMouseInWindow(get(), x, y);
 }
@@ -678,7 +666,7 @@ inline void WindowBase::WarpMouse(float x, float y)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.WarpMouse
+ * @sa WindowRef.WarpMouse
  */
 inline void WarpMouse(float x, float y)
 {
@@ -694,9 +682,9 @@ inline void WarpMouse(float x, float y)
  * the window.
  *
  * If you'd like to keep the mouse position fixed while in relative mode you
- * can use WindowBase.SetMouseRect(). If you'd like the cursor to be at a
+ * can use WindowRef.SetMouseRect(). If you'd like the cursor to be at a
  * specific location when relative mode ends, you should use
- * WindowBase.WarpMouse() before disabling relative mode.
+ * WindowRef.WarpMouse() before disabling relative mode.
  *
  * This function will flush any pending mouse motion for this window.
  *
@@ -707,9 +695,9 @@ inline void WarpMouse(float x, float y)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.GetRelativeMouseMode
+ * @sa WindowRef.GetRelativeMouseMode
  */
-inline void WindowBase::SetRelativeMouseMode(bool enabled)
+inline void WindowRef::SetRelativeMouseMode(bool enabled)
 {
   CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
 }
@@ -723,9 +711,9 @@ inline void WindowBase::SetRelativeMouseMode(bool enabled)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.SetRelativeMouseMode
+ * @sa WindowRef.SetRelativeMouseMode
  */
-inline bool WindowBase::GetRelativeMouseMode() const
+inline bool WindowRef::GetRelativeMouseMode() const
 {
   return SDL_GetWindowRelativeMouseMode(get());
 }
@@ -745,7 +733,7 @@ inline bool WindowBase::GetRelativeMouseMode() const
  * mouse while the user is dragging something, until the user releases a mouse
  * button. It is not recommended that you capture the mouse for long periods
  * of time, such as the entire time your app is running. For that, you should
- * probably use WindowBase.SetRelativeMouseMode() or WindowBase.SetMouseGrab(),
+ * probably use WindowRef.SetRelativeMouseMode() or WindowRef.SetMouseGrab(),
  * depending on your goals.
  *
  * While captured, mouse events still report coordinates relative to the
@@ -797,7 +785,7 @@ inline void CaptureMouse(bool enabled)
  *
  * @sa GetCursor
  */
-inline void SetCursor(CursorBase& cursor)
+inline void SetCursor(CursorRef& cursor)
 {
   CheckError(SDL_SetCursor(cursor.get()));
 }

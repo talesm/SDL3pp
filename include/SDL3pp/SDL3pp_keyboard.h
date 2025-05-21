@@ -351,7 +351,7 @@ inline const char* Keycode::GetName() const
  *
  * This function will enable text input (EVENT_TEXT_INPUT and
  * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowBase.StopTextInput().
+ * function paired with WindowRef.StopTextInput().
  *
  * Text input events are not received by default.
  *
@@ -365,12 +365,12 @@ inline const char* Keycode::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.SetTextInputArea
- * @sa WindowBase.StartTextInput
- * @sa WindowBase.StopTextInput
- * @sa WindowBase.IsTextInputActive
+ * @sa WindowRef.SetTextInputArea
+ * @sa WindowRef.StartTextInput
+ * @sa WindowRef.StopTextInput
+ * @sa WindowRef.IsTextInputActive
  */
-inline void WindowBase::StartTextInput()
+inline void WindowRef::StartTextInput()
 {
   return CheckError(SDL_StartTextInput(get()));
 }
@@ -381,7 +381,7 @@ inline void WindowBase::StartTextInput()
  *
  * This function will enable text input (EVENT_TEXT_INPUT and
  * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowBase.StopTextInput().
+ * function paired with WindowRef.StopTextInput().
  *
  * Text input events are not received by default.
  *
@@ -418,12 +418,12 @@ inline void WindowBase::StartTextInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.SetTextInputArea
- * @sa WindowBase.StartTextInput
- * @sa WindowBase.StopTextInput
- * @sa WindowBase.IsTextInputActive
+ * @sa WindowRef.SetTextInputArea
+ * @sa WindowRef.StartTextInput
+ * @sa WindowRef.StopTextInput
+ * @sa WindowRef.IsTextInputActive
  */
-inline void WindowBase::StartTextInput(PropertiesBase& props)
+inline void WindowRef::StartTextInput(PropertiesRef& props)
 {
   CheckError(SDL_StartTextInputWithProperties(get(), props.get()));
 }
@@ -437,7 +437,7 @@ inline void WindowBase::StartTextInput(PropertiesBase& props)
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa WindowBase.StartTextInput
+ * @sa WindowRef.StartTextInput
  */
 using TextInputType = SDL_TextInputType;
 
@@ -481,7 +481,7 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa WindowBase.StartTextInput
+ * @sa WindowRef.StartTextInput
  */
 using Capitalization = SDL_Capitalization;
 
@@ -522,9 +522,9 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.StartTextInput
+ * @sa WindowRef.StartTextInput
  */
-inline bool WindowBase::IsTextInputActive() const
+inline bool WindowRef::IsTextInputActive() const
 {
   return SDL_TextInputActive(get());
 }
@@ -532,7 +532,7 @@ inline bool WindowBase::IsTextInputActive() const
 /**
  * Stop receiving any text input events in a window.
  *
- * If WindowBase.StartTextInput() showed the screen keyboard, this function will
+ * If WindowRef.StartTextInput() showed the screen keyboard, this function will
  * hide it.
  *
  * @throws Error on failure.
@@ -541,12 +541,9 @@ inline bool WindowBase::IsTextInputActive() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.StartTextInput
+ * @sa WindowRef.StartTextInput
  */
-inline void WindowBase::StopTextInput()
-{
-  CheckError(SDL_StopTextInput(get()));
-}
+inline void WindowRef::StopTextInput() { CheckError(SDL_StopTextInput(get())); }
 
 /**
  * Dismiss the composition window/IME without disabling the subsystem.
@@ -557,10 +554,10 @@ inline void WindowBase::StopTextInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.StartTextInput
- * @sa WindowBase.StopTextInput
+ * @sa WindowRef.StartTextInput
+ * @sa WindowRef.StopTextInput
  */
-inline void WindowBase::ClearComposition()
+inline void WindowRef::ClearComposition()
 {
   CheckError(SDL_ClearComposition(get()));
 }
@@ -581,10 +578,10 @@ inline void WindowBase::ClearComposition()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.GetTextInputArea
- * @sa WindowBase.StartTextInput
+ * @sa WindowRef.GetTextInputArea
+ * @sa WindowRef.StartTextInput
  */
-inline void WindowBase::SetTextInputArea(const SDL_Rect& rect, int cursor)
+inline void WindowRef::SetTextInputArea(const SDL_Rect& rect, int cursor)
 {
   CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
 }
@@ -592,7 +589,7 @@ inline void WindowBase::SetTextInputArea(const SDL_Rect& rect, int cursor)
 /**
  * Get the area used to type Unicode text input.
  *
- * This returns the values previously set by WindowBase.SetTextInputArea().
+ * This returns the values previously set by WindowRef.SetTextInputArea().
  *
  * @param rect a pointer to an Rect filled in with the text input area,
  *             may be nullptr.
@@ -604,9 +601,9 @@ inline void WindowBase::SetTextInputArea(const SDL_Rect& rect, int cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.SetTextInputArea
+ * @sa WindowRef.SetTextInputArea
  */
-inline void WindowBase::GetTextInputArea(Rect* rect, int* cursor)
+inline void WindowRef::GetTextInputArea(Rect* rect, int* cursor)
 {
   CheckError(SDL_GetTextInputArea(get(), rect, cursor));
 }
@@ -621,8 +618,8 @@ inline void WindowBase::GetTextInputArea(Rect* rect, int* cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.StartTextInput
- * @sa WindowBase.IsScreenKeyboardShown
+ * @sa WindowRef.StartTextInput
+ * @sa WindowRef.IsScreenKeyboardShown
  */
 inline bool HasScreenKeyboardSupport()
 {
@@ -640,7 +637,7 @@ inline bool HasScreenKeyboardSupport()
  *
  * @sa HasScreenKeyboardSupport
  */
-inline bool WindowBase::IsScreenKeyboardShown() const
+inline bool WindowRef::IsScreenKeyboardShown() const
 {
   return SDL_ScreenKeyboardShown(get());
 }

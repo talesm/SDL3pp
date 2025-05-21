@@ -81,17 +81,15 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Handle to a non owned trayEntry.  
+<p>An opaque handle representing an entry on a system tray object.  
  <a href="structSDL_1_1TrayEntryRef.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for SDL::TrayEntryRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1TrayEntryRef__inherit__graph.png" border="0" usemap="#aSDL_1_1TrayEntryRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TrayEntryRef_inherit__map" id="aSDL_1_1TrayEntryRef_inherit__map">
-<area shape="rect" title="Handle to a non owned trayEntry." alt="" coords="13,167,152,192"/>
-<area shape="rect" href="structSDL_1_1TrayEntry.html" title="Handle to an owned trayEntry." alt="" coords="25,240,141,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
-<area shape="rect" href="structSDL_1_1TrayEntryBase.html" title="An opaque handle representing an entry on a system tray object." alt="" coords="9,93,157,119"/>
+<area shape="rect" title="An opaque handle representing an entry on a system tray object." alt="" coords="13,93,152,119"/>
+<area shape="rect" href="structSDL_1_1TrayEntry.html" title="Handle to an owned trayEntry." alt="" coords="25,167,141,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
@@ -108,75 +106,70 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TrayEntryRef</b>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TrayEntryRef</b> (<a class="el" href="structSDL_1_1TrayEntryRef.html">TrayEntryRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a329d27f5648c02f01261e2fd18f3d753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a329d27f5648c02f01261e2fd18f3d753"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac604b2d570c7f3de35691a2de8d4e95d" id="r_ac604b2d570c7f3de35691a2de8d4e95d"><td class="memItemLeft" align="right" valign="top"><a id="ac604b2d570c7f3de35691a2de8d4e95d" name="ac604b2d570c7f3de35691a2de8d4e95d"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~TrayEntryRef</b> ()=default</td></tr>
-<tr class="memdesc:ac604b2d570c7f3de35691a2de8d4e95d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:ac604b2d570c7f3de35691a2de8d4e95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55e82484ef2308ffe2c856a3785b4e45" id="r_a55e82484ef2308ffe2c856a3785b4e45"><td class="memItemLeft" align="right" valign="top"><a id="a55e82484ef2308ffe2c856a3785b4e45" name="a55e82484ef2308ffe2c856a3785b4e45"></a>
 <a class="el" href="structSDL_1_1TrayEntryRef.html">TrayEntryRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TrayEntryRef.html">TrayEntryRef</a> other)</td></tr>
 <tr class="memdesc:a55e82484ef2308ffe2c856a3785b4e45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a55e82484ef2308ffe2c856a3785b4e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a964f969515a5fad8715269f8cbdb40" id="r_a4a964f969515a5fad8715269f8cbdb40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#a4a964f969515a5fad8715269f8cbdb40">reset</a> (SDL_TrayEntry *newResource={})</td></tr>
-<tr class="memdesc:a4a964f969515a5fad8715269f8cbdb40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a tray entry.  <br /></td></tr>
-<tr class="separator:a4a964f969515a5fad8715269f8cbdb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70347df702a5623672ef51a84b8be674" id="r_a70347df702a5623672ef51a84b8be674"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#a70347df702a5623672ef51a84b8be674">CreateSubmenu</a> ()</td></tr>
+<tr class="memdesc:a70347df702a5623672ef51a84b8be674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a submenu for a system tray entry.  <br /></td></tr>
+<tr class="separator:a70347df702a5623672ef51a84b8be674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2049ebf006ba66234efc006a4203b1f0" id="r_a2049ebf006ba66234efc006a4203b1f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#a2049ebf006ba66234efc006a4203b1f0">GetSubmenu</a> ()</td></tr>
+<tr class="memdesc:a2049ebf006ba66234efc006a4203b1f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a previously created tray entry submenu.  <br /></td></tr>
+<tr class="separator:a2049ebf006ba66234efc006a4203b1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a955d0a1bc0731de3cc777d4f09caaf74" id="r_a955d0a1bc0731de3cc777d4f09caaf74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#a955d0a1bc0731de3cc777d4f09caaf74">SetLabel</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> label)</td></tr>
+<tr class="memdesc:a955d0a1bc0731de3cc777d4f09caaf74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the label of an entry.  <br /></td></tr>
+<tr class="separator:a955d0a1bc0731de3cc777d4f09caaf74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad09687f79e3b39c719f243bb85272d8b" id="r_ad09687f79e3b39c719f243bb85272d8b"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#ad09687f79e3b39c719f243bb85272d8b">GetLabel</a> () const</td></tr>
+<tr class="memdesc:ad09687f79e3b39c719f243bb85272d8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the label of an entry.  <br /></td></tr>
+<tr class="separator:ad09687f79e3b39c719f243bb85272d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f45bb25cdfe661681254535bcf09d3e" id="r_a2f45bb25cdfe661681254535bcf09d3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#a2f45bb25cdfe661681254535bcf09d3e">SetChecked</a> (bool checked)</td></tr>
+<tr class="memdesc:a2f45bb25cdfe661681254535bcf09d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether or not an entry is checked.  <br /></td></tr>
+<tr class="separator:a2f45bb25cdfe661681254535bcf09d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec66300fd43562ffefaf73a0b9b6bc97" id="r_aec66300fd43562ffefaf73a0b9b6bc97"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#aec66300fd43562ffefaf73a0b9b6bc97">GetChecked</a> () const</td></tr>
+<tr class="memdesc:aec66300fd43562ffefaf73a0b9b6bc97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether or not an entry is checked.  <br /></td></tr>
+<tr class="separator:aec66300fd43562ffefaf73a0b9b6bc97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ce1ac679509095fbba3673a37c7ce1" id="r_ad8ce1ac679509095fbba3673a37c7ce1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#ad8ce1ac679509095fbba3673a37c7ce1">SetEnabled</a> (bool enabled)</td></tr>
+<tr class="memdesc:ad8ce1ac679509095fbba3673a37c7ce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether or not an entry is enabled.  <br /></td></tr>
+<tr class="separator:ad8ce1ac679509095fbba3673a37c7ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf148a27b3094ef005f9ed74e1a41064" id="r_adf148a27b3094ef005f9ed74e1a41064"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#adf148a27b3094ef005f9ed74e1a41064">GetEnabled</a> () const</td></tr>
+<tr class="memdesc:adf148a27b3094ef005f9ed74e1a41064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether or not an entry is enabled.  <br /></td></tr>
+<tr class="separator:adf148a27b3094ef005f9ed74e1a41064"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bc14138b4608e32cd14d744054f96a8" id="r_a3bc14138b4608e32cd14d744054f96a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#a3bc14138b4608e32cd14d744054f96a8">SetCallback</a> (<a class="el" href="group__CategoryTray.html#gafa724f0f9ab6ed6c855bc2f8fa8738d0">TrayCB</a> callback)</td></tr>
+<tr class="memdesc:a3bc14138b4608e32cd14d744054f96a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a callback to be invoked when the entry is selected.  <br /></td></tr>
+<tr class="separator:a3bc14138b4608e32cd14d744054f96a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe2df33a61d31ef66c359001d1a3c138" id="r_abe2df33a61d31ef66c359001d1a3c138"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#abe2df33a61d31ef66c359001d1a3c138">SetCallback</a> (<a class="el" href="group__CategoryTray.html#gadc1822495fb3688687bf1d837d3cce20">TrayCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:abe2df33a61d31ef66c359001d1a3c138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a callback to be invoked when the entry is selected.  <br /></td></tr>
+<tr class="separator:abe2df33a61d31ef66c359001d1a3c138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e60966575729c3a2ea9bfdec817a6ea" id="r_a7e60966575729c3a2ea9bfdec817a6ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#a7e60966575729c3a2ea9bfdec817a6ea">Click</a> ()</td></tr>
+<tr class="memdesc:a7e60966575729c3a2ea9bfdec817a6ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simulate a click on a tray entry.  <br /></td></tr>
+<tr class="separator:a7e60966575729c3a2ea9bfdec817a6ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac67e7af3e09482dbb6b2c97cb54697ff" id="r_ac67e7af3e09482dbb6b2c97cb54697ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#ac67e7af3e09482dbb6b2c97cb54697ff">GetParent</a> ()</td></tr>
+<tr class="memdesc:ac67e7af3e09482dbb6b2c97cb54697ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the menu containing a certain tray entry.  <br /></td></tr>
+<tr class="separator:ac67e7af3e09482dbb6b2c97cb54697ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7e956e08a3d671ba39f0c4d87d0e79e" id="r_ac7e956e08a3d671ba39f0c4d87d0e79e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#ac7e956e08a3d671ba39f0c4d87d0e79e">Remove</a> ()</td></tr>
 <tr class="memdesc:ac7e956e08a3d671ba39f0c4d87d0e79e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a tray entry.  <br /></td></tr>
 <tr class="separator:ac7e956e08a3d671ba39f0c4d87d0e79e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TrayEntryBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TrayEntryBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TrayEntryBase.html">SDL::TrayEntryBase</a></td></tr>
-<tr class="memitem:a400adbdd241d006b02bd508b4a171d91 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a400adbdd241d006b02bd508b4a171d91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#a400adbdd241d006b02bd508b4a171d91">CreateSubmenu</a> ()</td></tr>
-<tr class="memdesc:a400adbdd241d006b02bd508b4a171d91 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a submenu for a system tray entry.  <br /></td></tr>
-<tr class="separator:a400adbdd241d006b02bd508b4a171d91 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fdf65e3541cdbb6e81cbfcb5ebec0a8 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a1fdf65e3541cdbb6e81cbfcb5ebec0a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#a1fdf65e3541cdbb6e81cbfcb5ebec0a8">GetSubmenu</a> ()</td></tr>
-<tr class="memdesc:a1fdf65e3541cdbb6e81cbfcb5ebec0a8 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a previously created tray entry submenu.  <br /></td></tr>
-<tr class="separator:a1fdf65e3541cdbb6e81cbfcb5ebec0a8 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a302ec0e4d0c0255356f7467f2b89faef inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a302ec0e4d0c0255356f7467f2b89faef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#a302ec0e4d0c0255356f7467f2b89faef">SetLabel</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> label)</td></tr>
-<tr class="memdesc:a302ec0e4d0c0255356f7467f2b89faef inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the label of an entry.  <br /></td></tr>
-<tr class="separator:a302ec0e4d0c0255356f7467f2b89faef inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4346703572edf37056e7d087ebea9c17 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a4346703572edf37056e7d087ebea9c17"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#a4346703572edf37056e7d087ebea9c17">GetLabel</a> () const</td></tr>
-<tr class="memdesc:a4346703572edf37056e7d087ebea9c17 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the label of an entry.  <br /></td></tr>
-<tr class="separator:a4346703572edf37056e7d087ebea9c17 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae07b33dea4ee53afb435e5098e689876 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_ae07b33dea4ee53afb435e5098e689876"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#ae07b33dea4ee53afb435e5098e689876">SetChecked</a> (bool checked)</td></tr>
-<tr class="memdesc:ae07b33dea4ee53afb435e5098e689876 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether or not an entry is checked.  <br /></td></tr>
-<tr class="separator:ae07b33dea4ee53afb435e5098e689876 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fc9e2cbfa8777ce1fa83d76d5b6d1fa inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a5fc9e2cbfa8777ce1fa83d76d5b6d1fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#a5fc9e2cbfa8777ce1fa83d76d5b6d1fa">GetChecked</a> () const</td></tr>
-<tr class="memdesc:a5fc9e2cbfa8777ce1fa83d76d5b6d1fa inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether or not an entry is checked.  <br /></td></tr>
-<tr class="separator:a5fc9e2cbfa8777ce1fa83d76d5b6d1fa inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19a84fc88da1d4994c9f6cc42faf941e inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a19a84fc88da1d4994c9f6cc42faf941e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#a19a84fc88da1d4994c9f6cc42faf941e">SetEnabled</a> (bool enabled)</td></tr>
-<tr class="memdesc:a19a84fc88da1d4994c9f6cc42faf941e inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether or not an entry is enabled.  <br /></td></tr>
-<tr class="separator:a19a84fc88da1d4994c9f6cc42faf941e inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3441b50bbf02f12a0e1b374d9902e84b inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a3441b50bbf02f12a0e1b374d9902e84b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#a3441b50bbf02f12a0e1b374d9902e84b">GetEnabled</a> () const</td></tr>
-<tr class="memdesc:a3441b50bbf02f12a0e1b374d9902e84b inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether or not an entry is enabled.  <br /></td></tr>
-<tr class="separator:a3441b50bbf02f12a0e1b374d9902e84b inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a846583db7417e7f9184845d222a0e3e8 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a846583db7417e7f9184845d222a0e3e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#a846583db7417e7f9184845d222a0e3e8">SetCallback</a> (<a class="el" href="group__CategoryTray.html#gafa724f0f9ab6ed6c855bc2f8fa8738d0">TrayCB</a> callback)</td></tr>
-<tr class="memdesc:a846583db7417e7f9184845d222a0e3e8 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a callback to be invoked when the entry is selected.  <br /></td></tr>
-<tr class="separator:a846583db7417e7f9184845d222a0e3e8 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1a2ead4539bc354e5c20f5ab9ff5d0a inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_aa1a2ead4539bc354e5c20f5ab9ff5d0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#aa1a2ead4539bc354e5c20f5ab9ff5d0a">SetCallback</a> (<a class="el" href="group__CategoryTray.html#gadc1822495fb3688687bf1d837d3cce20">TrayCallback</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:aa1a2ead4539bc354e5c20f5ab9ff5d0a inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a callback to be invoked when the entry is selected.  <br /></td></tr>
-<tr class="separator:aa1a2ead4539bc354e5c20f5ab9ff5d0a inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab064b8edc2066e9eb67dc4ed6a4b3312 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_ab064b8edc2066e9eb67dc4ed6a4b3312"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#ab064b8edc2066e9eb67dc4ed6a4b3312">Click</a> ()</td></tr>
-<tr class="memdesc:ab064b8edc2066e9eb67dc4ed6a4b3312 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simulate a click on a tray entry.  <br /></td></tr>
-<tr class="separator:ab064b8edc2066e9eb67dc4ed6a4b3312 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad487bde8813d2e372fbec29a14c2154 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_aad487bde8813d2e372fbec29a14c2154"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryBase.html#aad487bde8813d2e372fbec29a14c2154">GetParent</a> ()</td></tr>
-<tr class="memdesc:aad487bde8813d2e372fbec29a14c2154 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the menu containing a certain tray entry.  <br /></td></tr>
-<tr class="separator:aad487bde8813d2e372fbec29a14c2154 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a4a964f969515a5fad8715269f8cbdb40" id="r_a4a964f969515a5fad8715269f8cbdb40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayEntryRef.html#a4a964f969515a5fad8715269f8cbdb40">reset</a> (SDL_TrayEntry *newResource={})</td></tr>
+<tr class="memdesc:a4a964f969515a5fad8715269f8cbdb40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a tray entry.  <br /></td></tr>
+<tr class="separator:a4a964f969515a5fad8715269f8cbdb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top"><a id="afbcdc46caa3c15a1b9c9a116a6e32382" name="afbcdc46caa3c15a1b9c9a116a6e32382"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1TrayEntryBase" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
+<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top"><a id="a6035b9f529e0e8bdfd7174d0cb4f7cd6" name="a6035b9f529e0e8bdfd7174d0cb4f7cd6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1TrayEntryBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_TrayEntry * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_TrayEntry * resource={})</td></tr>
@@ -236,11 +229,239 @@ constexpr SDL_TrayEntry *&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TrayEntryBase.html" title="An opaque handle representing an entry on a system tray object.">TrayEntryBase</a> </dd>
+<div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TrayEntry.html" title="Handle to an owned trayEntry.">TrayEntry</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TrayEntry.html" title="Handle to an owned trayEntry.">TrayEntry</a> </dd></dl>
+<a class="el" href="structSDL_1_1TrayEntryRef.html" title="An opaque handle representing an entry on a system tray object.">TrayEntryRef</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7e60966575729c3a2ea9bfdec817a6ea" name="a7e60966575729c3a2ea9bfdec817a6ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e60966575729c3a2ea9bfdec817a6ea">&#9670;&#160;</a></span>Click()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TrayEntryRef::Click </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="a70347df702a5623672ef51a84b8be674" name="a70347df702a5623672ef51a84b8be674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70347df702a5623672ef51a84b8be674">&#9670;&#160;</a></span>CreateSubmenu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a> SDL::TrayEntryRef::CreateSubmenu </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This should be called at most once per tray entry.</p>
+<p>This function does the same thing as <a class="el" href="group__CategoryTray.html#ga072195c717d26ce4fd5e4972594d9c01" title="Create a menu for a system tray.">TrayRef.CreateMenu</a>, except that it takes a <a class="el" href="structSDL_1_1TrayEntryRef.html" title="An opaque handle representing an entry on a system tray object.">TrayEntryRef</a> instead of a <a class="el" href="structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object.">TrayRef</a>.</p>
+<p>A menu does not need to be destroyed; it will be destroyed with the tray.</p>
+<dl class="section return"><dt>Returns</dt><dd>the newly created menu.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayEntryRef.html#a2049ebf006ba66234efc006a4203b1f0" title="Gets a previously created tray entry submenu.">TrayEntryRef.GetSubmenu</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga586d870a1e42e4f4e3662d224791cfed" title="Gets the entry for which the menu is a submenu, if the current menu is a submenu.">TrayMenu.GetParentEntry</a> </dd></dl>
+
+</div>
+</div>
+<a id="aec66300fd43562ffefaf73a0b9b6bc97" name="aec66300fd43562ffefaf73a0b9b6bc97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec66300fd43562ffefaf73a0b9b6bc97">&#9670;&#160;</a></span>GetChecked()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::TrayEntryRef::GetChecked </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The entry must have been created with the TRAYENTRY_CHECKBOX flag.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the entry is checked; false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayEntryRef.html#a2f45bb25cdfe661681254535bcf09d3e" title="Sets whether or not an entry is checked.">TrayEntryRef.SetChecked</a> </dd></dl>
+
+</div>
+</div>
+<a id="adf148a27b3094ef005f9ed74e1a41064" name="adf148a27b3094ef005f9ed74e1a41064"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf148a27b3094ef005f9ed74e1a41064">&#9670;&#160;</a></span>GetEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::TrayEntryRef::GetEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true if the entry is enabled; false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayEntryRef.html#ad8ce1ac679509095fbba3673a37c7ce1" title="Sets whether or not an entry is enabled.">TrayEntryRef.SetEnabled</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad09687f79e3b39c719f243bb85272d8b" name="ad09687f79e3b39c719f243bb85272d8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad09687f79e3b39c719f243bb85272d8b">&#9670;&#160;</a></span>GetLabel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * SDL::TrayEntryRef::GetLabel </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If the returned value is nullptr, the entry is a separator.</p>
+<dl class="section return"><dt>Returns</dt><dd>the label of the entry in UTF-8 encoding.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayEntryRef.html#a955d0a1bc0731de3cc777d4f09caaf74" title="Sets the label of an entry.">TrayEntryRef.SetLabel</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac67e7af3e09482dbb6b2c97cb54697ff" name="ac67e7af3e09482dbb6b2c97cb54697ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac67e7af3e09482dbb6b2c97cb54697ff">&#9670;&#160;</a></span>GetParent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a> SDL::TrayEntryRef::GetParent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the parent menu.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2049ebf006ba66234efc006a4203b1f0" name="a2049ebf006ba66234efc006a4203b1f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2049ebf006ba66234efc006a4203b1f0">&#9670;&#160;</a></span>GetSubmenu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a> SDL::TrayEntryRef::GetSubmenu </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>You should have called <a class="el" href="structSDL_1_1TrayEntryRef.html#a70347df702a5623672ef51a84b8be674" title="Create a submenu for a system tray entry.">TrayEntryRef.CreateSubmenu()</a> on the entry object. This function allows you to fetch it again later.</p>
+<p>This function does the same thing as <a class="el" href="group__CategoryTray.html#ga28cad49b1dc92e2791e07f309f5c32b5" title="Gets a previously created tray menu.">TrayRef.GetMenu()</a>, except that it takes a <a class="el" href="structSDL_1_1TrayEntryRef.html" title="An opaque handle representing an entry on a system tray object.">TrayEntryRef</a> instead of a <a class="el" href="structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object.">TrayRef</a>.</p>
+<p>A menu does not need to be destroyed; it will be destroyed with the tray.</p>
+<dl class="section return"><dt>Returns</dt><dd>the newly created menu.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayEntryRef.html#a70347df702a5623672ef51a84b8be674" title="Create a submenu for a system tray entry.">TrayEntryRef.CreateSubmenu</a> </dd></dl>
+
+</div>
+</div>
 <a id="ac7e956e08a3d671ba39f0c4d87d0e79e" name="ac7e956e08a3d671ba39f0c4d87d0e79e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac7e956e08a3d671ba39f0c4d87d0e79e">&#9670;&#160;</a></span>Remove()</h2>
 
@@ -299,6 +520,210 @@ constexpr SDL_TrayEntry *&#160;</td><td class="memItemRight" valign="bottom"><b>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
 <dd>
 <a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd></dl>
+
+</div>
+</div>
+<a id="abe2df33a61d31ef66c359001d1a3c138" name="abe2df33a61d31ef66c359001d1a3c138"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe2df33a61d31ef66c359001d1a3c138">&#9670;&#160;</a></span>SetCallback() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TrayEntryRef::SetCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryTray.html#gadc1822495fb3688687bf1d837d3cce20">TrayCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>a callback to be invoked when the entry is selected. </td></tr>
+    <tr><td class="paramname">userdata</td><td>an optional pointer to pass extra data to the callback when it will be invoked.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3bc14138b4608e32cd14d744054f96a8" name="a3bc14138b4608e32cd14d744054f96a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bc14138b4608e32cd14d744054f96a8">&#9670;&#160;</a></span>SetCallback() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TrayEntryRef::SetCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryTray.html#gafa724f0f9ab6ed6c855bc2f8fa8738d0">TrayCB</a>&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>a callback to be invoked when the entry is selected.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2f45bb25cdfe661681254535bcf09d3e" name="a2f45bb25cdfe661681254535bcf09d3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f45bb25cdfe661681254535bcf09d3e">&#9670;&#160;</a></span>SetChecked()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TrayEntryRef::SetChecked </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>checked</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The entry must have been created with the TRAYENTRY_CHECKBOX flag.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">checked</td><td>true if the entry should be checked; false otherwise.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayEntryRef.html#aec66300fd43562ffefaf73a0b9b6bc97" title="Gets whether or not an entry is checked.">TrayEntryRef.GetChecked</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad8ce1ac679509095fbba3673a37c7ce1" name="ad8ce1ac679509095fbba3673a37c7ce1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8ce1ac679509095fbba3673a37c7ce1">&#9670;&#160;</a></span>SetEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TrayEntryRef::SetEnabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enabled</td><td>true if the entry should be enabled; false otherwise.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayEntryRef.html#adf148a27b3094ef005f9ed74e1a41064" title="Gets whether or not an entry is enabled.">TrayEntryRef.GetEnabled</a> </dd></dl>
+
+</div>
+</div>
+<a id="a955d0a1bc0731de3cc777d4f09caaf74" name="a955d0a1bc0731de3cc777d4f09caaf74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a955d0a1bc0731de3cc777d4f09caaf74">&#9670;&#160;</a></span>SetLabel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TrayEntryRef::SetLabel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>An entry cannot change between a separator and an ordinary entry; that is, it is not possible to set a non-nullptr label on an entry that has a nullptr label (separators), or to set a nullptr label to an entry that has a non-nullptr label. The function will silently fail if that happens.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>the new label for the entry in UTF-8 encoding.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the tray.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#gad9f14702ffdf88a66a867b06048e215c" title="Returns a list of entries in the menu, in order.">TrayMenu.GetEntries</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga05b307cc95a8adfcc46570f2a21d345a" title="Insert a tray entry at a given position.">TrayMenu.InsertEntry</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayEntryRef.html#ad09687f79e3b39c719f243bb85272d8b" title="Gets the label of an entry.">TrayEntryRef.GetLabel</a> </dd></dl>
 
 </div>
 </div>

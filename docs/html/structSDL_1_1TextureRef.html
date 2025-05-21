@@ -81,17 +81,15 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Handle to a non owned texture.  
+<p>An efficient driver-specific representation of pixel data.  
  <a href="structSDL_1_1TextureRef.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for SDL::TextureRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1TextureRef__inherit__graph.png" border="0" usemap="#aSDL_1_1TextureRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TextureRef_inherit__map" id="aSDL_1_1TextureRef_inherit__map">
-<area shape="rect" title="Handle to a non owned texture." alt="" coords="20,167,145,192"/>
-<area shape="rect" href="structSDL_1_1Texture.html" title="Handle to an owned texture." alt="" coords="31,240,134,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
-<area shape="rect" href="structSDL_1_1TextureBase.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="15,93,150,119"/>
+<area shape="rect" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="20,93,145,119"/>
+<area shape="rect" href="structSDL_1_1Texture.html" title="Handle to an owned texture." alt="" coords="31,167,134,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
@@ -108,154 +106,137 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureRef</b> (
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureRef</b> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a90bff2142a676d3424b9f2b54a2c7d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a90bff2142a676d3424b9f2b54a2c7d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e6d94b62a2b481cf6af02a69f9f5d7f" id="r_a8e6d94b62a2b481cf6af02a69f9f5d7f"><td class="memItemLeft" align="right" valign="top"><a id="a8e6d94b62a2b481cf6af02a69f9f5d7f" name="a8e6d94b62a2b481cf6af02a69f9f5d7f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~TextureRef</b> ()=default</td></tr>
-<tr class="memdesc:a8e6d94b62a2b481cf6af02a69f9f5d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:a8e6d94b62a2b481cf6af02a69f9f5d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc4679e5d97a4bc966457c659480af50" id="r_acc4679e5d97a4bc966457c659480af50"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#acc4679e5d97a4bc966457c659480af50">TextureRef</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
+<tr class="memdesc:acc4679e5d97a4bc966457c659480af50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
+<tr class="separator:acc4679e5d97a4bc966457c659480af50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90010aca4692a73db9a131907b6844d7" id="r_a90010aca4692a73db9a131907b6844d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a90010aca4692a73db9a131907b6844d7">TextureRef</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;renderer, <a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &amp;src)</td></tr>
+<tr class="memdesc:a90010aca4692a73db9a131907b6844d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> into a software surface.  <br /></td></tr>
+<tr class="separator:a90010aca4692a73db9a131907b6844d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a647d0206ed41a70de68b47de18e33e60" id="r_a647d0206ed41a70de68b47de18e33e60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a647d0206ed41a70de68b47de18e33e60">TextureRef</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;renderer, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const SDL_Point &amp;size)</td></tr>
+<tr class="memdesc:a647d0206ed41a70de68b47de18e33e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context.  <br /></td></tr>
+<tr class="separator:a647d0206ed41a70de68b47de18e33e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae49b7f74e44097f98382f872f5102922" id="r_ae49b7f74e44097f98382f872f5102922"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ae49b7f74e44097f98382f872f5102922">TextureRef</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;renderer, <a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> &amp;surface)</td></tr>
+<tr class="memdesc:ae49b7f74e44097f98382f872f5102922"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture from an existing surface.  <br /></td></tr>
+<tr class="separator:ae49b7f74e44097f98382f872f5102922"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fdb6b1723b9cf62fc8e0648792e5503" id="r_a2fdb6b1723b9cf62fc8e0648792e5503"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a2fdb6b1723b9cf62fc8e0648792e5503">TextureRef</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;renderer, <a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> &amp;props)</td></tr>
+<tr class="memdesc:a2fdb6b1723b9cf62fc8e0648792e5503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context with the specified properties.  <br /></td></tr>
+<tr class="separator:a2fdb6b1723b9cf62fc8e0648792e5503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28917c6b514af64cca6b974a55245667" id="r_a28917c6b514af64cca6b974a55245667"><td class="memItemLeft" align="right" valign="top"><a id="a28917c6b514af64cca6b974a55245667" name="a28917c6b514af64cca6b974a55245667"></a>
 <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> other)</td></tr>
 <tr class="memdesc:a28917c6b514af64cca6b974a55245667"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a28917c6b514af64cca6b974a55245667"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35de7a36a162339e8193a33a6d0fc8fa" id="r_a35de7a36a162339e8193a33a6d0fc8fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a35de7a36a162339e8193a33a6d0fc8fa">GetProperties</a> () const</td></tr>
+<tr class="memdesc:a35de7a36a162339e8193a33a6d0fc8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a texture.  <br /></td></tr>
+<tr class="separator:a35de7a36a162339e8193a33a6d0fc8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab59f223366b18d909eac87a27d4a0869" id="r_ab59f223366b18d909eac87a27d4a0869"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ab59f223366b18d909eac87a27d4a0869">GetRenderer</a> () const</td></tr>
+<tr class="memdesc:ab59f223366b18d909eac87a27d4a0869"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer that created an <a class="el" href="structSDL_1_1TextureRef.html" title="An efficient driver-specific representation of pixel data.">TextureRef</a>.  <br /></td></tr>
+<tr class="separator:ab59f223366b18d909eac87a27d4a0869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b304fe0c0c5bdacc9056372623027a1" id="r_a2b304fe0c0c5bdacc9056372623027a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a2b304fe0c0c5bdacc9056372623027a1">SetMod</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> c)</td></tr>
+<tr class="memdesc:a2b304fe0c0c5bdacc9056372623027a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color and alpha values multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a2b304fe0c0c5bdacc9056372623027a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5336c8f6fad523de4e77f27100b01399" id="r_a5336c8f6fad523de4e77f27100b01399"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a5336c8f6fad523de4e77f27100b01399">SetMod</a> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> c)</td></tr>
+<tr class="memdesc:a5336c8f6fad523de4e77f27100b01399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color and alpha values multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a5336c8f6fad523de4e77f27100b01399"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0eba1b38e4acb7f2776c4694b858e9e0" id="r_a0eba1b38e4acb7f2776c4694b858e9e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FColor.html">FColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a0eba1b38e4acb7f2776c4694b858e9e0">GetMod</a> () const</td></tr>
+<tr class="memdesc:a0eba1b38e4acb7f2776c4694b858e9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a0eba1b38e4acb7f2776c4694b858e9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d729152fbe5e32e2f2fdea372dda7a" id="r_ae1d729152fbe5e32e2f2fdea372dda7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ae1d729152fbe5e32e2f2fdea372dda7a">GetMod</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> *c) const</td></tr>
+<tr class="memdesc:ae1d729152fbe5e32e2f2fdea372dda7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:ae1d729152fbe5e32e2f2fdea372dda7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4340098ee07622fce4345fcfe86a109" id="r_af4340098ee07622fce4345fcfe86a109"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#af4340098ee07622fce4345fcfe86a109">GetMod</a> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> *c) const</td></tr>
+<tr class="memdesc:af4340098ee07622fce4345fcfe86a109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:af4340098ee07622fce4345fcfe86a109"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32d80a522dfcc680d32a161edfef3711" id="r_a32d80a522dfcc680d32a161edfef3711"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711">SetColorMod</a> (Uint8 r, Uint8 g, Uint8 b)</td></tr>
+<tr class="memdesc:a32d80a522dfcc680d32a161edfef3711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a32d80a522dfcc680d32a161edfef3711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1723d533a5dd3128d45bc6d8553c4111" id="r_a1723d533a5dd3128d45bc6d8553c4111"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a1723d533a5dd3128d45bc6d8553c4111">SetColorMod</a> (float r, float g, float b)</td></tr>
+<tr class="memdesc:a1723d533a5dd3128d45bc6d8553c4111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a1723d533a5dd3128d45bc6d8553c4111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bb61bb2d9134d38e90939dac7d2cfcf" id="r_a2bb61bb2d9134d38e90939dac7d2cfcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a2bb61bb2d9134d38e90939dac7d2cfcf">GetColorMod</a> (Uint8 *r, Uint8 *g, Uint8 *b) const</td></tr>
+<tr class="memdesc:a2bb61bb2d9134d38e90939dac7d2cfcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a2bb61bb2d9134d38e90939dac7d2cfcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4938c0418670d33daced82df3ebe0d70" id="r_a4938c0418670d33daced82df3ebe0d70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a4938c0418670d33daced82df3ebe0d70">GetColorMod</a> (float *r, float *g, float *b) const</td></tr>
+<tr class="memdesc:a4938c0418670d33daced82df3ebe0d70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a4938c0418670d33daced82df3ebe0d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1a16a0f4479bc6df3f3fb97e7e59a0d" id="r_ac1a16a0f4479bc6df3f3fb97e7e59a0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d">SetAlphaMod</a> (Uint8 alpha)</td></tr>
+<tr class="memdesc:ac1a16a0f4479bc6df3f3fb97e7e59a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional alpha value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:ac1a16a0f4479bc6df3f3fb97e7e59a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89d2348cd11dc85b86bd6ea25f9b2fae" id="r_a89d2348cd11dc85b86bd6ea25f9b2fae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a89d2348cd11dc85b86bd6ea25f9b2fae">SetAlphaMod</a> (float alpha)</td></tr>
+<tr class="memdesc:a89d2348cd11dc85b86bd6ea25f9b2fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional alpha value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a89d2348cd11dc85b86bd6ea25f9b2fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd7b5d79ce9da63509fd81de8331c15a" id="r_afd7b5d79ce9da63509fd81de8331c15a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a">GetAlphaMod</a> () const</td></tr>
+<tr class="memdesc:afd7b5d79ce9da63509fd81de8331c15a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:afd7b5d79ce9da63509fd81de8331c15a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d98ef11d655e5fac5bd30dd82c1f7bf" id="r_a7d98ef11d655e5fac5bd30dd82c1f7bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a7d98ef11d655e5fac5bd30dd82c1f7bf">GetAlphaMod</a> (Uint8 *alpha) const</td></tr>
+<tr class="memdesc:a7d98ef11d655e5fac5bd30dd82c1f7bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:a7d98ef11d655e5fac5bd30dd82c1f7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae77cb5f0ac398b2a3d733d0465950be5" id="r_ae77cb5f0ac398b2a3d733d0465950be5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ae77cb5f0ac398b2a3d733d0465950be5">GetAlphaMod</a> (float *alpha) const</td></tr>
+<tr class="memdesc:ae77cb5f0ac398b2a3d733d0465950be5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
+<tr class="separator:ae77cb5f0ac398b2a3d733d0465950be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15e38be82ab2e673b2449238e6e3c9d2" id="r_a15e38be82ab2e673b2449238e6e3c9d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a15e38be82ab2e673b2449238e6e3c9d2">SetBlendMode</a> (<a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a> blendMode)</td></tr>
+<tr class="memdesc:a15e38be82ab2e673b2449238e6e3c9d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the blend mode for a texture, used by <a class="el" href="group__CategoryRender.html#gae4f0af36735898e0a91ffa0eb1da9e39" title="Copy a portion of the texture to the current rendering target at subpixel precision.">RendererRef.RenderTexture()</a>.  <br /></td></tr>
+<tr class="separator:a15e38be82ab2e673b2449238e6e3c9d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c0d9b5323e067d355a198125a2911aa" id="r_a1c0d9b5323e067d355a198125a2911aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a1c0d9b5323e067d355a198125a2911aa">GetBlendMode</a> () const</td></tr>
+<tr class="memdesc:a1c0d9b5323e067d355a198125a2911aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the blend mode used for texture copy operations.  <br /></td></tr>
+<tr class="separator:a1c0d9b5323e067d355a198125a2911aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d668791cf04679d3ea38fd32269458f" id="r_a5d668791cf04679d3ea38fd32269458f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a5d668791cf04679d3ea38fd32269458f">SetScaleMode</a> (<a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
+<tr class="memdesc:a5d668791cf04679d3ea38fd32269458f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scale mode used for texture scale operations.  <br /></td></tr>
+<tr class="separator:a5d668791cf04679d3ea38fd32269458f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00b2ed9876a7c254ded85ca3e9c449fa" id="r_a00b2ed9876a7c254ded85ca3e9c449fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a00b2ed9876a7c254ded85ca3e9c449fa">GetScaleMode</a> () const</td></tr>
+<tr class="memdesc:a00b2ed9876a7c254ded85ca3e9c449fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the scale mode used for texture scale operations.  <br /></td></tr>
+<tr class="separator:a00b2ed9876a7c254ded85ca3e9c449fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5838d6f91777e95139ad31798ab554a1" id="r_a5838d6f91777e95139ad31798ab554a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1">Update</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const void *pixels, int pitch)</td></tr>
+<tr class="memdesc:a5838d6f91777e95139ad31798ab554a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the given texture rectangle with new pixel data.  <br /></td></tr>
+<tr class="separator:a5838d6f91777e95139ad31798ab554a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c9ca961bb5cca2539fc7f288f97097a" id="r_a9c9ca961bb5cca2539fc7f288f97097a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a9c9ca961bb5cca2539fc7f288f97097a">UpdateYUV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch)</td></tr>
+<tr class="memdesc:a9c9ca961bb5cca2539fc7f288f97097a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar YV12 or IYUV texture with new pixel data.  <br /></td></tr>
+<tr class="separator:a9c9ca961bb5cca2539fc7f288f97097a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b6242d67d6c0edf4be180dea494324c" id="r_a1b6242d67d6c0edf4be180dea494324c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a1b6242d67d6c0edf4be180dea494324c">UpdateNV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch)</td></tr>
+<tr class="memdesc:a1b6242d67d6c0edf4be180dea494324c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar NV12 or NV21 texture with new pixels.  <br /></td></tr>
+<tr class="separator:a1b6242d67d6c0edf4be180dea494324c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2942fc39824ae898d51dcc7b11dc2210" id="r_ga2942fc39824ae898d51dcc7b11dc2210"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TextureLock.html">TextureLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga2942fc39824ae898d51dcc7b11dc2210">Lock</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect={}) &amp;</td></tr>
+<tr class="memdesc:ga2942fc39824ae898d51dcc7b11dc2210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock a portion of the texture for <b>write-only</b> pixel access.  <br /></td></tr>
+<tr class="separator:ga2942fc39824ae898d51dcc7b11dc2210"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaf76e4507e0b5d55c50dfa359853ed2" id="r_abaf76e4507e0b5d55c50dfa359853ed2"><td class="memItemLeft" align="right" valign="top"><a id="abaf76e4507e0b5d55c50dfa359853ed2" name="abaf76e4507e0b5d55c50dfa359853ed2"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWidth</b> () const</td></tr>
+<tr class="memdesc:abaf76e4507e0b5d55c50dfa359853ed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the width in pixels. <br /></td></tr>
+<tr class="separator:abaf76e4507e0b5d55c50dfa359853ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac534ea0c9bea87d86aba8588413dcf31" id="r_ac534ea0c9bea87d86aba8588413dcf31"><td class="memItemLeft" align="right" valign="top"><a id="ac534ea0c9bea87d86aba8588413dcf31" name="ac534ea0c9bea87d86aba8588413dcf31"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () const</td></tr>
+<tr class="memdesc:ac534ea0c9bea87d86aba8588413dcf31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height in pixels. <br /></td></tr>
+<tr class="separator:ac534ea0c9bea87d86aba8588413dcf31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e33250b820d1cf745efbad12c24ab39" id="r_a4e33250b820d1cf745efbad12c24ab39"><td class="memItemLeft" align="right" valign="top"><a id="a4e33250b820d1cf745efbad12c24ab39" name="a4e33250b820d1cf745efbad12c24ab39"></a>
+<a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
+<tr class="memdesc:a4e33250b820d1cf745efbad12c24ab39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size in pixels. <br /></td></tr>
+<tr class="separator:a4e33250b820d1cf745efbad12c24ab39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6690aa4a0f72906ccc847431fafe2fb" id="r_ab6690aa4a0f72906ccc847431fafe2fb"><td class="memItemLeft" align="right" valign="top"><a id="ab6690aa4a0f72906ccc847431fafe2fb" name="ab6690aa4a0f72906ccc847431fafe2fb"></a>
+<a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormat</b> () const</td></tr>
+<tr class="memdesc:ab6690aa4a0f72906ccc847431fafe2fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel format. <br /></td></tr>
+<tr class="separator:ab6690aa4a0f72906ccc847431fafe2fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af20105a4009e6eb825f065389249d18d" id="r_af20105a4009e6eb825f065389249d18d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#af20105a4009e6eb825f065389249d18d">Destroy</a> ()</td></tr>
+<tr class="memdesc:af20105a4009e6eb825f065389249d18d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
+<tr class="separator:af20105a4009e6eb825f065389249d18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2c68d8aee6027792b70fe2c9957d846" id="r_ac2c68d8aee6027792b70fe2c9957d846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ac2c68d8aee6027792b70fe2c9957d846">reset</a> (SDL_Texture *newResource={})</td></tr>
 <tr class="memdesc:ac2c68d8aee6027792b70fe2c9957d846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
 <tr class="separator:ac2c68d8aee6027792b70fe2c9957d846"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13f8b564e445e6e1ce001084f1ef405e" id="r_a13f8b564e445e6e1ce001084f1ef405e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a13f8b564e445e6e1ce001084f1ef405e">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
-<tr class="memdesc:a13f8b564e445e6e1ce001084f1ef405e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
-<tr class="separator:a13f8b564e445e6e1ce001084f1ef405e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe7470b635215cac8c28f983f1f34ef9" id="r_abe7470b635215cac8c28f983f1f34ef9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#abe7470b635215cac8c28f983f1f34ef9">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &amp;src)</td></tr>
-<tr class="memdesc:abe7470b635215cac8c28f983f1f34ef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> into a software surface.  <br /></td></tr>
-<tr class="separator:abe7470b635215cac8c28f983f1f34ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae75937303faa015beb39764560d60a24" id="r_ae75937303faa015beb39764560d60a24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#ae75937303faa015beb39764560d60a24">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const SDL_Point &amp;size)</td></tr>
-<tr class="memdesc:ae75937303faa015beb39764560d60a24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context.  <br /></td></tr>
-<tr class="separator:ae75937303faa015beb39764560d60a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbc5be9b4f73ec5c74a9075766978001" id="r_afbc5be9b4f73ec5c74a9075766978001"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#afbc5be9b4f73ec5c74a9075766978001">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="structSDL_1_1SurfaceBase.html">SurfaceBase</a> &amp;surface)</td></tr>
-<tr class="memdesc:afbc5be9b4f73ec5c74a9075766978001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture from an existing surface.  <br /></td></tr>
-<tr class="separator:afbc5be9b4f73ec5c74a9075766978001"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb1f98e29b59c4b0a84d1acd7e855679" id="r_abb1f98e29b59c4b0a84d1acd7e855679"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#abb1f98e29b59c4b0a84d1acd7e855679">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a> &amp;props)</td></tr>
-<tr class="memdesc:abb1f98e29b59c4b0a84d1acd7e855679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context with the specified properties.  <br /></td></tr>
-<tr class="separator:abb1f98e29b59c4b0a84d1acd7e855679"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TextureBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TextureBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a></td></tr>
-<tr class="memitem:a13f8b564e445e6e1ce001084f1ef405e inherit pub_methods_structSDL_1_1TextureBase" id="r_a13f8b564e445e6e1ce001084f1ef405e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a13f8b564e445e6e1ce001084f1ef405e">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
-<tr class="memdesc:a13f8b564e445e6e1ce001084f1ef405e inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
-<tr class="separator:a13f8b564e445e6e1ce001084f1ef405e inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe7470b635215cac8c28f983f1f34ef9 inherit pub_methods_structSDL_1_1TextureBase" id="r_abe7470b635215cac8c28f983f1f34ef9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#abe7470b635215cac8c28f983f1f34ef9">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &amp;src)</td></tr>
-<tr class="memdesc:abe7470b635215cac8c28f983f1f34ef9 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> into a software surface.  <br /></td></tr>
-<tr class="separator:abe7470b635215cac8c28f983f1f34ef9 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae75937303faa015beb39764560d60a24 inherit pub_methods_structSDL_1_1TextureBase" id="r_ae75937303faa015beb39764560d60a24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#ae75937303faa015beb39764560d60a24">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, const SDL_Point &amp;size)</td></tr>
-<tr class="memdesc:ae75937303faa015beb39764560d60a24 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context.  <br /></td></tr>
-<tr class="separator:ae75937303faa015beb39764560d60a24 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbc5be9b4f73ec5c74a9075766978001 inherit pub_methods_structSDL_1_1TextureBase" id="r_afbc5be9b4f73ec5c74a9075766978001"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#afbc5be9b4f73ec5c74a9075766978001">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="structSDL_1_1SurfaceBase.html">SurfaceBase</a> &amp;surface)</td></tr>
-<tr class="memdesc:afbc5be9b4f73ec5c74a9075766978001 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture from an existing surface.  <br /></td></tr>
-<tr class="separator:afbc5be9b4f73ec5c74a9075766978001 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb1f98e29b59c4b0a84d1acd7e855679 inherit pub_methods_structSDL_1_1TextureBase" id="r_abb1f98e29b59c4b0a84d1acd7e855679"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#abb1f98e29b59c4b0a84d1acd7e855679">TextureBase</a> (<a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;renderer, <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a> &amp;props)</td></tr>
-<tr class="memdesc:abb1f98e29b59c4b0a84d1acd7e855679 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a texture for a rendering context with the specified properties.  <br /></td></tr>
-<tr class="separator:abb1f98e29b59c4b0a84d1acd7e855679 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a109a6086e13831fb0573651c2f1d1ace inherit pub_methods_structSDL_1_1TextureBase" id="r_a109a6086e13831fb0573651c2f1d1ace"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a109a6086e13831fb0573651c2f1d1ace">GetProperties</a> () const</td></tr>
-<tr class="memdesc:a109a6086e13831fb0573651c2f1d1ace inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a texture.  <br /></td></tr>
-<tr class="separator:a109a6086e13831fb0573651c2f1d1ace inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed23d06b13b3ecb0ad5ac32e520a8652 inherit pub_methods_structSDL_1_1TextureBase" id="r_aed23d06b13b3ecb0ad5ac32e520a8652"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#aed23d06b13b3ecb0ad5ac32e520a8652">GetRenderer</a> () const</td></tr>
-<tr class="memdesc:aed23d06b13b3ecb0ad5ac32e520a8652 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer that created an <a class="el" href="structSDL_1_1TextureBase.html" title="An efficient driver-specific representation of pixel data.">TextureBase</a>.  <br /></td></tr>
-<tr class="separator:aed23d06b13b3ecb0ad5ac32e520a8652 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ce17e5091770e9616426d1ddd8f859c inherit pub_methods_structSDL_1_1TextureBase" id="r_a2ce17e5091770e9616426d1ddd8f859c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a2ce17e5091770e9616426d1ddd8f859c">SetMod</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> c)</td></tr>
-<tr class="memdesc:a2ce17e5091770e9616426d1ddd8f859c inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color and alpha values multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a2ce17e5091770e9616426d1ddd8f859c inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a923ea73cb12c0535da09792eec7b97ab inherit pub_methods_structSDL_1_1TextureBase" id="r_a923ea73cb12c0535da09792eec7b97ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a923ea73cb12c0535da09792eec7b97ab">SetMod</a> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> c)</td></tr>
-<tr class="memdesc:a923ea73cb12c0535da09792eec7b97ab inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color and alpha values multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a923ea73cb12c0535da09792eec7b97ab inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f9b8ead527c18d482aeaff3a7421266 inherit pub_methods_structSDL_1_1TextureBase" id="r_a5f9b8ead527c18d482aeaff3a7421266"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1FColor.html">FColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a5f9b8ead527c18d482aeaff3a7421266">GetMod</a> () const</td></tr>
-<tr class="memdesc:a5f9b8ead527c18d482aeaff3a7421266 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a5f9b8ead527c18d482aeaff3a7421266 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46a346e88ee11662fd0a5ee51fefaacb inherit pub_methods_structSDL_1_1TextureBase" id="r_a46a346e88ee11662fd0a5ee51fefaacb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a46a346e88ee11662fd0a5ee51fefaacb">GetMod</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> *c) const</td></tr>
-<tr class="memdesc:a46a346e88ee11662fd0a5ee51fefaacb inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a46a346e88ee11662fd0a5ee51fefaacb inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb05ce3b547c9edfe3dabbdc1ba63f02 inherit pub_methods_structSDL_1_1TextureBase" id="r_acb05ce3b547c9edfe3dabbdc1ba63f02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#acb05ce3b547c9edfe3dabbdc1ba63f02">GetMod</a> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> *c) const</td></tr>
-<tr class="memdesc:acb05ce3b547c9edfe3dabbdc1ba63f02 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:acb05ce3b547c9edfe3dabbdc1ba63f02 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27cc9872ea2262b329c43d5bcbf02cb3 inherit pub_methods_structSDL_1_1TextureBase" id="r_a27cc9872ea2262b329c43d5bcbf02cb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a27cc9872ea2262b329c43d5bcbf02cb3">SetColorMod</a> (Uint8 r, Uint8 g, Uint8 b)</td></tr>
-<tr class="memdesc:a27cc9872ea2262b329c43d5bcbf02cb3 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a27cc9872ea2262b329c43d5bcbf02cb3 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a209d993b425fa98cea4b2d1d4736f464 inherit pub_methods_structSDL_1_1TextureBase" id="r_a209d993b425fa98cea4b2d1d4736f464"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a209d993b425fa98cea4b2d1d4736f464">SetColorMod</a> (float r, float g, float b)</td></tr>
-<tr class="memdesc:a209d993b425fa98cea4b2d1d4736f464 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a209d993b425fa98cea4b2d1d4736f464 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa105a8d5293ca2f4fc49ac0754bbebb7 inherit pub_methods_structSDL_1_1TextureBase" id="r_aa105a8d5293ca2f4fc49ac0754bbebb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#aa105a8d5293ca2f4fc49ac0754bbebb7">GetColorMod</a> (Uint8 *r, Uint8 *g, Uint8 *b) const</td></tr>
-<tr class="memdesc:aa105a8d5293ca2f4fc49ac0754bbebb7 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:aa105a8d5293ca2f4fc49ac0754bbebb7 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23949416a2660e80698c962eb64fbe4b inherit pub_methods_structSDL_1_1TextureBase" id="r_a23949416a2660e80698c962eb64fbe4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a23949416a2660e80698c962eb64fbe4b">GetColorMod</a> (float *r, float *g, float *b) const</td></tr>
-<tr class="memdesc:a23949416a2660e80698c962eb64fbe4b inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional color value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a23949416a2660e80698c962eb64fbe4b inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a042892568386935899dda5d596759379 inherit pub_methods_structSDL_1_1TextureBase" id="r_a042892568386935899dda5d596759379"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a042892568386935899dda5d596759379">SetAlphaMod</a> (Uint8 alpha)</td></tr>
-<tr class="memdesc:a042892568386935899dda5d596759379 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a042892568386935899dda5d596759379 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaba7f5cc4b1b47da035e9a72f54537e7 inherit pub_methods_structSDL_1_1TextureBase" id="r_aaba7f5cc4b1b47da035e9a72f54537e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#aaba7f5cc4b1b47da035e9a72f54537e7">SetAlphaMod</a> (float alpha)</td></tr>
-<tr class="memdesc:aaba7f5cc4b1b47da035e9a72f54537e7 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:aaba7f5cc4b1b47da035e9a72f54537e7 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0ad81f7bb0889ef6294f9d880b72a92 inherit pub_methods_structSDL_1_1TextureBase" id="r_aa0ad81f7bb0889ef6294f9d880b72a92"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#aa0ad81f7bb0889ef6294f9d880b72a92">GetAlphaMod</a> () const</td></tr>
-<tr class="memdesc:aa0ad81f7bb0889ef6294f9d880b72a92 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:aa0ad81f7bb0889ef6294f9d880b72a92 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a106c6b4e214e00570a42304167c49593 inherit pub_methods_structSDL_1_1TextureBase" id="r_a106c6b4e214e00570a42304167c49593"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a106c6b4e214e00570a42304167c49593">GetAlphaMod</a> (Uint8 *alpha) const</td></tr>
-<tr class="memdesc:a106c6b4e214e00570a42304167c49593 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a106c6b4e214e00570a42304167c49593 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3712ff2e54245ec2afdd0edf985a0e97 inherit pub_methods_structSDL_1_1TextureBase" id="r_a3712ff2e54245ec2afdd0edf985a0e97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a3712ff2e54245ec2afdd0edf985a0e97">GetAlphaMod</a> (float *alpha) const</td></tr>
-<tr class="memdesc:a3712ff2e54245ec2afdd0edf985a0e97 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
-<tr class="separator:a3712ff2e54245ec2afdd0edf985a0e97 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1f8f02bc0acf54dc2cc06f34032d39f inherit pub_methods_structSDL_1_1TextureBase" id="r_ac1f8f02bc0acf54dc2cc06f34032d39f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#ac1f8f02bc0acf54dc2cc06f34032d39f">SetBlendMode</a> (<a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a> blendMode)</td></tr>
-<tr class="memdesc:ac1f8f02bc0acf54dc2cc06f34032d39f inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the blend mode for a texture, used by <a class="el" href="group__CategoryRender.html#ga6c99864403315a50458e64782ca7a3b4" title="Copy a portion of the texture to the current rendering target at subpixel precision.">RendererBase.RenderTexture()</a>.  <br /></td></tr>
-<tr class="separator:ac1f8f02bc0acf54dc2cc06f34032d39f inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7d577c9f0010596c6019aae9e1085d6 inherit pub_methods_structSDL_1_1TextureBase" id="r_aa7d577c9f0010596c6019aae9e1085d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#aa7d577c9f0010596c6019aae9e1085d6">GetBlendMode</a> () const</td></tr>
-<tr class="memdesc:aa7d577c9f0010596c6019aae9e1085d6 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the blend mode used for texture copy operations.  <br /></td></tr>
-<tr class="separator:aa7d577c9f0010596c6019aae9e1085d6 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae56141046326bc51127077f0a1b340dc inherit pub_methods_structSDL_1_1TextureBase" id="r_ae56141046326bc51127077f0a1b340dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#ae56141046326bc51127077f0a1b340dc">SetScaleMode</a> (<a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> scaleMode)</td></tr>
-<tr class="memdesc:ae56141046326bc51127077f0a1b340dc inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scale mode used for texture scale operations.  <br /></td></tr>
-<tr class="separator:ae56141046326bc51127077f0a1b340dc inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa46d683f6e19cc7d51f0a1effc20cf66 inherit pub_methods_structSDL_1_1TextureBase" id="r_aa46d683f6e19cc7d51f0a1effc20cf66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#aa46d683f6e19cc7d51f0a1effc20cf66">GetScaleMode</a> () const</td></tr>
-<tr class="memdesc:aa46d683f6e19cc7d51f0a1effc20cf66 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the scale mode used for texture scale operations.  <br /></td></tr>
-<tr class="separator:aa46d683f6e19cc7d51f0a1effc20cf66 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9aad2da13892491dfe0ccf34a9a3182a inherit pub_methods_structSDL_1_1TextureBase" id="r_a9aad2da13892491dfe0ccf34a9a3182a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a9aad2da13892491dfe0ccf34a9a3182a">Update</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const void *pixels, int pitch)</td></tr>
-<tr class="memdesc:a9aad2da13892491dfe0ccf34a9a3182a inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the given texture rectangle with new pixel data.  <br /></td></tr>
-<tr class="separator:a9aad2da13892491dfe0ccf34a9a3182a inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50f9fe7bf9c2b14ff7ef5569db0062b5 inherit pub_methods_structSDL_1_1TextureBase" id="r_a50f9fe7bf9c2b14ff7ef5569db0062b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a50f9fe7bf9c2b14ff7ef5569db0062b5">UpdateYUV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch)</td></tr>
-<tr class="memdesc:a50f9fe7bf9c2b14ff7ef5569db0062b5 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar YV12 or IYUV texture with new pixel data.  <br /></td></tr>
-<tr class="separator:a50f9fe7bf9c2b14ff7ef5569db0062b5 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac15cce34a2f643e7d6e2276ccf62d7cd inherit pub_methods_structSDL_1_1TextureBase" id="r_ac15cce34a2f643e7d6e2276ccf62d7cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#ac15cce34a2f643e7d6e2276ccf62d7cd">UpdateNV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch)</td></tr>
-<tr class="memdesc:ac15cce34a2f643e7d6e2276ccf62d7cd inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar NV12 or NV21 texture with new pixels.  <br /></td></tr>
-<tr class="separator:ac15cce34a2f643e7d6e2276ccf62d7cd inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga03f21dd1f8d971c47399a7f17bfb860a inherit pub_methods_structSDL_1_1TextureBase" id="r_ga03f21dd1f8d971c47399a7f17bfb860a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TextureLock.html">TextureLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga03f21dd1f8d971c47399a7f17bfb860a">Lock</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect={}) &amp;</td></tr>
-<tr class="memdesc:ga03f21dd1f8d971c47399a7f17bfb860a inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock a portion of the texture for <b>write-only</b> pixel access.  <br /></td></tr>
-<tr class="separator:ga03f21dd1f8d971c47399a7f17bfb860a inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9755889519beefce7502d042ec49ab1a inherit pub_methods_structSDL_1_1TextureBase" id="r_a9755889519beefce7502d042ec49ab1a"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWidth</b> () const</td></tr>
-<tr class="memdesc:a9755889519beefce7502d042ec49ab1a inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the width in pixels. <br /></td></tr>
-<tr class="separator:a9755889519beefce7502d042ec49ab1a inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfcb86266b6266210224609bc2cf7fad inherit pub_methods_structSDL_1_1TextureBase" id="r_abfcb86266b6266210224609bc2cf7fad"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () const</td></tr>
-<tr class="memdesc:abfcb86266b6266210224609bc2cf7fad inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height in pixels. <br /></td></tr>
-<tr class="separator:abfcb86266b6266210224609bc2cf7fad inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadb19e49d3f7252b8680cad4d9bb3b8f inherit pub_methods_structSDL_1_1TextureBase" id="r_aadb19e49d3f7252b8680cad4d9bb3b8f"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
-<tr class="memdesc:aadb19e49d3f7252b8680cad4d9bb3b8f inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size in pixels. <br /></td></tr>
-<tr class="separator:aadb19e49d3f7252b8680cad4d9bb3b8f inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf2ef1f89812078e92d505eab351eb6f inherit pub_methods_structSDL_1_1TextureBase" id="r_abf2ef1f89812078e92d505eab351eb6f"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormat</b> () const</td></tr>
-<tr class="memdesc:abf2ef1f89812078e92d505eab351eb6f inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel format. <br /></td></tr>
-<tr class="separator:abf2ef1f89812078e92d505eab351eb6f inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextureBase" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextureBase" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextureBase" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextureBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1TextureBase" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top"><a id="afbcdc46caa3c15a1b9c9a116a6e32382" name="afbcdc46caa3c15a1b9c9a116a6e32382"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1TextureBase" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
+<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top"><a id="a6035b9f529e0e8bdfd7174d0cb4f7cd6" name="a6035b9f529e0e8bdfd7174d0cb4f7cd6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1TextureBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Texture * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Texture * resource={})</td></tr>
@@ -315,13 +296,19 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html" title="An efficient driver-specific representation of pixel data.">TextureBase</a> </dd>
+<div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a623c64a7bebf96b55e94dc04e24f0dac" title="Copy constructor.">TextureRef.TextureRef</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac2c68d8aee6027792b70fe2c9957d846" name="ac2c68d8aee6027792b70fe2c9957d846"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2c68d8aee6027792b70fe2c9957d846">&#9670;&#160;</a></span>reset()</h2>
+<a class="el" href="structSDL_1_1TextureRef.html#a623c64a7bebf96b55e94dc04e24f0dac" title="Copy constructor.">TextureRef.TextureRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a623c64a7bebf96b55e94dc04e24f0dac" title="Copy constructor.">TextureRef.TextureRef</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#ac2c68d8aee6027792b70fe2c9957d846" title="Destroy the specified texture.">TextureRef.reset</a></dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="acc4679e5d97a4bc966457c659480af50" name="acc4679e5d97a4bc966457c659480af50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc4679e5d97a4bc966457c659480af50">&#9670;&#160;</a></span>TextureRef() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -330,11 +317,21 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::TextureRef::reset </td>
+          <td class="memname">SDL::TextureRef::TextureRef </td>
           <td>(</td>
-          <td class="paramtype">SDL_Texture *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>file</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -343,15 +340,27 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Passing nullptr or an otherwise invalid texture will set the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> error message to "Invalid texture".</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html#a13f8b564e445e6e1ce001084f1ef405e" title="Load an image from a filesystem path into a software surface.">TextureBase.TextureBase</a> </dd></dl>
+<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a>, otherwise it uses <a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
+    <tr><td class="paramname">file</td><td>a path on the filesystem to load an image from. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga397a442fc685973de352f55a18f80b78" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererRef&amp;, StringParam)</a> </dd></dl>
 
 </div>
 </div>
-<a id="abe7470b635215cac8c28f983f1f34ef9" name="abe7470b635215cac8c28f983f1f34ef9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe7470b635215cac8c28f983f1f34ef9">&#9670;&#160;</a></span>TextureBase() <span class="overload">[1/5]</span></h2>
+<a id="a90010aca4692a73db9a131907b6844d7" name="a90010aca4692a73db9a131907b6844d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90010aca4692a73db9a131907b6844d7">&#9670;&#160;</a></span>TextureRef() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,9 +369,9 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL::TextureBase::TextureBase </td>
+          <td class="memname">SDL::TextureRef::TextureRef </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>
@@ -383,11 +392,11 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#gaf166bd0217b990f6ad26a34298c271c1" title="Load an image from an SDL data source into a software surface.">LoadSurface(IOStreamBase&amp;)</a>, otherwise it uses <a class="el" href="group__CategorySurface.html#gaf9cba1dd8bffadc7a58a04f4cb2a082b" title="Load a BMP image from a seekable SDL data stream.">LoadBMP(IOStreamBase&amp;)</a>.</p>
+<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#ga443f7fa7008eaa678ddb43c5677cfa6e" title="Load an image from an SDL data source into a software surface.">LoadSurface(IOStreamRef&amp;)</a>, otherwise it uses <a class="el" href="group__CategorySurface.html#ga447ce953d663f347712f7c9c688495eb" title="Load a BMP image from a seekable SDL data stream.">LoadBMP(IOStreamRef&amp;)</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamBase.html" title="The read/write operation structure.">IOStreamBase</a> to load an image from. </td></tr>
+    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to load an image from. </td></tr>
   </table>
   </dd>
 </dl>
@@ -398,14 +407,14 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd>LoadTexture(RendererBase&amp;StringParam) </dd>
+<dl class="section see"><dt>See also</dt><dd>LoadTexture(RendererRef&amp;StringParam) </dd>
 <dd>
-<a class="el" href="group__CategoryRender.html#ga629c9bc766766e63273385f9ed926e97" title="Load a BMP texture from a file.">LoadTextureBMP(RendererBase&amp;, StringParam)</a> </dd></dl>
+<a class="el" href="group__CategoryRender.html#ga1609bee148285fd49e3510d2c1cfb8e2" title="Load a BMP texture from a file.">LoadTextureBMP(RendererRef&amp;, StringParam)</a> </dd></dl>
 
 </div>
 </div>
-<a id="ae75937303faa015beb39764560d60a24" name="ae75937303faa015beb39764560d60a24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae75937303faa015beb39764560d60a24">&#9670;&#160;</a></span>TextureBase() <span class="overload">[2/5]</span></h2>
+<a id="a647d0206ed41a70de68b47de18e33e60" name="a647d0206ed41a70de68b47de18e33e60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a647d0206ed41a70de68b47de18e33e60">&#9670;&#160;</a></span>TextureRef() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -414,9 +423,9 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL::TextureBase::TextureBase </td>
+          <td class="memname">SDL::TextureRef::TextureRef </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>
@@ -468,14 +477,14 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html#aadb19e49d3f7252b8680cad4d9bb3b8f" title="Get the size in pixels.">TextureBase.GetSize</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a4e33250b820d1cf745efbad12c24ab39" title="Get the size in pixels.">TextureRef.GetSize</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureBase.html#a9aad2da13892491dfe0ccf34a9a3182a" title="Update the given texture rectangle with new pixel data.">TextureBase.Update</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd></dl>
 
 </div>
 </div>
-<a id="abb1f98e29b59c4b0a84d1acd7e855679" name="abb1f98e29b59c4b0a84d1acd7e855679"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb1f98e29b59c4b0a84d1acd7e855679">&#9670;&#160;</a></span>TextureBase() <span class="overload">[3/5]</span></h2>
+<a id="ae49b7f74e44097f98382f872f5102922" name="ae49b7f74e44097f98382f872f5102922"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae49b7f74e44097f98382f872f5102922">&#9670;&#160;</a></span>TextureRef() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -484,15 +493,70 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL::TextureBase::TextureBase </td>
+          <td class="memname">SDL::TextureRef::TextureRef </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> &amp;&#160;</td>
+          <td class="paramname"><em>surface</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The surface is not modified or freed by this function.</p>
+<p>The TextureAccess hint for the created texture is <code>TEXTUREACCESS_STATIC</code>.</p>
+<p>The pixel format of the created texture may be different from the pixel format of the surface, and can be queried using the prop::Texture.FORMAT_NUMBER property.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
+    <tr><td class="paramname">surface</td><td>the <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure containing pixel data used to fill the texture. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="a2fdb6b1723b9cf62fc8e0648792e5503" name="a2fdb6b1723b9cf62fc8e0648792e5503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fdb6b1723b9cf62fc8e0648792e5503">&#9670;&#160;</a></span>TextureRef() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL::TextureRef::TextureRef </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> &amp;&#160;</td>
           <td class="paramname"><em>props</em>&#160;</td>
         </tr>
         <tr>
@@ -570,20 +634,21 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a8be9675e6bb645926407372794d2cc05" title="Constructs from the underlying resource.">Properties.Properties</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureBase.html#a13f8b564e445e6e1ce001084f1ef405e" title="Load an image from a filesystem path into a software surface.">TextureBase.TextureBase</a> </dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a623c64a7bebf96b55e94dc04e24f0dac" title="Copy constructor.">TextureRef.TextureRef</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureBase.html#a13f8b564e445e6e1ce001084f1ef405e" title="Load an image from a filesystem path into a software surface.">TextureBase.TextureBase</a> </dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a623c64a7bebf96b55e94dc04e24f0dac" title="Copy constructor.">TextureRef.TextureRef</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1TextureRef.html#ac2c68d8aee6027792b70fe2c9957d846" title="Destroy the specified texture.">TextureRef.reset</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureBase.html#aadb19e49d3f7252b8680cad4d9bb3b8f" title="Get the size in pixels.">TextureBase.GetSize</a> </dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a4e33250b820d1cf745efbad12c24ab39" title="Get the size in pixels.">TextureRef.GetSize</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextureBase.html#a9aad2da13892491dfe0ccf34a9a3182a" title="Update the given texture rectangle with new pixel data.">TextureBase.Update</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd></dl>
 
 </div>
 </div>
-<a id="a13f8b564e445e6e1ce001084f1ef405e" name="a13f8b564e445e6e1ce001084f1ef405e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13f8b564e445e6e1ce001084f1ef405e">&#9670;&#160;</a></span>TextureBase() <span class="overload">[4/5]</span></h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af20105a4009e6eb825f065389249d18d" name="af20105a4009e6eb825f065389249d18d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af20105a4009e6eb825f065389249d18d">&#9670;&#160;</a></span>Destroy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -592,21 +657,10 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL::TextureBase::TextureBase </td>
+          <td class="memname">void SDL::TextureRef::Destroy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
-          <td class="paramname"><em>renderer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -615,27 +669,48 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a>, otherwise it uses <a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">file</td><td>a path on the filesystem to load an image from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> with loaded contents on success. </dd></dl>
+<p>Passing nullptr or an otherwise invalid texture will set the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> error message to "Invalid texture".</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a623c64a7bebf96b55e94dc04e24f0dac" title="Copy constructor.">TextureRef.TextureRef</a> </dd></dl>
+
+</div>
+</div>
+<a id="afd7b5d79ce9da63509fd81de8331c15a" name="afd7b5d79ce9da63509fd81de8331c15a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd7b5d79ce9da63509fd81de8331c15a">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SDL::TextureRef::GetAlphaMod </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the current alpha value on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaa875626708fbf7fa5ad03a4c72b97319" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererBase&amp;, StringParam)</a> </dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
 </div>
 </div>
-<a id="afbc5be9b4f73ec5c74a9075766978001" name="afbc5be9b4f73ec5c74a9075766978001"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbc5be9b4f73ec5c74a9075766978001">&#9670;&#160;</a></span>TextureBase() <span class="overload">[5/5]</span></h2>
+<a id="ae77cb5f0ac398b2a3d733d0465950be5" name="ae77cb5f0ac398b2a3d733d0465950be5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae77cb5f0ac398b2a3d733d0465950be5">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -644,16 +719,693 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SDL::TextureBase::TextureBase </td>
+          <td class="memname">void SDL::TextureRef::GetAlphaMod </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a> &amp;&#160;</td>
-          <td class="paramname"><em>renderer</em>, </td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>alpha</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alpha</td><td>a pointer filled in with the current alpha value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a2bb61bb2d9134d38e90939dac7d2cfcf" title="Get the additional color value multiplied into render copy operations.">TextureRef.GetColorMod</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d" title="Set an additional alpha value multiplied into render copy operations.">TextureRef.SetAlphaMod</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7d98ef11d655e5fac5bd30dd82c1f7bf" name="a7d98ef11d655e5fac5bd30dd82c1f7bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d98ef11d655e5fac5bd30dd82c1f7bf">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::GetAlphaMod </td>
+          <td>(</td>
+          <td class="paramtype">Uint8 *&#160;</td>
+          <td class="paramname"><em>alpha</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alpha</td><td>a pointer filled in with the current alpha value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a2bb61bb2d9134d38e90939dac7d2cfcf" title="Get the additional color value multiplied into render copy operations.">TextureRef.GetColorMod</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d" title="Set an additional alpha value multiplied into render copy operations.">TextureRef.SetAlphaMod</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1c0d9b5323e067d355a198125a2911aa" name="a1c0d9b5323e067d355a198125a2911aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c0d9b5323e067d355a198125a2911aa">&#9670;&#160;</a></span>GetBlendMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a> SDL::TextureRef::GetBlendMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the current SDL_BlendMode on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a15e38be82ab2e673b2449238e6e3c9d2" title="Set the blend mode for a texture, used by RendererRef.RenderTexture().">TextureRef.SetBlendMode</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4938c0418670d33daced82df3ebe0d70" name="a4938c0418670d33daced82df3ebe0d70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4938c0418670d33daced82df3ebe0d70">&#9670;&#160;</a></span>GetColorMod() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::GetColorMod </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceBase.html">SurfaceBase</a> &amp;&#160;</td>
-          <td class="paramname"><em>surface</em>&#160;</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>a pointer filled in with the current red color value. </td></tr>
+    <tr><td class="paramname">g</td><td>a pointer filled in with the current green color value. </td></tr>
+    <tr><td class="paramname">b</td><td>a pointer filled in with the current blue color value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a" title="Get the additional alpha value multiplied into render copy operations.">TextureRef.GetAlphaMod</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">TextureRef.SetColorMod</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2bb61bb2d9134d38e90939dac7d2cfcf" name="a2bb61bb2d9134d38e90939dac7d2cfcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bb61bb2d9134d38e90939dac7d2cfcf">&#9670;&#160;</a></span>GetColorMod() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::GetColorMod </td>
+          <td>(</td>
+          <td class="paramtype">Uint8 *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Uint8 *&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Uint8 *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>a pointer filled in with the current red color value. </td></tr>
+    <tr><td class="paramname">g</td><td>a pointer filled in with the current green color value. </td></tr>
+    <tr><td class="paramname">b</td><td>a pointer filled in with the current blue color value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a" title="Get the additional alpha value multiplied into render copy operations.">TextureRef.GetAlphaMod</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">TextureRef.SetColorMod</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0eba1b38e4acb7f2776c4694b858e9e0" name="a0eba1b38e4acb7f2776c4694b858e9e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0eba1b38e4acb7f2776c4694b858e9e0">&#9670;&#160;</a></span>GetMod() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1FColor.html">FColor</a> SDL::TextureRef::GetMod </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the color channels (0-1) on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a" title="Get the additional alpha value multiplied into render copy operations.">GetAlphaMod()</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">SetColorMod()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae1d729152fbe5e32e2f2fdea372dda7a" name="ae1d729152fbe5e32e2f2fdea372dda7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1d729152fbe5e32e2f2fdea372dda7a">&#9670;&#160;</a></span>GetMod() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::GetMod </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1Color.html">Color</a> *&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>a pointer filled in with the current color and alpha mod values. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a" title="Get the additional alpha value multiplied into render copy operations.">GetAlphaMod()</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">SetColorMod()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af4340098ee07622fce4345fcfe86a109" name="af4340098ee07622fce4345fcfe86a109"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4340098ee07622fce4345fcfe86a109">&#9670;&#160;</a></span>GetMod() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::GetMod </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1FColor.html">FColor</a> *&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>a pointer filled in with the current color and alpha mod values. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a" title="Get the additional alpha value multiplied into render copy operations.">GetAlphaMod()</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">SetColorMod()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a35de7a36a162339e8193a33a6d0fc8fa" name="a35de7a36a162339e8193a33a6d0fc8fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35de7a36a162339e8193a33a6d0fc8fa">&#9670;&#160;</a></span>GetProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> SDL::TextureRef::GetProperties </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The following read-only properties are provided by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
+<ul>
+<li><code>prop::Texture.COLORSPACE_NUMBER</code>: an <a class="el" href="classSDL_1_1Colorspace.html" title="Colorspace definitions.">Colorspace</a> value describing the texture colorspace.</li>
+<li><code>prop::Texture.FORMAT_NUMBER</code>: one of the enumerated values in <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a>.</li>
+<li><code>prop::Texture.ACCESS_NUMBER</code>: one of the enumerated values in TextureAccess.</li>
+<li><code>prop::Texture.WIDTH_NUMBER</code>: the width of the texture in pixels.</li>
+<li><code>prop::Texture.HEIGHT_NUMBER</code>: the height of the texture in pixels.</li>
+<li><code>prop::Texture.SDR_WHITE_POINT_FLOAT</code>: for HDR10 and floating point textures, this defines the value of 100% diffuse white, with higher values being displayed in the High Dynamic Range headroom. This defaults to 100 for HDR10 textures and 1.0 for other textures.</li>
+<li><code>prop::Texture.HDR_HEADROOM_FLOAT</code>: for HDR10 and floating point textures, this defines the maximum dynamic range used by the content, in terms of the SDR white point. If this is defined, any values outside the range supported by the display will be scaled into the available HDR headroom, otherwise they are clipped. This defaults to 1.0 for SDR textures, 4.0 for HDR10 textures, and no default for floating point textures.</li>
+</ul>
+<p>With the direct3d11 renderer:</p>
+<ul>
+<li><code>prop::Texture.D3D11_TEXTURE_POINTER</code>: the ID3D11Texture2D associated with the texture</li>
+<li><code>prop::Texture.D3D11_TEXTURE_U_POINTER</code>: the ID3D11Texture2D associated with the U plane of a YUV texture</li>
+<li><code>prop::Texture.D3D11_TEXTURE_V_POINTER</code>: the ID3D11Texture2D associated with the V plane of a YUV texture</li>
+</ul>
+<p>With the direct3d12 renderer:</p>
+<ul>
+<li><code>prop::Texture.D3D12_TEXTURE_POINTER</code>: the ID3D12Resource associated with the texture</li>
+<li><code>prop::Texture.D3D12_TEXTURE_U_POINTER</code>: the ID3D12Resource associated with the U plane of a YUV texture</li>
+<li><code>prop::Texture.D3D12_TEXTURE_V_POINTER</code>: the ID3D12Resource associated with the V plane of a YUV texture</li>
+</ul>
+<p>With the vulkan renderer:</p>
+<ul>
+<li><code>prop::Texture.VULKAN_TEXTURE_NUMBER</code>: the VkImage associated with the texture</li>
+</ul>
+<p>With the opengl renderer:</p>
+<ul>
+<li><code>prop::Texture.OPENGL_TEXTURE_NUMBER</code>: the GLuint texture associated with the texture</li>
+<li><code>prop::Texture.OPENGL_TEXTURE_UV_NUMBER</code>: the GLuint texture associated with the UV plane of an NV12 texture</li>
+<li><code>prop::Texture.OPENGL_TEXTURE_U_NUMBER</code>: the GLuint texture associated with the U plane of a YUV texture</li>
+<li><code>prop::Texture.OPENGL_TEXTURE_V_NUMBER</code>: the GLuint texture associated with the V plane of a YUV texture</li>
+<li><code>prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER</code>: the GLenum for the texture target (<code>GL_TEXTURE_2D</code>, <code>GL_TEXTURE_RECTANGLE_ARB</code>, etc)</li>
+<li><code>prop::Texture.OPENGL_TEX_W_FLOAT</code>: the texture coordinate width of the texture (0.0 - 1.0)</li>
+<li><code>prop::Texture.OPENGL_TEX_H_FLOAT</code>: the texture coordinate height of the texture (0.0 - 1.0)</li>
+</ul>
+<p>With the opengles2 renderer:</p>
+<ul>
+<li><code>prop::Texture.OPENGLES2_TEXTURE_NUMBER</code>: the GLuint texture associated with the texture</li>
+<li><code>prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER</code>: the GLuint texture associated with the UV plane of an NV12 texture</li>
+<li><code>prop::Texture.OPENGLES2_TEXTURE_U_NUMBER</code>: the GLuint texture associated with the U plane of a YUV texture</li>
+<li><code>prop::Texture.OPENGLES2_TEXTURE_V_NUMBER</code>: the GLuint texture associated with the V plane of a YUV texture</li>
+<li><code>prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER</code>: the GLenum for the texture target (<code>GL_TEXTURE_2D</code>, <code>GL_TEXTURE_EXTERNAL_OES</code>, etc)</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>a valid property on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ab59f223366b18d909eac87a27d4a0869" name="ab59f223366b18d909eac87a27d4a0869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab59f223366b18d909eac87a27d4a0869">&#9670;&#160;</a></span>GetRenderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> SDL::TextureRef::GetRenderer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the <a class="el" href="structSDL_1_1RendererRef.html" title="A structure representing rendering state.">RendererRef</a> that created the texture, or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="a00b2ed9876a7c254ded85ca3e9c449fa" name="a00b2ed9876a7c254ded85ca3e9c449fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00b2ed9876a7c254ded85ca3e9c449fa">&#9670;&#160;</a></span>GetScaleMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a> SDL::TextureRef::GetScaleMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the current scale mode on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a5d668791cf04679d3ea38fd32269458f" title="Set the scale mode used for texture scale operations.">TextureRef.SetScaleMode</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac2c68d8aee6027792b70fe2c9957d846" name="ac2c68d8aee6027792b70fe2c9957d846"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2c68d8aee6027792b70fe2c9957d846">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::reset </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Passing nullptr or an otherwise invalid texture will set the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> error message to "Invalid texture".</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a623c64a7bebf96b55e94dc04e24f0dac" title="Copy constructor.">TextureRef.TextureRef</a> </dd></dl>
+
+</div>
+</div>
+<a id="a89d2348cd11dc85b86bd6ea25f9b2fae" name="a89d2348cd11dc85b86bd6ea25f9b2fae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89d2348cd11dc85b86bd6ea25f9b2fae">&#9670;&#160;</a></span>SetAlphaMod() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::SetAlphaMod </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>alpha</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>When this texture is rendered, during the copy operation the source alpha value is modulated by this alpha value according to the following formula:</p>
+<p><code>srcA = srcA * alpha</code></p>
+<p>Alpha modulation is not always supported by the renderer; it will return false if alpha modulation is not supported.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alpha</td><td>the source alpha value multiplied into copy operations. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a" title="Get the additional alpha value multiplied into render copy operations.">TextureRef.GetAlphaMod</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">TextureRef.SetColorMod</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac1a16a0f4479bc6df3f3fb97e7e59a0d" name="ac1a16a0f4479bc6df3f3fb97e7e59a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1a16a0f4479bc6df3f3fb97e7e59a0d">&#9670;&#160;</a></span>SetAlphaMod() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::SetAlphaMod </td>
+          <td>(</td>
+          <td class="paramtype">Uint8&#160;</td>
+          <td class="paramname"><em>alpha</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>When this texture is rendered, during the copy operation the source alpha value is modulated by this alpha value according to the following formula:</p>
+<p><code>srcA = srcA * (alpha / 255)</code></p>
+<p>Alpha modulation is not always supported by the renderer; it will return false if alpha modulation is not supported.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alpha</td><td>the source alpha value multiplied into copy operations. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#afd7b5d79ce9da63509fd81de8331c15a" title="Get the additional alpha value multiplied into render copy operations.">TextureRef.GetAlphaMod</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">TextureRef.SetColorMod</a> </dd></dl>
+
+</div>
+</div>
+<a id="a15e38be82ab2e673b2449238e6e3c9d2" name="a15e38be82ab2e673b2449238e6e3c9d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15e38be82ab2e673b2449238e6e3c9d2">&#9670;&#160;</a></span>SetBlendMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::SetBlendMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryBlendmode.html#ga19319fdd1dbe0d4ced9f5f47b4609962">BlendMode</a>&#160;</td>
+          <td class="paramname"><em>blendMode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If the blend mode is not supported, the closest supported mode is chosen and this function returns false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blendMode</td><td>the BlendMode to use for texture blending. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a1c0d9b5323e067d355a198125a2911aa" title="Get the blend mode used for texture copy operations.">TextureRef.GetBlendMode</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1723d533a5dd3128d45bc6d8553c4111" name="a1723d533a5dd3128d45bc6d8553c4111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1723d533a5dd3128d45bc6d8553c4111">&#9670;&#160;</a></span>SetColorMod() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::SetColorMod </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -667,17 +1419,127 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The surface is not modified or freed by this function.</p>
-<p>The TextureAccess hint for the created texture is <code>TEXTUREACCESS_STATIC</code>.</p>
-<p>The pixel format of the created texture may be different from the pixel format of the surface, and can be queried using the prop::Texture.FORMAT_NUMBER property.</p>
+<p>When this texture is rendered, during the copy operation each source color channel is modulated by the appropriate color value according to the following formula:</p>
+<p><code>srcC = srcC * color</code></p>
+<p><a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> modulation is not always supported by the renderer; it will return false if color modulation is not supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">renderer</td><td>the rendering context. </td></tr>
-    <tr><td class="paramname">surface</td><td>the <a class="el" href="structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting.">SurfaceBase</a> structure containing pixel data used to fill the texture. </td></tr>
+    <tr><td class="paramname">r</td><td>the red color value multiplied into copy operations. </td></tr>
+    <tr><td class="paramname">g</td><td>the green color value multiplied into copy operations. </td></tr>
+    <tr><td class="paramname">b</td><td>the blue color value multiplied into copy operations. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a2bb61bb2d9134d38e90939dac7d2cfcf" title="Get the additional color value multiplied into render copy operations.">TextureRef.GetColorMod</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d" title="Set an additional alpha value multiplied into render copy operations.">TextureRef.SetAlphaMod</a> </dd></dl>
+
+</div>
+</div>
+<a id="a32d80a522dfcc680d32a161edfef3711" name="a32d80a522dfcc680d32a161edfef3711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32d80a522dfcc680d32a161edfef3711">&#9670;&#160;</a></span>SetColorMod() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::SetColorMod </td>
+          <td>(</td>
+          <td class="paramtype">Uint8&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Uint8&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Uint8&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>When this texture is rendered, during the copy operation each source color channel is modulated by the appropriate color value according to the following formula:</p>
+<p><code>srcC = srcC * (color / 255)</code></p>
+<p><a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> modulation is not always supported by the renderer; it will return false if color modulation is not supported.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>the red color value multiplied into copy operations. </td></tr>
+    <tr><td class="paramname">g</td><td>the green color value multiplied into copy operations. </td></tr>
+    <tr><td class="paramname">b</td><td>the blue color value multiplied into copy operations. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a2bb61bb2d9134d38e90939dac7d2cfcf" title="Get the additional color value multiplied into render copy operations.">TextureRef.GetColorMod</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d" title="Set an additional alpha value multiplied into render copy operations.">TextureRef.SetAlphaMod</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2b304fe0c0c5bdacc9056372623027a1" name="a2b304fe0c0c5bdacc9056372623027a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b304fe0c0c5bdacc9056372623027a1">&#9670;&#160;</a></span>SetMod() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::SetMod </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>When this texture is rendered, during the copy operation each source color and alpha channels are modulated by the appropriate color value according to the following formula: </p><pre class="fragment"> srcC = srcC * (color / 255)
+ srcA = srcA * (alpha / 255)
+</pre><p> <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is not always supported by the renderer; it will return false if either modulation is not supported.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the color and alpha channel values multiplied into copy operations. </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
@@ -689,8 +1551,329 @@ constexpr SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a id="a5336c8f6fad523de4e77f27100b01399" name="a5336c8f6fad523de4e77f27100b01399"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5336c8f6fad523de4e77f27100b01399">&#9670;&#160;</a></span>SetMod() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::SetMod </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1FColor.html">FColor</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>When this texture is rendered, during the copy operation each source color and alpha channels are modulated by the appropriate color value according to the following formula: </p><pre class="fragment"> srcC = srcC * (color / 255)
+ srcA = srcA * (alpha / 255)
+</pre><p> <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is not always supported by the renderer; it will return false if either modulation is not supported.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the color and alpha channel values multiplied into copy operations. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="a5d668791cf04679d3ea38fd32269458f" name="a5d668791cf04679d3ea38fd32269458f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d668791cf04679d3ea38fd32269458f">&#9670;&#160;</a></span>SetScaleMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::SetScaleMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d">ScaleMode</a>&#160;</td>
+          <td class="paramname"><em>scaleMode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The default texture scale mode is SCALEMODE_LINEAR.</p>
+<p>If the scale mode is not supported, the closest supported mode is chosen.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scaleMode</td><td>the ScaleMode to use for texture scaling. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a00b2ed9876a7c254ded85ca3e9c449fa" title="Get the scale mode used for texture scale operations.">TextureRef.GetScaleMode</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5838d6f91777e95139ad31798ab554a1" name="a5838d6f91777e95139ad31798ab554a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5838d6f91777e95139ad31798ab554a1">&#9670;&#160;</a></span>Update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::Update </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt;&#160;</td>
+          <td class="paramname"><em>rect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>pixels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pitch</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The pixel data must be in the pixel format of the texture, which can be queried using the prop::Texture.FORMAT_NUMBER property.</p>
+<p>This is a fairly slow function, intended for use with static textures that do not change often.</p>
+<p>If the texture is intended to be updated often, it is preferred to create the texture as streaming and use the locking functions referenced below. While this function will work with streaming textures, for optimization reasons you may not get the pixels back if you lock the texture afterward.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>an <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure representing the area to update, or nullptr to update the entire texture. </td></tr>
+    <tr><td class="paramname">pixels</td><td>the raw pixel data in the format of the texture. </td></tr>
+    <tr><td class="paramname">pitch</td><td>the number of bytes in a row of pixel data, including padding between lines. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga2942fc39824ae898d51dcc7b11dc2210" title="Lock a portion of the texture for write-only pixel access.">TextureRef.Lock</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1TextureLock.html#a64d4299d0b3b140db84ad04e380d6044" title="Unlock a texture, uploading the changes to video memory, if needed.">TextureLock.Unlock</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a1b6242d67d6c0edf4be180dea494324c" title="Update a rectangle within a planar NV12 or NV21 texture with new pixels.">TextureRef.UpdateNV</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a9c9ca961bb5cca2539fc7f288f97097a" title="Update a rectangle within a planar YV12 or IYUV texture with new pixel data.">TextureRef.UpdateYUV</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1b6242d67d6c0edf4be180dea494324c" name="a1b6242d67d6c0edf4be180dea494324c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b6242d67d6c0edf4be180dea494324c">&#9670;&#160;</a></span>UpdateNV()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::UpdateNV </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt;&#160;</td>
+          <td class="paramname"><em>rect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Uint8 *&#160;</td>
+          <td class="paramname"><em>Yplane</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Ypitch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Uint8 *&#160;</td>
+          <td class="paramname"><em>UVplane</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>UVpitch</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>You can use <a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update()</a> as long as your pixel data is a contiguous block of NV12/21 planes in the proper order, but this function is available if your pixel data is not contiguous.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>a pointer to the rectangle of pixels to update, or nullptr to update the entire texture. </td></tr>
+    <tr><td class="paramname">Yplane</td><td>the raw pixel data for the Y plane. </td></tr>
+    <tr><td class="paramname">Ypitch</td><td>the number of bytes between rows of pixel data for the Y plane. </td></tr>
+    <tr><td class="paramname">UVplane</td><td>the raw pixel data for the UV plane. </td></tr>
+    <tr><td class="paramname">UVpitch</td><td>the number of bytes between rows of pixel data for the UV plane. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a9c9ca961bb5cca2539fc7f288f97097a" title="Update a rectangle within a planar YV12 or IYUV texture with new pixel data.">TextureRef.UpdateYUV</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9c9ca961bb5cca2539fc7f288f97097a" name="a9c9ca961bb5cca2539fc7f288f97097a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c9ca961bb5cca2539fc7f288f97097a">&#9670;&#160;</a></span>UpdateYUV()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextureRef::UpdateYUV </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt;&#160;</td>
+          <td class="paramname"><em>rect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Uint8 *&#160;</td>
+          <td class="paramname"><em>Yplane</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Ypitch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Uint8 *&#160;</td>
+          <td class="paramname"><em>Uplane</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Upitch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Uint8 *&#160;</td>
+          <td class="paramname"><em>Vplane</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Vpitch</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>You can use <a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update()</a> as long as your pixel data is a contiguous block of Y and U/V planes in the proper order, but this function is available if your pixel data is not contiguous.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>a pointer to the rectangle of pixels to update, or nullptr to update the entire texture. </td></tr>
+    <tr><td class="paramname">Yplane</td><td>the raw pixel data for the Y plane. </td></tr>
+    <tr><td class="paramname">Ypitch</td><td>the number of bytes between rows of pixel data for the Y plane. </td></tr>
+    <tr><td class="paramname">Uplane</td><td>the raw pixel data for the U plane. </td></tr>
+    <tr><td class="paramname">Upitch</td><td>the number of bytes between rows of pixel data for the U plane. </td></tr>
+    <tr><td class="paramname">Vplane</td><td>the raw pixel data for the V plane. </td></tr>
+    <tr><td class="paramname">Vpitch</td><td>the number of bytes between rows of pixel data for the V plane. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureRef.html#a1b6242d67d6c0edf4be180dea494324c" title="Update a rectangle within a planar NV12 or NV21 texture with new pixels.">TextureRef.UpdateNV</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureRef.html#a5838d6f91777e95139ad31798ab554a1" title="Update the given texture rectangle with new pixel data.">TextureRef.Update</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a></li>
+<li>SDL3pp/<a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

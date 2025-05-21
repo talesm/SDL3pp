@@ -1,9 +1,0 @@
-<map id="SDL::TextureBase" name="SDL::TextureBase">
-<area shape="rect" id="Node000001" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="15,93,150,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1TextureRef.html" title="Handle to a non owned texture." alt="" coords="20,167,145,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1Texture.html" title="Handle to an owned texture." alt="" coords="31,240,134,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
-</map>

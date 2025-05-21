@@ -1,9 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1TrayBase.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="208,13,323,38"/>
-<area shape="poly" id="edge77_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1TrayRef.html" title="Handle to a non owned tray." alt="" coords="371,13,475,38"/>
-<area shape="poly" id="edge78_Node000001_Node000002" title=" " alt="" coords="336,23,370,23,370,28,336,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Tray.html" title="Handle to an owned tray." alt="" coords="523,13,605,38"/>
-<area shape="poly" id="edge79_Node000002_Node000003" title=" " alt="" coords="488,23,522,23,522,28,488,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="208,13,312,38"/>
+<area shape="poly" id="edge56_Node000000_Node000001" title=" " alt="" coords="173,23,208,23,208,28,173,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1Tray.html" title="Handle to an owned tray." alt="" coords="360,13,443,38"/>
+<area shape="poly" id="edge57_Node000001_Node000002" title=" " alt="" coords="326,23,360,23,360,28,326,28"/>
 </map>

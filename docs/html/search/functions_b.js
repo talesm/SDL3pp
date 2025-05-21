@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['makecurrent_0',['MakeCurrent',['../structSDL_1_1GLContextBase.html#abe7815071638a42310da00c82c3b272e',1,'SDL::GLContextBase']]],
+  ['makecurrent_0',['MakeCurrent',['../structSDL_1_1GLContextRef.html#ac378d9839d895485868403616f58efe8',1,'SDL::GLContextRef']]],
   ['malloc_1',['malloc',['../group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70',1,'SDL']]],
   ['map_2',['map',['../classSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880',1,'SDL::PixelFormat::Map()'],['../structSDL_1_1Color.html#a152048e6de3cdaae27438893d5c4bfac',1,'SDL::Color::Map()']]],
-  ['mapcolor_3',['mapcolor',['../structSDL_1_1SurfaceBase.html#a788252ffebfba64d8239ac7af3b667e8',1,'SDL::SurfaceBase::MapColor(SDL_Color color) const'],['../structSDL_1_1SurfaceBase.html#ac3b20a8fb7b7a54a72324d420d178d90',1,'SDL::SurfaceBase::MapColor(Uint8 r, Uint8 g, Uint8 b) const'],['../structSDL_1_1SurfaceBase.html#a1888f4ce586ceead740d77d5a96c75a8',1,'SDL::SurfaceBase::MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const']]],
-  ['maprgb_4',['MapRGB',['../group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c',1,'SDL']]],
-  ['maprgba_5',['MapRGBA',['../group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4',1,'SDL']]],
+  ['mapcolor_3',['mapcolor',['../structSDL_1_1SurfaceRef.html#a8e52373eccd909bc58357160d05112c7',1,'SDL::SurfaceRef::MapColor(SDL_Color color) const'],['../structSDL_1_1SurfaceRef.html#a42e9cc0ae405df54c7efac508b9322a7',1,'SDL::SurfaceRef::MapColor(Uint8 r, Uint8 g, Uint8 b) const'],['../structSDL_1_1SurfaceRef.html#af57c906cabe52ed0e3f5833d16a5b2d4',1,'SDL::SurfaceRef::MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const']]],
+  ['maprgb_4',['MapRGB',['../group__CategoryPixels.html#gaffd17bffce7d22dd94ab1dc8257af1b9',1,'SDL']]],
+  ['maprgba_5',['MapRGBA',['../group__CategoryPixels.html#ga771b5a63cb9c353eb4e51f3f0d65040d',1,'SDL']]],
   ['max_6',['max',['../group__CategoryStdinc.html#ga74fda1cb69f4e000dc8a42aba05136a0',1,'SDL']]],
-  ['maximize_7',['Maximize',['../structSDL_1_1WindowBase.html#a04d27ca9da0a1abbc510513cc77e8044',1,'SDL::WindowBase']]],
-  ['measurestring_8',['MeasureString',['../structSDL_1_1FontBase.html#a9d2625f8807e14f9277f729f4819ca52',1,'SDL::FontBase']]],
+  ['maximize_7',['Maximize',['../structSDL_1_1WindowRef.html#a39039f50fb10131fd59a9200fc92024e',1,'SDL::WindowRef']]],
+  ['measurestring_8',['MeasureString',['../structSDL_1_1FontRef.html#ae0feb5ba458ea229b62ee932f1db2fe0',1,'SDL::FontRef']]],
   ['memcmp_9',['memcmp',['../group__CategoryStdinc.html#ga1713911979192a927ee8202ad4ed478b',1,'SDL']]],
   ['memcpy_10',['memcpy',['../group__CategoryStdinc.html#gafe27508f0dcd3fb7902725b46f1c7e15',1,'SDL']]],
   ['memmove_11',['memmove',['../group__CategoryStdinc.html#ga166c29b5162d190b0002720452a5ef43',1,'SDL']]],
@@ -18,13 +18,12 @@ var searchData=
   ['memset4_15',['memset4',['../group__CategoryStdinc.html#ga8e06e75cea4ef203bf1f3c967f8bff54',1,'SDL']]],
   ['messagebox_16',['messagebox',['../structSDL_1_1MessageBox.html#a8523f0200e08cc16913d84014adf42e0',1,'SDL::MessageBox::MessageBox(MessageBoxFlags flags, OptionalWindow window, const char *title, const char *message, std::span&lt; const MessageBoxButtonData &gt; buttons, OptionalRef&lt; const MessageBoxColorScheme &gt; colorScheme)'],['../structSDL_1_1MessageBox.html#a761e3c246f031304d5c26b5a2f509b47',1,'SDL::MessageBox::MessageBox(const SDL_MessageBoxData &amp;messageBox={})']]],
   ['min_17',['min',['../group__CategoryStdinc.html#ga37591dc3dcb6bb89de19a61acdec4ef3',1,'SDL']]],
-  ['minimize_18',['Minimize',['../structSDL_1_1WindowBase.html#ac1fc6049741099d2d3f132821acf2786',1,'SDL::WindowBase']]],
+  ['minimize_18',['Minimize',['../structSDL_1_1WindowRef.html#abcc112068b01ccaa283a7d49ea1ff3ad',1,'SDL::WindowRef']]],
   ['mixaudio_19',['mixaudio',['../group__CategoryAudio.html#gaaa8a066451543172b07d02bf4eff8882',1,'SDL::MixAudio(Uint8 *dst, SourceBytes src, AudioFormat format, float volume)'],['../group__CategoryAudio.html#ga90ebbeaafbf2f69bbd771abbd5b94f23',1,'SDL::MixAudio(TargetBytes dst, SourceBytes src, AudioFormat format, float volume)']]],
   ['modf_20',['modf',['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL::modf(double x, double *y)'],['../group__CategoryStdinc.html#ga5a30a1c10942df28de78ce3f482dec53',1,'SDL::modf(float x, float *y)']]],
   ['mostsignificantbitindex32_21',['MostSignificantBitIndex32',['../group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee',1,'SDL']]],
   ['murmur3_5f32_22',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
-  ['mustlock_23',['MustLock',['../structSDL_1_1SurfaceBase.html#ac7835f8bf8a54fa61a472a3154e3cbf2',1,'SDL::SurfaceBase']]],
+  ['mustlock_23',['MustLock',['../structSDL_1_1SurfaceRef.html#a5030bf180d394effdc2ad46615b305ea',1,'SDL::SurfaceRef']]],
   ['mutex_24',['mutex',['../structSDL_1_1Mutex.html#ab2499a12c78cb8a0febe5de1cb005f87',1,'SDL::Mutex::Mutex(Mutex &amp;&amp;other)=default'],['../structSDL_1_1Mutex.html#a20ef1e6a72b08ce1debf049991351aeb',1,'SDL::Mutex::Mutex(SDL_Mutex *resource={})']]],
-  ['mutexbase_25',['mutexbase',['../structSDL_1_1MutexRef.html#ada5874fdfcff15ea7110a634f0afd3ff',1,'SDL::MutexRef::MutexBase()'],['../structSDL_1_1MutexBase.html#ada5874fdfcff15ea7110a634f0afd3ff',1,'SDL::MutexBase::MutexBase()']]],
-  ['mutexref_26',['mutexref',['../structSDL_1_1Mutex.html#a894130d20d6e577086ebe8a40f635ffb',1,'SDL::Mutex::MutexRef(MutexRef &amp;&amp;other)'],['../structSDL_1_1Mutex.html#a6f3657808b21c59e04d7f3277a48d710',1,'SDL::Mutex::MutexRef(const MutexRef &amp;other)'],['../structSDL_1_1MutexRef.html#a894130d20d6e577086ebe8a40f635ffb',1,'SDL::MutexRef::MutexRef(MutexRef &amp;&amp;other)'],['../structSDL_1_1MutexRef.html#a6f3657808b21c59e04d7f3277a48d710',1,'SDL::MutexRef::MutexRef(const MutexRef &amp;other)']]]
+  ['mutexref_25',['mutexref',['../structSDL_1_1Mutex.html#ae57f25d6aa8405454d57c8d0eb5cbb16',1,'SDL::Mutex::MutexRef()'],['../structSDL_1_1Mutex.html#a894130d20d6e577086ebe8a40f635ffb',1,'SDL::Mutex::MutexRef(MutexRef &amp;&amp;other)'],['../structSDL_1_1Mutex.html#a6f3657808b21c59e04d7f3277a48d710',1,'SDL::Mutex::MutexRef(const MutexRef &amp;other)'],['../structSDL_1_1MutexRef.html#ae57f25d6aa8405454d57c8d0eb5cbb16',1,'SDL::MutexRef::MutexRef()'],['../structSDL_1_1MutexRef.html#a894130d20d6e577086ebe8a40f635ffb',1,'SDL::MutexRef::MutexRef(MutexRef &amp;&amp;other)'],['../structSDL_1_1MutexRef.html#a6f3657808b21c59e04d7f3277a48d710',1,'SDL::MutexRef::MutexRef(const MutexRef &amp;other)']]]
 ];

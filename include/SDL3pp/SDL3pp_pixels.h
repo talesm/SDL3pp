@@ -74,9 +74,6 @@ namespace SDL {
 struct Color;
 
 // Forward decl
-struct PaletteBase;
-
-// Forward decl
 struct PaletteRef;
 
 // Forward decl
@@ -1946,13 +1943,38 @@ struct FColor : SDL_FColor
  *
  * @cat resource
  *
- * @sa PaletteBase.SetColors
+ * @sa PaletteRef.SetColors
  * @sa Palette
  * @sa PaletteRef
  */
-struct PaletteBase : Resource<SDL_Palette*>
+struct PaletteRef : Resource<SDL_Palette*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr PaletteRef(const PaletteRef& other)
+    : PaletteRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr PaletteRef(PaletteRef&& other)
+    : PaletteRef(other.release())
+  {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  PaletteRef& operator=(PaletteRef other)
+  {
+    release(other.release());
+    return *this;
+  }
 
   /**
    * Create a palette structure with the specified number of color entries.
@@ -1967,10 +1989,10 @@ struct PaletteBase : Resource<SDL_Palette*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteBase.SetColors
-   * @sa SurfaceBase.SetPalette
+   * @sa PaletteRef.SetColors
+   * @sa SurfaceRef.SetPalette
    */
-  PaletteBase(int ncolors)
+  PaletteRef(int ncolors)
     : Resource(CheckError(SDL_CreatePalette(ncolors)))
   {
   }
@@ -2016,52 +2038,9 @@ struct PaletteBase : Resource<SDL_Palette*>
     return SDL_SetPaletteColors(
       get(), colors.data(), firstcolor, colors.size());
   }
-};
-
-/**
- * Handle to a non owned palette
- *
- * @cat resource
- *
- * @sa PaletteBase
- * @sa Palette
- */
-struct PaletteRef : PaletteBase
-{
-  using PaletteBase::PaletteBase;
 
   /**
-   * Copy constructor.
-   */
-  constexpr PaletteRef(const PaletteRef& other)
-    : PaletteBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr PaletteRef(PaletteRef&& other)
-    : PaletteBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~PaletteRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  PaletteRef& operator=(PaletteRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Free a palette created with PaletteBase.PaletteBase().
+   * Free a palette created with PaletteRef.PaletteRef().
    *
    * After calling, this object becomes empty.
    *
@@ -2070,7 +2049,21 @@ struct PaletteRef : PaletteBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteBase.PaletteBase
+   * @sa PaletteRef.PaletteRef
+   */
+  void Destroy() { reset(); }
+
+  /**
+   * Free a palette created with PaletteRef.PaletteRef().
+   *
+   * After calling, this object becomes empty.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PaletteRef.PaletteRef
    */
   void reset(SDL_Palette* newResource = {})
   {
@@ -2083,7 +2076,7 @@ struct PaletteRef : PaletteBase
  *
  * @cat resource
  *
- * @sa PaletteBase
+ * @sa PaletteRef
  * @sa PaletteRef
  */
 struct Palette : PaletteRef
@@ -2154,10 +2147,10 @@ struct Palette : PaletteRef
  * @sa PixelFormat.GetDetails
  * @sa GetRGB
  * @sa MapRGBA
- * @sa SurfaceBase.MapColor
+ * @sa SurfaceRef.MapColor
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
-                     const PaletteBase& palette,
+                     const PaletteRef& palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
@@ -2200,10 +2193,10 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
  * @sa PixelFormat.GetDetails
  * @sa GetRGBA
  * @sa MapRGB
- * @sa SurfaceBase.MapColor
+ * @sa SurfaceRef.MapColor
  */
 inline Uint32 MapRGBA(const PixelFormatDetails& format,
-                      const PaletteBase& palette,
+                      const PaletteRef& palette,
                       Uint8 r,
                       Uint8 g,
                       Uint8 b,
@@ -2240,7 +2233,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  */
 inline void GetRGB(Uint32 pixel,
                    const PixelFormatDetails& format,
-                   const PaletteBase& palette,
+                   const PaletteRef& palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
@@ -2280,7 +2273,7 @@ inline void GetRGB(Uint32 pixel,
  */
 inline void GetRGBA(Uint32 pixel,
                     const PixelFormatDetails& format,
-                    const PaletteBase& palette,
+                    const PaletteRef& palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,

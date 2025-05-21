@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_5fdestroy_0',['m_destroy',['../structSDL_1_1TextEngineBase.html#a3aa75fc33ada621619438a2a095fc223',1,'SDL::TextEngineBase']]],
+  ['m_5fdestroy_0',['m_destroy',['../structSDL_1_1TextEngineRef.html#a183f67c796ecbf73a26b656155bcfa39',1,'SDL::TextEngineRef']]],
   ['matrix_5fcoefficients_5fbt2020_5fcl_1',['MATRIX_COEFFICIENTS_BT2020_CL',['../group__CategoryPixels.html#ga64fb158d3fa153783bc936a5af03998e',1,'SDL']]],
   ['matrix_5fcoefficients_5fbt2020_5fncl_2',['MATRIX_COEFFICIENTS_BT2020_NCL',['../group__CategoryPixels.html#ga587f4b8a3af31a87671b6f5f313ab945',1,'SDL']]],
   ['matrix_5fcoefficients_5fbt470bg_3',['MATRIX_COEFFICIENTS_BT470BG',['../group__CategoryPixels.html#ga58f14ec6c6d059ba46e8529d6cab88e9',1,'SDL']]],

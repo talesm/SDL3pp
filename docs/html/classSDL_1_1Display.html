@@ -152,9 +152,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a20f5e92fea06720484e9e5266da9b536" id="r_a20f5e92fea06720484e9e5266da9b536"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Display.html">Display</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Display.html#a20f5e92fea06720484e9e5266da9b536">GetForRect</a> (const SDL_Rect &amp;rect)</td></tr>
 <tr class="memdesc:a20f5e92fea06720484e9e5266da9b536"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the display primarily containing a rect.  <br /></td></tr>
 <tr class="separator:a20f5e92fea06720484e9e5266da9b536"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24c51fc53647f95c19cac6e8f50d5f14" id="r_a24c51fc53647f95c19cac6e8f50d5f14"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Display.html">Display</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Display.html#a24c51fc53647f95c19cac6e8f50d5f14">GetForWindow</a> (<a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a> &amp;window)</td></tr>
-<tr class="memdesc:a24c51fc53647f95c19cac6e8f50d5f14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the display associated with a window.  <br /></td></tr>
-<tr class="separator:a24c51fc53647f95c19cac6e8f50d5f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a631475c40c8e53e416f8f832bb197f92" id="r_a631475c40c8e53e416f8f832bb197f92"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Display.html">Display</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Display.html#a631475c40c8e53e416f8f832bb197f92">GetForWindow</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> &amp;window)</td></tr>
+<tr class="memdesc:a631475c40c8e53e416f8f832bb197f92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the display associated with a window.  <br /></td></tr>
+<tr class="separator:a631475c40c8e53e416f8f832bb197f92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>If the display is disconnected and reconnected, it will get a new ID.</p>
@@ -353,11 +353,11 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>The content scale is the expected scale for content based on the DPI settings of the display. For example, a 4K display might have a 2.0 (200%) display scale, which means that the user expects UI elements to be twice as big on this display, to aid in readability.</p>
-<p>After window creation, <a class="el" href="structSDL_1_1WindowBase.html#ab0ef612f827f8a6aa2f99ca7a8484025" title="Get the content display scale relative to a window&#39;s pixel size.">WindowBase.GetDisplayScale()</a> should be used to query the content scale factor for individual windows instead of querying the display for a window and calling this function, as the per-window content scale factor may differ from the base value of the display it is on, particularly on high-DPI and/or multi-monitor desktop configurations.</p>
+<p>After window creation, <a class="el" href="structSDL_1_1WindowRef.html#a057eecdbd9d4c0bd76ef40cbe9320c47" title="Get the content display scale relative to a window&#39;s pixel size.">WindowRef.GetDisplayScale()</a> should be used to query the content scale factor for individual windows instead of querying the display for a window and calling this function, as the per-window content scale factor may differ from the base value of the display it is on, particularly on high-DPI and/or multi-monitor desktop configurations.</p>
 <dl class="section return"><dt>Returns</dt><dd>the content scale of the display, or 0.0f on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#ab0ef612f827f8a6aa2f99ca7a8484025" title="Get the content display scale relative to a window&#39;s pixel size.">WindowBase.GetDisplayScale</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowRef.html#a057eecdbd9d4c0bd76ef40cbe9320c47" title="Get the content display scale relative to a window&#39;s pixel size.">WindowRef.GetDisplayScale</a> </dd>
 <dd>
 <a class="el" href="classSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll</a> </dd></dl>
 
@@ -538,8 +538,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a24c51fc53647f95c19cac6e8f50d5f14" name="a24c51fc53647f95c19cac6e8f50d5f14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24c51fc53647f95c19cac6e8f50d5f14">&#9670;&#160;</a></span>GetForWindow()</h2>
+<a id="a631475c40c8e53e416f8f832bb197f92" name="a631475c40c8e53e416f8f832bb197f92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a631475c40c8e53e416f8f832bb197f92">&#9670;&#160;</a></span>GetForWindow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -550,7 +550,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">static <a class="el" href="classSDL_1_1Display.html">Display</a> SDL::Display::GetForWindow </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> &amp;&#160;</td>
           <td class="paramname"><em>window</em></td><td>)</td>
           <td></td>
         </tr>

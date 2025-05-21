@@ -76,25 +76,24 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="structSDL_1_1TextEngineRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::TextEngineRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a> &raquo; <a class="el" href="group__CategorySDLTTF.html">True type font support</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Handle to a non owned textEngine.  
+<p>A text engine used to create text objects.  
  <a href="structSDL_1_1TextEngineRef.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for SDL::TextEngineRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1TextEngineRef__inherit__graph.png" border="0" usemap="#aSDL_1_1TextEngineRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TextEngineRef_inherit__map" id="aSDL_1_1TextEngineRef_inherit__map">
-<area shape="rect" title="Handle to a non owned textEngine." alt="" coords="11,167,159,192"/>
-<area shape="rect" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine." alt="" coords="21,240,148,265"/>
-<area shape="poly" title=" " alt="" coords="87,206,87,240,82,240,82,206"/>
-<area shape="rect" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects." alt="" coords="5,93,164,119"/>
-<area shape="poly" title=" " alt="" coords="87,132,87,167,82,167,82,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="7,5,162,45"/>
-<area shape="poly" title=" " alt="" coords="87,59,87,93,82,93,82,59"/>
+<area shape="rect" title="A text engine used to create text objects." alt="" coords="9,93,157,119"/>
+<area shape="rect" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine." alt="" coords="19,167,146,192"/>
+<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -108,51 +107,42 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (<a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a19648977a42e885ae0486c14464909c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a19648977a42e885ae0486c14464909c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a809553a3ff57acbb3b9757ffdbe58fa3" id="r_a809553a3ff57acbb3b9757ffdbe58fa3"><td class="memItemLeft" align="right" valign="top"><a id="a809553a3ff57acbb3b9757ffdbe58fa3" name="a809553a3ff57acbb3b9757ffdbe58fa3"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~TextEngineRef</b> ()=default</td></tr>
-<tr class="memdesc:a809553a3ff57acbb3b9757ffdbe58fa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:a809553a3ff57acbb3b9757ffdbe58fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a151b48a7c30a79eeb8d6490859d87340" id="r_a151b48a7c30a79eeb8d6490859d87340"><td class="memItemLeft" align="right" valign="top"><a id="a151b48a7c30a79eeb8d6490859d87340" name="a151b48a7c30a79eeb8d6490859d87340"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
+<tr class="memdesc:a151b48a7c30a79eeb8d6490859d87340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
+<tr class="separator:a151b48a7c30a79eeb8d6490859d87340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabcfa084fd4cc868095d635ef51b85b2" id="r_aabcfa084fd4cc868095d635ef51b85b2"><td class="memItemLeft" align="right" valign="top"><a id="aabcfa084fd4cc868095d635ef51b85b2" name="aabcfa084fd4cc868095d635ef51b85b2"></a>
 <a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> other)</td></tr>
 <tr class="memdesc:aabcfa084fd4cc868095d635ef51b85b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:aabcfa084fd4cc868095d635ef51b85b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab37824219f55056f023744530683cf03" id="r_ab37824219f55056f023744530683cf03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineRef.html#ab37824219f55056f023744530683cf03">SetGPUWinding</a> (<a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a> winding)</td></tr>
+<tr class="memdesc:ab37824219f55056f023744530683cf03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextRef.html#a94afbdaef01a909da9dbe9777b5242ac" title="Get the geometry data needed for drawing the text.">TextRef.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
+<tr class="separator:ab37824219f55056f023744530683cf03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a082852df49f3dbf6e24eff7b8546c28f" id="r_a082852df49f3dbf6e24eff7b8546c28f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineRef.html#a082852df49f3dbf6e24eff7b8546c28f">GetGPUWinding</a> () const</td></tr>
+<tr class="memdesc:a082852df49f3dbf6e24eff7b8546c28f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextRef.html#a94afbdaef01a909da9dbe9777b5242ac" title="Get the geometry data needed for drawing the text.">TextRef.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
+<tr class="separator:a082852df49f3dbf6e24eff7b8546c28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a967eb00b8b07787e1c9fa3600d88b306" id="r_a967eb00b8b07787e1c9fa3600d88b306"><td class="memItemLeft" align="right" valign="top"><a id="a967eb00b8b07787e1c9fa3600d88b306" name="a967eb00b8b07787e1c9fa3600d88b306"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> (TTF_TextEngine *newResource={})</td></tr>
-<tr class="memdesc:a967eb00b8b07787e1c9fa3600d88b306"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees up <a class="el" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects.">TextEngineBase</a>. <br /></td></tr>
+<tr class="memdesc:a967eb00b8b07787e1c9fa3600d88b306"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees up <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a>. <br /></td></tr>
 <tr class="separator:a967eb00b8b07787e1c9fa3600d88b306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5397d0be14fca29a3f94f228dc784e61" id="r_a5397d0be14fca29a3f94f228dc784e61"><td class="memItemLeft" align="right" valign="top"><a id="a5397d0be14fca29a3f94f228dc784e61" name="a5397d0be14fca29a3f94f228dc784e61"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineBase</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
-<tr class="memdesc:a5397d0be14fca29a3f94f228dc784e61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
-<tr class="separator:a5397d0be14fca29a3f94f228dc784e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1TextEngineBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TextEngineBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TextEngineBase.html">SDL::TextEngineBase</a></td></tr>
-<tr class="memitem:a5397d0be14fca29a3f94f228dc784e61 inherit pub_methods_structSDL_1_1TextEngineBase" id="r_a5397d0be14fca29a3f94f228dc784e61"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineBase</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
-<tr class="memdesc:a5397d0be14fca29a3f94f228dc784e61 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
-<tr class="separator:a5397d0be14fca29a3f94f228dc784e61 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a333eaf22356d937f9e21be4a4d3e4c84 inherit pub_methods_structSDL_1_1TextEngineBase" id="r_a333eaf22356d937f9e21be4a4d3e4c84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineBase.html#a333eaf22356d937f9e21be4a4d3e4c84">SetGPUWinding</a> (<a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a> winding)</td></tr>
-<tr class="memdesc:a333eaf22356d937f9e21be4a4d3e4c84 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextBase.html#a83724970a8adf4d3166e6876519a5755" title="Get the geometry data needed for drawing the text.">TextBase.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
-<tr class="separator:a333eaf22356d937f9e21be4a4d3e4c84 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96c6be594442b4f603074d2cf9c8d55a inherit pub_methods_structSDL_1_1TextEngineBase" id="r_a96c6be594442b4f603074d2cf9c8d55a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineBase.html#a96c6be594442b4f603074d2cf9c8d55a">GetGPUWinding</a> () const</td></tr>
-<tr class="memdesc:a96c6be594442b4f603074d2cf9c8d55a inherit pub_methods_structSDL_1_1TextEngineBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextBase.html#a83724970a8adf4d3166e6876519a5755" title="Get the geometry data needed for drawing the text.">TextBase.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
-<tr class="separator:a96c6be594442b4f603074d2cf9c8d55a inherit pub_methods_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextEngineBase" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextEngineBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextEngineBase" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="separator:a959604d891dcae230bf4c378c046a21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top"><a id="a988d47fefd6d7a5f623d3de9fce5ea59" name="a988d47fefd6d7a5f623d3de9fce5ea59"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextEngineBase" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top"><a id="afbb3168108af6a8bd0e23edc712b6a09" name="afbb3168108af6a8bd0e23edc712b6a09"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1TextEngineBase" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top"><a id="afbcdc46caa3c15a1b9c9a116a6e32382" name="afbcdc46caa3c15a1b9c9a116a6e32382"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1TextEngineBase" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
+<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top"><a id="a6035b9f529e0e8bdfd7174d0cb4f7cd6" name="a6035b9f529e0e8bdfd7174d0cb4f7cd6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; TTF_TextEngine * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (TTF_TextEngine * resource={})</td></tr>
@@ -211,20 +201,92 @@ constexpr TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_structSDL_1_1TextEngineBase"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_structSDL_1_1TextEngineBase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="structSDL_1_1TextEngineBase.html">SDL::TextEngineBase</a></td></tr>
-<tr class="memitem:a3aa75fc33ada621619438a2a095fc223 inherit pro_attribs_structSDL_1_1TextEngineBase" id="r_a3aa75fc33ada621619438a2a095fc223"><td class="memItemLeft" align="right" valign="top">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a183f67c796ecbf73a26b656155bcfa39" id="r_a183f67c796ecbf73a26b656155bcfa39"><td class="memItemLeft" align="right" valign="top"><a id="a183f67c796ecbf73a26b656155bcfa39" name="a183f67c796ecbf73a26b656155bcfa39"></a>
 void(*&#160;</td><td class="memItemRight" valign="bottom"><b>m_destroy</b> )(TTF_TextEngine *engine) = nullptr</td></tr>
-<tr class="memdesc:a3aa75fc33ada621619438a2a095fc223 inherit pro_attribs_structSDL_1_1TextEngineBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom destroyer. <br /></td></tr>
-<tr class="separator:a3aa75fc33ada621619438a2a095fc223 inherit pro_attribs_structSDL_1_1TextEngineBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a183f67c796ecbf73a26b656155bcfa39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom destroyer. <br /></td></tr>
+<tr class="separator:a183f67c796ecbf73a26b656155bcfa39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects.">TextEngineBase</a> </dd>
+<div class="textblock"><p>This is a public interface that can be used by applications and libraries to perform customize rendering with text objects. See &lt;SDL3_ttf/SDL_textengine.h&gt; for details.</p>
+<p>There are three text engines provided with the library:</p>
+<ul>
+<li>Drawing to an SDL_Surface, created with <a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine()</a></li>
+<li>Drawing with an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 2D renderer, created with <a class="el" href="group__CategorySDLTTF.html#ga16d30066c04817c695911241ba2cdc48" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine()</a></li>
+<li>Drawing with the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> GPU API, created with <a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine()</a></li>
+</ul>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine.">TextEngine</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine.">TextEngine</a> </dd></dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a082852df49f3dbf6e24eff7b8546c28f" name="a082852df49f3dbf6e24eff7b8546c28f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a082852df49f3dbf6e24eff7b8546c28f">&#9670;&#160;</a></span>GetGPUWinding()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a> SDL::TextEngineRef::GetGPUWinding </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the winding order used by the GPU text engine or GPU_TEXTENGINE_WINDING_INVALID in case of error.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineRef.html#ab37824219f55056f023744530683cf03" title="Sets the winding order of the vertices returned by TextRef.GetGPUDrawData for a particular GPU text e...">TextEngineRef.SetGPUWinding</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab37824219f55056f023744530683cf03" name="ab37824219f55056f023744530683cf03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab37824219f55056f023744530683cf03">&#9670;&#160;</a></span>SetGPUWinding()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::TextEngineRef::SetGPUWinding </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td>
+          <td class="paramname"><em>winding</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">winding</td><td>the new winding order option.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineRef.html#a082852df49f3dbf6e24eff7b8546c28f" title="Get the winding order of the vertices returned by TextRef.GetGPUDrawData for a particular GPU text en...">TextEngineRef.GetGPUWinding</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a></li>
 </ul>
 </div><!-- contents -->

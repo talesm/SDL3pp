@@ -16,10 +16,10 @@ namespace SDL {
  * of these primitives are, why they are useful, and how to correctly use them
  * is vital to writing correct and safe multithreaded programs.
  *
- * - Mutexes: MutexBase.MutexBase()
- * - Read/Write locks: RWLockBase.RWLockBase()
- * - Semaphores: SemaphoreBase.SemaphoreBase()
- * - Condition variables: ConditionBase.ConditionBase()
+ * - Mutexes: Mutex.Mutex()
+ * - Read/Write locks: RWLock.RWLock()
+ * - Semaphores: Semaphore.Semaphore()
+ * - Condition variables: Condition.Condition()
  *
  * SDL also offers a datatype, InitState, which can be used to make sure
  * only one thread initializes/deinitializes some resource that several
@@ -29,16 +29,10 @@ namespace SDL {
  */
 
 // Forward decl
-struct MutexBase;
-
-// Forward decl
 struct MutexRef;
 
 // Forward decl
 struct Mutex;
-
-// Forward decl
-struct RWLockBase;
 
 // Forward decl
 struct RWLockRef;
@@ -47,16 +41,10 @@ struct RWLockRef;
 struct RWLock;
 
 // Forward decl
-struct SemaphoreBase;
-
-// Forward decl
 struct SemaphoreRef;
 
 // Forward decl
 struct Semaphore;
-
-// Forward decl
-struct ConditionBase;
 
 // Forward decl
 struct ConditionRef;
@@ -79,19 +67,34 @@ struct Condition;
  * @cat resource
  *
  * @sa Mutex
- * @sa MutexRef
  */
-struct MutexBase : Resource<SDL_Mutex*>
+struct MutexRef : Resource<SDL_Mutex*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr MutexRef(const MutexRef& other)
+    : MutexRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr MutexRef(MutexRef&& other)
+    : MutexRef(other.release())
+  {
+  }
 
   /**
    * Create a new mutex.
    *
    * All newly-created mutexes begin in the _unlocked_ state.
    *
-   * Calls to MutexBase.Lock() will not return while the mutex is locked by
-   * another thread. See MutexBase.TryLock() to attempt to lock without
+   * Calls to MutexRef.Lock() will not return while the mutex is locked by
+   * another thread. See MutexRef.TryLock() to attempt to lock without
    * blocking.
    *
    * SDL mutexes are reentrant.
@@ -101,13 +104,22 @@ struct MutexBase : Resource<SDL_Mutex*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexBase.Lock
-   * @sa MutexBase.TryLock
-   * @sa MutexBase.Unlock
+   * @sa MutexRef.Lock
+   * @sa MutexRef.TryLock
+   * @sa MutexRef.Unlock
    */
-  MutexBase()
+  MutexRef()
     : Resource(SDL_CreateMutex())
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  MutexRef& operator=(MutexRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -128,15 +140,15 @@ struct MutexBase : Resource<SDL_Mutex*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexBase.TryLock
-   * @sa MutexBase.Unlock
+   * @sa MutexRef.TryLock
+   * @sa MutexRef.Unlock
    */
   void Lock() { SDL_LockMutex(get()); }
 
   /**
    * Try to lock a mutex without blocking.
    *
-   * This works just like MutexBase.Lock(), but if the mutex is not available,
+   * This works just like MutexRef.Lock(), but if the mutex is not available,
    * this function returns false immediately.
    *
    * This technique is useful if you need exclusive access to a resource but
@@ -148,8 +160,8 @@ struct MutexBase : Resource<SDL_Mutex*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexBase.Lock
-   * @sa MutexBase.Unlock
+   * @sa MutexRef.Lock
+   * @sa MutexRef.Unlock
    */
   void TryLock() { CheckError(SDL_TryLockMutex(get())); }
 
@@ -166,56 +178,13 @@ struct MutexBase : Resource<SDL_Mutex*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexBase.Lock
-   * @sa MutexBase.TryLock
+   * @sa MutexRef.Lock
+   * @sa MutexRef.TryLock
    */
   void Unlock() { SDL_UnlockMutex(get()); }
-};
-
-/**
- * Handle to a non owned mutex
- *
- * @cat resource
- *
- * @sa MutexBase
- * @sa Mutex
- */
-struct MutexRef : MutexBase
-{
-  using MutexBase::MutexBase;
 
   /**
-   * Copy constructor.
-   */
-  constexpr MutexRef(const MutexRef& other)
-    : MutexBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr MutexRef(MutexRef&& other)
-    : MutexBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~MutexRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  MutexRef& operator=(MutexRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Destroy a mutex created with MutexBase.MutexBase().
+   * Destroy a mutex created with MutexRef.MutexRef().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -226,7 +195,23 @@ struct MutexRef : MutexBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexBase.MutexBase
+   * @sa MutexRef.MutexRef
+   */
+  void Destroy() { reset(); }
+
+  /**
+   * Destroy a mutex created with MutexRef.MutexRef().
+   *
+   * This function must be called on any mutex that is no longer needed. Failure
+   * to destroy a mutex will result in a system memory or resource leak. While
+   * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
+   * to destroy a locked mutex, and may result in undefined behavior depending
+   * on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexRef.MutexRef
    */
   void reset(SDL_Mutex* newResource = {})
   {
@@ -239,7 +224,7 @@ struct MutexRef : MutexBase
  *
  * @cat resource
  *
- * @sa MutexBase
+ * @sa MutexRef
  * @sa MutexRef
  */
 struct Mutex : MutexRef
@@ -279,7 +264,7 @@ struct Mutex : MutexRef
 /**
  * A mutex that allows read-only threads to run in parallel.
  *
- * A rwlock is roughly the same concept as MutexBase, but allows threads that
+ * A rwlock is roughly the same concept as MutexRef, but allows threads that
  * request read-only access to all hold the lock at the same time. If a thread
  * requests write access, it will block until all read-only threads have
  * released the lock, and no one else can hold the thread (for reading or
@@ -297,11 +282,26 @@ struct Mutex : MutexRef
  * @cat resource
  *
  * @sa RWLock
- * @sa RWLockRef
  */
-struct RWLockBase : Resource<SDL_RWLock*>
+struct RWLockRef : Resource<SDL_RWLock*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr RWLockRef(const RWLockRef& other)
+    : RWLockRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr RWLockRef(RWLockRef&& other)
+    : RWLockRef(other.release())
+  {
+  }
 
   /**
    * Create a new read/write lock.
@@ -320,9 +320,9 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * All newly-created read/write locks begin in the _unlocked_ state.
    *
-   * Calls to RWLockBase.LockForReading() and RWLockBase.LockForWriting will not
+   * Calls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not
    * return while the rwlock is locked _for writing_ by another thread. See
-   * RWLockBase.TryLockForReading() and RWLockBase.TryLockForWriting() to
+   * RWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to
    * attempt to lock without blocking.
    *
    * SDL read/write locks are only recursive for read-only locks! They are not
@@ -336,15 +336,24 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockBase.LockForReading
-   * @sa RWLockBase.LockForWriting
-   * @sa RWLockBase.TryLockForReading
-   * @sa RWLockBase.TryLockForWriting
-   * @sa RWLockBase.Unlock
+   * @sa RWLockRef.LockForReading
+   * @sa RWLockRef.LockForWriting
+   * @sa RWLockRef.TryLockForReading
+   * @sa RWLockRef.TryLockForWriting
+   * @sa RWLockRef.Unlock
    */
-  RWLockBase()
+  RWLockRef()
     : Resource(SDL_CreateRWLock())
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  RWLockRef& operator=(RWLockRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -377,9 +386,9 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockBase.LockForWriting
-   * @sa RWLockBase.TryLockForReading
-   * @sa RWLockBase.Unlock
+   * @sa RWLockRef.LockForWriting
+   * @sa RWLockRef.TryLockForReading
+   * @sa RWLockRef.Unlock
    */
   void LockForReading() { SDL_LockRWLockForReading(get()); }
 
@@ -407,16 +416,16 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockBase.LockForReading
-   * @sa RWLockBase.TryLockForWriting
-   * @sa RWLockBase.Unlock
+   * @sa RWLockRef.LockForReading
+   * @sa RWLockRef.TryLockForWriting
+   * @sa RWLockRef.Unlock
    */
   void LockForWriting() { SDL_LockRWLockForWriting(get()); }
 
   /**
    * Try to lock a read/write lock _for reading_ without blocking.
    *
-   * This works just like RWLockBase.LockForReading(), but if the rwlock is not
+   * This works just like RWLockRef.LockForReading(), but if the rwlock is not
    * available, then this function returns false immediately.
    *
    * This technique is useful if you need access to a resource but don't want to
@@ -431,16 +440,16 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockBase.LockForReading
-   * @sa RWLockBase.TryLockForWriting
-   * @sa RWLockBase.Unlock
+   * @sa RWLockRef.LockForReading
+   * @sa RWLockRef.TryLockForWriting
+   * @sa RWLockRef.Unlock
    */
   void TryLockForReading() { CheckError(SDL_TryLockRWLockForReading(get())); }
 
   /**
    * Try to lock a read/write lock _for writing_ without blocking.
    *
-   * This works just like RWLockBase.LockForWriting(), but if the rwlock is not
+   * This works just like RWLockRef.LockForWriting(), but if the rwlock is not
    * available, then this function returns false immediately.
    *
    * This technique is useful if you need exclusive access to a resource but
@@ -460,9 +469,9 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockBase.LockForWriting
-   * @sa RWLockBase.TryLockForReading
-   * @sa RWLockBase.Unlock
+   * @sa RWLockRef.LockForWriting
+   * @sa RWLockRef.TryLockForReading
+   * @sa RWLockRef.Unlock
    */
   void TryLockForWriting() { CheckError(SDL_TryLockRWLockForWriting(get())); }
 
@@ -483,58 +492,31 @@ struct RWLockBase : Resource<SDL_RWLock*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockBase.LockForReading
-   * @sa RWLockBase.LockForWriting
-   * @sa RWLockBase.TryLockForReading
-   * @sa RWLockBase.TryLockForWriting
+   * @sa RWLockRef.LockForReading
+   * @sa RWLockRef.LockForWriting
+   * @sa RWLockRef.TryLockForReading
+   * @sa RWLockRef.TryLockForWriting
    */
   void Unlock() { SDL_UnlockRWLock(get()); }
-};
-
-/**
- * Handle to a non owned rWLock
- *
- * @cat resource
- *
- * @sa RWLockBase
- * @sa RWLock
- */
-struct RWLockRef : RWLockBase
-{
-  using RWLockBase::RWLockBase;
 
   /**
-   * Copy constructor.
+   * Destroy a read/write lock created with RWLockRef.RWLockRef().
+   *
+   * This function must be called on any read/write lock that is no longer
+   * needed. Failure to destroy a rwlock will result in a system memory or
+   * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
+   * is not safe to attempt to destroy a locked rwlock, and may result in
+   * undefined behavior depending on the platform.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockRef.RWLockRef
    */
-  constexpr RWLockRef(const RWLockRef& other)
-    : RWLockBase(other.get())
-  {
-  }
+  void Destroy() { reset(); }
 
   /**
-   * Move constructor.
-   */
-  constexpr RWLockRef(RWLockRef&& other)
-    : RWLockBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~RWLockRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  RWLockRef& operator=(RWLockRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Destroy a read/write lock created with RWLockBase.RWLockBase().
+   * Destroy a read/write lock created with RWLockRef.RWLockRef().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -544,7 +526,7 @@ struct RWLockRef : RWLockBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockBase.RWLockBase
+   * @sa RWLockRef.RWLockRef
    */
   void reset(SDL_RWLock* newResource = {})
   {
@@ -557,7 +539,7 @@ struct RWLockRef : RWLockBase
  *
  * @cat resource
  *
- * @sa RWLockBase
+ * @sa RWLockRef
  * @sa RWLockRef
  */
 struct RWLock : RWLockRef
@@ -613,9 +595,25 @@ struct RWLock : RWLockRef
  * @sa Semaphore
  * @sa SemaphoreRef
  */
-struct SemaphoreBase : Resource<SDL_Semaphore*>
+struct SemaphoreRef : Resource<SDL_Semaphore*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr SemaphoreRef(const SemaphoreRef& other)
+    : SemaphoreRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr SemaphoreRef(SemaphoreRef&& other)
+    : SemaphoreRef(other.release())
+  {
+  }
 
   /**
    * Create a semaphore.
@@ -632,15 +630,24 @@ struct SemaphoreBase : Resource<SDL_Semaphore*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreBase.Signal
-   * @sa SemaphoreBase.TryWait
-   * @sa SemaphoreBase.GetValue
-   * @sa SemaphoreBase.Wait
-   * @sa SemaphoreBase.WaitTimeout
+   * @sa SemaphoreRef.Signal
+   * @sa SemaphoreRef.TryWait
+   * @sa SemaphoreRef.GetValue
+   * @sa SemaphoreRef.Wait
+   * @sa SemaphoreRef.WaitTimeout
    */
-  SemaphoreBase(Uint32 initial_value)
+  SemaphoreRef(Uint32 initial_value)
     : Resource(SDL_CreateSemaphore(initial_value))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  SemaphoreRef& operator=(SemaphoreRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -650,15 +657,15 @@ struct SemaphoreBase : Resource<SDL_Semaphore*>
    * `sem` has a positive value, and then atomically decrement the semaphore
    * value.
    *
-   * This function is the equivalent of calling SemaphoreBase.WaitTimeout() with
+   * This function is the equivalent of calling SemaphoreRef.WaitTimeout() with
    * a time length of -1.
    *
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreBase.Signal
-   * @sa SemaphoreBase.TryWait
-   * @sa SemaphoreBase.WaitTimeout
+   * @sa SemaphoreRef.Signal
+   * @sa SemaphoreRef.TryWait
+   * @sa SemaphoreRef.WaitTimeout
    */
   void Wait() { SDL_WaitSemaphore(get()); }
 
@@ -674,9 +681,9 @@ struct SemaphoreBase : Resource<SDL_Semaphore*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreBase.Signal
-   * @sa SemaphoreBase.Wait
-   * @sa SemaphoreBase.WaitTimeout
+   * @sa SemaphoreRef.Signal
+   * @sa SemaphoreRef.Wait
+   * @sa SemaphoreRef.WaitTimeout
    */
   bool TryWait() { return SDL_TryWaitSemaphore(get()); }
 
@@ -693,9 +700,9 @@ struct SemaphoreBase : Resource<SDL_Semaphore*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreBase.Signal
-   * @sa SemaphoreBase.TryWait
-   * @sa SemaphoreBase.Wait
+   * @sa SemaphoreRef.Signal
+   * @sa SemaphoreRef.TryWait
+   * @sa SemaphoreRef.Wait
    */
   bool WaitTimeout(std::chrono::milliseconds timeout)
   {
@@ -708,9 +715,9 @@ struct SemaphoreBase : Resource<SDL_Semaphore*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreBase.TryWait
-   * @sa SemaphoreBase.Wait
-   * @sa SemaphoreBase.WaitTimeout
+   * @sa SemaphoreRef.TryWait
+   * @sa SemaphoreRef.Wait
+   * @sa SemaphoreRef.WaitTimeout
    */
   void Signal() { SDL_SignalSemaphore(get()); }
 
@@ -722,49 +729,6 @@ struct SemaphoreBase : Resource<SDL_Semaphore*>
    * @since This function is available since SDL 3.2.0.
    */
   Uint32 GetValue() const { return SDL_GetSemaphoreValue(get()); }
-};
-
-/**
- * Handle to a non owned semaphore
- *
- * @cat resource
- *
- * @sa SemaphoreBase
- * @sa Semaphore
- */
-struct SemaphoreRef : SemaphoreBase
-{
-  using SemaphoreBase::SemaphoreBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr SemaphoreRef(const SemaphoreRef& other)
-    : SemaphoreBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SemaphoreRef(SemaphoreRef&& other)
-    : SemaphoreBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~SemaphoreRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  SemaphoreRef& operator=(SemaphoreRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Destroy a semaphore.
@@ -774,7 +738,19 @@ struct SemaphoreRef : SemaphoreBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreBase.SemaphoreBase
+   * @sa SemaphoreRef.SemaphoreRef
+   */
+  void Destroy() { reset(); }
+
+  /**
+   * Destroy a semaphore.
+   *
+   * It is not safe to destroy a semaphore if there are threads currently
+   * waiting on it.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreRef.SemaphoreRef
    */
   void reset(SDL_Semaphore* newResource = {})
   {
@@ -787,7 +763,7 @@ struct SemaphoreRef : SemaphoreBase
  *
  * @cat resource
  *
- * @sa SemaphoreBase
+ * @sa SemaphoreRef
  * @sa SemaphoreRef
  */
 struct Semaphore : SemaphoreRef
@@ -827,7 +803,7 @@ struct Semaphore : SemaphoreRef
 /**
  * A means to block multiple threads until a condition is satisfied.
  *
- * Condition variables, paired with an MutexBase, let an app halt multiple
+ * Condition variables, paired with an MutexRef, let an app halt multiple
  * threads until a condition has occurred, at which time the app can release
  * one or all waiting threads.
  *
@@ -840,11 +816,26 @@ struct Semaphore : SemaphoreRef
  * @cat resource
  *
  * @sa Condition
- * @sa ConditionRef
  */
-struct ConditionBase : Resource<SDL_Condition*>
+struct ConditionRef : Resource<SDL_Condition*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr ConditionRef(const ConditionRef& other)
+    : ConditionRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr ConditionRef(ConditionRef&& other)
+    : ConditionRef(other.release())
+  {
+  }
 
   /**
    * Create a condition variable.
@@ -854,14 +845,23 @@ struct ConditionBase : Resource<SDL_Condition*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionBase.Broadcast
-   * @sa ConditionBase.Signal
-   * @sa ConditionBase.Wait
-   * @sa ConditionBase.WaitTimeout
+   * @sa ConditionRef.Broadcast
+   * @sa ConditionRef.Signal
+   * @sa ConditionRef.Wait
+   * @sa ConditionRef.WaitTimeout
    */
-  ConditionBase()
+  ConditionRef()
     : Resource(SDL_CreateCondition())
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  ConditionRef& operator=(ConditionRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -872,9 +872,9 @@ struct ConditionBase : Resource<SDL_Condition*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionBase.Broadcast
-   * @sa ConditionBase.Wait
-   * @sa ConditionBase.WaitTimeout
+   * @sa ConditionRef.Broadcast
+   * @sa ConditionRef.Wait
+   * @sa ConditionRef.WaitTimeout
    */
   void Signal() { SDL_SignalCondition(get()); }
 
@@ -886,9 +886,9 @@ struct ConditionBase : Resource<SDL_Condition*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionBase.Signal
-   * @sa ConditionBase.Wait
-   * @sa ConditionBase.WaitTimeout
+   * @sa ConditionRef.Signal
+   * @sa ConditionRef.Wait
+   * @sa ConditionRef.WaitTimeout
    */
   void Broadcast() { SDL_BroadcastCondition(get()); }
 
@@ -896,7 +896,7 @@ struct ConditionBase : Resource<SDL_Condition*>
    * Wait until a condition variable is signaled.
    *
    * This function unlocks the specified `mutex` and waits for another thread to
-   * call ConditionBase.Signal() or ConditionBase.Broadcast() on the condition
+   * call ConditionRef.Signal() or ConditionRef.Broadcast() on the condition
    * variable `cond`. Once the condition variable is signaled, the mutex is
    * re-locked and the function returns.
    *
@@ -904,7 +904,7 @@ struct ConditionBase : Resource<SDL_Condition*>
    * recursively (more than once) is not supported and leads to undefined
    * behavior.
    *
-   * This function is the equivalent of calling ConditionBase.WaitTimeout() with
+   * This function is the equivalent of calling ConditionRef.WaitTimeout() with
    * a time length of -1.
    *
    * @param mutex the mutex used to coordinate thread access.
@@ -913,17 +913,17 @@ struct ConditionBase : Resource<SDL_Condition*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionBase.Broadcast
-   * @sa ConditionBase.Signal
-   * @sa ConditionBase.WaitTimeout
+   * @sa ConditionRef.Broadcast
+   * @sa ConditionRef.Signal
+   * @sa ConditionRef.WaitTimeout
    */
-  void Wait(MutexBase& mutex) { SDL_WaitCondition(get(), mutex.get()); }
+  void Wait(MutexRef& mutex) { SDL_WaitCondition(get(), mutex.get()); }
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
    *
    * This function unlocks the specified `mutex` and waits for another thread to
-   * call ConditionBase.Signal() or ConditionBase.Broadcast() on the condition
+   * call ConditionRef.Signal() or ConditionRef.Broadcast() on the condition
    * variable `cond`, or for the specified time to elapse. Once the condition
    * variable is signaled or the time elapsed, the mutex is re-locked and the
    * function returns.
@@ -942,64 +942,31 @@ struct ConditionBase : Resource<SDL_Condition*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionBase.Broadcast
-   * @sa ConditionBase.Signal
-   * @sa ConditionBase.Wait
+   * @sa ConditionRef.Broadcast
+   * @sa ConditionRef.Signal
+   * @sa ConditionRef.Wait
    */
-  bool WaitTimeout(MutexBase& mutex, std::chrono::milliseconds timeout)
+  bool WaitTimeout(MutexRef& mutex, std::chrono::milliseconds timeout)
   {
     return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
   }
-};
-
-/**
- * Handle to a non owned condition
- *
- * @cat resource
- *
- * @sa ConditionBase
- * @sa Condition
- */
-struct ConditionRef : ConditionBase
-{
-  using ConditionBase::ConditionBase;
 
   /**
-   * Copy constructor.
+   * Destroy a condition variable.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionRef.ConditionRef
    */
-  constexpr ConditionRef(const ConditionRef& other)
-    : ConditionBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ConditionRef(ConditionRef&& other)
-    : ConditionBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~ConditionRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  ConditionRef& operator=(ConditionRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  void Destroy() { reset(); }
 
   /**
    * Destroy a condition variable.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionBase.ConditionBase
+   * @sa ConditionRef.ConditionRef
    */
   void reset(SDL_Condition* newResource = {})
   {
@@ -1012,7 +979,7 @@ struct ConditionRef : ConditionBase
  *
  * @cat resource
  *
- * @sa ConditionBase
+ * @sa ConditionRef
  * @sa ConditionRef
  */
 struct Condition : ConditionRef

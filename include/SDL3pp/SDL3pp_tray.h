@@ -24,16 +24,10 @@ namespace SDL {
 struct TrayMenu;
 
 // Forward decl
-struct TrayBase;
-
-// Forward decl
 struct TrayRef;
 
 // Forward decl
 struct Tray;
-
-// Forward decl
-struct TrayEntryBase;
 
 // Forward decl
 struct TrayEntryRef;
@@ -87,11 +81,26 @@ constexpr TrayEntryFlags TRAYENTRY_CHECKED = SDL_TRAYENTRY_CHECKED;
  * @cat resource
  *
  * @sa Tray
- * @sa TrayRef
  */
-struct TrayBase : Resource<SDL_Tray*>
+struct TrayRef : Resource<SDL_Tray*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr TrayRef(const TrayRef& other)
+    : TrayRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr TrayRef(TrayRef&& other)
+    : TrayRef(other.release())
+  {
+  }
 
   /**
    * Create an icon to be placed in the operating system's tray, or equivalent.
@@ -112,12 +121,21 @@ struct TrayBase : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayBase.CreateMenu
-   * @sa TrayBase.GetMenu
+   * @sa TrayRef.CreateMenu
+   * @sa TrayRef.GetMenu
    */
-  TrayBase(SurfaceBase& icon, StringParam tooltip)
+  TrayRef(SurfaceRef& icon, StringParam tooltip)
     : Resource(CheckError(SDL_CreateTray(icon.get(), tooltip)))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  TrayRef& operator=(TrayRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -130,9 +148,9 @@ struct TrayBase : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayBase.TrayBase
+   * @sa TrayRef.TrayRef
    */
-  void SetIcon(SurfaceBase& icon) { SDL_SetTrayIcon(get(), icon.get()); }
+  void SetIcon(SurfaceRef& icon) { SDL_SetTrayIcon(get(), icon.get()); }
 
   /**
    * Updates the system tray icon's tooltip.
@@ -144,7 +162,7 @@ struct TrayBase : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayBase.TrayBase
+   * @sa TrayRef.TrayRef
    */
   void SetTooltip(StringParam tooltip) { SDL_SetTrayTooltip(get(), tooltip); }
 
@@ -153,8 +171,8 @@ struct TrayBase : Resource<SDL_Tray*>
    *
    * This should be called at most once per tray icon.
    *
-   * This function does the same thing as TrayEntryBase.CreateSubmenu(), except
-   * that it takes a TrayBase instead of a TrayEntryBase.
+   * This function does the same thing as TrayEntryRef.CreateSubmenu(), except
+   * that it takes a TrayRef instead of a TrayEntryRef.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
@@ -165,8 +183,8 @@ struct TrayBase : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayBase.TrayBase
-   * @sa TrayBase.GetMenu
+   * @sa TrayRef.TrayRef
+   * @sa TrayRef.GetMenu
    * @sa TrayMenu.GetParentTray
    */
   TrayMenu CreateMenu();
@@ -174,11 +192,11 @@ struct TrayBase : Resource<SDL_Tray*>
   /**
    * Gets a previously created tray menu.
    *
-   * You should have called TrayBase.CreateMenu() on the tray object. This
+   * You should have called TrayRef.CreateMenu() on the tray object. This
    * function allows you to fetch it again later.
    *
-   * This function does the same thing as TrayEntryBase.GetSubmenu(), except
-   * that it takes a TrayBase instead of a TrayEntryBase.
+   * This function does the same thing as TrayEntryRef.GetSubmenu(), except
+   * that it takes a TrayRef instead of a TrayEntryRef.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
@@ -189,53 +207,25 @@ struct TrayBase : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayBase.TrayBase
-   * @sa TrayBase.CreateMenu
+   * @sa TrayRef.TrayRef
+   * @sa TrayRef.CreateMenu
    */
   TrayMenu GetMenu() const;
-};
-
-/**
- * Handle to a non owned tray
- *
- * @cat resource
- *
- * @sa TrayBase
- * @sa Tray
- */
-struct TrayRef : TrayBase
-{
-  using TrayBase::TrayBase;
 
   /**
-   * Copy constructor.
+   * Destroys a tray object.
+   *
+   * This also destroys all associated menus and entries.
+   *
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayRef.TrayRef
    */
-  constexpr TrayRef(const TrayRef& other)
-    : TrayBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TrayRef(TrayRef&& other)
-    : TrayBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~TrayRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  TrayRef& operator=(TrayRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  void Destroy() { reset(); }
 
   /**
    * Destroys a tray object.
@@ -247,7 +237,7 @@ struct TrayRef : TrayBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayBase.TrayBase
+   * @sa TrayRef.TrayRef
    */
   void reset(SDL_Tray* newResource = {})
   {
@@ -260,7 +250,6 @@ struct TrayRef : TrayBase
  *
  * @cat resource
  *
- * @sa TrayBase
  * @sa TrayRef
  */
 struct Tray : TrayRef
@@ -306,7 +295,7 @@ struct Tray : TrayRef
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa TrayEntryBase.SetCallback
+ * @sa TrayEntryRef.SetCallback
  */
 using TrayCallback = SDL_TrayCallback;
 
@@ -317,7 +306,7 @@ using TrayCallback = SDL_TrayCallback;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa TrayEntryBase.SetCallback
+ * @sa TrayEntryRef.SetCallback
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
 
@@ -409,7 +398,7 @@ public:
    * @sa TrayEntryFlags
    * @sa TrayMenu.GetEntries
    * @sa TrayEntryRef.Remove
-   * @sa TrayEntryBase.GetParent
+   * @sa TrayEntryRef.GetParent
    */
   DetachedTrayEntry InsertEntry(int pos,
                                 StringParam label,
@@ -436,8 +425,8 @@ public:
    * @sa TrayMenu.InsertEntry
    * @sa TrayEntryFlags
    * @sa TrayMenu.GetEntries
-   * @sa TrayEntryBase.Remove
-   * @sa TrayEntryBase.GetParent
+   * @sa TrayEntryRef.Remove
+   * @sa TrayEntryRef.GetParent
    */
   DetachedTrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
 
@@ -455,7 +444,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayEntryBase.CreateSubmenu
+   * @sa TrayEntryRef.CreateSubmenu
    * @sa TrayMenu.GetParentTray
    */
   TrayEntryRef GetParentEntry() const;
@@ -474,7 +463,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayBase.CreateMenu
+   * @sa TrayRef.CreateMenu
    * @sa TrayMenu.GetParentEntry
    */
   TrayRef GetParentTray() const;
@@ -490,17 +479,42 @@ public:
  * @sa TrayEntry
  * @sa TrayEntryRef
  */
-struct TrayEntryBase : Resource<SDL_TrayEntry*>
+struct TrayEntryRef : Resource<SDL_TrayEntry*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr TrayEntryRef(const TrayEntryRef& other)
+    : TrayEntryRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr TrayEntryRef(TrayEntryRef&& other)
+    : TrayEntryRef(other.release())
+  {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  TrayEntryRef& operator=(TrayEntryRef other)
+  {
+    release(other.release());
+    return *this;
+  }
 
   /**
    * Create a submenu for a system tray entry.
    *
    * This should be called at most once per tray entry.
    *
-   * This function does the same thing as TrayBase.CreateMenu, except that it
-   * takes a TrayEntryBase instead of a TrayBase.
+   * This function does the same thing as TrayRef.CreateMenu, except that it
+   * takes a TrayEntryRef instead of a TrayRef.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
@@ -512,7 +526,7 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntryBase.GetSubmenu
+   * @sa TrayEntryRef.GetSubmenu
    * @sa TrayMenu.GetParentEntry
    */
   TrayMenu CreateSubmenu() { return SDL_CreateTraySubmenu(get()); }
@@ -520,11 +534,11 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
   /**
    * Gets a previously created tray entry submenu.
    *
-   * You should have called TrayEntryBase.CreateSubmenu() on the entry object.
+   * You should have called TrayEntryRef.CreateSubmenu() on the entry object.
    * This function allows you to fetch it again later.
    *
-   * This function does the same thing as TrayBase.GetMenu(), except that it
-   * takes a TrayEntryBase instead of a TrayBase.
+   * This function does the same thing as TrayRef.GetMenu(), except that it
+   * takes a TrayEntryRef instead of a TrayRef.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
@@ -536,7 +550,7 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntryBase.CreateSubmenu
+   * @sa TrayEntryRef.CreateSubmenu
    */
   TrayMenu GetSubmenu() { return SDL_GetTraySubmenu(get()); }
 
@@ -557,7 +571,7 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    *
    * @sa TrayMenu.GetEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntryBase.GetLabel
+   * @sa TrayEntryRef.GetLabel
    */
   void SetLabel(StringParam label) { SDL_SetTrayEntryLabel(get(), label); }
 
@@ -575,7 +589,7 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    *
    * @sa TrayMenu.GetEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntryBase.SetLabel
+   * @sa TrayEntryRef.SetLabel
    */
   const char* GetLabel() const { return SDL_GetTrayEntryLabel(get()); }
 
@@ -593,7 +607,7 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    *
    * @sa TrayMenu.GetEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntryBase.GetChecked
+   * @sa TrayEntryRef.GetChecked
    */
   void SetChecked(bool checked) { SDL_SetTrayEntryChecked(get(), checked); }
 
@@ -611,7 +625,7 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    *
    * @sa TrayMenu.GetEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntryBase.SetChecked
+   * @sa TrayEntryRef.SetChecked
    */
   bool GetChecked() const { return SDL_GetTrayEntryChecked(get()); }
 
@@ -627,7 +641,7 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    *
    * @sa TrayMenu.GetEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntryBase.GetEnabled
+   * @sa TrayEntryRef.GetEnabled
    */
   void SetEnabled(bool enabled) { SDL_SetTrayEntryEnabled(get(), enabled); }
 
@@ -643,7 +657,7 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    *
    * @sa TrayMenu.GetEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntryBase.SetEnabled
+   * @sa TrayEntryRef.SetEnabled
    */
   bool GetEnabled() const { return SDL_GetTrayEntryEnabled(get()); }
 
@@ -706,49 +720,19 @@ struct TrayEntryBase : Resource<SDL_TrayEntry*>
    * @sa TrayMenu.InsertEntry
    */
   TrayMenu GetParent() { return SDL_GetTrayEntryParent(get()); }
-};
-
-/**
- * Handle to a non owned trayEntry
- *
- * @cat resource
- *
- * @sa TrayEntryBase
- * @sa TrayEntry
- */
-struct TrayEntryRef : TrayEntryBase
-{
-  using TrayEntryBase::TrayEntryBase;
 
   /**
-   * Copy constructor.
+   * Removes a tray entry.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayMenu.GetEntries
+   * @sa TrayMenu.InsertEntry
    */
-  constexpr TrayEntryRef(const TrayEntryRef& other)
-    : TrayEntryBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TrayEntryRef(TrayEntryRef&& other)
-    : TrayEntryBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~TrayEntryRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  TrayEntryRef& operator=(TrayEntryRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  void Remove() { reset(); }
 
   /**
    * Removes a tray entry.
@@ -765,19 +749,6 @@ struct TrayEntryRef : TrayEntryBase
   {
     SDL_RemoveTrayEntry(release(newResource));
   }
-
-  /**
-   * Removes a tray entry.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               tray.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TrayMenu.GetEntries
-   * @sa TrayMenu.InsertEntry
-   */
-  void Remove() { reset(); }
 };
 
 /**
@@ -785,7 +756,6 @@ struct TrayEntryRef : TrayEntryBase
  *
  * @cat resource
  *
- * @sa TrayEntryBase
  * @sa TrayEntryRef
  */
 struct TrayEntry : TrayEntryRef
@@ -822,9 +792,9 @@ struct TrayEntry : TrayEntryRef
   }
 };
 
-inline TrayMenu TrayBase::CreateMenu() { return SDL_CreateTrayMenu(get()); }
+inline TrayMenu TrayRef::CreateMenu() { return SDL_CreateTrayMenu(get()); }
 
-inline TrayMenu TrayBase::GetMenu() const { return SDL_GetTrayMenu(get()); }
+inline TrayMenu TrayRef::GetMenu() const { return SDL_GetTrayMenu(get()); }
 
 inline std::span<TrayEntry> TrayMenu::GetEntries()
 {
@@ -872,7 +842,7 @@ inline DetachedTrayEntry TrayMenu::AppendEntry(StringParam label,
   return InsertEntry(-1, std::move(label), flags);
 }
 
-inline void TrayEntryBase::SetCallback(TrayCB callback)
+inline void TrayEntryRef::SetCallback(TrayCB callback)
 {
   using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
   SetCallback(

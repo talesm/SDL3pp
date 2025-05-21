@@ -102,15 +102,15 @@ Function rules</h1>
 </ul>
 </li>
 <li>Method-like functions become class/struct methods accordingly to <a class="el" href="transformations.html#type-rules">Type rules</a>;<ul>
-<li>The Type name is removed, eg SDL_GetTextureProperties becomes <a class="el" href="structSDL_1_1TextureBase.html#a109a6086e13831fb0573651c2f1d1ace" title="Get the properties associated with a texture.">SDL::Texture::GetProperties()</a>;</li>
-<li>Functions that involve I/O, like <code>SDL_LoadBMP()</code>, are considered non-method like and thus stay as free functions like: <a class="el" href="group__CategorySurface.html#gaf9cba1dd8bffadc7a58a04f4cb2a082b" title="Load a BMP image from a seekable SDL data stream.">SDL::LoadBMP()</a>;</li>
+<li>The Type name is removed, eg SDL_GetTextureProperties becomes <a class="el" href="structSDL_1_1TextureRef.html#a35de7a36a162339e8193a33a6d0fc8fa" title="Get the properties associated with a texture.">SDL::Texture::GetProperties()</a>;</li>
+<li>Functions that involve I/O, like <code>SDL_LoadBMP()</code>, are considered non-method like and thus stay as free functions like: <a class="el" href="group__CategorySurface.html#ga447ce953d663f347712f7c9c688495eb" title="Load a BMP image from a seekable SDL data stream.">SDL::LoadBMP()</a>;</li>
 </ul>
 </li>
 <li>The parameters of the function have the same meaning and same order than <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s C API, transformed as the following:<ul>
 <li>If it is a instance function, the first parameter become the <code>this</code> pointer and thus is omitted.</li>
 <li>If the parameter was a <code>const char*</code>, its becomes a StringWrapper;</li>
 <li>If the parameter is a <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> type, use the type defined in <a class="el" href="transformations.html#type-rules">Type rules</a>:<ul>
-<li>If it is an <a class="el" href="resource.html">Resource</a>, use the non owned version, Eg <a class="el" href="structSDL_1_1SurfaceRef.html" title="Handle to a non owned surface.">SDL::SurfaceRef</a>;</li>
+<li>If it is an <a class="el" href="resource.html">Resource</a>, use the non owned version, Eg <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SDL::SurfaceRef</a>;</li>
 <li>Otherwise use the converted name like <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">SDL::Color</a>;</li>
 </ul>
 </li>

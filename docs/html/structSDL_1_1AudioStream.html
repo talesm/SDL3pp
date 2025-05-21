@@ -88,13 +88,11 @@ Inheritance diagram for SDL::AudioStream:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1AudioStream__inherit__graph.png" border="0" usemap="#aSDL_1_1AudioStream_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1AudioStream_inherit__map" id="aSDL_1_1AudioStream_inherit__map">
-<area shape="rect" title="Handle to an owned audioStream." alt="" coords="21,240,160,265"/>
-<area shape="rect" href="structSDL_1_1AudioStreamRef.html" title="Handle to a non owned audioStream." alt="" coords="10,167,171,192"/>
-<area shape="poly" title=" " alt="" coords="93,206,93,240,88,240,88,206"/>
-<area shape="rect" href="structSDL_1_1AudioStreamBase.html" title="The opaque handle that represents an audio stream." alt="" coords="5,93,176,119"/>
-<area shape="poly" title=" " alt="" coords="93,132,93,167,88,167,88,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="13,5,168,45"/>
-<area shape="poly" title=" " alt="" coords="93,59,93,93,88,93,88,59"/>
+<area shape="rect" title="Handle to an owned audioStream." alt="" coords="17,167,155,192"/>
+<area shape="rect" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream." alt="" coords="5,93,167,119"/>
+<area shape="poly" title=" " alt="" coords="89,132,89,167,83,167,83,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="9,5,163,45"/>
+<area shape="poly" title=" " alt="" coords="89,59,89,93,83,93,83,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -127,6 +125,15 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AudioStreamRef</
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AudioStreamRef</b> (<a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:ae491d9ac97594cc3f3ed6332486cfa59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:ae491d9ac97594cc3f3ed6332486cfa59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d6a15ea1a212a52df66d08f37a4711" id="r_a38d6a15ea1a212a52df66d08f37a4711"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStream.html#a38d6a15ea1a212a52df66d08f37a4711">AudioStreamRef</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; src_spec, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; dst_spec)</td></tr>
+<tr class="memdesc:a38d6a15ea1a212a52df66d08f37a4711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new audio stream.  <br /></td></tr>
+<tr class="separator:a38d6a15ea1a212a52df66d08f37a4711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77290648b9333327f700e327fd7437b8" id="r_a77290648b9333327f700e327fd7437b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStream.html#a77290648b9333327f700e327fd7437b8">AudioStreamRef</a> (const <a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec=std::nullopt, <a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback=nullptr, void *userdata=nullptr)</td></tr>
+<tr class="memdesc:a77290648b9333327f700e327fd7437b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for straightforward audio init for the common case.  <br /></td></tr>
+<tr class="separator:a77290648b9333327f700e327fd7437b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec455f57d728e02d6da4c11eeaf4a4a0" id="r_aec455f57d728e02d6da4c11eeaf4a4a0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStream.html#aec455f57d728e02d6da4c11eeaf4a4a0">AudioStreamRef</a> (const <a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec, <a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a> callback)</td></tr>
+<tr class="memdesc:aec455f57d728e02d6da4c11eeaf4a4a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for straightforward audio init for the common case.  <br /></td></tr>
+<tr class="separator:aec455f57d728e02d6da4c11eeaf4a4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1AudioStreamRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1AudioStreamRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1AudioStreamRef.html">SDL::AudioStreamRef</a></td></tr>
 <tr class="memitem:a2d97cd452adbc35d8f1ad405cc9cebb1 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a2d97cd452adbc35d8f1ad405cc9cebb1"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AudioStreamRef</b> (const <a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> &amp;other)</td></tr>
@@ -136,150 +143,139 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AudioStreamRef</
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AudioStreamRef</b> (<a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:ae491d9ac97594cc3f3ed6332486cfa59 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:ae491d9ac97594cc3f3ed6332486cfa59 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a0ee7c55b91878914d6008c708f5c5c inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a8a0ee7c55b91878914d6008c708f5c5c"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~AudioStreamRef</b> ()=default</td></tr>
-<tr class="memdesc:a8a0ee7c55b91878914d6008c708f5c5c inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:a8a0ee7c55b91878914d6008c708f5c5c inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d6a15ea1a212a52df66d08f37a4711 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a38d6a15ea1a212a52df66d08f37a4711"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a38d6a15ea1a212a52df66d08f37a4711">AudioStreamRef</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; src_spec, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; dst_spec)</td></tr>
+<tr class="memdesc:a38d6a15ea1a212a52df66d08f37a4711 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new audio stream.  <br /></td></tr>
+<tr class="separator:a38d6a15ea1a212a52df66d08f37a4711 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77290648b9333327f700e327fd7437b8 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a77290648b9333327f700e327fd7437b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a77290648b9333327f700e327fd7437b8">AudioStreamRef</a> (const <a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec=std::nullopt, <a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback=nullptr, void *userdata=nullptr)</td></tr>
+<tr class="memdesc:a77290648b9333327f700e327fd7437b8 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for straightforward audio init for the common case.  <br /></td></tr>
+<tr class="separator:a77290648b9333327f700e327fd7437b8 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec455f57d728e02d6da4c11eeaf4a4a0 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_aec455f57d728e02d6da4c11eeaf4a4a0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#aec455f57d728e02d6da4c11eeaf4a4a0">AudioStreamRef</a> (const <a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec, <a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a> callback)</td></tr>
+<tr class="memdesc:aec455f57d728e02d6da4c11eeaf4a4a0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for straightforward audio init for the common case.  <br /></td></tr>
+<tr class="separator:aec455f57d728e02d6da4c11eeaf4a4a0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69a2f43ff12e53ca2b56d56bc6bf0acc inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a69a2f43ff12e53ca2b56d56bc6bf0acc"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> other)</td></tr>
 <tr class="memdesc:a69a2f43ff12e53ca2b56d56bc6bf0acc inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a69a2f43ff12e53ca2b56d56bc6bf0acc inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37dfaf0415334a7808c673ed1a5a85e5 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a37dfaf0415334a7808c673ed1a5a85e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a37dfaf0415334a7808c673ed1a5a85e5">GetProperties</a> () const</td></tr>
+<tr class="memdesc:a37dfaf0415334a7808c673ed1a5a85e5 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with an audio stream.  <br /></td></tr>
+<tr class="separator:a37dfaf0415334a7808c673ed1a5a85e5 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af978efab4abb3a816411b5bbe8ee7039 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_af978efab4abb3a816411b5bbe8ee7039"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#af978efab4abb3a816411b5bbe8ee7039">GetInputFormat</a> () const</td></tr>
+<tr class="memdesc:af978efab4abb3a816411b5bbe8ee7039 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current input format of an audio stream.  <br /></td></tr>
+<tr class="separator:af978efab4abb3a816411b5bbe8ee7039 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b4a7f35ad4ed7e6c1a33e271bfc2c2a inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a2b4a7f35ad4ed7e6c1a33e271bfc2c2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a2b4a7f35ad4ed7e6c1a33e271bfc2c2a">GetOutputFormat</a> () const</td></tr>
+<tr class="memdesc:a2b4a7f35ad4ed7e6c1a33e271bfc2c2a inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current output format of an audio stream.  <br /></td></tr>
+<tr class="separator:a2b4a7f35ad4ed7e6c1a33e271bfc2c2a inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf59464b72347d73d49db2c04032915e inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_adf59464b72347d73d49db2c04032915e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#adf59464b72347d73d49db2c04032915e">GetFormat</a> (<a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> *src_spec, <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> *dst_spec) const</td></tr>
+<tr class="memdesc:adf59464b72347d73d49db2c04032915e inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current format of an audio stream.  <br /></td></tr>
+<tr class="separator:adf59464b72347d73d49db2c04032915e inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5767373c6f1caf16e1387c8b4332a89 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_ad5767373c6f1caf16e1387c8b4332a89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#ad5767373c6f1caf16e1387c8b4332a89">SetInputFormat</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;spec)</td></tr>
+<tr class="memdesc:ad5767373c6f1caf16e1387c8b4332a89 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the input format of an audio stream.  <br /></td></tr>
+<tr class="separator:ad5767373c6f1caf16e1387c8b4332a89 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa284332b91343c6be07dfdbe91bf1e44 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_aa284332b91343c6be07dfdbe91bf1e44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#aa284332b91343c6be07dfdbe91bf1e44">SetOutputFormat</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;spec)</td></tr>
+<tr class="memdesc:aa284332b91343c6be07dfdbe91bf1e44 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the output format of an audio stream.  <br /></td></tr>
+<tr class="separator:aa284332b91343c6be07dfdbe91bf1e44 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2c35be20ef4f73096a561a5555404a0 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_aa2c35be20ef4f73096a561a5555404a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#aa2c35be20ef4f73096a561a5555404a0">SetFormat</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; src_spec, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; dst_spec)</td></tr>
+<tr class="memdesc:aa2c35be20ef4f73096a561a5555404a0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the input and output formats of an audio stream.  <br /></td></tr>
+<tr class="separator:aa2c35be20ef4f73096a561a5555404a0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f549e49797616993802e482c2ad0a30 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a5f549e49797616993802e482c2ad0a30"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a5f549e49797616993802e482c2ad0a30">GetFrequencyRatio</a> () const</td></tr>
+<tr class="memdesc:a5f549e49797616993802e482c2ad0a30 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the frequency ratio of an audio stream.  <br /></td></tr>
+<tr class="separator:a5f549e49797616993802e482c2ad0a30 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ed951d1c2cd2753639be612e4da53d inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a67ed951d1c2cd2753639be612e4da53d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a67ed951d1c2cd2753639be612e4da53d">SetFrequencyRatio</a> (float ratio)</td></tr>
+<tr class="memdesc:a67ed951d1c2cd2753639be612e4da53d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the frequency ratio of an audio stream.  <br /></td></tr>
+<tr class="separator:a67ed951d1c2cd2753639be612e4da53d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32238149ad4eb7b34b77bddf2d7e8b4c inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a32238149ad4eb7b34b77bddf2d7e8b4c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a32238149ad4eb7b34b77bddf2d7e8b4c">GetGain</a> () const</td></tr>
+<tr class="memdesc:a32238149ad4eb7b34b77bddf2d7e8b4c inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the gain of an audio stream.  <br /></td></tr>
+<tr class="separator:a32238149ad4eb7b34b77bddf2d7e8b4c inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bec6a9a23a495ab1353657d5d1557b1 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a9bec6a9a23a495ab1353657d5d1557b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a9bec6a9a23a495ab1353657d5d1557b1">SetGain</a> (float gain)</td></tr>
+<tr class="memdesc:a9bec6a9a23a495ab1353657d5d1557b1 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the gain of an audio stream.  <br /></td></tr>
+<tr class="separator:a9bec6a9a23a495ab1353657d5d1557b1 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e1ee61eba971cdf650ea9831b658d59 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a0e1ee61eba971cdf650ea9831b658d59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a0e1ee61eba971cdf650ea9831b658d59">GetInputChannelMap</a> () const</td></tr>
+<tr class="memdesc:a0e1ee61eba971cdf650ea9831b658d59 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current input channel map of an audio stream.  <br /></td></tr>
+<tr class="separator:a0e1ee61eba971cdf650ea9831b658d59 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38443d9be0c0c361bfb6e529349b4e5d inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a38443d9be0c0c361bfb6e529349b4e5d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a38443d9be0c0c361bfb6e529349b4e5d">GetOutputChannelMap</a> () const</td></tr>
+<tr class="memdesc:a38443d9be0c0c361bfb6e529349b4e5d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current output channel map of an audio stream.  <br /></td></tr>
+<tr class="separator:a38443d9be0c0c361bfb6e529349b4e5d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff2003c30ed1fe6b00f6e1193f7a6704 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_aff2003c30ed1fe6b00f6e1193f7a6704"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#aff2003c30ed1fe6b00f6e1193f7a6704">SetInputChannelMap</a> (std::span&lt; int &gt; chmap)</td></tr>
+<tr class="memdesc:aff2003c30ed1fe6b00f6e1193f7a6704 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current input channel map of an audio stream.  <br /></td></tr>
+<tr class="separator:aff2003c30ed1fe6b00f6e1193f7a6704 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6870ce641ba0b8b38f41688f4c450687 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a6870ce641ba0b8b38f41688f4c450687"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a6870ce641ba0b8b38f41688f4c450687">SetOutputChannelMap</a> (std::span&lt; int &gt; chmap)</td></tr>
+<tr class="memdesc:a6870ce641ba0b8b38f41688f4c450687 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current output channel map of an audio stream.  <br /></td></tr>
+<tr class="separator:a6870ce641ba0b8b38f41688f4c450687 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98d44233259c85840a44328b83c42f57 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a98d44233259c85840a44328b83c42f57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a98d44233259c85840a44328b83c42f57">PutData</a> (<a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> buf)</td></tr>
+<tr class="memdesc:a98d44233259c85840a44328b83c42f57 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
+<tr class="separator:a98d44233259c85840a44328b83c42f57 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30190621ee9e16b81998af35af8af33e inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a30190621ee9e16b81998af35af8af33e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a30190621ee9e16b81998af35af8af33e">GetData</a> (<a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> buf)</td></tr>
+<tr class="memdesc:a30190621ee9e16b81998af35af8af33e inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get converted/resampled data from the stream.  <br /></td></tr>
+<tr class="separator:a30190621ee9e16b81998af35af8af33e inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab053b902b157dc232ba566f67037f826 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_ab053b902b157dc232ba566f67037f826"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#ab053b902b157dc232ba566f67037f826">GetAvailable</a> () const</td></tr>
+<tr class="memdesc:ab053b902b157dc232ba566f67037f826 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of converted/resampled bytes available.  <br /></td></tr>
+<tr class="separator:ab053b902b157dc232ba566f67037f826 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade38f29483f90132ca77e77a40c6b37e inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_ade38f29483f90132ca77e77a40c6b37e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#ade38f29483f90132ca77e77a40c6b37e">GetQueued</a> () const</td></tr>
+<tr class="memdesc:ade38f29483f90132ca77e77a40c6b37e inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of bytes currently queued.  <br /></td></tr>
+<tr class="separator:ade38f29483f90132ca77e77a40c6b37e inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add369e6164714ef6db18fffa6798156c inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_add369e6164714ef6db18fffa6798156c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#add369e6164714ef6db18fffa6798156c">Flush</a> ()</td></tr>
+<tr class="memdesc:add369e6164714ef6db18fffa6798156c inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell the stream that you're done sending data, and anything being buffered should be converted/resampled and made available immediately.  <br /></td></tr>
+<tr class="separator:add369e6164714ef6db18fffa6798156c inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d5e7970b3b41eccc8c3a033de3c5371 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a2d5e7970b3b41eccc8c3a033de3c5371"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a2d5e7970b3b41eccc8c3a033de3c5371">Clear</a> ()</td></tr>
+<tr class="memdesc:a2d5e7970b3b41eccc8c3a033de3c5371 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear any pending data in the stream.  <br /></td></tr>
+<tr class="separator:a2d5e7970b3b41eccc8c3a033de3c5371 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0398ac745de7408760b36d185b169e83 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a0398ac745de7408760b36d185b169e83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a0398ac745de7408760b36d185b169e83">PauseDevice</a> ()</td></tr>
+<tr class="memdesc:a0398ac745de7408760b36d185b169e83 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to pause audio playback on the audio device associated with an audio stream.  <br /></td></tr>
+<tr class="separator:a0398ac745de7408760b36d185b169e83 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a121254766839590c1877f413cfa64367 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a121254766839590c1877f413cfa64367"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a121254766839590c1877f413cfa64367">ResumeDevice</a> ()</td></tr>
+<tr class="memdesc:a121254766839590c1877f413cfa64367 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to unpause audio playback on the audio device associated with an audio stream.  <br /></td></tr>
+<tr class="separator:a121254766839590c1877f413cfa64367 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae289a9050fee4d60b67b054f814fc694 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_ae289a9050fee4d60b67b054f814fc694"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#ae289a9050fee4d60b67b054f814fc694">DevicePaused</a> () const</td></tr>
+<tr class="memdesc:ae289a9050fee4d60b67b054f814fc694 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to query if an audio device associated with a stream is paused.  <br /></td></tr>
+<tr class="separator:ae289a9050fee4d60b67b054f814fc694 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac5cf7026d0330daa1eec716a321908b0 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_gac5cf7026d0330daa1eec716a321908b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1AudioStreamLock.html">AudioStreamLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gac5cf7026d0330daa1eec716a321908b0">Lock</a> ()</td></tr>
+<tr class="memdesc:gac5cf7026d0330daa1eec716a321908b0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock an audio stream for serialized access.  <br /></td></tr>
+<tr class="separator:gac5cf7026d0330daa1eec716a321908b0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f06f9ad56e1eba11825f58dc21b1014 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a8f06f9ad56e1eba11825f58dc21b1014"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a8f06f9ad56e1eba11825f58dc21b1014">SetGetCallback</a> (<a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a> callback)</td></tr>
+<tr class="memdesc:a8f06f9ad56e1eba11825f58dc21b1014 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is requested from an audio stream.  <br /></td></tr>
+<tr class="separator:a8f06f9ad56e1eba11825f58dc21b1014 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63e4b1178899a5d2b0c98cd87e811dc0 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a63e4b1178899a5d2b0c98cd87e811dc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a63e4b1178899a5d2b0c98cd87e811dc0">SetGetCallback</a> (<a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:a63e4b1178899a5d2b0c98cd87e811dc0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is requested from an audio stream.  <br /></td></tr>
+<tr class="separator:a63e4b1178899a5d2b0c98cd87e811dc0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a2883172ba0273c79f57e506f6dc3a6 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a1a2883172ba0273c79f57e506f6dc3a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a1a2883172ba0273c79f57e506f6dc3a6">SetPutCallback</a> (<a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a> callback)</td></tr>
+<tr class="memdesc:a1a2883172ba0273c79f57e506f6dc3a6 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is added to an audio stream.  <br /></td></tr>
+<tr class="separator:a1a2883172ba0273c79f57e506f6dc3a6 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d04b2518efcd44d7696c9f45ddbaf27 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a9d04b2518efcd44d7696c9f45ddbaf27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a9d04b2518efcd44d7696c9f45ddbaf27">SetPutCallback</a> (<a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:a9d04b2518efcd44d7696c9f45ddbaf27 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is added to an audio stream.  <br /></td></tr>
+<tr class="separator:a9d04b2518efcd44d7696c9f45ddbaf27 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c154acb2d832773ab2f054599a968d inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a30c154acb2d832773ab2f054599a968d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a30c154acb2d832773ab2f054599a968d">Bind</a> (<a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;devid)</td></tr>
+<tr class="memdesc:a30c154acb2d832773ab2f054599a968d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind a single audio stream to an audio device.  <br /></td></tr>
+<tr class="separator:a30c154acb2d832773ab2f054599a968d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3fa302bd61a63c97b4ca3ffb7d4fd7e inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_aa3fa302bd61a63c97b4ca3ffb7d4fd7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#aa3fa302bd61a63c97b4ca3ffb7d4fd7e">Unbind</a> ()</td></tr>
+<tr class="memdesc:aa3fa302bd61a63c97b4ca3ffb7d4fd7e inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbind a single audio stream from its audio device.  <br /></td></tr>
+<tr class="separator:aa3fa302bd61a63c97b4ca3ffb7d4fd7e inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0638d4c1d5113a8db10614d6a2f51de0 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a0638d4c1d5113a8db10614d6a2f51de0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a0638d4c1d5113a8db10614d6a2f51de0">GetDevice</a> () const</td></tr>
+<tr class="memdesc:a0638d4c1d5113a8db10614d6a2f51de0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query an audio stream for its currently-bound device.  <br /></td></tr>
+<tr class="separator:a0638d4c1d5113a8db10614d6a2f51de0 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76662ed19c98da5b25da2cbc16603db3 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a76662ed19c98da5b25da2cbc16603db3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a76662ed19c98da5b25da2cbc16603db3">Destroy</a> ()</td></tr>
+<tr class="memdesc:a76662ed19c98da5b25da2cbc16603db3 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free an audio stream.  <br /></td></tr>
+<tr class="separator:a76662ed19c98da5b25da2cbc16603db3 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62cda7f49aabc910a9e93b0fc395b687 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a62cda7f49aabc910a9e93b0fc395b687"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a62cda7f49aabc910a9e93b0fc395b687">reset</a> (SDL_AudioStream *newResource={})</td></tr>
 <tr class="memdesc:a62cda7f49aabc910a9e93b0fc395b687 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free an audio stream.  <br /></td></tr>
 <tr class="separator:a62cda7f49aabc910a9e93b0fc395b687 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f482729f6c93aaf955fc17aebc0780d inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a4f482729f6c93aaf955fc17aebc0780d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a4f482729f6c93aaf955fc17aebc0780d">AudioStreamBase</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; src_spec, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; dst_spec)</td></tr>
-<tr class="memdesc:a4f482729f6c93aaf955fc17aebc0780d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new audio stream.  <br /></td></tr>
-<tr class="separator:a4f482729f6c93aaf955fc17aebc0780d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad908ee7c8994b96a38d1773b8ced366b inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_ad908ee7c8994b96a38d1773b8ced366b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#ad908ee7c8994b96a38d1773b8ced366b">AudioStreamBase</a> (const <a class="el" href="structSDL_1_1AudioDeviceBase.html">AudioDeviceBase</a> &amp;devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec=std::nullopt, <a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback=nullptr, void *userdata=nullptr)</td></tr>
-<tr class="memdesc:ad908ee7c8994b96a38d1773b8ced366b inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for straightforward audio init for the common case.  <br /></td></tr>
-<tr class="separator:ad908ee7c8994b96a38d1773b8ced366b inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6575b34a8d2c754f12818f5a4ecade34 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a6575b34a8d2c754f12818f5a4ecade34"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a6575b34a8d2c754f12818f5a4ecade34">AudioStreamBase</a> (const <a class="el" href="structSDL_1_1AudioDeviceBase.html">AudioDeviceBase</a> &amp;devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec, <a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a> callback)</td></tr>
-<tr class="memdesc:a6575b34a8d2c754f12818f5a4ecade34 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for straightforward audio init for the common case.  <br /></td></tr>
-<tr class="separator:a6575b34a8d2c754f12818f5a4ecade34 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1AudioStreamBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1AudioStreamBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1AudioStreamBase.html">SDL::AudioStreamBase</a></td></tr>
-<tr class="memitem:a4f482729f6c93aaf955fc17aebc0780d inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a4f482729f6c93aaf955fc17aebc0780d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a4f482729f6c93aaf955fc17aebc0780d">AudioStreamBase</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; src_spec, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; dst_spec)</td></tr>
-<tr class="memdesc:a4f482729f6c93aaf955fc17aebc0780d inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new audio stream.  <br /></td></tr>
-<tr class="separator:a4f482729f6c93aaf955fc17aebc0780d inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad908ee7c8994b96a38d1773b8ced366b inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ad908ee7c8994b96a38d1773b8ced366b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ad908ee7c8994b96a38d1773b8ced366b">AudioStreamBase</a> (const <a class="el" href="structSDL_1_1AudioDeviceBase.html">AudioDeviceBase</a> &amp;devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec=std::nullopt, <a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback=nullptr, void *userdata=nullptr)</td></tr>
-<tr class="memdesc:ad908ee7c8994b96a38d1773b8ced366b inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for straightforward audio init for the common case.  <br /></td></tr>
-<tr class="separator:ad908ee7c8994b96a38d1773b8ced366b inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6575b34a8d2c754f12818f5a4ecade34 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a6575b34a8d2c754f12818f5a4ecade34"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a6575b34a8d2c754f12818f5a4ecade34">AudioStreamBase</a> (const <a class="el" href="structSDL_1_1AudioDeviceBase.html">AudioDeviceBase</a> &amp;devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; spec, <a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a> callback)</td></tr>
-<tr class="memdesc:a6575b34a8d2c754f12818f5a4ecade34 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for straightforward audio init for the common case.  <br /></td></tr>
-<tr class="separator:a6575b34a8d2c754f12818f5a4ecade34 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1c5bbb0c55cfe52113e65da71c4365b inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ab1c5bbb0c55cfe52113e65da71c4365b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ab1c5bbb0c55cfe52113e65da71c4365b">GetProperties</a> () const</td></tr>
-<tr class="memdesc:ab1c5bbb0c55cfe52113e65da71c4365b inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with an audio stream.  <br /></td></tr>
-<tr class="separator:ab1c5bbb0c55cfe52113e65da71c4365b inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7d167bbd12809586787c6462b46fe29 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ae7d167bbd12809586787c6462b46fe29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ae7d167bbd12809586787c6462b46fe29">GetInputFormat</a> () const</td></tr>
-<tr class="memdesc:ae7d167bbd12809586787c6462b46fe29 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current input format of an audio stream.  <br /></td></tr>
-<tr class="separator:ae7d167bbd12809586787c6462b46fe29 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d94b0968694db0148046e5bf63d28d9 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a1d94b0968694db0148046e5bf63d28d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a1d94b0968694db0148046e5bf63d28d9">GetOutputFormat</a> () const</td></tr>
-<tr class="memdesc:a1d94b0968694db0148046e5bf63d28d9 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current output format of an audio stream.  <br /></td></tr>
-<tr class="separator:a1d94b0968694db0148046e5bf63d28d9 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f15bd25ca0408c7cc17f2ecae71b73f inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a8f15bd25ca0408c7cc17f2ecae71b73f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a8f15bd25ca0408c7cc17f2ecae71b73f">GetFormat</a> (<a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> *src_spec, <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> *dst_spec) const</td></tr>
-<tr class="memdesc:a8f15bd25ca0408c7cc17f2ecae71b73f inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current format of an audio stream.  <br /></td></tr>
-<tr class="separator:a8f15bd25ca0408c7cc17f2ecae71b73f inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a969222523512a2bc8ba8ac09cc004206 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a969222523512a2bc8ba8ac09cc004206"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a969222523512a2bc8ba8ac09cc004206">SetInputFormat</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;spec)</td></tr>
-<tr class="memdesc:a969222523512a2bc8ba8ac09cc004206 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the input format of an audio stream.  <br /></td></tr>
-<tr class="separator:a969222523512a2bc8ba8ac09cc004206 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a387c3dfc27bb08479ba5f1c66a2c576d inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a387c3dfc27bb08479ba5f1c66a2c576d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a387c3dfc27bb08479ba5f1c66a2c576d">SetOutputFormat</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;spec)</td></tr>
-<tr class="memdesc:a387c3dfc27bb08479ba5f1c66a2c576d inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the output format of an audio stream.  <br /></td></tr>
-<tr class="separator:a387c3dfc27bb08479ba5f1c66a2c576d inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c97546574bceb41fa4c0e1add9446e2 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a6c97546574bceb41fa4c0e1add9446e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a6c97546574bceb41fa4c0e1add9446e2">SetFormat</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; src_spec, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt; dst_spec)</td></tr>
-<tr class="memdesc:a6c97546574bceb41fa4c0e1add9446e2 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the input and output formats of an audio stream.  <br /></td></tr>
-<tr class="separator:a6c97546574bceb41fa4c0e1add9446e2 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab541345972037a2dd79dac2ab678dd5f inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ab541345972037a2dd79dac2ab678dd5f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ab541345972037a2dd79dac2ab678dd5f">GetFrequencyRatio</a> () const</td></tr>
-<tr class="memdesc:ab541345972037a2dd79dac2ab678dd5f inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the frequency ratio of an audio stream.  <br /></td></tr>
-<tr class="separator:ab541345972037a2dd79dac2ab678dd5f inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba7a3e02f2b409ced4dfd7feea991fd8 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_aba7a3e02f2b409ced4dfd7feea991fd8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#aba7a3e02f2b409ced4dfd7feea991fd8">SetFrequencyRatio</a> (float ratio)</td></tr>
-<tr class="memdesc:aba7a3e02f2b409ced4dfd7feea991fd8 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the frequency ratio of an audio stream.  <br /></td></tr>
-<tr class="separator:aba7a3e02f2b409ced4dfd7feea991fd8 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a227400a18d69c0a2e8a788411603bdf2 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a227400a18d69c0a2e8a788411603bdf2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a227400a18d69c0a2e8a788411603bdf2">GetGain</a> () const</td></tr>
-<tr class="memdesc:a227400a18d69c0a2e8a788411603bdf2 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the gain of an audio stream.  <br /></td></tr>
-<tr class="separator:a227400a18d69c0a2e8a788411603bdf2 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a820212c707e7e690379cda10a1e0d7dd inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a820212c707e7e690379cda10a1e0d7dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a820212c707e7e690379cda10a1e0d7dd">SetGain</a> (float gain)</td></tr>
-<tr class="memdesc:a820212c707e7e690379cda10a1e0d7dd inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the gain of an audio stream.  <br /></td></tr>
-<tr class="separator:a820212c707e7e690379cda10a1e0d7dd inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c6333d5ce6ea5cb97c574c4a94aa815 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a7c6333d5ce6ea5cb97c574c4a94aa815"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a7c6333d5ce6ea5cb97c574c4a94aa815">GetInputChannelMap</a> () const</td></tr>
-<tr class="memdesc:a7c6333d5ce6ea5cb97c574c4a94aa815 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current input channel map of an audio stream.  <br /></td></tr>
-<tr class="separator:a7c6333d5ce6ea5cb97c574c4a94aa815 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad653b5bea4261ac293b0b10c0e54da9 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_aad653b5bea4261ac293b0b10c0e54da9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#aad653b5bea4261ac293b0b10c0e54da9">GetOutputChannelMap</a> () const</td></tr>
-<tr class="memdesc:aad653b5bea4261ac293b0b10c0e54da9 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current output channel map of an audio stream.  <br /></td></tr>
-<tr class="separator:aad653b5bea4261ac293b0b10c0e54da9 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e58cc6da453a601d501667ad871d9af inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a5e58cc6da453a601d501667ad871d9af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a5e58cc6da453a601d501667ad871d9af">SetInputChannelMap</a> (std::span&lt; int &gt; chmap)</td></tr>
-<tr class="memdesc:a5e58cc6da453a601d501667ad871d9af inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current input channel map of an audio stream.  <br /></td></tr>
-<tr class="separator:a5e58cc6da453a601d501667ad871d9af inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad09b84cfd64bc37263a765f7cf95d9af inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ad09b84cfd64bc37263a765f7cf95d9af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ad09b84cfd64bc37263a765f7cf95d9af">SetOutputChannelMap</a> (std::span&lt; int &gt; chmap)</td></tr>
-<tr class="memdesc:ad09b84cfd64bc37263a765f7cf95d9af inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current output channel map of an audio stream.  <br /></td></tr>
-<tr class="separator:ad09b84cfd64bc37263a765f7cf95d9af inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c794d44b3bd7bc0060a91eec4a8bae9 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a1c794d44b3bd7bc0060a91eec4a8bae9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a1c794d44b3bd7bc0060a91eec4a8bae9">PutData</a> (<a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> buf)</td></tr>
-<tr class="memdesc:a1c794d44b3bd7bc0060a91eec4a8bae9 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
-<tr class="separator:a1c794d44b3bd7bc0060a91eec4a8bae9 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3164d08d12fec31905b45e7d1acb47c7 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a3164d08d12fec31905b45e7d1acb47c7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a3164d08d12fec31905b45e7d1acb47c7">GetData</a> (<a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> buf)</td></tr>
-<tr class="memdesc:a3164d08d12fec31905b45e7d1acb47c7 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get converted/resampled data from the stream.  <br /></td></tr>
-<tr class="separator:a3164d08d12fec31905b45e7d1acb47c7 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc2cb37c62f166c585333b5a506a36c9 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_afc2cb37c62f166c585333b5a506a36c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#afc2cb37c62f166c585333b5a506a36c9">GetAvailable</a> () const</td></tr>
-<tr class="memdesc:afc2cb37c62f166c585333b5a506a36c9 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of converted/resampled bytes available.  <br /></td></tr>
-<tr class="separator:afc2cb37c62f166c585333b5a506a36c9 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7047dbd239dbd1a07448a6061b5aa357 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a7047dbd239dbd1a07448a6061b5aa357"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a7047dbd239dbd1a07448a6061b5aa357">GetQueued</a> () const</td></tr>
-<tr class="memdesc:a7047dbd239dbd1a07448a6061b5aa357 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of bytes currently queued.  <br /></td></tr>
-<tr class="separator:a7047dbd239dbd1a07448a6061b5aa357 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97aa378f25c2fc536e53491067c027c1 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a97aa378f25c2fc536e53491067c027c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a97aa378f25c2fc536e53491067c027c1">Flush</a> ()</td></tr>
-<tr class="memdesc:a97aa378f25c2fc536e53491067c027c1 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell the stream that you're done sending data, and anything being buffered should be converted/resampled and made available immediately.  <br /></td></tr>
-<tr class="separator:a97aa378f25c2fc536e53491067c027c1 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35175215684d600010042918f5f29ca4 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a35175215684d600010042918f5f29ca4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a35175215684d600010042918f5f29ca4">Clear</a> ()</td></tr>
-<tr class="memdesc:a35175215684d600010042918f5f29ca4 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear any pending data in the stream.  <br /></td></tr>
-<tr class="separator:a35175215684d600010042918f5f29ca4 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd56cbc8e7f9fd1ea5a8445d64dbea03 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_afd56cbc8e7f9fd1ea5a8445d64dbea03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#afd56cbc8e7f9fd1ea5a8445d64dbea03">PauseDevice</a> ()</td></tr>
-<tr class="memdesc:afd56cbc8e7f9fd1ea5a8445d64dbea03 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to pause audio playback on the audio device associated with an audio stream.  <br /></td></tr>
-<tr class="separator:afd56cbc8e7f9fd1ea5a8445d64dbea03 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfba4e69b9647d75fa00a2e10cd378fd inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_acfba4e69b9647d75fa00a2e10cd378fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#acfba4e69b9647d75fa00a2e10cd378fd">ResumeDevice</a> ()</td></tr>
-<tr class="memdesc:acfba4e69b9647d75fa00a2e10cd378fd inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to unpause audio playback on the audio device associated with an audio stream.  <br /></td></tr>
-<tr class="separator:acfba4e69b9647d75fa00a2e10cd378fd inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad56e9928ffb8e4c8726c871cc915d9f5 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ad56e9928ffb8e4c8726c871cc915d9f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ad56e9928ffb8e4c8726c871cc915d9f5">DevicePaused</a> () const</td></tr>
-<tr class="memdesc:ad56e9928ffb8e4c8726c871cc915d9f5 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to query if an audio device associated with a stream is paused.  <br /></td></tr>
-<tr class="separator:ad56e9928ffb8e4c8726c871cc915d9f5 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf0269818d928fa71beb8616668f4795f inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_gaf0269818d928fa71beb8616668f4795f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1AudioStreamLock.html">AudioStreamLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaf0269818d928fa71beb8616668f4795f">Lock</a> ()</td></tr>
-<tr class="memdesc:gaf0269818d928fa71beb8616668f4795f inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock an audio stream for serialized access.  <br /></td></tr>
-<tr class="separator:gaf0269818d928fa71beb8616668f4795f inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad110c13c5a1ba75e4d0c4ab5ec93f583 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ad110c13c5a1ba75e4d0c4ab5ec93f583"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ad110c13c5a1ba75e4d0c4ab5ec93f583">SetGetCallback</a> (<a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a> callback)</td></tr>
-<tr class="memdesc:ad110c13c5a1ba75e4d0c4ab5ec93f583 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is requested from an audio stream.  <br /></td></tr>
-<tr class="separator:ad110c13c5a1ba75e4d0c4ab5ec93f583 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a974a7ad7a9ebd213da449c41d942c67c inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a974a7ad7a9ebd213da449c41d942c67c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a974a7ad7a9ebd213da449c41d942c67c">SetGetCallback</a> (<a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:a974a7ad7a9ebd213da449c41d942c67c inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is requested from an audio stream.  <br /></td></tr>
-<tr class="separator:a974a7ad7a9ebd213da449c41d942c67c inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97ab55463f04c764f54300e4084d3a31 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a97ab55463f04c764f54300e4084d3a31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a97ab55463f04c764f54300e4084d3a31">SetPutCallback</a> (<a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a> callback)</td></tr>
-<tr class="memdesc:a97ab55463f04c764f54300e4084d3a31 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is added to an audio stream.  <br /></td></tr>
-<tr class="separator:a97ab55463f04c764f54300e4084d3a31 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac84cb28394f91297e2c99d6dbb94883e inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ac84cb28394f91297e2c99d6dbb94883e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ac84cb28394f91297e2c99d6dbb94883e">SetPutCallback</a> (<a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:ac84cb28394f91297e2c99d6dbb94883e inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is added to an audio stream.  <br /></td></tr>
-<tr class="separator:ac84cb28394f91297e2c99d6dbb94883e inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc01b4b3e2e2689e240dc9277ea375fb inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_adc01b4b3e2e2689e240dc9277ea375fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#adc01b4b3e2e2689e240dc9277ea375fb">Bind</a> (<a class="el" href="structSDL_1_1AudioDeviceBase.html">AudioDeviceBase</a> &amp;devid)</td></tr>
-<tr class="memdesc:adc01b4b3e2e2689e240dc9277ea375fb inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind a single audio stream to an audio device.  <br /></td></tr>
-<tr class="separator:adc01b4b3e2e2689e240dc9277ea375fb inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4c7c7300e8ae619dd9a03ef69a86415 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_ad4c7c7300e8ae619dd9a03ef69a86415"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#ad4c7c7300e8ae619dd9a03ef69a86415">Unbind</a> ()</td></tr>
-<tr class="memdesc:ad4c7c7300e8ae619dd9a03ef69a86415 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbind a single audio stream from its audio device.  <br /></td></tr>
-<tr class="separator:ad4c7c7300e8ae619dd9a03ef69a86415 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63abe791908eb1eab5c374f46b2386e7 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a63abe791908eb1eab5c374f46b2386e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamBase.html#a63abe791908eb1eab5c374f46b2386e7">GetDevice</a> () const</td></tr>
-<tr class="memdesc:a63abe791908eb1eab5c374f46b2386e7 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query an audio stream for its currently-bound device.  <br /></td></tr>
-<tr class="separator:a63abe791908eb1eab5c374f46b2386e7 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1AudioStreamBase" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
+<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1AudioStreamRef" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1AudioStreamBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1AudioStreamRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_AudioStream * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_AudioStream * resource={})</td></tr>
@@ -340,10 +336,223 @@ constexpr SDL_AudioStream *&#160;</td><td class="memItemRight" valign="bottom"><
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamBase.html" title="The opaque handle that represents an audio stream.">AudioStreamBase</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream.">AudioStreamRef</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aec455f57d728e02d6da4c11eeaf4a4a0" name="aec455f57d728e02d6da4c11eeaf4a4a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec455f57d728e02d6da4c11eeaf4a4a0">&#9670;&#160;</a></span>AudioStreamRef() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL::AudioStreamRef::AudioStreamRef </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;&#160;</td>
+          <td class="paramname"><em>devid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt;&#160;</td>
+          <td class="paramname"><em>spec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#ga7e94ca585b8e971289b7bfd6780762cc">AudioStreamCB</a>&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If all your app intends to do is provide a single source of PCM audio, this function allows you to do all your audio setup in a single call.</p>
+<p>This is also intended to be a clean means to migrate apps from SDL2.</p>
+<p>This function will open an audio device, create a stream and bind it. Unlike other methods of setup, the audio device will be closed when this stream is destroyed, so the app can treat the returned <a class="el" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream.">AudioStreamRef</a> as the only object needed to manage audio playback.</p>
+<p>Also unlike other functions, the audio device begins paused. This is to map more closely to SDL2-style behavior, since there is no extra step here to bind a stream to begin audio flowing. The audio device should be resumed with <code>AudioStreamRef.ResumeDevice(stream);</code></p>
+<p>This function works with both playback and recording devices.</p>
+<p>The <code>spec</code> parameter represents the app's side of the audio stream. That is, for recording audio, this will be the output format, and for playing audio, this will be the input format. If spec is nullptr, the system will choose the format, and the app can use <a class="el" href="structSDL_1_1AudioStreamRef.html#adf59464b72347d73d49db2c04032915e" title="Query the current format of an audio stream.">AudioStreamRef.GetFormat()</a> to obtain this information later.</p>
+<p>If you don't care about opening a specific audio device, you can (and probably <em>should</em>), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and AUDIO_DEVICE_DEFAULT_RECORDING for recording.</p>
+<p>One can optionally provide a callback function; if nullptr, the app is expected to queue audio data for playback (or unqueue audio data if capturing). Otherwise, the callback will begin to fire once the device is unpaused.</p>
+<p>Destroying the returned stream with <a class="el" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream.">AudioStreamRef</a>,<a class="el" href="structSDL_1_1AudioStreamRef.html#a76662ed19c98da5b25da2cbc16603db3" title="Free an audio stream.">Destroy()</a> will also close the audio device associated with this stream.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">devid</td><td>an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING. </td></tr>
+    <tr><td class="paramname">spec</td><td>the audio stream's data format. Can be std::nullopt. </td></tr>
+    <tr><td class="paramname">callback</td><td>a callback where the app will provide new data for playback, or receive new data for recording. Can not be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>an audio stream on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamRef.html#a0638d4c1d5113a8db10614d6a2f51de0" title="Query an audio stream for its currently-bound device.">AudioStreamRef.GetDevice</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AudioStreamRef.html" title="Handle to a non owned audioStream.">AudioStreamRef</a> </dd></dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<a class="el" href="structSDL_1_1AudioStreamRef.html#a121254766839590c1877f413cfa64367" title="Use this function to unpause audio playback on the audio device associated with an audio stream.">AudioStreamRef.ResumeDevice</a> </dd></dl>
+
+</div>
+</div>
+<a id="a77290648b9333327f700e327fd7437b8" name="a77290648b9333327f700e327fd7437b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77290648b9333327f700e327fd7437b8">&#9670;&#160;</a></span>AudioStreamRef() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL::AudioStreamRef::AudioStreamRef </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;&#160;</td>
+          <td class="paramname"><em>devid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt;&#160;</td>
+          <td class="paramname"><em>spec</em> = <code>std::nullopt</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em> = <code>nullptr</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If all your app intends to do is provide a single source of PCM audio, this function allows you to do all your audio setup in a single call.</p>
+<p>This is also intended to be a clean means to migrate apps from SDL2.</p>
+<p>This function will open an audio device, create a stream and bind it. Unlike other methods of setup, the audio device will be closed when this stream is destroyed, so the app can treat the returned <a class="el" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream.">AudioStreamRef</a> as the only object needed to manage audio playback.</p>
+<p>Also unlike other functions, the audio device begins paused. This is to map more closely to SDL2-style behavior, since there is no extra step here to bind a stream to begin audio flowing. The audio device should be resumed with <code>AudioStreamRef.ResumeDevice(stream);</code></p>
+<p>This function works with both playback and recording devices.</p>
+<p>The <code>spec</code> parameter represents the app's side of the audio stream. That is, for recording audio, this will be the output format, and for playing audio, this will be the input format. If spec is nullptr, the system will choose the format, and the app can use <a class="el" href="structSDL_1_1AudioStreamRef.html#adf59464b72347d73d49db2c04032915e" title="Query the current format of an audio stream.">AudioStreamRef.GetFormat()</a> to obtain this information later.</p>
+<p>If you don't care about opening a specific audio device, you can (and probably <em>should</em>), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and AUDIO_DEVICE_DEFAULT_RECORDING for recording.</p>
+<p>One can optionally provide a callback function; if nullptr, the app is expected to queue audio data for playback (or unqueue audio data if capturing). Otherwise, the callback will begin to fire once the device is unpaused.</p>
+<p>Destroying the returned stream with <a class="el" href="structSDL_1_1AudioStreamRef.html#a76662ed19c98da5b25da2cbc16603db3" title="Free an audio stream.">AudioStreamRef.Destroy</a> will also close the audio device associated with this stream.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">devid</td><td>an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING. </td></tr>
+    <tr><td class="paramname">spec</td><td>the audio stream's data format. Can be std::nullopt. </td></tr>
+    <tr><td class="paramname">callback</td><td>a callback where the app will provide new data for playback, or receive new data for recording. Can be nullptr, in which case the app will need to call <a class="el" href="structSDL_1_1AudioStreamRef.html#a98d44233259c85840a44328b83c42f57" title="Add data to the stream.">AudioStreamRef.PutData</a> or <a class="el" href="structSDL_1_1AudioStreamRef.html#a30190621ee9e16b81998af35af8af33e" title="Get converted/resampled data from the stream.">AudioStreamRef.GetData</a> as necessary. </td></tr>
+    <tr><td class="paramname">userdata</td><td>app-controlled pointer passed to callback. Can be nullptr. Ignored if callback is nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>an audio stream on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamRef.html#a0638d4c1d5113a8db10614d6a2f51de0" title="Query an audio stream for its currently-bound device.">AudioStreamRef.GetDevice</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AudioStreamRef.html#a121254766839590c1877f413cfa64367" title="Use this function to unpause audio playback on the audio device associated with an audio stream.">AudioStreamRef.ResumeDevice</a> </dd></dl>
+
+</div>
+</div>
+<a id="a38d6a15ea1a212a52df66d08f37a4711" name="a38d6a15ea1a212a52df66d08f37a4711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38d6a15ea1a212a52df66d08f37a4711">&#9670;&#160;</a></span>AudioStreamRef() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL::AudioStreamRef::AudioStreamRef </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt;&#160;</td>
+          <td class="paramname"><em>src_spec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &gt;&#160;</td>
+          <td class="paramname"><em>dst_spec</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src_spec</td><td>the format details of the input audio. </td></tr>
+    <tr><td class="paramname">dst_spec</td><td>the format details of the output audio. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a new audio stream on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamRef.html#a98d44233259c85840a44328b83c42f57" title="Add data to the stream.">AudioStreamRef.PutData</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AudioStreamRef.html#a30190621ee9e16b81998af35af8af33e" title="Get converted/resampled data from the stream.">AudioStreamRef.GetData</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AudioStreamRef.html#ab053b902b157dc232ba566f67037f826" title="Get the number of converted/resampled bytes available.">AudioStreamRef.GetAvailable</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AudioStreamRef.html#add369e6164714ef6db18fffa6798156c" title="Tell the stream that you&#39;re done sending data, and anything being buffered should be converted/resamp...">AudioStreamRef.Flush</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AudioStreamRef.html#a2d5e7970b3b41eccc8c3a033de3c5371" title="Clear any pending data in the stream.">AudioStreamRef.Clear</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AudioStreamRef.html#aa2c35be20ef4f73096a561a5555404a0" title="Change the input and output formats of an audio stream.">AudioStreamRef.SetFormat</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AudioStreamRef.html#a76662ed19c98da5b25da2cbc16603db3" title="Free an audio stream.">AudioStreamRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__audio_8h_source.html">SDL3pp_audio.h</a></li>
 </ul>
 </div><!-- contents -->

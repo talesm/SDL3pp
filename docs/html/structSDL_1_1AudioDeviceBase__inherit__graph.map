@@ -1,9 +1,0 @@
-<map id="SDL::AudioDeviceBase" name="SDL::AudioDeviceBase">
-<area shape="rect" id="Node000001" title="SDL Audio Device instance IDs." alt="" coords="5,93,175,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1AudioDeviceRef.html" title="Handle to a non owned audioDevice." alt="" coords="11,167,169,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="93,132,93,167,87,167,87,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="13,5,167,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,59,93,93,87,93,87,59"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice." alt="" coords="21,240,159,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="93,206,93,240,87,240,87,206"/>
-</map>

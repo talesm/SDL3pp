@@ -1,9 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1PaletteBase.html" title="A set of indexed colors representing a palette." alt="" coords="208,13,340,38"/>
-<area shape="poly" id="edge43_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1PaletteRef.html" title="Handle to a non owned palette." alt="" coords="388,13,511,38"/>
-<area shape="poly" id="edge44_Node000001_Node000002" title=" " alt="" coords="354,23,388,23,388,28,354,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Palette.html" title="Handle to an owned palette." alt="" coords="559,13,659,38"/>
-<area shape="poly" id="edge45_Node000002_Node000003" title=" " alt="" coords="524,23,558,23,558,28,524,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1PaletteRef.html" title="A set of indexed colors representing a palette." alt="" coords="208,13,331,38"/>
+<area shape="poly" id="edge33_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1Palette.html" title="Handle to an owned palette." alt="" coords="379,13,479,38"/>
+<area shape="poly" id="edge34_Node000001_Node000002" title=" " alt="" coords="344,23,378,23,378,28,344,28"/>
 </map>

@@ -40,16 +40,10 @@ namespace SDL {
  */
 
 // Forward decl
-struct WindowBase;
-
-// Forward decl
 struct WindowRef;
 
 // Forward decl
 struct Window;
-
-// Forward decl
-struct RendererBase;
 
 // Forward decl
 struct RendererRef;
@@ -113,8 +107,8 @@ using DisplayModeData = SDL_DisplayModeData;
  * @sa Display.GetFullscreenModes
  * @sa Display.GetDesktopMode
  * @sa Display.GetCurrentMode
- * @sa WindowBase.SetFullscreenMode
- * @sa WindowBase.GetFullscreenMode
+ * @sa WindowRef.SetFullscreenMode
+ * @sa WindowRef.GetFullscreenMode
  */
 using DisplayMode = SDL_DisplayMode;
 
@@ -127,13 +121,13 @@ using DisplayMode = SDL_DisplayMode;
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through WindowBase.WindowBase(), some of it can be
+ * immutable after being set through WindowRef.WindowRef(), some of it can be
  * changed on existing windows by the app, and some of it might be altered by
  * the user or system outside of the app's control.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa WindowBase.GetFlags
+ * @sa WindowRef.GetFlags
  */
 using WindowFlags = SDL_WindowFlags;
 
@@ -148,7 +142,7 @@ constexpr WindowFlags WINDOW_OCCLUDED =
 
 /**
  * window is neither mapped onto the desktop nor shown in the
- * taskbar/dock/window list; WindowBase.Show() is required for it to become
+ * taskbar/dock/window list; WindowRef.Show() is required for it to become
  * visible
  */
 constexpr WindowFlags WINDOW_HIDDEN = SDL_WINDOW_HIDDEN;
@@ -313,19 +307,19 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
 /// @}
 
 /**
- * @name Callbacks for WindowBase::SetHitTest()
+ * @name Callbacks for WindowRef::SetHitTest()
  * @{
  */
 
 /**
  * Callback used for hit-testing.
  *
- * @param win the WindowBase where hit-testing was set on.
+ * @param win the WindowRef where hit-testing was set on.
  * @param area an Point which should be hit-tested.
- * @param data what was passed as `callback_data` to WindowBase.SetHitTest().
+ * @param data what was passed as `callback_data` to WindowRef.SetHitTest().
  * @returns an HitTestResult value.
  *
- * @sa WindowBase.SetHitTest
+ * @sa WindowRef.SetHitTest
  */
 using HitTest = SDL_HitTest;
 
@@ -352,9 +346,6 @@ using HitTestCB =
 using OptionalWindow = OptionalResource<WindowRef, Window>;
 
 /// @}
-
-// Forward decl
-struct GLContextBase;
 
 // Forward decl
 struct GLContextRef;
@@ -584,7 +575,7 @@ public:
    * display scale, which means that the user expects UI elements to be twice as
    * big on this display, to aid in readability.
    *
-   * After window creation, WindowBase.GetDisplayScale() should be used to query
+   * After window creation, WindowRef.GetDisplayScale() should be used to query
    * the content scale factor for individual windows instead of querying the
    * display for a window and calling this function, as the per-window content
    * scale factor may differ from the base value of the display it is on,
@@ -597,7 +588,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetDisplayScale
+   * @sa WindowRef.GetDisplayScale
    * @sa Display.GetAll
    */
   float GetContentScale() const
@@ -767,7 +758,7 @@ public:
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  static Display GetForWindow(WindowBase& window);
+  static Display GetForWindow(WindowRef& window);
 };
 
 /**
@@ -827,16 +818,31 @@ constexpr SystemTheme SYSTEM_THEME_DARK =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa WindowBase.WindowBase
+ * @sa WindowRef.WindowRef
  *
  * @cat resource
  *
  * @sa Window
- * @sa WindowRef
  */
-struct WindowBase : Resource<SDL_Window*>
+struct WindowRef : Resource<SDL_Window*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr WindowRef(const WindowRef& other)
+    : WindowRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr WindowRef(WindowRef&& other)
+    : WindowRef(other.release())
+  {
+  }
 
   /**
    * Create a window with the specified dimensions and flags.
@@ -878,15 +884,15 @@ struct WindowBase : Resource<SDL_Window*>
    * - `WINDOW_TRANSPARENT`: window with transparent buffer
    * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
    *
-   * The WindowBase is implicitly shown if WINDOW_HIDDEN is not set.
+   * The WindowRef is implicitly shown if WINDOW_HIDDEN is not set.
    *
    * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
    * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use WindowBase.GetSize() to
+   * window is on a high pixel density display. Use WindowRef.GetSize() to
    * query the client area's size in window coordinates, and
-   * WindowBase.GetSizeInPixels() or RendererBase.GetOutputSize() to query the
+   * WindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the
    * drawable size in pixels. Note that the drawable size can vary after the
    * window is created and should be queried again if you get an
    * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
@@ -897,13 +903,13 @@ struct WindowBase : Resource<SDL_Window*>
    * corresponding UnloadLibrary function is called by WindowRef.reset().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * WindowBase.WindowBase() will fail, because SDL_Vulkan_LoadLibrary() will
+   * WindowRef.WindowRef() will fail, because SDL_Vulkan_LoadLibrary() will
    * fail.
    *
    * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * WindowBase.WindowBase() will fail.
+   * WindowRef.WindowRef() will fail.
    *
-   * If you intend to use this window with an RendererBase, you should use
+   * If you intend to use this window with an RendererRef, you should use
    * CreateWindowAndRenderer() instead of this function, to avoid window
    * flicker.
    *
@@ -923,7 +929,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa CreateWindowAndRenderer()
    */
-  WindowBase(StringParam title, const SDL_Point& size, WindowFlags flags = 0)
+  WindowRef(StringParam title, const SDL_Point& size, WindowFlags flags = 0)
     : Resource(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)))
   {
   }
@@ -984,12 +990,12 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetParent
+   * @sa WindowRef.GetParent
    */
-  WindowBase(WindowBase& parent,
-             const SDL_Point& offset,
-             const SDL_Point& size,
-             WindowFlags flags = 0)
+  WindowRef(WindowRef& parent,
+            const SDL_Point& offset,
+            const SDL_Point& size,
+            WindowFlags flags = 0)
     : Resource(CheckError(SDL_CreatePopupWindow(parent.get(),
                                                 offset.x,
                                                 offset.y,
@@ -1036,7 +1042,7 @@ struct WindowBase : Resource<SDL_Window*>
    *   with grabbed mouse focus
    * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
    *   with OpenGL rendering
-   * - `prop::Window.CREATE_PARENT_POINTER`: an WindowBase that will be the
+   * - `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the
    *   parent of this window, required for windows with the "tooltip", "menu",
    *   and "modal" properties
    * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
@@ -1098,9 +1104,9 @@ struct WindowBase : Resource<SDL_Window*>
    * The window is implicitly shown if the "hidden" property is not set.
    *
    * Windows with the "tooltip" and "menu" properties are popup windows and have
-   * the behaviors and guidelines outlined in WindowBase.WindowBase().
+   * the behaviors and guidelines outlined in WindowRef.WindowRef().
    *
-   * If this window is being created to be used with an RendererBase, you should
+   * If this window is being created to be used with an RendererRef, you should
    * not add a graphics API specific property
    * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
    * internally when it chooses a renderer. However, SDL might need to recreate
@@ -1108,7 +1114,7 @@ struct WindowBase : Resource<SDL_Window*>
    * and then flicker as it is recreated. The correct approach to this is to
    * create the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property
    * set to true, then create the renderer, then show the window with
-   * WindowBase.Show().
+   * WindowRef.Show().
    *
    * @param props the properties to use.
    * @post the window that was created.
@@ -1120,9 +1126,18 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @sa Properties.Properties
    */
-  WindowBase(PropertiesBase& props)
+  WindowRef(PropertiesRef& props)
     : Resource(CheckError(SDL_CreateWindowWithProperties(props.get())))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  WindowRef& operator=(WindowRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -1155,7 +1170,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetDisplayScale
+   * @sa WindowRef.GetDisplayScale
    */
   float GetPixelDensity() const { return SDL_GetWindowPixelDensity(get()); }
 
@@ -1187,12 +1202,12 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * This only affects the display mode used when the window is fullscreen. To
    * change the window size when the window is not fullscreen, use
-   * WindowBase.SetSize().
+   * WindowRef.SetSize().
    *
    * If the window is currently in the fullscreen state, this request is
    * asynchronous on some windowing systems and the new mode dimensions may not
    * be applied immediately upon the return of this function. If an immediate
-   * change is required, call WindowBase.Sync() to block until the changes have
+   * change is required, call WindowRef.Sync() to block until the changes have
    * taken effect.
    *
    * When the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an
@@ -1209,9 +1224,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetFullscreenMode
-   * @sa WindowBase.SetFullscreen
-   * @sa WindowBase.Sync
+   * @sa WindowRef.GetFullscreenMode
+   * @sa WindowRef.SetFullscreen
+   * @sa WindowRef.Sync
    */
   void SetFullscreenMode(OptionalRef<const DisplayMode> mode)
   {
@@ -1228,8 +1243,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetFullscreenMode
-   * @sa WindowBase.SetFullscreen
+   * @sa WindowRef.SetFullscreenMode
+   * @sa WindowRef.SetFullscreen
    */
   const DisplayMode* GetFullscreenMode() const
   {
@@ -1271,7 +1286,7 @@ struct WindowBase : Resource<SDL_Window*>
    * Get the numeric ID of a window.
    *
    * The numeric ID is what WindowEvent references, and is necessary to map
-   * these events to specific WindowBase objects.
+   * these events to specific WindowRef objects.
    *
    * @returns the ID of the window on success.
    * @throws Error on failure.
@@ -1287,16 +1302,16 @@ struct WindowBase : Resource<SDL_Window*>
   /**
    * Get parent of a window.
    *
-   * @returns the parent of the window on success.
-   * @throws Error on failure.
+   * @returns the parent of the window on success, or nullptr if the window has
+   *          no parent.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.WindowBase
+   * @sa WindowRef.WindowRef
    */
-  WindowRef GetParent() const;
+  WindowRef GetParent() const { return SDL_GetWindowParent(get()); }
 
   /**
    * Get the properties associated with a window.
@@ -1431,13 +1446,13 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.WindowBase
-   * @sa WindowBase.Hide
-   * @sa WindowBase.Maximize
-   * @sa WindowBase.Minimize
-   * @sa WindowBase.SetFullscreen
-   * @sa WindowBase.SetMouseGrab
-   * @sa WindowBase.Show
+   * @sa WindowRef.WindowRef
+   * @sa WindowRef.Hide
+   * @sa WindowRef.Maximize
+   * @sa WindowRef.Minimize
+   * @sa WindowRef.SetFullscreen
+   * @sa WindowRef.SetMouseGrab
+   * @sa WindowRef.Show
    */
   WindowFlags GetFlags() const { return SDL_GetWindowFlags(get()); }
 
@@ -1453,7 +1468,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetTitle
+   * @sa WindowRef.GetTitle
    */
   void SetTitle(StringParam title)
   {
@@ -1470,7 +1485,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetTitle
+   * @sa WindowRef.SetTitle
    */
   const char* GetTitle() const { return SDL_GetWindowTitle(get()); }
 
@@ -1487,14 +1502,14 @@ struct WindowBase : Resource<SDL_Window*>
    * appropriate size and be used instead, if available. Otherwise, the closest
    * smaller image will be upscaled and be used instead.
    *
-   * @param icon an SurfaceBase structure containing the icon for the window.
+   * @param icon an SurfaceRef structure containing the icon for the window.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetIcon(SurfaceBase& icon)
+  void SetIcon(SurfaceRef& icon)
   {
     CheckError(SDL_SetWindowIcon(get(), icon.get()));
   }
@@ -1507,8 +1522,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @threadsafety This function should only be called on the main thread.
    *
-   * @sa WindowBase.SetPosition()
-   * @sa WindowBase.SetSize()
+   * @sa WindowRef.SetPosition()
+   * @sa WindowRef.SetSize()
    */
   void SetRect(Rect rect)
   {
@@ -1524,7 +1539,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * The window pixel size may differ from its window coordinate size if the
    * window is on a high pixel density display. Use Window.GetSizeInPixels()
-   * or RendererBase.GetOutputSize() to get the real client area size in pixels.
+   * or RendererRef.GetOutputSize() to get the real client area size in pixels.
    *
    * @return Rect with the position and size
    * @throws Error on failure.
@@ -1540,11 +1555,11 @@ struct WindowBase : Resource<SDL_Window*>
    * This can be used to reposition fullscreen-desktop windows onto a different
    * display, however, as exclusive fullscreen windows are locked to a specific
    * display, they can only be repositioned programmatically via
-   * WindowBase.SetFullscreenMode().
+   * WindowRef.SetFullscreenMode().
    *
    * On some windowing systems this request is asynchronous and the new
    * coordinates may not have have been applied immediately upon the return of
-   * this function. If an immediate change is required, call WindowBase.Sync()
+   * this function. If an immediate change is required, call WindowRef.Sync()
    * to block until the changes have taken effect.
    *
    * When the window position changes, an EVENT_WINDOW_MOVED event will be
@@ -1563,8 +1578,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetPosition
-   * @sa WindowBase.Sync
+   * @sa WindowRef.GetPosition
+   * @sa WindowRef.Sync
    */
   void SetPosition(const SDL_Point& p)
   {
@@ -1613,7 +1628,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetPosition
+   * @sa WindowRef.SetPosition
    */
   void GetPosition(int* x, int* y) const
   {
@@ -1627,11 +1642,11 @@ struct WindowBase : Resource<SDL_Window*>
    * effect.
    *
    * To change the exclusive fullscreen mode of a window, use
-   * WindowBase.SetFullscreenMode().
+   * WindowRef.SetFullscreenMode().
    *
    * On some windowing systems, this request is asynchronous and the new window
    * size may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call WindowBase.Sync() to
+   * function. If an immediate change is required, call WindowRef.Sync() to
    * block until the changes have taken effect.
    *
    * When the window size changes, an EVENT_WINDOW_RESIZED event will be
@@ -1648,9 +1663,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetSize
-   * @sa WindowBase.SetFullscreenMode
-   * @sa WindowBase.Sync
+   * @sa WindowRef.GetSize
+   * @sa WindowRef.SetFullscreenMode
+   * @sa WindowRef.Sync
    */
   void SetSize(const SDL_Point& p)
   {
@@ -1687,8 +1702,8 @@ struct WindowBase : Resource<SDL_Window*>
    * Get the size of a window's client area.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use WindowBase.GetSizeInPixels()
-   * or RendererBase.GetOutputSize() to get the real client area size in pixels.
+   * window is on a high pixel density display. Use WindowRef.GetSizeInPixels()
+   * or RendererRef.GetOutputSize() to get the real client area size in pixels.
    *
    * @param w a pointer filled in with the width of the window, may be nullptr.
    * @param h a pointer filled in with the height of the window, may be nullptr.
@@ -1698,9 +1713,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererBase.GetOutputSize
-   * @sa WindowBase.GetSizeInPixels
-   * @sa WindowBase.SetSize
+   * @sa RendererRef.GetOutputSize
+   * @sa WindowRef.GetSizeInPixels
+   * @sa WindowRef.SetSize
    */
   void GetSize(int* w, int* h) const
   {
@@ -1744,7 +1759,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * On some windowing systems, this request is asynchronous and the new window
    * aspect ratio may not have have been applied immediately upon the return of
-   * this function. If an immediate change is required, call WindowBase.Sync()
+   * this function. If an immediate change is required, call WindowRef.Sync()
    * to block until the changes have taken effect.
    *
    * When the window size changes, an EVENT_WINDOW_RESIZED event will be
@@ -1765,8 +1780,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetAspectRatio
-   * @sa WindowBase.Sync
+   * @sa WindowRef.GetAspectRatio
+   * @sa WindowRef.Sync
    */
   void SetAspectRatio(float min_aspect, float max_aspect)
   {
@@ -1786,7 +1801,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetAspectRatio
+   * @sa WindowRef.SetAspectRatio
    */
   void GetAspectRatio(float* min_aspect, float* max_aspect) const
   {
@@ -1802,7 +1817,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * Note: This function may fail on systems where the window has not yet been
    * decorated by the display server (for example, immediately after calling
-   * WindowBase.WindowBase). It is recommended that you wait at least until the
+   * WindowRef.WindowRef). It is recommended that you wait at least until the
    * window has been presented and composited, so that the window system has a
    * chance to decorate the window and provide the border dimensions to SDL.
    *
@@ -1823,7 +1838,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetSize
+   * @sa WindowRef.GetSize
    */
   void GetBordersSize(int* top, int* left, int* bottom, int* right) const
   {
@@ -1863,8 +1878,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.WindowBase
-   * @sa WindowBase.GetSize
+   * @sa WindowRef.WindowRef
+   * @sa WindowRef.GetSize
    */
   void GetSizeInPixels(int* w, int* h) const
   {
@@ -1881,8 +1896,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetMinimumSize
-   * @sa WindowBase.SetMaximumSize
+   * @sa WindowRef.GetMinimumSize
+   * @sa WindowRef.SetMaximumSize
    */
   void SetMinimumSize(const SDL_Point& p)
   {
@@ -1902,8 +1917,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetMaximumSize
-   * @sa WindowBase.SetMinimumSize
+   * @sa WindowRef.GetMaximumSize
+   * @sa WindowRef.SetMinimumSize
    */
   void GetMinimumSize(int* w, int* h) const
   {
@@ -1920,8 +1935,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetMaximumSize
-   * @sa WindowBase.SetMinimumSize
+   * @sa WindowRef.GetMaximumSize
+   * @sa WindowRef.SetMinimumSize
    */
   void SetMaximumSize(const SDL_Point& p)
   {
@@ -1941,8 +1956,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetMinimumSize
-   * @sa WindowBase.SetMaximumSize
+   * @sa WindowRef.GetMinimumSize
+   * @sa WindowRef.SetMaximumSize
    */
   void GetMaximumSize(int* w, int* h) const
   {
@@ -1965,7 +1980,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetFlags
+   * @sa WindowRef.GetFlags
    */
   void SetBordered(bool bordered)
   {
@@ -1988,7 +2003,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetFlags
+   * @sa WindowRef.GetFlags
    */
   void SetResizable(bool resizable)
   {
@@ -2008,7 +2023,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetFlags
+   * @sa WindowRef.GetFlags
    */
   void SetAlwaysOnTop(bool on_top)
   {
@@ -2024,8 +2039,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.Hide
-   * @sa WindowBase.Raise
+   * @sa WindowRef.Hide
+   * @sa WindowRef.Raise
    */
   void Show() { CheckError(SDL_ShowWindow(get())); }
 
@@ -2038,7 +2053,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.Show
+   * @sa WindowRef.Show
    * @sa WINDOW_HIDDEN
    */
   void Hide() { CheckError(SDL_HideWindow(get())); }
@@ -2069,7 +2084,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call WindowBase.Sync() to
+   * function. If an immediate change is required, call WindowRef.Sync() to
    * block until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_MAXIMIZED event will be
@@ -2077,7 +2092,7 @@ struct WindowBase : Resource<SDL_Window*>
    * deny the state change.
    *
    * When maximizing a window, whether the constraints set via
-   * WindowBase.SetMaximumSize() are honored depends on the policy of the window
+   * WindowRef.SetMaximumSize() are honored depends on the policy of the window
    * manager. Win32 and macOS enforce the constraints when maximizing, while X11
    * and Wayland window managers may vary.
    *
@@ -2087,9 +2102,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.Minimize
-   * @sa WindowBase.Restore
-   * @sa WindowBase.Sync
+   * @sa WindowRef.Minimize
+   * @sa WindowRef.Restore
+   * @sa WindowRef.Sync
    */
   void Maximize() { CheckError(SDL_MaximizeWindow(get())); }
 
@@ -2101,7 +2116,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have been applied immediately upon the return of this
-   * function. If an immediate change is required, call WindowBase.Sync() to
+   * function. If an immediate change is required, call WindowRef.Sync() to
    * block until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_MINIMIZED event will be
@@ -2114,9 +2129,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.Maximize
-   * @sa WindowBase.Restore
-   * @sa WindowBase.Sync
+   * @sa WindowRef.Maximize
+   * @sa WindowRef.Restore
+   * @sa WindowRef.Sync
    */
   void Minimize() { CheckError(SDL_MinimizeWindow(get())); }
 
@@ -2129,7 +2144,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call WindowBase.Sync() to
+   * function. If an immediate change is required, call WindowRef.Sync() to
    * block until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_RESTORED event will be
@@ -2142,9 +2157,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.Maximize
-   * @sa WindowBase.Minimize
-   * @sa WindowBase.Sync
+   * @sa WindowRef.Maximize
+   * @sa WindowRef.Minimize
+   * @sa WindowRef.Sync
    */
   void Restore() { CheckError(SDL_RestoreWindow(get())); }
 
@@ -2153,12 +2168,12 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * By default a window in fullscreen state uses borderless fullscreen desktop
    * mode, but a specific exclusive display mode can be set using
-   * WindowBase.SetFullscreenMode().
+   * WindowRef.SetFullscreenMode().
    *
    * On some windowing systems this request is asynchronous and the new
    * fullscreen state may not have have been applied immediately upon the return
    * of this function. If an immediate change is required, call
-   * WindowBase.Sync() to block until the changes have taken effect.
+   * WindowRef.Sync() to block until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
    * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
@@ -2171,9 +2186,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetFullscreenMode
-   * @sa WindowBase.SetFullscreenMode
-   * @sa WindowBase.Sync
+   * @sa WindowRef.GetFullscreenMode
+   * @sa WindowRef.SetFullscreenMode
+   * @sa WindowRef.Sync
    * @sa WINDOW_FULLSCREEN
    */
   void SetFullscreen(bool fullscreen)
@@ -2199,12 +2214,12 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetSize
-   * @sa WindowBase.SetPosition
-   * @sa WindowBase.SetFullscreen
-   * @sa WindowBase.Minimize
-   * @sa WindowBase.Maximize
-   * @sa WindowBase.Restore
+   * @sa WindowRef.SetSize
+   * @sa WindowRef.SetPosition
+   * @sa WindowRef.SetFullscreen
+   * @sa WindowRef.Minimize
+   * @sa WindowRef.Maximize
+   * @sa WindowRef.Restore
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
   void Sync() { CheckError(SDL_SyncWindow(get())); }
@@ -2219,7 +2234,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetSurface
+   * @sa WindowRef.GetSurface
    */
   bool HasSurface() const { return SDL_WindowHasSurface(get()); }
 
@@ -2244,10 +2259,10 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.DestroySurface
-   * @sa WindowBase.HasSurface
-   * @sa WindowBase.UpdateSurface
-   * @sa WindowBase.UpdateSurfaceRects
+   * @sa WindowRef.DestroySurface
+   * @sa WindowRef.HasSurface
+   * @sa WindowRef.UpdateSurface
+   * @sa WindowRef.UpdateSurfaceRects
    */
   SurfaceRef GetSurface() { return SDL_GetWindowSurface(get()); }
 
@@ -2271,7 +2286,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetSurfaceVSync
+   * @sa WindowRef.GetSurfaceVSync
    */
   void SetSurfaceVSync(int vsync)
   {
@@ -2288,7 +2303,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetSurfaceVSync
+   * @sa WindowRef.SetSurfaceVSync
    */
   int GetSurfaceVSync() const
   {
@@ -2311,8 +2326,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetSurface
-   * @sa WindowBase.UpdateSurfaceRects
+   * @sa WindowRef.GetSurface
+   * @sa WindowRef.UpdateSurfaceRects
    */
   void UpdateSurface() { CheckError(SDL_UpdateWindowSurface(get())); }
 
@@ -2337,8 +2352,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetSurface
-   * @sa WindowBase.UpdateSurface
+   * @sa WindowRef.GetSurface
+   * @sa WindowRef.UpdateSurface
    */
   void UpdateSurfaceRects(SpanRef<const SDL_Rect> rects)
   {
@@ -2355,8 +2370,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetSurface
-   * @sa WindowBase.HasSurface
+   * @sa WindowRef.GetSurface
+   * @sa WindowRef.HasSurface
    */
   void DestroySurface() { CheckError(SDL_DestroyWindowSurface(get())); }
 
@@ -2386,8 +2401,8 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetKeyboardGrab
-   * @sa WindowBase.SetMouseGrab
+   * @sa WindowRef.GetKeyboardGrab
+   * @sa WindowRef.SetMouseGrab
    */
   void SetKeyboardGrab(bool grabbed)
   {
@@ -2406,10 +2421,10 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetMouseRect
-   * @sa WindowBase.SetMouseRect
-   * @sa WindowBase.SetMouseGrab
-   * @sa WindowBase.SetKeyboardGrab
+   * @sa WindowRef.GetMouseRect
+   * @sa WindowRef.SetMouseRect
+   * @sa WindowRef.SetMouseGrab
+   * @sa WindowRef.SetKeyboardGrab
    */
   void SetMouseGrab(bool grabbed)
   {
@@ -2425,7 +2440,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetKeyboardGrab
+   * @sa WindowRef.SetKeyboardGrab
    */
   bool GetKeyboardGrab() const { return SDL_GetWindowKeyboardGrab(get()); }
 
@@ -2438,10 +2453,10 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetMouseRect
-   * @sa WindowBase.SetMouseRect
-   * @sa WindowBase.SetMouseGrab
-   * @sa WindowBase.SetKeyboardGrab
+   * @sa WindowRef.GetMouseRect
+   * @sa WindowRef.SetMouseRect
+   * @sa WindowRef.SetMouseGrab
+   * @sa WindowRef.SetKeyboardGrab
    */
   bool GetMouseGrab() const { return SDL_GetWindowMouseGrab(get()); }
 
@@ -2459,9 +2474,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetMouseRect
-   * @sa WindowBase.GetMouseGrab
-   * @sa WindowBase.SetMouseGrab
+   * @sa WindowRef.GetMouseRect
+   * @sa WindowRef.GetMouseGrab
+   * @sa WindowRef.SetMouseGrab
    */
   void SetMouseRect(const SDL_Rect& rect)
   {
@@ -2478,9 +2493,9 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetMouseRect
-   * @sa WindowBase.GetMouseGrab
-   * @sa WindowBase.SetMouseGrab
+   * @sa WindowRef.SetMouseRect
+   * @sa WindowRef.GetMouseGrab
+   * @sa WindowRef.SetMouseGrab
    */
   const SDL_Rect* GetMouseRect() const { return SDL_GetWindowMouseRect(get()); }
 
@@ -2499,7 +2514,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetOpacity
+   * @sa WindowRef.GetOpacity
    */
   void SetOpacity(float opacity)
   {
@@ -2519,7 +2534,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetOpacity
+   * @sa WindowRef.SetOpacity
    */
   float GetOpacity() const { return SDL_GetWindowOpacity(get()); }
 
@@ -2536,7 +2551,7 @@ struct WindowBase : Resource<SDL_Window*>
    * the parent is shown.
    *
    * Attempting to set the parent of a window that is currently in the modal
-   * state will fail. Use WindowBase.SetModal() to cancel the modal status
+   * state will fail. Use WindowRef.SetModal() to cancel the modal status
    * before attempting to change the parent.
    *
    * Popup windows cannot change parents and attempts to do so will fail.
@@ -2551,7 +2566,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetModal
+   * @sa WindowRef.SetModal
    */
   void SetParent(OptionalWindow parent);
 
@@ -2568,7 +2583,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetParent
+   * @sa WindowRef.SetParent
    * @sa WINDOW_MODAL
    */
   void SetModal(bool modal) { CheckError(SDL_SetWindowModal(get(), modal)); }
@@ -2710,7 +2725,7 @@ struct WindowBase : Resource<SDL_Window*>
    * consistent cross-platform results.
    *
    * The shape is copied inside this function, so you can free it afterwards. If
-   * your shape surface changes, you should call WindowBase.SetShape() again to
+   * your shape surface changes, you should call WindowRef.SetShape() again to
    * update the window. This is an expensive operation, so should be done
    * sparingly.
    *
@@ -2724,7 +2739,7 @@ struct WindowBase : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetShape(SurfaceBase& shape)
+  void SetShape(SurfaceRef& shape)
   {
     CheckError(SDL_SetWindowShape(get(), shape.get()));
   }
@@ -2744,11 +2759,82 @@ struct WindowBase : Resource<SDL_Window*>
     CheckError(SDL_FlashWindow(get(), operation));
   }
 
+  /**
+   * Get a window from a stored ID.
+   *
+   * The numeric ID is what WindowEvent references, and is necessary to map
+   * these events to specific WindowRef objects.
+   *
+   * @param id the ID of the window.
+   * @returns the window associated with `id` or nullptr if it doesn't exist;
+   * call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa WindowRef.GetID
+   */
+  static WindowRef FromID(WindowID id) { return SDL_GetWindowFromID(id); }
+
+  /**
+   * Get the window that currently has an input grab enabled.
+   *
+   * @returns the window if input is grabbed or nullptr otherwise.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa WindowRef.SetMouseGrab
+   * @sa WindowRef.SetKeyboardGrab
+   */
+  static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
+
+  /**
+   * Destroy a window.
+   *
+   * Any child windows owned by the window will be recursively destroyed as
+   * well.
+   *
+   * Note that on some platforms, the visible window may not actually be removed
+   * from the screen until the SDL event loop is pumped again, even though the
+   * WindowRef is no longer valid after this call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa WindowRef.WindowRef
+   */
+  void Destroy() { reset(); }
+
+  /**
+   * Destroy a window.
+   *
+   * Any child windows owned by the window will be recursively destroyed as
+   * well.
+   *
+   * Note that on some platforms, the visible window may not actually be removed
+   * from the screen until the SDL event loop is pumped again, even though the
+   * WindowRef is no longer valid after this call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa WindowRef.WindowRef
+   */
+  void reset(SDL_Window* newResource = {})
+  {
+    SDL_DestroyWindow(release(newResource));
+  }
+
   RendererRef GetRenderer() const;
 
   void StartTextInput();
 
-  void StartTextInput(PropertiesBase& props);
+  void StartTextInput(PropertiesRef& props);
 
   bool IsTextInputActive() const;
 
@@ -2770,105 +2856,10 @@ struct WindowBase : Resource<SDL_Window*>
 };
 
 /**
- * Handle to a non owned window
- *
- * @cat resource
- *
- * @sa WindowBase
- * @sa Window
- */
-struct WindowRef : WindowBase
-{
-  using WindowBase::WindowBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr WindowRef(const WindowRef& other)
-    : WindowBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr WindowRef(WindowRef&& other)
-    : WindowBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~WindowRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  WindowRef& operator=(WindowRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Destroy a window.
-   *
-   * Any child windows owned by the window will be recursively destroyed as
-   * well.
-   *
-   * Note that on some platforms, the visible window may not actually be removed
-   * from the screen until the SDL event loop is pumped again, even though the
-   * WindowBase is no longer valid after this call.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void reset(SDL_Window* newResource = {})
-  {
-    SDL_DestroyWindow(release(newResource));
-  }
-
-  /**
-   * Get a window from a stored ID.
-   *
-   * The numeric ID is what WindowEvent references, and is necessary to map
-   * these events to specific WindowBase objects.
-   *
-   * @param id the ID of the window.
-   * @returns the window associated with `id` or nullptr if it doesn't exist;
-   * call GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa WindowBase.GetID
-   */
-  static WindowRef FromID(WindowID id);
-
-  /**
-   * Get the window that currently has an input grab enabled.
-   *
-   * @returns the window if input is grabbed or nullptr otherwise.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa WindowBase.SetMouseGrab
-   * @sa WindowBase.SetKeyboardGrab
-   */
-  static WindowRef GetGrabbed();
-};
-
-/**
  * Handle to an owned window
  *
  * @cat resource
  *
- * @sa WindowBase
  * @sa WindowRef
  */
 struct Window : WindowRef
@@ -2996,16 +2987,30 @@ struct Window : WindowRef
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GLContextBase.GLContextBase
- *
  * @cat resource
  *
+ * @sa GLContextRef.GLContextRef
  * @sa GLContext
- * @sa GLContextRef
  */
-struct GLContextBase : Resource<SDL_GLContextState*>
+struct GLContextRef : Resource<SDL_GLContextState*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr GLContextRef(const GLContextRef& other)
+    : GLContextRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr GLContextRef(GLContextRef&& other)
+    : GLContextRef(other.release())
+  {
+  }
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -3016,7 +3021,7 @@ struct GLContextBase : Resource<SDL_GLContextState*>
    * extension-handling library or with GL_GetProcAddress() and its related
    * functions.
    *
-   * GLContextBase is opaque to the application.
+   * GLContextRef is opaque to the application.
    *
    * @param window the window to associate with the context.
    * @post the OpenGL context associated with `window`.
@@ -3027,11 +3032,20 @@ struct GLContextBase : Resource<SDL_GLContextState*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GLContextRef.reset
-   * @sa GLContextBase.MakeCurrent
+   * @sa GLContextRef.MakeCurrent
    */
-  GLContextBase(WindowBase& window)
+  GLContextRef(WindowRef& window)
     : Resource(CheckError(SDL_GL_CreateContext(window.get())))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  GLContextRef& operator=(GLContextRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -3046,71 +3060,42 @@ struct GLContextBase : Resource<SDL_GLContextState*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextBase.GLContextBase
+   * @sa GLContextRef.GLContextRef
    */
-  void MakeCurrent(WindowBase& window)
+  void MakeCurrent(WindowRef& window)
   {
     CheckError(SDL_GL_MakeCurrent(window.get(), get()));
-  }
-};
-
-/**
- * Handle to a non owned gLContext
- *
- * @cat resource
- *
- * @sa GLContextBase
- * @sa GLContext
- */
-struct GLContextRef : GLContextBase
-{
-  using GLContextBase::GLContextBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr GLContextRef(const GLContextRef& other)
-    : GLContextBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr GLContextRef(GLContextRef&& other)
-    : GLContextBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~GLContextRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  GLContextRef& operator=(GLContextRef other)
-  {
-    release(other.release());
-    return *this;
   }
 
   /**
    * Delete an OpenGL context.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @param context the OpenGL context to be deleted.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextBase.GLContextBase
+   * @sa GLContextRef.GLContextRef
    */
-  bool reset(SDL_GLContextState* newResource = {})
+  void Destroy() { reset(); }
+
+  /**
+   * Delete an OpenGL context.
+   *
+   * @param context the OpenGL context to be deleted.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GLContextRef.GLContextRef
+   */
+  void reset(SDL_GLContextState* newResource = {})
   {
-    return SDL_GL_DestroyContext(release(newResource));
+    CheckError(SDL_GL_DestroyContext(release(newResource)));
   }
 };
 
@@ -3119,7 +3104,6 @@ struct GLContextRef : GLContextBase
  *
  * @cat resource
  *
- * @sa GLContextBase
  * @sa GLContextRef
  */
 struct GLContext : GLContextRef
@@ -3198,7 +3182,7 @@ using EGLint = SDL_EGLint;
  * app add extra attributes to its eglGetPlatformDisplay() call.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase
+ * with `EGL_NONE`. If this function returns nullptr, the WindowRef.WindowRef
  * process will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be
@@ -3223,7 +3207,7 @@ using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
  * app add extra attributes to its eglGetPlatformDisplay() call.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase
+ * with `EGL_NONE`. If this function returns nullptr, the WindowRef.WindowRef
  * process will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be
@@ -3252,7 +3236,7 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
  * callback.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase
+ * with `EGL_NONE`. If this function returns nullptr, the WindowRef.WindowRef
  * process will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be
@@ -3283,7 +3267,7 @@ using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
  * callback.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the WindowBase.WindowBase
+ * with `EGL_NONE`. If this function returns nullptr, the WindowRef.WindowRef
  * process will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be
@@ -3833,16 +3817,6 @@ constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
 
 } // namespace prop::Window
 
-inline WindowRef WindowRef::FromID(WindowID id)
-{
-  return SDL_GetWindowFromID(id);
-}
-
-inline WindowRef WindowBase::GetParent() const
-{
-  return SDL_GetWindowParent(get());
-}
-
 #ifdef SDL3PP_DOC
 
 /// Disable vsync
@@ -3852,8 +3826,6 @@ inline WindowRef WindowBase::GetParent() const
 #define SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE (-1)
 
 #endif // SDL3PP_DOC
-
-inline WindowRef WindowRef::GetGrabbed() { return SDL_GetGrabbedWindow(); }
 
 /**
  * Check whether the screensaver is currently enabled.
@@ -4132,7 +4104,7 @@ inline WindowRef GL_GetCurrentWindow()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContextBase.MakeCurrent
+ * @sa GLContextRef.MakeCurrent
  */
 inline GLContextRef GL_GetCurrentContext()
 {
@@ -4180,7 +4152,7 @@ inline EGLConfig EGL_GetCurrentConfig()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline EGLSurface EGL_GetWindowSurface(WindowBase& window)
+inline EGLSurface EGL_GetWindowSurface(WindowRef& window)
 {
   return CheckError(SDL_EGL_GetWindowSurface(window.get()));
 }
@@ -4290,7 +4262,7 @@ inline void GL_GetSwapInterval(int* interval)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GL_SwapWindow(WindowBase& window)
+inline void GL_SwapWindow(WindowRef& window)
 {
   CheckError(SDL_GL_SwapWindow(window.get()));
 }
@@ -4299,7 +4271,7 @@ inline void GL_SwapWindow(WindowBase& window)
 
 /// @}
 
-inline void WindowBase::SetHitTest(HitTestCB callback)
+inline void WindowRef::SetHitTest(HitTestCB callback)
 {
   using Wrapper = KeyValueCallbackWrapper<SDL_Window*, HitTestCB>;
   void* cbHandle = Wrapper::Wrap(get(), std::move(callback));

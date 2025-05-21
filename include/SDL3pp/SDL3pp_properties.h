@@ -13,7 +13,7 @@ namespace SDL {
  * A property is a variable that can be created and retrieved by name at
  * runtime.
  *
- * All properties are part of a property group (PropertiesBase). A property
+ * All properties are part of a property group (PropertiesRef). A property
  * group can be created with the CreateProperties() function or by simply
  * instantiating @ref Properties. It can be destroyed with the
  * PropertiesRef.reset(), but the Properties destructor probably will do what
@@ -22,18 +22,18 @@ namespace SDL {
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on
+ * - PropertiesRef.SetPointer() and PropertiesRef.GetPointer() operate on
  * `void*` pointer types.
- * - PropertiesBase.SetString() and PropertiesBase.GetString() operate on string
+ * - PropertiesRef.SetString() and PropertiesRef.GetString() operate on string
  * types.
- * - PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed
+ * - PropertiesRef.SetNumber() and PropertiesRef.GetNumber() operate on signed
  * 64-bit integer types.
- * - PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating
+ * - PropertiesRef.SetFloat() and PropertiesRef.GetFloat() operate on floating
  * point types.
- * - PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on
+ * - PropertiesRef.SetBoolean() and PropertiesRef.GetBoolean() operate on
  * boolean types.
  *
- * Properties can be removed from a group by using PropertiesBase.Clear().
+ * Properties can be removed from a group by using PropertiesRef.Clear().
  * @{
  */
 
@@ -45,7 +45,7 @@ namespace SDL {
 using PropertyType = SDL_PropertyType;
 
 /**
- * @name Callbacks for PropertiesBase.SetPointerWithCleanup()
+ * @name Callbacks for PropertiesRef.SetPointerWithCleanup()
  * @{
  */
 
@@ -58,7 +58,7 @@ using PropertyType = SDL_PropertyType;
  * This callback is set per-property. Different properties in the same group
  * can have different cleanup callbacks.
  *
- * This callback will be called _during_ PropertiesBase.SetPointerWithCleanup if
+ * This callback will be called _during_ PropertiesRef.SetPointerWithCleanup if
  * the function fails for any reason.
  *
  * @param userdata an app-defined pointer passed to the callback.
@@ -69,7 +69,7 @@ using PropertyType = SDL_PropertyType;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa PropertiesBase.SetPointerWithCleanup
+ * @sa PropertiesRef.SetPointerWithCleanup
  */
 using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 
@@ -77,7 +77,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  * A callback used to free resources when a property is deleted.
  *
  * @sa CleanupPropertyCallback
- * @sa PropertiesBase.SetPointerWithCleanup()
+ * @sa PropertiesRef.SetPointerWithCleanup()
  * @sa result-callback
  *
  * @cat result-callback
@@ -86,26 +86,26 @@ using CleanupPropertyCB = std::function<void(void*)>;
 
 /// @}
 /**
- * @name Callbacks for PropertiesBase.Enumerate()
+ * @name Callbacks for PropertiesRef.Enumerate()
  * @{
  */
 
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from PropertiesBase.Enumerate(), and is called once
+ * This callback is called from PropertiesRef.Enumerate(), and is called once
  * per property in the set.
  *
  * @param userdata an app-defined pointer passed to the callback.
- * @param props the PropertiesBase that is being enumerated.
+ * @param props the PropertiesRef that is being enumerated.
  * @param name the next property name in the enumeration.
  *
- * @threadsafety PropertiesBase.Enumerate holds a lock on `props` during this
+ * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
  *               callback.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa PropertiesBase.Enumerate
+ * @sa PropertiesRef.Enumerate
  */
 using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
 
@@ -115,13 +115,13 @@ struct PropertiesRef;
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from PropertiesBase.Enumerate(), and is called once
+ * This callback is called from PropertiesRef.Enumerate(), and is called once
  * per property in the set.
  *
- * @param props the PropertiesBase that is being enumerated.
+ * @param props the PropertiesRef that is being enumerated.
  * @param name the next property name in the enumeration.
  *
- * @threadsafety PropertiesBase.Enumerate holds a lock on `props` during this
+ * @threadsafety PropertiesRef.Enumerate holds a lock on `props` during this
  *               callback.
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -129,7 +129,7 @@ struct PropertiesRef;
  * @cat immediate-callback
  *
  *
- * @sa PropertiesBase.Enumerate
+ * @sa PropertiesRef.Enumerate
  * @sa EnumeratePropertiesCallback
  */
 using EnumeratePropertiesCB =
@@ -139,9 +139,6 @@ using EnumeratePropertiesCB =
 
 // Forward decl
 struct PropertiesLock;
-
-// Forward decl
-struct PropertiesBase;
 
 // Forward decl
 struct Properties;
@@ -197,18 +194,42 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @sa Properties.Properties
  * @sa Properties
- * @sa PropertiesRef
  */
-struct PropertiesBase : Resource<SDL_PropertiesID>
+struct PropertiesRef : Resource<SDL_PropertiesID>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr PropertiesRef(const PropertiesRef& other)
+    : PropertiesRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr PropertiesRef(PropertiesRef&& other)
+    : PropertiesRef(other.release())
+  {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  PropertiesRef& operator=(PropertiesRef other)
+  {
+    release(other.release());
+    return *this;
+  }
 
   /**
    * Copy a group of properties.
    *
    * Copy all the properties from one group of properties to another, with the
    * exception of properties requiring cleanup (set using
-   * PropertiesBase.SetPointerWithCleanup()), which will not be copied. Any
+   * PropertiesRef.SetPointerWithCleanup()), which will not be copied. Any
    * property that already exists on `dst` will be overwritten.
    *
    * @param dst the destination properties.
@@ -218,7 +239,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void CopyPropertiesTo(PropertiesBase& dst) const
+  void CopyPropertiesTo(PropertiesRef& dst) const
   {
     CheckError(SDL_CopyProperties(get(), dst.get()));
   }
@@ -289,8 +310,8 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    * reason.
    *
    * For simply setting basic data types, like numbers, bools, or strings, use
-   * PropertiesBase.SetNumber, PropertiesBase.SetBoolean, or
-   * PropertiesBase.SetString instead, as those functions will handle cleanup on
+   * PropertiesRef.SetNumber, PropertiesRef.SetBoolean, or
+   * PropertiesRef.SetString instead, as those functions will handle cleanup on
    * your behalf. This function is only for more complex, custom data.
    *
    * @param name the name of the property to modify.
@@ -305,8 +326,8 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetPointer
-   * @sa PropertiesBase.SetPointer
+   * @sa PropertiesRef.GetPointer
+   * @sa PropertiesRef.SetPointer
    * @sa CleanupPropertyCallback
    */
   void SetPointerWithCleanup(StringParam name,
@@ -330,13 +351,13 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetPointer
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetBoolean
-   * @sa PropertiesBase.SetFloat
-   * @sa PropertiesBase.SetNumber
-   * @sa PropertiesBase.SetPointerWithCleanup
-   * @sa PropertiesBase.SetString
+   * @sa PropertiesRef.GetPointer
+   * @sa PropertiesRef.Has
+   * @sa PropertiesRef.SetBoolean
+   * @sa PropertiesRef.SetFloat
+   * @sa PropertiesRef.SetNumber
+   * @sa PropertiesRef.SetPointerWithCleanup
+   * @sa PropertiesRef.SetString
    */
   void SetPointer(StringParam name, void* value)
   {
@@ -358,7 +379,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetString
+   * @sa PropertiesRef.GetString
    */
   void SetString(StringParam name, StringParam value)
   {
@@ -376,7 +397,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetNumber
+   * @sa PropertiesRef.GetNumber
    */
   void SetNumber(StringParam name, Sint64 value)
   {
@@ -394,7 +415,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetFloat
+   * @sa PropertiesRef.GetFloat
    */
   void SetFloat(StringParam name, float value)
   {
@@ -412,7 +433,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetBoolean
+   * @sa PropertiesRef.GetBoolean
    */
   void SetBoolean(StringParam name, bool value)
   {
@@ -429,7 +450,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetType
+   * @sa PropertiesRef.GetType
    */
   bool Has(StringParam name) const { return SDL_HasProperty(get(), name); }
 
@@ -444,7 +465,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.Has
+   * @sa PropertiesRef.Has
    */
   PropertyType GetType(StringParam name) const
   {
@@ -469,20 +490,20 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @threadsafety It is safe to call this function from any thread, although
    *               the data returned is not protected and could potentially be
-   *               freed if you call PropertiesBase.SetPointer() or
-   *               PropertiesBase.Clear() on these properties from another
-   *               thread. If you need to avoid this, use PropertiesBase.Lock()
+   *               freed if you call PropertiesRef.SetPointer() or
+   *               PropertiesRef.Clear() on these properties from another
+   *               thread. If you need to avoid this, use PropertiesRef.Lock()
    *               and PropertiesLock.Unlock().
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetBoolean
-   * @sa PropertiesBase.GetFloat
-   * @sa PropertiesBase.GetNumber
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.GetString
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetPointer
+   * @sa PropertiesRef.GetBoolean
+   * @sa PropertiesRef.GetFloat
+   * @sa PropertiesRef.GetNumber
+   * @sa PropertiesRef.GetType
+   * @sa PropertiesRef.GetString
+   * @sa PropertiesRef.Has
+   * @sa PropertiesRef.SetPointer
    */
   void* GetPointer(StringParam name, void* default_value) const
   {
@@ -507,16 +528,16 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @threadsafety It is safe to call this function from any thread, although
    *               the data returned is not protected and could potentially be
-   *               freed if you call PropertiesBase.SetString() or
-   *               PropertiesBase.Clear() on these properties from another
-   *               thread. If you need to avoid this, use PropertiesBase.Lock()
+   *               freed if you call PropertiesRef.SetString() or
+   *               PropertiesRef.Clear() on these properties from another
+   *               thread. If you need to avoid this, use PropertiesRef.Lock()
    *               and PropertiesLock.Unlock().
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetString
+   * @sa PropertiesRef.GetType
+   * @sa PropertiesRef.Has
+   * @sa PropertiesRef.SetString
    */
   const char* GetString(StringParam name, StringParam default_value) const
   {
@@ -526,7 +547,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
   /**
    * Get a number property from a group of properties.
    *
-   * You can use PropertiesBase.GetType() to query whether the property exists
+   * You can use PropertiesRef.GetType() to query whether the property exists
    * and is a number property.
    *
    * By convention, the names of properties that SDL exposes on objects will
@@ -543,9 +564,9 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetNumber
+   * @sa PropertiesRef.GetType
+   * @sa PropertiesRef.Has
+   * @sa PropertiesRef.SetNumber
    */
   Sint64 GetNumber(StringParam name, Sint64 default_value) const
   {
@@ -555,7 +576,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
   /**
    * Get a floating point property from a group of properties.
    *
-   * You can use PropertiesBase.GetType() to query whether the property exists
+   * You can use PropertiesRef.GetType() to query whether the property exists
    * and is a floating point property.
    *
    * By convention, the names of properties that SDL exposes on objects will
@@ -572,9 +593,9 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetFloat
+   * @sa PropertiesRef.GetType
+   * @sa PropertiesRef.Has
+   * @sa PropertiesRef.SetFloat
    */
   float GetFloat(StringParam name, float default_value) const
   {
@@ -584,7 +605,7 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
   /**
    * Get a boolean property from a group of properties.
    *
-   * You can use PropertiesBase.GetType() to query whether the property exists
+   * You can use PropertiesRef.GetType() to query whether the property exists
    * and is a boolean property.
    *
    * By convention, the names of properties that SDL exposes on objects will
@@ -601,9 +622,9 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.GetType
-   * @sa PropertiesBase.Has
-   * @sa PropertiesBase.SetBoolean
+   * @sa PropertiesRef.GetType
+   * @sa PropertiesRef.Has
+   * @sa PropertiesRef.SetBoolean
    */
   bool GetBoolean(StringParam name, bool default_value) const
   {
@@ -674,54 +695,21 @@ struct PropertiesBase : Resource<SDL_PropertiesID>
   }
 
   /**
-   * Returns the number of properties this has
+   * Destroy a group of properties.
    *
-   * This uses Enumerate() internally, so might not be so fast
+   * All properties are deleted and their cleanup functions will be called, if
+   * any.
+   *
+   *
+   * @threadsafety This function should not be called while these properties are
+   *               locked or other threads might be setting or getting values
+   *               from these properties.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Properties
    */
-  Uint64 GetCount() const;
-};
-
-/**
- * Handle to a non owned properties
- *
- * @cat resource
- *
- * @sa PropertiesBase
- * @sa Properties
- */
-struct PropertiesRef : PropertiesBase
-{
-  using PropertiesBase::PropertiesBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr PropertiesRef(const PropertiesRef& other)
-    : PropertiesBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr PropertiesRef(PropertiesRef&& other)
-    : PropertiesBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~PropertiesRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  PropertiesRef& operator=(PropertiesRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  void Destroy() { reset(); }
 
   /**
    * Destroy a group of properties.
@@ -735,13 +723,19 @@ struct PropertiesRef : PropertiesBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CreateProperties
-   * @sa Properties.Properties()
+   * @sa Properties.Properties
    */
   void reset(SDL_PropertiesID newResource = {})
   {
     SDL_DestroyProperties(release(newResource));
   }
+
+  /**
+   * Returns the number of properties this has
+   *
+   * This uses Enumerate() internally, so might not be so fast
+   */
+  Uint64 GetCount() const;
 };
 
 /**
@@ -749,7 +743,6 @@ struct PropertiesRef : PropertiesBase
  *
  * @cat resource
  *
- * @sa PropertiesBase
  * @sa PropertiesRef
  */
 struct Properties : PropertiesRef
@@ -806,7 +799,7 @@ struct Properties : PropertiesRef
 };
 
 /**
- * Wrap the lock state for PropertiesBase
+ * Wrap the lock state for PropertiesRef
  *
  */
 class PropertiesLock
@@ -814,7 +807,7 @@ class PropertiesLock
   PropertiesRef properties;
 
   /**
-   * @sa PropertiesBase.Lock()
+   * @sa PropertiesRef.Lock()
    */
   explicit PropertiesLock(PropertiesRef properties)
     : properties(properties)
@@ -857,11 +850,11 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesBase.Lock
+   * @sa PropertiesRef.Lock
    */
   void Unlock() { SDL_UnlockProperties(properties.release()); }
 
-  friend class PropertiesBase;
+  friend class PropertiesRef;
 };
 
 /**
@@ -877,7 +870,7 @@ inline PropertiesRef GetGlobalProperties()
   return CheckError(SDL_GetGlobalProperties());
 }
 
-inline PropertiesLock PropertiesBase::Lock() &
+inline PropertiesLock PropertiesRef::Lock() &
 {
   CheckError(SDL_LockProperties(get()));
   return PropertiesLock{get()};
@@ -905,7 +898,7 @@ inline Properties CreateProperties()
 #pragma region impl
 /// @}
 
-inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
+inline void PropertiesRef::Enumerate(EnumeratePropertiesCB callback) const
 {
   return Enumerate(
     [](void* userdata, SDL_PropertiesID props, const char* name) {
@@ -915,7 +908,7 @@ inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const
     &callback);
 }
 
-inline Uint64 PropertiesBase::GetCount() const
+inline Uint64 PropertiesRef::GetCount() const
 {
   Uint64 count = 0;
   Enumerate([&](auto, const char*) { count++; });
