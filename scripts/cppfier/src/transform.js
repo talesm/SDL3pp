@@ -648,8 +648,8 @@ function expandResources(sourceEntries, file, context) {
   /** @type {ApiEntry[]} */
   const referenceAliases = [];
   for (const [sourceName, resourceEntry] of Object.entries(file.resources ?? {})) {
-    const uniqueName = resourceEntry.uniqueName || transformName(sourceName, context);
-    const name = resourceEntry.name || (uniqueName + "Base");
+    const uniqueName = resourceEntry.name || resourceEntry.uniqueName || transformName(sourceName, context);
+    const name = uniqueName + "Base";
     const refName = resourceEntry.refName || (uniqueName + "Ref");
     const optionalName = "Optional" + uniqueName;
     const detachedName = "Detached" + uniqueName;
