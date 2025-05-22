@@ -3091,7 +3091,6 @@ protected:
   /**
    * Delete an OpenGL context.
    *
-   * @param context the OpenGL context to be deleted.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -3105,7 +3104,6 @@ protected:
   /**
    * Delete an OpenGL context.
    *
-   * @param context the OpenGL context to be deleted.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.

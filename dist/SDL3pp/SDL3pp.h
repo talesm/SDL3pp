@@ -30999,7 +30999,6 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    * Get call would just dequeue the previously-converted data.
    *
    * @param buf a pointer to the audio data to add.
-   * @param len the number of bytes to write to the stream.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread, but if the
@@ -40142,7 +40141,6 @@ protected:
   /**
    * Delete an OpenGL context.
    *
-   * @param context the OpenGL context to be deleted.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -40156,7 +40154,6 @@ protected:
   /**
    * Delete an OpenGL context.
    *
-   * @param context the OpenGL context to be deleted.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
