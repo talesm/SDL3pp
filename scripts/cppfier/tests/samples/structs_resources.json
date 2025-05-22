@@ -4,9 +4,9 @@
       "name": "structs_resources.h",
       "doc": "",
       "entries": {
-        "Type1Base": {
+        "Type1Ref": {
           "doc": "",
-          "name": "Type1Base",
+          "name": "Type1Ref",
           "kind": "struct",
           "type": "T",
           "entries": {
@@ -15,9 +15,9 @@
               "name": "T::T",
               "kind": "alias"
             },
-            "Type1Base": {
+            "Type1Ref": {
               "doc": "",
-              "name": "Type1Base",
+              "name": "Type1Ref",
               "kind": "function",
               "type": "",
               "parameters": [
