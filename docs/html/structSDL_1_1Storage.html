@@ -88,7 +88,9 @@ Inheritance diagram for SDL::Storage:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Storage__inherit__graph.png" border="0" usemap="#aSDL_1_1Storage_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Storage_inherit__map" id="aSDL_1_1Storage_inherit__map">
-<area shape="rect" title="Handle to an owned storage." alt="" coords="30,167,135,192"/>
+<area shape="rect" title="Handle to an owned storage." alt="" coords="30,240,135,265"/>
+<area shape="rect" href="structSDL_1_1StorageUnsafe.html" title="Unsafe Handle to storage." alt="" coords="7,167,158,192"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 <area shape="rect" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access." alt="" coords="19,93,146,119"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
@@ -98,10 +100,10 @@ Inheritance diagram for SDL::Storage:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1ea69f1ea5933428e86a561fc7cb1c8b" id="r_a1ea69f1ea5933428e86a561fc7cb1c8b"><td class="memItemLeft" align="right" valign="top"><a id="a1ea69f1ea5933428e86a561fc7cb1c8b" name="a1ea69f1ea5933428e86a561fc7cb1c8b"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Storage</b> (SDL_Storage *resource={})</td></tr>
-<tr class="memdesc:a1ea69f1ea5933428e86a561fc7cb1c8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a1ea69f1ea5933428e86a561fc7cb1c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02ed80c03531a64448b507b483974e68" id="r_a02ed80c03531a64448b507b483974e68"><td class="memItemLeft" align="right" valign="top"><a id="a02ed80c03531a64448b507b483974e68" name="a02ed80c03531a64448b507b483974e68"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Storage</b> (SDL_Storage *resource)</td></tr>
+<tr class="memdesc:a02ed80c03531a64448b507b483974e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
+<tr class="separator:a02ed80c03531a64448b507b483974e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e86e7afd345dd2a28221999d1588d63" id="r_a4e86e7afd345dd2a28221999d1588d63"><td class="memItemLeft" align="right" valign="top"><a id="a4e86e7afd345dd2a28221999d1588d63" name="a4e86e7afd345dd2a28221999d1588d63"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Storage</b> (const <a class="el" href="structSDL_1_1Storage.html">Storage</a> &amp;other)=delete</td></tr>
 <tr class="separator:a4e86e7afd345dd2a28221999d1588d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,26 +119,33 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Storage</b> (<a 
 <a class="el" href="structSDL_1_1Storage.html">Storage</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Storage.html">Storage</a> other)</td></tr>
 <tr class="memdesc:a266f9608b4504c2f76a27168734d1b5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a266f9608b4504c2f76a27168734d1b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fed623bd720bde7222d25f344be3199" id="r_a5fed623bd720bde7222d25f344be3199"><td class="memItemLeft" align="right" valign="top"><a id="a5fed623bd720bde7222d25f344be3199" name="a5fed623bd720bde7222d25f344be3199"></a>
+<tr class="inherit_header pub_methods_structSDL_1_1StorageUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1StorageUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1StorageUnsafe.html">SDL::StorageUnsafe</a></td></tr>
+<tr class="memitem:a72707f9b571f681ea87b3643463cc5dc inherit pub_methods_structSDL_1_1StorageUnsafe" id="r_a72707f9b571f681ea87b3643463cc5dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageUnsafe.html#a72707f9b571f681ea87b3643463cc5dc">Close</a> ()</td></tr>
+<tr class="memdesc:a72707f9b571f681ea87b3643463cc5dc inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
+<tr class="separator:a72707f9b571f681ea87b3643463cc5dc inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fed623bd720bde7222d25f344be3199 inherit pub_methods_structSDL_1_1StorageUnsafe" id="r_a5fed623bd720bde7222d25f344be3199"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StorageRef</b> (const <a class="el" href="structSDL_1_1StorageRef.html">StorageRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a5fed623bd720bde7222d25f344be3199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:a5fed623bd720bde7222d25f344be3199"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a217d623f3234c3bca268ed331433e01c" id="r_a217d623f3234c3bca268ed331433e01c"><td class="memItemLeft" align="right" valign="top"><a id="a217d623f3234c3bca268ed331433e01c" name="a217d623f3234c3bca268ed331433e01c"></a>
+<tr class="memdesc:a5fed623bd720bde7222d25f344be3199 inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a5fed623bd720bde7222d25f344be3199 inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217d623f3234c3bca268ed331433e01c inherit pub_methods_structSDL_1_1StorageUnsafe" id="r_a217d623f3234c3bca268ed331433e01c"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StorageRef</b> (<a class="el" href="structSDL_1_1StorageRef.html">StorageRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a217d623f3234c3bca268ed331433e01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a217d623f3234c3bca268ed331433e01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4250ebc5fb0428970c0eea7b0c94c01c" id="r_a4250ebc5fb0428970c0eea7b0c94c01c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Storage.html#a4250ebc5fb0428970c0eea7b0c94c01c">StorageRef</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> override, <a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> &amp;props)</td></tr>
-<tr class="memdesc:a4250ebc5fb0428970c0eea7b0c94c01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a read-only container for the application's filesystem.  <br /></td></tr>
-<tr class="separator:a4250ebc5fb0428970c0eea7b0c94c01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13850b90ddaf6606a145c92c067d3f2c" id="r_a13850b90ddaf6606a145c92c067d3f2c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Storage.html#a13850b90ddaf6606a145c92c067d3f2c">StorageRef</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> org, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> app, <a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> &amp;props)</td></tr>
-<tr class="memdesc:a13850b90ddaf6606a145c92c067d3f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a container for a user's unique read/write filesystem.  <br /></td></tr>
-<tr class="separator:a13850b90ddaf6606a145c92c067d3f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65500d0a36afba82ef0ace12c21ebefd" id="r_a65500d0a36afba82ef0ace12c21ebefd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Storage.html#a65500d0a36afba82ef0ace12c21ebefd">StorageRef</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path)</td></tr>
-<tr class="memdesc:a65500d0a36afba82ef0ace12c21ebefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a container for local filesystem storage.  <br /></td></tr>
-<tr class="separator:a65500d0a36afba82ef0ace12c21ebefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac12dea897b6511a670962d600388b29c" id="r_ac12dea897b6511a670962d600388b29c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Storage.html#ac12dea897b6511a670962d600388b29c">StorageRef</a> (const <a class="el" href="group__CategoryStorage.html#ga24042115587c5568577e7acc5d0d76f7">StorageInterface</a> &amp;iface, void *userdata)</td></tr>
-<tr class="memdesc:ac12dea897b6511a670962d600388b29c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a container using a client-provided storage interface.  <br /></td></tr>
-<tr class="separator:ac12dea897b6511a670962d600388b29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a217d623f3234c3bca268ed331433e01c inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a217d623f3234c3bca268ed331433e01c inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4250ebc5fb0428970c0eea7b0c94c01c inherit pub_methods_structSDL_1_1StorageUnsafe" id="r_a4250ebc5fb0428970c0eea7b0c94c01c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageUnsafe.html#a4250ebc5fb0428970c0eea7b0c94c01c">StorageRef</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> override, <a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> &amp;props)</td></tr>
+<tr class="memdesc:a4250ebc5fb0428970c0eea7b0c94c01c inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a read-only container for the application's filesystem.  <br /></td></tr>
+<tr class="separator:a4250ebc5fb0428970c0eea7b0c94c01c inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13850b90ddaf6606a145c92c067d3f2c inherit pub_methods_structSDL_1_1StorageUnsafe" id="r_a13850b90ddaf6606a145c92c067d3f2c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageUnsafe.html#a13850b90ddaf6606a145c92c067d3f2c">StorageRef</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> org, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> app, <a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> &amp;props)</td></tr>
+<tr class="memdesc:a13850b90ddaf6606a145c92c067d3f2c inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a container for a user's unique read/write filesystem.  <br /></td></tr>
+<tr class="separator:a13850b90ddaf6606a145c92c067d3f2c inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65500d0a36afba82ef0ace12c21ebefd inherit pub_methods_structSDL_1_1StorageUnsafe" id="r_a65500d0a36afba82ef0ace12c21ebefd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageUnsafe.html#a65500d0a36afba82ef0ace12c21ebefd">StorageRef</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path)</td></tr>
+<tr class="memdesc:a65500d0a36afba82ef0ace12c21ebefd inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a container for local filesystem storage.  <br /></td></tr>
+<tr class="separator:a65500d0a36afba82ef0ace12c21ebefd inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac12dea897b6511a670962d600388b29c inherit pub_methods_structSDL_1_1StorageUnsafe" id="r_ac12dea897b6511a670962d600388b29c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageUnsafe.html#ac12dea897b6511a670962d600388b29c">StorageRef</a> (const <a class="el" href="group__CategoryStorage.html#ga24042115587c5568577e7acc5d0d76f7">StorageInterface</a> &amp;iface, void *userdata)</td></tr>
+<tr class="memdesc:ac12dea897b6511a670962d600388b29c inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens up a container using a client-provided storage interface.  <br /></td></tr>
+<tr class="separator:ac12dea897b6511a670962d600388b29c inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ae8c3dc09af8c3778645c92a1e766ed inherit pub_methods_structSDL_1_1StorageUnsafe" id="r_a8ae8c3dc09af8c3778645c92a1e766ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageUnsafe.html#a8ae8c3dc09af8c3778645c92a1e766ed">reset</a> (SDL_Storage *newResource={})</td></tr>
+<tr class="memdesc:a8ae8c3dc09af8c3778645c92a1e766ed inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
+<tr class="separator:a8ae8c3dc09af8c3778645c92a1e766ed inherit pub_methods_structSDL_1_1StorageUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1StorageRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1StorageRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1StorageRef.html">SDL::StorageRef</a></td></tr>
 <tr class="memitem:a5fed623bd720bde7222d25f344be3199 inherit pub_methods_structSDL_1_1StorageRef" id="r_a5fed623bd720bde7222d25f344be3199"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StorageRef</b> (const <a class="el" href="structSDL_1_1StorageRef.html">StorageRef</a> &amp;other)</td></tr>
@@ -211,12 +220,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StorageRef</b> (
 <tr class="memitem:a628b27a4b29d65d50eddefb67d8beb21 inherit pub_methods_structSDL_1_1StorageRef" id="r_a628b27a4b29d65d50eddefb67d8beb21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a628b27a4b29d65d50eddefb67d8beb21">GlobDirectory</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> pattern, <a class="el" href="group__CategoryFilesystem.html#gaa05ff4a5a5f7f2e5b5e18072766b6140">GlobFlags</a> flags)</td></tr>
 <tr class="memdesc:a628b27a4b29d65d50eddefb67d8beb21 inherit pub_methods_structSDL_1_1StorageRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate a directory tree, filtered by pattern, and return a list.  <br /></td></tr>
 <tr class="separator:a628b27a4b29d65d50eddefb67d8beb21 inherit pub_methods_structSDL_1_1StorageRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72707f9b571f681ea87b3643463cc5dc inherit pub_methods_structSDL_1_1StorageRef" id="r_a72707f9b571f681ea87b3643463cc5dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a72707f9b571f681ea87b3643463cc5dc">Close</a> ()</td></tr>
-<tr class="memdesc:a72707f9b571f681ea87b3643463cc5dc inherit pub_methods_structSDL_1_1StorageRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
-<tr class="separator:a72707f9b571f681ea87b3643463cc5dc inherit pub_methods_structSDL_1_1StorageRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ae8c3dc09af8c3778645c92a1e766ed inherit pub_methods_structSDL_1_1StorageRef" id="r_a8ae8c3dc09af8c3778645c92a1e766ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a8ae8c3dc09af8c3778645c92a1e766ed">reset</a> (SDL_Storage *newResource={})</td></tr>
-<tr class="memdesc:a8ae8c3dc09af8c3778645c92a1e766ed inherit pub_methods_structSDL_1_1StorageRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
-<tr class="separator:a8ae8c3dc09af8c3778645c92a1e766ed inherit pub_methods_structSDL_1_1StorageRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1StorageRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1StorageRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -292,256 +295,21 @@ constexpr const SDL_Storage *&#160;</td><td class="memItemRight" valign="bottom"
 constexpr SDL_Storage *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_structSDL_1_1StorageRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1StorageRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1StorageRef.html">SDL::StorageRef</a></td></tr>
+<tr class="memitem:a72707f9b571f681ea87b3643463cc5dc inherit pro_methods_structSDL_1_1StorageRef" id="r_a72707f9b571f681ea87b3643463cc5dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a72707f9b571f681ea87b3643463cc5dc">Close</a> ()</td></tr>
+<tr class="memdesc:a72707f9b571f681ea87b3643463cc5dc inherit pro_methods_structSDL_1_1StorageRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
+<tr class="separator:a72707f9b571f681ea87b3643463cc5dc inherit pro_methods_structSDL_1_1StorageRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ae8c3dc09af8c3778645c92a1e766ed inherit pro_methods_structSDL_1_1StorageRef" id="r_a8ae8c3dc09af8c3778645c92a1e766ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a8ae8c3dc09af8c3778645c92a1e766ed">reset</a> (SDL_Storage *newResource={})</td></tr>
+<tr class="memdesc:a8ae8c3dc09af8c3778645c92a1e766ed inherit pro_methods_structSDL_1_1StorageRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
+<tr class="separator:a8ae8c3dc09af8c3778645c92a1e766ed inherit pro_methods_structSDL_1_1StorageRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac12dea897b6511a670962d600388b29c" name="ac12dea897b6511a670962d600388b29c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac12dea897b6511a670962d600388b29c">&#9670;&#160;</a></span>StorageRef() <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::StorageRef::StorageRef </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__CategoryStorage.html#ga24042115587c5568577e7acc5d0d76f7">StorageInterface</a> &amp;&#160;</td>
-          <td class="paramname"><em>iface</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>userdata</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Applications do not need to use this function unless they are providing their own <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> implementation. If you just need an <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a>, you should use the built-in implementations in <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>, like <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef()</a> or <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef()</a>.</p>
-<p>This function makes a copy of <code>iface</code> and the caller does not need to keep it around after this call.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">iface</td><td>the interface that implements this storage, initialized using <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE()</a>. </td></tr>
-    <tr><td class="paramname">userdata</td><td>the pointer that will be passed to the interface functions. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a storage container on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1StorageRef.html#a9853e265b4a7256714f1be7d11acb567" title="Query the size of a file within a storage container.">StorageRef.GetFileSize</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a9a0e3ef3b12cf443da69fc032be01820" title="Queries the remaining space in a storage container.">StorageRef.GetSpaceRemaining</a> </dd>
-<dd>
-<a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a68133ff13e69cb9aefc6c7d8ba0bc474" title="Synchronously read a file from a storage container into a client-provided buffer.">StorageRef.ReadFile</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a1c0985eae291f433468783416c1ec1d2" title="Checks if the storage container is ready to use.">StorageRef.Ready</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#abbaffeee392062c3498a36b07746eeca" title="Synchronously write a file from client memory into a storage container.">StorageRef.WriteFile</a> </dd></dl>
-
-</div>
-</div>
-<a id="a13850b90ddaf6606a145c92c067d3f2c" name="a13850b90ddaf6606a145c92c067d3f2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13850b90ddaf6606a145c92c067d3f2c">&#9670;&#160;</a></span>StorageRef() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::StorageRef::StorageRef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>org</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>app</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> &amp;&#160;</td>
-          <td class="paramname"><em>props</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>While title storage can generally be kept open throughout runtime, user storage should only be opened when the client is ready to read/write files. This allows the backend to properly batch file operations and flush them when the container has been closed; ensuring safe and optimal save I/O.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">org</td><td>the name of your organization. </td></tr>
-    <tr><td class="paramname">app</td><td>the name of your application. </td></tr>
-    <tr><td class="paramname">props</td><td>a property list that may contain backend-specific information. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a user storage container on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1StorageRef.html#a9853e265b4a7256714f1be7d11acb567" title="Query the size of a file within a storage container.">StorageRef.GetFileSize</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a9a0e3ef3b12cf443da69fc032be01820" title="Queries the remaining space in a storage container.">StorageRef.GetSpaceRemaining</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a68133ff13e69cb9aefc6c7d8ba0bc474" title="Synchronously read a file from a storage container into a client-provided buffer.">StorageRef.ReadFile</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a1c0985eae291f433468783416c1ec1d2" title="Checks if the storage container is ready to use.">StorageRef.Ready</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#abbaffeee392062c3498a36b07746eeca" title="Synchronously write a file from client memory into a storage container.">StorageRef.WriteFile</a> </dd></dl>
-
-</div>
-</div>
-<a id="a4250ebc5fb0428970c0eea7b0c94c01c" name="a4250ebc5fb0428970c0eea7b0c94c01c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4250ebc5fb0428970c0eea7b0c94c01c">&#9670;&#160;</a></span>StorageRef() <span class="overload">[3/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::StorageRef::StorageRef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>override</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> &amp;&#160;</td>
-          <td class="paramname"><em>props</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">override</td><td>a path to override the backend's default title root. </td></tr>
-    <tr><td class="paramname">props</td><td>a property list that may contain backend-specific information. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a title storage container on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1StorageRef.html#a72707f9b571f681ea87b3643463cc5dc" title="Closes and frees a storage container.">StorageRef.Close</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a9853e265b4a7256714f1be7d11acb567" title="Query the size of a file within a storage container.">StorageRef.GetFileSize</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a68133ff13e69cb9aefc6c7d8ba0bc474" title="Synchronously read a file from a storage container into a client-provided buffer.">StorageRef.ReadFile</a> </dd></dl>
-
-</div>
-</div>
-<a id="a65500d0a36afba82ef0ace12c21ebefd" name="a65500d0a36afba82ef0ace12c21ebefd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65500d0a36afba82ef0ace12c21ebefd">&#9670;&#160;</a></span>StorageRef() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::StorageRef::StorageRef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This is provided for development and tools. Portable applications should use <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef()</a> for access to game data and <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef()</a> for access to user data.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>the base path prepended to all storage paths, or nullptr for no base path. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a filesystem storage container on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1StorageRef.html#a9853e265b4a7256714f1be7d11acb567" title="Query the size of a file within a storage container.">StorageRef.GetFileSize</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a9a0e3ef3b12cf443da69fc032be01820" title="Queries the remaining space in a storage container.">StorageRef.GetSpaceRemaining</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#a68133ff13e69cb9aefc6c7d8ba0bc474" title="Synchronously read a file from a storage container into a client-provided buffer.">StorageRef.ReadFile</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1StorageRef.html#abbaffeee392062c3498a36b07746eeca" title="Synchronously write a file from client memory into a storage container.">StorageRef.WriteFile</a> </dd></dl>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__storage_8h_source.html">SDL3pp_storage.h</a></li>
 </ul>
 </div><!-- contents -->

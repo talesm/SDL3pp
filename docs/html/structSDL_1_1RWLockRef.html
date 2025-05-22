@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1RWLockRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::RWLockRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryMutex.html">Thread Synchronization Primitives</a></div></div></div>
 </div><!--header-->
@@ -89,10 +90,12 @@ Inheritance diagram for SDL::RWLockRef:</div>
 <div class="center"><img src="structSDL_1_1RWLockRef__inherit__graph.png" border="0" usemap="#aSDL_1_1RWLockRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1RWLockRef_inherit__map" id="aSDL_1_1RWLockRef_inherit__map">
 <area shape="rect" title="A mutex that allows read&#45;only threads to run in parallel." alt="" coords="18,93,147,119"/>
-<area shape="rect" href="structSDL_1_1RWLock.html" title="Handle to an owned rWLock." alt="" coords="29,167,136,192"/>
+<area shape="rect" href="structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock." alt="" coords="6,167,159,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1RWLock.html" title="Handle to an owned rWLock." alt="" coords="29,240,136,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -128,12 +131,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockRef</b> (<
 <tr class="memitem:aa712abde57baa181fec0dda90cd36b2f" id="r_aa712abde57baa181fec0dda90cd36b2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html#aa712abde57baa181fec0dda90cd36b2f">Unlock</a> ()</td></tr>
 <tr class="memdesc:aa712abde57baa181fec0dda90cd36b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlock the read/write lock.  <br /></td></tr>
 <tr class="separator:aa712abde57baa181fec0dda90cd36b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43020c49c4c6b6b1046ec8b886d7afaa" id="r_a43020c49c4c6b6b1046ec8b886d7afaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html#a43020c49c4c6b6b1046ec8b886d7afaa">Destroy</a> ()</td></tr>
-<tr class="memdesc:a43020c49c4c6b6b1046ec8b886d7afaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLockRef.html#abb5d48f38337422262d6645361a286d1" title="Create a new read/write lock.">RWLockRef.RWLockRef()</a>.  <br /></td></tr>
-<tr class="separator:a43020c49c4c6b6b1046ec8b886d7afaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba496f1892ead742c12b8e2ef196db63" id="r_aba496f1892ead742c12b8e2ef196db63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html#aba496f1892ead742c12b8e2ef196db63">reset</a> (SDL_RWLock *newResource={})</td></tr>
-<tr class="memdesc:aba496f1892ead742c12b8e2ef196db63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLockRef.html#abb5d48f38337422262d6645361a286d1" title="Create a new read/write lock.">RWLockRef.RWLockRef()</a>.  <br /></td></tr>
-<tr class="separator:aba496f1892ead742c12b8e2ef196db63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -209,6 +206,15 @@ constexpr const SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom">
 constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a43020c49c4c6b6b1046ec8b886d7afaa" id="r_a43020c49c4c6b6b1046ec8b886d7afaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html#a43020c49c4c6b6b1046ec8b886d7afaa">Destroy</a> ()</td></tr>
+<tr class="memdesc:a43020c49c4c6b6b1046ec8b886d7afaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLockRef.html#abb5d48f38337422262d6645361a286d1" title="Create a new read/write lock.">RWLockRef.RWLockRef()</a>.  <br /></td></tr>
+<tr class="separator:a43020c49c4c6b6b1046ec8b886d7afaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba496f1892ead742c12b8e2ef196db63" id="r_aba496f1892ead742c12b8e2ef196db63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html#aba496f1892ead742c12b8e2ef196db63">reset</a> (SDL_RWLock *newResource={})</td></tr>
+<tr class="memdesc:aba496f1892ead742c12b8e2ef196db63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLockRef.html#abb5d48f38337422262d6645361a286d1" title="Create a new read/write lock.">RWLockRef.RWLockRef()</a>.  <br /></td></tr>
+<tr class="separator:aba496f1892ead742c12b8e2ef196db63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A rwlock is roughly the same concept as <a class="el" href="structSDL_1_1MutexRef.html" title="A means to serialize access to a resource between threads.">MutexRef</a>, but allows threads that request read-only access to all hold the lock at the same time. If a thread requests write access, it will block until all read-only threads have released the lock, and no one else can hold the thread (for reading or writing) at the same time as the writing thread.</p>
@@ -278,7 +284,7 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -378,7 +384,7 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

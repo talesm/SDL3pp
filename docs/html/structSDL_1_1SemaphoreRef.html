@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1SemaphoreRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::SemaphoreRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryMutex.html">Thread Synchronization Primitives</a></div></div></div>
 </div><!--header-->
@@ -88,11 +89,13 @@ Inheritance diagram for SDL::SemaphoreRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1SemaphoreRef__inherit__graph.png" border="0" usemap="#aSDL_1_1SemaphoreRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1SemaphoreRef_inherit__map" id="aSDL_1_1SemaphoreRef_inherit__map">
-<area shape="rect" title="A means to manage access to a resource, by count, between threads." alt="" coords="7,93,158,119"/>
-<area shape="rect" href="structSDL_1_1Semaphore.html" title="Handle to an owned semaphore." alt="" coords="18,167,147,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="A means to manage access to a resource, by count, between threads." alt="" coords="17,93,168,119"/>
+<area shape="rect" href="structSDL_1_1SemaphoreUnsafe.html" title="Unsafe Handle to semaphore." alt="" coords="5,167,180,192"/>
+<area shape="poly" title=" " alt="" coords="95,132,95,167,90,167,90,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="15,5,170,45"/>
+<area shape="poly" title=" " alt="" coords="95,59,95,93,90,93,90,59"/>
+<area shape="rect" href="structSDL_1_1Semaphore.html" title="Handle to an owned semaphore." alt="" coords="28,240,157,265"/>
+<area shape="poly" title=" " alt="" coords="95,206,95,240,90,240,90,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -128,12 +131,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SemaphoreRef</b>
 <tr class="memitem:a46aed8ff327728773d556cfff6b84e0a" id="r_a46aed8ff327728773d556cfff6b84e0a"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a46aed8ff327728773d556cfff6b84e0a">GetValue</a> () const</td></tr>
 <tr class="memdesc:a46aed8ff327728773d556cfff6b84e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current value of a semaphore.  <br /></td></tr>
 <tr class="separator:a46aed8ff327728773d556cfff6b84e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fb979905ac1da1debe86c580a715d0f" id="r_a6fb979905ac1da1debe86c580a715d0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a6fb979905ac1da1debe86c580a715d0f">Destroy</a> ()</td></tr>
-<tr class="memdesc:a6fb979905ac1da1debe86c580a715d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a semaphore.  <br /></td></tr>
-<tr class="separator:a6fb979905ac1da1debe86c580a715d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9be164c5ef3e9b4e9a9c30ea30bdcee1" id="r_a9be164c5ef3e9b4e9a9c30ea30bdcee1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a9be164c5ef3e9b4e9a9c30ea30bdcee1">reset</a> (SDL_Semaphore *newResource={})</td></tr>
-<tr class="memdesc:a9be164c5ef3e9b4e9a9c30ea30bdcee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a semaphore.  <br /></td></tr>
-<tr class="separator:a9be164c5ef3e9b4e9a9c30ea30bdcee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -209,6 +206,15 @@ constexpr const SDL_Semaphore *&#160;</td><td class="memItemRight" valign="botto
 constexpr SDL_Semaphore *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a6fb979905ac1da1debe86c580a715d0f" id="r_a6fb979905ac1da1debe86c580a715d0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a6fb979905ac1da1debe86c580a715d0f">Destroy</a> ()</td></tr>
+<tr class="memdesc:a6fb979905ac1da1debe86c580a715d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a semaphore.  <br /></td></tr>
+<tr class="separator:a6fb979905ac1da1debe86c580a715d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9be164c5ef3e9b4e9a9c30ea30bdcee1" id="r_a9be164c5ef3e9b4e9a9c30ea30bdcee1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SemaphoreRef.html#a9be164c5ef3e9b4e9a9c30ea30bdcee1">reset</a> (SDL_Semaphore *newResource={})</td></tr>
+<tr class="memdesc:a9be164c5ef3e9b4e9a9c30ea30bdcee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a semaphore.  <br /></td></tr>
+<tr class="separator:a9be164c5ef3e9b4e9a9c30ea30bdcee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Semaphores (specifically, "counting semaphores"), let X number of threads request access at the same time, each thread granted access decrementing a counter. When the counter reaches zero, future requests block until a prior thread releases their request, incrementing the counter again.</p>
@@ -283,7 +289,7 @@ constexpr SDL_Semaphore *&#160;</td><td class="memItemRight" valign="bottom"><b>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -339,7 +345,7 @@ constexpr SDL_Semaphore *&#160;</td><td class="memItemRight" valign="bottom"><b>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

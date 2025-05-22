@@ -292,6 +292,7 @@ struct CursorRef : Resource<SDL_Cursor*>
     return *this;
   }
 
+protected:
   /**
    * Free a previously-created cursor.
    *
@@ -327,21 +328,39 @@ struct CursorRef : Resource<SDL_Cursor*>
 };
 
 /**
+ * Unsafe Handle to cursor
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa CursorRef
+ */
+struct CursorUnsafe : CursorRef
+{
+  using CursorRef::CursorRef;
+
+  using CursorRef::Destroy;
+
+  using CursorRef::reset;
+};
+
+/**
  * Handle to an owned cursor
  *
  * @cat resource
  *
  * @sa CursorRef
  */
-struct Cursor : CursorRef
+struct Cursor : CursorUnsafe
 {
-  using CursorRef::CursorRef;
+  using CursorUnsafe::CursorUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Cursor(SDL_Cursor* resource = {})
-    : CursorRef(resource)
+  constexpr explicit Cursor(SDL_Cursor* resource)
+    : CursorUnsafe(resource)
   {
   }
 

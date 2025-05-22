@@ -183,6 +183,7 @@ struct MutexRef : Resource<SDL_Mutex*>
    */
   void Unlock() { SDL_UnlockMutex(get()); }
 
+protected:
   /**
    * Destroy a mutex created with MutexRef.MutexRef().
    *
@@ -220,22 +221,39 @@ struct MutexRef : Resource<SDL_Mutex*>
 };
 
 /**
+ * Unsafe Handle to mutex
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa MutexRef
+ */
+struct MutexUnsafe : MutexRef
+{
+  using MutexRef::Destroy;
+
+  using MutexRef::MutexRef;
+
+  using MutexRef::reset;
+};
+
+/**
  * Handle to an owned mutex
  *
  * @cat resource
  *
  * @sa MutexRef
- * @sa MutexRef
  */
-struct Mutex : MutexRef
+struct Mutex : MutexUnsafe
 {
-  using MutexRef::MutexRef;
+  using MutexUnsafe::MutexUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Mutex(SDL_Mutex* resource = {})
-    : MutexRef(resource)
+  constexpr explicit Mutex(SDL_Mutex* resource)
+    : MutexUnsafe(resource)
   {
   }
 
@@ -499,6 +517,7 @@ struct RWLockRef : Resource<SDL_RWLock*>
    */
   void Unlock() { SDL_UnlockRWLock(get()); }
 
+protected:
   /**
    * Destroy a read/write lock created with RWLockRef.RWLockRef().
    *
@@ -535,22 +554,39 @@ struct RWLockRef : Resource<SDL_RWLock*>
 };
 
 /**
+ * Unsafe Handle to rWLock
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RWLockRef
+ */
+struct RWLockUnsafe : RWLockRef
+{
+  using RWLockRef::Destroy;
+
+  using RWLockRef::RWLockRef;
+
+  using RWLockRef::reset;
+};
+
+/**
  * Handle to an owned rWLock
  *
  * @cat resource
  *
  * @sa RWLockRef
- * @sa RWLockRef
  */
-struct RWLock : RWLockRef
+struct RWLock : RWLockUnsafe
 {
-  using RWLockRef::RWLockRef;
+  using RWLockUnsafe::RWLockUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit RWLock(SDL_RWLock* resource = {})
-    : RWLockRef(resource)
+  constexpr explicit RWLock(SDL_RWLock* resource)
+    : RWLockUnsafe(resource)
   {
   }
 
@@ -730,6 +766,7 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
    */
   Uint32 GetValue() const { return SDL_GetSemaphoreValue(get()); }
 
+protected:
   /**
    * Destroy a semaphore.
    *
@@ -759,22 +796,39 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
 };
 
 /**
+ * Unsafe Handle to semaphore
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreRef
+ */
+struct SemaphoreUnsafe : SemaphoreRef
+{
+  using SemaphoreRef::Destroy;
+
+  using SemaphoreRef::SemaphoreRef;
+
+  using SemaphoreRef::reset;
+};
+
+/**
  * Handle to an owned semaphore
  *
  * @cat resource
  *
  * @sa SemaphoreRef
- * @sa SemaphoreRef
  */
-struct Semaphore : SemaphoreRef
+struct Semaphore : SemaphoreUnsafe
 {
-  using SemaphoreRef::SemaphoreRef;
+  using SemaphoreUnsafe::SemaphoreUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Semaphore(SDL_Semaphore* resource = {})
-    : SemaphoreRef(resource)
+  constexpr explicit Semaphore(SDL_Semaphore* resource)
+    : SemaphoreUnsafe(resource)
   {
   }
 
@@ -951,6 +1005,7 @@ struct ConditionRef : Resource<SDL_Condition*>
     return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
   }
 
+protected:
   /**
    * Destroy a condition variable.
    *
@@ -975,22 +1030,39 @@ struct ConditionRef : Resource<SDL_Condition*>
 };
 
 /**
+ * Unsafe Handle to condition
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ConditionRef
+ */
+struct ConditionUnsafe : ConditionRef
+{
+  using ConditionRef::ConditionRef;
+
+  using ConditionRef::Destroy;
+
+  using ConditionRef::reset;
+};
+
+/**
  * Handle to an owned condition
  *
  * @cat resource
  *
  * @sa ConditionRef
- * @sa ConditionRef
  */
-struct Condition : ConditionRef
+struct Condition : ConditionUnsafe
 {
-  using ConditionRef::ConditionRef;
+  using ConditionUnsafe::ConditionUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Condition(SDL_Condition* resource = {})
-    : ConditionRef(resource)
+  constexpr explicit Condition(SDL_Condition* resource)
+    : ConditionUnsafe(resource)
   {
   }
 

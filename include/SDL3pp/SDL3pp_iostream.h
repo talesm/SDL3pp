@@ -1513,6 +1513,8 @@ struct IOStreamRef : Resource<SDL_IOStream*>
     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
     return {};
   }
+
+protected:
   /**
    * Close and free an allocated IOStreamRef structure.
    *
@@ -1580,22 +1582,39 @@ struct IOStreamRef : Resource<SDL_IOStream*>
 };
 
 /**
+ * Unsafe Handle to iOStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ */
+struct IOStreamUnsafe : IOStreamRef
+{
+  using IOStreamRef::Close;
+
+  using IOStreamRef::IOStreamRef;
+
+  using IOStreamRef::reset;
+};
+
+/**
  * Handle to an owned iOStream
  *
  * @cat resource
  *
  * @sa IOStreamRef
- * @sa IOStreamRef
  */
-struct IOStream : IOStreamRef
+struct IOStream : IOStreamUnsafe
 {
-  using IOStreamRef::IOStreamRef;
+  using IOStreamUnsafe::IOStreamUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit IOStream(SDL_IOStream* resource = {})
-    : IOStreamRef(resource)
+  constexpr explicit IOStream(SDL_IOStream* resource)
+    : IOStreamUnsafe(resource)
   {
   }
 

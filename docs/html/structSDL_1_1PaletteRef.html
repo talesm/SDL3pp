@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1PaletteRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::PaletteRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryPixels.html">Pixel Formats and Conversion Routines</a></div></div></div>
 </div><!--header-->
@@ -89,10 +90,12 @@ Inheritance diagram for SDL::PaletteRef:</div>
 <div class="center"><img src="structSDL_1_1PaletteRef__inherit__graph.png" border="0" usemap="#aSDL_1_1PaletteRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1PaletteRef_inherit__map" id="aSDL_1_1PaletteRef_inherit__map">
 <area shape="rect" title="A set of indexed colors representing a palette." alt="" coords="21,93,144,119"/>
-<area shape="rect" href="structSDL_1_1Palette.html" title="Handle to an owned palette." alt="" coords="33,167,133,192"/>
+<area shape="rect" href="structSDL_1_1PaletteUnsafe.html" title="Unsafe Handle to palette." alt="" coords="9,167,156,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1Palette.html" title="Handle to an owned palette." alt="" coords="33,240,133,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -127,12 +130,6 @@ constexpr <a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td c
 <tr class="memitem:ae270eb0c89843314b0019e581f7ea37d" id="r_ae270eb0c89843314b0019e581f7ea37d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteRef.html#ae270eb0c89843314b0019e581f7ea37d">SetColors</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; const SDL_Color &gt; colors, int firstcolor=0)</td></tr>
 <tr class="memdesc:ae270eb0c89843314b0019e581f7ea37d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a range of colors in a palette.  <br /></td></tr>
 <tr class="separator:ae270eb0c89843314b0019e581f7ea37d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacad16d3b9b0bddbd61c1411a2eb6920" id="r_aacad16d3b9b0bddbd61c1411a2eb6920"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteRef.html#aacad16d3b9b0bddbd61c1411a2eb6920">Destroy</a> ()</td></tr>
-<tr class="memdesc:aacad16d3b9b0bddbd61c1411a2eb6920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a palette created with <a class="el" href="structSDL_1_1PaletteRef.html#af41394bb32dbd66ab8c80621be5c3d6e" title="Copy constructor.">PaletteRef.PaletteRef()</a>.  <br /></td></tr>
-<tr class="separator:aacad16d3b9b0bddbd61c1411a2eb6920"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a632206adea6879f37b42b614e953144c" id="r_a632206adea6879f37b42b614e953144c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteRef.html#a632206adea6879f37b42b614e953144c">reset</a> (SDL_Palette *newResource={})</td></tr>
-<tr class="memdesc:a632206adea6879f37b42b614e953144c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a palette created with <a class="el" href="structSDL_1_1PaletteRef.html#af41394bb32dbd66ab8c80621be5c3d6e" title="Copy constructor.">PaletteRef.PaletteRef()</a>.  <br /></td></tr>
-<tr class="separator:a632206adea6879f37b42b614e953144c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -208,6 +205,15 @@ constexpr const SDL_Palette *&#160;</td><td class="memItemRight" valign="bottom"
 constexpr SDL_Palette *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:aacad16d3b9b0bddbd61c1411a2eb6920" id="r_aacad16d3b9b0bddbd61c1411a2eb6920"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteRef.html#aacad16d3b9b0bddbd61c1411a2eb6920">Destroy</a> ()</td></tr>
+<tr class="memdesc:aacad16d3b9b0bddbd61c1411a2eb6920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a palette created with <a class="el" href="structSDL_1_1PaletteRef.html#af41394bb32dbd66ab8c80621be5c3d6e" title="Copy constructor.">PaletteRef.PaletteRef()</a>.  <br /></td></tr>
+<tr class="separator:aacad16d3b9b0bddbd61c1411a2eb6920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a632206adea6879f37b42b614e953144c" id="r_a632206adea6879f37b42b614e953144c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteRef.html#a632206adea6879f37b42b614e953144c">reset</a> (SDL_Palette *newResource={})</td></tr>
+<tr class="memdesc:a632206adea6879f37b42b614e953144c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a palette created with <a class="el" href="structSDL_1_1PaletteRef.html#af41394bb32dbd66ab8c80621be5c3d6e" title="Copy constructor.">PaletteRef.PaletteRef()</a>.  <br /></td></tr>
+<tr class="separator:a632206adea6879f37b42b614e953144c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -282,7 +288,7 @@ constexpr SDL_Palette *&#160;</td><td class="memItemRight" valign="bottom"><b>op
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -312,7 +318,7 @@ constexpr SDL_Palette *&#160;</td><td class="memItemRight" valign="bottom"><b>op
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

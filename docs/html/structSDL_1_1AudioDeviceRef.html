@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1AudioDeviceRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::AudioDeviceRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoryAudio.html">Audio Playback, Recording, and Mixing</a></div></div></div>
 </div><!--header-->
@@ -88,11 +89,13 @@ Inheritance diagram for SDL::AudioDeviceRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1AudioDeviceRef__inherit__graph.png" border="0" usemap="#aSDL_1_1AudioDeviceRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1AudioDeviceRef_inherit__map" id="aSDL_1_1AudioDeviceRef_inherit__map">
-<area shape="rect" title="SDL Audio Device instance IDs." alt="" coords="5,93,164,119"/>
-<area shape="rect" href="structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice." alt="" coords="16,167,153,192"/>
-<area shape="poly" title=" " alt="" coords="87,132,87,167,82,167,82,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="7,5,162,45"/>
-<area shape="poly" title=" " alt="" coords="87,59,87,93,82,93,82,59"/>
+<area shape="rect" title="SDL Audio Device instance IDs." alt="" coords="17,93,176,119"/>
+<area shape="rect" href="structSDL_1_1AudioDeviceUnsafe.html" title="Unsafe Handle to audioDevice." alt="" coords="5,167,188,192"/>
+<area shape="poly" title=" " alt="" coords="99,132,99,167,94,167,94,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="19,5,174,45"/>
+<area shape="poly" title=" " alt="" coords="99,59,99,93,94,93,94,59"/>
+<area shape="rect" href="structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice." alt="" coords="28,240,165,265"/>
+<area shape="poly" title=" " alt="" coords="99,206,99,240,94,240,94,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -159,12 +162,6 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt
 <tr class="memitem:a8b3f613ecfd69abcef292e0e88b6960a" id="r_a8b3f613ecfd69abcef292e0e88b6960a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDeviceRef.html#a8b3f613ecfd69abcef292e0e88b6960a">SetPostmixCallback</a> (<a class="el" href="group__CategoryAudio.html#ga2e483caf8bcf7944d6f995ad9ab1ffe7">AudioPostmixCallback</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:a8b3f613ecfd69abcef292e0e88b6960a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that fires when data is about to be fed to an audio device.  <br /></td></tr>
 <tr class="separator:a8b3f613ecfd69abcef292e0e88b6960a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fe3df0c15b9f1d8ff16b50b83aa8dc9" id="r_a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDeviceRef.html#a6fe3df0c15b9f1d8ff16b50b83aa8dc9">Close</a> ()</td></tr>
-<tr class="memdesc:a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a previously-opened audio device.  <br /></td></tr>
-<tr class="separator:a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ce3124e400ae3dc2ea9086fb7b51575" id="r_a2ce3124e400ae3dc2ea9086fb7b51575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDeviceRef.html#a2ce3124e400ae3dc2ea9086fb7b51575">reset</a> (SDL_AudioDeviceID newResource={})</td></tr>
-<tr class="memdesc:a2ce3124e400ae3dc2ea9086fb7b51575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a previously-opened audio device.  <br /></td></tr>
-<tr class="separator:a2ce3124e400ae3dc2ea9086fb7b51575"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -240,6 +237,15 @@ constexpr const SDL_AudioDeviceID&#160;</td><td class="memItemRight" valign="bot
 constexpr SDL_AudioDeviceID&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a6fe3df0c15b9f1d8ff16b50b83aa8dc9" id="r_a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDeviceRef.html#a6fe3df0c15b9f1d8ff16b50b83aa8dc9">Close</a> ()</td></tr>
+<tr class="memdesc:a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a previously-opened audio device.  <br /></td></tr>
+<tr class="separator:a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ce3124e400ae3dc2ea9086fb7b51575" id="r_a2ce3124e400ae3dc2ea9086fb7b51575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDeviceRef.html#a2ce3124e400ae3dc2ea9086fb7b51575">reset</a> (SDL_AudioDeviceID newResource={})</td></tr>
+<tr class="memdesc:a2ce3124e400ae3dc2ea9086fb7b51575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a previously-opened audio device.  <br /></td></tr>
+<tr class="separator:a2ce3124e400ae3dc2ea9086fb7b51575"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Zero is used to signify an invalid/null device.</p>
@@ -332,7 +338,7 @@ constexpr SDL_AudioDeviceID&#160;</td><td class="memItemRight" valign="bottom"><
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -636,7 +642,7 @@ constexpr SDL_AudioDeviceID&#160;</td><td class="memItemRight" valign="bottom"><
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

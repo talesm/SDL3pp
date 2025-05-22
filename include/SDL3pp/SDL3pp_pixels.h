@@ -2039,6 +2039,7 @@ struct PaletteRef : Resource<SDL_Palette*>
       get(), colors.data(), firstcolor, colors.size());
   }
 
+protected:
   /**
    * Free a palette created with PaletteRef.PaletteRef().
    *
@@ -2072,22 +2073,39 @@ struct PaletteRef : Resource<SDL_Palette*>
 };
 
 /**
+ * Unsafe Handle to palette
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa PaletteRef
+ */
+struct PaletteUnsafe : PaletteRef
+{
+  using PaletteRef::Destroy;
+
+  using PaletteRef::PaletteRef;
+
+  using PaletteRef::reset;
+};
+
+/**
  * Handle to an owned palette
  *
  * @cat resource
  *
  * @sa PaletteRef
- * @sa PaletteRef
  */
-struct Palette : PaletteRef
+struct Palette : PaletteUnsafe
 {
-  using PaletteRef::PaletteRef;
+  using PaletteUnsafe::PaletteUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Palette(SDL_Palette* resource = {})
-    : PaletteRef(resource)
+  constexpr explicit Palette(SDL_Palette* resource)
+    : PaletteUnsafe(resource)
   {
   }
 

@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1SharedObjectRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::SharedObjectRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategorySharedObject.html">Shared Object/DLL Management</a></div></div></div>
 </div><!--header-->
@@ -88,11 +89,13 @@ Inheritance diagram for SDL::SharedObjectRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1SharedObjectRef__inherit__graph.png" border="0" usemap="#aSDL_1_1SharedObjectRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1SharedObjectRef_inherit__map" id="aSDL_1_1SharedObjectRef_inherit__map">
-<area shape="rect" title="An opaque datatype that represents a loaded shared object." alt="" coords="5,93,169,119"/>
-<area shape="rect" href="structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="16,167,159,192"/>
-<area shape="poly" title=" " alt="" coords="90,132,90,167,85,167,85,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="10,5,165,45"/>
-<area shape="poly" title=" " alt="" coords="90,59,90,93,85,93,85,59"/>
+<area shape="rect" title="An opaque datatype that represents a loaded shared object." alt="" coords="17,93,181,119"/>
+<area shape="rect" href="structSDL_1_1SharedObjectUnsafe.html" title="Unsafe Handle to sharedObject." alt="" coords="5,167,193,192"/>
+<area shape="poly" title=" " alt="" coords="102,132,102,167,97,167,97,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="22,5,177,45"/>
+<area shape="poly" title=" " alt="" coords="102,59,102,93,97,93,97,59"/>
+<area shape="rect" href="structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="28,240,171,265"/>
+<area shape="poly" title=" " alt="" coords="102,206,102,240,97,240,97,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -116,12 +119,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SharedObjectRef<
 <tr class="memitem:ac0a75bdc0eea4ce18e9801bbf176b2d2" id="r_ac0a75bdc0eea4ce18e9801bbf176b2d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2">LoadFunction</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
 <tr class="memdesc:ac0a75bdc0eea4ce18e9801bbf176b2d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up the address of the named function in a shared object.  <br /></td></tr>
 <tr class="separator:ac0a75bdc0eea4ce18e9801bbf176b2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a183366ceaeac124bc111e2f57c908707" id="r_a183366ceaeac124bc111e2f57c908707"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#a183366ceaeac124bc111e2f57c908707">Unload</a> ()</td></tr>
-<tr class="memdesc:a183366ceaeac124bc111e2f57c908707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
-<tr class="separator:a183366ceaeac124bc111e2f57c908707"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30da00014b93430d11f33a03790e5416" id="r_a30da00014b93430d11f33a03790e5416"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#a30da00014b93430d11f33a03790e5416">reset</a> (SDL_SharedObject *newResource={})</td></tr>
-<tr class="memdesc:a30da00014b93430d11f33a03790e5416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
-<tr class="separator:a30da00014b93430d11f33a03790e5416"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -197,6 +194,15 @@ constexpr const SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bo
 constexpr SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a183366ceaeac124bc111e2f57c908707" id="r_a183366ceaeac124bc111e2f57c908707"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#a183366ceaeac124bc111e2f57c908707">Unload</a> ()</td></tr>
+<tr class="memdesc:a183366ceaeac124bc111e2f57c908707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
+<tr class="separator:a183366ceaeac124bc111e2f57c908707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30da00014b93430d11f33a03790e5416" id="r_a30da00014b93430d11f33a03790e5416"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObjectRef.html#a30da00014b93430d11f33a03790e5416">reset</a> (SDL_SharedObject *newResource={})</td></tr>
+<tr class="memdesc:a30da00014b93430d11f33a03790e5416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload a shared object from memory.  <br /></td></tr>
+<tr class="separator:a30da00014b93430d11f33a03790e5416"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -309,7 +315,7 @@ constexpr SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bottom">
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -338,7 +344,7 @@ constexpr SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bottom">
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

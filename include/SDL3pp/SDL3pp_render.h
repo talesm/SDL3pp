@@ -1892,6 +1892,7 @@ struct RendererRef : Resource<SDL_Renderer*>
     RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
   }
 
+protected:
   /**
    * Destroy the rendering context for a window and free all associated
    * textures.
@@ -1925,22 +1926,39 @@ struct RendererRef : Resource<SDL_Renderer*>
 };
 
 /**
+ * Unsafe Handle to renderer
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RendererRef
+ */
+struct RendererUnsafe : RendererRef
+{
+  using RendererRef::Destroy;
+
+  using RendererRef::RendererRef;
+
+  using RendererRef::reset;
+};
+
+/**
  * Handle to an owned renderer
  *
  * @cat resource
  *
  * @sa RendererRef
- * @sa RendererRef
  */
-struct Renderer : RendererRef
+struct Renderer : RendererUnsafe
 {
-  using RendererRef::RendererRef;
+  using RendererUnsafe::RendererUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Renderer(SDL_Renderer* resource = {})
-    : RendererRef(resource)
+  constexpr explicit Renderer(SDL_Renderer* resource)
+    : RendererUnsafe(resource)
   {
   }
 
@@ -2863,6 +2881,7 @@ struct TextureRef : Resource<SDL_Texture*>
    */
   PixelFormat GetFormat() const { return get()->format; }
 
+protected:
   /**
    * Destroy the specified texture.
    *
@@ -2896,22 +2915,39 @@ struct TextureRef : Resource<SDL_Texture*>
 };
 
 /**
+ * Unsafe Handle to texture
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextureRef
+ */
+struct TextureUnsafe : TextureRef
+{
+  using TextureRef::Destroy;
+
+  using TextureRef::TextureRef;
+
+  using TextureRef::reset;
+};
+
+/**
  * Handle to an owned texture
  *
  * @cat resource
  *
  * @sa TextureRef
- * @sa TextureRef
  */
-struct Texture : TextureRef
+struct Texture : TextureUnsafe
 {
-  using TextureRef::TextureRef;
+  using TextureUnsafe::TextureUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Texture(SDL_Texture* resource = {})
-    : TextureRef(resource)
+  constexpr explicit Texture(SDL_Texture* resource)
+    : TextureUnsafe(resource)
   {
   }
 

@@ -451,6 +451,7 @@ struct ProcessRef : Resource<SDL_Process*>
     return SDL_WaitProcess(get(), block, exitcode);
   }
 
+protected:
   /**
    * Destroy a previously created process object.
    *
@@ -488,21 +489,39 @@ struct ProcessRef : Resource<SDL_Process*>
 };
 
 /**
+ * Unsafe Handle to process
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ProcessRef
+ */
+struct ProcessUnsafe : ProcessRef
+{
+  using ProcessRef::Destroy;
+
+  using ProcessRef::ProcessRef;
+
+  using ProcessRef::reset;
+};
+
+/**
  * Handle to an owned process
  *
  * @cat resource
  *
  * @sa ProcessRef
  */
-struct Process : ProcessRef
+struct Process : ProcessUnsafe
 {
-  using ProcessRef::ProcessRef;
+  using ProcessUnsafe::ProcessUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Process(SDL_Process* resource = {})
-    : ProcessRef(resource)
+  constexpr explicit Process(SDL_Process* resource)
+    : ProcessUnsafe(resource)
   {
   }
 

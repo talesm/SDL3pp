@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="structSDL_1_1TextEngineRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::TextEngineRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a> &raquo; <a class="el" href="group__CategorySDLTTF.html">True type font support</a></div></div></div>
@@ -89,11 +90,13 @@ Inheritance diagram for SDL::TextEngineRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1TextEngineRef__inherit__graph.png" border="0" usemap="#aSDL_1_1TextEngineRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TextEngineRef_inherit__map" id="aSDL_1_1TextEngineRef_inherit__map">
-<area shape="rect" title="A text engine used to create text objects." alt="" coords="9,93,157,119"/>
-<area shape="rect" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine." alt="" coords="19,167,146,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="A text engine used to create text objects." alt="" coords="17,93,165,119"/>
+<area shape="rect" href="structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine." alt="" coords="5,167,177,192"/>
+<area shape="poly" title=" " alt="" coords="94,132,94,167,89,167,89,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="14,5,169,45"/>
+<area shape="poly" title=" " alt="" coords="94,59,94,93,89,93,89,59"/>
+<area shape="rect" href="structSDL_1_1TextEngine.html" title="Handle to an owned textEngine." alt="" coords="28,240,155,265"/>
+<area shape="poly" title=" " alt="" coords="94,206,94,240,89,240,89,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -121,10 +124,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b
 <tr class="memitem:a082852df49f3dbf6e24eff7b8546c28f" id="r_a082852df49f3dbf6e24eff7b8546c28f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineRef.html#a082852df49f3dbf6e24eff7b8546c28f">GetGPUWinding</a> () const</td></tr>
 <tr class="memdesc:a082852df49f3dbf6e24eff7b8546c28f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextRef.html#a94afbdaef01a909da9dbe9777b5242ac" title="Get the geometry data needed for drawing the text.">TextRef.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
 <tr class="separator:a082852df49f3dbf6e24eff7b8546c28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a967eb00b8b07787e1c9fa3600d88b306" id="r_a967eb00b8b07787e1c9fa3600d88b306"><td class="memItemLeft" align="right" valign="top"><a id="a967eb00b8b07787e1c9fa3600d88b306" name="a967eb00b8b07787e1c9fa3600d88b306"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> (TTF_TextEngine *newResource={})</td></tr>
-<tr class="memdesc:a967eb00b8b07787e1c9fa3600d88b306"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees up <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a>. <br /></td></tr>
-<tr class="separator:a967eb00b8b07787e1c9fa3600d88b306"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -200,6 +199,13 @@ constexpr const TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bott
 constexpr TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a967eb00b8b07787e1c9fa3600d88b306" id="r_a967eb00b8b07787e1c9fa3600d88b306"><td class="memItemLeft" align="right" valign="top"><a id="a967eb00b8b07787e1c9fa3600d88b306" name="a967eb00b8b07787e1c9fa3600d88b306"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> (TTF_TextEngine *newResource={})</td></tr>
+<tr class="memdesc:a967eb00b8b07787e1c9fa3600d88b306"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees up <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a>. <br /></td></tr>
+<tr class="separator:a967eb00b8b07787e1c9fa3600d88b306"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>

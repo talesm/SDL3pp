@@ -1,7 +1,9 @@
 <map id="SDL::SharedObjectRef" name="SDL::SharedObjectRef">
-<area shape="rect" id="Node000001" title="An opaque datatype that represents a loaded shared object." alt="" coords="5,93,169,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="16,167,159,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="90,132,90,167,85,167,85,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="10,5,165,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,59,90,93,85,93,85,59"/>
+<area shape="rect" id="Node000001" title="An opaque datatype that represents a loaded shared object." alt="" coords="17,93,181,119"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1SharedObjectUnsafe.html" title="Unsafe Handle to sharedObject." alt="" coords="5,167,193,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="102,132,102,167,97,167,97,132"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="22,5,177,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,59,102,93,97,93,97,59"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="28,240,171,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="102,206,102,240,97,240,97,206"/>
 </map>

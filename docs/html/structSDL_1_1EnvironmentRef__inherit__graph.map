@@ -1,7 +1,9 @@
 <map id="SDL::EnvironmentRef" name="SDL::EnvironmentRef">
-<area shape="rect" id="Node000001" title="A thread&#45;safe set of environment variables." alt="" coords="5,93,165,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Environment.html" title="Handle to an owned environment." alt="" coords="16,167,155,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="88,132,88,167,83,167,83,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="8,5,163,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,59,88,93,83,93,83,59"/>
+<area shape="rect" id="Node000001" title="A thread&#45;safe set of environment variables." alt="" coords="17,93,177,119"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1EnvironmentUnsafe.html" title="Unsafe Handle to environment." alt="" coords="5,167,189,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="100,132,100,167,95,167,95,132"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="20,5,175,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,59,100,93,95,93,95,59"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Environment.html" title="Handle to an owned environment." alt="" coords="28,240,167,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="100,206,100,240,95,240,95,206"/>
 </map>

@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1StorageRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::StorageRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesFileIO.html">File and I/O Abstractions</a> &raquo; <a class="el" href="group__CategoryStorage.html">Storage Abstraction</a></div></div></div>
 </div><!--header-->
@@ -89,10 +90,12 @@ Inheritance diagram for SDL::StorageRef:</div>
 <div class="center"><img src="structSDL_1_1StorageRef__inherit__graph.png" border="0" usemap="#aSDL_1_1StorageRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1StorageRef_inherit__map" id="aSDL_1_1StorageRef_inherit__map">
 <area shape="rect" title="An abstract interface for filesystem access." alt="" coords="19,93,146,119"/>
-<area shape="rect" href="structSDL_1_1Storage.html" title="Handle to an owned storage." alt="" coords="30,167,135,192"/>
+<area shape="rect" href="structSDL_1_1StorageUnsafe.html" title="Unsafe Handle to storage." alt="" coords="7,167,158,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1Storage.html" title="Handle to an owned storage." alt="" coords="30,240,135,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -171,12 +174,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>StorageRef</b> (
 <tr class="memitem:a628b27a4b29d65d50eddefb67d8beb21" id="r_a628b27a4b29d65d50eddefb67d8beb21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a628b27a4b29d65d50eddefb67d8beb21">GlobDirectory</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> pattern, <a class="el" href="group__CategoryFilesystem.html#gaa05ff4a5a5f7f2e5b5e18072766b6140">GlobFlags</a> flags)</td></tr>
 <tr class="memdesc:a628b27a4b29d65d50eddefb67d8beb21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate a directory tree, filtered by pattern, and return a list.  <br /></td></tr>
 <tr class="separator:a628b27a4b29d65d50eddefb67d8beb21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72707f9b571f681ea87b3643463cc5dc" id="r_a72707f9b571f681ea87b3643463cc5dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a72707f9b571f681ea87b3643463cc5dc">Close</a> ()</td></tr>
-<tr class="memdesc:a72707f9b571f681ea87b3643463cc5dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
-<tr class="separator:a72707f9b571f681ea87b3643463cc5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ae8c3dc09af8c3778645c92a1e766ed" id="r_a8ae8c3dc09af8c3778645c92a1e766ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a8ae8c3dc09af8c3778645c92a1e766ed">reset</a> (SDL_Storage *newResource={})</td></tr>
-<tr class="memdesc:a8ae8c3dc09af8c3778645c92a1e766ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
-<tr class="separator:a8ae8c3dc09af8c3778645c92a1e766ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -252,6 +249,15 @@ constexpr const SDL_Storage *&#160;</td><td class="memItemRight" valign="bottom"
 constexpr SDL_Storage *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a72707f9b571f681ea87b3643463cc5dc" id="r_a72707f9b571f681ea87b3643463cc5dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a72707f9b571f681ea87b3643463cc5dc">Close</a> ()</td></tr>
+<tr class="memdesc:a72707f9b571f681ea87b3643463cc5dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
+<tr class="separator:a72707f9b571f681ea87b3643463cc5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ae8c3dc09af8c3778645c92a1e766ed" id="r_a8ae8c3dc09af8c3778645c92a1e766ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html#a8ae8c3dc09af8c3778645c92a1e766ed">reset</a> (SDL_Storage *newResource={})</td></tr>
+<tr class="memdesc:a8ae8c3dc09af8c3778645c92a1e766ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes and frees a storage container.  <br /></td></tr>
+<tr class="separator:a8ae8c3dc09af8c3778645c92a1e766ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is an opaque datatype. One can create this object using standard <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> functions like <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a> or <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a>, etc, or create an object with a custom implementation using <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a>.</p>
@@ -522,7 +528,7 @@ constexpr SDL_Storage *&#160;</td><td class="memItemRight" valign="bottom"><b>op
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1208,7 +1214,7 @@ template&lt;class T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

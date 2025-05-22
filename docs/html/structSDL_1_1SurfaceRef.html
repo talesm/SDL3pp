@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1SurfaceRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::SurfaceRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategorySurface.html">Surface Creation and Simple Drawing</a></div></div></div>
 </div><!--header-->
@@ -88,13 +89,15 @@ Inheritance diagram for SDL::SurfaceRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1SurfaceRef__inherit__graph.png" border="0" usemap="#aSDL_1_1SurfaceRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1SurfaceRef_inherit__map" id="aSDL_1_1SurfaceRef_inherit__map">
-<area shape="rect" title="A collection of pixels used in software blitting." alt="" coords="65,93,191,119"/>
-<area shape="rect" href="structSDL_1_1Surface.html" title="Handle to an owned surface." alt="" coords="5,167,109,192"/>
-<area shape="poly" title=" " alt="" coords="109,131,71,168,67,165,105,127"/>
-<area shape="rect" href="classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels." alt="" coords="133,167,267,192"/>
-<area shape="poly" title=" " alt="" coords="152,127,190,165,186,168,148,131"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="51,5,205,45"/>
-<area shape="poly" title=" " alt="" coords="131,59,131,93,125,93,125,59"/>
+<area shape="rect" title="A collection of pixels used in software blitting." alt="" coords="100,93,227,119"/>
+<area shape="rect" href="structSDL_1_1SurfaceUnsafe.html" title="Unsafe Handle to surface." alt="" coords="5,167,156,192"/>
+<area shape="poly" title=" " alt="" coords="141,130,96,168,92,164,138,126"/>
+<area shape="rect" href="classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels." alt="" coords="181,167,314,192"/>
+<area shape="poly" title=" " alt="" coords="189,126,235,164,232,168,186,130"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="86,5,241,45"/>
+<area shape="poly" title=" " alt="" coords="166,59,166,93,161,93,161,59"/>
+<area shape="rect" href="structSDL_1_1Surface.html" title="Handle to an owned surface." alt="" coords="29,240,133,265"/>
+<area shape="poly" title=" " alt="" coords="83,206,83,240,78,240,78,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -335,12 +338,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () const
 <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormat</b> () const</td></tr>
 <tr class="memdesc:a7310dbe7a5fc6a945876f5c1ef48b6b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel format. <br /></td></tr>
 <tr class="separator:a7310dbe7a5fc6a945876f5c1ef48b6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0add99a8055fd8cc03299bcfeb55e446" id="r_a0add99a8055fd8cc03299bcfeb55e446"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446">Destroy</a> ()</td></tr>
-<tr class="memdesc:a0add99a8055fd8cc03299bcfeb55e446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
-<tr class="separator:a0add99a8055fd8cc03299bcfeb55e446"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ea34b21fc4000f27321f0e049f1b69c" id="r_a5ea34b21fc4000f27321f0e049f1b69c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c">reset</a> (SDL_Surface *newResource={})</td></tr>
-<tr class="memdesc:a5ea34b21fc4000f27321f0e049f1b69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
-<tr class="separator:a5ea34b21fc4000f27321f0e049f1b69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -416,6 +413,15 @@ constexpr const SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"
 constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a0add99a8055fd8cc03299bcfeb55e446" id="r_a0add99a8055fd8cc03299bcfeb55e446"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446">Destroy</a> ()</td></tr>
+<tr class="memdesc:a0add99a8055fd8cc03299bcfeb55e446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
+<tr class="separator:a0add99a8055fd8cc03299bcfeb55e446"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ea34b21fc4000f27321f0e049f1b69c" id="r_a5ea34b21fc4000f27321f0e049f1b69c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c">reset</a> (SDL_Surface *newResource={})</td></tr>
+<tr class="memdesc:a5ea34b21fc4000f27321f0e049f1b69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
+<tr class="separator:a5ea34b21fc4000f27321f0e049f1b69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Pixels are arranged in memory in rows, with the top row first. Each row occupies an amount of memory given by the pitch (sometimes known as the row stride in non-SDL APIs).</p>
@@ -1530,7 +1536,7 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2985,7 +2991,7 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

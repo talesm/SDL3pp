@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1GLContextRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::GLContextRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryVideo.html">Display and Window Management</a></div></div></div>
 </div><!--header-->
@@ -88,11 +89,13 @@ Inheritance diagram for SDL::GLContextRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1GLContextRef__inherit__graph.png" border="0" usemap="#aSDL_1_1GLContextRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1GLContextRef_inherit__map" id="aSDL_1_1GLContextRef_inherit__map">
-<area shape="rect" title="An opaque handle to an OpenGL context." alt="" coords="11,93,157,119"/>
-<area shape="rect" href="structSDL_1_1GLContext.html" title="Handle to an owned gLContext." alt="" coords="23,167,145,192"/>
-<area shape="poly" title=" " alt="" coords="87,132,87,167,81,167,81,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,163,45"/>
-<area shape="poly" title=" " alt="" coords="87,59,87,93,81,93,81,59"/>
+<area shape="rect" title="An opaque handle to an OpenGL context." alt="" coords="17,93,163,119"/>
+<area shape="rect" href="structSDL_1_1GLContextUnsafe.html" title="Unsafe Handle to gLContext." alt="" coords="5,167,175,192"/>
+<area shape="poly" title=" " alt="" coords="93,132,93,167,87,167,87,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="11,5,169,45"/>
+<area shape="poly" title=" " alt="" coords="93,59,93,93,87,93,87,59"/>
+<area shape="rect" href="structSDL_1_1GLContext.html" title="Handle to an owned gLContext." alt="" coords="29,240,151,265"/>
+<area shape="poly" title=" " alt="" coords="93,206,93,240,87,240,87,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -116,12 +119,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContextRef</b>
 <tr class="memitem:ac378d9839d895485868403616f58efe8" id="r_ac378d9839d895485868403616f58efe8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#ac378d9839d895485868403616f58efe8">MakeCurrent</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> &amp;window)</td></tr>
 <tr class="memdesc:ac378d9839d895485868403616f58efe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up an OpenGL context for rendering into an OpenGL window.  <br /></td></tr>
 <tr class="separator:ac378d9839d895485868403616f58efe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6a5799e48b87da2a47ab7de6e994660" id="r_ae6a5799e48b87da2a47ab7de6e994660"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#ae6a5799e48b87da2a47ab7de6e994660">Destroy</a> ()</td></tr>
-<tr class="memdesc:ae6a5799e48b87da2a47ab7de6e994660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
-<tr class="separator:ae6a5799e48b87da2a47ab7de6e994660"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af54eb271b6c4b021185e5a5e319d946e" id="r_af54eb271b6c4b021185e5a5e319d946e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#af54eb271b6c4b021185e5a5e319d946e">reset</a> (SDL_GLContextState *newResource={})</td></tr>
-<tr class="memdesc:af54eb271b6c4b021185e5a5e319d946e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
-<tr class="separator:af54eb271b6c4b021185e5a5e319d946e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -197,6 +194,15 @@ constexpr const SDL_GLContextState *&#160;</td><td class="memItemRight" valign="
 constexpr SDL_GLContextState *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae6a5799e48b87da2a47ab7de6e994660" id="r_ae6a5799e48b87da2a47ab7de6e994660"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#ae6a5799e48b87da2a47ab7de6e994660">Destroy</a> ()</td></tr>
+<tr class="memdesc:ae6a5799e48b87da2a47ab7de6e994660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
+<tr class="separator:ae6a5799e48b87da2a47ab7de6e994660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af54eb271b6c4b021185e5a5e319d946e" id="r_af54eb271b6c4b021185e5a5e319d946e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#af54eb271b6c4b021185e5a5e319d946e">reset</a> (SDL_GLContextState *newResource={})</td></tr>
+<tr class="memdesc:af54eb271b6c4b021185e5a5e319d946e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
+<tr class="separator:af54eb271b6c4b021185e5a5e319d946e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -270,7 +276,7 @@ constexpr SDL_GLContextState *&#160;</td><td class="memItemRight" valign="bottom
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -353,7 +359,7 @@ constexpr SDL_GLContextState *&#160;</td><td class="memItemRight" valign="bottom
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

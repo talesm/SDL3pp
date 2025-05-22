@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1CursorRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::CursorRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesEvents.html">Input Events</a> &raquo; <a class="el" href="group__CategoryMouse.html">Mouse Support</a></div></div></div>
 </div><!--header-->
@@ -89,10 +90,12 @@ Inheritance diagram for SDL::CursorRef:</div>
 <div class="center"><img src="structSDL_1_1CursorRef__inherit__graph.png" border="0" usemap="#aSDL_1_1CursorRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1CursorRef_inherit__map" id="aSDL_1_1CursorRef_inherit__map">
 <area shape="rect" title="The structure used to identify an SDL cursor." alt="" coords="23,93,142,119"/>
-<area shape="rect" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor." alt="" coords="34,167,131,192"/>
+<area shape="rect" href="structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor." alt="" coords="11,167,154,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor." alt="" coords="34,240,131,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -119,12 +122,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>CursorRef</b> (<
 <a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> other)</td></tr>
 <tr class="memdesc:a558c79e80a5b15e1704a778c3105bd80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a558c79e80a5b15e1704a778c3105bd80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8610d8c0d0820c3c1ce8957ab6d13a9" id="r_aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9">Destroy</a> ()</td></tr>
-<tr class="memdesc:aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
-<tr class="separator:aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4755b54c6a180957caa8047a2dc6817e" id="r_a4755b54c6a180957caa8047a2dc6817e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e">reset</a> (SDL_Cursor *newResource={})</td></tr>
-<tr class="memdesc:a4755b54c6a180957caa8047a2dc6817e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
-<tr class="separator:a4755b54c6a180957caa8047a2dc6817e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -200,6 +197,15 @@ constexpr const SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom">
 constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:aa8610d8c0d0820c3c1ce8957ab6d13a9" id="r_aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9">Destroy</a> ()</td></tr>
+<tr class="memdesc:aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
+<tr class="separator:aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4755b54c6a180957caa8047a2dc6817e" id="r_a4755b54c6a180957caa8047a2dc6817e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e">reset</a> (SDL_Cursor *newResource={})</td></tr>
+<tr class="memdesc:a4755b54c6a180957caa8047a2dc6817e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
+<tr class="separator:a4755b54c6a180957caa8047a2dc6817e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is opaque data.</p>
@@ -429,7 +435,7 @@ constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -459,7 +465,7 @@ constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

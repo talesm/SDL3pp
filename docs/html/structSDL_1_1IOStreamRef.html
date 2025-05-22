@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1IOStreamRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::IOStreamRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesFileIO.html">File and I/O Abstractions</a> &raquo; <a class="el" href="group__CategoryIOStream.html">I/O Streams</a></div></div></div>
 </div><!--header-->
@@ -88,11 +89,13 @@ Inheritance diagram for SDL::IOStreamRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1IOStreamRef__inherit__graph.png" border="0" usemap="#aSDL_1_1IOStreamRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1IOStreamRef_inherit__map" id="aSDL_1_1IOStreamRef_inherit__map">
-<area shape="rect" title="The read/write operation structure." alt="" coords="13,93,152,119"/>
-<area shape="rect" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream." alt="" coords="25,167,141,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="The read/write operation structure." alt="" coords="17,93,156,119"/>
+<area shape="rect" href="structSDL_1_1IOStreamUnsafe.html" title="Unsafe Handle to iOStream." alt="" coords="5,167,168,192"/>
+<area shape="poly" title=" " alt="" coords="89,132,89,167,84,167,84,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="9,5,164,45"/>
+<area shape="poly" title=" " alt="" coords="89,59,89,93,84,93,84,59"/>
+<area shape="rect" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream." alt="" coords="29,240,145,265"/>
+<area shape="poly" title=" " alt="" coords="89,206,89,240,84,240,84,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -289,12 +292,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IOStreamRef</b> 
 <tr class="memitem:a7ee6af092685a1f1659882c095b31bf7" id="r_a7ee6af092685a1f1659882c095b31bf7"><td class="memItemLeft" align="right" valign="top">std::optional&lt; Sint64 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamRef.html#a7ee6af092685a1f1659882c095b31bf7">TryReadS64BE</a> ()</td></tr>
 <tr class="memdesc:a7ee6af092685a1f1659882c095b31bf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to read 64 bits of big-endian data from an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> and return in native format.  <br /></td></tr>
 <tr class="separator:a7ee6af092685a1f1659882c095b31bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3df3b2e4929e33683c0509b0175150f5" id="r_a3df3b2e4929e33683c0509b0175150f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5">Close</a> ()</td></tr>
-<tr class="memdesc:a3df3b2e4929e33683c0509b0175150f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure.  <br /></td></tr>
-<tr class="separator:a3df3b2e4929e33683c0509b0175150f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a776b6a4384c88344fd5c94f18068b355" id="r_a776b6a4384c88344fd5c94f18068b355"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamRef.html#a776b6a4384c88344fd5c94f18068b355">reset</a> (SDL_IOStream *newResource={})</td></tr>
-<tr class="memdesc:a776b6a4384c88344fd5c94f18068b355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure.  <br /></td></tr>
-<tr class="separator:a776b6a4384c88344fd5c94f18068b355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -370,6 +367,15 @@ constexpr const SDL_IOStream *&#160;</td><td class="memItemRight" valign="bottom
 constexpr SDL_IOStream *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3df3b2e4929e33683c0509b0175150f5" id="r_a3df3b2e4929e33683c0509b0175150f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamRef.html#a3df3b2e4929e33683c0509b0175150f5">Close</a> ()</td></tr>
+<tr class="memdesc:a3df3b2e4929e33683c0509b0175150f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure.  <br /></td></tr>
+<tr class="separator:a3df3b2e4929e33683c0509b0175150f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776b6a4384c88344fd5c94f18068b355" id="r_a776b6a4384c88344fd5c94f18068b355"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamRef.html#a776b6a4384c88344fd5c94f18068b355">reset</a> (SDL_IOStream *newResource={})</td></tr>
+<tr class="memdesc:a776b6a4384c88344fd5c94f18068b355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure.  <br /></td></tr>
+<tr class="separator:a776b6a4384c88344fd5c94f18068b355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This operates as an opaque handle. There are several APIs to create various types of I/O streams, or an app can supply an IOStreamInterface to <a class="el" href="structSDL_1_1IOStreamRef.html#a8b76e37e156393479492ad62d6e86a51" title="Copy constructor.">IOStreamRef.IOStreamRef()</a> to provide their own stream implementation behind this struct's abstract interface.</p>
@@ -539,7 +545,7 @@ constexpr SDL_IOStream *&#160;</td><td class="memItemRight" valign="bottom"><b>o
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1497,7 +1503,7 @@ template&lt;class T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

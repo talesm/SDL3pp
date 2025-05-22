@@ -901,6 +901,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
     CheckError(SDL_UnsetEnvironmentVariable(get(), name));
   }
 
+protected:
   /**
    * Destroy a set of environment variables.
    *
@@ -933,21 +934,39 @@ struct EnvironmentRef : Resource<SDL_Environment*>
 };
 
 /**
+ * Unsafe Handle to environment
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentRef
+ */
+struct EnvironmentUnsafe : EnvironmentRef
+{
+  using EnvironmentRef::Destroy;
+
+  using EnvironmentRef::EnvironmentRef;
+
+  using EnvironmentRef::reset;
+};
+
+/**
  * Handle to an owned environment
  *
  * @cat resource
  *
  * @sa EnvironmentRef
  */
-struct Environment : EnvironmentRef
+struct Environment : EnvironmentUnsafe
 {
-  using EnvironmentRef::EnvironmentRef;
+  using EnvironmentUnsafe::EnvironmentUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Environment(SDL_Environment* resource = {})
-    : EnvironmentRef(resource)
+  constexpr explicit Environment(SDL_Environment* resource)
+    : EnvironmentUnsafe(resource)
   {
   }
 
@@ -5213,6 +5232,7 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
     return SDL_iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
 
+protected:
   /**
    * This function frees a context used for character set conversion.
    *
@@ -5245,21 +5265,39 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
 };
 
 /**
+ * Unsafe Handle to iConv
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IConvRef
+ */
+struct IConvUnsafe : IConvRef
+{
+  using IConvRef::IConvRef;
+
+  using IConvRef::close;
+
+  using IConvRef::reset;
+};
+
+/**
  * Handle to an owned iConv
  *
  * @cat resource
  *
  * @sa IConvRef
  */
-struct IConv : IConvRef
+struct IConv : IConvUnsafe
 {
-  using IConvRef::IConvRef;
+  using IConvUnsafe::IConvUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit IConv(SDL_iconv_data_t* resource = {})
-    : IConvRef(resource)
+  constexpr explicit IConv(SDL_iconv_data_t* resource)
+    : IConvUnsafe(resource)
   {
   }
 

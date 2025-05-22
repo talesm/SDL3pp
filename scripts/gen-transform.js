@@ -3582,7 +3582,14 @@ const transform = {
               "kind": "function",
               "name": "Enumerate",
               "immutable": true
-            }
+            },
+            "GetCount": {
+              kind: "function",
+              immutable: true,
+              type: "Uint64",
+              parameters: [],
+              proto: true,
+            },
           }
         }
       },
@@ -3592,7 +3599,8 @@ const transform = {
         },
         "SDL_CreateProperties": {
           name: "Properties.Properties",
-          type: ""
+          type: "",
+          explicit: true,
         }
       }
     },

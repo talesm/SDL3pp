@@ -402,6 +402,7 @@ struct ThreadRef : Resource<SDL_Thread*>
    */
   ThreadState GetState() const { return SDL_GetThreadState(get()); }
 
+protected:
   /**
    * Let a thread clean up on exit without intervention.
    *
@@ -472,22 +473,39 @@ struct ThreadRef : Resource<SDL_Thread*>
 };
 
 /**
+ * Unsafe Handle to thread
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ThreadRef
+ */
+struct ThreadUnsafe : ThreadRef
+{
+  using ThreadRef::Detach;
+
+  using ThreadRef::ThreadRef;
+
+  using ThreadRef::reset;
+};
+
+/**
  * Handle to an owned thread
  *
  * @cat resource
  *
  * @sa ThreadRef
- * @sa ThreadRef
  */
-struct Thread : ThreadRef
+struct Thread : ThreadUnsafe
 {
-  using ThreadRef::ThreadRef;
+  using ThreadUnsafe::ThreadUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Thread(SDL_Thread* resource = {})
-    : ThreadRef(resource)
+  constexpr explicit Thread(SDL_Thread* resource)
+    : ThreadUnsafe(resource)
   {
   }
 

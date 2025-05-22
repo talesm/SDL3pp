@@ -1057,6 +1057,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
     CheckError(SDL_SetAudioPostmixCallback(get(), callback, userdata));
   }
 
+protected:
   /**
    * Close a previously-opened audio device.
    *
@@ -1099,21 +1100,39 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 };
 
 /**
+ * Unsafe Handle to audioDevice
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceRef
+ */
+struct AudioDeviceUnsafe : AudioDeviceRef
+{
+  using AudioDeviceRef::AudioDeviceRef;
+
+  using AudioDeviceRef::Close;
+
+  using AudioDeviceRef::reset;
+};
+
+/**
  * Handle to an owned audioDevice
  *
  * @cat resource
  *
  * @sa AudioDeviceRef
  */
-struct AudioDevice : AudioDeviceRef
+struct AudioDevice : AudioDeviceUnsafe
 {
-  using AudioDeviceRef::AudioDeviceRef;
+  using AudioDeviceUnsafe::AudioDeviceUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit AudioDevice(SDL_AudioDeviceID resource = {})
-    : AudioDeviceRef(resource)
+  constexpr explicit AudioDevice(SDL_AudioDeviceID resource)
+    : AudioDeviceUnsafe(resource)
   {
   }
 
@@ -2411,6 +2430,7 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    */
   AudioDeviceRef GetDevice() const { return SDL_GetAudioStreamDevice(get()); }
 
+protected:
   /**
    * Free an audio stream.
    *
@@ -2456,21 +2476,39 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
 };
 
 /**
+ * Unsafe Handle to audioStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamRef
+ */
+struct AudioStreamUnsafe : AudioStreamRef
+{
+  using AudioStreamRef::AudioStreamRef;
+
+  using AudioStreamRef::Destroy;
+
+  using AudioStreamRef::reset;
+};
+
+/**
  * Handle to an owned audioStream
  *
  * @cat resource
  *
  * @sa AudioStreamRef
  */
-struct AudioStream : AudioStreamRef
+struct AudioStream : AudioStreamUnsafe
 {
-  using AudioStreamRef::AudioStreamRef;
+  using AudioStreamUnsafe::AudioStreamUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit AudioStream(SDL_AudioStream* resource = {})
-    : AudioStreamRef(resource)
+  constexpr explicit AudioStream(SDL_AudioStream* resource)
+    : AudioStreamUnsafe(resource)
   {
   }
 

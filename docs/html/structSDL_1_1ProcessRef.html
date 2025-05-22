@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1ProcessRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::ProcessRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryProcess.html">Process Control</a></div></div></div>
 </div><!--header-->
@@ -89,10 +90,12 @@ Inheritance diagram for SDL::ProcessRef:</div>
 <div class="center"><img src="structSDL_1_1ProcessRef__inherit__graph.png" border="0" usemap="#aSDL_1_1ProcessRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1ProcessRef_inherit__map" id="aSDL_1_1ProcessRef_inherit__map">
 <area shape="rect" title="An opaque handle representing a system process." alt="" coords="19,93,146,119"/>
-<area shape="rect" href="structSDL_1_1Process.html" title="Handle to an owned process." alt="" coords="30,167,135,192"/>
+<area shape="rect" href="structSDL_1_1ProcessUnsafe.html" title="Unsafe Handle to process." alt="" coords="7,167,158,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1Process.html" title="Handle to an owned process." alt="" coords="30,240,135,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -138,12 +141,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessRef</b> (
 <tr class="memitem:ae2211b6a1888aa6181a99cc54db4b9e5" id="r_ae2211b6a1888aa6181a99cc54db4b9e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html#ae2211b6a1888aa6181a99cc54db4b9e5">Wait</a> (bool block, int *exitcode)</td></tr>
 <tr class="memdesc:ae2211b6a1888aa6181a99cc54db4b9e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for a process to finish.  <br /></td></tr>
 <tr class="separator:ae2211b6a1888aa6181a99cc54db4b9e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13f00b0e648058edaf58bbf4fac161f1" id="r_a13f00b0e648058edaf58bbf4fac161f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1">Destroy</a> ()</td></tr>
-<tr class="memdesc:a13f00b0e648058edaf58bbf4fac161f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
-<tr class="separator:a13f00b0e648058edaf58bbf4fac161f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43d0ca6bf60894daeb0d56cc0f6f8b97" id="r_a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html#a43d0ca6bf60894daeb0d56cc0f6f8b97">reset</a> (SDL_Process *newResource={})</td></tr>
-<tr class="memdesc:a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
-<tr class="separator:a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -219,6 +216,15 @@ constexpr const SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"
 constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a13f00b0e648058edaf58bbf4fac161f1" id="r_a13f00b0e648058edaf58bbf4fac161f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1">Destroy</a> ()</td></tr>
+<tr class="memdesc:a13f00b0e648058edaf58bbf4fac161f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
+<tr class="separator:a13f00b0e648058edaf58bbf4fac161f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43d0ca6bf60894daeb0d56cc0f6f8b97" id="r_a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessRef.html#a43d0ca6bf60894daeb0d56cc0f6f8b97">reset</a> (SDL_Process *newResource={})</td></tr>
+<tr class="memdesc:a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
+<tr class="separator:a43d0ca6bf60894daeb0d56cc0f6f8b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -388,7 +394,7 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -666,7 +672,7 @@ template&lt;class T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

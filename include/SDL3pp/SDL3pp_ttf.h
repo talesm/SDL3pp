@@ -1893,6 +1893,7 @@ struct FontRef : Resource<TTF_Font*>
     return Surface{TTF_RenderGlyph_LCD(get(), ch, fg, bg)};
   }
 
+protected:
   /**
    * Dispose of a previously-created font.
    *
@@ -1940,21 +1941,38 @@ struct FontRef : Resource<TTF_Font*>
 };
 
 /**
+ * Unsafe Handle to font
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa FontRef
+ */
+struct FontUnsafe : FontRef
+{
+  using FontRef::Close;
+
+  using FontRef::FontRef;
+  using FontRef::reset;
+};
+
+/**
  * Handle to an owned font
  *
  * @cat resource
  *
  * @sa FontRef
  */
-struct Font : FontRef
+struct Font : FontUnsafe
 {
-  using FontRef::FontRef;
+  using FontUnsafe::FontUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Font(TTF_Font* resource = {})
-    : FontRef(resource)
+  constexpr explicit Font(TTF_Font* resource)
+    : FontUnsafe(resource)
   {
   }
 
@@ -2095,6 +2113,7 @@ public:
     return TTF_GetGPUTextEngineWinding(get());
   }
 
+protected:
   /**
    * frees up TextEngineRef.
    */
@@ -2107,21 +2126,35 @@ public:
 };
 
 /**
+ * Unsafe Handle to textEngine
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextEngineRef
+ */
+struct TextEngineUnsafe : TextEngineRef
+{
+  using TextEngineRef::TextEngineRef;
+};
+
+/**
  * Handle to an owned textEngine
  *
  * @cat resource
  *
  * @sa TextEngineRef
  */
-struct TextEngine : TextEngineRef
+struct TextEngine : TextEngineUnsafe
 {
-  using TextEngineRef::TextEngineRef;
+  using TextEngineUnsafe::TextEngineUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit TextEngine(TTF_TextEngine* resource = {})
-    : TextEngineRef(resource)
+  constexpr explicit TextEngine(TTF_TextEngine* resource)
+    : TextEngineUnsafe(resource)
   {
   }
 
@@ -3279,6 +3312,7 @@ struct TextRef : Resource<TTF_Text*>
    */
   int GetNumLines() const { return get()->num_lines; }
 
+protected:
   /**
    * Destroy a text object created by a text engine.
    *
@@ -3309,21 +3343,39 @@ struct TextRef : Resource<TTF_Text*>
 };
 
 /**
+ * Unsafe Handle to text
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextRef
+ */
+struct TextUnsafe : TextRef
+{
+  using TextRef::Destroy;
+
+  using TextRef::TextRef;
+
+  using TextRef::reset;
+};
+
+/**
  * Handle to an owned text
  *
  * @cat resource
  *
  * @sa TextRef
  */
-struct Text : TextRef
+struct Text : TextUnsafe
 {
-  using TextRef::TextRef;
+  using TextUnsafe::TextUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Text(TTF_Text* resource = {})
-    : TextRef(resource)
+  constexpr explicit Text(TTF_Text* resource)
+    : TextUnsafe(resource)
   {
   }
 

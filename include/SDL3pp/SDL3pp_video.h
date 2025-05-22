@@ -2791,6 +2791,7 @@ struct WindowRef : Resource<SDL_Window*>
    */
   static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
 
+protected:
   /**
    * Destroy a window.
    *
@@ -2830,6 +2831,7 @@ struct WindowRef : Resource<SDL_Window*>
     SDL_DestroyWindow(release(newResource));
   }
 
+public:
   RendererRef GetRenderer() const;
 
   void StartTextInput();
@@ -2856,21 +2858,39 @@ struct WindowRef : Resource<SDL_Window*>
 };
 
 /**
+ * Unsafe Handle to window
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa WindowRef
+ */
+struct WindowUnsafe : WindowRef
+{
+  using WindowRef::Destroy;
+
+  using WindowRef::WindowRef;
+
+  using WindowRef::reset;
+};
+
+/**
  * Handle to an owned window
  *
  * @cat resource
  *
  * @sa WindowRef
  */
-struct Window : WindowRef
+struct Window : WindowUnsafe
 {
-  using WindowRef::WindowRef;
+  using WindowUnsafe::WindowUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Window(SDL_Window* resource = {})
-    : WindowRef(resource)
+  constexpr explicit Window(SDL_Window* resource)
+    : WindowUnsafe(resource)
   {
   }
 
@@ -3067,6 +3087,7 @@ struct GLContextRef : Resource<SDL_GLContextState*>
     CheckError(SDL_GL_MakeCurrent(window.get(), get()));
   }
 
+protected:
   /**
    * Delete an OpenGL context.
    *
@@ -3100,21 +3121,39 @@ struct GLContextRef : Resource<SDL_GLContextState*>
 };
 
 /**
+ * Unsafe Handle to gLContext
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa GLContextRef
+ */
+struct GLContextUnsafe : GLContextRef
+{
+  using GLContextRef::Destroy;
+
+  using GLContextRef::GLContextRef;
+
+  using GLContextRef::reset;
+};
+
+/**
  * Handle to an owned gLContext
  *
  * @cat resource
  *
  * @sa GLContextRef
  */
-struct GLContext : GLContextRef
+struct GLContext : GLContextUnsafe
 {
-  using GLContextRef::GLContextRef;
+  using GLContextUnsafe::GLContextUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit GLContext(SDL_GLContextState* resource = {})
-    : GLContextRef(resource)
+  constexpr explicit GLContext(SDL_GLContextState* resource)
+    : GLContextUnsafe(resource)
   {
   }
 

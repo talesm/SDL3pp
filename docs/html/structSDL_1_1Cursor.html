@@ -88,7 +88,9 @@ Inheritance diagram for SDL::Cursor:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Cursor__inherit__graph.png" border="0" usemap="#aSDL_1_1Cursor_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Cursor_inherit__map" id="aSDL_1_1Cursor_inherit__map">
-<area shape="rect" title="Handle to an owned cursor." alt="" coords="34,167,131,192"/>
+<area shape="rect" title="Handle to an owned cursor." alt="" coords="34,240,131,265"/>
+<area shape="rect" href="structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor." alt="" coords="11,167,154,192"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 <area shape="rect" href="structSDL_1_1CursorRef.html" title="The structure used to identify an SDL cursor." alt="" coords="23,93,142,119"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
@@ -98,10 +100,10 @@ Inheritance diagram for SDL::Cursor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e13082d1cbf3ce1754be95e87b16157" id="r_a1e13082d1cbf3ce1754be95e87b16157"><td class="memItemLeft" align="right" valign="top"><a id="a1e13082d1cbf3ce1754be95e87b16157" name="a1e13082d1cbf3ce1754be95e87b16157"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Cursor</b> (SDL_Cursor *resource={})</td></tr>
-<tr class="memdesc:a1e13082d1cbf3ce1754be95e87b16157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a1e13082d1cbf3ce1754be95e87b16157"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1884ac291911d9b369ed210ba09320a4" id="r_a1884ac291911d9b369ed210ba09320a4"><td class="memItemLeft" align="right" valign="top"><a id="a1884ac291911d9b369ed210ba09320a4" name="a1884ac291911d9b369ed210ba09320a4"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Cursor</b> (SDL_Cursor *resource)</td></tr>
+<tr class="memdesc:a1884ac291911d9b369ed210ba09320a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
+<tr class="separator:a1884ac291911d9b369ed210ba09320a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abed53cc2df86f8a8fe5c49ecd861456e" id="r_abed53cc2df86f8a8fe5c49ecd861456e"><td class="memItemLeft" align="right" valign="top"><a id="abed53cc2df86f8a8fe5c49ecd861456e" name="abed53cc2df86f8a8fe5c49ecd861456e"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Cursor</b> (const <a class="el" href="structSDL_1_1Cursor.html">Cursor</a> &amp;other)=delete</td></tr>
 <tr class="separator:abed53cc2df86f8a8fe5c49ecd861456e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,23 +119,30 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Cursor</b> (<a c
 <a class="el" href="structSDL_1_1Cursor.html">Cursor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Cursor.html">Cursor</a> other)</td></tr>
 <tr class="memdesc:aa494d7d9edcb8c7604e02b9c9cd6b448"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:aa494d7d9edcb8c7604e02b9c9cd6b448"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac41c8af0b143f085ed5d711a2c81969e" id="r_ac41c8af0b143f085ed5d711a2c81969e"><td class="memItemLeft" align="right" valign="top"><a id="ac41c8af0b143f085ed5d711a2c81969e" name="ac41c8af0b143f085ed5d711a2c81969e"></a>
+<tr class="inherit_header pub_methods_structSDL_1_1CursorUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1CursorUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1CursorUnsafe.html">SDL::CursorUnsafe</a></td></tr>
+<tr class="memitem:ac41c8af0b143f085ed5d711a2c81969e inherit pub_methods_structSDL_1_1CursorUnsafe" id="r_ac41c8af0b143f085ed5d711a2c81969e"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>CursorRef</b> (const <a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;other)</td></tr>
-<tr class="memdesc:ac41c8af0b143f085ed5d711a2c81969e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:ac41c8af0b143f085ed5d711a2c81969e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0217fe720335fb5f8dc5f3544378f70b" id="r_a0217fe720335fb5f8dc5f3544378f70b"><td class="memItemLeft" align="right" valign="top"><a id="a0217fe720335fb5f8dc5f3544378f70b" name="a0217fe720335fb5f8dc5f3544378f70b"></a>
+<tr class="memdesc:ac41c8af0b143f085ed5d711a2c81969e inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:ac41c8af0b143f085ed5d711a2c81969e inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0217fe720335fb5f8dc5f3544378f70b inherit pub_methods_structSDL_1_1CursorUnsafe" id="r_a0217fe720335fb5f8dc5f3544378f70b"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>CursorRef</b> (<a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a0217fe720335fb5f8dc5f3544378f70b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a0217fe720335fb5f8dc5f3544378f70b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae87b5e3b23c5821f84b4dfdd44500af2" id="r_ae87b5e3b23c5821f84b4dfdd44500af2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html#ae87b5e3b23c5821f84b4dfdd44500af2">CursorRef</a> (const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y)</td></tr>
-<tr class="memdesc:ae87b5e3b23c5821f84b4dfdd44500af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a cursor using the specified bitmap data and mask (in MSB format).  <br /></td></tr>
-<tr class="separator:ae87b5e3b23c5821f84b4dfdd44500af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a9aeb6015a1836af0c354f1014d743e" id="r_a8a9aeb6015a1836af0c354f1014d743e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html#a8a9aeb6015a1836af0c354f1014d743e">CursorRef</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> &amp;surface, int hot_x, int hot_y)</td></tr>
-<tr class="memdesc:a8a9aeb6015a1836af0c354f1014d743e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a color cursor.  <br /></td></tr>
-<tr class="separator:a8a9aeb6015a1836af0c354f1014d743e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6163f1934d70a084ccbbfcc3251c3ac" id="r_ae6163f1934d70a084ccbbfcc3251c3ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html#ae6163f1934d70a084ccbbfcc3251c3ac">CursorRef</a> (<a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SystemCursor</a> id)</td></tr>
-<tr class="memdesc:ae6163f1934d70a084ccbbfcc3251c3ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a system cursor.  <br /></td></tr>
-<tr class="separator:ae6163f1934d70a084ccbbfcc3251c3ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a0217fe720335fb5f8dc5f3544378f70b inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a0217fe720335fb5f8dc5f3544378f70b inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae87b5e3b23c5821f84b4dfdd44500af2 inherit pub_methods_structSDL_1_1CursorUnsafe" id="r_ae87b5e3b23c5821f84b4dfdd44500af2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html#ae87b5e3b23c5821f84b4dfdd44500af2">CursorRef</a> (const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y)</td></tr>
+<tr class="memdesc:ae87b5e3b23c5821f84b4dfdd44500af2 inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a cursor using the specified bitmap data and mask (in MSB format).  <br /></td></tr>
+<tr class="separator:ae87b5e3b23c5821f84b4dfdd44500af2 inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a9aeb6015a1836af0c354f1014d743e inherit pub_methods_structSDL_1_1CursorUnsafe" id="r_a8a9aeb6015a1836af0c354f1014d743e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html#a8a9aeb6015a1836af0c354f1014d743e">CursorRef</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> &amp;surface, int hot_x, int hot_y)</td></tr>
+<tr class="memdesc:a8a9aeb6015a1836af0c354f1014d743e inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a color cursor.  <br /></td></tr>
+<tr class="separator:a8a9aeb6015a1836af0c354f1014d743e inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6163f1934d70a084ccbbfcc3251c3ac inherit pub_methods_structSDL_1_1CursorUnsafe" id="r_ae6163f1934d70a084ccbbfcc3251c3ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html#ae6163f1934d70a084ccbbfcc3251c3ac">CursorRef</a> (<a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SystemCursor</a> id)</td></tr>
+<tr class="memdesc:ae6163f1934d70a084ccbbfcc3251c3ac inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a system cursor.  <br /></td></tr>
+<tr class="separator:ae6163f1934d70a084ccbbfcc3251c3ac inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pub_methods_structSDL_1_1CursorUnsafe" id="r_aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html#aa8610d8c0d0820c3c1ce8957ab6d13a9">Destroy</a> ()</td></tr>
+<tr class="memdesc:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
+<tr class="separator:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4755b54c6a180957caa8047a2dc6817e inherit pub_methods_structSDL_1_1CursorUnsafe" id="r_a4755b54c6a180957caa8047a2dc6817e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html#a4755b54c6a180957caa8047a2dc6817e">reset</a> (SDL_Cursor *newResource={})</td></tr>
+<tr class="memdesc:a4755b54c6a180957caa8047a2dc6817e inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
+<tr class="separator:a4755b54c6a180957caa8047a2dc6817e inherit pub_methods_structSDL_1_1CursorUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1CursorRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1CursorRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1CursorRef.html">SDL::CursorRef</a></td></tr>
 <tr class="memitem:ac41c8af0b143f085ed5d711a2c81969e inherit pub_methods_structSDL_1_1CursorRef" id="r_ac41c8af0b143f085ed5d711a2c81969e"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>CursorRef</b> (const <a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;other)</td></tr>
@@ -156,12 +165,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>CursorRef</b> (<
 <a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> other)</td></tr>
 <tr class="memdesc:a558c79e80a5b15e1704a778c3105bd80 inherit pub_methods_structSDL_1_1CursorRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a558c79e80a5b15e1704a778c3105bd80 inherit pub_methods_structSDL_1_1CursorRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pub_methods_structSDL_1_1CursorRef" id="r_aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9">Destroy</a> ()</td></tr>
-<tr class="memdesc:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pub_methods_structSDL_1_1CursorRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
-<tr class="separator:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pub_methods_structSDL_1_1CursorRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4755b54c6a180957caa8047a2dc6817e inherit pub_methods_structSDL_1_1CursorRef" id="r_a4755b54c6a180957caa8047a2dc6817e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e">reset</a> (SDL_Cursor *newResource={})</td></tr>
-<tr class="memdesc:a4755b54c6a180957caa8047a2dc6817e inherit pub_methods_structSDL_1_1CursorRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
-<tr class="separator:a4755b54c6a180957caa8047a2dc6817e inherit pub_methods_structSDL_1_1CursorRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1CursorRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1CursorRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -237,215 +240,21 @@ constexpr const SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom">
 constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_structSDL_1_1CursorRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1CursorRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1CursorRef.html">SDL::CursorRef</a></td></tr>
+<tr class="memitem:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pro_methods_structSDL_1_1CursorRef" id="r_aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9">Destroy</a> ()</td></tr>
+<tr class="memdesc:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pro_methods_structSDL_1_1CursorRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
+<tr class="separator:aa8610d8c0d0820c3c1ce8957ab6d13a9 inherit pro_methods_structSDL_1_1CursorRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4755b54c6a180957caa8047a2dc6817e inherit pro_methods_structSDL_1_1CursorRef" id="r_a4755b54c6a180957caa8047a2dc6817e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e">reset</a> (SDL_Cursor *newResource={})</td></tr>
+<tr class="memdesc:a4755b54c6a180957caa8047a2dc6817e inherit pro_methods_structSDL_1_1CursorRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
+<tr class="separator:a4755b54c6a180957caa8047a2dc6817e inherit pro_methods_structSDL_1_1CursorRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorRef.html" title="The structure used to identify an SDL cursor.">CursorRef</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae87b5e3b23c5821f84b4dfdd44500af2" name="ae87b5e3b23c5821f84b4dfdd44500af2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae87b5e3b23c5821f84b4dfdd44500af2">&#9670;&#160;</a></span>CursorRef() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::CursorRef::CursorRef </td>
-          <td>(</td>
-          <td class="paramtype">const Uint8 *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Uint8 *&#160;</td>
-          <td class="paramname"><em>mask</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>w</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>h</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>hot_x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>hot_y</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p><code>mask</code> has to be in MSB (Most Significant Bit) format.</p>
-<p>The cursor width (<code>w</code>) must be a multiple of 8 bits.</p>
-<p>The cursor is created in black and white according to the following:</p>
-<ul>
-<li>data=0, mask=1: white</li>
-<li>data=1, mask=1: black</li>
-<li>data=0, mask=0: transparent</li>
-<li>data=1, mask=0: inverted color if possible, black if not.</li>
-</ul>
-<p>If you want to have a color cursor, or create your cursor from an <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a>, you should use <a class="el" href="structSDL_1_1CursorRef.html#ac41c8af0b143f085ed5d711a2c81969e" title="Copy constructor.">CursorRef.CursorRef()</a>. Alternately, you can hide the cursor and draw your own as part of your game's rendering, but it will be bound to the framerate.</p>
-<p>Also, <a class="el" href="structSDL_1_1CursorRef.html#ac41c8af0b143f085ed5d711a2c81969e" title="Copy constructor.">CursorRef.CursorRef()</a> is available, which provides several readily-available system cursors to pick from.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>the color value for each pixel of the cursor. </td></tr>
-    <tr><td class="paramname">mask</td><td>the mask value for each pixel of the cursor. </td></tr>
-    <tr><td class="paramname">w</td><td>the width of the cursor. </td></tr>
-    <tr><td class="paramname">h</td><td>the height of the cursor. </td></tr>
-    <tr><td class="paramname">hot_x</td><td>the x-axis offset from the left of the cursor image to the mouse x position, in the range of 0 to <code>w</code> - 1. </td></tr>
-    <tr><td class="paramname">hot_y</td><td>the y-axis offset from the top of the cursor image to the mouse y position, in the range of 0 to <code>h</code> - 1. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a new cursor with the specified parameters on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorRef.html#ac41c8af0b143f085ed5d711a2c81969e" title="Copy constructor.">CursorRef.CursorRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9" title="Free a previously-created cursor.">CursorRef.Destroy</a> </dd>
-<dd>
-<a class="el" href="group__CategoryMouse.html#ga0cabce2fcea4d30c16666f021d1615ab" title="Set the active cursor.">SetCursor</a> </dd></dl>
-
-</div>
-</div>
-<a id="a8a9aeb6015a1836af0c354f1014d743e" name="a8a9aeb6015a1836af0c354f1014d743e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a9aeb6015a1836af0c354f1014d743e">&#9670;&#160;</a></span>CursorRef() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::CursorRef::CursorRef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> &amp;&#160;</td>
-          <td class="paramname"><em>surface</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>hot_x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>hot_y</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If this function is passed a surface with alternate representations, the surface will be interpreted as the content to be used for 100% display scale, and the alternate representations will be used for high DPI situations. For example, if the original surface is 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64 version of the image will be used, if available. If a matching version of the image isn't available, the closest larger size image will be downscaled to the appropriate size and be used instead, if available. Otherwise, the closest smaller image will be upscaled and be used instead.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">surface</td><td>an <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure representing the cursor image. </td></tr>
-    <tr><td class="paramname">hot_x</td><td>the x position of the cursor hot spot. </td></tr>
-    <tr><td class="paramname">hot_y</td><td>the y position of the cursor hot spot. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new cursor on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorRef.html#ac41c8af0b143f085ed5d711a2c81969e" title="Copy constructor.">CursorRef.CursorRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9" title="Free a previously-created cursor.">CursorRef.Destroy</a> </dd>
-<dd>
-<a class="el" href="group__CategoryMouse.html#ga0cabce2fcea4d30c16666f021d1615ab" title="Set the active cursor.">SetCursor</a> </dd></dl>
-
-</div>
-</div>
-<a id="ae6163f1934d70a084ccbbfcc3251c3ac" name="ae6163f1934d70a084ccbbfcc3251c3ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6163f1934d70a084ccbbfcc3251c3ac">&#9670;&#160;</a></span>CursorRef() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::CursorRef::CursorRef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SystemCursor</a>&#160;</td>
-          <td class="paramname"><em>id</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>an SystemCursor enum value. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a cursor on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9" title="Free a previously-created cursor.">CursorRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__mouse_8h_source.html">SDL3pp_mouse.h</a></li>
 </ul>
 </div><!-- contents -->

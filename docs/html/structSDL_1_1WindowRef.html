@@ -77,6 +77,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1WindowRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::WindowRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryVideo.html">Display and Window Management</a></div></div></div>
 </div><!--header-->
@@ -90,10 +91,12 @@ Inheritance diagram for SDL::WindowRef:</div>
 <div class="center"><img src="structSDL_1_1WindowRef__inherit__graph.png" border="0" usemap="#aSDL_1_1WindowRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1WindowRef_inherit__map" id="aSDL_1_1WindowRef_inherit__map">
 <area shape="rect" title="Represents a handle to a window." alt="" coords="18,93,147,119"/>
-<area shape="rect" href="structSDL_1_1Window.html" title="Handle to an owned window." alt="" coords="29,167,136,192"/>
+<area shape="rect" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window." alt="" coords="6,167,159,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1Window.html" title="Handle to an owned window." alt="" coords="29,240,136,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -318,12 +321,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>WindowRef</b> (<
 <tr class="memitem:a3f25993961c06c26fd034a46e50cf800" id="r_a3f25993961c06c26fd034a46e50cf800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a3f25993961c06c26fd034a46e50cf800">Flash</a> (<a class="el" href="group__CategoryVideo.html#ga9d43efa44ae8a04c595ca7018e8ff813">FlashOperation</a> operation)</td></tr>
 <tr class="memdesc:a3f25993961c06c26fd034a46e50cf800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request a window to demand attention from the user.  <br /></td></tr>
 <tr class="separator:a3f25993961c06c26fd034a46e50cf800"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfc07cb1e80e63736d4574ba8f23adb7" id="r_abfc07cb1e80e63736d4574ba8f23adb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7">Destroy</a> ()</td></tr>
-<tr class="memdesc:abfc07cb1e80e63736d4574ba8f23adb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
-<tr class="separator:abfc07cb1e80e63736d4574ba8f23adb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a850b93ca1b23b6472f846c2f76af7099" id="r_a850b93ca1b23b6472f846c2f76af7099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a850b93ca1b23b6472f846c2f76af7099">reset</a> (SDL_Window *newResource={})</td></tr>
-<tr class="memdesc:a850b93ca1b23b6472f846c2f76af7099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
-<tr class="separator:a850b93ca1b23b6472f846c2f76af7099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga590ff79dc216039acd11e6920ae51669" id="r_ga590ff79dc216039acd11e6920ae51669"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga590ff79dc216039acd11e6920ae51669">GetRenderer</a> () const</td></tr>
 <tr class="memdesc:ga590ff79dc216039acd11e6920ae51669"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer associated with a window.  <br /></td></tr>
 <tr class="separator:ga590ff79dc216039acd11e6920ae51669"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -444,6 +441,15 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0bc05cedcc50205f35db0476a9df92b6" id="r_a0bc05cedcc50205f35db0476a9df92b6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a0bc05cedcc50205f35db0476a9df92b6">GetGrabbed</a> ()</td></tr>
 <tr class="memdesc:a0bc05cedcc50205f35db0476a9df92b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the window that currently has an input grab enabled.  <br /></td></tr>
 <tr class="separator:a0bc05cedcc50205f35db0476a9df92b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:abfc07cb1e80e63736d4574ba8f23adb7" id="r_abfc07cb1e80e63736d4574ba8f23adb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#abfc07cb1e80e63736d4574ba8f23adb7">Destroy</a> ()</td></tr>
+<tr class="memdesc:abfc07cb1e80e63736d4574ba8f23adb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
+<tr class="separator:abfc07cb1e80e63736d4574ba8f23adb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a850b93ca1b23b6472f846c2f76af7099" id="r_a850b93ca1b23b6472f846c2f76af7099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowRef.html#a850b93ca1b23b6472f846c2f76af7099">reset</a> (SDL_Window *newResource={})</td></tr>
+<tr class="memdesc:a850b93ca1b23b6472f846c2f76af7099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
+<tr class="separator:a850b93ca1b23b6472f846c2f76af7099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -726,7 +732,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a8be9675e6bb645926407372794d2cc05" title="Constructs from the underlying resource.">Properties.Properties</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a5bfe865718adfd9f1059350a31fa4a81" title="Constructs from the underlying resource.">Properties.Properties</a> </dd></dl>
 
 </div>
 </div>
@@ -749,7 +755,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2307,7 +2313,7 @@ GetSizeInPixels(int*, int*) </dd></dl>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

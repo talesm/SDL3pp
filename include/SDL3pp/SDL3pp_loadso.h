@@ -139,6 +139,7 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
     return SDL_LoadFunction(get(), name);
   }
 
+protected:
   /**
    * Unload a shared object from memory.
    *
@@ -172,21 +173,39 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
 };
 
 /**
+ * Unsafe Handle to sharedObject
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectRef
+ */
+struct SharedObjectUnsafe : SharedObjectRef
+{
+  using SharedObjectRef::SharedObjectRef;
+
+  using SharedObjectRef::Unload;
+
+  using SharedObjectRef::reset;
+};
+
+/**
  * Handle to an owned sharedObject
  *
  * @cat resource
  *
  * @sa SharedObjectRef
  */
-struct SharedObject : SharedObjectRef
+struct SharedObject : SharedObjectUnsafe
 {
-  using SharedObjectRef::SharedObjectRef;
+  using SharedObjectUnsafe::SharedObjectUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit SharedObject(SDL_SharedObject* resource = {})
-    : SharedObjectRef(resource)
+  constexpr explicit SharedObject(SDL_SharedObject* resource)
+    : SharedObjectUnsafe(resource)
   {
   }
 

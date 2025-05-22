@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1PropertiesRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::PropertiesRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a> &raquo; <a class="el" href="group__CategoryProperties.html">Object Properties</a></div></div></div>
 </div><!--header-->
@@ -88,11 +89,13 @@ Inheritance diagram for SDL::PropertiesRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1PropertiesRef__inherit__graph.png" border="0" usemap="#aSDL_1_1PropertiesRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1PropertiesRef_inherit__map" id="aSDL_1_1PropertiesRef_inherit__map">
-<area shape="rect" title="Wrap properties id." alt="" coords="11,93,154,119"/>
-<area shape="rect" href="structSDL_1_1Properties.html" title="Handle to an owned properties." alt="" coords="22,167,143,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Wrap properties id." alt="" coords="17,93,160,119"/>
+<area shape="rect" href="structSDL_1_1PropertiesUnsafe.html" title="Unsafe Handle to properties." alt="" coords="5,167,172,192"/>
+<area shape="poly" title=" " alt="" coords="91,132,91,167,86,167,86,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="11,5,166,45"/>
+<area shape="poly" title=" " alt="" coords="91,59,91,93,86,93,86,59"/>
+<area shape="rect" href="structSDL_1_1Properties.html" title="Handle to an owned properties." alt="" coords="28,240,149,265"/>
+<area shape="poly" title=" " alt="" coords="91,206,91,240,86,240,86,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -171,12 +174,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>PropertiesRef</b
 <tr class="memitem:a19d7e2ac878aeae4645ce32c8148641d" id="r_a19d7e2ac878aeae4645ce32c8148641d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#a19d7e2ac878aeae4645ce32c8148641d">Enumerate</a> (<a class="el" href="group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c">EnumeratePropertiesCallback</a> callback, void *userdata) const</td></tr>
 <tr class="memdesc:a19d7e2ac878aeae4645ce32c8148641d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate the properties contained in a group of properties.  <br /></td></tr>
 <tr class="separator:a19d7e2ac878aeae4645ce32c8148641d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99925951b2107d400258b2145246ebf8" id="r_a99925951b2107d400258b2145246ebf8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#a99925951b2107d400258b2145246ebf8">Destroy</a> ()</td></tr>
-<tr class="memdesc:a99925951b2107d400258b2145246ebf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a group of properties.  <br /></td></tr>
-<tr class="separator:a99925951b2107d400258b2145246ebf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f20ac4b4a713d7303f7bc8676e49d63" id="r_a1f20ac4b4a713d7303f7bc8676e49d63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#a1f20ac4b4a713d7303f7bc8676e49d63">reset</a> (SDL_PropertiesID newResource={})</td></tr>
-<tr class="memdesc:a1f20ac4b4a713d7303f7bc8676e49d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a group of properties.  <br /></td></tr>
-<tr class="separator:a1f20ac4b4a713d7303f7bc8676e49d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a948ce7077661f572c0125e3ff2494ee8" id="r_a948ce7077661f572c0125e3ff2494ee8"><td class="memItemLeft" align="right" valign="top">Uint64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#a948ce7077661f572c0125e3ff2494ee8">GetCount</a> () const</td></tr>
 <tr class="memdesc:a948ce7077661f572c0125e3ff2494ee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of properties this has.  <br /></td></tr>
 <tr class="separator:a948ce7077661f572c0125e3ff2494ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,6 +252,15 @@ constexpr const SDL_PropertiesID&#160;</td><td class="memItemRight" valign="bott
 constexpr SDL_PropertiesID&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a99925951b2107d400258b2145246ebf8" id="r_a99925951b2107d400258b2145246ebf8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#a99925951b2107d400258b2145246ebf8">Destroy</a> ()</td></tr>
+<tr class="memdesc:a99925951b2107d400258b2145246ebf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a group of properties.  <br /></td></tr>
+<tr class="separator:a99925951b2107d400258b2145246ebf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f20ac4b4a713d7303f7bc8676e49d63" id="r_a1f20ac4b4a713d7303f7bc8676e49d63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#a1f20ac4b4a713d7303f7bc8676e49d63">reset</a> (SDL_PropertiesID newResource={})</td></tr>
+<tr class="memdesc:a1f20ac4b4a713d7303f7bc8676e49d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a group of properties.  <br /></td></tr>
+<tr class="separator:a1f20ac4b4a713d7303f7bc8676e49d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A property is a variable that can be created and retrieved by name at runtime.</p>
@@ -271,7 +277,7 @@ constexpr SDL_PropertiesID&#160;</td><td class="memItemRight" valign="bottom"><b
 <p>To create a new properties group use <a class="el" href="group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce" title="Create a group of properties.">CreateProperties()</a> or <a class="el" href="structSDL_1_1Properties.html#a5acd6793568e8ef1987b384363605d80" title="Create a group of properties.">Properties.Properties()</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a8be9675e6bb645926407372794d2cc05" title="Constructs from the underlying resource.">Properties.Properties</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a5bfe865718adfd9f1059350a31fa4a81" title="Constructs from the underlying resource.">Properties.Properties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -374,14 +380,14 @@ constexpr SDL_PropertiesID&#160;</td><td class="memItemRight" valign="bottom"><b
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>All properties are deleted and their cleanup functions will be called, if any.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while these properties are locked or other threads might be setting or getting values from these properties.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a8be9675e6bb645926407372794d2cc05" title="Constructs from the underlying resource.">Properties.Properties</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a5bfe865718adfd9f1059350a31fa4a81" title="Constructs from the underlying resource.">Properties.Properties</a> </dd></dl>
 
 </div>
 </div>
@@ -910,14 +916,14 @@ template&lt;std::output_iterator&lt; const char * &gt; IT&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>All properties are deleted and their cleanup functions will be called, if any.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while these properties are locked or other threads might be setting or getting values from these properties.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a8be9675e6bb645926407372794d2cc05" title="Constructs from the underlying resource.">Properties.Properties</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a5bfe865718adfd9f1059350a31fa4a81" title="Constructs from the underlying resource.">Properties.Properties</a> </dd></dl>
 
 </div>
 </div>

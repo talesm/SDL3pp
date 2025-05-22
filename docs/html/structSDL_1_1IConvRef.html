@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1IConvRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::IConvRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryStdinc.html">Standard Library Functionality</a></div></div></div>
 </div><!--header-->
@@ -89,10 +90,12 @@ Inheritance diagram for SDL::IConvRef:</div>
 <div class="center"><img src="structSDL_1_1IConvRef__inherit__graph.png" border="0" usemap="#aSDL_1_1IConvRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1IConvRef_inherit__map" id="aSDL_1_1IConvRef_inherit__map">
 <area shape="rect" title="An opaque handle representing string encoding conversion state." alt="" coords="25,93,140,119"/>
-<area shape="rect" href="structSDL_1_1IConv.html" title="Handle to an owned iConv." alt="" coords="37,167,129,192"/>
+<area shape="rect" href="structSDL_1_1IConvUnsafe.html" title="Unsafe Handle to iConv." alt="" coords="13,167,152,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1IConv.html" title="Handle to an owned iConv." alt="" coords="37,240,129,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -116,12 +119,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IConvRef</b> (<a
 <tr class="memitem:a1986bf1e484c1388ea3508010b7cb763" id="r_a1986bf1e484c1388ea3508010b7cb763"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763">iconv</a> (const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft)</td></tr>
 <tr class="memdesc:a1986bf1e484c1388ea3508010b7cb763"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function converts text between encodings, reading from and writing to a buffer.  <br /></td></tr>
 <tr class="separator:a1986bf1e484c1388ea3508010b7cb763"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3aad736a0e4c6002dcda917c4ebe6fa0" id="r_a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a3aad736a0e4c6002dcda917c4ebe6fa0">close</a> ()</td></tr>
-<tr class="memdesc:a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
-<tr class="separator:a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00d5226c826fac585e10502357237d4c" id="r_a00d5226c826fac585e10502357237d4c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a00d5226c826fac585e10502357237d4c">reset</a> (SDL_iconv_data_t *newResource={})</td></tr>
-<tr class="memdesc:a00d5226c826fac585e10502357237d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
-<tr class="separator:a00d5226c826fac585e10502357237d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -197,6 +194,15 @@ constexpr const SDL_iconv_data_t *&#160;</td><td class="memItemRight" valign="bo
 constexpr SDL_iconv_data_t *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3aad736a0e4c6002dcda917c4ebe6fa0" id="r_a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a3aad736a0e4c6002dcda917c4ebe6fa0">close</a> ()</td></tr>
+<tr class="memdesc:a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
+<tr class="separator:a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00d5226c826fac585e10502357237d4c" id="r_a00d5226c826fac585e10502357237d4c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a00d5226c826fac585e10502357237d4c">reset</a> (SDL_iconv_data_t *newResource={})</td></tr>
+<tr class="memdesc:a00d5226c826fac585e10502357237d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
+<tr class="separator:a00d5226c826fac585e10502357237d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -272,7 +278,7 @@ constexpr SDL_iconv_data_t *&#160;</td><td class="memItemRight" valign="bottom">
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -381,7 +387,7 @@ constexpr SDL_iconv_data_t *&#160;</td><td class="memItemRight" valign="bottom">
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

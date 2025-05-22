@@ -2362,6 +2362,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
     CheckError(SDL_UnsetEnvironmentVariable(get(), name));
   }
 
+protected:
   /**
    * Destroy a set of environment variables.
    *
@@ -2394,21 +2395,39 @@ struct EnvironmentRef : Resource<SDL_Environment*>
 };
 
 /**
+ * Unsafe Handle to environment
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentRef
+ */
+struct EnvironmentUnsafe : EnvironmentRef
+{
+  using EnvironmentRef::Destroy;
+
+  using EnvironmentRef::EnvironmentRef;
+
+  using EnvironmentRef::reset;
+};
+
+/**
  * Handle to an owned environment
  *
  * @cat resource
  *
  * @sa EnvironmentRef
  */
-struct Environment : EnvironmentRef
+struct Environment : EnvironmentUnsafe
 {
-  using EnvironmentRef::EnvironmentRef;
+  using EnvironmentUnsafe::EnvironmentUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Environment(SDL_Environment* resource = {})
-    : EnvironmentRef(resource)
+  constexpr explicit Environment(SDL_Environment* resource)
+    : EnvironmentUnsafe(resource)
   {
   }
 
@@ -6674,6 +6693,7 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
     return SDL_iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
 
+protected:
   /**
    * This function frees a context used for character set conversion.
    *
@@ -6706,21 +6726,39 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
 };
 
 /**
+ * Unsafe Handle to iConv
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IConvRef
+ */
+struct IConvUnsafe : IConvRef
+{
+  using IConvRef::IConvRef;
+
+  using IConvRef::close;
+
+  using IConvRef::reset;
+};
+
+/**
  * Handle to an owned iConv
  *
  * @cat resource
  *
  * @sa IConvRef
  */
-struct IConv : IConvRef
+struct IConv : IConvUnsafe
 {
-  using IConvRef::IConvRef;
+  using IConvUnsafe::IConvUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit IConv(SDL_iconv_data_t* resource = {})
-    : IConvRef(resource)
+  constexpr explicit IConv(SDL_iconv_data_t* resource)
+    : IConvUnsafe(resource)
   {
   }
 
@@ -15249,6 +15287,7 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
     return SDL_LoadFunction(get(), name);
   }
 
+protected:
   /**
    * Unload a shared object from memory.
    *
@@ -15282,21 +15321,39 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
 };
 
 /**
+ * Unsafe Handle to sharedObject
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectRef
+ */
+struct SharedObjectUnsafe : SharedObjectRef
+{
+  using SharedObjectRef::SharedObjectRef;
+
+  using SharedObjectRef::Unload;
+
+  using SharedObjectRef::reset;
+};
+
+/**
  * Handle to an owned sharedObject
  *
  * @cat resource
  *
  * @sa SharedObjectRef
  */
-struct SharedObject : SharedObjectRef
+struct SharedObject : SharedObjectUnsafe
 {
-  using SharedObjectRef::SharedObjectRef;
+  using SharedObjectUnsafe::SharedObjectUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit SharedObject(SDL_SharedObject* resource = {})
-    : SharedObjectRef(resource)
+  constexpr explicit SharedObject(SDL_SharedObject* resource)
+    : SharedObjectUnsafe(resource)
   {
   }
 
@@ -18251,6 +18308,7 @@ struct PaletteRef : Resource<SDL_Palette*>
       get(), colors.data(), firstcolor, colors.size());
   }
 
+protected:
   /**
    * Free a palette created with PaletteRef.PaletteRef().
    *
@@ -18284,22 +18342,39 @@ struct PaletteRef : Resource<SDL_Palette*>
 };
 
 /**
+ * Unsafe Handle to palette
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa PaletteRef
+ */
+struct PaletteUnsafe : PaletteRef
+{
+  using PaletteRef::Destroy;
+
+  using PaletteRef::PaletteRef;
+
+  using PaletteRef::reset;
+};
+
+/**
  * Handle to an owned palette
  *
  * @cat resource
  *
  * @sa PaletteRef
- * @sa PaletteRef
  */
-struct Palette : PaletteRef
+struct Palette : PaletteUnsafe
 {
-  using PaletteRef::PaletteRef;
+  using PaletteUnsafe::PaletteUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Palette(SDL_Palette* resource = {})
-    : PaletteRef(resource)
+  constexpr explicit Palette(SDL_Palette* resource)
+    : PaletteUnsafe(resource)
   {
   }
 
@@ -19612,6 +19687,14 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
   }
 
   /**
+   * Returns the number of properties this has
+   *
+   * This uses Enumerate() internally, so might not be so fast
+   */
+  Uint64 GetCount() const;
+
+protected:
+  /**
    * Destroy a group of properties.
    *
    * All properties are deleted and their cleanup functions will be called, if
@@ -19646,13 +19729,24 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
   {
     SDL_DestroyProperties(release(newResource));
   }
+};
 
-  /**
-   * Returns the number of properties this has
-   *
-   * This uses Enumerate() internally, so might not be so fast
-   */
-  Uint64 GetCount() const;
+/**
+ * Unsafe Handle to properties
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa PropertiesRef
+ */
+struct PropertiesUnsafe : PropertiesRef
+{
+  using PropertiesRef::Destroy;
+
+  using PropertiesRef::PropertiesRef;
+
+  using PropertiesRef::reset;
 };
 
 /**
@@ -19662,15 +19756,15 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
  *
  * @sa PropertiesRef
  */
-struct Properties : PropertiesRef
+struct Properties : PropertiesUnsafe
 {
-  using PropertiesRef::PropertiesRef;
+  using PropertiesUnsafe::PropertiesUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Properties(SDL_PropertiesID resource = {})
-    : PropertiesRef(resource)
+  constexpr explicit Properties(SDL_PropertiesID resource)
+    : PropertiesUnsafe(resource)
   {
   }
 
@@ -19693,9 +19787,9 @@ struct Properties : PropertiesRef
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesRef.reset
+   * @sa PropertiesRef.Destroy
    */
-  Properties()
+  explicit Properties()
     : Properties(CheckError(SDL_CreateProperties()))
   {
   }
@@ -26248,6 +26342,8 @@ struct IOStreamRef : Resource<SDL_IOStream*>
     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
     return {};
   }
+
+protected:
   /**
    * Close and free an allocated IOStreamRef structure.
    *
@@ -26315,22 +26411,39 @@ struct IOStreamRef : Resource<SDL_IOStream*>
 };
 
 /**
+ * Unsafe Handle to iOStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ */
+struct IOStreamUnsafe : IOStreamRef
+{
+  using IOStreamRef::Close;
+
+  using IOStreamRef::IOStreamRef;
+
+  using IOStreamRef::reset;
+};
+
+/**
  * Handle to an owned iOStream
  *
  * @cat resource
  *
  * @sa IOStreamRef
- * @sa IOStreamRef
  */
-struct IOStream : IOStreamRef
+struct IOStream : IOStreamUnsafe
 {
-  using IOStreamRef::IOStreamRef;
+  using IOStreamUnsafe::IOStreamUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit IOStream(SDL_IOStream* resource = {})
-    : IOStreamRef(resource)
+  constexpr explicit IOStream(SDL_IOStream* resource)
+    : IOStreamUnsafe(resource)
   {
   }
 
@@ -28227,6 +28340,7 @@ struct StorageRef : Resource<SDL_Storage*>
     return OwnArray<char*>{data, size_t(count)};
   }
 
+protected:
   /**
    * Closes and frees a storage container.
    *
@@ -28260,21 +28374,39 @@ struct StorageRef : Resource<SDL_Storage*>
 };
 
 /**
+ * Unsafe Handle to storage
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa StorageRef
+ */
+struct StorageUnsafe : StorageRef
+{
+  using StorageRef::Close;
+
+  using StorageRef::StorageRef;
+
+  using StorageRef::reset;
+};
+
+/**
  * Handle to an owned storage
  *
  * @cat resource
  *
  * @sa StorageRef
  */
-struct Storage : StorageRef
+struct Storage : StorageUnsafe
 {
-  using StorageRef::StorageRef;
+  using StorageUnsafe::StorageUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Storage(SDL_Storage* resource = {})
-    : StorageRef(resource)
+  constexpr explicit Storage(SDL_Storage* resource)
+    : StorageUnsafe(resource)
   {
   }
 
@@ -28696,6 +28828,7 @@ struct ThreadRef : Resource<SDL_Thread*>
    */
   ThreadState GetState() const { return SDL_GetThreadState(get()); }
 
+protected:
   /**
    * Let a thread clean up on exit without intervention.
    *
@@ -28766,22 +28899,39 @@ struct ThreadRef : Resource<SDL_Thread*>
 };
 
 /**
+ * Unsafe Handle to thread
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ThreadRef
+ */
+struct ThreadUnsafe : ThreadRef
+{
+  using ThreadRef::Detach;
+
+  using ThreadRef::ThreadRef;
+
+  using ThreadRef::reset;
+};
+
+/**
  * Handle to an owned thread
  *
  * @cat resource
  *
  * @sa ThreadRef
- * @sa ThreadRef
  */
-struct Thread : ThreadRef
+struct Thread : ThreadUnsafe
 {
-  using ThreadRef::ThreadRef;
+  using ThreadUnsafe::ThreadUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Thread(SDL_Thread* resource = {})
-    : ThreadRef(resource)
+  constexpr explicit Thread(SDL_Thread* resource)
+    : ThreadUnsafe(resource)
   {
   }
 
@@ -29951,6 +30101,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
     CheckError(SDL_SetAudioPostmixCallback(get(), callback, userdata));
   }
 
+protected:
   /**
    * Close a previously-opened audio device.
    *
@@ -29993,21 +30144,39 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 };
 
 /**
+ * Unsafe Handle to audioDevice
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceRef
+ */
+struct AudioDeviceUnsafe : AudioDeviceRef
+{
+  using AudioDeviceRef::AudioDeviceRef;
+
+  using AudioDeviceRef::Close;
+
+  using AudioDeviceRef::reset;
+};
+
+/**
  * Handle to an owned audioDevice
  *
  * @cat resource
  *
  * @sa AudioDeviceRef
  */
-struct AudioDevice : AudioDeviceRef
+struct AudioDevice : AudioDeviceUnsafe
 {
-  using AudioDeviceRef::AudioDeviceRef;
+  using AudioDeviceUnsafe::AudioDeviceUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit AudioDevice(SDL_AudioDeviceID resource = {})
-    : AudioDeviceRef(resource)
+  constexpr explicit AudioDevice(SDL_AudioDeviceID resource)
+    : AudioDeviceUnsafe(resource)
   {
   }
 
@@ -31305,6 +31474,7 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    */
   AudioDeviceRef GetDevice() const { return SDL_GetAudioStreamDevice(get()); }
 
+protected:
   /**
    * Free an audio stream.
    *
@@ -31350,21 +31520,39 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
 };
 
 /**
+ * Unsafe Handle to audioStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamRef
+ */
+struct AudioStreamUnsafe : AudioStreamRef
+{
+  using AudioStreamRef::AudioStreamRef;
+
+  using AudioStreamRef::Destroy;
+
+  using AudioStreamRef::reset;
+};
+
+/**
  * Handle to an owned audioStream
  *
  * @cat resource
  *
  * @sa AudioStreamRef
  */
-struct AudioStream : AudioStreamRef
+struct AudioStream : AudioStreamUnsafe
 {
-  using AudioStreamRef::AudioStreamRef;
+  using AudioStreamUnsafe::AudioStreamUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit AudioStream(SDL_AudioStream* resource = {})
-    : AudioStreamRef(resource)
+  constexpr explicit AudioStream(SDL_AudioStream* resource)
+    : AudioStreamUnsafe(resource)
   {
   }
 
@@ -32101,6 +32289,7 @@ struct MutexRef : Resource<SDL_Mutex*>
    */
   void Unlock() { SDL_UnlockMutex(get()); }
 
+protected:
   /**
    * Destroy a mutex created with MutexRef.MutexRef().
    *
@@ -32138,22 +32327,39 @@ struct MutexRef : Resource<SDL_Mutex*>
 };
 
 /**
+ * Unsafe Handle to mutex
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa MutexRef
+ */
+struct MutexUnsafe : MutexRef
+{
+  using MutexRef::Destroy;
+
+  using MutexRef::MutexRef;
+
+  using MutexRef::reset;
+};
+
+/**
  * Handle to an owned mutex
  *
  * @cat resource
  *
  * @sa MutexRef
- * @sa MutexRef
  */
-struct Mutex : MutexRef
+struct Mutex : MutexUnsafe
 {
-  using MutexRef::MutexRef;
+  using MutexUnsafe::MutexUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Mutex(SDL_Mutex* resource = {})
-    : MutexRef(resource)
+  constexpr explicit Mutex(SDL_Mutex* resource)
+    : MutexUnsafe(resource)
   {
   }
 
@@ -32417,6 +32623,7 @@ struct RWLockRef : Resource<SDL_RWLock*>
    */
   void Unlock() { SDL_UnlockRWLock(get()); }
 
+protected:
   /**
    * Destroy a read/write lock created with RWLockRef.RWLockRef().
    *
@@ -32453,22 +32660,39 @@ struct RWLockRef : Resource<SDL_RWLock*>
 };
 
 /**
+ * Unsafe Handle to rWLock
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RWLockRef
+ */
+struct RWLockUnsafe : RWLockRef
+{
+  using RWLockRef::Destroy;
+
+  using RWLockRef::RWLockRef;
+
+  using RWLockRef::reset;
+};
+
+/**
  * Handle to an owned rWLock
  *
  * @cat resource
  *
  * @sa RWLockRef
- * @sa RWLockRef
  */
-struct RWLock : RWLockRef
+struct RWLock : RWLockUnsafe
 {
-  using RWLockRef::RWLockRef;
+  using RWLockUnsafe::RWLockUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit RWLock(SDL_RWLock* resource = {})
-    : RWLockRef(resource)
+  constexpr explicit RWLock(SDL_RWLock* resource)
+    : RWLockUnsafe(resource)
   {
   }
 
@@ -32648,6 +32872,7 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
    */
   Uint32 GetValue() const { return SDL_GetSemaphoreValue(get()); }
 
+protected:
   /**
    * Destroy a semaphore.
    *
@@ -32677,22 +32902,39 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
 };
 
 /**
+ * Unsafe Handle to semaphore
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreRef
+ */
+struct SemaphoreUnsafe : SemaphoreRef
+{
+  using SemaphoreRef::Destroy;
+
+  using SemaphoreRef::SemaphoreRef;
+
+  using SemaphoreRef::reset;
+};
+
+/**
  * Handle to an owned semaphore
  *
  * @cat resource
  *
  * @sa SemaphoreRef
- * @sa SemaphoreRef
  */
-struct Semaphore : SemaphoreRef
+struct Semaphore : SemaphoreUnsafe
 {
-  using SemaphoreRef::SemaphoreRef;
+  using SemaphoreUnsafe::SemaphoreUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Semaphore(SDL_Semaphore* resource = {})
-    : SemaphoreRef(resource)
+  constexpr explicit Semaphore(SDL_Semaphore* resource)
+    : SemaphoreUnsafe(resource)
   {
   }
 
@@ -32869,6 +33111,7 @@ struct ConditionRef : Resource<SDL_Condition*>
     return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
   }
 
+protected:
   /**
    * Destroy a condition variable.
    *
@@ -32893,22 +33136,39 @@ struct ConditionRef : Resource<SDL_Condition*>
 };
 
 /**
+ * Unsafe Handle to condition
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ConditionRef
+ */
+struct ConditionUnsafe : ConditionRef
+{
+  using ConditionRef::ConditionRef;
+
+  using ConditionRef::Destroy;
+
+  using ConditionRef::reset;
+};
+
+/**
  * Handle to an owned condition
  *
  * @cat resource
  *
  * @sa ConditionRef
- * @sa ConditionRef
  */
-struct Condition : ConditionRef
+struct Condition : ConditionUnsafe
 {
-  using ConditionRef::ConditionRef;
+  using ConditionUnsafe::ConditionUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Condition(SDL_Condition* resource = {})
-    : ConditionRef(resource)
+  constexpr explicit Condition(SDL_Condition* resource)
+    : ConditionUnsafe(resource)
   {
   }
 
@@ -33530,6 +33790,7 @@ struct ProcessRef : Resource<SDL_Process*>
     return SDL_WaitProcess(get(), block, exitcode);
   }
 
+protected:
   /**
    * Destroy a previously created process object.
    *
@@ -33567,21 +33828,39 @@ struct ProcessRef : Resource<SDL_Process*>
 };
 
 /**
+ * Unsafe Handle to process
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ProcessRef
+ */
+struct ProcessUnsafe : ProcessRef
+{
+  using ProcessRef::Destroy;
+
+  using ProcessRef::ProcessRef;
+
+  using ProcessRef::reset;
+};
+
+/**
  * Handle to an owned process
  *
  * @cat resource
  *
  * @sa ProcessRef
  */
-struct Process : ProcessRef
+struct Process : ProcessUnsafe
 {
-  using ProcessRef::ProcessRef;
+  using ProcessUnsafe::ProcessUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Process(SDL_Process* resource = {})
-    : ProcessRef(resource)
+  constexpr explicit Process(SDL_Process* resource)
+    : ProcessUnsafe(resource)
   {
   }
 
@@ -35458,6 +35737,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    */
   PixelFormat GetFormat() const { return get()->format; }
 
+protected:
   /**
    * Free a surface.
    *
@@ -35491,22 +35771,39 @@ struct SurfaceRef : Resource<SDL_Surface*>
 };
 
 /**
+ * Unsafe Handle to surface
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceRef
+ */
+struct SurfaceUnsafe : SurfaceRef
+{
+  using SurfaceRef::Destroy;
+
+  using SurfaceRef::SurfaceRef;
+
+  using SurfaceRef::reset;
+};
+
+/**
  * Handle to an owned surface
  *
  * @cat resource
  *
  * @sa SurfaceRef
- * @sa SurfaceRef
  */
-struct Surface : SurfaceRef
+struct Surface : SurfaceUnsafe
 {
-  using SurfaceRef::SurfaceRef;
+  using SurfaceUnsafe::SurfaceUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Surface(SDL_Surface* resource = {})
-    : SurfaceRef(resource)
+  constexpr explicit Surface(SDL_Surface* resource)
+    : SurfaceUnsafe(resource)
   {
   }
 
@@ -35547,7 +35844,7 @@ class SurfaceLock
   explicit SurfaceLock(SurfaceRef surface)
     : surface(std::move(surface))
   {
-    if (!SDL_LockSurface(this->surface.get())) this->surface.reset();
+    if (!SDL_LockSurface(this->surface.get())) this->surface.release();
   }
 
 public:
@@ -36085,6 +36382,7 @@ struct TrayRef : Resource<SDL_Tray*>
    */
   TrayMenu GetMenu() const;
 
+protected:
   /**
    * Destroys a tray object.
    *
@@ -36119,21 +36417,39 @@ struct TrayRef : Resource<SDL_Tray*>
 };
 
 /**
+ * Unsafe Handle to tray
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TrayRef
+ */
+struct TrayUnsafe : TrayRef
+{
+  using TrayRef::Destroy;
+
+  using TrayRef::TrayRef;
+
+  using TrayRef::reset;
+};
+
+/**
  * Handle to an owned tray
  *
  * @cat resource
  *
  * @sa TrayRef
  */
-struct Tray : TrayRef
+struct Tray : TrayUnsafe
 {
-  using TrayRef::TrayRef;
+  using TrayUnsafe::TrayUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Tray(SDL_Tray* resource = {})
-    : TrayRef(resource)
+  constexpr explicit Tray(SDL_Tray* resource)
+    : TrayUnsafe(resource)
   {
   }
 
@@ -36594,6 +36910,7 @@ struct TrayEntryRef : Resource<SDL_TrayEntry*>
    */
   TrayMenu GetParent() { return SDL_GetTrayEntryParent(get()); }
 
+protected:
   /**
    * Removes a tray entry.
    *
@@ -36625,21 +36942,39 @@ struct TrayEntryRef : Resource<SDL_TrayEntry*>
 };
 
 /**
+ * Unsafe Handle to trayEntry
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryRef
+ */
+struct TrayEntryUnsafe : TrayEntryRef
+{
+  using TrayEntryRef::Remove;
+
+  using TrayEntryRef::TrayEntryRef;
+
+  using TrayEntryRef::reset;
+};
+
+/**
  * Handle to an owned trayEntry
  *
  * @cat resource
  *
  * @sa TrayEntryRef
  */
-struct TrayEntry : TrayEntryRef
+struct TrayEntry : TrayEntryUnsafe
 {
-  using TrayEntryRef::TrayEntryRef;
+  using TrayEntryUnsafe::TrayEntryUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit TrayEntry(SDL_TrayEntry* resource = {})
-    : TrayEntryRef(resource)
+  constexpr explicit TrayEntry(SDL_TrayEntry* resource)
+    : TrayEntryUnsafe(resource)
   {
   }
 
@@ -39507,6 +39842,7 @@ struct WindowRef : Resource<SDL_Window*>
    */
   static WindowRef GetGrabbed() { return SDL_GetGrabbedWindow(); }
 
+protected:
   /**
    * Destroy a window.
    *
@@ -39546,6 +39882,7 @@ struct WindowRef : Resource<SDL_Window*>
     SDL_DestroyWindow(release(newResource));
   }
 
+public:
   RendererRef GetRenderer() const;
 
   void StartTextInput();
@@ -39572,21 +39909,39 @@ struct WindowRef : Resource<SDL_Window*>
 };
 
 /**
+ * Unsafe Handle to window
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa WindowRef
+ */
+struct WindowUnsafe : WindowRef
+{
+  using WindowRef::Destroy;
+
+  using WindowRef::WindowRef;
+
+  using WindowRef::reset;
+};
+
+/**
  * Handle to an owned window
  *
  * @cat resource
  *
  * @sa WindowRef
  */
-struct Window : WindowRef
+struct Window : WindowUnsafe
 {
-  using WindowRef::WindowRef;
+  using WindowUnsafe::WindowUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Window(SDL_Window* resource = {})
-    : WindowRef(resource)
+  constexpr explicit Window(SDL_Window* resource)
+    : WindowUnsafe(resource)
   {
   }
 
@@ -39783,6 +40138,7 @@ struct GLContextRef : Resource<SDL_GLContextState*>
     CheckError(SDL_GL_MakeCurrent(window.get(), get()));
   }
 
+protected:
   /**
    * Delete an OpenGL context.
    *
@@ -39816,21 +40172,39 @@ struct GLContextRef : Resource<SDL_GLContextState*>
 };
 
 /**
+ * Unsafe Handle to gLContext
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa GLContextRef
+ */
+struct GLContextUnsafe : GLContextRef
+{
+  using GLContextRef::Destroy;
+
+  using GLContextRef::GLContextRef;
+
+  using GLContextRef::reset;
+};
+
+/**
  * Handle to an owned gLContext
  *
  * @cat resource
  *
  * @sa GLContextRef
  */
-struct GLContext : GLContextRef
+struct GLContext : GLContextUnsafe
 {
-  using GLContextRef::GLContextRef;
+  using GLContextUnsafe::GLContextUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit GLContext(SDL_GLContextState* resource = {})
-    : GLContextRef(resource)
+  constexpr explicit GLContext(SDL_GLContextState* resource)
+    : GLContextUnsafe(resource)
   {
   }
 
@@ -44923,6 +45297,7 @@ struct CursorRef : Resource<SDL_Cursor*>
     return *this;
   }
 
+protected:
   /**
    * Free a previously-created cursor.
    *
@@ -44958,21 +45333,39 @@ struct CursorRef : Resource<SDL_Cursor*>
 };
 
 /**
+ * Unsafe Handle to cursor
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa CursorRef
+ */
+struct CursorUnsafe : CursorRef
+{
+  using CursorRef::CursorRef;
+
+  using CursorRef::Destroy;
+
+  using CursorRef::reset;
+};
+
+/**
  * Handle to an owned cursor
  *
  * @cat resource
  *
  * @sa CursorRef
  */
-struct Cursor : CursorRef
+struct Cursor : CursorUnsafe
 {
-  using CursorRef::CursorRef;
+  using CursorUnsafe::CursorUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Cursor(SDL_Cursor* resource = {})
-    : CursorRef(resource)
+  constexpr explicit Cursor(SDL_Cursor* resource)
+    : CursorUnsafe(resource)
   {
   }
 
@@ -47379,6 +47772,7 @@ struct RendererRef : Resource<SDL_Renderer*>
     RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
   }
 
+protected:
   /**
    * Destroy the rendering context for a window and free all associated
    * textures.
@@ -47412,22 +47806,39 @@ struct RendererRef : Resource<SDL_Renderer*>
 };
 
 /**
+ * Unsafe Handle to renderer
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa RendererRef
+ */
+struct RendererUnsafe : RendererRef
+{
+  using RendererRef::Destroy;
+
+  using RendererRef::RendererRef;
+
+  using RendererRef::reset;
+};
+
+/**
  * Handle to an owned renderer
  *
  * @cat resource
  *
  * @sa RendererRef
- * @sa RendererRef
  */
-struct Renderer : RendererRef
+struct Renderer : RendererUnsafe
 {
-  using RendererRef::RendererRef;
+  using RendererUnsafe::RendererUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Renderer(SDL_Renderer* resource = {})
-    : RendererRef(resource)
+  constexpr explicit Renderer(SDL_Renderer* resource)
+    : RendererUnsafe(resource)
   {
   }
 
@@ -48350,6 +48761,7 @@ struct TextureRef : Resource<SDL_Texture*>
    */
   PixelFormat GetFormat() const { return get()->format; }
 
+protected:
   /**
    * Destroy the specified texture.
    *
@@ -48383,22 +48795,39 @@ struct TextureRef : Resource<SDL_Texture*>
 };
 
 /**
+ * Unsafe Handle to texture
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextureRef
+ */
+struct TextureUnsafe : TextureRef
+{
+  using TextureRef::Destroy;
+
+  using TextureRef::TextureRef;
+
+  using TextureRef::reset;
+};
+
+/**
  * Handle to an owned texture
  *
  * @cat resource
  *
  * @sa TextureRef
- * @sa TextureRef
  */
-struct Texture : TextureRef
+struct Texture : TextureUnsafe
 {
-  using TextureRef::TextureRef;
+  using TextureUnsafe::TextureUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Texture(SDL_Texture* resource = {})
-    : TextureRef(resource)
+  constexpr explicit Texture(SDL_Texture* resource)
+    : TextureUnsafe(resource)
   {
   }
 
@@ -49159,7 +49588,7 @@ using WindowsMessageHook = SDL_WindowsMessageHook;
  * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
  * @sa WindowsMessageHook
  */
-using WindowsMessageHookCB = std::function<bool(MSG*)>;
+using WindowsMessageHookCB = std::function<bool(MSG* msg)>;
 
 /**
  * Set a callback for every Windows message, run before TranslateMessage().
@@ -49763,7 +50192,8 @@ using RequestAndroidPermissionCallback = SDL_RequestAndroidPermissionCallback;
  * @sa RequestAndroidPermission
  * @sa RequestAndroidPermissionCallback
  */
-using RequestAndroidPermissionCB = std::function<void(const char*, bool)>;
+using RequestAndroidPermissionCB =
+  std::function<void(const char* permission, bool granted)>;
 
 /**
  * Request permissions at runtime, asynchronously.
@@ -52196,6 +52626,7 @@ struct AnimationRef : Resource<IMG_Animation*>
    */
   int GetDelay(int index) const { return get()->delays[index]; }
 
+protected:
   /**
    * Dispose of an AnimationRef and free its resources.
    *
@@ -52218,20 +52649,41 @@ struct AnimationRef : Resource<IMG_Animation*>
   }
 };
 /**
+ * Unsafe Handle to animation
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AnimationRef
+ */
+struct AnimationUnsafe : AnimationRef
+{
+  using AnimationRef::AnimationRef;
+
+  using AnimationRef::Free;
+
+  using AnimationRef::reset;
+};
+
+/**
  * Handle to an owned animation
  *
  * @cat resource
  *
  * @sa AnimationRef
  */
-struct Animation : AnimationRef
+struct Animation : AnimationUnsafe
 {
-  using AnimationRef::AnimationRef;
+  using AnimationUnsafe::AnimationUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Animation(IMG_Animation* resource = {}) {}
+  constexpr explicit Animation(IMG_Animation* resource)
+    : AnimationUnsafe(resource)
+  {
+  }
 
   constexpr Animation(const Animation& other) = delete;
 
@@ -52250,7 +52702,7 @@ struct Animation : AnimationRef
    */
   Animation& operator=(Animation other)
   {
-    AnimationRef::operator=(other.release());
+    reset(other.release());
     return *this;
   }
 };
@@ -54236,6 +54688,7 @@ struct FontRef : Resource<TTF_Font*>
     return Surface{TTF_RenderGlyph_LCD(get(), ch, fg, bg)};
   }
 
+protected:
   /**
    * Dispose of a previously-created font.
    *
@@ -54283,21 +54736,38 @@ struct FontRef : Resource<TTF_Font*>
 };
 
 /**
+ * Unsafe Handle to font
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa FontRef
+ */
+struct FontUnsafe : FontRef
+{
+  using FontRef::Close;
+
+  using FontRef::FontRef;
+  using FontRef::reset;
+};
+
+/**
  * Handle to an owned font
  *
  * @cat resource
  *
  * @sa FontRef
  */
-struct Font : FontRef
+struct Font : FontUnsafe
 {
-  using FontRef::FontRef;
+  using FontUnsafe::FontUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Font(TTF_Font* resource = {})
-    : FontRef(resource)
+  constexpr explicit Font(TTF_Font* resource)
+    : FontUnsafe(resource)
   {
   }
 
@@ -54438,6 +54908,7 @@ public:
     return TTF_GetGPUTextEngineWinding(get());
   }
 
+protected:
   /**
    * frees up TextEngineRef.
    */
@@ -54450,21 +54921,35 @@ public:
 };
 
 /**
+ * Unsafe Handle to textEngine
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextEngineRef
+ */
+struct TextEngineUnsafe : TextEngineRef
+{
+  using TextEngineRef::TextEngineRef;
+};
+
+/**
  * Handle to an owned textEngine
  *
  * @cat resource
  *
  * @sa TextEngineRef
  */
-struct TextEngine : TextEngineRef
+struct TextEngine : TextEngineUnsafe
 {
-  using TextEngineRef::TextEngineRef;
+  using TextEngineUnsafe::TextEngineUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit TextEngine(TTF_TextEngine* resource = {})
-    : TextEngineRef(resource)
+  constexpr explicit TextEngine(TTF_TextEngine* resource)
+    : TextEngineUnsafe(resource)
   {
   }
 
@@ -54688,6 +55173,15 @@ struct TextRef : Resource<TTF_Text*>
   }
 
   /**
+   * Assignment operator.
+   */
+  TextRef& operator=(TextRef other)
+  {
+    release(other.release());
+    return *this;
+  }
+
+  /**
    * Draw text to an SDL surface.
    *
    * `text` must have been created using a TextEngineRef from
@@ -54787,15 +55281,6 @@ struct TextRef : Resource<TTF_Text*>
     : Resource(
         TTF_CreateText(engine.get(), font.get(), text.data(), text.size()))
   {
-  }
-
-  /**
-   * Assignment operator.
-   */
-  TextRef& operator=(TextRef other)
-  {
-    release(other.release());
-    return *this;
   }
 
   /**
@@ -55622,6 +56107,7 @@ struct TextRef : Resource<TTF_Text*>
    */
   int GetNumLines() const { return get()->num_lines; }
 
+protected:
   /**
    * Destroy a text object created by a text engine.
    *
@@ -55652,21 +56138,39 @@ struct TextRef : Resource<TTF_Text*>
 };
 
 /**
+ * Unsafe Handle to text
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TextRef
+ */
+struct TextUnsafe : TextRef
+{
+  using TextRef::Destroy;
+
+  using TextRef::TextRef;
+
+  using TextRef::reset;
+};
+
+/**
  * Handle to an owned text
  *
  * @cat resource
  *
  * @sa TextRef
  */
-struct Text : TextRef
+struct Text : TextUnsafe
 {
-  using TextRef::TextRef;
+  using TextUnsafe::TextUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Text(TTF_Text* resource = {})
-    : TextRef(resource)
+  constexpr explicit Text(TTF_Text* resource)
+    : TextUnsafe(resource)
   {
   }
 

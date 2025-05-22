@@ -212,6 +212,7 @@ struct TrayRef : Resource<SDL_Tray*>
    */
   TrayMenu GetMenu() const;
 
+protected:
   /**
    * Destroys a tray object.
    *
@@ -246,21 +247,39 @@ struct TrayRef : Resource<SDL_Tray*>
 };
 
 /**
+ * Unsafe Handle to tray
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TrayRef
+ */
+struct TrayUnsafe : TrayRef
+{
+  using TrayRef::Destroy;
+
+  using TrayRef::TrayRef;
+
+  using TrayRef::reset;
+};
+
+/**
  * Handle to an owned tray
  *
  * @cat resource
  *
  * @sa TrayRef
  */
-struct Tray : TrayRef
+struct Tray : TrayUnsafe
 {
-  using TrayRef::TrayRef;
+  using TrayUnsafe::TrayUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Tray(SDL_Tray* resource = {})
-    : TrayRef(resource)
+  constexpr explicit Tray(SDL_Tray* resource)
+    : TrayUnsafe(resource)
   {
   }
 
@@ -721,6 +740,7 @@ struct TrayEntryRef : Resource<SDL_TrayEntry*>
    */
   TrayMenu GetParent() { return SDL_GetTrayEntryParent(get()); }
 
+protected:
   /**
    * Removes a tray entry.
    *
@@ -752,21 +772,39 @@ struct TrayEntryRef : Resource<SDL_TrayEntry*>
 };
 
 /**
+ * Unsafe Handle to trayEntry
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryRef
+ */
+struct TrayEntryUnsafe : TrayEntryRef
+{
+  using TrayEntryRef::Remove;
+
+  using TrayEntryRef::TrayEntryRef;
+
+  using TrayEntryRef::reset;
+};
+
+/**
  * Handle to an owned trayEntry
  *
  * @cat resource
  *
  * @sa TrayEntryRef
  */
-struct TrayEntry : TrayEntryRef
+struct TrayEntry : TrayEntryUnsafe
 {
-  using TrayEntryRef::TrayEntryRef;
+  using TrayEntryUnsafe::TrayEntryUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit TrayEntry(SDL_TrayEntry* resource = {})
-    : TrayEntryRef(resource)
+  constexpr explicit TrayEntry(SDL_TrayEntry* resource)
+    : TrayEntryUnsafe(resource)
   {
   }
 

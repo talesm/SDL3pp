@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1AnimationRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::AnimationRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a> &raquo; <a class="el" href="group__CategorySDLImage.html">Load images from several formats</a></div></div></div>
 </div><!--header-->
@@ -88,11 +89,13 @@ Inheritance diagram for SDL::AnimationRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1AnimationRef__inherit__graph.png" border="0" usemap="#aSDL_1_1AnimationRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1AnimationRef_inherit__map" id="aSDL_1_1AnimationRef_inherit__map">
-<area shape="rect" title="Animated image support." alt="" coords="11,93,155,119"/>
-<area shape="rect" href="structSDL_1_1Animation.html" title="Handle to an owned animation." alt="" coords="22,167,145,192"/>
-<area shape="poly" title=" " alt="" coords="86,132,86,167,81,167,81,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,161,45"/>
-<area shape="poly" title=" " alt="" coords="86,59,86,93,81,93,81,59"/>
+<area shape="rect" title="Animated image support." alt="" coords="17,93,161,119"/>
+<area shape="rect" href="structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation." alt="" coords="5,167,173,192"/>
+<area shape="poly" title=" " alt="" coords="92,132,92,167,87,167,87,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="11,5,167,45"/>
+<area shape="poly" title=" " alt="" coords="92,59,92,93,87,93,87,59"/>
+<area shape="rect" href="structSDL_1_1Animation.html" title="Handle to an owned animation." alt="" coords="28,240,151,265"/>
+<area shape="poly" title=" " alt="" coords="92,206,92,240,87,240,87,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -141,12 +144,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetCount</b> () const<
 <tr class="memitem:a2f952b02ccd086861124dc0eaee8123d" id="r_a2f952b02ccd086861124dc0eaee8123d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a2f952b02ccd086861124dc0eaee8123d">GetDelay</a> (int index) const</td></tr>
 <tr class="memdesc:a2f952b02ccd086861124dc0eaee8123d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the frame delay under given index.  <br /></td></tr>
 <tr class="separator:a2f952b02ccd086861124dc0eaee8123d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07613e9c5466d72279d84c5702eaccc7" id="r_a07613e9c5466d72279d84c5702eaccc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7">Free</a> ()</td></tr>
-<tr class="memdesc:a07613e9c5466d72279d84c5702eaccc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
-<tr class="separator:a07613e9c5466d72279d84c5702eaccc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49c1ef08e98328123aa1722d3f4dbc65" id="r_a49c1ef08e98328123aa1722d3f4dbc65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a49c1ef08e98328123aa1722d3f4dbc65">reset</a> (IMG_Animation *newResource={})</td></tr>
-<tr class="memdesc:a49c1ef08e98328123aa1722d3f4dbc65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
-<tr class="separator:a49c1ef08e98328123aa1722d3f4dbc65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -222,6 +219,15 @@ constexpr const IMG_Animation *&#160;</td><td class="memItemRight" valign="botto
 constexpr IMG_Animation *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a07613e9c5466d72279d84c5702eaccc7" id="r_a07613e9c5466d72279d84c5702eaccc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a07613e9c5466d72279d84c5702eaccc7">Free</a> ()</td></tr>
+<tr class="memdesc:a07613e9c5466d72279d84c5702eaccc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
+<tr class="separator:a07613e9c5466d72279d84c5702eaccc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49c1ef08e98328123aa1722d3f4dbc65" id="r_a49c1ef08e98328123aa1722d3f4dbc65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html#a49c1ef08e98328123aa1722d3f4dbc65">reset</a> (IMG_Animation *newResource={})</td></tr>
+<tr class="memdesc:a49c1ef08e98328123aa1722d3f4dbc65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an <a class="el" href="structSDL_1_1AnimationRef.html" title="Animated image support.">AnimationRef</a> and free its resources.  <br /></td></tr>
+<tr class="separator:a49c1ef08e98328123aa1722d3f4dbc65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Currently only animated GIFs and WEBP images are supported.</p>
@@ -364,7 +370,7 @@ constexpr IMG_Animation *&#160;</td><td class="memItemRight" valign="bottom"><b>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -456,7 +462,7 @@ constexpr IMG_Animation *&#160;</td><td class="memItemRight" valign="bottom"><b>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

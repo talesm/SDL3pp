@@ -77,6 +77,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1FontRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::FontRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a> &raquo; <a class="el" href="group__CategorySDLTTF.html">True type font support</a></div></div></div>
 </div><!--header-->
@@ -90,10 +91,12 @@ Inheritance diagram for SDL::FontRef:</div>
 <div class="center"><img src="structSDL_1_1FontRef__inherit__graph.png" border="0" usemap="#aSDL_1_1FontRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1FontRef_inherit__map" id="aSDL_1_1FontRef_inherit__map">
 <area shape="rect" title="The internal structure containing font information." alt="" coords="30,93,135,119"/>
-<area shape="rect" href="structSDL_1_1Font.html" title="Handle to an owned font." alt="" coords="41,167,124,192"/>
+<area shape="rect" href="structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font." alt="" coords="18,167,147,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1Font.html" title="Handle to an owned font." alt="" coords="41,240,124,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -300,12 +303,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FontRef</b> (<a 
 <tr class="memitem:a3821e51df6fc581bb01549f9c095b7ca" id="r_a3821e51df6fc581bb01549f9c095b7ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a3821e51df6fc581bb01549f9c095b7ca">RenderGlyph_LCD</a> (Uint32 ch, <a class="el" href="structSDL_1_1Color.html">Color</a> fg, <a class="el" href="structSDL_1_1Color.html">Color</a> bg) const</td></tr>
 <tr class="memdesc:a3821e51df6fc581bb01549f9c095b7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a single UNICODE codepoint at LCD subpixel quality to a new ARGB surface.  <br /></td></tr>
 <tr class="separator:a3821e51df6fc581bb01549f9c095b7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd16e48f95d9bf0ff7f3519e5ba2ec6c" id="r_acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c">Close</a> ()</td></tr>
-<tr class="memdesc:acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
-<tr class="separator:acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85152f508848fecf1af7cf10cbb972a8" id="r_a85152f508848fecf1af7cf10cbb972a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a85152f508848fecf1af7cf10cbb972a8">reset</a> (TTF_Font *newResource={})</td></tr>
-<tr class="memdesc:a85152f508848fecf1af7cf10cbb972a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
-<tr class="separator:a85152f508848fecf1af7cf10cbb972a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -387,6 +384,15 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a163fbc6b957ebfab54f9eba6d35a693c" id="r_a163fbc6b957ebfab54f9eba6d35a693c"><td class="memItemLeft" align="right" valign="top">static Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a163fbc6b957ebfab54f9eba6d35a693c">GetGlyphScript</a> (Uint32 ch)</td></tr>
 <tr class="memdesc:a163fbc6b957ebfab54f9eba6d35a693c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the script used by a 32-bit codepoint.  <br /></td></tr>
 <tr class="separator:a163fbc6b957ebfab54f9eba6d35a693c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:acd16e48f95d9bf0ff7f3519e5ba2ec6c" id="r_acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#acd16e48f95d9bf0ff7f3519e5ba2ec6c">Close</a> ()</td></tr>
+<tr class="memdesc:acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
+<tr class="separator:acd16e48f95d9bf0ff7f3519e5ba2ec6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85152f508848fecf1af7cf10cbb972a8" id="r_a85152f508848fecf1af7cf10cbb972a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontRef.html#a85152f508848fecf1af7cf10cbb972a8">reset</a> (TTF_Font *newResource={})</td></tr>
+<tr class="memdesc:a85152f508848fecf1af7cf10cbb972a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of a previously-created font.  <br /></td></tr>
+<tr class="separator:a85152f508848fecf1af7cf10cbb972a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
@@ -647,7 +653,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2739,7 +2745,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

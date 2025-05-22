@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="structSDL_1_1TrayRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::TrayRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryTray.html">System Tray</a></div></div></div>
 </div><!--header-->
@@ -89,10 +90,12 @@ Inheritance diagram for SDL::TrayRef:</div>
 <div class="center"><img src="structSDL_1_1TrayRef__inherit__graph.png" border="0" usemap="#aSDL_1_1TrayRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1TrayRef_inherit__map" id="aSDL_1_1TrayRef_inherit__map">
 <area shape="rect" title="An opaque handle representing a toplevel system tray object." alt="" coords="31,93,135,119"/>
-<area shape="rect" href="structSDL_1_1Tray.html" title="Handle to an owned tray." alt="" coords="41,167,124,192"/>
+<area shape="rect" href="structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray." alt="" coords="19,167,147,192"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" href="structSDL_1_1Tray.html" title="Handle to an owned tray." alt="" coords="41,240,124,265"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -125,12 +128,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TrayRef</b> (<a 
 <tr class="memitem:ga28cad49b1dc92e2791e07f309f5c32b5" id="r_ga28cad49b1dc92e2791e07f309f5c32b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TrayMenu.html">TrayMenu</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTray.html#ga28cad49b1dc92e2791e07f309f5c32b5">GetMenu</a> () const</td></tr>
 <tr class="memdesc:ga28cad49b1dc92e2791e07f309f5c32b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a previously created tray menu.  <br /></td></tr>
 <tr class="separator:ga28cad49b1dc92e2791e07f309f5c32b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18adc5c36cc23e2e6a9e20a5973af005" id="r_a18adc5c36cc23e2e6a9e20a5973af005"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayRef.html#a18adc5c36cc23e2e6a9e20a5973af005">Destroy</a> ()</td></tr>
-<tr class="memdesc:a18adc5c36cc23e2e6a9e20a5973af005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
-<tr class="separator:a18adc5c36cc23e2e6a9e20a5973af005"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab145d6bb11fd1f6472a956482fc50ab0" id="r_ab145d6bb11fd1f6472a956482fc50ab0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayRef.html#ab145d6bb11fd1f6472a956482fc50ab0">reset</a> (SDL_Tray *newResource={})</td></tr>
-<tr class="memdesc:ab145d6bb11fd1f6472a956482fc50ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
-<tr class="separator:ab145d6bb11fd1f6472a956482fc50ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top"><a id="a959604d891dcae230bf4c378c046a21d" name="a959604d891dcae230bf4c378c046a21d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -206,6 +203,15 @@ constexpr const SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b
 constexpr SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a18adc5c36cc23e2e6a9e20a5973af005" id="r_a18adc5c36cc23e2e6a9e20a5973af005"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayRef.html#a18adc5c36cc23e2e6a9e20a5973af005">Destroy</a> ()</td></tr>
+<tr class="memdesc:a18adc5c36cc23e2e6a9e20a5973af005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
+<tr class="separator:a18adc5c36cc23e2e6a9e20a5973af005"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab145d6bb11fd1f6472a956482fc50ab0" id="r_ab145d6bb11fd1f6472a956482fc50ab0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TrayRef.html#ab145d6bb11fd1f6472a956482fc50ab0">reset</a> (SDL_Tray *newResource={})</td></tr>
+<tr class="memdesc:ab145d6bb11fd1f6472a956482fc50ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a tray object.  <br /></td></tr>
+<tr class="separator:ab145d6bb11fd1f6472a956482fc50ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -282,7 +288,7 @@ constexpr SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b>opera
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -312,7 +318,7 @@ constexpr SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b>opera
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

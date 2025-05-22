@@ -88,20 +88,22 @@ Inheritance diagram for SDL::Condition:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Condition__inherit__graph.png" border="0" usemap="#aSDL_1_1Condition_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Condition_inherit__map" id="aSDL_1_1Condition_inherit__map">
-<area shape="rect" title="Handle to an owned condition." alt="" coords="24,167,141,192"/>
-<area shape="rect" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied." alt="" coords="13,93,152,119"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
+<area shape="rect" title="Handle to an owned condition." alt="" coords="28,240,145,265"/>
+<area shape="rect" href="structSDL_1_1ConditionUnsafe.html" title="Unsafe Handle to condition." alt="" coords="5,167,168,192"/>
+<area shape="poly" title=" " alt="" coords="89,206,89,240,84,240,84,206"/>
+<area shape="rect" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied." alt="" coords="17,93,156,119"/>
+<area shape="poly" title=" " alt="" coords="89,132,89,167,84,167,84,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="9,5,164,45"/>
+<area shape="poly" title=" " alt="" coords="89,59,89,93,84,93,84,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1777d3813e51bb52cfe1349df3063692" id="r_a1777d3813e51bb52cfe1349df3063692"><td class="memItemLeft" align="right" valign="top"><a id="a1777d3813e51bb52cfe1349df3063692" name="a1777d3813e51bb52cfe1349df3063692"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Condition</b> (SDL_Condition *resource={})</td></tr>
-<tr class="memdesc:a1777d3813e51bb52cfe1349df3063692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a1777d3813e51bb52cfe1349df3063692"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e11b2fee246969fa46ecb083b18b41" id="r_a29e11b2fee246969fa46ecb083b18b41"><td class="memItemLeft" align="right" valign="top"><a id="a29e11b2fee246969fa46ecb083b18b41" name="a29e11b2fee246969fa46ecb083b18b41"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Condition</b> (SDL_Condition *resource)</td></tr>
+<tr class="memdesc:a29e11b2fee246969fa46ecb083b18b41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
+<tr class="separator:a29e11b2fee246969fa46ecb083b18b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf4e1db04438a3d7a4de159514c504c8" id="r_abf4e1db04438a3d7a4de159514c504c8"><td class="memItemLeft" align="right" valign="top"><a id="abf4e1db04438a3d7a4de159514c504c8" name="abf4e1db04438a3d7a4de159514c504c8"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Condition</b> (const <a class="el" href="structSDL_1_1Condition.html">Condition</a> &amp;other)=delete</td></tr>
 <tr class="separator:abf4e1db04438a3d7a4de159514c504c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,17 +119,24 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Condition</b> (<
 <a class="el" href="structSDL_1_1Condition.html">Condition</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Condition.html">Condition</a> other)</td></tr>
 <tr class="memdesc:a87f371fd845625411223c145db08764f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a87f371fd845625411223c145db08764f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93f8f240561e97bd957c023b9f6f21f9" id="r_a93f8f240561e97bd957c023b9f6f21f9"><td class="memItemLeft" align="right" valign="top"><a id="a93f8f240561e97bd957c023b9f6f21f9" name="a93f8f240561e97bd957c023b9f6f21f9"></a>
+<tr class="inherit_header pub_methods_structSDL_1_1ConditionUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1ConditionUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1ConditionUnsafe.html">SDL::ConditionUnsafe</a></td></tr>
+<tr class="memitem:a93f8f240561e97bd957c023b9f6f21f9 inherit pub_methods_structSDL_1_1ConditionUnsafe" id="r_a93f8f240561e97bd957c023b9f6f21f9"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ConditionRef</b> (const <a class="el" href="structSDL_1_1ConditionRef.html">ConditionRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a93f8f240561e97bd957c023b9f6f21f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:a93f8f240561e97bd957c023b9f6f21f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e8b36b79b852a47a02c31dace2831c8" id="r_a4e8b36b79b852a47a02c31dace2831c8"><td class="memItemLeft" align="right" valign="top"><a id="a4e8b36b79b852a47a02c31dace2831c8" name="a4e8b36b79b852a47a02c31dace2831c8"></a>
+<tr class="memdesc:a93f8f240561e97bd957c023b9f6f21f9 inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a93f8f240561e97bd957c023b9f6f21f9 inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e8b36b79b852a47a02c31dace2831c8 inherit pub_methods_structSDL_1_1ConditionUnsafe" id="r_a4e8b36b79b852a47a02c31dace2831c8"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ConditionRef</b> (<a class="el" href="structSDL_1_1ConditionRef.html">ConditionRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a4e8b36b79b852a47a02c31dace2831c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a4e8b36b79b852a47a02c31dace2831c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44c224fcb26593843838c430ad688298" id="r_a44c224fcb26593843838c430ad688298"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Condition.html#a44c224fcb26593843838c430ad688298">ConditionRef</a> ()</td></tr>
-<tr class="memdesc:a44c224fcb26593843838c430ad688298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a condition variable.  <br /></td></tr>
-<tr class="separator:a44c224fcb26593843838c430ad688298"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a4e8b36b79b852a47a02c31dace2831c8 inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a4e8b36b79b852a47a02c31dace2831c8 inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c224fcb26593843838c430ad688298 inherit pub_methods_structSDL_1_1ConditionUnsafe" id="r_a44c224fcb26593843838c430ad688298"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionUnsafe.html#a44c224fcb26593843838c430ad688298">ConditionRef</a> ()</td></tr>
+<tr class="memdesc:a44c224fcb26593843838c430ad688298 inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a condition variable.  <br /></td></tr>
+<tr class="separator:a44c224fcb26593843838c430ad688298 inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bf9e89c64ed19d0328814582945a41b inherit pub_methods_structSDL_1_1ConditionUnsafe" id="r_a5bf9e89c64ed19d0328814582945a41b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionUnsafe.html#a5bf9e89c64ed19d0328814582945a41b">Destroy</a> ()</td></tr>
+<tr class="memdesc:a5bf9e89c64ed19d0328814582945a41b inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a condition variable.  <br /></td></tr>
+<tr class="separator:a5bf9e89c64ed19d0328814582945a41b inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a8dc52c6a106408e239749d1c1801cc inherit pub_methods_structSDL_1_1ConditionUnsafe" id="r_a0a8dc52c6a106408e239749d1c1801cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionUnsafe.html#a0a8dc52c6a106408e239749d1c1801cc">reset</a> (SDL_Condition *newResource={})</td></tr>
+<tr class="memdesc:a0a8dc52c6a106408e239749d1c1801cc inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a condition variable.  <br /></td></tr>
+<tr class="separator:a0a8dc52c6a106408e239749d1c1801cc inherit pub_methods_structSDL_1_1ConditionUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1ConditionRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1ConditionRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1ConditionRef.html">SDL::ConditionRef</a></td></tr>
 <tr class="memitem:a93f8f240561e97bd957c023b9f6f21f9 inherit pub_methods_structSDL_1_1ConditionRef" id="r_a93f8f240561e97bd957c023b9f6f21f9"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ConditionRef</b> (const <a class="el" href="structSDL_1_1ConditionRef.html">ConditionRef</a> &amp;other)</td></tr>
@@ -156,12 +165,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ConditionRef</b>
 <tr class="memitem:acc5b9f07db90cccb340eaf1d40031b21 inherit pub_methods_structSDL_1_1ConditionRef" id="r_acc5b9f07db90cccb340eaf1d40031b21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionRef.html#acc5b9f07db90cccb340eaf1d40031b21">WaitTimeout</a> (<a class="el" href="structSDL_1_1MutexRef.html">MutexRef</a> &amp;mutex, std::chrono::milliseconds timeout)</td></tr>
 <tr class="memdesc:acc5b9f07db90cccb340eaf1d40031b21 inherit pub_methods_structSDL_1_1ConditionRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until a condition variable is signaled or a certain time has passed.  <br /></td></tr>
 <tr class="separator:acc5b9f07db90cccb340eaf1d40031b21 inherit pub_methods_structSDL_1_1ConditionRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bf9e89c64ed19d0328814582945a41b inherit pub_methods_structSDL_1_1ConditionRef" id="r_a5bf9e89c64ed19d0328814582945a41b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionRef.html#a5bf9e89c64ed19d0328814582945a41b">Destroy</a> ()</td></tr>
-<tr class="memdesc:a5bf9e89c64ed19d0328814582945a41b inherit pub_methods_structSDL_1_1ConditionRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a condition variable.  <br /></td></tr>
-<tr class="separator:a5bf9e89c64ed19d0328814582945a41b inherit pub_methods_structSDL_1_1ConditionRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a8dc52c6a106408e239749d1c1801cc inherit pub_methods_structSDL_1_1ConditionRef" id="r_a0a8dc52c6a106408e239749d1c1801cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionRef.html#a0a8dc52c6a106408e239749d1c1801cc">reset</a> (SDL_Condition *newResource={})</td></tr>
-<tr class="memdesc:a0a8dc52c6a106408e239749d1c1801cc inherit pub_methods_structSDL_1_1ConditionRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a condition variable.  <br /></td></tr>
-<tr class="separator:a0a8dc52c6a106408e239749d1c1801cc inherit pub_methods_structSDL_1_1ConditionRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1ConditionRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1ConditionRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -237,48 +240,21 @@ constexpr const SDL_Condition *&#160;</td><td class="memItemRight" valign="botto
 constexpr SDL_Condition *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_structSDL_1_1ConditionRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1ConditionRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1ConditionRef.html">SDL::ConditionRef</a></td></tr>
+<tr class="memitem:a5bf9e89c64ed19d0328814582945a41b inherit pro_methods_structSDL_1_1ConditionRef" id="r_a5bf9e89c64ed19d0328814582945a41b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionRef.html#a5bf9e89c64ed19d0328814582945a41b">Destroy</a> ()</td></tr>
+<tr class="memdesc:a5bf9e89c64ed19d0328814582945a41b inherit pro_methods_structSDL_1_1ConditionRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a condition variable.  <br /></td></tr>
+<tr class="separator:a5bf9e89c64ed19d0328814582945a41b inherit pro_methods_structSDL_1_1ConditionRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a8dc52c6a106408e239749d1c1801cc inherit pro_methods_structSDL_1_1ConditionRef" id="r_a0a8dc52c6a106408e239749d1c1801cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ConditionRef.html#a0a8dc52c6a106408e239749d1c1801cc">reset</a> (SDL_Condition *newResource={})</td></tr>
+<tr class="memdesc:a0a8dc52c6a106408e239749d1c1801cc inherit pro_methods_structSDL_1_1ConditionRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a condition variable.  <br /></td></tr>
+<tr class="separator:a0a8dc52c6a106408e239749d1c1801cc inherit pro_methods_structSDL_1_1ConditionRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied.">ConditionRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied.">ConditionRef</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a44c224fcb26593843838c430ad688298" name="a44c224fcb26593843838c430ad688298"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44c224fcb26593843838c430ad688298">&#9670;&#160;</a></span>ConditionRef()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::ConditionRef::ConditionRef </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section post"><dt>Postcondition</dt><dd>a new condition variable or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ConditionRef.html#a1190b8c5edb61fc2fd4bfb2718406572" title="Restart all threads that are waiting on the condition variable.">ConditionRef.Broadcast</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ConditionRef.html#a4ab2314a8a6f8a9d08b9a4bdcfe99213" title="Restart one of the threads that are waiting on the condition variable.">ConditionRef.Signal</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ConditionRef.html#aa4e0f4d56458dc26bbf059e24c262df8" title="Wait until a condition variable is signaled.">ConditionRef.Wait</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ConditionRef.html#acc5b9f07db90cccb340eaf1d40031b21" title="Wait until a condition variable is signaled or a certain time has passed.">ConditionRef.WaitTimeout</a> </dd></dl>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ConditionRef.html" title="A means to block multiple threads until a condition is satisfied.">ConditionRef</a> </dd></dl>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__mutex_8h_source.html">SDL3pp_mutex.h</a></li>
 </ul>
 </div><!-- contents -->

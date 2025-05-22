@@ -2065,6 +2065,7 @@ struct AnimationRef : Resource<IMG_Animation*>
    */
   int GetDelay(int index) const { return get()->delays[index]; }
 
+protected:
   /**
    * Dispose of an AnimationRef and free its resources.
    *
@@ -2087,20 +2088,41 @@ struct AnimationRef : Resource<IMG_Animation*>
   }
 };
 /**
+ * Unsafe Handle to animation
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AnimationRef
+ */
+struct AnimationUnsafe : AnimationRef
+{
+  using AnimationRef::AnimationRef;
+
+  using AnimationRef::Free;
+
+  using AnimationRef::reset;
+};
+
+/**
  * Handle to an owned animation
  *
  * @cat resource
  *
  * @sa AnimationRef
  */
-struct Animation : AnimationRef
+struct Animation : AnimationUnsafe
 {
-  using AnimationRef::AnimationRef;
+  using AnimationUnsafe::AnimationUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Animation(IMG_Animation* resource = {}) {}
+  constexpr explicit Animation(IMG_Animation* resource)
+    : AnimationUnsafe(resource)
+  {
+  }
 
   constexpr Animation(const Animation& other) = delete;
 
@@ -2119,7 +2141,7 @@ struct Animation : AnimationRef
    */
   Animation& operator=(Animation other)
   {
-    AnimationRef::operator=(other.release());
+    reset(other.release());
     return *this;
   }
 };

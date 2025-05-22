@@ -3232,6 +3232,15 @@
                 "immutable": true
               }
             ],
+            "GetCount": {
+              "kind": "function",
+              "immutable": true,
+              "type": "Uint64",
+              "parameters": [],
+              "proto": true,
+              "name": "GetCount",
+              "doc": ""
+            },
             "Destroy": {
               "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties",
               "name": "Destroy",
@@ -3266,15 +3275,38 @@
             "super": "Resource"
           }
         },
-        "Properties": {
-          "name": "Properties",
+        "PropertiesUnsafe": {
+          "name": "PropertiesUnsafe",
           "kind": "struct",
           "type": "PropertiesRef",
-          "doc": "Handle to an owned properties\n\n@cat resource\n\n@sa PropertiesRef",
+          "doc": "Unsafe Handle to properties\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PropertiesRef",
           "entries": {
+            "PropertiesRef::Destroy": {
+              "kind": "alias",
+              "name": "PropertiesRef::Destroy",
+              "doc": ""
+            },
             "PropertiesRef::PropertiesRef": {
               "kind": "alias",
               "name": "PropertiesRef::PropertiesRef",
+              "doc": ""
+            },
+            "PropertiesRef::reset": {
+              "kind": "alias",
+              "name": "PropertiesRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Properties": {
+          "name": "Properties",
+          "kind": "struct",
+          "type": "PropertiesUnsafe",
+          "doc": "Handle to an owned properties\n\n@cat resource\n\n@sa PropertiesRef",
+          "entries": {
+            "PropertiesUnsafe::PropertiesUnsafe": {
+              "kind": "alias",
+              "name": "PropertiesUnsafe::PropertiesUnsafe",
               "doc": ""
             },
             "Properties": [
@@ -3286,14 +3318,13 @@
                 "parameters": [
                   {
                     "type": "SDL_PropertiesID",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "PropertiesRef(resource)"
+                    "PropertiesUnsafe(resource)"
                   ]
                 },
                 "name": "Properties"
@@ -3338,7 +3369,8 @@
                 "kind": "function",
                 "type": "",
                 "parameters": [],
-                "sourceName": "SDL_CreateProperties"
+                "sourceName": "SDL_CreateProperties",
+                "explicit": true
               }
             ],
             "~Properties": {
@@ -6881,15 +6913,38 @@
             "super": "Resource"
           }
         },
-        "Window": {
-          "name": "Window",
+        "WindowUnsafe": {
+          "name": "WindowUnsafe",
           "kind": "struct",
           "type": "WindowRef",
-          "doc": "Handle to an owned window\n\n@cat resource\n\n@sa WindowRef",
+          "doc": "Unsafe Handle to window\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa WindowRef",
           "entries": {
+            "WindowRef::Destroy": {
+              "kind": "alias",
+              "name": "WindowRef::Destroy",
+              "doc": ""
+            },
             "WindowRef::WindowRef": {
               "kind": "alias",
               "name": "WindowRef::WindowRef",
+              "doc": ""
+            },
+            "WindowRef::reset": {
+              "kind": "alias",
+              "name": "WindowRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Window": {
+          "name": "Window",
+          "kind": "struct",
+          "type": "WindowUnsafe",
+          "doc": "Handle to an owned window\n\n@cat resource\n\n@sa WindowRef",
+          "entries": {
+            "WindowUnsafe::WindowUnsafe": {
+              "kind": "alias",
+              "name": "WindowUnsafe::WindowUnsafe",
               "doc": ""
             },
             "Window": [
@@ -6901,14 +6956,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Window *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "WindowRef(resource)"
+                    "WindowUnsafe(resource)"
                   ]
                 },
                 "name": "Window"
@@ -7174,15 +7228,38 @@
             "super": "Resource"
           }
         },
-        "GLContext": {
-          "name": "GLContext",
+        "GLContextUnsafe": {
+          "name": "GLContextUnsafe",
           "kind": "struct",
           "type": "GLContextRef",
-          "doc": "Handle to an owned gLContext\n\n@cat resource\n\n@sa GLContextRef",
+          "doc": "Unsafe Handle to gLContext\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa GLContextRef",
           "entries": {
+            "GLContextRef::Destroy": {
+              "kind": "alias",
+              "name": "GLContextRef::Destroy",
+              "doc": ""
+            },
             "GLContextRef::GLContextRef": {
               "kind": "alias",
               "name": "GLContextRef::GLContextRef",
+              "doc": ""
+            },
+            "GLContextRef::reset": {
+              "kind": "alias",
+              "name": "GLContextRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "GLContext": {
+          "name": "GLContext",
+          "kind": "struct",
+          "type": "GLContextUnsafe",
+          "doc": "Handle to an owned gLContext\n\n@cat resource\n\n@sa GLContextRef",
+          "entries": {
+            "GLContextUnsafe::GLContextUnsafe": {
+              "kind": "alias",
+              "name": "GLContextUnsafe::GLContextUnsafe",
               "doc": ""
             },
             "GLContext": [
@@ -7194,14 +7271,13 @@
                 "parameters": [
                   {
                     "type": "SDL_GLContextState *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "GLContextRef(resource)"
+                    "GLContextUnsafe(resource)"
                   ]
                 },
                 "name": "GLContext"
@@ -10061,15 +10137,38 @@
             "super": "Resource"
           }
         },
-        "Renderer": {
-          "name": "Renderer",
+        "RendererUnsafe": {
+          "name": "RendererUnsafe",
           "kind": "struct",
           "type": "RendererRef",
-          "doc": "Handle to an owned renderer\n\n@cat resource\n\n@sa RendererRef",
+          "doc": "Unsafe Handle to renderer\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RendererRef",
           "entries": {
+            "RendererRef::Destroy": {
+              "kind": "alias",
+              "name": "RendererRef::Destroy",
+              "doc": ""
+            },
             "RendererRef::RendererRef": {
               "kind": "alias",
               "name": "RendererRef::RendererRef",
+              "doc": ""
+            },
+            "RendererRef::reset": {
+              "kind": "alias",
+              "name": "RendererRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Renderer": {
+          "name": "Renderer",
+          "kind": "struct",
+          "type": "RendererUnsafe",
+          "doc": "Handle to an owned renderer\n\n@cat resource\n\n@sa RendererRef",
+          "entries": {
+            "RendererUnsafe::RendererUnsafe": {
+              "kind": "alias",
+              "name": "RendererUnsafe::RendererUnsafe",
               "doc": ""
             },
             "Renderer": [
@@ -10081,14 +10180,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Renderer *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "RendererRef(resource)"
+                    "RendererUnsafe(resource)"
                   ]
                 },
                 "name": "Renderer"
@@ -10813,15 +10911,38 @@
             "super": "Resource"
           }
         },
-        "Texture": {
-          "name": "Texture",
+        "TextureUnsafe": {
+          "name": "TextureUnsafe",
           "kind": "struct",
           "type": "TextureRef",
-          "doc": "Handle to an owned texture\n\n@cat resource\n\n@sa TextureRef",
+          "doc": "Unsafe Handle to texture\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextureRef",
           "entries": {
+            "TextureRef::Destroy": {
+              "kind": "alias",
+              "name": "TextureRef::Destroy",
+              "doc": ""
+            },
             "TextureRef::TextureRef": {
               "kind": "alias",
               "name": "TextureRef::TextureRef",
+              "doc": ""
+            },
+            "TextureRef::reset": {
+              "kind": "alias",
+              "name": "TextureRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Texture": {
+          "name": "Texture",
+          "kind": "struct",
+          "type": "TextureUnsafe",
+          "doc": "Handle to an owned texture\n\n@cat resource\n\n@sa TextureRef",
+          "entries": {
+            "TextureUnsafe::TextureUnsafe": {
+              "kind": "alias",
+              "name": "TextureUnsafe::TextureUnsafe",
               "doc": ""
             },
             "Texture": [
@@ -10833,14 +10954,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Texture *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "TextureRef(resource)"
+                    "TextureUnsafe(resource)"
                   ]
                 },
                 "name": "Texture"
@@ -15083,15 +15203,38 @@
             "super": "Resource"
           }
         },
-        "Palette": {
-          "name": "Palette",
+        "PaletteUnsafe": {
+          "name": "PaletteUnsafe",
           "kind": "struct",
           "type": "PaletteRef",
-          "doc": "Handle to an owned palette\n\n@cat resource\n\n@sa PaletteRef",
+          "doc": "Unsafe Handle to palette\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PaletteRef",
           "entries": {
+            "PaletteRef::Destroy": {
+              "kind": "alias",
+              "name": "PaletteRef::Destroy",
+              "doc": ""
+            },
             "PaletteRef::PaletteRef": {
               "kind": "alias",
               "name": "PaletteRef::PaletteRef",
+              "doc": ""
+            },
+            "PaletteRef::reset": {
+              "kind": "alias",
+              "name": "PaletteRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Palette": {
+          "name": "Palette",
+          "kind": "struct",
+          "type": "PaletteUnsafe",
+          "doc": "Handle to an owned palette\n\n@cat resource\n\n@sa PaletteRef",
+          "entries": {
+            "PaletteUnsafe::PaletteUnsafe": {
+              "kind": "alias",
+              "name": "PaletteUnsafe::PaletteUnsafe",
               "doc": ""
             },
             "Palette": [
@@ -15103,14 +15246,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Palette *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "PaletteRef(resource)"
+                    "PaletteUnsafe(resource)"
                   ]
                 },
                 "name": "Palette"
@@ -18560,15 +18702,38 @@
             "super": "Resource"
           }
         },
-        "Surface": {
-          "name": "Surface",
+        "SurfaceUnsafe": {
+          "name": "SurfaceUnsafe",
           "kind": "struct",
           "type": "SurfaceRef",
-          "doc": "Handle to an owned surface\n\n@cat resource\n\n@sa SurfaceRef",
+          "doc": "Unsafe Handle to surface\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SurfaceRef",
           "entries": {
+            "SurfaceRef::Destroy": {
+              "kind": "alias",
+              "name": "SurfaceRef::Destroy",
+              "doc": ""
+            },
             "SurfaceRef::SurfaceRef": {
               "kind": "alias",
               "name": "SurfaceRef::SurfaceRef",
+              "doc": ""
+            },
+            "SurfaceRef::reset": {
+              "kind": "alias",
+              "name": "SurfaceRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Surface": {
+          "name": "Surface",
+          "kind": "struct",
+          "type": "SurfaceUnsafe",
+          "doc": "Handle to an owned surface\n\n@cat resource\n\n@sa SurfaceRef",
+          "entries": {
+            "SurfaceUnsafe::SurfaceUnsafe": {
+              "kind": "alias",
+              "name": "SurfaceUnsafe::SurfaceUnsafe",
               "doc": ""
             },
             "Surface": [
@@ -18580,14 +18745,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Surface *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "SurfaceRef(resource)"
+                    "SurfaceUnsafe(resource)"
                   ]
                 },
                 "name": "Surface"
@@ -20078,15 +20242,38 @@
             "super": "Resource"
           }
         },
-        "AudioDevice": {
-          "name": "AudioDevice",
+        "AudioDeviceUnsafe": {
+          "name": "AudioDeviceUnsafe",
           "kind": "struct",
           "type": "AudioDeviceRef",
-          "doc": "Handle to an owned audioDevice\n\n@cat resource\n\n@sa AudioDeviceRef",
+          "doc": "Unsafe Handle to audioDevice\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioDeviceRef",
           "entries": {
             "AudioDeviceRef::AudioDeviceRef": {
               "kind": "alias",
               "name": "AudioDeviceRef::AudioDeviceRef",
+              "doc": ""
+            },
+            "AudioDeviceRef::Close": {
+              "kind": "alias",
+              "name": "AudioDeviceRef::Close",
+              "doc": ""
+            },
+            "AudioDeviceRef::reset": {
+              "kind": "alias",
+              "name": "AudioDeviceRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "AudioDevice": {
+          "name": "AudioDevice",
+          "kind": "struct",
+          "type": "AudioDeviceUnsafe",
+          "doc": "Handle to an owned audioDevice\n\n@cat resource\n\n@sa AudioDeviceRef",
+          "entries": {
+            "AudioDeviceUnsafe::AudioDeviceUnsafe": {
+              "kind": "alias",
+              "name": "AudioDeviceUnsafe::AudioDeviceUnsafe",
               "doc": ""
             },
             "AudioDevice": [
@@ -20098,14 +20285,13 @@
                 "parameters": [
                   {
                     "type": "SDL_AudioDeviceID",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "AudioDeviceRef(resource)"
+                    "AudioDeviceUnsafe(resource)"
                   ]
                 },
                 "name": "AudioDevice"
@@ -20794,15 +20980,38 @@
             "super": "Resource"
           }
         },
-        "AudioStream": {
-          "name": "AudioStream",
+        "AudioStreamUnsafe": {
+          "name": "AudioStreamUnsafe",
           "kind": "struct",
           "type": "AudioStreamRef",
-          "doc": "Handle to an owned audioStream\n\n@cat resource\n\n@sa AudioStreamRef",
+          "doc": "Unsafe Handle to audioStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AudioStreamRef",
           "entries": {
             "AudioStreamRef::AudioStreamRef": {
               "kind": "alias",
               "name": "AudioStreamRef::AudioStreamRef",
+              "doc": ""
+            },
+            "AudioStreamRef::Destroy": {
+              "kind": "alias",
+              "name": "AudioStreamRef::Destroy",
+              "doc": ""
+            },
+            "AudioStreamRef::reset": {
+              "kind": "alias",
+              "name": "AudioStreamRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "AudioStream": {
+          "name": "AudioStream",
+          "kind": "struct",
+          "type": "AudioStreamUnsafe",
+          "doc": "Handle to an owned audioStream\n\n@cat resource\n\n@sa AudioStreamRef",
+          "entries": {
+            "AudioStreamUnsafe::AudioStreamUnsafe": {
+              "kind": "alias",
+              "name": "AudioStreamUnsafe::AudioStreamUnsafe",
               "doc": ""
             },
             "AudioStream": [
@@ -20814,14 +21023,13 @@
                 "parameters": [
                   {
                     "type": "SDL_AudioStream *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "AudioStreamRef(resource)"
+                    "AudioStreamUnsafe(resource)"
                   ]
                 },
                 "name": "AudioStream"
@@ -28679,15 +28887,38 @@
             "super": "Resource"
           }
         },
-        "Cursor": {
-          "name": "Cursor",
+        "CursorUnsafe": {
+          "name": "CursorUnsafe",
           "kind": "struct",
           "type": "CursorRef",
-          "doc": "Handle to an owned cursor\n\n@cat resource\n\n@sa CursorRef",
+          "doc": "Unsafe Handle to cursor\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa CursorRef",
           "entries": {
             "CursorRef::CursorRef": {
               "kind": "alias",
               "name": "CursorRef::CursorRef",
+              "doc": ""
+            },
+            "CursorRef::Destroy": {
+              "kind": "alias",
+              "name": "CursorRef::Destroy",
+              "doc": ""
+            },
+            "CursorRef::reset": {
+              "kind": "alias",
+              "name": "CursorRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Cursor": {
+          "name": "Cursor",
+          "kind": "struct",
+          "type": "CursorUnsafe",
+          "doc": "Handle to an owned cursor\n\n@cat resource\n\n@sa CursorRef",
+          "entries": {
+            "CursorUnsafe::CursorUnsafe": {
+              "kind": "alias",
+              "name": "CursorUnsafe::CursorUnsafe",
               "doc": ""
             },
             "Cursor": [
@@ -28699,14 +28930,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Cursor *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "CursorRef(resource)"
+                    "CursorUnsafe(resource)"
                   ]
                 },
                 "name": "Cursor"
@@ -29495,15 +29725,38 @@
             "super": "Resource"
           }
         },
-        "Thread": {
-          "name": "Thread",
+        "ThreadUnsafe": {
+          "name": "ThreadUnsafe",
           "kind": "struct",
           "type": "ThreadRef",
-          "doc": "Handle to an owned thread\n\n@cat resource\n\n@sa ThreadRef",
+          "doc": "Unsafe Handle to thread\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ThreadRef",
           "entries": {
+            "ThreadRef::Detach": {
+              "kind": "alias",
+              "name": "ThreadRef::Detach",
+              "doc": ""
+            },
             "ThreadRef::ThreadRef": {
               "kind": "alias",
               "name": "ThreadRef::ThreadRef",
+              "doc": ""
+            },
+            "ThreadRef::reset": {
+              "kind": "alias",
+              "name": "ThreadRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Thread": {
+          "name": "Thread",
+          "kind": "struct",
+          "type": "ThreadUnsafe",
+          "doc": "Handle to an owned thread\n\n@cat resource\n\n@sa ThreadRef",
+          "entries": {
+            "ThreadUnsafe::ThreadUnsafe": {
+              "kind": "alias",
+              "name": "ThreadUnsafe::ThreadUnsafe",
               "doc": ""
             },
             "Thread": [
@@ -29515,14 +29768,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Thread *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "ThreadRef(resource)"
+                    "ThreadUnsafe(resource)"
                   ]
                 },
                 "name": "Thread"
@@ -29865,15 +30117,38 @@
             "super": "Resource"
           }
         },
-        "Mutex": {
-          "name": "Mutex",
+        "MutexUnsafe": {
+          "name": "MutexUnsafe",
           "kind": "struct",
           "type": "MutexRef",
-          "doc": "Handle to an owned mutex\n\n@cat resource\n\n@sa MutexRef",
+          "doc": "Unsafe Handle to mutex\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa MutexRef",
           "entries": {
+            "MutexRef::Destroy": {
+              "kind": "alias",
+              "name": "MutexRef::Destroy",
+              "doc": ""
+            },
             "MutexRef::MutexRef": {
               "kind": "alias",
               "name": "MutexRef::MutexRef",
+              "doc": ""
+            },
+            "MutexRef::reset": {
+              "kind": "alias",
+              "name": "MutexRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Mutex": {
+          "name": "Mutex",
+          "kind": "struct",
+          "type": "MutexUnsafe",
+          "doc": "Handle to an owned mutex\n\n@cat resource\n\n@sa MutexRef",
+          "entries": {
+            "MutexUnsafe::MutexUnsafe": {
+              "kind": "alias",
+              "name": "MutexUnsafe::MutexUnsafe",
               "doc": ""
             },
             "Mutex": [
@@ -29885,14 +30160,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Mutex *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "MutexRef(resource)"
+                    "MutexUnsafe(resource)"
                   ]
                 },
                 "name": "Mutex"
@@ -30112,15 +30386,38 @@
             "super": "Resource"
           }
         },
-        "RWLock": {
-          "name": "RWLock",
+        "RWLockUnsafe": {
+          "name": "RWLockUnsafe",
           "kind": "struct",
           "type": "RWLockRef",
-          "doc": "Handle to an owned rWLock\n\n@cat resource\n\n@sa RWLockRef",
+          "doc": "Unsafe Handle to rWLock\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa RWLockRef",
           "entries": {
+            "RWLockRef::Destroy": {
+              "kind": "alias",
+              "name": "RWLockRef::Destroy",
+              "doc": ""
+            },
             "RWLockRef::RWLockRef": {
               "kind": "alias",
               "name": "RWLockRef::RWLockRef",
+              "doc": ""
+            },
+            "RWLockRef::reset": {
+              "kind": "alias",
+              "name": "RWLockRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "RWLock": {
+          "name": "RWLock",
+          "kind": "struct",
+          "type": "RWLockUnsafe",
+          "doc": "Handle to an owned rWLock\n\n@cat resource\n\n@sa RWLockRef",
+          "entries": {
+            "RWLockUnsafe::RWLockUnsafe": {
+              "kind": "alias",
+              "name": "RWLockUnsafe::RWLockUnsafe",
               "doc": ""
             },
             "RWLock": [
@@ -30132,14 +30429,13 @@
                 "parameters": [
                   {
                     "type": "SDL_RWLock *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "RWLockRef(resource)"
+                    "RWLockUnsafe(resource)"
                   ]
                 },
                 "name": "RWLock"
@@ -30364,15 +30660,38 @@
             "super": "Resource"
           }
         },
-        "Semaphore": {
-          "name": "Semaphore",
+        "SemaphoreUnsafe": {
+          "name": "SemaphoreUnsafe",
           "kind": "struct",
           "type": "SemaphoreRef",
-          "doc": "Handle to an owned semaphore\n\n@cat resource\n\n@sa SemaphoreRef",
+          "doc": "Unsafe Handle to semaphore\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SemaphoreRef",
           "entries": {
+            "SemaphoreRef::Destroy": {
+              "kind": "alias",
+              "name": "SemaphoreRef::Destroy",
+              "doc": ""
+            },
             "SemaphoreRef::SemaphoreRef": {
               "kind": "alias",
               "name": "SemaphoreRef::SemaphoreRef",
+              "doc": ""
+            },
+            "SemaphoreRef::reset": {
+              "kind": "alias",
+              "name": "SemaphoreRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Semaphore": {
+          "name": "Semaphore",
+          "kind": "struct",
+          "type": "SemaphoreUnsafe",
+          "doc": "Handle to an owned semaphore\n\n@cat resource\n\n@sa SemaphoreRef",
+          "entries": {
+            "SemaphoreUnsafe::SemaphoreUnsafe": {
+              "kind": "alias",
+              "name": "SemaphoreUnsafe::SemaphoreUnsafe",
               "doc": ""
             },
             "Semaphore": [
@@ -30384,14 +30703,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Semaphore *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "SemaphoreRef(resource)"
+                    "SemaphoreUnsafe(resource)"
                   ]
                 },
                 "name": "Semaphore"
@@ -30611,15 +30929,38 @@
             "super": "Resource"
           }
         },
-        "Condition": {
-          "name": "Condition",
+        "ConditionUnsafe": {
+          "name": "ConditionUnsafe",
           "kind": "struct",
           "type": "ConditionRef",
-          "doc": "Handle to an owned condition\n\n@cat resource\n\n@sa ConditionRef",
+          "doc": "Unsafe Handle to condition\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ConditionRef",
           "entries": {
             "ConditionRef::ConditionRef": {
               "kind": "alias",
               "name": "ConditionRef::ConditionRef",
+              "doc": ""
+            },
+            "ConditionRef::Destroy": {
+              "kind": "alias",
+              "name": "ConditionRef::Destroy",
+              "doc": ""
+            },
+            "ConditionRef::reset": {
+              "kind": "alias",
+              "name": "ConditionRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Condition": {
+          "name": "Condition",
+          "kind": "struct",
+          "type": "ConditionUnsafe",
+          "doc": "Handle to an owned condition\n\n@cat resource\n\n@sa ConditionRef",
+          "entries": {
+            "ConditionUnsafe::ConditionUnsafe": {
+              "kind": "alias",
+              "name": "ConditionUnsafe::ConditionUnsafe",
               "doc": ""
             },
             "Condition": [
@@ -30631,14 +30972,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Condition *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "ConditionRef(resource)"
+                    "ConditionUnsafe(resource)"
                   ]
                 },
                 "name": "Condition"
@@ -33009,15 +33349,38 @@
             "super": "Resource"
           }
         },
-        "Storage": {
-          "name": "Storage",
+        "StorageUnsafe": {
+          "name": "StorageUnsafe",
           "kind": "struct",
           "type": "StorageRef",
-          "doc": "Handle to an owned storage\n\n@cat resource\n\n@sa StorageRef",
+          "doc": "Unsafe Handle to storage\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa StorageRef",
           "entries": {
+            "StorageRef::Close": {
+              "kind": "alias",
+              "name": "StorageRef::Close",
+              "doc": ""
+            },
             "StorageRef::StorageRef": {
               "kind": "alias",
               "name": "StorageRef::StorageRef",
+              "doc": ""
+            },
+            "StorageRef::reset": {
+              "kind": "alias",
+              "name": "StorageRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Storage": {
+          "name": "Storage",
+          "kind": "struct",
+          "type": "StorageUnsafe",
+          "doc": "Handle to an owned storage\n\n@cat resource\n\n@sa StorageRef",
+          "entries": {
+            "StorageUnsafe::StorageUnsafe": {
+              "kind": "alias",
+              "name": "StorageUnsafe::StorageUnsafe",
               "doc": ""
             },
             "Storage": [
@@ -33029,14 +33392,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Storage *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "StorageRef(resource)"
+                    "StorageUnsafe(resource)"
                   ]
                 },
                 "name": "Storage"
@@ -34037,15 +34399,38 @@
             "super": "Resource"
           }
         },
-        "IOStream": {
-          "name": "IOStream",
+        "IOStreamUnsafe": {
+          "name": "IOStreamUnsafe",
           "kind": "struct",
           "type": "IOStreamRef",
-          "doc": "Handle to an owned iOStream\n\n@cat resource\n\n@sa IOStreamRef",
+          "doc": "Unsafe Handle to iOStream\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IOStreamRef",
           "entries": {
+            "IOStreamRef::Close": {
+              "kind": "alias",
+              "name": "IOStreamRef::Close",
+              "doc": ""
+            },
             "IOStreamRef::IOStreamRef": {
               "kind": "alias",
               "name": "IOStreamRef::IOStreamRef",
+              "doc": ""
+            },
+            "IOStreamRef::reset": {
+              "kind": "alias",
+              "name": "IOStreamRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "IOStream": {
+          "name": "IOStream",
+          "kind": "struct",
+          "type": "IOStreamUnsafe",
+          "doc": "Handle to an owned iOStream\n\n@cat resource\n\n@sa IOStreamRef",
+          "entries": {
+            "IOStreamUnsafe::IOStreamUnsafe": {
+              "kind": "alias",
+              "name": "IOStreamUnsafe::IOStreamUnsafe",
               "doc": ""
             },
             "IOStream": [
@@ -34057,14 +34442,13 @@
                 "parameters": [
                   {
                     "type": "SDL_IOStream *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "IOStreamRef(resource)"
+                    "IOStreamUnsafe(resource)"
                   ]
                 },
                 "name": "IOStream"
@@ -34960,15 +35344,38 @@
             "super": "Resource"
           }
         },
-        "SharedObject": {
-          "name": "SharedObject",
+        "SharedObjectUnsafe": {
+          "name": "SharedObjectUnsafe",
           "kind": "struct",
           "type": "SharedObjectRef",
-          "doc": "Handle to an owned sharedObject\n\n@cat resource\n\n@sa SharedObjectRef",
+          "doc": "Unsafe Handle to sharedObject\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa SharedObjectRef",
           "entries": {
             "SharedObjectRef::SharedObjectRef": {
               "kind": "alias",
               "name": "SharedObjectRef::SharedObjectRef",
+              "doc": ""
+            },
+            "SharedObjectRef::Unload": {
+              "kind": "alias",
+              "name": "SharedObjectRef::Unload",
+              "doc": ""
+            },
+            "SharedObjectRef::reset": {
+              "kind": "alias",
+              "name": "SharedObjectRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "SharedObject": {
+          "name": "SharedObject",
+          "kind": "struct",
+          "type": "SharedObjectUnsafe",
+          "doc": "Handle to an owned sharedObject\n\n@cat resource\n\n@sa SharedObjectRef",
+          "entries": {
+            "SharedObjectUnsafe::SharedObjectUnsafe": {
+              "kind": "alias",
+              "name": "SharedObjectUnsafe::SharedObjectUnsafe",
               "doc": ""
             },
             "SharedObject": [
@@ -34980,14 +35387,13 @@
                 "parameters": [
                   {
                     "type": "SDL_SharedObject *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "SharedObjectRef(resource)"
+                    "SharedObjectUnsafe(resource)"
                   ]
                 },
                 "name": "SharedObject"
@@ -35332,15 +35738,38 @@
             "super": "Resource"
           }
         },
-        "Process": {
-          "name": "Process",
+        "ProcessUnsafe": {
+          "name": "ProcessUnsafe",
           "kind": "struct",
           "type": "ProcessRef",
-          "doc": "Handle to an owned process\n\n@cat resource\n\n@sa ProcessRef",
+          "doc": "Unsafe Handle to process\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ProcessRef",
           "entries": {
+            "ProcessRef::Destroy": {
+              "kind": "alias",
+              "name": "ProcessRef::Destroy",
+              "doc": ""
+            },
             "ProcessRef::ProcessRef": {
               "kind": "alias",
               "name": "ProcessRef::ProcessRef",
+              "doc": ""
+            },
+            "ProcessRef::reset": {
+              "kind": "alias",
+              "name": "ProcessRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Process": {
+          "name": "Process",
+          "kind": "struct",
+          "type": "ProcessUnsafe",
+          "doc": "Handle to an owned process\n\n@cat resource\n\n@sa ProcessRef",
+          "entries": {
+            "ProcessUnsafe::ProcessUnsafe": {
+              "kind": "alias",
+              "name": "ProcessUnsafe::ProcessUnsafe",
               "doc": ""
             },
             "Process": [
@@ -35352,14 +35781,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Process *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "ProcessRef(resource)"
+                    "ProcessUnsafe(resource)"
                   ]
                 },
                 "name": "Process"
@@ -36514,15 +36942,38 @@
             "super": "Resource"
           }
         },
-        "Tray": {
-          "name": "Tray",
+        "TrayUnsafe": {
+          "name": "TrayUnsafe",
           "kind": "struct",
           "type": "TrayRef",
-          "doc": "Handle to an owned tray\n\n@cat resource\n\n@sa TrayRef",
+          "doc": "Unsafe Handle to tray\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TrayRef",
           "entries": {
+            "TrayRef::Destroy": {
+              "kind": "alias",
+              "name": "TrayRef::Destroy",
+              "doc": ""
+            },
             "TrayRef::TrayRef": {
               "kind": "alias",
               "name": "TrayRef::TrayRef",
+              "doc": ""
+            },
+            "TrayRef::reset": {
+              "kind": "alias",
+              "name": "TrayRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Tray": {
+          "name": "Tray",
+          "kind": "struct",
+          "type": "TrayUnsafe",
+          "doc": "Handle to an owned tray\n\n@cat resource\n\n@sa TrayRef",
+          "entries": {
+            "TrayUnsafe::TrayUnsafe": {
+              "kind": "alias",
+              "name": "TrayUnsafe::TrayUnsafe",
               "doc": ""
             },
             "Tray": [
@@ -36534,14 +36985,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Tray *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "TrayRef(resource)"
+                    "TrayUnsafe(resource)"
                   ]
                 },
                 "name": "Tray"
@@ -37017,15 +37467,38 @@
             "super": "Resource"
           }
         },
-        "TrayEntry": {
-          "name": "TrayEntry",
+        "TrayEntryUnsafe": {
+          "name": "TrayEntryUnsafe",
           "kind": "struct",
           "type": "TrayEntryRef",
-          "doc": "Handle to an owned trayEntry\n\n@cat resource\n\n@sa TrayEntryRef",
+          "doc": "Unsafe Handle to trayEntry\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TrayEntryRef",
           "entries": {
+            "TrayEntryRef::Remove": {
+              "kind": "alias",
+              "name": "TrayEntryRef::Remove",
+              "doc": ""
+            },
             "TrayEntryRef::TrayEntryRef": {
               "kind": "alias",
               "name": "TrayEntryRef::TrayEntryRef",
+              "doc": ""
+            },
+            "TrayEntryRef::reset": {
+              "kind": "alias",
+              "name": "TrayEntryRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "TrayEntry": {
+          "name": "TrayEntry",
+          "kind": "struct",
+          "type": "TrayEntryUnsafe",
+          "doc": "Handle to an owned trayEntry\n\n@cat resource\n\n@sa TrayEntryRef",
+          "entries": {
+            "TrayEntryUnsafe::TrayEntryUnsafe": {
+              "kind": "alias",
+              "name": "TrayEntryUnsafe::TrayEntryUnsafe",
               "doc": ""
             },
             "TrayEntry": [
@@ -37037,14 +37510,13 @@
                 "parameters": [
                   {
                     "type": "SDL_TrayEntry *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "TrayEntryRef(resource)"
+                    "TrayEntryUnsafe(resource)"
                   ]
                 },
                 "name": "TrayEntry"
@@ -38807,15 +39279,38 @@
             "super": "Resource"
           }
         },
-        "Environment": {
-          "name": "Environment",
+        "EnvironmentUnsafe": {
+          "name": "EnvironmentUnsafe",
           "kind": "struct",
           "type": "EnvironmentRef",
-          "doc": "Handle to an owned environment\n\n@cat resource\n\n@sa EnvironmentRef",
+          "doc": "Unsafe Handle to environment\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa EnvironmentRef",
           "entries": {
+            "EnvironmentRef::Destroy": {
+              "kind": "alias",
+              "name": "EnvironmentRef::Destroy",
+              "doc": ""
+            },
             "EnvironmentRef::EnvironmentRef": {
               "kind": "alias",
               "name": "EnvironmentRef::EnvironmentRef",
+              "doc": ""
+            },
+            "EnvironmentRef::reset": {
+              "kind": "alias",
+              "name": "EnvironmentRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Environment": {
+          "name": "Environment",
+          "kind": "struct",
+          "type": "EnvironmentUnsafe",
+          "doc": "Handle to an owned environment\n\n@cat resource\n\n@sa EnvironmentRef",
+          "entries": {
+            "EnvironmentUnsafe::EnvironmentUnsafe": {
+              "kind": "alias",
+              "name": "EnvironmentUnsafe::EnvironmentUnsafe",
               "doc": ""
             },
             "Environment": [
@@ -38827,14 +39322,13 @@
                 "parameters": [
                   {
                     "type": "SDL_Environment *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "EnvironmentRef(resource)"
+                    "EnvironmentUnsafe(resource)"
                   ]
                 },
                 "name": "Environment"
@@ -41708,15 +42202,38 @@
             "super": "Resource"
           }
         },
-        "IConv": {
-          "name": "IConv",
+        "IConvUnsafe": {
+          "name": "IConvUnsafe",
           "kind": "struct",
           "type": "IConvRef",
-          "doc": "Handle to an owned iConv\n\n@cat resource\n\n@sa IConvRef",
+          "doc": "Unsafe Handle to iConv\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa IConvRef",
           "entries": {
             "IConvRef::IConvRef": {
               "kind": "alias",
               "name": "IConvRef::IConvRef",
+              "doc": ""
+            },
+            "IConvRef::close": {
+              "kind": "alias",
+              "name": "IConvRef::close",
+              "doc": ""
+            },
+            "IConvRef::reset": {
+              "kind": "alias",
+              "name": "IConvRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "IConv": {
+          "name": "IConv",
+          "kind": "struct",
+          "type": "IConvUnsafe",
+          "doc": "Handle to an owned iConv\n\n@cat resource\n\n@sa IConvRef",
+          "entries": {
+            "IConvUnsafe::IConvUnsafe": {
+              "kind": "alias",
+              "name": "IConvUnsafe::IConvUnsafe",
               "doc": ""
             },
             "IConv": [
@@ -41728,14 +42245,13 @@
                 "parameters": [
                   {
                     "type": "SDL_iconv_data_t *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "IConvRef(resource)"
+                    "IConvUnsafe(resource)"
                   ]
                 },
                 "name": "IConv"
@@ -43055,15 +43571,38 @@
             "super": "Resource"
           }
         },
-        "Animation": {
-          "name": "Animation",
+        "AnimationUnsafe": {
+          "name": "AnimationUnsafe",
           "kind": "struct",
           "type": "AnimationRef",
-          "doc": "Handle to an owned animation\n\n@cat resource\n\n@sa AnimationRef",
+          "doc": "Unsafe Handle to animation\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa AnimationRef",
           "entries": {
             "AnimationRef::AnimationRef": {
               "kind": "alias",
               "name": "AnimationRef::AnimationRef",
+              "doc": ""
+            },
+            "AnimationRef::Free": {
+              "kind": "alias",
+              "name": "AnimationRef::Free",
+              "doc": ""
+            },
+            "AnimationRef::reset": {
+              "kind": "alias",
+              "name": "AnimationRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Animation": {
+          "name": "Animation",
+          "kind": "struct",
+          "type": "AnimationUnsafe",
+          "doc": "Handle to an owned animation\n\n@cat resource\n\n@sa AnimationRef",
+          "entries": {
+            "AnimationUnsafe::AnimationUnsafe": {
+              "kind": "alias",
+              "name": "AnimationUnsafe::AnimationUnsafe",
               "doc": ""
             },
             "Animation": [
@@ -43075,14 +43614,13 @@
                 "parameters": [
                   {
                     "type": "IMG_Animation *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "AnimationRef(resource)"
+                    "AnimationUnsafe(resource)"
                   ]
                 },
                 "name": "Animation"
@@ -44753,15 +45291,38 @@
             "super": "Resource"
           }
         },
-        "Font": {
-          "name": "Font",
+        "FontUnsafe": {
+          "name": "FontUnsafe",
           "kind": "struct",
           "type": "FontRef",
-          "doc": "Handle to an owned font\n\n@cat resource\n\n@sa FontRef",
+          "doc": "Unsafe Handle to font\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa FontRef",
           "entries": {
+            "FontRef::Close": {
+              "kind": "alias",
+              "name": "FontRef::Close",
+              "doc": ""
+            },
             "FontRef::FontRef": {
               "kind": "alias",
               "name": "FontRef::FontRef",
+              "doc": ""
+            },
+            "FontRef::reset": {
+              "kind": "alias",
+              "name": "FontRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Font": {
+          "name": "Font",
+          "kind": "struct",
+          "type": "FontUnsafe",
+          "doc": "Handle to an owned font\n\n@cat resource\n\n@sa FontRef",
+          "entries": {
+            "FontUnsafe::FontUnsafe": {
+              "kind": "alias",
+              "name": "FontUnsafe::FontUnsafe",
               "doc": ""
             },
             "Font": [
@@ -44773,14 +45334,13 @@
                 "parameters": [
                   {
                     "type": "TTF_Font *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "FontRef(resource)"
+                    "FontUnsafe(resource)"
                   ]
                 },
                 "name": "Font"
@@ -44996,15 +45556,28 @@
             "super": "Resource"
           }
         },
-        "TextEngine": {
-          "name": "TextEngine",
+        "TextEngineUnsafe": {
+          "name": "TextEngineUnsafe",
           "kind": "struct",
           "type": "TextEngineRef",
-          "doc": "Handle to an owned textEngine\n\n@cat resource\n\n@sa TextEngineRef",
+          "doc": "Unsafe Handle to textEngine\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextEngineRef",
           "entries": {
             "TextEngineRef::TextEngineRef": {
               "kind": "alias",
               "name": "TextEngineRef::TextEngineRef",
+              "doc": ""
+            }
+          }
+        },
+        "TextEngine": {
+          "name": "TextEngine",
+          "kind": "struct",
+          "type": "TextEngineUnsafe",
+          "doc": "Handle to an owned textEngine\n\n@cat resource\n\n@sa TextEngineRef",
+          "entries": {
+            "TextEngineUnsafe::TextEngineUnsafe": {
+              "kind": "alias",
+              "name": "TextEngineUnsafe::TextEngineUnsafe",
               "doc": ""
             },
             "TextEngine": [
@@ -45016,14 +45589,13 @@
                 "parameters": [
                   {
                     "type": "TTF_TextEngine *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "TextEngineRef(resource)"
+                    "TextEngineUnsafe(resource)"
                   ]
                 },
                 "name": "TextEngine"
@@ -46162,15 +46734,38 @@
             "super": "Resource"
           }
         },
-        "Text": {
-          "name": "Text",
+        "TextUnsafe": {
+          "name": "TextUnsafe",
           "kind": "struct",
           "type": "TextRef",
-          "doc": "Handle to an owned text\n\n@cat resource\n\n@sa TextRef",
+          "doc": "Unsafe Handle to text\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa TextRef",
           "entries": {
+            "TextRef::Destroy": {
+              "kind": "alias",
+              "name": "TextRef::Destroy",
+              "doc": ""
+            },
             "TextRef::TextRef": {
               "kind": "alias",
               "name": "TextRef::TextRef",
+              "doc": ""
+            },
+            "TextRef::reset": {
+              "kind": "alias",
+              "name": "TextRef::reset",
+              "doc": ""
+            }
+          }
+        },
+        "Text": {
+          "name": "Text",
+          "kind": "struct",
+          "type": "TextUnsafe",
+          "doc": "Handle to an owned text\n\n@cat resource\n\n@sa TextRef",
+          "entries": {
+            "TextUnsafe::TextUnsafe": {
+              "kind": "alias",
+              "name": "TextUnsafe::TextUnsafe",
               "doc": ""
             },
             "Text": [
@@ -46182,14 +46777,13 @@
                 "parameters": [
                   {
                     "type": "TTF_Text *",
-                    "name": "resource",
-                    "default": "{}"
+                    "name": "resource"
                   }
                 ],
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "TextRef(resource)"
+                    "TextUnsafe(resource)"
                   ]
                 },
                 "name": "Text"

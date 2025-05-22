@@ -9,6 +9,8 @@ var searchData=
   ['colorspace_6',['Colorspace',['../classSDL_1_1Colorspace.html',1,'SDL']]],
   ['condition_7',['Condition',['../structSDL_1_1Condition.html',1,'SDL']]],
   ['conditionref_8',['ConditionRef',['../structSDL_1_1ConditionRef.html',1,'SDL']]],
-  ['cursor_9',['Cursor',['../structSDL_1_1Cursor.html',1,'SDL']]],
-  ['cursorref_10',['CursorRef',['../structSDL_1_1CursorRef.html',1,'SDL']]]
+  ['conditionunsafe_9',['ConditionUnsafe',['../structSDL_1_1ConditionUnsafe.html',1,'SDL']]],
+  ['cursor_10',['Cursor',['../structSDL_1_1Cursor.html',1,'SDL']]],
+  ['cursorref_11',['CursorRef',['../structSDL_1_1CursorRef.html',1,'SDL']]],
+  ['cursorunsafe_12',['CursorUnsafe',['../structSDL_1_1CursorUnsafe.html',1,'SDL']]]
 ];

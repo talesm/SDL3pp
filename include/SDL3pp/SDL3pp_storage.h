@@ -756,6 +756,7 @@ struct StorageRef : Resource<SDL_Storage*>
     return OwnArray<char*>{data, size_t(count)};
   }
 
+protected:
   /**
    * Closes and frees a storage container.
    *
@@ -789,21 +790,39 @@ struct StorageRef : Resource<SDL_Storage*>
 };
 
 /**
+ * Unsafe Handle to storage
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa StorageRef
+ */
+struct StorageUnsafe : StorageRef
+{
+  using StorageRef::Close;
+
+  using StorageRef::StorageRef;
+
+  using StorageRef::reset;
+};
+
+/**
  * Handle to an owned storage
  *
  * @cat resource
  *
  * @sa StorageRef
  */
-struct Storage : StorageRef
+struct Storage : StorageUnsafe
 {
-  using StorageRef::StorageRef;
+  using StorageUnsafe::StorageUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Storage(SDL_Storage* resource = {})
-    : StorageRef(resource)
+  constexpr explicit Storage(SDL_Storage* resource)
+    : StorageUnsafe(resource)
   {
   }
 

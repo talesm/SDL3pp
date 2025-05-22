@@ -1824,6 +1824,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    */
   PixelFormat GetFormat() const { return get()->format; }
 
+protected:
   /**
    * Free a surface.
    *
@@ -1857,22 +1858,39 @@ struct SurfaceRef : Resource<SDL_Surface*>
 };
 
 /**
+ * Unsafe Handle to surface
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceRef
+ */
+struct SurfaceUnsafe : SurfaceRef
+{
+  using SurfaceRef::Destroy;
+
+  using SurfaceRef::SurfaceRef;
+
+  using SurfaceRef::reset;
+};
+
+/**
  * Handle to an owned surface
  *
  * @cat resource
  *
  * @sa SurfaceRef
- * @sa SurfaceRef
  */
-struct Surface : SurfaceRef
+struct Surface : SurfaceUnsafe
 {
-  using SurfaceRef::SurfaceRef;
+  using SurfaceUnsafe::SurfaceUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Surface(SDL_Surface* resource = {})
-    : SurfaceRef(resource)
+  constexpr explicit Surface(SDL_Surface* resource)
+    : SurfaceUnsafe(resource)
   {
   }
 
@@ -1913,7 +1931,7 @@ class SurfaceLock
   explicit SurfaceLock(SurfaceRef surface)
     : surface(std::move(surface))
   {
-    if (!SDL_LockSurface(this->surface.get())) this->surface.reset();
+    if (!SDL_LockSurface(this->surface.get())) this->surface.release();
   }
 
 public:

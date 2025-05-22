@@ -1,7 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="rect" id="Node000001" href="$structSDL_1_1ProcessRef.html" title="An opaque handle representing a system process." alt="" coords="208,13,335,38"/>
-<area shape="poly" id="edge35_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1Process.html" title="Handle to an owned process." alt="" coords="383,13,488,38"/>
-<area shape="poly" id="edge36_Node000001_Node000002" title=" " alt="" coords="348,23,382,23,382,28,348,28"/>
+<area shape="poly" id="edge46_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1ProcessUnsafe.html" title="Unsafe Handle to process." alt="" coords="383,13,533,38"/>
+<area shape="poly" id="edge47_Node000001_Node000002" title=" " alt="" coords="348,23,382,23,382,28,348,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Process.html" title="Handle to an owned process." alt="" coords="581,13,687,38"/>
+<area shape="poly" id="edge48_Node000002_Node000003" title=" " alt="" coords="547,23,581,23,581,28,547,28"/>
 </map>

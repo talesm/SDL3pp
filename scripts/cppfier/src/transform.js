@@ -649,7 +649,8 @@ function expandResources(sourceEntries, file, context) {
   const referenceAliases = [];
   for (const [sourceName, resourceEntry] of Object.entries(file.resources ?? {})) {
     const uniqueName = resourceEntry.name || resourceEntry.uniqueName || transformName(sourceName, context);
-    const refName = resourceEntry.refName || (uniqueName + "Ref");
+    const refName = uniqueName + "Ref";
+    const unsafeName = uniqueName + "Unsafe";
     const optionalName = "Optional" + uniqueName;
     const detachedName = "Detached" + uniqueName;
     const type = resourceEntry.type ?? sourceName;
@@ -694,7 +695,8 @@ function expandResources(sourceEntries, file, context) {
     }
     const subEntries = resourceEntry.entries || {};
     const resourceType = `Resource<${pointerType}>`;
-    let freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free]) ?? scanFreeFunction(sourceEntries, uniqueName, pointerType);
+    let freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free ?? "reset"]) ?? scanFreeFunction(sourceEntries, uniqueName, pointerType);
+    const unsafeAliases = [refName];
     if (freeFunction) {
       const sourceName = freeFunction.name;
       freeFunction = transformEntry(freeFunction, context);
@@ -706,8 +708,12 @@ function expandResources(sourceEntries, file, context) {
         delete subEntries.reset;
       }
 
+      freeTransformEntry.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), uniqueName);
       subEntries[sourceName] = freeTransformEntry;
+      unsafeAliases.push(freeTransformEntry.name);
+
       subEntries.reset = freeFunction;
+      unsafeAliases.push("reset");
 
       freeFunction.name = "reset";
       freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${sourceName}.`;
@@ -814,16 +820,27 @@ function expandResources(sourceEntries, file, context) {
 
     const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
 
+    /** @type {ApiSubEntryTransformMap} */
+    const unsafeEntries = {};
+    unsafeAliases.sort().forEach(alias => unsafeEntries[`${refName}::${alias}`] = "alias");
+
 
     /** @type {ApiEntryTransform[]} */
     const derivedEntries = [
       {
-        name: uniqueName,
+        name: unsafeName,
         kind: "struct",
         type: refName,
+        doc: `Unsafe Handle to ${title}\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
+        entries: unsafeEntries,
+      },
+      {
+        name: uniqueName,
+        kind: "struct",
+        type: unsafeName,
         doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
-          [`${refName}::${refName}`]: "alias",
+          [`${unsafeName}::${unsafeName}`]: "alias",
           [uniqueName]: [{
             kind: "function",
             type: "",
@@ -831,12 +848,11 @@ function expandResources(sourceEntries, file, context) {
             explicit: true,
             parameters: [{
               type: pointerType,
-              name: "resource",
-              default: "{}"
+              name: "resource"
             }],
             doc: "Constructs from the underlying resource.",
             hints: {
-              init: [`${refName}(resource)`],
+              init: [`${unsafeName}(resource)`],
             }
           }, {
             kind: "function",
@@ -888,7 +904,7 @@ function expandResources(sourceEntries, file, context) {
         }
       }
     ];
-    const derivedNames = new Set([uniqueName, optionalName]);
+    const derivedNames = new Set([uniqueName, unsafeName, optionalName]);
     if (resourceEntry.lock) {
       const lockEntry = resourceEntry.lock !== true ? resourceEntry.lock : {};
       lockEntry.kind = "struct";

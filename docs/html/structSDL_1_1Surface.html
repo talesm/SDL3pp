@@ -88,7 +88,9 @@ Inheritance diagram for SDL::Surface:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1Surface__inherit__graph.png" border="0" usemap="#aSDL_1_1Surface_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1Surface_inherit__map" id="aSDL_1_1Surface_inherit__map">
-<area shape="rect" title="Handle to an owned surface." alt="" coords="31,167,135,192"/>
+<area shape="rect" title="Handle to an owned surface." alt="" coords="31,240,135,265"/>
+<area shape="rect" href="structSDL_1_1SurfaceUnsafe.html" title="Unsafe Handle to surface." alt="" coords="7,167,158,192"/>
+<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 <area shape="rect" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting." alt="" coords="19,93,146,119"/>
 <area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
@@ -98,10 +100,10 @@ Inheritance diagram for SDL::Surface:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aeb0e52977f3abd87928ef06fcef39f20" id="r_aeb0e52977f3abd87928ef06fcef39f20"><td class="memItemLeft" align="right" valign="top"><a id="aeb0e52977f3abd87928ef06fcef39f20" name="aeb0e52977f3abd87928ef06fcef39f20"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Surface</b> (SDL_Surface *resource={})</td></tr>
-<tr class="memdesc:aeb0e52977f3abd87928ef06fcef39f20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:aeb0e52977f3abd87928ef06fcef39f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5750b66e20082b181b229a209ebb1409" id="r_a5750b66e20082b181b229a209ebb1409"><td class="memItemLeft" align="right" valign="top"><a id="a5750b66e20082b181b229a209ebb1409" name="a5750b66e20082b181b229a209ebb1409"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Surface</b> (SDL_Surface *resource)</td></tr>
+<tr class="memdesc:a5750b66e20082b181b229a209ebb1409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
+<tr class="separator:a5750b66e20082b181b229a209ebb1409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a297788f5e4d2e7c58120d9f3b2ec53ef" id="r_a297788f5e4d2e7c58120d9f3b2ec53ef"><td class="memItemLeft" align="right" valign="top"><a id="a297788f5e4d2e7c58120d9f3b2ec53ef" name="a297788f5e4d2e7c58120d9f3b2ec53ef"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Surface</b> (const <a class="el" href="structSDL_1_1Surface.html">Surface</a> &amp;other)=delete</td></tr>
 <tr class="separator:a297788f5e4d2e7c58120d9f3b2ec53ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,26 +119,33 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Surface</b> (<a 
 <a class="el" href="structSDL_1_1Surface.html">Surface</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Surface.html">Surface</a> other)</td></tr>
 <tr class="memdesc:a3c7fca010536b3aa7fc89d4ccf58f793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a3c7fca010536b3aa7fc89d4ccf58f793"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c84318ad7c3d47a559a826d71a23bb1" id="r_a6c84318ad7c3d47a559a826d71a23bb1"><td class="memItemLeft" align="right" valign="top"><a id="a6c84318ad7c3d47a559a826d71a23bb1" name="a6c84318ad7c3d47a559a826d71a23bb1"></a>
+<tr class="inherit_header pub_methods_structSDL_1_1SurfaceUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1SurfaceUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1SurfaceUnsafe.html">SDL::SurfaceUnsafe</a></td></tr>
+<tr class="memitem:a0add99a8055fd8cc03299bcfeb55e446 inherit pub_methods_structSDL_1_1SurfaceUnsafe" id="r_a0add99a8055fd8cc03299bcfeb55e446"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html#a0add99a8055fd8cc03299bcfeb55e446">Destroy</a> ()</td></tr>
+<tr class="memdesc:a0add99a8055fd8cc03299bcfeb55e446 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
+<tr class="separator:a0add99a8055fd8cc03299bcfeb55e446 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c84318ad7c3d47a559a826d71a23bb1 inherit pub_methods_structSDL_1_1SurfaceUnsafe" id="r_a6c84318ad7c3d47a559a826d71a23bb1"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SurfaceRef</b> (const <a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a6c84318ad7c3d47a559a826d71a23bb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:a6c84318ad7c3d47a559a826d71a23bb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aeba684a21dd2f80d7e2458cbd77815" id="r_a4aeba684a21dd2f80d7e2458cbd77815"><td class="memItemLeft" align="right" valign="top"><a id="a4aeba684a21dd2f80d7e2458cbd77815" name="a4aeba684a21dd2f80d7e2458cbd77815"></a>
+<tr class="memdesc:a6c84318ad7c3d47a559a826d71a23bb1 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a6c84318ad7c3d47a559a826d71a23bb1 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aeba684a21dd2f80d7e2458cbd77815 inherit pub_methods_structSDL_1_1SurfaceUnsafe" id="r_a4aeba684a21dd2f80d7e2458cbd77815"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SurfaceRef</b> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a4aeba684a21dd2f80d7e2458cbd77815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a4aeba684a21dd2f80d7e2458cbd77815"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4023f84334224025d16e223f19e77616" id="r_a4023f84334224025d16e223f19e77616"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html#a4023f84334224025d16e223f19e77616">SurfaceRef</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
-<tr class="memdesc:a4023f84334224025d16e223f19e77616"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
-<tr class="separator:a4023f84334224025d16e223f19e77616"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0dbe16310265f981a99fd448a502c3c" id="r_af0dbe16310265f981a99fd448a502c3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html#af0dbe16310265f981a99fd448a502c3c">SurfaceRef</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> &amp;src)</td></tr>
-<tr class="memdesc:af0dbe16310265f981a99fd448a502c3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> into a software surface.  <br /></td></tr>
-<tr class="separator:af0dbe16310265f981a99fd448a502c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab309b8056c78d915b477eca85a92e948" id="r_ab309b8056c78d915b477eca85a92e948"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html#ab309b8056c78d915b477eca85a92e948">SurfaceRef</a> (const SDL_Point &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format)</td></tr>
-<tr class="memdesc:ab309b8056c78d915b477eca85a92e948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format.  <br /></td></tr>
-<tr class="separator:ab309b8056c78d915b477eca85a92e948"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27a5c86906a344827a2d4b12c41c4218" id="r_a27a5c86906a344827a2d4b12c41c4218"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html#a27a5c86906a344827a2d4b12c41c4218">SurfaceRef</a> (const SDL_Point &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, void *pixels, int pitch)</td></tr>
-<tr class="memdesc:a27a5c86906a344827a2d4b12c41c4218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format and existing pixel data.  <br /></td></tr>
-<tr class="separator:a27a5c86906a344827a2d4b12c41c4218"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a4aeba684a21dd2f80d7e2458cbd77815 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a4aeba684a21dd2f80d7e2458cbd77815 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4023f84334224025d16e223f19e77616 inherit pub_methods_structSDL_1_1SurfaceUnsafe" id="r_a4023f84334224025d16e223f19e77616"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html#a4023f84334224025d16e223f19e77616">SurfaceRef</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
+<tr class="memdesc:a4023f84334224025d16e223f19e77616 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
+<tr class="separator:a4023f84334224025d16e223f19e77616 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0dbe16310265f981a99fd448a502c3c inherit pub_methods_structSDL_1_1SurfaceUnsafe" id="r_af0dbe16310265f981a99fd448a502c3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html#af0dbe16310265f981a99fd448a502c3c">SurfaceRef</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> &amp;src)</td></tr>
+<tr class="memdesc:af0dbe16310265f981a99fd448a502c3c inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> into a software surface.  <br /></td></tr>
+<tr class="separator:af0dbe16310265f981a99fd448a502c3c inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab309b8056c78d915b477eca85a92e948 inherit pub_methods_structSDL_1_1SurfaceUnsafe" id="r_ab309b8056c78d915b477eca85a92e948"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html#ab309b8056c78d915b477eca85a92e948">SurfaceRef</a> (const SDL_Point &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format)</td></tr>
+<tr class="memdesc:ab309b8056c78d915b477eca85a92e948 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format.  <br /></td></tr>
+<tr class="separator:ab309b8056c78d915b477eca85a92e948 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27a5c86906a344827a2d4b12c41c4218 inherit pub_methods_structSDL_1_1SurfaceUnsafe" id="r_a27a5c86906a344827a2d4b12c41c4218"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html#a27a5c86906a344827a2d4b12c41c4218">SurfaceRef</a> (const SDL_Point &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, void *pixels, int pitch)</td></tr>
+<tr class="memdesc:a27a5c86906a344827a2d4b12c41c4218 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format and existing pixel data.  <br /></td></tr>
+<tr class="separator:a27a5c86906a344827a2d4b12c41c4218 inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ea34b21fc4000f27321f0e049f1b69c inherit pub_methods_structSDL_1_1SurfaceUnsafe" id="r_a5ea34b21fc4000f27321f0e049f1b69c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceUnsafe.html#a5ea34b21fc4000f27321f0e049f1b69c">reset</a> (SDL_Surface *newResource={})</td></tr>
+<tr class="memdesc:a5ea34b21fc4000f27321f0e049f1b69c inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
+<tr class="separator:a5ea34b21fc4000f27321f0e049f1b69c inherit pub_methods_structSDL_1_1SurfaceUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1SurfaceRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1SurfaceRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1SurfaceRef.html">SDL::SurfaceRef</a></td></tr>
 <tr class="memitem:a6c84318ad7c3d47a559a826d71a23bb1 inherit pub_methods_structSDL_1_1SurfaceRef" id="r_a6c84318ad7c3d47a559a826d71a23bb1"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SurfaceRef</b> (const <a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> &amp;other)</td></tr>
@@ -373,12 +382,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () const
 <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormat</b> () const</td></tr>
 <tr class="memdesc:a7310dbe7a5fc6a945876f5c1ef48b6b3 inherit pub_methods_structSDL_1_1SurfaceRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel format. <br /></td></tr>
 <tr class="separator:a7310dbe7a5fc6a945876f5c1ef48b6b3 inherit pub_methods_structSDL_1_1SurfaceRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0add99a8055fd8cc03299bcfeb55e446 inherit pub_methods_structSDL_1_1SurfaceRef" id="r_a0add99a8055fd8cc03299bcfeb55e446"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446">Destroy</a> ()</td></tr>
-<tr class="memdesc:a0add99a8055fd8cc03299bcfeb55e446 inherit pub_methods_structSDL_1_1SurfaceRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
-<tr class="separator:a0add99a8055fd8cc03299bcfeb55e446 inherit pub_methods_structSDL_1_1SurfaceRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ea34b21fc4000f27321f0e049f1b69c inherit pub_methods_structSDL_1_1SurfaceRef" id="r_a5ea34b21fc4000f27321f0e049f1b69c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c">reset</a> (SDL_Surface *newResource={})</td></tr>
-<tr class="memdesc:a5ea34b21fc4000f27321f0e049f1b69c inherit pub_methods_structSDL_1_1SurfaceRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
-<tr class="separator:a5ea34b21fc4000f27321f0e049f1b69c inherit pub_methods_structSDL_1_1SurfaceRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1SurfaceRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
 <tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1SurfaceRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
@@ -454,224 +457,21 @@ constexpr const SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"
 constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_structSDL_1_1SurfaceRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1SurfaceRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1SurfaceRef.html">SDL::SurfaceRef</a></td></tr>
+<tr class="memitem:a0add99a8055fd8cc03299bcfeb55e446 inherit pro_methods_structSDL_1_1SurfaceRef" id="r_a0add99a8055fd8cc03299bcfeb55e446"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446">Destroy</a> ()</td></tr>
+<tr class="memdesc:a0add99a8055fd8cc03299bcfeb55e446 inherit pro_methods_structSDL_1_1SurfaceRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
+<tr class="separator:a0add99a8055fd8cc03299bcfeb55e446 inherit pro_methods_structSDL_1_1SurfaceRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ea34b21fc4000f27321f0e049f1b69c inherit pro_methods_structSDL_1_1SurfaceRef" id="r_a5ea34b21fc4000f27321f0e049f1b69c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c">reset</a> (SDL_Surface *newResource={})</td></tr>
+<tr class="memdesc:a5ea34b21fc4000f27321f0e049f1b69c inherit pro_methods_structSDL_1_1SurfaceRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
+<tr class="separator:a5ea34b21fc4000f27321f0e049f1b69c inherit pro_methods_structSDL_1_1SurfaceRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab309b8056c78d915b477eca85a92e948" name="ab309b8056c78d915b477eca85a92e948"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab309b8056c78d915b477eca85a92e948">&#9670;&#160;</a></span>SurfaceRef() <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::SurfaceRef::SurfaceRef </td>
-          <td>(</td>
-          <td class="paramtype">const SDL_Point &amp;&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td>
-          <td class="paramname"><em>format</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The pixels of the new surface are initialized to zero.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">size</td><td>the width and height of the surface. </td></tr>
-    <tr><td class="paramname">format</td><td>the <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> for the new surface's pixel format. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure that is created. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<a id="a27a5c86906a344827a2d4b12c41c4218" name="a27a5c86906a344827a2d4b12c41c4218"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27a5c86906a344827a2d4b12c41c4218">&#9670;&#160;</a></span>SurfaceRef() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::SurfaceRef::SurfaceRef </td>
-          <td>(</td>
-          <td class="paramtype">const SDL_Point &amp;&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td>
-          <td class="paramname"><em>format</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>pixels</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>pitch</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>No copy is made of the pixel data. Pixel data is not managed automatically; you must free the surface before you free the pixel data.</p>
-<p>Pitch is the offset in bytes from one row of pixels to the next, e.g. <code>width*4</code> for <code>PIXELFORMAT_RGBA8888</code>.</p>
-<p>You may pass nullptr for pixels and 0 for pitch to create a surface that you will fill in with valid values later.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">size</td><td>the width and height of the surface. </td></tr>
-    <tr><td class="paramname">format</td><td>the <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> for the new surface's pixel format. </td></tr>
-    <tr><td class="paramname">pixels</td><td>a pointer to existing pixel data. </td></tr>
-    <tr><td class="paramname">pitch</td><td>the number of bytes between each row, including padding. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure that is created. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<a id="af0dbe16310265f981a99fd448a502c3c" name="af0dbe16310265f981a99fd448a502c3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0dbe16310265f981a99fd448a502c3c">&#9670;&#160;</a></span>SurfaceRef() <span class="overload">[3/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::SurfaceRef::SurfaceRef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> &amp;&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#ga443f7fa7008eaa678ddb43c5677cfa6e" title="Load an image from an SDL data source into a software surface.">LoadSurface(IOStreamRef&amp;)</a>, otherwise it uses <a class="el" href="group__CategorySurface.html#ga447ce953d663f347712f7c9c688495eb" title="Load a BMP image from a seekable SDL data stream.">LoadBMP(IOStreamRef&amp;)</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to load an image from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with loaded contents on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a> </dd>
-<dd>
-<a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a> </dd></dl>
-
-</div>
-</div>
-<a id="a4023f84334224025d16e223f19e77616" name="a4023f84334224025d16e223f19e77616"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4023f84334224025d16e223f19e77616">&#9670;&#160;</a></span>SurfaceRef() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::SurfaceRef::SurfaceRef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a>, otherwise it uses <a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>a path on the filesystem to load an image from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with loaded contents on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a> </dd>
-<dd>
-<a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a> </dd></dl>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> </dd></dl>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a></li>
 </ul>
 </div><!-- contents -->

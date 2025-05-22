@@ -695,6 +695,14 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
   }
 
   /**
+   * Returns the number of properties this has
+   *
+   * This uses Enumerate() internally, so might not be so fast
+   */
+  Uint64 GetCount() const;
+
+protected:
+  /**
    * Destroy a group of properties.
    *
    * All properties are deleted and their cleanup functions will be called, if
@@ -729,13 +737,24 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
   {
     SDL_DestroyProperties(release(newResource));
   }
+};
 
-  /**
-   * Returns the number of properties this has
-   *
-   * This uses Enumerate() internally, so might not be so fast
-   */
-  Uint64 GetCount() const;
+/**
+ * Unsafe Handle to properties
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa PropertiesRef
+ */
+struct PropertiesUnsafe : PropertiesRef
+{
+  using PropertiesRef::Destroy;
+
+  using PropertiesRef::PropertiesRef;
+
+  using PropertiesRef::reset;
 };
 
 /**
@@ -745,15 +764,15 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
  *
  * @sa PropertiesRef
  */
-struct Properties : PropertiesRef
+struct Properties : PropertiesUnsafe
 {
-  using PropertiesRef::PropertiesRef;
+  using PropertiesUnsafe::PropertiesUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Properties(SDL_PropertiesID resource = {})
-    : PropertiesRef(resource)
+  constexpr explicit Properties(SDL_PropertiesID resource)
+    : PropertiesUnsafe(resource)
   {
   }
 
@@ -776,9 +795,9 @@ struct Properties : PropertiesRef
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PropertiesRef.reset
+   * @sa PropertiesRef.Destroy
    */
-  Properties()
+  explicit Properties()
     : Properties(CheckError(SDL_CreateProperties()))
   {
   }
