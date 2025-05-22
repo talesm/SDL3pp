@@ -6,11 +6,11 @@
 namespace name {
 
 template<class T>
-struct Type1Base : T
+struct Type1Ref : T
 {
   using T::T;
 
-  inline Type1Base(int var1, const char* var2)
+  inline Type1Ref(int var1, const char* var2)
   {
     // return MyCreateType1(var1, var2);
   }

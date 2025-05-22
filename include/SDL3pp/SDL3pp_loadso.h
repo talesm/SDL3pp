@@ -42,9 +42,6 @@ namespace SDL {
  */
 
 // Forward decl
-struct SharedObjectBase;
-
-// Forward decl
 struct SharedObjectRef;
 
 // Forward decl
@@ -57,15 +54,31 @@ struct SharedObject;
  *
  * @cat resource
  *
- * @sa SharedObjectBase.SharedObjectBase
- * @sa SharedObjectBase.LoadFunction
+ * @sa SharedObjectRef.SharedObjectRef
+ * @sa SharedObjectRef.LoadFunction
  * @sa SharedObjectRef.Unload
  * @sa SharedObject
  * @sa SharedObjectRef
  */
-struct SharedObjectBase : Resource<SDL_SharedObject*>
+struct SharedObjectRef : Resource<SDL_SharedObject*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr SharedObjectRef(const SharedObjectRef& other)
+    : SharedObjectRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr SharedObjectRef(SharedObjectRef&& other)
+    : SharedObjectRef(other.release())
+  {
+  }
 
   /**
    * Dynamically load a shared object.
@@ -78,12 +91,21 @@ struct SharedObjectBase : Resource<SDL_SharedObject*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectBase.LoadFunction
+   * @sa SharedObjectRef.LoadFunction
    * @sa SharedObjectRef.Unload
    */
-  SharedObjectBase(StringParam sofile)
+  SharedObjectRef(StringParam sofile)
     : Resource(SDL_LoadObject(sofile))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  SharedObjectRef& operator=(SharedObjectRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -110,86 +132,62 @@ struct SharedObjectBase : Resource<SDL_SharedObject*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectBase.SharedObjectBase
+   * @sa SharedObjectRef.SharedObjectRef
    */
   FunctionPointer LoadFunction(StringParam name)
   {
     return SDL_LoadFunction(get(), name);
   }
-};
 
-/**
- * Handle to a non owned sharedObject
- *
- * @cat resource
- *
- * @sa SharedObjectBase
- * @sa SharedObject
- */
-struct SharedObjectRef : SharedObjectBase
-{
-  using SharedObjectBase::SharedObjectBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr SharedObjectRef(const SharedObjectRef& other)
-    : SharedObjectBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SharedObjectRef(SharedObjectRef&& other)
-    : SharedObjectBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~SharedObjectRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  SharedObjectRef& operator=(SharedObjectRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
+protected:
   /**
    * Unload a shared object from memory.
    *
    * Note that any pointers from this object looked up through
-   * SharedObjectBase.LoadFunction() will no longer be valid.
+   * SharedObjectRef.LoadFunction() will no longer be valid.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectBase.SharedObjectBase
+   * @sa SharedObjectRef.SharedObjectRef
+   */
+  void Unload() { reset(); }
+
+  /**
+   * Unload a shared object from memory.
+   *
+   * Note that any pointers from this object looked up through
+   * SharedObjectRef.LoadFunction() will no longer be valid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObjectRef.SharedObjectRef
    */
   void reset(SDL_SharedObject* newResource = {})
   {
     SDL_UnloadObject(release(newResource));
   }
+};
 
-  /**
-   * Unload a shared object from memory.
-   *
-   * Note that any pointers from this object looked up through
-   * SharedObjectBase.LoadFunction() will no longer be valid.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SharedObjectBase.SharedObjectBase
-   */
-  void Unload() { reset(); }
+/**
+ * Unsafe Handle to sharedObject
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectRef
+ */
+struct SharedObjectUnsafe : SharedObjectRef
+{
+  using SharedObjectRef::SharedObjectRef;
+
+  using SharedObjectRef::Unload;
+
+  using SharedObjectRef::reset;
 };
 
 /**
@@ -197,18 +195,17 @@ struct SharedObjectRef : SharedObjectBase
  *
  * @cat resource
  *
- * @sa SharedObjectBase
  * @sa SharedObjectRef
  */
-struct SharedObject : SharedObjectRef
+struct SharedObject : SharedObjectUnsafe
 {
-  using SharedObjectRef::SharedObjectRef;
+  using SharedObjectUnsafe::SharedObjectUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit SharedObject(SDL_SharedObject* resource = {})
-    : SharedObjectRef(resource)
+  constexpr explicit SharedObject(SDL_SharedObject* resource)
+    : SharedObjectUnsafe(resource)
   {
   }
 

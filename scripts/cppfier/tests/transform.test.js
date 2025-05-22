@@ -120,7 +120,7 @@ test("structs transform resources", () => {
         "structs.h": {
           transform: {
             "MyType1": {
-              name: "Type1Base",
+              name: "Type1Ref",
               type: "T",
               kind: "struct",
               template: [{

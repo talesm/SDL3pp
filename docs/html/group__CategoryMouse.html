@@ -84,11 +84,11 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorBase.html">SDL::CursorBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The structure used to identify an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> cursor.  <a href="structSDL_1_1CursorBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html">SDL::CursorRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned cursor.  <a href="structSDL_1_1CursorRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The structure used to identify an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> cursor.  <a href="structSDL_1_1CursorRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorUnsafe.html">SDL::CursorUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to cursor.  <a href="structSDL_1_1CursorUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html">SDL::Cursor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned cursor.  <a href="structSDL_1_1Cursor.html#details">More...</a><br /></td></tr>
@@ -97,7 +97,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga18c02aef67d85f2fbf2758204eba125d" id="r_ga18c02aef67d85f2fbf2758204eba125d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SDL::SystemCursor</a> = SDL_SystemCursor</td></tr>
-<tr class="memdesc:ga18c02aef67d85f2fbf2758204eba125d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> types for <a class="el" href="structSDL_1_1CursorBase.html#ab713b50b78e0c0a5d6aafdb72a4249f3" title="Create a cursor using the specified bitmap data and mask (in MSB format).">CursorBase.CursorBase()</a>.  <br /></td></tr>
+<tr class="memdesc:ga18c02aef67d85f2fbf2758204eba125d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> types for <a class="el" href="structSDL_1_1CursorRef.html#ac41c8af0b143f085ed5d711a2c81969e" title="Copy constructor.">CursorRef.CursorRef()</a>.  <br /></td></tr>
 <tr class="separator:ga18c02aef67d85f2fbf2758204eba125d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga733d09de50440ff2a5587b8a47080440" id="r_ga733d09de50440ff2a5587b8a47080440"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga733d09de50440ff2a5587b8a47080440">SDL::MouseID</a> = SDL_MouseID</td></tr>
 <tr class="memdesc:ga733d09de50440ff2a5587b8a47080440"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a unique ID for a mouse for the time it is connected to the system, and is never reused for the lifetime of the application.  <br /></td></tr>
@@ -145,9 +145,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4545ed8ad78078db5e70b80883cb5c3a" id="r_ga4545ed8ad78078db5e70b80883cb5c3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga4545ed8ad78078db5e70b80883cb5c3a">SDL::CaptureMouse</a> (bool enabled)</td></tr>
 <tr class="memdesc:ga4545ed8ad78078db5e70b80883cb5c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Capture the mouse and to track input outside an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> window.  <br /></td></tr>
 <tr class="separator:ga4545ed8ad78078db5e70b80883cb5c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae120fdb2322a643f2564c367cb17e1bc" id="r_gae120fdb2322a643f2564c367cb17e1bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gae120fdb2322a643f2564c367cb17e1bc">SDL::SetCursor</a> (<a class="el" href="structSDL_1_1CursorBase.html">CursorBase</a> &amp;cursor)</td></tr>
-<tr class="memdesc:gae120fdb2322a643f2564c367cb17e1bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the active cursor.  <br /></td></tr>
-<tr class="separator:gae120fdb2322a643f2564c367cb17e1bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0cabce2fcea4d30c16666f021d1615ab" id="r_ga0cabce2fcea4d30c16666f021d1615ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0cabce2fcea4d30c16666f021d1615ab">SDL::SetCursor</a> (<a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;cursor)</td></tr>
+<tr class="memdesc:ga0cabce2fcea4d30c16666f021d1615ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the active cursor.  <br /></td></tr>
+<tr class="separator:ga0cabce2fcea4d30c16666f021d1615ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f844c5e311014fb6fbd27d2f6105c09" id="r_ga2f844c5e311014fb6fbd27d2f6105c09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga2f844c5e311014fb6fbd27d2f6105c09">SDL::GetCursor</a> ()</td></tr>
 <tr class="memdesc:ga2f844c5e311014fb6fbd27d2f6105c09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the active cursor.  <br /></td></tr>
 <tr class="separator:ga2f844c5e311014fb6fbd27d2f6105c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,15 +163,15 @@ Functions</h2></td></tr>
 <tr class="memitem:gac4547e18959c21ca560b54349634f47b" id="r_gac4547e18959c21ca560b54349634f47b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gac4547e18959c21ca560b54349634f47b">SDL::CursorVisible</a> ()</td></tr>
 <tr class="memdesc:gac4547e18959c21ca560b54349634f47b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether the cursor is currently being shown.  <br /></td></tr>
 <tr class="separator:gac4547e18959c21ca560b54349634f47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga499e4d38d982020414f6d9ef7aae90a4" id="r_ga499e4d38d982020414f6d9ef7aae90a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga499e4d38d982020414f6d9ef7aae90a4">SDL::WindowBase::WarpMouse</a> (float x, float y)</td></tr>
-<tr class="memdesc:ga499e4d38d982020414f6d9ef7aae90a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the mouse cursor to the given position within the window.  <br /></td></tr>
-<tr class="separator:ga499e4d38d982020414f6d9ef7aae90a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab2ebcf5a109892673b9f87e562749ac5" id="r_gab2ebcf5a109892673b9f87e562749ac5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gab2ebcf5a109892673b9f87e562749ac5">SDL::WindowBase::SetRelativeMouseMode</a> (bool enabled)</td></tr>
-<tr class="memdesc:gab2ebcf5a109892673b9f87e562749ac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set relative mouse mode for a window.  <br /></td></tr>
-<tr class="separator:gab2ebcf5a109892673b9f87e562749ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga96c4eb552f961299b294ae8479880eca" id="r_ga96c4eb552f961299b294ae8479880eca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga96c4eb552f961299b294ae8479880eca">SDL::WindowBase::GetRelativeMouseMode</a> () const</td></tr>
-<tr class="memdesc:ga96c4eb552f961299b294ae8479880eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether relative mouse mode is enabled for a window.  <br /></td></tr>
-<tr class="separator:ga96c4eb552f961299b294ae8479880eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0b838bf7c4e62a00187e28def4de70d3" id="r_ga0b838bf7c4e62a00187e28def4de70d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0b838bf7c4e62a00187e28def4de70d3">SDL::WindowRef::WarpMouse</a> (float x, float y)</td></tr>
+<tr class="memdesc:ga0b838bf7c4e62a00187e28def4de70d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the mouse cursor to the given position within the window.  <br /></td></tr>
+<tr class="separator:ga0b838bf7c4e62a00187e28def4de70d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga76b2b4117079a4a17a0b61684c25d343" id="r_ga76b2b4117079a4a17a0b61684c25d343"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga76b2b4117079a4a17a0b61684c25d343">SDL::WindowRef::SetRelativeMouseMode</a> (bool enabled)</td></tr>
+<tr class="memdesc:ga76b2b4117079a4a17a0b61684c25d343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set relative mouse mode for a window.  <br /></td></tr>
+<tr class="separator:ga76b2b4117079a4a17a0b61684c25d343"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b2b046a18896a5af98454fdafc86fa5" id="r_ga5b2b046a18896a5af98454fdafc86fa5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga5b2b046a18896a5af98454fdafc86fa5">SDL::WindowRef::GetRelativeMouseMode</a> () const</td></tr>
+<tr class="memdesc:ga5b2b046a18896a5af98454fdafc86fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether relative mouse mode is enabled for a window.  <br /></td></tr>
+<tr class="separator:ga5b2b046a18896a5af98454fdafc86fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -284,8 +284,8 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Most interactions with the mouse will come through the event subsystem. Moving a mouse generates an EVENT_MOUSE_MOTION event, pushing a button generates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the current state of the mouse at any time with <a class="el" href="group__CategoryMouse.html#ga83b4f3753f840a29688be524a83f610f" title="Query SDL&#39;s cache for the synchronous mouse button state and the window-relative SDL-cursor position.">GetMouseState()</a>.</p>
-<p>For certain games, it's useful to disassociate the mouse cursor from mouse input. An FPS, for example, would not want the player's motion to stop as the mouse hits the edge of the window. For these scenarios, use <a class="el" href="group__CategoryMouse.html#gab2ebcf5a109892673b9f87e562749ac5" title="Set relative mouse mode for a window.">WindowBase.SetRelativeMouseMode()</a>, which hides the cursor, grabs mouse input to the window, and reads mouse input no matter how far it moves.</p>
-<p>Games that want the system to track the mouse but want to draw their own cursor can use <a class="el" href="group__CategoryMouse.html#gaf0f9b4279e667e985373bed9f896385e" title="Hide the cursor.">HideCursor()</a> and <a class="el" href="group__CategoryMouse.html#gaf819a266866ac1cbc7491c5ad4bd6fdd" title="Show the cursor.">ShowCursor()</a>. It might be more efficient to let the system manage the cursor, if possible, using <a class="el" href="group__CategoryMouse.html#gae120fdb2322a643f2564c367cb17e1bc" title="Set the active cursor.">SetCursor()</a> with a custom image made through <a class="el" href="structSDL_1_1CursorBase.html#ab713b50b78e0c0a5d6aafdb72a4249f3" title="Create a cursor using the specified bitmap data and mask (in MSB format).">CursorBase.CursorBase()</a>, or perhaps just a specific system cursor from <a class="el" href="structSDL_1_1CursorBase.html#ab713b50b78e0c0a5d6aafdb72a4249f3" title="Create a cursor using the specified bitmap data and mask (in MSB format).">CursorBase.CursorBase()</a>.</p>
+<p>For certain games, it's useful to disassociate the mouse cursor from mouse input. An FPS, for example, would not want the player's motion to stop as the mouse hits the edge of the window. For these scenarios, use <a class="el" href="group__CategoryMouse.html#ga76b2b4117079a4a17a0b61684c25d343" title="Set relative mouse mode for a window.">WindowRef.SetRelativeMouseMode()</a>, which hides the cursor, grabs mouse input to the window, and reads mouse input no matter how far it moves.</p>
+<p>Games that want the system to track the mouse but want to draw their own cursor can use <a class="el" href="group__CategoryMouse.html#gaf0f9b4279e667e985373bed9f896385e" title="Hide the cursor.">HideCursor()</a> and <a class="el" href="group__CategoryMouse.html#gaf819a266866ac1cbc7491c5ad4bd6fdd" title="Show the cursor.">ShowCursor()</a>. It might be more efficient to let the system manage the cursor, if possible, using <a class="el" href="group__CategoryMouse.html#ga0cabce2fcea4d30c16666f021d1615ab" title="Set the active cursor.">SetCursor()</a> with a custom image made through <a class="el" href="structSDL_1_1CursorRef.html#ac41c8af0b143f085ed5d711a2c81969e" title="Copy constructor.">CursorRef.CursorRef()</a>, or perhaps just a specific system cursor from <a class="el" href="structSDL_1_1CursorRef.html#ac41c8af0b143f085ed5d711a2c81969e" title="Copy constructor.">CursorRef.CursorRef()</a>.</p>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can, on many platforms, differentiate between multiple connected mice, allowing for interesting input scenarios and multiplayer games. They can be enumerated with <a class="el" href="group__CategoryMouse.html#gae6a2284e9cbc6ed3904dbcc27ea066ad" title="Get a list of currently connected mice.">GetMice()</a>, and <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send EVENT_MOUSE_ADDED and EVENT_MOUSE_REMOVED events as they are connected and unplugged.</p>
 <p>Since many apps only care about basic mouse input, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> offers a virtual mouse device for touch and pen input, which often can make a desktop application work on a touchscreen phone without any code changes. Apps that care about touch/pen separately from mouse input should filter out events with a <code>which</code> field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -421,7 +421,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 </table>
 </div><div class="memdoc">
 <p>Capturing enables your app to obtain mouse events globally, instead of just within your window. Not all video targets support this function. When capturing is enabled, the current window will get all mouse events, but unlike relative mode, no change is made to the cursor and it is not restrained to your window.</p>
-<p>This function may also deny mouse input to other windows&ndash;both those in your application and others on the system&ndash;so you should use this function sparingly, and in small bursts. For example, you might want to track the mouse while the user is dragging something, until the user releases a mouse button. It is not recommended that you capture the mouse for long periods of time, such as the entire time your app is running. For that, you should probably use <a class="el" href="group__CategoryMouse.html#gab2ebcf5a109892673b9f87e562749ac5" title="Set relative mouse mode for a window.">WindowBase.SetRelativeMouseMode()</a> or <a class="el" href="structSDL_1_1WindowBase.html#a2854025fe0f08eb07e5359a85fab29ab" title="Set a window&#39;s mouse grab mode.">WindowBase.SetMouseGrab()</a>, depending on your goals.</p>
+<p>This function may also deny mouse input to other windows&ndash;both those in your application and others on the system&ndash;so you should use this function sparingly, and in small bursts. For example, you might want to track the mouse while the user is dragging something, until the user releases a mouse button. It is not recommended that you capture the mouse for long periods of time, such as the entire time your app is running. For that, you should probably use <a class="el" href="group__CategoryMouse.html#ga76b2b4117079a4a17a0b61684c25d343" title="Set relative mouse mode for a window.">WindowRef.SetRelativeMouseMode()</a> or <a class="el" href="structSDL_1_1WindowRef.html#a9bd7d9f4ba877839f9c37d1aa31fd3c9" title="Set a window&#39;s mouse grab mode.">WindowRef.SetMouseGrab()</a>, depending on your goals.</p>
 <p>While captured, mouse events still report coordinates relative to the current (foreground) window, but those coordinates may be outside the bounds of the window (including negative values). Capturing is only allowed for the foreground window. If the window loses focus while capturing, the capture will be disabled automatically.</p>
 <p>While capturing is enabled, the current window will have the <code>WINDOW_MOUSE_CAPTURE</code> flag set.</p>
 <p>Please note that <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will attempt to "auto capture" the mouse while the user is pressing a button; this is to try and make mouse behavior more consistent between platforms, and deal with the common case of a user dragging the mouse outside of the window. This means that if you are calling <a class="el" href="group__CategoryMouse.html#ga4545ed8ad78078db5e70b80883cb5c3a" title="Capture the mouse and to track input outside an SDL window.">CaptureMouse()</a> only to deal with this situation, you do not have to (although it is safe to do so). If this causes problems for your app, you can disable auto capture by setting the <code>SDL_HINT_MOUSE_AUTO_CAPTURE</code> hint to zero.</p>
@@ -500,7 +500,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 <dl class="section return"><dt>Returns</dt><dd>the active cursor or nullptr if there is no mouse.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#gae120fdb2322a643f2564c367cb17e1bc" title="Set the active cursor.">SetCursor</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga0cabce2fcea4d30c16666f021d1615ab" title="Set the active cursor.">SetCursor</a> </dd></dl>
 
 </div>
 </div>
@@ -574,7 +574,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 </div><div class="memdoc">
 <p>This function immediately queries the platform for the most recent asynchronous state, more costly than retrieving <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s cached state in <a class="el" href="group__CategoryMouse.html#ga83b4f3753f840a29688be524a83f610f" title="Query SDL&#39;s cache for the synchronous mouse button state and the window-relative SDL-cursor position.">GetMouseState()</a>.</p>
 <p>Passing non-nullptr pointers to <code>x</code> or <code>y</code> will write the destination with respective x or y coordinates relative to the desktop.</p>
-<p>In Relative Mode, the platform-cursor's position usually contradicts the SDL-cursor's position as manually calculated from <a class="el" href="group__CategoryMouse.html#ga83b4f3753f840a29688be524a83f610f" title="Query SDL&#39;s cache for the synchronous mouse button state and the window-relative SDL-cursor position.">GetMouseState()</a> and <a class="el" href="structSDL_1_1WindowBase.html#a77fedba57b084035b4a2d07490cbf0bc" title="Get the position of a window.">WindowBase.GetPosition</a>.</p>
+<p>In Relative Mode, the platform-cursor's position usually contradicts the SDL-cursor's position as manually calculated from <a class="el" href="group__CategoryMouse.html#ga83b4f3753f840a29688be524a83f610f" title="Query SDL&#39;s cache for the synchronous mouse button state and the window-relative SDL-cursor position.">GetMouseState()</a> and <a class="el" href="structSDL_1_1WindowRef.html#a4b8c90e5891161362744f1af6e05f34c" title="Get the position of a window.">WindowRef.GetPosition</a>.</p>
 <p>This function can be useful if you need to track the mouse outside of a specific window and <a class="el" href="group__CategoryMouse.html#ga4545ed8ad78078db5e70b80883cb5c3a" title="Capture the mouse and to track input outside an SDL window.">CaptureMouse()</a> doesn't fit your needs. For example, it could be useful if you need to track the mouse while dragging a window, where coordinates relative to a window might not be in sync at all times.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -739,7 +739,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 <p>This function returns the cached synchronous state as <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> understands it from the last pump of the event queue.</p>
 <p>To query the platform for immediate asynchronous state, use GetGlobalMouseState.</p>
 <p>Passing non-nullptr pointers to <code>x</code> or <code>y</code> will write the destination with respective x or y coordinates relative to the focused window.</p>
-<p>In Relative Mode, the SDL-cursor's position usually contradicts the platform-cursor's position as manually calculated from <a class="el" href="group__CategoryMouse.html#ga5c007f887bc456205735b082692fe7da" title="Query the platform for the asynchronous mouse button state and the desktop-relative platform-cursor p...">GetGlobalMouseState()</a> and <a class="el" href="structSDL_1_1WindowBase.html#a77fedba57b084035b4a2d07490cbf0bc" title="Get the position of a window.">WindowBase.GetPosition</a>.</p>
+<p>In Relative Mode, the SDL-cursor's position usually contradicts the platform-cursor's position as manually calculated from <a class="el" href="group__CategoryMouse.html#ga5c007f887bc456205735b082692fe7da" title="Query the platform for the asynchronous mouse button state and the desktop-relative platform-cursor p...">GetGlobalMouseState()</a> and <a class="el" href="structSDL_1_1WindowRef.html#a4b8c90e5891161362744f1af6e05f34c" title="Get the position of a window.">WindowRef.GetPosition</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>a pointer to receive the SDL-cursor's x-position from the focused window's top left corner, can be nullptr if unused. </td></tr>
@@ -756,8 +756,8 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 
 </div>
 </div>
-<a id="ga96c4eb552f961299b294ae8479880eca" name="ga96c4eb552f961299b294ae8479880eca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga96c4eb552f961299b294ae8479880eca">&#9670;&#160;</a></span>GetRelativeMouseMode()</h2>
+<a id="ga5b2b046a18896a5af98454fdafc86fa5" name="ga5b2b046a18896a5af98454fdafc86fa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5b2b046a18896a5af98454fdafc86fa5">&#9670;&#160;</a></span>GetRelativeMouseMode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -766,7 +766,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::WindowBase::GetRelativeMouseMode </td>
+          <td class="memname">bool SDL::WindowRef::GetRelativeMouseMode </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -781,7 +781,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 <dl class="section return"><dt>Returns</dt><dd>true if relative mode is enabled for a window or false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#gab2ebcf5a109892673b9f87e562749ac5" title="Set relative mouse mode for a window.">WindowBase.SetRelativeMouseMode</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga76b2b4117079a4a17a0b61684c25d343" title="Set relative mouse mode for a window.">WindowRef.SetRelativeMouseMode</a> </dd></dl>
 
 </div>
 </div>
@@ -903,8 +903,8 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 
 </div>
 </div>
-<a id="gae120fdb2322a643f2564c367cb17e1bc" name="gae120fdb2322a643f2564c367cb17e1bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae120fdb2322a643f2564c367cb17e1bc">&#9670;&#160;</a></span>SetCursor()</h2>
+<a id="ga0cabce2fcea4d30c16666f021d1615ab" name="ga0cabce2fcea4d30c16666f021d1615ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0cabce2fcea4d30c16666f021d1615ab">&#9670;&#160;</a></span>SetCursor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -915,7 +915,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
         <tr>
           <td class="memname">void SDL::SetCursor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1CursorBase.html">CursorBase</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;&#160;</td>
           <td class="paramname"><em>cursor</em></td><td>)</td>
           <td></td>
         </tr>
@@ -945,8 +945,8 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 
 </div>
 </div>
-<a id="gab2ebcf5a109892673b9f87e562749ac5" name="gab2ebcf5a109892673b9f87e562749ac5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab2ebcf5a109892673b9f87e562749ac5">&#9670;&#160;</a></span>SetRelativeMouseMode()</h2>
+<a id="ga76b2b4117079a4a17a0b61684c25d343" name="ga76b2b4117079a4a17a0b61684c25d343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga76b2b4117079a4a17a0b61684c25d343">&#9670;&#160;</a></span>SetRelativeMouseMode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -955,7 +955,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::WindowBase::SetRelativeMouseMode </td>
+          <td class="memname">void SDL::WindowRef::SetRelativeMouseMode </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>enabled</em></td><td>)</td>
@@ -969,7 +969,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 </table>
 </div><div class="memdoc">
 <p>While the window has focus and relative mouse mode is enabled, the cursor is hidden, the mouse position is constrained to the window, and <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will report continuous relative mouse motion even if the mouse is at the edge of the window.</p>
-<p>If you'd like to keep the mouse position fixed while in relative mode you can use <a class="el" href="structSDL_1_1WindowBase.html#a52d719b21c269f3569875078eadd5147" title="Confines the cursor to the specified area of a window.">WindowBase.SetMouseRect()</a>. If you'd like the cursor to be at a specific location when relative mode ends, you should use <a class="el" href="group__CategoryMouse.html#ga499e4d38d982020414f6d9ef7aae90a4" title="Move the mouse cursor to the given position within the window.">WindowBase.WarpMouse()</a> before disabling relative mode.</p>
+<p>If you'd like to keep the mouse position fixed while in relative mode you can use <a class="el" href="structSDL_1_1WindowRef.html#a2ca4f7609682d1373503813829d042f4" title="Confines the cursor to the specified area of a window.">WindowRef.SetMouseRect()</a>. If you'd like the cursor to be at a specific location when relative mode ends, you should use <a class="el" href="group__CategoryMouse.html#ga0b838bf7c4e62a00187e28def4de70d3" title="Move the mouse cursor to the given position within the window.">WindowRef.WarpMouse()</a> before disabling relative mode.</p>
 <p>This function will flush any pending mouse motion for this window.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -985,7 +985,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga96c4eb552f961299b294ae8479880eca" title="Query whether relative mouse mode is enabled for a window.">WindowBase.GetRelativeMouseMode</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga5b2b046a18896a5af98454fdafc86fa5" title="Query whether relative mouse mode is enabled for a window.">WindowRef.GetRelativeMouseMode</a> </dd></dl>
 
 </div>
 </div>
@@ -1076,12 +1076,12 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga499e4d38d982020414f6d9ef7aae90a4" title="Move the mouse cursor to the given position within the window.">WindowBase.WarpMouse</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga0b838bf7c4e62a00187e28def4de70d3" title="Move the mouse cursor to the given position within the window.">WindowRef.WarpMouse</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga499e4d38d982020414f6d9ef7aae90a4" name="ga499e4d38d982020414f6d9ef7aae90a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga499e4d38d982020414f6d9ef7aae90a4">&#9670;&#160;</a></span>WarpMouse() <span class="overload">[2/2]</span></h2>
+<a id="ga0b838bf7c4e62a00187e28def4de70d3" name="ga0b838bf7c4e62a00187e28def4de70d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0b838bf7c4e62a00187e28def4de70d3">&#9670;&#160;</a></span>WarpMouse() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1090,7 +1090,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::WindowBase::WarpMouse </td>
+          <td class="memname">void SDL::WindowRef::WarpMouse </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>x</em>, </td>
@@ -1124,7 +1124,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga499e4d38d982020414f6d9ef7aae90a4" title="Move the mouse cursor to the given position within the window.">WarpMouse</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga0b838bf7c4e62a00187e28def4de70d3" title="Move the mouse cursor to the given position within the window.">WarpMouse</a> </dd></dl>
 
 </div>
 </div>

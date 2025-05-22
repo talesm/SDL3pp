@@ -96,11 +96,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FColor.html">SDL::FColor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bits of this structure can be directly reinterpreted as a float-packed color which uses the PIXELFORMAT_RGBA128_FLOAT format.  <a href="structSDL_1_1FColor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html">SDL::PaletteBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of indexed colors representing a palette.  <a href="structSDL_1_1PaletteBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteRef.html">SDL::PaletteRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned palette.  <a href="structSDL_1_1PaletteRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of indexed colors representing a palette.  <a href="structSDL_1_1PaletteRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteUnsafe.html">SDL::PaletteUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to palette.  <a href="structSDL_1_1PaletteUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Palette.html">SDL::Palette</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned palette.  <a href="structSDL_1_1Palette.html#details">More...</a><br /></td></tr>
@@ -135,18 +135,18 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga0154cb3b56b41f03cb7b21b627b1626c" id="r_ga0154cb3b56b41f03cb7b21b627b1626c"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c">SDL::MapRGB</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;palette, Uint8 r, Uint8 g, Uint8 b)</td></tr>
-<tr class="memdesc:ga0154cb3b56b41f03cb7b21b627b1626c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGB triple to an opaque pixel value for a given pixel format.  <br /></td></tr>
-<tr class="separator:ga0154cb3b56b41f03cb7b21b627b1626c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3ab23ef5a4df2ea8aef4df1ed0088fd4" id="r_ga3ab23ef5a4df2ea8aef4df1ed0088fd4"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4">SDL::MapRGBA</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;palette, Uint8 r, Uint8 g, Uint8 b, Uint8 a)</td></tr>
-<tr class="memdesc:ga3ab23ef5a4df2ea8aef4df1ed0088fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a given pixel format.  <br /></td></tr>
-<tr class="separator:ga3ab23ef5a4df2ea8aef4df1ed0088fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeb6958ed7d37f689e9f925dcced856e2" id="r_gaeb6958ed7d37f689e9f925dcced856e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaeb6958ed7d37f689e9f925dcced856e2">SDL::GetRGB</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;palette, Uint8 *r, Uint8 *g, Uint8 *b)</td></tr>
-<tr class="memdesc:gaeb6958ed7d37f689e9f925dcced856e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGB values from a pixel in the specified format.  <br /></td></tr>
-<tr class="separator:gaeb6958ed7d37f689e9f925dcced856e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaea943762e402bea20719ac40c6380bee" id="r_gaea943762e402bea20719ac40c6380bee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaea943762e402bea20719ac40c6380bee">SDL::GetRGBA</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a)</td></tr>
-<tr class="memdesc:gaea943762e402bea20719ac40c6380bee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGBA values from a pixel in the specified format.  <br /></td></tr>
-<tr class="separator:gaea943762e402bea20719ac40c6380bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaffd17bffce7d22dd94ab1dc8257af1b9" id="r_gaffd17bffce7d22dd94ab1dc8257af1b9"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaffd17bffce7d22dd94ab1dc8257af1b9">SDL::MapRGB</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;palette, Uint8 r, Uint8 g, Uint8 b)</td></tr>
+<tr class="memdesc:gaffd17bffce7d22dd94ab1dc8257af1b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGB triple to an opaque pixel value for a given pixel format.  <br /></td></tr>
+<tr class="separator:gaffd17bffce7d22dd94ab1dc8257af1b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga771b5a63cb9c353eb4e51f3f0d65040d" id="r_ga771b5a63cb9c353eb4e51f3f0d65040d"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga771b5a63cb9c353eb4e51f3f0d65040d">SDL::MapRGBA</a> (const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;palette, Uint8 r, Uint8 g, Uint8 b, Uint8 a)</td></tr>
+<tr class="memdesc:ga771b5a63cb9c353eb4e51f3f0d65040d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a given pixel format.  <br /></td></tr>
+<tr class="separator:ga771b5a63cb9c353eb4e51f3f0d65040d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga153e6a7c8e9538e7f894a5336e5649da" id="r_ga153e6a7c8e9538e7f894a5336e5649da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga153e6a7c8e9538e7f894a5336e5649da">SDL::GetRGB</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;palette, Uint8 *r, Uint8 *g, Uint8 *b)</td></tr>
+<tr class="memdesc:ga153e6a7c8e9538e7f894a5336e5649da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGB values from a pixel in the specified format.  <br /></td></tr>
+<tr class="separator:ga153e6a7c8e9538e7f894a5336e5649da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga53c2c1db218e00f3eee6e55876c4e20c" id="r_ga53c2c1db218e00f3eee6e55876c4e20c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#ga53c2c1db218e00f3eee6e55876c4e20c">SDL::GetRGBA</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, const <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a)</td></tr>
+<tr class="memdesc:ga53c2c1db218e00f3eee6e55876c4e20c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGBA values from a pixel in the specified format.  <br /></td></tr>
+<tr class="separator:ga53c2c1db218e00f3eee6e55876c4e20c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">PixelTypes</h2></td></tr>
 <tr class="memitem:gaedfdadf087ddd7d55c732a8f05d2bde2" id="r_gaedfdadf087ddd7d55c732a8f05d2bde2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gaedfdadf087ddd7d55c732a8f05d2bde2">SDL::PixelType</a> = SDL_PixelType</td></tr>
@@ -936,7 +936,7 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
 </div><div class="memdoc">
 <p>For example, defining PIXELFORMAT_YV12 looks like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_define" href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a>(<span class="charliteral">&#39;Y&#39;</span>, <span class="charliteral">&#39;V&#39;</span>, <span class="charliteral">&#39;1&#39;</span>, <span class="charliteral">&#39;2&#39;</span>)</div>
-<div class="ttc" id="agroup__CategoryPixels_html_ga7dc1903b18ca972a3676628782873f71"><div class="ttname"><a href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a></div><div class="ttdeci">#define SDL_DEFINE_PIXELFOURCC(A, B, C, D)</div><div class="ttdoc">A macro for defining custom FourCC pixel formats.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:307</div></div>
+<div class="ttc" id="agroup__CategoryPixels_html_ga7dc1903b18ca972a3676628782873f71"><div class="ttname"><a href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a></div><div class="ttdeci">#define SDL_DEFINE_PIXELFOURCC(A, B, C, D)</div><div class="ttdoc">A macro for defining custom FourCC pixel formats.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:304</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>the first character of the FourCC code. </td></tr>
@@ -1164,8 +1164,8 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gaeb6958ed7d37f689e9f925dcced856e2" name="gaeb6958ed7d37f689e9f925dcced856e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaeb6958ed7d37f689e9f925dcced856e2">&#9670;&#160;</a></span>GetRGB()</h2>
+<a id="ga153e6a7c8e9538e7f894a5336e5649da" name="ga153e6a7c8e9538e7f894a5336e5649da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga153e6a7c8e9538e7f894a5336e5649da">&#9670;&#160;</a></span>GetRGB()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1188,7 +1188,7 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;&#160;</td>
           <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
@@ -1237,16 +1237,16 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gaea943762e402bea20719ac40c6380bee" title="Get RGBA values from a pixel in the specified format.">GetRGBA</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga53c2c1db218e00f3eee6e55876c4e20c" title="Get RGBA values from a pixel in the specified format.">GetRGBA</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaffd17bffce7d22dd94ab1dc8257af1b9" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd></dl>
+<a class="el" href="group__CategoryPixels.html#ga771b5a63cb9c353eb4e51f3f0d65040d" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd></dl>
 
 </div>
 </div>
-<a id="gaea943762e402bea20719ac40c6380bee" name="gaea943762e402bea20719ac40c6380bee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaea943762e402bea20719ac40c6380bee">&#9670;&#160;</a></span>GetRGBA()</h2>
+<a id="ga53c2c1db218e00f3eee6e55876c4e20c" name="ga53c2c1db218e00f3eee6e55876c4e20c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga53c2c1db218e00f3eee6e55876c4e20c">&#9670;&#160;</a></span>GetRGBA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1269,7 +1269,7 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;&#160;</td>
           <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
@@ -1326,16 +1326,16 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gaeb6958ed7d37f689e9f925dcced856e2" title="Get RGB values from a pixel in the specified format.">GetRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga153e6a7c8e9538e7f894a5336e5649da" title="Get RGB values from a pixel in the specified format.">GetRGB</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaffd17bffce7d22dd94ab1dc8257af1b9" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd></dl>
+<a class="el" href="group__CategoryPixels.html#ga771b5a63cb9c353eb4e51f3f0d65040d" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga0154cb3b56b41f03cb7b21b627b1626c" name="ga0154cb3b56b41f03cb7b21b627b1626c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0154cb3b56b41f03cb7b21b627b1626c">&#9670;&#160;</a></span>MapRGB()</h2>
+<a id="gaffd17bffce7d22dd94ab1dc8257af1b9" name="gaffd17bffce7d22dd94ab1dc8257af1b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaffd17bffce7d22dd94ab1dc8257af1b9">&#9670;&#160;</a></span>MapRGB()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1352,7 +1352,7 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;&#160;</td>
           <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
@@ -1404,16 +1404,16 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gaeb6958ed7d37f689e9f925dcced856e2" title="Get RGB values from a pixel in the specified format.">GetRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga153e6a7c8e9538e7f894a5336e5649da" title="Get RGB values from a pixel in the specified format.">GetRGB</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga3ab23ef5a4df2ea8aef4df1ed0088fd4" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga771b5a63cb9c353eb4e51f3f0d65040d" title="Map an RGBA quadruple to a pixel value for a given pixel format.">MapRGBA</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceBase.html#a788252ffebfba64d8239ac7af3b667e8" title="Map an RGBA quadruple to a pixel value for a surface.">SurfaceBase.MapColor</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceRef.html#a8e52373eccd909bc58357160d05112c7" title="Map an RGBA quadruple to a pixel value for a surface.">SurfaceRef.MapColor</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga3ab23ef5a4df2ea8aef4df1ed0088fd4" name="ga3ab23ef5a4df2ea8aef4df1ed0088fd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3ab23ef5a4df2ea8aef4df1ed0088fd4">&#9670;&#160;</a></span>MapRGBA()</h2>
+<a id="ga771b5a63cb9c353eb4e51f3f0d65040d" name="ga771b5a63cb9c353eb4e51f3f0d65040d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga771b5a63cb9c353eb4e51f3f0d65040d">&#9670;&#160;</a></span>MapRGBA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1430,7 +1430,7 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteBase.html">PaletteBase</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;&#160;</td>
           <td class="paramname"><em>palette</em>, </td>
         </tr>
         <tr>
@@ -1489,11 +1489,11 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41" title="Create an PixelFormatDetails structure corresponding to a pixel format.">PixelFormat.GetDetails</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#gaea943762e402bea20719ac40c6380bee" title="Get RGBA values from a pixel in the specified format.">GetRGBA</a> </dd>
+<a class="el" href="group__CategoryPixels.html#ga53c2c1db218e00f3eee6e55876c4e20c" title="Get RGBA values from a pixel in the specified format.">GetRGBA</a> </dd>
 <dd>
-<a class="el" href="group__CategoryPixels.html#ga0154cb3b56b41f03cb7b21b627b1626c" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
+<a class="el" href="group__CategoryPixels.html#gaffd17bffce7d22dd94ab1dc8257af1b9" title="Map an RGB triple to an opaque pixel value for a given pixel format.">MapRGB</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceBase.html#a788252ffebfba64d8239ac7af3b667e8" title="Map an RGBA quadruple to a pixel value for a surface.">SurfaceBase.MapColor</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceRef.html#a8e52373eccd909bc58357160d05112c7" title="Map an RGBA quadruple to a pixel value for a surface.">SurfaceRef.MapColor</a> </dd></dl>
 
 </div>
 </div>

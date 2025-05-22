@@ -340,7 +340,7 @@ constexpr PathType PATHTYPE_OTHER = SDL_PATHTYPE_OTHER;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GetPathInfo
- * @sa StorageBase.GetPathInfo
+ * @sa StorageRef.GetPathInfo
  */
 struct PathInfo : SDL_PathInfo
 {
@@ -375,7 +375,7 @@ struct PathInfo : SDL_PathInfo
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GlobDirectory
- * @sa StorageBase.GlobDirectory
+ * @sa StorageRef.GlobDirectory
  */
 using GlobFlags = Uint32;
 

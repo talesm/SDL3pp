@@ -290,7 +290,7 @@ namespace SDL {
  * show up in a system control panel that lets the user adjust the volume on
  * specific audio streams instead of using one giant master volume slider.
  * Note that this is unrelated to the icon used by the windowing system, which
- * may be set with WindowBase.SetIcon (or via desktop file on Wayland).
+ * may be set with WindowRef.SetIcon (or via desktop file on Wayland).
  *
  * Setting this to "" or leaving it unset will have SDL use a reasonable
  * default, "applications-games", which is likely to be installed. See
@@ -734,7 +734,7 @@ namespace SDL {
  * - "0": Do not show the on-screen keyboard.
  * - "1": Show the on-screen keyboard, if available.
  *
- * This hint must be set before WindowBase.StartTextInput() is called
+ * This hint must be set before WindowRef.StartTextInput() is called
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -816,7 +816,7 @@ namespace SDL {
  * - "X": Enable 3D acceleration, using X where X is one of the valid
  *   rendering drivers. (e.g. "direct3d", "opengl", etc.)
  *
- * This hint should be set before calling WindowBase.GetSurface()
+ * This hint should be set before calling WindowRef.GetSurface()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -944,7 +944,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowBase.StartTextInput()
+ * This hint should be set before calling WindowRef.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -956,7 +956,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowBase.StartTextInput()
+ * This hint should be set before calling WindowRef.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -971,7 +971,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowBase.StartTextInput()
+ * This hint should be set before calling WindowRef.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -987,7 +987,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowBase.StartTextInput()
+ * This hint should be set before calling WindowRef.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -998,7 +998,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowBase.StartTextInput()
+ * This hint should be set before calling WindowRef.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3164,7 +3164,7 @@ namespace SDL {
  * - "1": Force THREAD_PRIORITY_TIME_CRITICAL to a realtime scheduling
  *   policy
  *
- * This hint should be set before calling ThreadBase.SetCurrentPriority()
+ * This hint should be set before calling ThreadRef.SetCurrentPriority()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3173,9 +3173,9 @@ namespace SDL {
 
 /**
  * A string specifying additional information to use with
- * ThreadBase.SetCurrentPriority.
+ * ThreadRef.SetCurrentPriority.
  *
- * By default ThreadBase.SetCurrentPriority will make appropriate system
+ * By default ThreadRef.SetCurrentPriority will make appropriate system
  * changes in order to apply a thread priority. For example on systems using
  * pthreads the scheduler policy is changed automatically to a policy that
  * works well with a given priority. Code which has specific requirements can
@@ -3186,9 +3186,9 @@ namespace SDL {
  *
  * On Linux, the kernel may send SIGKILL to realtime tasks which exceed the
  * distro configured execution budget for rtkit. This budget can be queried
- * through RLIMIT_RTTIME after calling ThreadBase.SetCurrentPriority().
+ * through RLIMIT_RTTIME after calling ThreadRef.SetCurrentPriority().
  *
- * This hint should be set before calling ThreadBase.SetCurrentPriority()
+ * This hint should be set before calling ThreadRef.SetCurrentPriority()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3418,7 +3418,7 @@ namespace SDL {
  * - "1": The menu will be accessible when the window is in a fullscreen
  *   space.
  * - "auto": The menu will be hidden if fullscreen mode was toggled on
- *   programmatically via `WindowBase.SetFullscreen()`, and accessible if
+ *   programmatically via `WindowRef.SetFullscreen()`, and accessible if
  *   fullscreen was entered via the "fullscreen" button on the window title
  *   bar. (default)
  *
@@ -3471,7 +3471,7 @@ namespace SDL {
  * return of the requesting function. Setting this hint will cause such
  * operations to block after every call until the pending operation has
  * completed. Setting this to '1' is the equivalent of calling
- * WindowBase.Sync() after every function call.
+ * WindowRef.Sync() after every function call.
  *
  * Be aware that amount of time spent blocking while waiting for window
  * operations to complete can be quite lengthy, as animations may have to
@@ -3959,13 +3959,13 @@ namespace SDL {
 
 /**
  * A variable controlling whether the window is activated when the
- * WindowBase.Raise function is called.
+ * WindowRef.Raise function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the WindowBase.Raise function is
+ * - "0": The window is not activated when the WindowRef.Raise function is
  *   called.
- * - "1": The window is activated when the WindowBase.Raise function is called.
+ * - "1": The window is activated when the WindowRef.Raise function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -3976,13 +3976,13 @@ namespace SDL {
 
 /**
  * A variable controlling whether the window is activated when the
- * WindowBase.Show function is called.
+ * WindowRef.Show function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the WindowBase.Show function is
+ * - "0": The window is not activated when the WindowRef.Show function is
  *   called.
- * - "1": The window is activated when the WindowBase.Show function is called.
+ * - "1": The window is activated when the WindowRef.Show function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -4230,7 +4230,7 @@ namespace SDL {
 /**
  * A variable specifying the type of an X11 window.
  *
- * During WindowBase.WindowBase, SDL uses the _NET_WM_WINDOW_TYPE X11 property
+ * During WindowRef.WindowRef, SDL uses the _NET_WM_WINDOW_TYPE X11 property
  * to report to the window manager the type of window it wants to create. This
  * might be set to various things if WINDOW_TOOLTIP or
  * WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that

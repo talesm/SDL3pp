@@ -1,9 +1,9 @@
 <map id="SDL::SemaphoreRef" name="SDL::SemaphoreRef">
-<area shape="rect" id="Node000001" title="Handle to a non owned semaphore." alt="" coords="11,167,161,192"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1Semaphore.html" title="Handle to an owned semaphore." alt="" coords="21,240,151,265"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="89,206,89,240,83,240,83,206"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1SemaphoreBase.html" title="A means to manage access to a resource, by count, between threads." alt="" coords="5,93,167,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,132,89,167,83,167,83,132"/>
-<area shape="rect" id="Node000003" href="$classSDL_1_1Resource.html" title=" " alt="" coords="9,5,163,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,59,89,93,83,93,83,59"/>
+<area shape="rect" id="Node000001" title="A means to manage access to a resource, by count, between threads." alt="" coords="17,93,168,119"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1SemaphoreUnsafe.html" title="Unsafe Handle to semaphore." alt="" coords="5,167,180,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="95,132,95,167,90,167,90,132"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="15,5,170,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,59,95,93,90,93,90,59"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Semaphore.html" title="Handle to an owned semaphore." alt="" coords="28,240,157,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="95,206,95,240,90,240,90,206"/>
 </map>

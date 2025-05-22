@@ -5,5 +5,5 @@ var searchData=
   ['rendererlogicalpresentation_2',['RendererLogicalPresentation',['../group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d',1,'SDL']]],
   ['renderevent_3',['RenderEvent',['../group__CategoryEvents.html#ga2659db701de06c5a2e1632526c4f6345',1,'SDL']]],
   ['requestandroidpermissioncallback_4',['RequestAndroidPermissionCallback',['../group__CategorySystem.html#ga8da7f559e7e420e9e52e7a4cb0009ec5',1,'SDL']]],
-  ['requestandroidpermissioncb_5',['RequestAndroidPermissionCB',['../group__CategorySystem.html#ga7264b13cdb485ae52496e37db441852f',1,'SDL']]]
+  ['requestandroidpermissioncb_5',['RequestAndroidPermissionCB',['../group__CategorySystem.html#gac0ca90027cb7d40e6b549e2070b7d1a1',1,'SDL']]]
 ];

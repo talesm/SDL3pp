@@ -3,8 +3,8 @@ var searchData=
   ['random_0',['Random',['../classSDL_1_1Random.html',1,'SDL']]],
   ['rect_1',['Rect',['../structSDL_1_1Rect.html',1,'SDL']]],
   ['renderer_2',['Renderer',['../structSDL_1_1Renderer.html',1,'SDL']]],
-  ['rendererbase_3',['RendererBase',['../structSDL_1_1RendererBase.html',1,'SDL']]],
-  ['rendererref_4',['RendererRef',['../structSDL_1_1RendererRef.html',1,'SDL']]],
+  ['rendererref_3',['RendererRef',['../structSDL_1_1RendererRef.html',1,'SDL']]],
+  ['rendererunsafe_4',['RendererUnsafe',['../structSDL_1_1RendererUnsafe.html',1,'SDL']]],
   ['resource_5',['Resource',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['resource_3c_20img_5fanimation_20_2a_20_3e_6',['Resource&lt; IMG_Animation * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['resource_3c_20sdl_5faudiodeviceid_20_3e_7',['Resource&lt; SDL_AudioDeviceID &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
@@ -34,6 +34,6 @@ var searchData=
   ['resource_3c_20ttf_5ftext_20_2a_20_3e_31',['Resource&lt; TTF_Text * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['resource_3c_20ttf_5ftextengine_20_2a_20_3e_32',['Resource&lt; TTF_TextEngine * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['rwlock_33',['RWLock',['../structSDL_1_1RWLock.html',1,'SDL']]],
-  ['rwlockbase_34',['RWLockBase',['../structSDL_1_1RWLockBase.html',1,'SDL']]],
-  ['rwlockref_35',['RWLockRef',['../structSDL_1_1RWLockRef.html',1,'SDL']]]
+  ['rwlockref_34',['RWLockRef',['../structSDL_1_1RWLockRef.html',1,'SDL']]],
+  ['rwlockunsafe_35',['RWLockUnsafe',['../structSDL_1_1RWLockUnsafe.html',1,'SDL']]]
 ];

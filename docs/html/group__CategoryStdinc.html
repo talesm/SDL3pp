@@ -88,11 +88,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Time.html">SDL::Time</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1, 1970).  <a href="classSDL_1_1Time.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html">SDL::EnvironmentBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A thread-safe set of environment variables.  <a href="structSDL_1_1EnvironmentBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html">SDL::EnvironmentRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned environment.  <a href="structSDL_1_1EnvironmentRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A thread-safe set of environment variables.  <a href="structSDL_1_1EnvironmentRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentUnsafe.html">SDL::EnvironmentUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to environment.  <a href="structSDL_1_1EnvironmentUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Environment.html">SDL::Environment</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned environment.  <a href="structSDL_1_1Environment.html#details">More...</a><br /></td></tr>
@@ -100,11 +100,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Random.html">SDL::Random</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A independent pseudo random state.  <a href="classSDL_1_1Random.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html">SDL::IConvBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle representing string encoding conversion state.  <a href="structSDL_1_1IConvBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html">SDL::IConvRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned iConv.  <a href="structSDL_1_1IConvRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle representing string encoding conversion state.  <a href="structSDL_1_1IConvRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvUnsafe.html">SDL::IConvUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to iConv.  <a href="structSDL_1_1IConvUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConv.html">SDL::IConv</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned iConv.  <a href="structSDL_1_1IConv.html#details">More...</a><br /></td></tr>
@@ -811,7 +811,7 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 <div class="line">    SDL_COMPILE_TIME_ASSERT(<a class="code hl_define" href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a>, <span class="keyword">sizeof</span>(*(dst)) == <span class="keyword">sizeof</span>(*(src)));      \</div>
 <div class="line">  }                                                                            \</div>
 <div class="line">  SDL_memcpy((dst), (src), <span class="keyword">sizeof</span>(*(src)))</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaa20b552293de849b3c1c7576cb158e9e"><div class="ttname"><a href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a></div><div class="ttdeci">#define SDL_copyp(dst, src)</div><div class="ttdoc">A macro to copy memory between objects, with basic type checking.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:2000</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaa20b552293de849b3c1c7576cb158e9e"><div class="ttname"><a href="group__CategoryStdinc.html#gaa20b552293de849b3c1c7576cb158e9e">SDL_copyp</a></div><div class="ttdeci">#define SDL_copyp(dst, src)</div><div class="ttdoc">A macro to copy memory between objects, with basic type checking.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:2006</div></div>
 </div><!-- fragment --><p>memcpy and memmove do not care where you copy memory to and from, which can lead to bugs. This macro aims to avoid most of those bugs by making sure that the source and destination are both pointers to objects that are the same size. It does not check that the objects are the same <em>type</em>, just that the copy will not overflow either object.</p>
 <p>The size check happens at compile time, and the compiler will throw an error if the objects are different sizes.</p>
 <p>Generally this is intended to copy a single object, not an array.</p>
@@ -997,14 +997,14 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td clas
 <div class="line"><span class="comment">// Fill in the interface function pointers with your implementation</span></div>
 <div class="line">iface.seek = ...</div>
 <div class="line"> </div>
-<div class="line">stream = IOStreamBase.IOStreamBase(&amp;iface, <span class="keyword">nullptr</span>);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaad520b6fa62d69fe36edadb0925196aa"><div class="ttname"><a href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa">SDL_INIT_INTERFACE</a></div><div class="ttdeci">#define SDL_INIT_INTERFACE(iface)</div><div class="ttdoc">A macro to initialize an SDL interface.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:390</div></div>
+<div class="line">stream = IOStreamRef.IOStreamRef(&amp;iface, <span class="keyword">nullptr</span>);</div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaad520b6fa62d69fe36edadb0925196aa"><div class="ttname"><a href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa">SDL_INIT_INTERFACE</a></div><div class="ttdeci">#define SDL_INIT_INTERFACE(iface)</div><div class="ttdoc">A macro to initialize an SDL interface.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:384</div></div>
 </div><!-- fragment --><p>If you are using designated initializers, you can use the size of the interface as the version, e.g.</p>
 <div class="fragment"><div class="line">IOStreamInterface iface = {</div>
 <div class="line">    .version = <span class="keyword">sizeof</span>(iface),</div>
 <div class="line">    .seek = ...</div>
 <div class="line">};</div>
-<div class="line">stream = IOStreamBase.IOStreamBase(&amp;iface, <span class="keyword">nullptr</span>);</div>
+<div class="line">stream = IOStreamRef.IOStreamRef(&amp;iface, <span class="keyword">nullptr</span>);</div>
 </div><!-- fragment --><dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>IOStreamInterface </dd>
@@ -2166,8 +2166,8 @@ SDL_strtoull </dd>
 <div class="line"> </div>
 <div class="line">data *result = <a class="code hl_function" href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541">bsearch</a>(&amp;key, values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]),</div>
 <div class="line">compare);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_ga20b4cc6c53a1dbd7789ee90af065b5f9"><div class="ttname"><a href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">SDL::arraysize</a></div><div class="ttdeci">constexpr std::size_t arraysize(const T(&amp;array)[N])</div><div class="ttdoc">The number of elements in a static array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:108</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gada62aea13b8eceffa3e57359e124e541"><div class="ttname"><a href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541">SDL::bsearch</a></div><div class="ttdeci">void * bsearch(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Perform a binary search on a previously sorted array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1205</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_ga20b4cc6c53a1dbd7789ee90af065b5f9"><div class="ttname"><a href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">SDL::arraysize</a></div><div class="ttdeci">constexpr std::size_t arraysize(const T(&amp;array)[N])</div><div class="ttdoc">The number of elements in a static array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:102</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gada62aea13b8eceffa3e57359e124e541"><div class="ttname"><a href="group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541">SDL::bsearch</a></div><div class="ttdeci">void * bsearch(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Perform a binary search on a previously sorted array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1211</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>a pointer to a key equal to the element being searched for. </td></tr>
@@ -2277,7 +2277,7 @@ SDL_strtoull </dd>
 <div class="line"> </div>
 <div class="line">data *result = <a class="code hl_function" href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">bsearch_r</a>(&amp;key, values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]),</div>
 <div class="line">compare, (<span class="keyword">const</span> <span class="keywordtype">void</span> *)(uintptr_t)sort_increasing);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaf22f982867b4598c8caa2de8f5a9e0e4"><div class="ttname"><a href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a></div><div class="ttdeci">void * bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1430</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaf22f982867b4598c8caa2de8f5a9e0e4"><div class="ttname"><a href="group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4">SDL::bsearch_r</a></div><div class="ttdeci">void * bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Perform a binary search on a previously sorted array, passing a userdata pointer to the compare funct...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1436</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>a pointer to a key equal to the element being searched for. </td></tr>
@@ -3383,17 +3383,17 @@ template&lt;class T , class U , class V &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This is initialized at application start and is not affected by setenv() and unsetenv() calls after that point. Use <a class="el" href="structSDL_1_1EnvironmentBase.html#a9fec9f08ac50ee2c76966b84ce7b1023" title="Set the value of a variable in the environment.">EnvironmentBase.SetVariable()</a> and <a class="el" href="structSDL_1_1EnvironmentBase.html#a0dce8cfac507ce0ee774cf3449f450e9" title="Clear a variable from the environment.">EnvironmentBase.UnsetVariable()</a> if you want to modify this environment, or <a class="el" href="group__CategoryStdinc.html#ga97da5abe6c940c70b73fc9465cf8e75e" title="Set the value of a variable in the environment.">setenv_unsafe()</a> or <a class="el" href="group__CategoryStdinc.html#ga7dc726179e2ae431d7db8164099e333a" title="Clear a variable from the environment.">unsetenv_unsafe()</a> if you want changes to persist in the C runtime environment after <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>.</p>
+<p>This is initialized at application start and is not affected by setenv() and unsetenv() calls after that point. Use <a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable()</a> and <a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable()</a> if you want to modify this environment, or <a class="el" href="group__CategoryStdinc.html#ga97da5abe6c940c70b73fc9465cf8e75e" title="Set the value of a variable in the environment.">setenv_unsafe()</a> or <a class="el" href="group__CategoryStdinc.html#ga7dc726179e2ae431d7db8164099e333a" title="Clear a variable from the environment.">unsetenv_unsafe()</a> if you want changes to persist in the C runtime environment after <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the environment for the process or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1EnvironmentBase.html#a2b34f72fb4a546bcb6ad4ce8b3cc5b4e" title="Get the value of a variable in the environment.">EnvironmentBase.GetVariable</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1EnvironmentRef.html#af38b4128673800ba9e46e954a9b38998" title="Get the value of a variable in the environment.">EnvironmentRef.GetVariable</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1EnvironmentBase.html#a34b48bcdaaae7fa66efc0db6c79ed469" title="Get all variables in the environment.">EnvironmentBase.GetVariables</a> </dd>
+<a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1EnvironmentBase.html#a9fec9f08ac50ee2c76966b84ce7b1023" title="Set the value of a variable in the environment.">EnvironmentBase.SetVariable</a> </dd>
+<a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1EnvironmentBase.html#a0dce8cfac507ce0ee774cf3449f450e9" title="Clear a variable from the environment.">EnvironmentBase.UnsetVariable</a> </dd></dl>
+<a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
 
 </div>
 </div>
@@ -3605,9 +3605,9 @@ template&lt;class T , class U , class V &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new string, converted to the new encoding, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConvBase.html#a439b8c48902e8bf4a98ee8505d800f28" title="This function allocates a context for the specified character set conversion.">IConvBase.IConvBase</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConvRef.html#a4cf6627b23a7b24a7b7dfda30e8426a7" title="Copy constructor.">IConvRef.IConvRef</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1IConvBase.html#a7e63be073d2212672ec0e007f181a3c9" title="This function converts text between encodings, reading from and writing to a buffer.">IConvBase.iconv</a> </dd></dl>
+<a class="el" href="structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763" title="This function converts text between encodings, reading from and writing to a buffer.">IConvRef.iconv</a> </dd></dl>
 
 </div>
 </div>
@@ -5321,7 +5321,7 @@ template&lt;class T , class U &gt; </div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="group__CategoryStdinc.html#gab52a0ec3d96fb4c04972b1b322f75857">qsort</a>(values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]), compare);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gab52a0ec3d96fb4c04972b1b322f75857"><div class="ttname"><a href="group__CategoryStdinc.html#gab52a0ec3d96fb4c04972b1b322f75857">SDL::qsort</a></div><div class="ttdeci">void qsort(void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Sort an array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1148</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gab52a0ec3d96fb4c04972b1b322f75857"><div class="ttname"><a href="group__CategoryStdinc.html#gab52a0ec3d96fb4c04972b1b322f75857">SDL::qsort</a></div><div class="ttdeci">void qsort(void *base, size_t nmemb, size_t size, CompareCallback compare)</div><div class="ttdoc">Sort an array.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1154</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">base</td><td>a pointer to the start of the array. </td></tr>
@@ -5422,7 +5422,7 @@ template&lt;class T , class U &gt; </div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">qsort_r</a>(values, <a class="code hl_function" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">arraysize</a>(values), <span class="keyword">sizeof</span>(values[0]), compare, (<span class="keyword">const</span> <span class="keywordtype">void</span></div>
 <div class="line">*)(uintptr_t)sort_increasing);</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gaa3b0083aa5cb6236224048d437834dd2"><div class="ttname"><a href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">SDL::qsort_r</a></div><div class="ttdeci">void qsort_r(void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Sort an array, passing a userdata pointer to the compare function.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1300</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gaa3b0083aa5cb6236224048d437834dd2"><div class="ttname"><a href="group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2">SDL::qsort_r</a></div><div class="ttdeci">void qsort_r(void *base, size_t nmemb, size_t size, CompareCallback_r compare, void *userdata)</div><div class="ttdoc">Sort an array, passing a userdata pointer to the compare function.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1306</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">base</td><td>a pointer to the start of the array. </td></tr>
@@ -5944,9 +5944,9 @@ template&lt;class T , class U &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on error.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe, consider using <a class="el" href="structSDL_1_1EnvironmentBase.html#a9fec9f08ac50ee2c76966b84ce7b1023" title="Set the value of a variable in the environment.">EnvironmentBase.SetVariable()</a> instead.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe, consider using <a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable()</a> instead.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1EnvironmentBase.html#a9fec9f08ac50ee2c76966b84ce7b1023" title="Set the value of a variable in the environment.">EnvironmentBase.SetVariable</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable</a> </dd></dl>
 
 </div>
 </div>
@@ -8243,9 +8243,9 @@ SDL_ulltoa </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on error.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe, consider using <a class="el" href="structSDL_1_1EnvironmentBase.html#a0dce8cfac507ce0ee774cf3449f450e9" title="Clear a variable from the environment.">EnvironmentBase.UnsetVariable()</a> instead.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe, consider using <a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable()</a> instead.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1EnvironmentBase.html#a0dce8cfac507ce0ee774cf3449f450e9" title="Clear a variable from the environment.">EnvironmentBase.UnsetVariable</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
 
 </div>
 </div>

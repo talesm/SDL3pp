@@ -328,11 +328,11 @@ const transform = {
         "SDL_OpenAudioDeviceStream": {
           kind: "function",
           type: "",
-          name: "AudioStreamBase.AudioStreamBase",
+          name: "AudioStreamRef.AudioStreamRef",
           parameters: [
             {
               name: "devid",
-              type: "const AudioDeviceBase &"
+              type: "const AudioDeviceRef &"
             },
             {
               name: "spec",
@@ -438,8 +438,8 @@ const transform = {
             "SDL_OpenAudioDevice": {
               name: "ctor",
               parameters: [
-                { type: "const AudioDeviceBase &" },
-                { type: "OptionalRef<const SDL_AudioSpec>", default: "std::nullopt" }
+                { type: "const AudioDeviceRef &" },
+                { type: "OptionalRef<const SDL_AudioSpec>" }
               ]
             },
             "operator<=>": {
@@ -447,7 +447,7 @@ const transform = {
               constexpr: true,
               immutable: true,
               type: "auto",
-              parameters: [{ type: "const AudioDeviceBase &", name: "other" }],
+              parameters: [{ type: "const AudioDeviceRef &", name: "other" }],
               hints: { default: true }
             },
             "SDL_GetAudioDeviceName": "immutable",
@@ -509,7 +509,7 @@ const transform = {
               parameters: [
                 {
                   name: "devid",
-                  type: "const AudioDeviceBase &"
+                  type: "const AudioDeviceRef &"
                 },
                 {
                   name: "spec",
@@ -627,9 +627,9 @@ const transform = {
             "Bind": {
               kind: "function",
               type: "void",
-              doc: "@see AudioDeviceBase.BindAudioStream",
+              doc: "@see AudioDeviceRef.BindAudioStream",
               parameters: [{
-                type: "AudioDeviceBase &",
+                type: "AudioDeviceRef &",
                 name: "devid"
               }]
             },
@@ -1879,6 +1879,10 @@ const transform = {
           entries: {
             "SDL_IOFromFile": "ctor",
             "SDL_OpenIO": "ctor",
+            "SDL_CloseIO": {
+              name: "Close",
+              hints: { mayFail: true },
+            },
             "SDL_GetIOProperties": {
               "name": "GetProperties",
               "immutable": true
@@ -2129,13 +2133,6 @@ const transform = {
           type: "StringResult",
           parameters: [{}]
         },
-        "SDL_CloseIO": {
-          name: "IOStreamRef.Close",
-          type: "void",
-          static: false,
-          parameters: [],
-          hints: { body: "return reset();" }
-        },
         "SDL_SaveFile": {
           type: "void",
           parameters: [
@@ -2183,29 +2180,29 @@ const transform = {
           "name": "Keycode::Keycode"
         },
         "SDL_StartTextInput": {
-          name: "WindowBase::StartTextInput",
+          name: "WindowRef::StartTextInput",
         },
         "SDL_StartTextInputWithProperties": {
-          name: "WindowBase::StartTextInput",
+          name: "WindowRef::StartTextInput",
         },
         "SDL_TextInputActive": {
-          name: "WindowBase::IsTextInputActive",
+          name: "WindowRef::IsTextInputActive",
           immutable: true,
         },
         "SDL_StopTextInput": {
-          name: "WindowBase::StopTextInput",
+          name: "WindowRef::StopTextInput",
         },
         "SDL_ClearComposition": {
-          name: "WindowBase::ClearComposition",
+          name: "WindowRef::ClearComposition",
         },
         "SDL_SetTextInputArea": {
-          name: "WindowBase::SetTextInputArea",
+          name: "WindowRef::SetTextInputArea",
         },
         "SDL_GetTextInputArea": {
-          name: "WindowBase::GetTextInputArea",
+          name: "WindowRef::GetTextInputArea",
         },
         "SDL_ScreenKeyboardShown": {
-          name: "WindowBase::IsScreenKeyboardShown",
+          name: "WindowRef::IsScreenKeyboardShown",
           immutable: true,
         }
       }
@@ -2266,16 +2263,10 @@ const transform = {
           entries: {
             "SDL_LoadObject": "ctor",
             "SDL_LoadFunction": "function",
+            "SDL_UnloadObject": { name: "Unload" },
           }
         }
       },
-      transform: {
-        "SDL_UnloadObject": {
-          name: "SharedObjectRef.Unload",
-          static: false,
-          parameters: [],
-        },
-      }
     },
     "SDL_locale.h": {
       transform: {
@@ -2614,7 +2605,7 @@ const transform = {
         },
         "SDL_SetPaletteColors": {
           kind: "function",
-          name: "PaletteBase.SetColors",
+          name: "PaletteRef.SetColors",
           type: "bool",
           static: false,
           parameters: [
@@ -3206,16 +3197,16 @@ const transform = {
           parameters: []
         },
         "SDL_WarpMouseInWindow": {
-          name: "WindowBase::WarpMouse"
+          name: "WindowRef::WarpMouse"
         },
         "SDL_WarpMouseGlobal": {
           name: "WarpMouse"
         },
         "SDL_SetWindowRelativeMouseMode": {
-          name: "WindowBase::SetRelativeMouseMode"
+          name: "WindowRef::SetRelativeMouseMode"
         },
         "SDL_GetWindowRelativeMouseMode": {
-          name: "WindowBase::GetRelativeMouseMode",
+          name: "WindowRef::GetRelativeMouseMode",
           immutable: true,
         }
       }
@@ -3387,7 +3378,7 @@ const transform = {
             },
             "PropertiesLock": [
               {
-                "doc": "@sa PropertiesBase.Lock()",
+                "doc": "@sa PropertiesRef.Lock()",
                 "kind": "function",
                 "type": "",
                 "explicit": true,
@@ -3591,7 +3582,14 @@ const transform = {
               "kind": "function",
               "name": "Enumerate",
               "immutable": true
-            }
+            },
+            "GetCount": {
+              kind: "function",
+              immutable: true,
+              type: "Uint64",
+              parameters: [],
+              proto: true,
+            },
           }
         }
       },
@@ -3601,7 +3599,8 @@ const transform = {
         },
         "SDL_CreateProperties": {
           name: "Properties.Properties",
-          type: ""
+          type: "",
+          explicit: true,
         }
       }
     },
@@ -4200,7 +4199,7 @@ const transform = {
             },
             "TextureLock": [
               {
-                doc: "@sa TextureBase.Lock()",
+                doc: "@sa TextureRef.Lock()",
                 kind: "function",
                 type: "",
                 explicit: true,
@@ -4281,7 +4280,7 @@ const transform = {
       resources: {
         "SDL_Renderer": {
           entries: {
-            "RendererBase": {
+            "RendererRef": {
               "kind": "function",
               "type": "",
               "parameters": [
@@ -4636,7 +4635,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureBase &"
+                  "type": "TextureRef &"
                 },
                 {
                   "name": "srcrect",
@@ -4654,7 +4653,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureBase &"
+                  "type": "TextureRef &"
                 },
                 {
                   "name": "srcrect",
@@ -4684,7 +4683,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureBase &"
+                  "type": "TextureRef &"
                 },
                 {
                   "name": "srcrect",
@@ -4710,7 +4709,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureBase &"
+                  "type": "TextureRef &"
                 },
                 {
                   "name": "srcrect",
@@ -4732,7 +4731,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureBase &"
+                  "type": "TextureRef &"
                 },
                 {
                   "name": "srcrect",
@@ -4905,13 +4904,13 @@ const transform = {
         "SDL_Texture": {
           aliasOptional: true,
           entries: {
-            "TextureBase": [{
+            "TextureRef": [{
               kind: "function",
               type: "",
               proto: true,
               parameters: [
                 {
-                  type: "RendererBase &",
+                  type: "RendererRef &",
                   name: "renderer"
                 },
                 {
@@ -4925,7 +4924,7 @@ const transform = {
               proto: true,
               parameters: [
                 {
-                  type: "RendererBase &",
+                  type: "RendererRef &",
                   name: "renderer"
                 },
                 {
@@ -4939,7 +4938,7 @@ const transform = {
               parameters: [
                 {
                   name: "renderer",
-                  type: "RendererBase &"
+                  type: "RendererRef &"
                 },
                 {
                   name: "format",
@@ -5171,7 +5170,7 @@ const transform = {
           ]
         },
         "SDL_GetRenderer": {
-          name: "WindowBase::GetRenderer",
+          name: "WindowRef::GetRenderer",
           immutable: true,
         },
       }
@@ -5429,6 +5428,7 @@ const transform = {
           entries: {
             "SDL_iconv_open": "ctor",
             "SDL_iconv": "function",
+            "SDL_iconv_close": { name: "close" },
           }
         }
       },
@@ -5956,13 +5956,6 @@ const transform = {
           }
         }
       },
-      transform: {
-        "SDL_CloseStorage": {
-          name: "StorageRef.Close",
-          static: false,
-          parameters: [],
-        },
-      }
     },
     "SDL_surface.h": {
       enableException: true,
@@ -5981,7 +5974,7 @@ const transform = {
             },
             "SurfaceLock": [
               {
-                doc: "@sa SurfaceBase.Lock()",
+                doc: "@sa SurfaceRef.Lock()",
                 kind: "function",
                 type: "",
                 explicit: true,
@@ -6067,7 +6060,7 @@ const transform = {
       resources: {
         "SDL_Surface": {
           entries: {
-            "SurfaceBase": [{
+            "SurfaceRef": [{
               kind: "function",
               type: "",
               proto: true,
@@ -6080,7 +6073,7 @@ const transform = {
               type: "",
               proto: true,
               parameters: [{
-                type: "IOStreamBase &",
+                type: "IOStreamRef &",
                 name: "src"
               }],
             }],
@@ -6364,7 +6357,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6384,7 +6377,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6404,7 +6397,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6424,7 +6417,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6448,7 +6441,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6478,7 +6471,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6503,7 +6496,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6524,7 +6517,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6551,7 +6544,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6588,7 +6581,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceBase &",
+                  type: "const SurfaceRef &",
                   name: "src"
                 },
                 {
@@ -6823,7 +6816,7 @@ const transform = {
           type: "Surface",
           parameters: [
             {
-              type: "IOStreamBase &"
+              type: "IOStreamRef &"
             }
           ]
         },
@@ -6835,7 +6828,7 @@ const transform = {
           parameters: [
             {},
             {
-              type: "IOStreamBase &"
+              type: "IOStreamRef &"
             }
           ]
         }
@@ -6872,7 +6865,7 @@ const transform = {
           parameters: [
             {
               name: "window",
-              type: "WindowBase &"
+              type: "WindowRef &"
             },
             {
               name: "interval",
@@ -6911,6 +6904,9 @@ const transform = {
           type: "Uint32",
           constexpr: true,
         },
+        "WindowsMessageHookCB": { type: "std::function<bool(MSG *msg)>" },
+        "iOSAnimationCB": { type: "std::function<void()>" },
+        "RequestAndroidPermissionCB": { type: "std::function<void(const char *permission, bool granted)>" },
       }
     },
     "SDL_thread.h": {
@@ -6944,7 +6940,7 @@ const transform = {
         "SDL_Thread": {
           free: "SDL_DetachThread",
           entries: {
-            "ThreadBase": {
+            "ThreadRef": {
               kind: "function",
               type: "",
               parameters: [
@@ -6967,12 +6963,7 @@ const transform = {
       transform: {
         "SDL_TLSID": {
           type: "AtomicInt"
-        },
-        "SDL_DetachThread": {
-          name: "ThreadRef.Detach",
-          static: false,
-          parameters: [],
-        },
+        }
       }
     },
     "SDL_time.h": {
@@ -7252,11 +7243,6 @@ const transform = {
       },
       transform: {
         "TrayCB": { type: "std::function<void(TrayEntryRef)>" },
-        "SDL_RemoveTrayEntry": {
-          name: "TrayEntryRef.Remove",
-          static: false,
-          parameters: [],
-        },
       }
     },
     "SDL_video.h": {
@@ -7264,19 +7250,11 @@ const transform = {
       includeAfter: {
         "__begin": [
           {
-            "name": "WindowBase",
-            "kind": "forward",
-          },
-          {
             "name": "WindowRef",
             "kind": "forward",
           },
           {
             "name": "Window",
-            "kind": "forward",
-          },
-          {
-            "name": "RendererBase",
             "kind": "forward",
           },
           {
@@ -7450,7 +7428,7 @@ const transform = {
           entries: {
             "SDL_CreateWindow": {
               kind: "function",
-              name: "WindowBase",
+              name: "WindowRef",
               type: "",
               static: false,
               parameters: [
@@ -7471,12 +7449,12 @@ const transform = {
             },
             "SDL_CreatePopupWindow": {
               kind: "function",
-              name: "WindowBase",
+              name: "WindowRef",
               type: "",
               parameters: [
                 {
                   name: "parent",
-                  type: "WindowBase &"
+                  type: "WindowRef &"
                 },
                 {
                   name: "offset",
@@ -7682,7 +7660,15 @@ const transform = {
             },
             "SDL_SetWindowHitTest": "function",
             "SDL_SetWindowShape": "function",
-            "SDL_FlashWindow": "function"
+            "SDL_FlashWindow": "function",
+            "SDL_GetWindowFromID": {
+              name: "FromID",
+              static: true,
+            },
+            "SDL_GetGrabbedWindow": {
+              name: "GetGrabbed",
+              static: true,
+            },
           }
         },
         "SDL_GLContext": {
@@ -7695,11 +7681,15 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "WindowBase &",
+                  "type": "WindowRef &",
                   "name": "window"
                 }
               ]
-            }
+            },
+            "SDL_GL_DestroyContext": {
+              name: "Destroy",
+              hints: { mayFail: true },
+            },
           }
         }
       },
@@ -7942,13 +7932,6 @@ const transform = {
           "constexpr": true,
           "type": "WindowFlags"
         },
-        "SDL_GetWindowFromID": {
-          name: "WindowRef::FromID",
-        },
-        "SDL_GetGrabbedWindow": {
-          name: "WindowRef::GetGrabbed",
-          static: true,
-        },
         "SDL_GL_GetCurrentWindow": {
           type: "WindowRef"
         },
@@ -7976,24 +7959,20 @@ const transform = {
           entries: {
             "IMG_LoadAnimation": "ctor",
             "IMG_LoadAnimation_IO": {
-              name: "AnimationBase",
-              type: "",
-              static: false,
+              name: "ctor",
               parameters: [
                 {
                   "name": "src",
-                  "type": "IOStreamBase &"
+                  "type": "IOStreamRef &"
                 }
               ]
             },
             "IMG_LoadAnimationTyped_IO": {
-              name: "AnimationBase",
-              type: "",
-              static: false,
+              name: "ctor",
               parameters: [
                 {
                   "name": "src",
-                  "type": "IOStreamBase &"
+                  "type": "IOStreamRef &"
                 },
                 {
                   "name": "type",
@@ -8060,7 +8039,7 @@ const transform = {
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamBase &"
+              "type": "IOStreamRef &"
             },
             {
               "name": "type",
@@ -8078,7 +8057,7 @@ const transform = {
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamBase &"
+              "type": "IOStreamRef &"
             }
           ]
         },
@@ -8091,11 +8070,11 @@ const transform = {
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererBase &"
+              "type": "RendererRef &"
             },
             {
               "name": "src",
-              "type": "IOStreamBase &"
+              "type": "IOStreamRef &"
             }
           ]
         },
@@ -8105,11 +8084,11 @@ const transform = {
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererBase &"
+              "type": "RendererRef &"
             },
             {
               "name": "src",
-              "type": "IOStreamBase &"
+              "type": "IOStreamRef &"
             },
             {
               "name": "type",
@@ -8210,7 +8189,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "IOStreamBase &"
+              "type": "IOStreamRef &"
             },
             {
               "name": "quality",
@@ -8227,7 +8206,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "IOStreamBase &"
+              "type": "IOStreamRef &"
             }
           ]
         },
@@ -8240,7 +8219,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "IOStreamBase &"
+              "type": "IOStreamRef &"
             },
             {
               "name": "quality",
@@ -8268,8 +8247,7 @@ const transform = {
           entries: {
             "TTF_OpenFont": "ctor",
             "TTF_OpenFontIO": {
-              name: "FontBase",
-              type: "",
+              name: "ctor",
               parameters: [{}, {
                 type: "float",
                 name: "ptsize"
@@ -8594,7 +8572,7 @@ const transform = {
                 "*m_destroy"
               ],
             },
-            "TextEngineBase": {
+            "TextEngineRef": {
               type: "",
               kind: "function",
               constexpr: true,
@@ -8644,11 +8622,11 @@ const transform = {
             },
             "TTF_GetGPUTextDrawData": "immutable",
             "TTF_CreateText": {
-              "name": "TextBase",
+              "name": "ctor",
               "type": "",
               "parameters": [
                 {
-                  "type": "TextEngineBase &",
+                  "type": "TextEngineRef &",
                   "name": "engine"
                 },
                 {
@@ -8667,7 +8645,7 @@ const transform = {
                 {},
                 {
                   name: "engine",
-                  type: "TextEngineBase &"
+                  type: "TextEngineRef &"
                 }
               ],
             },

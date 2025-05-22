@@ -35,16 +35,13 @@ namespace SDL {
 struct SurfaceLock;
 
 // Forward decl
-struct SurfaceBase;
-
-// Forward decl
 struct SurfaceRef;
 
 // Forward decl
 struct Surface;
 
 /**
- * The flags on an SurfaceBase.
+ * The flags on an SurfaceRef.
  *
  * These are generally considered read-only.
  *
@@ -126,7 +123,7 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SurfaceBase.SurfaceBase
+ * @sa SurfaceRef.SurfaceRef
  * @sa SurfaceRef.reset
  *
  * @cat resource
@@ -134,9 +131,25 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  * @sa Surface
  * @sa SurfaceRef
  */
-struct SurfaceBase : Resource<SDL_Surface*>
+struct SurfaceRef : Resource<SDL_Surface*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr SurfaceRef(const SurfaceRef& other)
+    : SurfaceRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr SurfaceRef(SurfaceRef&& other)
+    : SurfaceRef(other.release())
+  {
+  }
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -151,22 +164,22 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
    */
-  SurfaceBase(StringParam file);
+  SurfaceRef(StringParam file);
 
   /**
-   * Load an image from a IOStreamBase into a software surface.
+   * Load an image from a IOStreamRef into a software surface.
    *
-   * If available, this uses LoadSurface(IOStreamBase&), otherwise it uses
-   * LoadBMP(IOStreamBase&).
+   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
+   * LoadBMP(IOStreamRef&).
    *
-   * @param src an IOStreamBase to load an image from.
+   * @param src an IOStreamRef to load an image from.
    * @post the new Surface with loaded contents on success.
    * @throws Error on failure.
    *
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
    */
-  SurfaceBase(IOStreamBase& src);
+  SurfaceRef(IOStreamRef& src);
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -175,14 +188,16 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
-   * @post the new SurfaceBase structure that is created.
+   * @post the new SurfaceRef structure that is created.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.Destroy
    */
-  SurfaceBase(const SDL_Point& size, PixelFormat format)
+  SurfaceRef(const SDL_Point& size, PixelFormat format)
     : Resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
   {
   }
@@ -204,20 +219,28 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
-   * @post the new SurfaceBase structure that is created.
+   * @post the new SurfaceRef structure that is created.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.Destroy
    */
-  SurfaceBase(const SDL_Point& size,
-              PixelFormat format,
-              void* pixels,
-              int pitch)
+  SurfaceRef(const SDL_Point& size, PixelFormat format, void* pixels, int pitch)
     : Resource(CheckError(
         SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  SurfaceRef& operator=(SurfaceRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -263,7 +286,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.GetColorspace
+   * @sa SurfaceRef.GetColorspace
    */
   void SetColorspace(Colorspace colorspace)
   {
@@ -314,17 +337,17 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * A single palette can be shared with many surfaces.
    *
-   * @param palette the PaletteBase structure to use.
+   * @param palette the PaletteRef structure to use.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteBase.PaletteBase
-   * @sa SurfaceBase.GetPalette
+   * @sa PaletteRef.PaletteRef
+   * @sa SurfaceRef.GetPalette
    */
-  void SetPalette(PaletteBase& palette)
+  void SetPalette(PaletteRef& palette)
   {
     CheckError(SDL_SetSurfacePalette(get(), palette.get()));
   }
@@ -348,7 +371,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * This function adds a reference to the alternate version, so you should call
    * SurfaceRef.reset() on the image after this call.
    *
-   * @param image an alternate SurfaceBase to associate with this
+   * @param image an alternate SurfaceRef to associate with this
    *              surface.
    * @throws Error on failure.
    *
@@ -356,11 +379,11 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.RemoveAlternateImages
-   * @sa SurfaceBase.GetImages
-   * @sa SurfaceBase.HasAlternateImages
+   * @sa SurfaceRef.RemoveAlternateImages
+   * @sa SurfaceRef.GetImages
+   * @sa SurfaceRef.HasAlternateImages
    */
-  void AddAlternateImage(SurfaceBase& image)
+  void AddAlternateImage(SurfaceRef& image)
   {
     CheckError(SDL_AddSurfaceAlternateImage(get(), image.get()));
   }
@@ -431,13 +454,13 @@ struct SurfaceBase : Resource<SDL_Surface*>
   /**
    * Set up a surface for directly accessing the pixels.
    *
-   * Between calls to SurfaceBase.Lock() / Unlock(), you can write
+   * Between calls to SurfaceRef.Lock() / Unlock(), you can write
    * to and read from `GetPixels()`, using the pixel format stored in
    * `GetFormat()`. Once you are done accessing the surface, you should use
    * Unlock() to release it or let the destructor take care of this
    * for you.
    *
-   * Not all surfaces require locking. If `SurfaceBase.MustLock(surface)`
+   * Not all surfaces require locking. If `SurfaceRef.MustLock(surface)`
    * evaluates to false, then you can read and write to the surface at any time,
    * and the pixel format of the surface will not change.
    *
@@ -466,8 +489,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Blit
-   * @sa SurfaceBase.Lock
+   * @sa SurfaceRef.Blit
+   * @sa SurfaceRef.Lock
    * @sa SurfaceLock.Unlock
    */
   void SetRLE(bool enabled) { CheckError(SDL_SetSurfaceRLE(get(), enabled)); }
@@ -517,9 +540,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.GetColorKey
-   * @sa SurfaceBase.SetRLE
-   * @sa SurfaceBase.HasColorKey
+   * @sa SurfaceRef.GetColorKey
+   * @sa SurfaceRef.SetRLE
+   * @sa SurfaceRef.HasColorKey
    */
   void SetColorKey(std::optional<Uint32> key)
   {
@@ -608,8 +631,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.SetColorKey
-   * @sa SurfaceBase.HasColorKey
+   * @sa SurfaceRef.SetColorKey
+   * @sa SurfaceRef.HasColorKey
    */
   void GetColorKey(Uint32* key) const
   {
@@ -634,8 +657,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.GetColorMod
-   * @sa SurfaceBase.SetAlphaMod
+   * @sa SurfaceRef.GetColorMod
+   * @sa SurfaceRef.SetAlphaMod
    */
   void SetColorMod(Uint8 r, Uint8 g, Uint8 b)
   {
@@ -654,8 +677,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.GetAlphaMod
-   * @sa SurfaceBase.SetColorMod
+   * @sa SurfaceRef.GetAlphaMod
+   * @sa SurfaceRef.SetColorMod
    */
   void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
   {
@@ -677,8 +700,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.GetAlphaMod
-   * @sa SurfaceBase.SetColorMod
+   * @sa SurfaceRef.GetAlphaMod
+   * @sa SurfaceRef.SetColorMod
    */
   void SetAlphaMod(Uint8 alpha)
   {
@@ -694,8 +717,8 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.GetColorMod
-   * @sa SurfaceBase.SetAlphaMod
+   * @sa SurfaceRef.GetColorMod
+   * @sa SurfaceRef.SetAlphaMod
    */
   Uint8 GetAlphaMod() const
   {
@@ -753,7 +776,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.GetBlendMode
+   * @sa SurfaceRef.GetBlendMode
    */
   void SetBlendMode(BlendMode blendMode)
   {
@@ -876,20 +899,20 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * future blits, making them faster.
    *
    * If you are converting to an indexed surface and want to map colors to a
-   * palette, you can use SurfaceBase.Convert() instead.
+   * palette, you can use SurfaceRef.Convert() instead.
    *
    * If the original surface has alternate images, the new surface will have a
    * reference to them as well.
    *
    * @param format the new pixel format.
-   * @returns the new SurfaceBase structure that is created or nullptr on
+   * @returns the new SurfaceRef structure that is created or nullptr on
    * failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Convert
+   * @sa SurfaceRef.Convert
    * @sa SurfaceRef.reset
    */
   Surface Convert(PixelFormat format) const;
@@ -909,21 +932,21 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * @param palette an optional palette to use for indexed formats, may be
    *                nullptr.
    * @param colorspace the new colorspace.
-   * @param props an PropertiesBase with additional color properties, or 0.
-   * @returns the new SurfaceBase structure that is created or nullptr on
+   * @param props an PropertiesRef with additional color properties, or 0.
+   * @returns the new SurfaceRef structure that is created or nullptr on
    * failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Convert
+   * @sa SurfaceRef.Convert
    * @sa SurfaceRef.reset
    */
   Surface Convert(PixelFormat format,
-                  PaletteBase& palette,
+                  PaletteRef& palette,
                   Colorspace colorspace,
-                  PropertiesBase& props) const;
+                  PropertiesRef& props) const;
 
   /**
    * Premultiply the alpha in a surface.
@@ -969,7 +992,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Perform a fast fill of a rectangle with a specific color.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * SurfaceRef.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param color the color to fill with.
@@ -986,7 +1009,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * SurfaceRef.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param color the color to fill with.
@@ -1001,7 +1024,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Perform a fast fill of a rectangle with a specific color.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * SurfaceRef.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rect the SDL_Rect structure representing the rectangle to fill.
@@ -1012,7 +1035,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.FillRects
+   * @sa SurfaceRef.FillRects
    */
   void FillRect(const SDL_Rect& rect, SDL_Color color)
   {
@@ -1028,7 +1051,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * SurfaceRef.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rect the SDL_Rect structure representing the rectangle to fill.
@@ -1039,7 +1062,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.FillRects
+   * @sa SurfaceRef.FillRects
    */
   void FillRect(const SDL_Rect& rect, Uint32 color)
   {
@@ -1050,7 +1073,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Perform a fast fill of a set of rectangles with a specific color.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * SurfaceRef.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rects an array of SDL_Rects representing the rectangles to fill.
@@ -1077,7 +1100,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
-   * SurfaceBase.SetClipRect()), then this function will fill based on the
+   * SurfaceRef.SetClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
    * @param rects an array of SDL_Rects representing the rectangles to fill.
@@ -1088,7 +1111,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.FillRect
+   * @sa SurfaceRef.FillRect
    */
   void FillRects(SpanRef<const SDL_Rect> rects, Uint32 color)
   {
@@ -1155,7 +1178,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *                the destination surface, or NULL for (0,0). The width and
    *                height are ignored, and are copied from `srcrect`. If you
    *                want a specific width and height, you should use
-   *                SurfaceBase.BlitScaled().
+   *                SurfaceRef.BlitScaled().
    * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
@@ -1163,9 +1186,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.BlitScaled
+   * @sa SurfaceRef.BlitScaled
    */
-  void Blit(const SurfaceBase& src,
+  void Blit(const SurfaceRef& src,
             OptionalRef<const SDL_Rect> srcrect,
             const SDL_Point& dstpos)
   {
@@ -1234,7 +1257,7 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *                the destination surface, or NULL for (0,0). The width and
    *                height are ignored, and are copied from `srcrect`. If you
    *                want a specific width and height, you should use
-   *                SurfaceBase.BlitScaled().
+   *                SurfaceRef.BlitScaled().
    * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
@@ -1242,9 +1265,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.BlitScaled
+   * @sa SurfaceRef.BlitScaled
    */
-  void Blit(const SurfaceBase& src,
+  void Blit(const SurfaceRef& src,
             OptionalRef<const SDL_Rect> srcrect,
             OptionalRef<const SDL_Rect> dstrect)
   {
@@ -1269,9 +1292,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Blit
+   * @sa SurfaceRef.Blit
    */
-  void BlitUnchecked(const SurfaceBase& src,
+  void BlitUnchecked(const SurfaceRef& src,
                      const SDL_Rect& srcrect,
                      const SDL_Rect& dstrect)
   {
@@ -1296,9 +1319,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Blit
+   * @sa SurfaceRef.Blit
    */
-  void BlitScaled(const SurfaceBase& src,
+  void BlitScaled(const SurfaceRef& src,
                   OptionalRef<const SDL_Rect> srcrect,
                   OptionalRef<const SDL_Rect> dstrect,
                   ScaleMode scaleMode)
@@ -1326,9 +1349,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.BlitScaled
+   * @sa SurfaceRef.BlitScaled
    */
-  void BlitUncheckedScaled(const SurfaceBase& src,
+  void BlitUncheckedScaled(const SurfaceRef& src,
                            const SDL_Rect& srcrect,
                            const SDL_Rect& dstrect,
                            ScaleMode scaleMode)
@@ -1355,9 +1378,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.4.
    *
-   * @sa SurfaceBase.BlitScaled
+   * @sa SurfaceRef.BlitScaled
    */
-  void Stretch(const SurfaceBase& src,
+  void Stretch(const SurfaceRef& src,
                const SDL_Rect& srcrect,
                const SDL_Rect& dstrect,
                ScaleMode scaleMode)
@@ -1388,9 +1411,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Blit
+   * @sa SurfaceRef.Blit
    */
-  void BlitTiled(const SurfaceBase& src,
+  void BlitTiled(const SurfaceRef& src,
                  OptionalRef<const SDL_Rect> srcrect,
                  OptionalRef<const SDL_Rect> dstrect)
   {
@@ -1421,9 +1444,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Blit
+   * @sa SurfaceRef.Blit
    */
-  void BlitTiledWithScale(const SurfaceBase& src,
+  void BlitTiledWithScale(const SurfaceRef& src,
                           OptionalRef<const SDL_Rect> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
@@ -1461,9 +1484,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Blit
+   * @sa SurfaceRef.Blit
    */
-  void Blit9Grid(const SurfaceBase& src,
+  void Blit9Grid(const SurfaceRef& src,
                  OptionalRef<const SDL_Rect> srcrect,
                  int left_width,
                  int right_width,
@@ -1513,9 +1536,9 @@ struct SurfaceBase : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.Blit
+   * @sa SurfaceRef.Blit
    */
-  void Blit9GridWithScale(const SurfaceBase& src,
+  void Blit9GridWithScale(const SurfaceRef& src,
                           OptionalRef<const SDL_Rect> srcrect,
                           int left_width,
                           int right_width,
@@ -1800,49 +1823,22 @@ struct SurfaceBase : Resource<SDL_Surface*>
    * Get the pixel format.
    */
   PixelFormat GetFormat() const { return get()->format; }
-};
 
-/**
- * Handle to a non owned surface
- *
- * @cat resource
- *
- * @sa SurfaceBase
- * @sa Surface
- */
-struct SurfaceRef : SurfaceBase
-{
-  using SurfaceBase::SurfaceBase;
-
+protected:
   /**
-   * Copy constructor.
+   * Free a surface.
+   *
+   * It is safe to pass nullptr to this function.
+   *
+   *
+   * @threadsafety No other thread should be using the surface when it is freed.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SurfaceRef
+   * @sa SurfaceRef.SurfaceRef
    */
-  constexpr SurfaceRef(const SurfaceRef& other)
-    : SurfaceBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SurfaceRef(SurfaceRef&& other)
-    : SurfaceBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~SurfaceRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  SurfaceRef& operator=(SurfaceRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  void Destroy() { reset(); }
 
   /**
    * Free a surface.
@@ -1853,7 +1849,7 @@ struct SurfaceRef : SurfaceBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceBase.SurfaceBase
+   * @sa SurfaceRef.SurfaceRef
    */
   void reset(SDL_Surface* newResource = {})
   {
@@ -1862,22 +1858,39 @@ struct SurfaceRef : SurfaceBase
 };
 
 /**
+ * Unsafe Handle to surface
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa SurfaceRef
+ */
+struct SurfaceUnsafe : SurfaceRef
+{
+  using SurfaceRef::Destroy;
+
+  using SurfaceRef::SurfaceRef;
+
+  using SurfaceRef::reset;
+};
+
+/**
  * Handle to an owned surface
  *
  * @cat resource
  *
- * @sa SurfaceBase
  * @sa SurfaceRef
  */
-struct Surface : SurfaceRef
+struct Surface : SurfaceUnsafe
 {
-  using SurfaceRef::SurfaceRef;
+  using SurfaceUnsafe::SurfaceUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Surface(SDL_Surface* resource = {})
-    : SurfaceRef(resource)
+  constexpr explicit Surface(SDL_Surface* resource)
+    : SurfaceUnsafe(resource)
   {
   }
 
@@ -1913,12 +1926,12 @@ class SurfaceLock
   SurfaceRef surface;
 
   /**
-   * @sa SurfaceBase.Lock()
+   * @sa SurfaceRef.Lock()
    */
   explicit SurfaceLock(SurfaceRef surface)
     : surface(std::move(surface))
   {
-    if (!SDL_LockSurface(this->surface.get())) this->surface.reset();
+    if (!SDL_LockSurface(this->surface.get())) this->surface.release();
   }
 
 public:
@@ -1979,7 +1992,7 @@ public:
    */
   PixelFormat GetFormat() const { return surface->format; }
 
-  friend class SurfaceBase;
+  friend class SurfaceRef;
 };
 
 namespace prop::Surface {
@@ -2014,7 +2027,7 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *
  * @sa SaveBMP
  */
-inline Surface LoadBMP(IOStreamBase& src)
+inline Surface LoadBMP(IOStreamRef& src)
 {
   return Surface{SDL_LoadBMP_IO(src.get(), false)};
 }
@@ -2043,7 +2056,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
  *
- * @param surface the SurfaceBase structure containing the image to be saved.
+ * @param surface the SurfaceRef structure containing the image to be saved.
  * @param dst a data stream to save to.
  * @throws Error on failure.
  *
@@ -2053,7 +2066,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @sa LoadBMP
  */
-inline void SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
+inline void SaveBMP(SurfaceRef& surface, IOStreamRef& dst)
 {
   CheckError(SDL_SaveBMP_IO(surface.get(), dst.get(), false));
 }
@@ -2067,7 +2080,7 @@ inline void SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
  * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
  * not supported.
  *
- * @param surface the SurfaceBase structure containing the image to be saved.
+ * @param surface the SurfaceRef structure containing the image to be saved.
  * @param file a file to save to.
  * @throws Error on failure.
  *
@@ -2077,32 +2090,32 @@ inline void SaveBMP(SurfaceBase& surface, IOStreamBase& dst)
  *
  * @sa LoadBMP
  */
-inline void SaveBMP(SurfaceBase& surface, StringParam file)
+inline void SaveBMP(SurfaceRef& surface, StringParam file)
 {
   CheckError(SDL_SaveBMP(surface.get(), file));
 }
 
-inline Surface SurfaceBase::Duplicate() const
+inline Surface SurfaceRef::Duplicate() const
 {
   return Surface{SDL_DuplicateSurface(get())};
 }
 
-inline Surface SurfaceBase::Scale(int width,
-                                  int height,
-                                  ScaleMode scaleMode) const
+inline Surface SurfaceRef::Scale(int width,
+                                 int height,
+                                 ScaleMode scaleMode) const
 {
   return Surface{SDL_ScaleSurface(get(), width, height, scaleMode)};
 }
 
-inline Surface SurfaceBase::Convert(PixelFormat format) const
+inline Surface SurfaceRef::Convert(PixelFormat format) const
 {
   return Surface{SDL_ConvertSurface(get(), format)};
 }
 
-inline Surface SurfaceBase::Convert(PixelFormat format,
-                                    PaletteBase& palette,
-                                    Colorspace colorspace,
-                                    PropertiesBase& props) const
+inline Surface SurfaceRef::Convert(PixelFormat format,
+                                   PaletteRef& palette,
+                                   Colorspace colorspace,
+                                   PropertiesRef& props) const
 {
   return Surface{SDL_ConvertSurfaceAndColorspace(
     get(), format, palette.get(), colorspace, props.get())};
@@ -2151,14 +2164,14 @@ inline void ConvertPixels(int width,
  * @param src_format an PixelFormat value of the `src` pixels format.
  * @param src_colorspace an Colorspace value describing the colorspace of
  *                       the `src` pixels.
- * @param src_properties an PropertiesBase with additional source color
+ * @param src_properties an PropertiesRef with additional source color
  *                       properties, or 0.
  * @param src a pointer to the source pixels.
  * @param src_pitch the pitch of the source pixels, in bytes.
  * @param dst_format an PixelFormat value of the `dst` pixels format.
  * @param dst_colorspace an Colorspace value describing the colorspace of
  *                       the `dst` pixels.
- * @param dst_properties an PropertiesBase with additional destination color
+ * @param dst_properties an PropertiesRef with additional destination color
  *                       properties, or 0.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.
@@ -2176,12 +2189,12 @@ inline void ConvertPixelsAndColorspace(int width,
                                        int height,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
-                                       PropertiesBase& src_properties,
+                                       PropertiesRef& src_properties,
                                        const void* src,
                                        int src_pitch,
                                        PixelFormat dst_format,
                                        Colorspace dst_colorspace,
-                                       PropertiesBase& dst_properties,
+                                       PropertiesRef& dst_properties,
                                        void* dst,
                                        int dst_pitch)
 {
@@ -2247,7 +2260,7 @@ inline void PremultiplyAlpha(int width,
 
 #pragma region impl
 
-inline SurfaceLock SurfaceBase::Lock() & { return SurfaceLock{get()}; }
+inline SurfaceLock SurfaceRef::Lock() & { return SurfaceLock{get()}; }
 
 #pragma endregion impl
 

@@ -41,16 +41,10 @@ namespace SDL {
  */
 
 // Forward decl
-struct EnvironmentBase;
-
-// Forward decl
 struct EnvironmentRef;
 
 // Forward decl
 struct Environment;
-
-// Forward decl
-struct IConvBase;
 
 // Forward decl
 struct IConvRef;
@@ -365,7 +359,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = IOStreamBase.IOStreamBase(&iface, nullptr);
+ * stream = IOStreamRef.IOStreamRef(&iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
@@ -376,7 +370,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = IOStreamBase.IOStreamBase(&iface, nullptr);
+ * stream = IOStreamRef.IOStreamRef(&iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this macro from any thread.
@@ -740,17 +734,32 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  * @cat resource
  *
  * @sa Environment
- * @sa EnvironmentRef
  * @sa GetEnvironment
- * @sa EnvironmentBase.EnvironmentBase
- * @sa EnvironmentBase.GetVariable
- * @sa EnvironmentBase.GetVariables
- * @sa EnvironmentBase.SetVariable
- * @sa EnvironmentBase.UnsetVariable
+ * @sa EnvironmentRef.EnvironmentRef
+ * @sa EnvironmentRef.GetVariable
+ * @sa EnvironmentRef.GetVariables
+ * @sa EnvironmentRef.SetVariable
+ * @sa EnvironmentRef.UnsetVariable
  */
-struct EnvironmentBase : Resource<SDL_Environment*>
+struct EnvironmentRef : Resource<SDL_Environment*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr EnvironmentRef(const EnvironmentRef& other)
+    : EnvironmentRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr EnvironmentRef(EnvironmentRef&& other)
+    : EnvironmentRef(other.release())
+  {
+  }
 
   /**
    * Create a set of environment variables
@@ -766,14 +775,23 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa EnvironmentBase.GetVariable
-   * @sa EnvironmentBase.GetVariables
-   * @sa EnvironmentBase.SetVariable
-   * @sa EnvironmentBase.UnsetVariable
+   * @sa EnvironmentRef.GetVariable
+   * @sa EnvironmentRef.GetVariables
+   * @sa EnvironmentRef.SetVariable
+   * @sa EnvironmentRef.UnsetVariable
    */
-  EnvironmentBase(bool populated)
+  EnvironmentRef(bool populated)
     : Resource(CheckError(SDL_CreateEnvironment(populated)))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  EnvironmentRef& operator=(EnvironmentRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -788,10 +806,10 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentBase.EnvironmentBase
-   * @sa EnvironmentBase.GetVariables
-   * @sa EnvironmentBase.SetVariable
-   * @sa EnvironmentBase.UnsetVariable
+   * @sa EnvironmentRef.EnvironmentRef
+   * @sa EnvironmentRef.GetVariables
+   * @sa EnvironmentRef.SetVariable
+   * @sa EnvironmentRef.UnsetVariable
    */
   const char* GetVariable(StringParam name)
   {
@@ -812,10 +830,10 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentBase.EnvironmentBase
-   * @sa EnvironmentBase.GetVariables
-   * @sa EnvironmentBase.SetVariable
-   * @sa EnvironmentBase.UnsetVariable
+   * @sa EnvironmentRef.EnvironmentRef
+   * @sa EnvironmentRef.GetVariables
+   * @sa EnvironmentRef.SetVariable
+   * @sa EnvironmentRef.UnsetVariable
    */
   inline OwnArray<char*> GetVariables()
   {
@@ -851,10 +869,10 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentBase.EnvironmentBase
-   * @sa EnvironmentBase.GetVariable
-   * @sa EnvironmentBase.GetVariables
-   * @sa EnvironmentBase.UnsetVariable
+   * @sa EnvironmentRef.EnvironmentRef
+   * @sa EnvironmentRef.GetVariable
+   * @sa EnvironmentRef.GetVariables
+   * @sa EnvironmentRef.UnsetVariable
    */
   void SetVariable(StringParam name, StringParam value, bool overwrite)
   {
@@ -872,59 +890,30 @@ struct EnvironmentBase : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentBase.EnvironmentBase
-   * @sa EnvironmentBase.GetVariable
-   * @sa EnvironmentBase.GetVariables
-   * @sa EnvironmentBase.SetVariable
-   * @sa EnvironmentBase.UnsetVariable
+   * @sa EnvironmentRef.EnvironmentRef
+   * @sa EnvironmentRef.GetVariable
+   * @sa EnvironmentRef.GetVariables
+   * @sa EnvironmentRef.SetVariable
+   * @sa EnvironmentRef.UnsetVariable
    */
   void UnsetVariable(StringParam name)
   {
     CheckError(SDL_UnsetEnvironmentVariable(get(), name));
   }
-};
 
-/**
- * Handle to a non owned environment
- *
- * @cat resource
- *
- * @sa EnvironmentBase
- * @sa Environment
- */
-struct EnvironmentRef : EnvironmentBase
-{
-  using EnvironmentBase::EnvironmentBase;
-
+protected:
   /**
-   * Copy constructor.
+   * Destroy a set of environment variables.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa EnvironmentRef.EnvironmentRef
    */
-  constexpr EnvironmentRef(const EnvironmentRef& other)
-    : EnvironmentBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr EnvironmentRef(EnvironmentRef&& other)
-    : EnvironmentBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~EnvironmentRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  EnvironmentRef& operator=(EnvironmentRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  void Destroy() { reset(); }
 
   /**
    * Destroy a set of environment variables.
@@ -936,7 +925,7 @@ struct EnvironmentRef : EnvironmentBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa EnvironmentBase.EnvironmentBase
+   * @sa EnvironmentRef.EnvironmentRef
    */
   void reset(SDL_Environment* newResource = {})
   {
@@ -945,22 +934,39 @@ struct EnvironmentRef : EnvironmentBase
 };
 
 /**
+ * Unsafe Handle to environment
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentRef
+ */
+struct EnvironmentUnsafe : EnvironmentRef
+{
+  using EnvironmentRef::Destroy;
+
+  using EnvironmentRef::EnvironmentRef;
+
+  using EnvironmentRef::reset;
+};
+
+/**
  * Handle to an owned environment
  *
  * @cat resource
  *
- * @sa EnvironmentBase
  * @sa EnvironmentRef
  */
-struct Environment : EnvironmentRef
+struct Environment : EnvironmentUnsafe
 {
-  using EnvironmentRef::EnvironmentRef;
+  using EnvironmentUnsafe::EnvironmentUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Environment(SDL_Environment* resource = {})
-    : EnvironmentRef(resource)
+  constexpr explicit Environment(SDL_Environment* resource)
+    : EnvironmentUnsafe(resource)
   {
   }
 
@@ -990,8 +996,8 @@ struct Environment : EnvironmentRef
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv()
- * and unsetenv() calls after that point. Use EnvironmentBase.SetVariable() and
- * EnvironmentBase.UnsetVariable() if you want to modify this environment, or
+ * and unsetenv() calls after that point. Use EnvironmentRef.SetVariable() and
+ * EnvironmentRef.UnsetVariable() if you want to modify this environment, or
  * setenv_unsafe() or unsetenv_unsafe() if you want changes to persist
  * in the C runtime environment after Quit().
  *
@@ -1002,10 +1008,10 @@ struct Environment : EnvironmentRef
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa EnvironmentBase.GetVariable
- * @sa EnvironmentBase.GetVariables
- * @sa EnvironmentBase.SetVariable
- * @sa EnvironmentBase.UnsetVariable
+ * @sa EnvironmentRef.GetVariable
+ * @sa EnvironmentRef.GetVariables
+ * @sa EnvironmentRef.SetVariable
+ * @sa EnvironmentRef.UnsetVariable
  */
 inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
 
@@ -1056,11 +1062,11 @@ inline const char* getenv_unsafe(StringParam name)
  * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
- *               EnvironmentBase.SetVariable() instead.
+ *               EnvironmentRef.SetVariable() instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa EnvironmentBase.SetVariable
+ * @sa EnvironmentRef.SetVariable
  */
 inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
 {
@@ -1074,11 +1080,11 @@ inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
  * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
- *               EnvironmentBase.UnsetVariable() instead.
+ *               EnvironmentRef.UnsetVariable() instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa EnvironmentBase.UnsetVariable
+ * @sa EnvironmentRef.UnsetVariable
  */
 inline int unsetenv_unsafe(StringParam name)
 {
@@ -5134,13 +5140,28 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
- * @sa IConvBase.IConvBase
+ * @sa IConvRef.IConvRef
  * @sa IConv
- * @sa IConvRef
  */
-struct IConvBase : Resource<SDL_iconv_data_t*>
+struct IConvRef : Resource<SDL_iconv_data_t*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr IConvRef(const IConvRef& other)
+    : IConvRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr IConvRef(IConvRef&& other)
+    : IConvRef(other.release())
+  {
+  }
 
   /**
    * This function allocates a context for the specified character set
@@ -5153,12 +5174,21 @@ struct IConvBase : Resource<SDL_iconv_data_t*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConvBase.iconv
+   * @sa IConvRef.iconv
    * @sa iconv_string
    */
-  IConvBase(StringParam tocode, StringParam fromcode)
+  IConvRef(StringParam tocode, StringParam fromcode)
     : Resource(SDL_iconv_open(tocode, fromcode))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  IConvRef& operator=(IConvRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -5191,7 +5221,7 @@ struct IConvBase : Resource<SDL_iconv_data_t*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConvBase.IConvBase
+   * @sa IConvRef.IConvRef
    * @sa iconv_string
    */
   size_t iconv(const char** inbuf,
@@ -5201,49 +5231,21 @@ struct IConvBase : Resource<SDL_iconv_data_t*>
   {
     return SDL_iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
-};
 
-/**
- * Handle to a non owned iConv
- *
- * @cat resource
- *
- * @sa IConvBase
- * @sa IConv
- */
-struct IConvRef : IConvBase
-{
-  using IConvBase::IConvBase;
-
+protected:
   /**
-   * Copy constructor.
+   * This function frees a context used for character set conversion.
+   *
+   * @returns 0 on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConvRef.iconv
+   * @sa IConvRef.IConvRef
+   * @sa iconv_string
    */
-  constexpr IConvRef(const IConvRef& other)
-    : IConvBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr IConvRef(IConvRef&& other)
-    : IConvBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~IConvRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  IConvRef& operator=(IConvRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  int close() { return reset(); }
 
   /**
    * This function frees a context used for character set conversion.
@@ -5252,8 +5254,8 @@ struct IConvRef : IConvBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConvBase.iconv
-   * @sa IConvBase.IConvBase
+   * @sa IConvRef.iconv
+   * @sa IConvRef.IConvRef
    * @sa iconv_string
    */
   int reset(SDL_iconv_data_t* newResource = {})
@@ -5263,22 +5265,39 @@ struct IConvRef : IConvBase
 };
 
 /**
+ * Unsafe Handle to iConv
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IConvRef
+ */
+struct IConvUnsafe : IConvRef
+{
+  using IConvRef::IConvRef;
+
+  using IConvRef::close;
+
+  using IConvRef::reset;
+};
+
+/**
  * Handle to an owned iConv
  *
  * @cat resource
  *
- * @sa IConvBase
  * @sa IConvRef
  */
-struct IConv : IConvRef
+struct IConv : IConvUnsafe
 {
-  using IConvRef::IConvRef;
+  using IConvUnsafe::IConvUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit IConv(SDL_iconv_data_t* resource = {})
-    : IConvRef(resource)
+  constexpr explicit IConv(SDL_iconv_data_t* resource)
+    : IConvUnsafe(resource)
   {
   }
 
@@ -5346,8 +5365,8 @@ struct IConv : IConvRef
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConvBase.IConvBase
- * @sa IConvBase.iconv
+ * @sa IConvRef.IConvRef
+ * @sa IConvRef.iconv
  */
 inline OwnPtr<char> iconv_string(StringParam tocode,
                                  StringParam fromcode,

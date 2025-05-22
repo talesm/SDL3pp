@@ -82,11 +82,11 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageBase.html">SDL::StorageBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An abstract interface for filesystem access.  <a href="structSDL_1_1StorageBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageRef.html">SDL::StorageRef</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned storage.  <a href="structSDL_1_1StorageRef.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An abstract interface for filesystem access.  <a href="structSDL_1_1StorageRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1StorageUnsafe.html">SDL::StorageUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to storage.  <a href="structSDL_1_1StorageUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Storage.html">SDL::Storage</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned storage.  <a href="structSDL_1_1Storage.html#details">More...</a><br /></td></tr>
@@ -95,7 +95,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga24042115587c5568577e7acc5d0d76f7" id="r_ga24042115587c5568577e7acc5d0d76f7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#ga24042115587c5568577e7acc5d0d76f7">SDL::StorageInterface</a> = SDL_StorageInterface</td></tr>
-<tr class="memdesc:ga24042115587c5568577e7acc5d0d76f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function interface for <a class="el" href="structSDL_1_1StorageBase.html" title="An abstract interface for filesystem access.">StorageBase</a>.  <br /></td></tr>
+<tr class="memdesc:ga24042115587c5568577e7acc5d0d76f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function interface for <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a>.  <br /></td></tr>
 <tr class="separator:ga24042115587c5568577e7acc5d0d76f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -154,27 +154,27 @@ Typedefs</h2></td></tr>
 <li>Game/User storage is not implicitly mounted, so no files will be found for either scenario when a platform requires explicitly mounting filesystems</li>
 <li>Save data may not be safe since the I/O is not being flushed or validated, so an error occurring elsewhere in the program may result in missing/corrupted save data</li>
 </ul>
-<p>When using <a class="el" href="structSDL_1_1StorageBase.html" title="An abstract interface for filesystem access.">StorageBase</a>, these types of problems are virtually impossible to trip over:</p>
+<p>When using <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a>, these types of problems are virtually impossible to trip over:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> ReadGameData(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">extern</span> <span class="keywordtype">char</span>** fileNames;</div>
 <div class="line">    <span class="keyword">extern</span> <span class="keywordtype">size_t</span> numFiles;</div>
 <div class="line"> </div>
-<div class="line">    StorageBase *title = StorageBase.StorageBase(<span class="keyword">nullptr</span>, 0);</div>
+<div class="line">    Storage title(<span class="keyword">nullptr</span>, 0);</div>
 <div class="line">    <span class="keywordflow">if</span> (title == <span class="keyword">nullptr</span>) {</div>
 <div class="line">        <span class="comment">// Something bad happened!</span></div>
 <div class="line">    }</div>
-<div class="line">    <span class="keywordflow">while</span> (!StorageBase.Ready(title)) {</div>
+<div class="line">    <span class="keywordflow">while</span> (!title.Ready()) {</div>
 <div class="line">        <a class="code hl_function" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">Delay</a>(1);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; numFiles; i += 1) {</div>
 <div class="line">        <span class="keywordtype">void</span>* dst;</div>
-<div class="line">        Uint64 dstLen = 0;</div>
+<div class="line">        Uint64 dstLen = title.GetSize(fileNames[i]);</div>
 <div class="line"> </div>
-<div class="line">        <span class="keywordflow">if</span> (StorageBase.GetFileSize(title, fileNames[i], &amp;dstLen) &amp;&amp; dstLen &gt;</div>
-<div class="line">0) { dst = <a class="code hl_function" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">malloc</a>(dstLen); <span class="keywordflow">if</span> (StorageBase.ReadFile(title, fileNames[i], dst,</div>
-<div class="line">dstLen)) {</div>
+<div class="line">        <span class="keywordflow">if</span> (dstLen &gt; 0) {</div>
+<div class="line">          dst = <a class="code hl_function" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">malloc</a>(dstLen);</div>
+<div class="line">          <span class="keywordflow">if</span> (title.ReadFile(fileNames[i], dst, dstLen)) {</div>
 <div class="line">                <span class="comment">// A bunch of stuff happens here</span></div>
 <div class="line">            } <span class="keywordflow">else</span> {</div>
 <div class="line">                <span class="comment">// Something bad happened!</span></div>
@@ -184,24 +184,22 @@ Typedefs</h2></td></tr>
 <div class="line">            <span class="comment">// Something bad happened!</span></div>
 <div class="line">        }</div>
 <div class="line">    }</div>
-<div class="line"> </div>
-<div class="line">    StorageRef.Close(title);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> ReadSave(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
-<div class="line">    StorageBase *user = StorageBase.StorageBase(<span class="stringliteral">&quot;libsdl&quot;</span>, <span class="stringliteral">&quot;Storage Example&quot;</span>,</div>
-<div class="line">0); <span class="keywordflow">if</span> (user == <span class="keyword">nullptr</span>) {</div>
+<div class="line">    Storage user(<span class="stringliteral">&quot;libsdl&quot;</span>, <span class="stringliteral">&quot;Storage Example&quot;</span>, 0);</div>
+<div class="line">    <span class="keywordflow">if</span> (user == <span class="keyword">nullptr</span>) {</div>
 <div class="line">        <span class="comment">// Something bad happened!</span></div>
 <div class="line">    }</div>
-<div class="line">    <span class="keywordflow">while</span> (!StorageBase.Ready(user)) {</div>
+<div class="line">    <span class="keywordflow">while</span> (!user.Ready()) {</div>
 <div class="line">        <a class="code hl_function" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">Delay</a>(1);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    Uint64 saveLen = 0;</div>
-<div class="line">    <span class="keywordflow">if</span> (StorageBase.GetFileSize(user, <span class="stringliteral">&quot;save0.sav&quot;</span>, &amp;saveLen) &amp;&amp; saveLen &gt; 0)</div>
-<div class="line">{ <span class="keywordtype">void</span>* dst = <a class="code hl_function" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">malloc</a>(saveLen); <span class="keywordflow">if</span> (StorageBase.ReadFile(user, <span class="stringliteral">&quot;save0.sav&quot;</span>,</div>
-<div class="line">dst, saveLen)) {</div>
+<div class="line">    Uint64 saveLen = user.GetFileSize();</div>
+<div class="line">    <span class="keywordflow">if</span> (saveLen &gt; 0) {</div>
+<div class="line">        <span class="keywordtype">void</span>* dst = <a class="code hl_function" href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">malloc</a>(saveLen);</div>
+<div class="line">        <span class="keywordflow">if</span> (user.ReadFile(<span class="stringliteral">&quot;save0.sav&quot;</span>, dst, saveLen)) {</div>
 <div class="line">            <span class="comment">// A bunch of stuff happens here</span></div>
 <div class="line">        } <span class="keywordflow">else</span> {</div>
 <div class="line">            <span class="comment">// Something bad happened!</span></div>
@@ -210,39 +208,35 @@ Typedefs</h2></td></tr>
 <div class="line">    } <span class="keywordflow">else</span> {</div>
 <div class="line">        <span class="comment">// Something bad happened!</span></div>
 <div class="line">    }</div>
-<div class="line"> </div>
-<div class="line">    StorageRef.Close(user);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> WriteSave(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
-<div class="line">    StorageBase *user = StorageBase.StorageBase(<span class="stringliteral">&quot;libsdl&quot;</span>, <span class="stringliteral">&quot;Storage Example&quot;</span>,</div>
-<div class="line">0); <span class="keywordflow">if</span> (user == <span class="keyword">nullptr</span>) {</div>
+<div class="line">    Storage user(<span class="stringliteral">&quot;libsdl&quot;</span>, <span class="stringliteral">&quot;Storage Example&quot;</span>, 0);</div>
+<div class="line">    <span class="keywordflow">if</span> (user == <span class="keyword">nullptr</span>) {</div>
 <div class="line">        <span class="comment">// Something bad happened!</span></div>
 <div class="line">    }</div>
-<div class="line">    <span class="keywordflow">while</span> (!StorageBase.Ready(user)) {</div>
+<div class="line">    <span class="keywordflow">while</span> (!user.Ready()) {</div>
 <div class="line">        <a class="code hl_function" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">Delay</a>(1);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">extern</span> <span class="keywordtype">void</span> *saveData; <span class="comment">// A bunch of stuff happened here...</span></div>
 <div class="line">    <span class="keyword">extern</span> Uint64 saveLen;</div>
-<div class="line">    <span class="keywordflow">if</span> (!StorageBase.WriteFile(user, <span class="stringliteral">&quot;save0.sav&quot;</span>, saveData, saveLen)) {</div>
+<div class="line">    <span class="keywordflow">if</span> (!user.WriteFile(<span class="stringliteral">&quot;save0.sav&quot;</span>, saveData, saveLen)) {</div>
 <div class="line">        <span class="comment">// Something bad happened!</span></div>
 <div class="line">    }</div>
-<div class="line"> </div>
-<div class="line">    StorageRef.Close(user);</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryStdinc_html_ga48fe5521cb77ff8e4ae442bc8387be70"><div class="ttname"><a href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">SDL::malloc</a></div><div class="ttdeci">void * malloc(size_t size)</div><div class="ttdoc">Allocate uninitialized memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:424</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gadfa01257ca1f966fffb72f002db27fa6"><div class="ttname"><a href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a></div><div class="ttdeci">void free(void *mem)</div><div class="ttdoc">Free allocated memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:512</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_ga48fe5521cb77ff8e4ae442bc8387be70"><div class="ttname"><a href="group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70">SDL::malloc</a></div><div class="ttdeci">void * malloc(size_t size)</div><div class="ttdoc">Allocate uninitialized memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:418</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gadfa01257ca1f966fffb72f002db27fa6"><div class="ttname"><a href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a></div><div class="ttdeci">void free(void *mem)</div><div class="ttdoc">Free allocated memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:506</div></div>
 <div class="ttc" id="agroup__CategoryTimer_html_ga29135876921c3060e1c60a9e839d57b4"><div class="ttname"><a href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a></div><div class="ttdeci">void Delay(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:126</div></div>
-</div><!-- fragment --><p>Note the improvements that <a class="el" href="structSDL_1_1StorageBase.html" title="An abstract interface for filesystem access.">StorageBase</a> makes:</p>
+</div><!-- fragment --><p>Note the improvements that <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a> makes:</p>
 <ol type="1">
 <li><b>What to Access:</b> This code explicitly reads from a title or user storage device based on the context of the function.</li>
 <li><b>How to Access:</b> This code explicitly uses either a read or write function based on the context of the function.</li>
 <li><b>When to Access:</b> This code explicitly opens the device when it needs to, and closes it when it is finished working with the filesystem.</li>
 </ol>
 <p>The result is an application that is significantly more robust against the increasing demands of platforms and their filesystems!</p>
-<p>A publicly available example of an <a class="el" href="structSDL_1_1StorageBase.html" title="An abstract interface for filesystem access.">StorageBase</a> backend is the <a href="https://partner.steamgames.com/doc/features/cloud">Steam Cloud</a> backend - you can initialize Steamworks when starting the program, and then <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will recognize that Steamworks is initialized and automatically use ISteamRemoteStorage when the application opens user storage. More importantly, when you <em>open</em> storage it knows to begin a "batch" of filesystem operations, and when you <em>close</em> storage it knows to end and flush the batch. This is used by Steam to support <a href="https://steamcommunity.com/groups/steamworks/announcements/detail/3142949576401813670">Dynamic Cloud Sync</a> ; users can save data on one PC, put the device to sleep, and then continue playing on another PC (and vice versa) with the save data fully synchronized across all devices, allowing for a seamless experience without having to do full restarts of the program.</p>
+<p>A publicly available example of an <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a> backend is the <a href="https://partner.steamgames.com/doc/features/cloud">Steam Cloud</a> backend - you can initialize Steamworks when starting the program, and then <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will recognize that Steamworks is initialized and automatically use ISteamRemoteStorage when the application opens user storage. More importantly, when you <em>open</em> storage it knows to begin a "batch" of filesystem operations, and when you <em>close</em> storage it knows to end and flush the batch. This is used by Steam to support <a href="https://steamcommunity.com/groups/steamworks/announcements/detail/3142949576401813670">Dynamic Cloud Sync</a> ; users can save data on one PC, put the device to sleep, and then continue playing on another PC (and vice versa) with the save data fully synchronized across all devices, allowing for a seamless experience without having to do full restarts of the program.</p>
 <h2><a class="anchor" id="notes-on-valid-paths"></a>
 Notes on valid paths</h2>
 <p>All paths in the <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a> API use Unix-style path separators ('/'). Using a different path separator will not work, even if the underlying platform would otherwise accept it. This is to keep code using the <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a> API portable between platforms and <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a> implementations and simplify app code.</p>
@@ -260,8 +254,8 @@ Notes on valid paths</h2>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Apps that want to supply a custom implementation of <a class="el" href="structSDL_1_1StorageBase.html" title="An abstract interface for filesystem access.">StorageBase</a> will fill in all the functions in this struct, and then pass it to <a class="el" href="structSDL_1_1StorageBase.html#adf8259d0e033b8a58cb8c5277510fb3b" title="Opens up a read-only container for the application&#39;s filesystem.">StorageBase.StorageBase</a> to create a custom <a class="el" href="structSDL_1_1StorageBase.html" title="An abstract interface for filesystem access.">StorageBase</a> object.</p>
-<p>It is not usually necessary to do this; <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> provides standard implementations for many things you might expect to do with an <a class="el" href="structSDL_1_1StorageBase.html" title="An abstract interface for filesystem access.">StorageBase</a>.</p>
+<p>Apps that want to supply a custom implementation of <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> will fill in all the functions in this struct, and then pass it to <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a> to create a custom <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> object.</p>
+<p>It is not usually necessary to do this; <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> provides standard implementations for many things you might expect to do with an <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a>.</p>
 <p>This structure should be initialized using <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE()</a></p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE</a> </dd></dl>

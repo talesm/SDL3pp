@@ -17,23 +17,20 @@ namespace SDL {
  * These functions provide a cross-platform way to spawn and manage OS-level
  * processes.
  *
- * You can create a new subprocess with ProcessBase.ProcessBase() and optionally
- * read and write to it using ProcessBase.Read() or ProcessBase.GetInput() and
- * ProcessBase.GetOutput(). If more advanced functionality like chaining input
+ * You can create a new subprocess with Process.Process() and optionally
+ * read and write to it using Process.Read() or Process.GetInput() and
+ * Process.GetOutput(). If more advanced functionality like chaining input
  * between processes is necessary, you can use
- * ProcessBase.ProcessBase().
+ * Process.Process().
  *
- * You can get the status of a created process with ProcessBase.Wait(), or
- * terminate the process with ProcessBase.Kill().
+ * You can get the status of a created process with Process.Wait(), or
+ * terminate the process with Process.Kill().
  *
- * Don't forget to call ProcessRef.reset() to clean up, whether the process
+ * Don't forget to call Process.reset() to clean up, whether the process
  * process was killed, terminated on its own, or is still running!
  *
  * @{
  */
-
-// Forward decl
-struct ProcessBase;
 
 // Forward decl
 struct ProcessRef;
@@ -54,34 +51,34 @@ struct Process;
  * for standard input.
  *
  * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected
- * to a new IOStreamBase that is available to the application. Standard input
+ * to a new IOStreamRef that is available to the application. Standard input
  * will be available as `prop::process.STDIN_POINTER` and allows
- * ProcessBase.GetInput(), standard output will be available as
- * `prop::process.STDOUT_POINTER` and allows ProcessBase.Read() and
- * ProcessBase.GetOutput(), and standard error will be available as
+ * ProcessRef.GetInput(), standard output will be available as
+ * `prop::process.STDOUT_POINTER` and allows ProcessRef.Read() and
+ * ProcessRef.GetOutput(), and standard error will be available as
  * `prop::process.STDERR_POINTER` in the properties for the created
  * process.
  *
  * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is
- * connected to an existing IOStreamBase provided by the application. Standard
+ * connected to an existing IOStreamRef provided by the application. Standard
  * input is provided using `prop::process.CREATE_STDIN_POINTER`, standard
  * output is provided using `prop::process.CREATE_STDOUT_POINTER`, and
  * standard error is provided using `prop::process.CREATE_STDERR_POINTER`
  * in the creation properties. These existing streams should be closed by the
  * application once the new process is created.
  *
- * In order to use an IOStreamBase with PROCESS_STDIO_REDIRECT, it must
+ * In order to use an IOStreamRef with PROCESS_STDIO_REDIRECT, it must
  * have `prop::IOStream.WINDOWS_HANDLE_POINTER` or
  * `prop::IOStream.FILE_DESCRIPTOR_NUMBER` set. This is true for streams
  * representing files and process I/O.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa ProcessBase.ProcessBase
- * @sa ProcessBase.GetProperties
- * @sa ProcessBase.Read
- * @sa ProcessBase.GetInput
- * @sa ProcessBase.GetOutput
+ * @sa ProcessRef.ProcessRef
+ * @sa ProcessRef.GetProperties
+ * @sa ProcessRef.Read
+ * @sa ProcessRef.GetInput
+ * @sa ProcessRef.GetOutput
  */
 using ProcessIO = SDL_ProcessIO;
 
@@ -93,13 +90,13 @@ constexpr ProcessIO PROCESS_STDIO_NULL =
   SDL_PROCESS_STDIO_NULL; ///< The I/O stream is ignored.
 
 /**
- * The I/O stream is connected to a new IOStreamBase that the application can
+ * The I/O stream is connected to a new IOStreamRef that the application can
  * read or write.
  */
 constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 
 /**
- * The I/O stream is redirected to an existing IOStreamBase.
+ * The I/O stream is redirected to an existing IOStreamRef.
  */
 constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
 
@@ -108,16 +105,32 @@ constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ProcessBase.ProcessBase
+ * @sa ProcessRef.ProcessRef
  *
  * @cat resource
  *
  * @sa Process
  * @sa ProcessRef
  */
-struct ProcessBase : Resource<SDL_Process*>
+struct ProcessRef : Resource<SDL_Process*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr ProcessRef(const ProcessRef& other)
+    : ProcessRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr ProcessRef(ProcessRef&& other)
+    : ProcessRef(other.release())
+  {
+  }
 
   /**
    * Create a new process.
@@ -133,10 +146,10 @@ struct ProcessBase : Resource<SDL_Process*>
    * Setting pipe_stdio to true is equivalent to setting
    * `prop::process.CREATE_STDIN_NUMBER` and
    * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and
-   * will allow the use of ProcessBase.Read() or ProcessBase.GetInput() and
-   * ProcessBase.GetOutput().
+   * will allow the use of ProcessRef.Read() or ProcessRef.GetInput() and
+   * ProcessRef.GetOutput().
    *
-   * See ProcessBase.ProcessBase() for more details.
+   * See ProcessRef.ProcessRef() for more details.
    *
    * @param args the path and arguments for the new process.
    * @param pipe_stdio true to create pipes to the process's standard input and
@@ -150,16 +163,16 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.GetProperties
-   * @sa ProcessBase.Read
-   * @sa ProcessBase.GetInput
-   * @sa ProcessBase.GetOutput
-   * @sa ProcessBase.Kill
-   * @sa ProcessBase.Wait
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.GetProperties
+   * @sa ProcessRef.Read
+   * @sa ProcessRef.GetInput
+   * @sa ProcessRef.GetOutput
+   * @sa ProcessRef.Kill
+   * @sa ProcessRef.Wait
    * @sa ProcessRef.reset
    */
-  ProcessBase(const char* const* args, bool pipe_stdio)
+  ProcessRef(const char* const* args, bool pipe_stdio)
     : Resource(CheckError(SDL_CreateProcess(args, pipe_stdio)))
   {
   }
@@ -173,25 +186,25 @@ struct ProcessBase : Resource<SDL_Process*>
    *   the program to run, any arguments, and a nullptr pointer, e.g. const char
    *   *args[] = { "myprogram", "argument", nullptr }. This is a required
    * property.
-   * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an EnvironmentBase
+   * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an EnvironmentRef
    *   pointer. If this property is set, it will be the entire environment for
    *   the process, otherwise the current environment is used.
    * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing
    *   where standard input for the process comes from, defaults to
    *   `SDL_PROCESS_STDIO_NULL`.
-   * - `prop::process.CREATE_STDIN_POINTER`: an IOStreamBase pointer used for
+   * - `prop::process.CREATE_STDIN_POINTER`: an IOStreamRef pointer used for
    *   standard input when `prop::process.CREATE_STDIN_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
    * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value
    *   describing where standard output for the process goes to, defaults to
    *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDOUT_POINTER`: an IOStreamBase pointer used
+   * - `prop::process.CREATE_STDOUT_POINTER`: an IOStreamRef pointer used
    *   for standard output when `prop::process.CREATE_STDOUT_NUMBER` is set
    *   to `PROCESS_STDIO_REDIRECT`.
    * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value
    *   describing where standard error for the process goes to, defaults to
    *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDERR_POINTER`: an IOStreamBase pointer used
+   * - `prop::process.CREATE_STDERR_POINTER`: an IOStreamRef pointer used
    *   for standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
    * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error
@@ -206,7 +219,7 @@ struct ProcessBase : Resource<SDL_Process*>
    * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
    * SIGCHLD should not be ignored or handled because those would prevent SDL
    * from properly tracking the lifetime of the underlying process. You should
-   * use ProcessBase.Wait() instead.
+   * use ProcessRef.Wait() instead.
    *
    * @param props the properties to use.
    * @post the newly created and running process.
@@ -216,17 +229,27 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.GetProperties
-   * @sa ProcessBase.Read
-   * @sa ProcessBase.GetInput
-   * @sa ProcessBase.GetOutput
-   * @sa ProcessBase.Kill
-   * @sa ProcessBase.Wait
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.GetProperties
+   * @sa ProcessRef.Read
+   * @sa ProcessRef.GetInput
+   * @sa ProcessRef.GetOutput
+   * @sa ProcessRef.Kill
+   * @sa ProcessRef.Wait
+   * @sa ProcessRef.Destroy
    */
-  ProcessBase(PropertiesBase& props)
+  ProcessRef(PropertiesRef& props)
     : Resource(CheckError(SDL_CreateProcessWithProperties(props.get())))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  ProcessRef& operator=(ProcessRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -235,13 +258,13 @@ struct ProcessBase : Resource<SDL_Process*>
    * The following read-only properties are provided by SDL:
    *
    * - `prop::process.PID_NUMBER`: the process ID of the process.
-   * - `prop::process.STDIN_POINTER`: an IOStreamBase that can be used to
+   * - `prop::process.STDIN_POINTER`: an IOStreamRef that can be used to
    *   write input to the process, if it was created with
    *   `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop::process.STDOUT_POINTER`: a non-blocking IOStreamBase that can
+   * - `prop::process.STDOUT_POINTER`: a non-blocking IOStreamRef that can
    *   be used to read output from the process, if it was created with
    *   `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop::process.STDERR_POINTER`: a non-blocking IOStreamBase that can
+   * - `prop::process.STDERR_POINTER`: a non-blocking IOStreamRef that can
    *   be used to read error output from the process, if it was created with
    *   `prop::process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
    * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in
@@ -254,7 +277,7 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
+   * @sa ProcessRef.ProcessRef
    */
   PropertiesRef GetProperties() const
   {
@@ -283,7 +306,7 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
+   * @sa ProcessRef.ProcessRef
    */
   StringResult Read(int* exitcode = nullptr)
   {
@@ -314,7 +337,7 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
+   * @sa ProcessRef.ProcessRef
    */
   template<class T>
   OwnArray<T> ReadAs(int* exitcode = nullptr)
@@ -326,15 +349,15 @@ struct ProcessBase : Resource<SDL_Process*>
   }
 
   /**
-   * Get the IOStreamBase associated with process standard input.
+   * Get the IOStreamRef associated with process standard input.
    *
-   * The process must have been created with ProcessBase.ProcessBase() and
-   * pipe_stdio set to true, or with ProcessBase.ProcessBase() and
+   * The process must have been created with ProcessRef.ProcessRef() and
+   * pipe_stdio set to true, or with ProcessRef.ProcessRef() and
    * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Writing to this stream can return less data than expected if the process
    * hasn't read its input. It may be blocked waiting for its output to be read,
-   * if so you may need to call ProcessBase.GetOutput() and read the output in
+   * if so you may need to call ProcessRef.GetOutput() and read the output in
    * parallel with writing input.
    *
    * @returns the input stream or nullptr on failure; call GetError() for more
@@ -344,20 +367,20 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.GetOutput
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.GetOutput
    */
   IOStreamRef GetInput() { return SDL_GetProcessInput(get()); }
 
   /**
-   * Get the IOStreamBase associated with process standard output.
+   * Get the IOStreamRef associated with process standard output.
    *
-   * The process must have been created with ProcessBase.ProcessBase() and
-   * pipe_stdio set to true, or with ProcessBase.ProcessBase() and
+   * The process must have been created with ProcessRef.ProcessRef() and
+   * pipe_stdio set to true, or with ProcessRef.ProcessRef() and
    * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
-   * Reading from this stream can return 0 with IOStreamBase.GetStatus()
+   * Reading from this stream can return 0 with IOStreamRef.GetStatus()
    * returning IO_STATUS_NOT_READY if no output is available yet.
    *
    * @returns the output stream or nullptr on failure; call GetError() for more
@@ -367,9 +390,9 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.GetInput
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.GetInput
    */
   IOStreamRef GetOutput() { return SDL_GetProcessOutput(get()); }
 
@@ -387,9 +410,9 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.Wait
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.Wait
    * @sa ProcessRef.reset
    */
   void Kill(bool force) { CheckError(SDL_KillProcess(get(), force)); }
@@ -405,9 +428,9 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * If you create a process with standard output piped to the application
    * (`pipe_stdio` being true) then you should read all of the process output
-   * before calling ProcessBase.Wait(). If you don't do this the process might
+   * before calling ProcessRef.Wait(). If you don't do this the process might
    * be blocked indefinitely waiting for output to be read and
-   * ProcessBase.Wait() will never return true;
+   * ProcessRef.Wait() will never return true;
    *
    * @param block If true, block until the process finishes; otherwise, report
    *              on the process' status.
@@ -419,73 +442,45 @@ struct ProcessBase : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.Kill
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.Kill
    * @sa ProcessRef.reset
    */
   bool Wait(bool block, int* exitcode)
   {
     return SDL_WaitProcess(get(), block, exitcode);
   }
-};
 
-/**
- * Handle to a non owned process
- *
- * @cat resource
- *
- * @sa ProcessBase
- * @sa Process
- */
-struct ProcessRef : ProcessBase
-{
-  using ProcessBase::ProcessBase;
-
+protected:
   /**
-   * Copy constructor.
+   * Destroy a previously created process object.
+   *
+   * Note that this does not stop the process, just destroys the SDL object used
+   * to track it. If you want to stop the process you should use
+   * ProcessRef.Kill().
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.Kill
    */
-  constexpr ProcessRef(const ProcessRef& other)
-    : ProcessBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ProcessRef(ProcessRef&& other)
-    : ProcessBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~ProcessRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  ProcessRef& operator=(ProcessRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  void Destroy() { reset(); }
 
   /**
    * Destroy a previously created process object.
    *
    * Note that this does not stop the process, just destroys the SDL object used
    * to track it. If you want to stop the process you should use
-   * ProcessBase.Kill().
+   * ProcessRef.Kill().
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.ProcessBase
-   * @sa ProcessBase.Kill
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.Kill
    */
   void reset(SDL_Process* newResource = {})
   {
@@ -494,22 +489,39 @@ struct ProcessRef : ProcessBase
 };
 
 /**
+ * Unsafe Handle to process
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ProcessRef
+ */
+struct ProcessUnsafe : ProcessRef
+{
+  using ProcessRef::Destroy;
+
+  using ProcessRef::ProcessRef;
+
+  using ProcessRef::reset;
+};
+
+/**
  * Handle to an owned process
  *
  * @cat resource
  *
- * @sa ProcessBase
  * @sa ProcessRef
  */
-struct Process : ProcessRef
+struct Process : ProcessUnsafe
 {
-  using ProcessRef::ProcessRef;
+  using ProcessUnsafe::ProcessUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Process(SDL_Process* resource = {})
-    : ProcessRef(resource)
+  constexpr explicit Process(SDL_Process* resource)
+    : ProcessUnsafe(resource)
   {
   }
 

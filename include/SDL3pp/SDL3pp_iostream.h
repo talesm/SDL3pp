@@ -21,16 +21,13 @@ namespace SDL {
  */
 
 // Forward decl
-struct IOStreamBase;
-
-// Forward decl
 struct IOStreamRef;
 
 // Forward decl
 struct IOStream;
 
 /**
- * IOStreamBase status, set by a read or write operation.
+ * IOStreamRef status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -54,7 +51,7 @@ constexpr IOStatus IO_STATUS_WRITEONLY =
   SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
 
 /**
- * Possible `whence` values for IOStreamBase seeking.
+ * Possible `whence` values for IOStreamRef seeking.
  *
  * These map to the same "whence" concept that `fseek` or `lseek` use in the
  * standard C runtime.
@@ -73,12 +70,12 @@ constexpr IOWhence IO_SEEK_END =
   SDL_IO_SEEK_END; ///< Seek relative to the end of data.
 
 /**
- * The function pointers that drive an IOStreamBase.
+ * The function pointers that drive an IOStreamRef.
  *
- * Applications can provide this struct to IOStreamBase.IOStreamBase() to create
- * their own implementation of IOStreamBase. This is not necessarily required,
+ * Applications can provide this struct to IOStreamRef.IOStreamRef() to create
+ * their own implementation of IOStreamRef. This is not necessarily required,
  * as SDL already offers several common types of I/O streams, via
- * IOStreamBase.IOStreamBase().
+ * IOStreamRef.IOStreamRef().
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
  *
@@ -93,7 +90,7 @@ using IOStreamInterface = SDL_IOStreamInterface;
  *
  * This operates as an opaque handle. There are several APIs to create various
  * types of I/O streams, or an app can supply an IOStreamInterface to
- * IOStreamBase.IOStreamBase() to provide their own stream implementation behind
+ * IOStreamRef.IOStreamRef() to provide their own stream implementation behind
  * this struct's abstract interface.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -103,12 +100,28 @@ using IOStreamInterface = SDL_IOStreamInterface;
  * @sa IOStream
  * @sa IOStreamRef
  */
-struct IOStreamBase : Resource<SDL_IOStream*>
+struct IOStreamRef : Resource<SDL_IOStream*>
 {
   using Resource::Resource;
 
   /**
-   * Use this function to create a new IOStreamBase structure for reading from
+   * Copy constructor.
+   */
+  constexpr IOStreamRef(const IOStreamRef& other)
+    : IOStreamRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr IOStreamRef(IOStreamRef&& other)
+    : IOStreamRef(other.release())
+  {
+  }
+
+  /**
+   * Use this function to create a new IOStreamRef structure for reading from
    * and/or writing to a named file.
    *
    * The `mode` string is treated roughly the same as in a call to the C
@@ -146,29 +159,29 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * This function supports Unicode filenames, but they must be encoded in UTF-8
    * format, regardless of the underlying operating system.
    *
-   * In Android, IOStreamBase.IOStreamBase() can be used to open content://
-   * URIs. As a fallback, IOStreamBase.IOStreamBase() will transparently open a
+   * In Android, IOStreamRef.IOStreamRef() can be used to open content://
+   * URIs. As a fallback, IOStreamRef.IOStreamRef() will transparently open a
    * matching filename in the app's `assets`.
    *
-   * Closing the IOStreamBase will close SDL's internal file handle.
+   * Closing the IOStreamRef will close SDL's internal file handle.
    *
    * The following properties may be set at creation time by SDL:
    *
    * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this IOStreamBase is using to access the
+   *   to a win32 `HANDLE`, that this IOStreamRef is using to access the
    *   filesystem. If the program isn't running on Windows, or SDL used some
    *   other method to access the filesystem, this property will not be set.
    * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStreamBase is using to access the filesystem.
+   *   stdio `FILE *`, that this IOStreamRef is using to access the filesystem.
    *   If SDL used some other method to access the filesystem, this property
    *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
    *   than your app, trying to use this pointer will almost certainly result in
    *   a crash! This is mostly a problem on Windows; make sure you build SDL and
    *   your app with the same compiler and settings to avoid it.
    * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   IOStreamBase is using to access the filesystem.
+   *   IOStreamRef is using to access the filesystem.
    * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this IOStreamBase is using to access
+   *   to an Android NDK `AAsset *`, that this IOStreamRef is using to access
    *   the filesystem. If SDL used some other method to access the filesystem,
    *   this property will not be set.
    *
@@ -183,30 +196,30 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IOStreamRef.Close
-   * @sa IOStreamBase.Flush
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Tell
-   * @sa IOStreamBase.Write
+   * @sa IOStreamRef.Flush
+   * @sa IOStreamRef.Read
+   * @sa IOStreamRef.Seek
+   * @sa IOStreamRef.Tell
+   * @sa IOStreamRef.Write
    */
-  IOStreamBase(StringParam file, StringParam mode)
+  IOStreamRef(StringParam file, StringParam mode)
     : Resource(SDL_IOFromFile(file, mode))
   {
   }
 
   /**
-   * Create a custom IOStreamBase.
+   * Create a custom IOStreamRef.
    *
    * Applications do not need to use this function unless they are providing
-   * their own IOStreamBase implementation. If you just need an IOStreamBase to
+   * their own IOStreamRef implementation. If you just need an IOStreamRef to
    * read/write a common data source, you should use the built-in
    * implementations in SDL, like
-   * IOStreamBase.IOStreamBase(StringParam,StringParam) or IOFromMem(), etc.
+   * IOStreamRef.IOStreamRef(StringParam,StringParam) or IOFromMem(), etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
    *
-   * @param iface the interface that implements this IOStreamBase, initialized
+   * @param iface the interface that implements this IOStreamRef, initialized
    *              using SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
    * @post a valid stream on success.
@@ -219,16 +232,25 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @sa IOStreamRef.Close
    * @sa SDL_INIT_INTERFACE
    * @sa IOFromConstMem
-   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamRef.IOStreamRef
    * @sa IOFromMem
    */
-  IOStreamBase(const IOStreamInterface& iface, void* userdata)
+  IOStreamRef(const IOStreamInterface& iface, void* userdata)
     : Resource(CheckError(SDL_OpenIO(&iface, userdata)))
   {
   }
 
   /**
-   * Get the properties associated with an IOStreamBase.
+   * Assignment operator.
+   */
+  IOStreamRef& operator=(IOStreamRef other)
+  {
+    release(other.release());
+    return *this;
+  }
+
+  /**
+   * Get the properties associated with an IOStreamRef.
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -243,14 +265,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Query the stream status of an IOStreamBase.
+   * Query the stream status of an IOStreamRef.
    *
    * This information can be useful to decide if a short read or write was due
    * to an error, an EOF, or a non-blocking operation that isn't yet ready to
    * complete.
    *
-   * An IOStreamBase's status is only expected to change after a
-   * IOStreamBase.Read or IOStreamBase.Write call; don't expect it to change if
+   * An IOStreamRef's status is only expected to change after a
+   * IOStreamRef.Read or IOStreamRef.Write call; don't expect it to change if
    * you just call this query function in a tight loop.
    *
    * @returns an IOStatus enum with the current state.
@@ -262,9 +284,9 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   IOStatus GetStatus() const { return SDL_GetIOStatus(get()); }
 
   /**
-   * Use this function to get the size of the data stream in an IOStreamBase.
+   * Use this function to get the size of the data stream in an IOStreamRef.
    *
-   * @returns the size of the data stream in the IOStreamBase on success.
+   * @returns the size of the data stream in the IOStreamRef on success.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
@@ -279,7 +301,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Seek within an IOStreamBase data stream.
+   * Seek within an IOStreamRef data stream.
    *
    * This function seeks to byte `offset`, relative to `whence`.
    *
@@ -302,7 +324,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.Tell
+   * @sa IOStreamRef.Tell
    */
   Sint64 Seek(Sint64 offset, IOWhence whence)
   {
@@ -310,9 +332,9 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Determine the current read/write offset in an IOStreamBase data stream.
+   * Determine the current read/write offset in an IOStreamRef data stream.
    *
-   * This is actually a wrapper function that calls the IOStreamBase's `seek`
+   * This is actually a wrapper function that calls the IOStreamRef's `seek`
    * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
    * application development.
    *
@@ -323,7 +345,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.Seek
+   * @sa IOStreamRef.Seek
    */
   Sint64 Tell() const { return SDL_TellIO(get()); }
 
@@ -334,8 +356,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * pointed at by `ptr`. This function may read less bytes than requested.
    *
    * This function will return zero when the data stream is completely read, and
-   * IOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and
-   * the stream is not at EOF, IOStreamBase.GetStatus() will return a different
+   * IOStreamRef.GetStatus() will return IO_STATUS_EOF. If zero is returned and
+   * the stream is not at EOF, IOStreamRef.GetStatus() will return a different
    * error value and GetError() will offer a human-readable message.
    *
    * @param size the number of bytes to read from the data source.
@@ -346,8 +368,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.Write
-   * @sa IOStreamBase.GetStatus
+   * @sa IOStreamRef.Write
+   * @sa IOStreamRef.GetStatus
    */
   std::string Read(size_t size = -1)
   {
@@ -373,8 +395,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * pointed at by `ptr`. This function may read less bytes than requested.
    *
    * This function will return zero when the data stream is completely read, and
-   * IOStreamBase.GetStatus() will return IO_STATUS_EOF. If zero is returned and
-   * the stream is not at EOF, IOStreamBase.GetStatus() will return a different
+   * IOStreamRef.GetStatus() will return IO_STATUS_EOF. If zero is returned and
+   * the stream is not at EOF, IOStreamRef.GetStatus() will return a different
    * error value and GetError() will offer a human-readable message.
    *
    * @param buf the buffer to read data into.
@@ -385,8 +407,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.Write
-   * @sa IOStreamBase.GetStatus
+   * @sa IOStreamRef.Write
+   * @sa IOStreamRef.GetStatus
    */
   size_t Read(TargetBytes buf)
   {
@@ -394,7 +416,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Write to an IOStreamBase data stream.
+   * Write to an IOStreamRef data stream.
    *
    * This function writes exactly `size` bytes from the area pointed at by `ptr`
    * to the stream. If this fails for any reason, it'll return less than `size`
@@ -403,7 +425,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * On error, this function still attempts to write as much as possible, so it
    * might return a positive value less than the requested write size.
    *
-   * The caller can use IOStreamBase.GetStatus() to determine if the problem is
+   * The caller can use IOStreamRef.GetStatus() to determine if the problem is
    * recoverable, such as a non-blocking write that can simply be retried later,
    * or a fatal error.
    *
@@ -415,11 +437,11 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.printf
-   * @sa IOStreamBase.Read
-   * @sa IOStreamBase.Seek
-   * @sa IOStreamBase.Flush
-   * @sa IOStreamBase.GetStatus
+   * @sa IOStreamRef.printf
+   * @sa IOStreamRef.Read
+   * @sa IOStreamRef.Seek
+   * @sa IOStreamRef.Flush
+   * @sa IOStreamRef.GetStatus
    */
   size_t Write(SourceBytes buf)
   {
@@ -445,7 +467,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Print to an IOStreamBase data stream.
+   * Print to an IOStreamRef data stream.
    *
    * @warning this is not typesafe! Prefer using print() and println()
    *
@@ -461,8 +483,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.vprintf
-   * @sa IOStreamBase.Write
+   * @sa IOStreamRef.vprintf
+   * @sa IOStreamRef.Write
    */
   size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
   {
@@ -477,7 +499,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Print to an IOStreamBase data stream.
+   * Print to an IOStreamRef data stream.
    *
    * @warning this is not typesafe! Prefer using print() and println()
    *
@@ -492,8 +514,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.printf
-   * @sa IOStreamBase.Write
+   * @sa IOStreamRef.printf
+   * @sa IOStreamRef.Write
    */
   size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap)
   {
@@ -513,8 +535,8 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.IOStreamBase
-   * @sa IOStreamBase.Write
+   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStreamRef.Write
    */
   void Flush() { CheckError(SDL_FlushIO(get())); }
 
@@ -533,7 +555,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa LoadFile
-   * @sa IOStreamBase.SaveFile
+   * @sa IOStreamRef.SaveFile
    */
   StringResult LoadFile()
   {
@@ -557,7 +579,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa LoadFile
-   * @sa IOStreamBase.SaveFile
+   * @sa IOStreamRef.SaveFile
    */
   template<class T>
   OwnArray<T> LoadFileAs()
@@ -579,7 +601,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SaveFile
-   * @sa IOStreamBase.LoadFile
+   * @sa IOStreamRef.LoadFile
    */
   void SaveFile(SourceBytes data)
   {
@@ -587,11 +609,11 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read a byte from an IOStreamBase.
+   * Use this function to read a byte from an IOStreamRef.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -609,11 +631,11 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read a signed byte from an IOStreamBase.
+   * Use this function to read a signed byte from an IOStreamRef.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -632,14 +654,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 16 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -658,14 +680,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 16 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -683,15 +705,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 16 bits of big-endian data from an IOStreamBase
+   * Use this function to read 16 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -709,15 +731,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 16 bits of big-endian data from an IOStreamBase
+   * Use this function to read 16 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -736,14 +758,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 32 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -762,14 +784,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 32 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -787,15 +809,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 32 bits of big-endian data from an IOStreamBase
+   * Use this function to read 32 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -813,15 +835,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 32 bits of big-endian data from an IOStreamBase
+   * Use this function to read 32 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -840,14 +862,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 64 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -866,14 +888,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 64 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -891,15 +913,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 64 bits of big-endian data from an IOStreamBase
+   * Use this function to read 64 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -917,15 +939,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 64 bits of big-endian data from an IOStreamBase
+   * Use this function to read 64 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
@@ -943,7 +965,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to write a byte to an IOStreamBase.
+   * Use this function to write a byte to an IOStreamRef.
    *
    * @param value the byte value to write.
    * @throws Error on failure.
@@ -955,7 +977,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteU8(Uint8 value) { CheckError(SDL_WriteU8(get(), value)); }
 
   /**
-   * Use this function to write a signed byte to an IOStreamBase.
+   * Use this function to write a signed byte to an IOStreamRef.
    *
    * @param value the byte value to write.
    * @throws Error on failure.
@@ -967,7 +989,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteS8(Sint8 value) { CheckError(SDL_WriteS8(get(), value)); }
 
   /**
-   * Use this function to write 16 bits in native format to an IOStreamBase as
+   * Use this function to write 16 bits in native format to an IOStreamRef as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -984,7 +1006,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteU16LE(Uint16 value) { CheckError(SDL_WriteU16LE(get(), value)); }
 
   /**
-   * Use this function to write 16 bits in native format to an IOStreamBase as
+   * Use this function to write 16 bits in native format to an IOStreamRef as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1001,7 +1023,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteS16LE(Sint16 value) { CheckError(SDL_WriteS16LE(get(), value)); }
 
   /**
-   * Use this function to write 16 bits in native format to an IOStreamBase as
+   * Use this function to write 16 bits in native format to an IOStreamRef as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1017,7 +1039,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteU16BE(Uint16 value) { CheckError(SDL_WriteU16BE(get(), value)); }
 
   /**
-   * Use this function to write 16 bits in native format to an IOStreamBase as
+   * Use this function to write 16 bits in native format to an IOStreamRef as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1033,7 +1055,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteS16BE(Sint16 value) { CheckError(SDL_WriteS16BE(get(), value)); }
 
   /**
-   * Use this function to write 32 bits in native format to an IOStreamBase as
+   * Use this function to write 32 bits in native format to an IOStreamRef as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1050,7 +1072,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteU32LE(Uint32 value) { CheckError(SDL_WriteU32LE(get(), value)); }
 
   /**
-   * Use this function to write 32 bits in native format to an IOStreamBase as
+   * Use this function to write 32 bits in native format to an IOStreamRef as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1067,7 +1089,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteS32LE(Sint32 value) { CheckError(SDL_WriteS32LE(get(), value)); }
 
   /**
-   * Use this function to write 32 bits in native format to an IOStreamBase as
+   * Use this function to write 32 bits in native format to an IOStreamRef as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1083,7 +1105,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteU32BE(Uint32 value) { CheckError(SDL_WriteU32BE(get(), value)); }
 
   /**
-   * Use this function to write 32 bits in native format to an IOStreamBase as
+   * Use this function to write 32 bits in native format to an IOStreamRef as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1099,7 +1121,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteS32BE(Sint32 value) { CheckError(SDL_WriteS32BE(get(), value)); }
 
   /**
-   * Use this function to write 64 bits in native format to an IOStreamBase as
+   * Use this function to write 64 bits in native format to an IOStreamRef as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1116,7 +1138,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteU64LE(Uint64 value) { CheckError(SDL_WriteU64LE(get(), value)); }
 
   /**
-   * Use this function to write 64 bits in native format to an IOStreamBase as
+   * Use this function to write 64 bits in native format to an IOStreamRef as
    * little-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1133,7 +1155,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteS64LE(Sint64 value) { CheckError(SDL_WriteS64LE(get(), value)); }
 
   /**
-   * Use this function to write 64 bits in native format to an IOStreamBase as
+   * Use this function to write 64 bits in native format to an IOStreamRef as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1149,7 +1171,7 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteU64BE(Uint64 value) { CheckError(SDL_WriteU64BE(get(), value)); }
 
   /**
-   * Use this function to write 64 bits in native format to an IOStreamBase as
+   * Use this function to write 64 bits in native format to an IOStreamRef as
    * big-endian data.
    *
    * SDL byteswaps the data only if necessary, so the application always
@@ -1165,11 +1187,11 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   void WriteS64BE(Sint64 value) { CheckError(SDL_WriteS64BE(get(), value)); }
 
   /**
-   * Use this function to read a byte from an IOStreamBase.
+   * Use this function to read a byte from an IOStreamRef.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1185,11 +1207,11 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read a byte from an IOStreamBase.
+   * Use this function to read a byte from an IOStreamRef.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1206,14 +1228,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 16 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1230,14 +1252,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 16 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1253,15 +1275,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 16 bits of big-endian data from an IOStreamBase
+   * Use this function to read 16 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1277,15 +1299,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 16 bits of big-endian data from an IOStreamBase
+   * Use this function to read 16 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1302,14 +1324,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 32 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1326,14 +1348,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 32 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1349,15 +1371,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 32 bits of big-endian data from an IOStreamBase
+   * Use this function to read 32 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1373,15 +1395,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 32 bits of big-endian data from an IOStreamBase
+   * Use this function to read 32 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1398,14 +1420,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 64 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1422,14 +1444,14 @@ struct IOStreamBase : Resource<SDL_IOStream*>
 
   /**
    * Use this function to read 64 bits of little-endian data from an
-   * IOStreamBase and return in native format.
+   * IOStreamRef and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1445,15 +1467,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 64 bits of big-endian data from an IOStreamBase
+   * Use this function to read 64 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1469,15 +1491,15 @@ struct IOStreamBase : Resource<SDL_IOStream*>
   }
 
   /**
-   * Use this function to read 64 bits of big-endian data from an IOStreamBase
+   * Use this function to read 64 bits of big-endian data from an IOStreamRef
    * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamBase.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamBase.GetStatus() will return
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
+   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
    * a different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success, std::nullopt on failure.
@@ -1491,60 +1513,18 @@ struct IOStreamBase : Resource<SDL_IOStream*>
     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
     return {};
   }
-};
 
-/**
- * Handle to a non owned iOStream
- *
- * @cat resource
- *
- * @sa IOStreamBase
- * @sa IOStream
- */
-struct IOStreamRef : IOStreamBase
-{
-  using IOStreamBase::IOStreamBase;
-
+protected:
   /**
-   * Copy constructor.
-   */
-  constexpr IOStreamRef(const IOStreamRef& other)
-    : IOStreamBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr IOStreamRef(IOStreamRef&& other)
-    : IOStreamBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~IOStreamRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  IOStreamRef& operator=(IOStreamRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Close and free an allocated IOStreamBase structure.
+   * Close and free an allocated IOStreamRef structure.
    *
-   * IOStreamRef.Close() closes and cleans up the IOStreamBase stream. It
-   * releases any resources used by the stream and frees the IOStreamBase
+   * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
+   * releases any resources used by the stream and frees the IOStreamRef
    * itself. This returns true on success, or false if the stream failed to
    * flush to its output (e.g. to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the IOStreamBase is still invalid once this function
+   * reports an error, but the IOStreamRef is still invalid once this function
    * returns.
    *
    * This call flushes any buffered writes to the operating system, but there
@@ -1552,7 +1532,7 @@ struct IOStreamRef : IOStreamBase
    * be in the OS's file cache, waiting to go to disk later. If it's absolutely
    * crucial that writes go to disk immediately, so they are definitely stored
    * even if the power fails before the file cache would have caught up, one
-   * should call IOStreamBase.Flush() before closing. Note that flushing takes
+   * should call IOStreamRef.Flush() before closing. Note that flushing takes
    * time and makes the system and your app operate less efficiently, so do so
    * sparingly.
    *
@@ -1562,43 +1542,61 @@ struct IOStreamRef : IOStreamBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamBase.IOStreamBase
+   * @sa IOStreamRef.IOStreamRef
+   */
+  void Close() { reset(); }
+
+  /**
+   * Close and free an allocated IOStreamRef structure.
+   *
+   * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
+   * releases any resources used by the stream and frees the IOStreamRef
+   * itself. This returns true on success, or false if the stream failed to
+   * flush to its output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the IOStreamRef is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call IOStreamRef.Flush() before closing. Note that flushing takes
+   * time and makes the system and your app operate less efficiently, so do so
+   * sparingly.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.IOStreamRef
    */
   void reset(SDL_IOStream* newResource = {})
   {
     CheckError(SDL_CloseIO(release(newResource)));
   }
+};
 
-  /**
-   * Close and free an allocated IOStreamBase structure.
-   *
-   * IOStreamRef.Close() closes and cleans up the IOStreamBase stream. It
-   * releases any resources used by the stream and frees the IOStreamBase
-   * itself. This returns true on success, or false if the stream failed to
-   * flush to its output (e.g. to disk).
-   *
-   * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the IOStreamBase is still invalid once this function
-   * returns.
-   *
-   * This call flushes any buffered writes to the operating system, but there
-   * are no guarantees that those writes have gone to physical media; they might
-   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
-   * crucial that writes go to disk immediately, so they are definitely stored
-   * even if the power fails before the file cache would have caught up, one
-   * should call IOStreamBase.Flush() before closing. Note that flushing takes
-   * time and makes the system and your app operate less efficiently, so do so
-   * sparingly.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamBase.IOStreamBase
-   */
-  void Close() { reset(); }
+/**
+ * Unsafe Handle to iOStream
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa IOStreamRef
+ */
+struct IOStreamUnsafe : IOStreamRef
+{
+  using IOStreamRef::Close;
+
+  using IOStreamRef::IOStreamRef;
+
+  using IOStreamRef::reset;
 };
 
 /**
@@ -1606,18 +1604,17 @@ struct IOStreamRef : IOStreamBase
  *
  * @cat resource
  *
- * @sa IOStreamBase
  * @sa IOStreamRef
  */
-struct IOStream : IOStreamRef
+struct IOStream : IOStreamUnsafe
 {
-  using IOStreamRef::IOStreamRef;
+  using IOStreamUnsafe::IOStreamUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit IOStream(SDL_IOStream* resource = {})
-    : IOStreamRef(resource)
+  constexpr explicit IOStream(SDL_IOStream* resource)
+    : IOStreamUnsafe(resource)
   {
   }
 
@@ -1670,16 +1667,16 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
 
 /**
  * Use this function to prepare a read-write memory buffer for use with
- * IOStreamBase.
+ * IOStreamRef.
  *
- * This function sets up an IOStreamBase struct based on a memory area of a
+ * This function sets up an IOStreamRef struct based on a memory area of a
  * certain size, for both read and write access.
  *
- * This memory buffer is not copied by the IOStreamBase; the pointer you
+ * This memory buffer is not copied by the IOStreamRef; the pointer you
  * provide must remain valid until you close the stream. Closing the stream
  * will not free the original buffer.
  *
- * If you need to make sure the IOStreamBase never writes to the memory
+ * If you need to make sure the IOStreamRef never writes to the memory
  * buffer, you should use IOFromConstMem() with a read-only buffer of
  * memory instead.
  *
@@ -1690,7 +1687,7 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
  *
- * @param mem a buffer to feed an IOStreamBase stream.
+ * @param mem a buffer to feed an IOStreamRef stream.
  * @returns a valid IOStream on success.
  * @throws Error on failure.
  *
@@ -1700,11 +1697,11 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  *
  * @sa IOFromConstMem
  * @sa IOStreamRef.Close
- * @sa IOStreamBase.Flush
- * @sa IOStreamBase.Read
- * @sa IOStreamBase.Seek
- * @sa IOStreamBase.Tell
- * @sa IOStreamBase.Write
+ * @sa IOStreamRef.Flush
+ * @sa IOStreamRef.Read
+ * @sa IOStreamRef.Seek
+ * @sa IOStreamRef.Tell
+ * @sa IOStreamRef.Write
  */
 inline IOStream IOFromMem(TargetBytes mem)
 {
@@ -1713,15 +1710,15 @@ inline IOStream IOFromMem(TargetBytes mem)
 
 /**
  * Use this function to prepare a read-only memory buffer for use with
- * IOStreamBase.
+ * IOStreamRef.
  *
- * This function sets up an IOStreamBase struct based on a memory area of a
+ * This function sets up an IOStreamRef struct based on a memory area of a
  * certain size. It assumes the memory area is not writable.
  *
- * Attempting to write to this IOStreamBase stream will report an error
+ * Attempting to write to this IOStreamRef stream will report an error
  * without writing to the memory buffer.
  *
- * This memory buffer is not copied by the IOStreamBase; the pointer you
+ * This memory buffer is not copied by the IOStreamRef; the pointer you
  * provide must remain valid until you close the stream. Closing the stream
  * will not free the original buffer.
  *
@@ -1735,7 +1732,7 @@ inline IOStream IOFromMem(TargetBytes mem)
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
  *
- * @param mem a read-only buffer to feed an IOStreamBase stream.
+ * @param mem a read-only buffer to feed an IOStreamRef stream.
  * @returns a valid IOStream on success.
  * @throws Error on failure.
  *
@@ -1745,9 +1742,9 @@ inline IOStream IOFromMem(TargetBytes mem)
  *
  * @sa IOFromMem
  * @sa IOStreamRef.Close
- * @sa IOStreamBase.Read
- * @sa IOStreamBase.Seek
- * @sa IOStreamBase.Tell
+ * @sa IOStreamRef.Read
+ * @sa IOStreamRef.Seek
+ * @sa IOStreamRef.Tell
  */
 inline IOStream IOFromConstMem(SourceBytes mem)
 {
@@ -1755,7 +1752,7 @@ inline IOStream IOFromConstMem(SourceBytes mem)
 }
 
 /**
- * Use this function to create an IOStreamBase that is backed by dynamically
+ * Use this function to create an IOStreamRef that is backed by dynamically
  * allocated memory.
  *
  * This supports the following properties to provide access to the memory and
@@ -1777,10 +1774,10 @@ inline IOStream IOFromConstMem(SourceBytes mem)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IOStreamRef.Close
- * @sa IOStreamBase.Read
- * @sa IOStreamBase.Seek
- * @sa IOStreamBase.Tell
- * @sa IOStreamBase.Write
+ * @sa IOStreamRef.Read
+ * @sa IOStreamRef.Seek
+ * @sa IOStreamRef.Tell
+ * @sa IOStreamRef.Write
  */
 inline IOStream IOFromDynamicMem() { return IOStream{SDL_IOFromDynamicMem()}; }
 
@@ -1799,7 +1796,7 @@ inline IOStream IOFromDynamicMem() { return IOStream{SDL_IOFromDynamicMem()}; }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStreamBase.LoadFile
+ * @sa IOStreamRef.LoadFile
  * @sa SaveFile
  */
 inline StringResult LoadFile(StringParam file)
@@ -1824,7 +1821,7 @@ inline StringResult LoadFile(StringParam file)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStreamBase.LoadFile
+ * @sa IOStreamRef.LoadFile
  * @sa SaveFile
  */
 template<class T>
@@ -1847,7 +1844,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStreamBase.SaveFile
+ * @sa IOStreamRef.SaveFile
  * @sa LoadFile
  */
 inline void SaveFile(StringParam file, SourceBytes data)

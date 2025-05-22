@@ -611,7 +611,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga60ffebe32576f285060421d0c75d103f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies whether THREAD_PRIORITY_TIME_CRITICAL should be treated as realtime.  <br /></td></tr>
 <tr class="separator:ga60ffebe32576f285060421d0c75d103f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga28a5b3b2e99f6219d4b9f84c794ffbb2" id="r_ga28a5b3b2e99f6219d4b9f84c794ffbb2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#ga28a5b3b2e99f6219d4b9f84c794ffbb2">SDL_HINT_THREAD_PRIORITY_POLICY</a>&#160;&#160;&#160;&quot;SDL_THREAD_PRIORITY_POLICY&quot;</td></tr>
-<tr class="memdesc:ga28a5b3b2e99f6219d4b9f84c794ffbb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A string specifying additional information to use with ThreadBase.SetCurrentPriority.  <br /></td></tr>
+<tr class="memdesc:ga28a5b3b2e99f6219d4b9f84c794ffbb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A string specifying additional information to use with ThreadRef.SetCurrentPriority.  <br /></td></tr>
 <tr class="separator:ga28a5b3b2e99f6219d4b9f84c794ffbb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafbc6ba9f809e07557eb369f763299174" id="r_gafbc6ba9f809e07557eb369f763299174"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#gafbc6ba9f809e07557eb369f763299174">SDL_HINT_TIMER_RESOLUTION</a>&#160;&#160;&#160;&quot;SDL_TIMER_RESOLUTION&quot;</td></tr>
 <tr class="memdesc:gafbc6ba9f809e07557eb369f763299174"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable that controls the timer resolution, in milliseconds.  <br /></td></tr>
@@ -743,10 +743,10 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga464d623d2f0edb55e2da44d09e32e72a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable controlling how a truncated WAVE file is handled.  <br /></td></tr>
 <tr class="separator:ga464d623d2f0edb55e2da44d09e32e72a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga80b2d96b116d894ff3c01b05d8c3ce4d" id="r_ga80b2d96b116d894ff3c01b05d8c3ce4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#ga80b2d96b116d894ff3c01b05d8c3ce4d">SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED</a>&#160;&#160;&#160;&quot;SDL_WINDOW_ACTIVATE_WHEN_RAISED&quot;</td></tr>
-<tr class="memdesc:ga80b2d96b116d894ff3c01b05d8c3ce4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable controlling whether the window is activated when the WindowBase.Raise function is called.  <br /></td></tr>
+<tr class="memdesc:ga80b2d96b116d894ff3c01b05d8c3ce4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable controlling whether the window is activated when the WindowRef.Raise function is called.  <br /></td></tr>
 <tr class="separator:ga80b2d96b116d894ff3c01b05d8c3ce4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga15998731fd8689dbca378af8321bcd38" id="r_ga15998731fd8689dbca378af8321bcd38"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#ga15998731fd8689dbca378af8321bcd38">SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN</a>&#160;&#160;&#160;&quot;SDL_WINDOW_ACTIVATE_WHEN_SHOWN&quot;</td></tr>
-<tr class="memdesc:ga15998731fd8689dbca378af8321bcd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable controlling whether the window is activated when the WindowBase.Show function is called.  <br /></td></tr>
+<tr class="memdesc:ga15998731fd8689dbca378af8321bcd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">A variable controlling whether the window is activated when the WindowRef.Show function is called.  <br /></td></tr>
 <tr class="separator:ga15998731fd8689dbca378af8321bcd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga80e9fc35e14239135087e9d34e57f9c9" id="r_ga80e9fc35e14239135087e9d34e57f9c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryHints.html#ga80e9fc35e14239135087e9d34e57f9c9">SDL_HINT_WINDOW_ALLOW_TOPMOST</a>&#160;&#160;&#160;&quot;SDL_WINDOW_ALLOW_TOPMOST&quot;</td></tr>
 <tr class="memdesc:ga80e9fc35e14239135087e9d34e57f9c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set to "0" then never set the top-most flag on an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> Window even if the application requests it.  <br /></td></tr>
@@ -1198,7 +1198,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Some audio backends (such as Pulseaudio and Pipewire) allow you to set an XDG icon name for your application. Among other things, this icon might show up in a system control panel that lets the user adjust the volume on specific audio streams instead of using one giant master volume slider. Note that this is unrelated to the icon used by the windowing system, which may be set with WindowBase.SetIcon (or via desktop file on Wayland).</p>
+<p>Some audio backends (such as Pulseaudio and Pipewire) allow you to set an XDG icon name for your application. Among other things, this icon might show up in a system control panel that lets the user adjust the volume on specific audio streams instead of using one giant master volume slider. Note that this is unrelated to the icon used by the windowing system, which may be set with WindowRef.SetIcon (or via desktop file on Wayland).</p>
 <p>Setting this to "" or leaving it unset will have <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> use a reasonable default, "applications-games", which is likely to be installed. See <a href="https://specifications.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html">https://specifications.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html</a> and <a href="https://specifications.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html">https://specifications.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html</a> for the relevant XDG icon specs.</p>
 <p>This hint should be set before an audio device is opened.</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
@@ -1654,7 +1654,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
 <li>"0": Do not show the on-screen keyboard.</li>
 <li>"1": Show the on-screen keyboard, if available.</li>
 </ul>
-<p>This hint must be set before WindowBase.StartTextInput() is called</p>
+<p>This hint must be set before WindowRef.StartTextInput() is called</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -1767,7 +1767,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
 <li>"1": Enable 3D acceleration, using the default renderer. (default)</li>
 <li>"X": Enable 3D acceleration, using X where X is one of the valid rendering drivers. (e.g. "direct3d", "opengl", etc.)</li>
 </ul>
-<p>This hint should be set before calling WindowBase.GetSurface()</p>
+<p>This hint should be set before calling WindowRef.GetSurface()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -1910,7 +1910,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
       </table>
 </div><div class="memdoc">
 <p>This hint is available only if SDL_GDK_TEXTINPUT defined.</p>
-<p>This hint should be set before calling WindowBase.StartTextInput()</p>
+<p>This hint should be set before calling WindowRef.StartTextInput()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -1927,7 +1927,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
       </table>
 </div><div class="memdoc">
 <p>This hint is available only if SDL_GDK_TEXTINPUT defined.</p>
-<p>This hint should be set before calling WindowBase.StartTextInput()</p>
+<p>This hint should be set before calling WindowRef.StartTextInput()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -1945,7 +1945,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
 </div><div class="memdoc">
 <p>The value must be a stringified integer, for example "10" to allow for up to 10 characters of text input.</p>
 <p>This hint is available only if SDL_GDK_TEXTINPUT defined.</p>
-<p>This hint should be set before calling WindowBase.StartTextInput()</p>
+<p>This hint should be set before calling WindowRef.StartTextInput()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -1963,7 +1963,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
 </div><div class="memdoc">
 <p>Set this hint to change the XGameUiTextEntryInputScope value that will be passed to the window creation function. The value must be a stringified integer, for example "0" for XGameUiTextEntryInputScope::Default.</p>
 <p>This hint is available only if SDL_GDK_TEXTINPUT defined.</p>
-<p>This hint should be set before calling WindowBase.StartTextInput()</p>
+<p>This hint should be set before calling WindowRef.StartTextInput()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -1980,7 +1980,7 @@ constexpr <a class="el" href="group__CategoryHints.html#gad9e5496fe76c6f22540c47
       </table>
 </div><div class="memdoc">
 <p>This hint is available only if SDL_GDK_TEXTINPUT defined.</p>
-<p>This hint should be set before calling WindowBase.StartTextInput()</p>
+<p>This hint should be set before calling WindowRef.StartTextInput()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -4531,7 +4531,7 @@ game" or "Watching a video".</p>
 <li>"0": default platform specific behaviour</li>
 <li>"1": Force THREAD_PRIORITY_TIME_CRITICAL to a realtime scheduling policy</li>
 </ul>
-<p>This hint should be set before calling ThreadBase.SetCurrentPriority()</p>
+<p>This hint should be set before calling ThreadRef.SetCurrentPriority()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -4547,10 +4547,10 @@ game" or "Watching a video".</p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>By default ThreadBase.SetCurrentPriority will make appropriate system changes in order to apply a thread priority. For example on systems using pthreads the scheduler policy is changed automatically to a policy that works well with a given priority. Code which has specific requirements can override <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s default behavior with this hint.</p>
+<p>By default ThreadRef.SetCurrentPriority will make appropriate system changes in order to apply a thread priority. For example on systems using pthreads the scheduler policy is changed automatically to a policy that works well with a given priority. Code which has specific requirements can override <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s default behavior with this hint.</p>
 <p>pthread hint values are "current", "other", "fifo" and "rr". Currently no other platform hint values are defined but may be in the future.</p>
-<p>On Linux, the kernel may send SIGKILL to realtime tasks which exceed the distro configured execution budget for rtkit. This budget can be queried through RLIMIT_RTTIME after calling ThreadBase.SetCurrentPriority().</p>
-<p>This hint should be set before calling ThreadBase.SetCurrentPriority()</p>
+<p>On Linux, the kernel may send SIGKILL to realtime tasks which exceed the distro configured execution budget for rtkit. This budget can be queried through RLIMIT_RTTIME after calling ThreadRef.SetCurrentPriority().</p>
+<p>This hint should be set before calling ThreadRef.SetCurrentPriority()</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -4802,7 +4802,7 @@ game" or "Watching a video".</p>
 <ul>
 <li>"0": The menu will be hidden when the window is in a fullscreen space, and not accessible by moving the mouse to the top of the screen.</li>
 <li>"1": The menu will be accessible when the window is in a fullscreen space.</li>
-<li>"auto": The menu will be hidden if fullscreen mode was toggled on programmatically via <code>WindowBase.SetFullscreen()</code>, and accessible if fullscreen was entered via the "fullscreen" button on the window title bar. (default)</li>
+<li>"auto": The menu will be hidden if fullscreen mode was toggled on programmatically via <code>WindowRef.SetFullscreen()</code>, and accessible if fullscreen was entered via the "fullscreen" button on the window title bar. (default)</li>
 </ul>
 <p>This hint can be set anytime.</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
@@ -4883,7 +4883,7 @@ game" or "Watching a video".</p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Window systems that run asynchronously may not have the results of window operations that resize or move the window applied immediately upon the return of the requesting function. Setting this hint will cause such operations to block after every call until the pending operation has completed. Setting this to '1' is the equivalent of calling WindowBase.Sync() after every function call.</p>
+<p>Window systems that run asynchronously may not have the results of window operations that resize or move the window applied immediately upon the return of the requesting function. Setting this hint will cause such operations to block after every call until the pending operation has completed. Setting this to '1' is the equivalent of calling WindowRef.Sync() after every function call.</p>
 <p>Be aware that amount of time spent blocking while waiting for window operations to complete can be quite lengthy, as animations may have to complete, which can take upwards of multiple seconds in some cases.</p>
 <p>The variable can be set to the following values:</p>
 <ul>
@@ -5476,8 +5476,8 @@ game" or "Watching a video".</p>
 </div><div class="memdoc">
 <p>The variable can be set to the following values:</p>
 <ul>
-<li>"0": The window is not activated when the WindowBase.Raise function is called.</li>
-<li>"1": The window is activated when the WindowBase.Raise function is called. (default)</li>
+<li>"0": The window is not activated when the WindowRef.Raise function is called.</li>
+<li>"1": The window is activated when the WindowRef.Raise function is called. (default)</li>
 </ul>
 <p>This hint can be set anytime.</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
@@ -5497,8 +5497,8 @@ game" or "Watching a video".</p>
 </div><div class="memdoc">
 <p>The variable can be set to the following values:</p>
 <ul>
-<li>"0": The window is not activated when the WindowBase.Show function is called.</li>
-<li>"1": The window is activated when the WindowBase.Show function is called. (default)</li>
+<li>"0": The window is not activated when the WindowRef.Show function is called.</li>
+<li>"1": The window is activated when the WindowRef.Show function is called. (default)</li>
 </ul>
 <p>This hint can be set anytime.</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
@@ -5793,7 +5793,7 @@ game" or "Watching a video".</p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>During WindowBase.WindowBase, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> uses the _NET_WM_WINDOW_TYPE X11 property to report to the window manager the type of window it wants to create. This might be set to various things if WINDOW_TOOLTIP or WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that haven't set a specific type, this hint can be used to specify a custom type. For example, a dock window might set this to "_NET_WM_WINDOW_TYPE_DOCK".</p>
+<p>During WindowRef.WindowRef, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> uses the _NET_WM_WINDOW_TYPE X11 property to report to the window manager the type of window it wants to create. This might be set to various things if WINDOW_TOOLTIP or WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that haven't set a specific type, this hint can be used to specify a custom type. For example, a dock window might set this to "_NET_WM_WINDOW_TYPE_DOCK".</p>
 <p>This hint should be set before creating a window.</p>
 <dl class="section since"><dt>Since</dt><dd>This hint is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 

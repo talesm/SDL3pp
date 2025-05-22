@@ -272,7 +272,7 @@ var searchData=
   ['keyvaluecallbackwrapper_3c_20key_2c_20std_3a_3afunction_3c_20result_28args_2e_2e_2e_29_3e_2c_20variant_20_3e_269',['KeyValueCallbackWrapper&lt; KEY, std::function&lt; Result(Args...)&gt;, VARIANT &gt;',['../structSDL_1_1KeyValueCallbackWrapper_3_01KEY_00_01std_1_1function_3_01Result_07Args_8_8_8_08_4_00_01VARIANT_01_4.html',1,'SDL']]],
   ['keyvaluewrapper_270',['KeyValueWrapper',['../structSDL_1_1KeyValueWrapper.html',1,'SDL']]],
   ['keyvaluewrapper_3c_20key_2c_20std_3a_3afunction_3c_20result_28args_2e_2e_2e_29_3e_2c_20variant_20_3e_271',['KeyValueWrapper&lt; KEY, std::function&lt; Result(Args...)&gt;, VARIANT &gt;',['../structSDL_1_1KeyValueWrapper.html',1,'SDL']]],
-  ['kill_272',['Kill',['../structSDL_1_1ProcessBase.html#a50b7bb3005445057ec3f2b2aa47fb0ca',1,'SDL::ProcessBase']]],
+  ['kill_272',['Kill',['../structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e',1,'SDL::ProcessRef']]],
   ['kmod_5falt_273',['KMOD_ALT',['../group__CategoryKeycode.html#gabbb4960394f39cbcd1c04b3e03194280',1,'SDL']]],
   ['kmod_5fcaps_274',['KMOD_CAPS',['../group__CategoryKeycode.html#gaeecc88d39b5918e0c303baf69da0b4a6',1,'SDL']]],
   ['kmod_5fctrl_275',['KMOD_CTRL',['../group__CategoryKeycode.html#gabbb01e1d9c52f404263f5bd22bbb0d50',1,'SDL']]],

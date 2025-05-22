@@ -26,7 +26,7 @@ namespace SDL {
  *
  * On platforms without thread support (such as Emscripten when built without
  * pthreads), these functions still exist, but things like
- * ThreadBase.ThreadBase() will report failure without doing anything.
+ * ThreadRef.ThreadRef() will report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
  * good understanding of [CategoryMutex](CategoryMutex) as well.
@@ -37,13 +37,13 @@ namespace SDL {
 /**
  * A unique numeric ID that identifies a thread.
  *
- * These are different from ThreadBase objects, which are generally what an
+ * These are different from ThreadRef objects, which are generally what an
  * application will operate on, but having a way to uniquely identify a thread
  * can be useful at times.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadBase.GetID
+ * @sa ThreadRef.GetID
  * @sa GetCurrentThreadID
  */
 using ThreadID = SDL_ThreadID;
@@ -62,21 +62,21 @@ using ThreadID = SDL_ThreadID;
 using TLSID = AtomicInt;
 
 /**
- * The function passed to ThreadBase.ThreadBase() as the new thread's entry
+ * The function passed to ThreadRef.ThreadRef() as the new thread's entry
  * point.
  *
- * @param data what was passed as `data` to ThreadBase.ThreadBase().
- * @returns a value that can be reported through ThreadBase.Wait().
+ * @param data what was passed as `data` to ThreadRef.ThreadRef().
+ * @returns a value that can be reported through ThreadRef.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
  */
 using ThreadFunction = SDL_ThreadFunction;
 
 /**
- * The function passed to ThreadBase.ThreadBase() as the new thread's entry
+ * The function passed to ThreadRef.ThreadRef() as the new thread's entry
  * point.
  *
- * @returns a value that can be reported through ThreadBase.Wait().
+ * @returns a value that can be reported through ThreadRef.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -96,9 +96,6 @@ using ThreadCB = std::function<int()>;
 using TLSDestructorCallback = SDL_TLSDestructorCallback;
 
 // Forward decl
-struct ThreadBase;
-
-// Forward decl
 struct ThreadRef;
 
 // Forward decl
@@ -109,7 +106,7 @@ struct Thread;
  *
  * SDL will make system changes as necessary in order to apply the thread
  * priority. Code which attempts to control thread state related to priority
- * should be aware that calling ThreadBase.SetCurrentPriority may alter such
+ * should be aware that calling ThreadRef.SetCurrentPriority may alter such
  * state. SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of
  * this behavior.
  *
@@ -131,11 +128,11 @@ constexpr ThreadPriority THREAD_PRIORITY_TIME_CRITICAL =
 /**
  * The SDL thread state.
  *
- * The current state of a thread can be checked by calling ThreadBase.GetState.
+ * The current state of a thread can be checked by calling ThreadRef.GetState.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa ThreadBase.GetState
+ * @sa ThreadRef.GetState
  */
 using ThreadState = SDL_ThreadState;
 
@@ -149,7 +146,7 @@ constexpr ThreadState THREAD_DETACHED =
   SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on.
 
 /**
- * The thread has finished and should be cleaned up with ThreadBase.Wait()
+ * The thread has finished and should be cleaned up with ThreadRef.Wait()
  */
 constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
 
@@ -160,17 +157,32 @@ constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa ThreadBase.ThreadBase
- * @sa ThreadBase.Wait
+ * @sa ThreadRef.Wait
  *
  * @cat resource
  *
  * @sa Thread
  * @sa ThreadRef
  */
-struct ThreadBase : Resource<SDL_Thread*>
+struct ThreadRef : Resource<SDL_Thread*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr ThreadRef(const ThreadRef& other)
+    : ThreadRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr ThreadRef(ThreadRef&& other)
+    : ThreadRef(other.release())
+  {
+  }
 
   /**
    * Create a new thread with a default stack size.
@@ -182,11 +194,11 @@ struct ThreadBase : Resource<SDL_Thread*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
+   * @sa ThreadRef.ThreadRef
+   * @sa ThreadRef.Wait
    */
-  ThreadBase(ThreadCB fn, StringParam name)
-    : ThreadBase(
+  ThreadRef(ThreadCB fn, StringParam name)
+    : ThreadRef(
         [](void* handler) {
           return CallbackWrapper<ThreadCB>::CallOnce(handler);
         },
@@ -199,7 +211,7 @@ struct ThreadBase : Resource<SDL_Thread*>
    * Create a new thread with a default stack size.
    *
    * This is a convenience function, equivalent to calling
-   * ThreadBase.ThreadBase with the following properties set:
+   * ThreadRef.ThreadRef with the following properties set:
    *
    * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
    * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -216,10 +228,10 @@ struct ThreadBase : Resource<SDL_Thread*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
+   * @sa ThreadRef.ThreadRef
+   * @sa ThreadRef.Wait
    */
-  ThreadBase(ThreadFunction fn, StringParam name, void* data)
+  ThreadRef(ThreadFunction fn, StringParam name, void* data)
     : Resource(CheckError(SDL_CreateThread(fn, name, data)))
   {
   }
@@ -255,7 +267,7 @@ struct ThreadBase : Resource<SDL_Thread*>
    *
    * If a system imposes requirements, SDL will try to munge the string for it
    * (truncate, etc), but the original string contents will be available from
-   * ThreadBase.GetName().
+   * ThreadRef.GetName().
    *
    * The size (in bytes) of the new stack can be specified with
    * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system
@@ -273,7 +285,7 @@ struct ThreadBase : Resource<SDL_Thread*>
    *
    * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
    * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "ThreadBase.ThreadBase" will fail.
+   * for "ThreadRef.ThreadRef" will fail.
    *
    * Usually, apps should just call this function the same way on every platform
    * and let the macros hide the details.
@@ -284,16 +296,25 @@ struct ThreadBase : Resource<SDL_Thread*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
+   * @sa ThreadRef.ThreadRef
+   * @sa ThreadRef.Wait
    */
-  ThreadBase(PropertiesBase& props)
+  ThreadRef(PropertiesRef& props)
     : Resource(CheckError(SDL_CreateThreadWithProperties(props.get())))
   {
   }
 
   /**
-   * Get the thread name as it was specified in ThreadBase.ThreadBase().
+   * Assignment operator.
+   */
+  ThreadRef& operator=(ThreadRef other)
+  {
+    release(other.release());
+    return *this;
+  }
+
+  /**
+   * Get the thread name as it was specified in ThreadRef.ThreadRef().
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
@@ -341,9 +362,9 @@ struct ThreadBase : Resource<SDL_Thread*>
    * Threads that haven't been detached will remain until this function cleans
    * them up. Not doing so is a resource leak.
    *
-   * Once a thread has been cleaned up through this function, the ThreadBase
+   * Once a thread has been cleaned up through this function, the ThreadRef
    * that references it becomes invalid and should not be referenced again. As
-   * such, only one thread may call ThreadBase.Wait() on another.
+   * such, only one thread may call ThreadRef.Wait() on another.
    *
    * The return code from the thread function is placed in the area pointed to
    * by `status`, if `status` is not nullptr.
@@ -357,14 +378,14 @@ struct ThreadBase : Resource<SDL_Thread*>
    * Note that the thread pointer is freed by this function and is not valid
    * afterward.
    *
-   *               ThreadBase.ThreadBase() call that started this thread.
+   *               ThreadRef.ThreadRef() call that started this thread.
    * @param status a pointer filled in with the value returned from the thread
    *               function by its 'return', or -1 if the thread has been
    *               detached or isn't valid, may be nullptr.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadBase.ThreadBase
+   * @sa ThreadRef.ThreadRef
    * @sa ThreadRef.Detach
    */
   void Wait(int* status) { SDL_WaitThread(get(), status); }
@@ -380,118 +401,93 @@ struct ThreadBase : Resource<SDL_Thread*>
    * @sa ThreadState
    */
   ThreadState GetState() const { return SDL_GetThreadState(get()); }
-};
 
-/**
- * Handle to a non owned thread
- *
- * @cat resource
- *
- * @sa ThreadBase
- * @sa Thread
- */
-struct ThreadRef : ThreadBase
-{
-  using ThreadBase::ThreadBase;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr ThreadRef(const ThreadRef& other)
-    : ThreadBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ThreadRef(ThreadRef&& other)
-    : ThreadBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~ThreadRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  ThreadRef& operator=(ThreadRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
+protected:
   /**
    * Let a thread clean up on exit without intervention.
    *
    * A thread may be "detached" to signify that it should not remain until
-   * another thread has called ThreadBase.Wait() on it. Detaching a thread is
+   * another thread has called ThreadRef.Wait() on it. Detaching a thread is
    * useful for long-running threads that nothing needs to synchronize with or
    * further manage. When a detached thread is done, it simply goes away.
    *
    * There is no way to recover the return code of a detached thread. If you
-   * need this, don't detach the thread and instead use ThreadBase.Wait().
+   * need this, don't detach the thread and instead use ThreadRef.Wait().
    *
-   * Once a thread is detached, you should usually assume the ThreadBase isn't
+   * Once a thread is detached, you should usually assume the ThreadRef isn't
    * safe to reference again, as it will become invalid immediately upon the
    * detached thread's exit, instead of remaining until someone has called
-   * ThreadBase.Wait() to finally clean it up. As such, don't detach the same
+   * ThreadRef.Wait() to finally clean it up. As such, don't detach the same
    * thread more than once.
    *
    * If a thread has already exited when passed to ThreadRef.Detach(), it will
-   * stop waiting for a call to ThreadBase.Wait() and clean up immediately. It
-   * is not safe to detach a thread that might be used with ThreadBase.Wait().
+   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It
+   * is not safe to detach a thread that might be used with ThreadRef.Wait().
    *
-   * You may not call ThreadBase.Wait() on a thread that has been detached. Use
+   * You may not call ThreadRef.Wait() on a thread that has been detached. Use
    * either that function or this one, but not both, or behavior is undefined.
    *
    * It is safe to pass nullptr to this function; it is a no-op.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
+   * @sa ThreadRef.ThreadRef
+   * @sa ThreadRef.Wait
+   */
+  void Detach() { reset(); }
+  /**
+   * Let a thread clean up on exit without intervention.
+   *
+   * A thread may be "detached" to signify that it should not remain until
+   * another thread has called ThreadRef.Wait() on it. Detaching a thread is
+   * useful for long-running threads that nothing needs to synchronize with or
+   * further manage. When a detached thread is done, it simply goes away.
+   *
+   * There is no way to recover the return code of a detached thread. If you
+   * need this, don't detach the thread and instead use ThreadRef.Wait().
+   *
+   * Once a thread is detached, you should usually assume the ThreadRef isn't
+   * safe to reference again, as it will become invalid immediately upon the
+   * detached thread's exit, instead of remaining until someone has called
+   * ThreadRef.Wait() to finally clean it up. As such, don't detach the same
+   * thread more than once.
+   *
+   * If a thread has already exited when passed to ThreadRef.Detach(), it will
+   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It
+   * is not safe to detach a thread that might be used with ThreadRef.Wait().
+   *
+   * You may not call ThreadRef.Wait() on a thread that has been detached. Use
+   * either that function or this one, but not both, or behavior is undefined.
+   *
+   * It is safe to pass nullptr to this function; it is a no-op.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadRef.ThreadRef
+   * @sa ThreadRef.Wait
    */
   void reset(SDL_Thread* newResource = {})
   {
     SDL_DetachThread(release(newResource));
   }
+};
 
-  /**
-   * Let a thread clean up on exit without intervention.
-   *
-   * A thread may be "detached" to signify that it should not remain until
-   * another thread has called ThreadBase.Wait() on it. Detaching a thread is
-   * useful for long-running threads that nothing needs to synchronize with or
-   * further manage. When a detached thread is done, it simply goes away.
-   *
-   * There is no way to recover the return code of a detached thread. If you
-   * need this, don't detach the thread and instead use ThreadBase.Wait().
-   *
-   * Once a thread is detached, you should usually assume the ThreadBase isn't
-   * safe to reference again, as it will become invalid immediately upon the
-   * detached thread's exit, instead of remaining until someone has called
-   * ThreadBase.Wait() to finally clean it up. As such, don't detach the same
-   * thread more than once.
-   *
-   * If a thread has already exited when passed to ThreadRef.Detach(), it will
-   * stop waiting for a call to ThreadBase.Wait() and clean up immediately. It
-   * is not safe to detach a thread that might be used with ThreadBase.Wait().
-   *
-   * You may not call ThreadBase.Wait() on a thread that has been detached. Use
-   * either that function or this one, but not both, or behavior is undefined.
-   *
-   * It is safe to pass nullptr to this function; it is a no-op.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadBase.ThreadBase
-   * @sa ThreadBase.Wait
-   */
-  void Detach() { reset(); }
+/**
+ * Unsafe Handle to thread
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa ThreadRef
+ */
+struct ThreadUnsafe : ThreadRef
+{
+  using ThreadRef::Detach;
+
+  using ThreadRef::ThreadRef;
+
+  using ThreadRef::reset;
 };
 
 /**
@@ -499,18 +495,17 @@ struct ThreadRef : ThreadBase
  *
  * @cat resource
  *
- * @sa ThreadBase
  * @sa ThreadRef
  */
-struct Thread : ThreadRef
+struct Thread : ThreadUnsafe
 {
-  using ThreadRef::ThreadRef;
+  using ThreadUnsafe::ThreadUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Thread(SDL_Thread* resource = {})
-    : ThreadRef(resource)
+  constexpr explicit Thread(SDL_Thread* resource)
+    : ThreadUnsafe(resource)
   {
   }
 
@@ -565,7 +560,7 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa ThreadBase.GetID
+ * @sa ThreadRef.GetID
  */
 inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
 

@@ -130,12 +130,8 @@ export interface ApiResource extends ApiEntryTransform {
   name?: string;
 
   /**
-   * The Reference name. Defaults to _uniqueName_`Ref`
-   */
-  refName?: string;
-
-  /**
    * The Unique name. Defaults to the converted name from the original type
+   * @deprecated
    */
   uniqueName?: string;
 

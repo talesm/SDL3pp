@@ -102,30 +102,30 @@ namespace SDL {
  *   validated, so an error occurring elsewhere in the program may result in
  *   missing/corrupted save data
  *
- * When using StorageBase, these types of problems are virtually impossible to
+ * When using Storage, these types of problems are virtually impossible to
  * trip over:
  *
- * ```c
+ * ```cpp
  * void ReadGameData(void)
  * {
  *     extern char** fileNames;
  *     extern size_t numFiles;
  *
- *     StorageBase *title = StorageBase.StorageBase(nullptr, 0);
+ *     Storage title(nullptr, 0);
  *     if (title == nullptr) {
  *         // Something bad happened!
  *     }
- *     while (!StorageBase.Ready(title)) {
+ *     while (!title.Ready()) {
  *         Delay(1);
  *     }
  *
  *     for (size_t i = 0; i < numFiles; i += 1) {
  *         void* dst;
- *         Uint64 dstLen = 0;
+ *         Uint64 dstLen = title.GetSize(fileNames[i]);
  *
- *         if (StorageBase.GetFileSize(title, fileNames[i], &dstLen) && dstLen >
- * 0) { dst = malloc(dstLen); if (StorageBase.ReadFile(title, fileNames[i], dst,
- * dstLen)) {
+ *         if (dstLen > 0) {
+ *           dst = malloc(dstLen);
+ *           if (title.ReadFile(fileNames[i], dst, dstLen)) {
  *                 // A bunch of stuff happens here
  *             } else {
  *                 // Something bad happened!
@@ -135,24 +135,22 @@ namespace SDL {
  *             // Something bad happened!
  *         }
  *     }
- *
- *     StorageRef.Close(title);
  * }
  *
  * void ReadSave(void)
  * {
- *     StorageBase *user = StorageBase.StorageBase("libsdl", "Storage Example",
- * 0); if (user == nullptr) {
+ *     Storage user("libsdl", "Storage Example", 0);
+ *     if (user == nullptr) {
  *         // Something bad happened!
  *     }
- *     while (!StorageBase.Ready(user)) {
+ *     while (!user.Ready()) {
  *         Delay(1);
  *     }
  *
- *     Uint64 saveLen = 0;
- *     if (StorageBase.GetFileSize(user, "save0.sav", &saveLen) && saveLen > 0)
- * { void* dst = malloc(saveLen); if (StorageBase.ReadFile(user, "save0.sav",
- * dst, saveLen)) {
+ *     Uint64 saveLen = user.GetFileSize();
+ *     if (saveLen > 0) {
+ *         void* dst = malloc(saveLen);
+ *         if (user.ReadFile("save0.sav", dst, saveLen)) {
  *             // A bunch of stuff happens here
  *         } else {
  *             // Something bad happened!
@@ -161,31 +159,27 @@ namespace SDL {
  *     } else {
  *         // Something bad happened!
  *     }
- *
- *     StorageRef.Close(user);
  * }
  *
  * void WriteSave(void)
  * {
- *     StorageBase *user = StorageBase.StorageBase("libsdl", "Storage Example",
- * 0); if (user == nullptr) {
+ *     Storage user("libsdl", "Storage Example", 0);
+ *     if (user == nullptr) {
  *         // Something bad happened!
  *     }
- *     while (!StorageBase.Ready(user)) {
+ *     while (!user.Ready()) {
  *         Delay(1);
  *     }
  *
  *     extern void *saveData; // A bunch of stuff happened here...
  *     extern Uint64 saveLen;
- *     if (!StorageBase.WriteFile(user, "save0.sav", saveData, saveLen)) {
+ *     if (!user.WriteFile("save0.sav", saveData, saveLen)) {
  *         // Something bad happened!
  *     }
- *
- *     StorageRef.Close(user);
  * }
  * ```
  *
- * Note the improvements that StorageBase makes:
+ * Note the improvements that Storage makes:
  *
  * 1. **What to Access:** This code explicitly reads from a title or user
  * storage device based on the context of the function.
@@ -199,7 +193,7 @@ namespace SDL {
  * The result is an application that is significantly more robust against the
  * increasing demands of platforms and their filesystems!
  *
- * A publicly available example of an StorageBase backend is the
+ * A publicly available example of an Storage backend is the
  * [Steam Cloud](https://partner.steamgames.com/doc/features/cloud)
  * backend - you can initialize Steamworks when starting the program, and then
  * SDL will recognize that Steamworks is initialized and automatically use
@@ -234,23 +228,20 @@ namespace SDL {
  */
 
 // Forward decl
-struct StorageBase;
-
-// Forward decl
 struct StorageRef;
 
 // Forward decl
 struct Storage;
 
 /**
- * Function interface for StorageBase.
+ * Function interface for StorageRef.
  *
- * Apps that want to supply a custom implementation of StorageBase will fill
+ * Apps that want to supply a custom implementation of StorageRef will fill
  * in all the functions in this struct, and then pass it to
- * StorageBase.StorageBase to create a custom StorageBase object.
+ * StorageRef.StorageRef to create a custom StorageRef object.
  *
  * It is not usually necessary to do this; SDL provides standard
- * implementations for many things you might expect to do with an StorageBase.
+ * implementations for many things you might expect to do with an StorageRef.
  *
  * This structure should be initialized using SDL_INIT_INTERFACE()
  *
@@ -264,19 +255,34 @@ using StorageInterface = SDL_StorageInterface;
  * An abstract interface for filesystem access.
  *
  * This is an opaque datatype. One can create this object using standard SDL
- * functions like StorageBase.StorageBase or StorageBase.StorageBase, etc, or
- * create an object with a custom implementation using StorageBase.StorageBase.
+ * functions like StorageRef.StorageRef or StorageRef.StorageRef, etc, or
+ * create an object with a custom implementation using StorageRef.StorageRef.
  *
  * @since This struct is available since SDL 3.2.0.
  *
  * @cat resource
  *
  * @sa Storage
- * @sa StorageRef
  */
-struct StorageBase : Resource<SDL_Storage*>
+struct StorageRef : Resource<SDL_Storage*>
 {
   using Resource::Resource;
+
+  /**
+   * Copy constructor.
+   */
+  constexpr StorageRef(const StorageRef& other)
+    : StorageRef(other.get())
+  {
+  }
+
+  /**
+   * Move constructor.
+   */
+  constexpr StorageRef(StorageRef&& other)
+    : StorageRef(other.release())
+  {
+  }
 
   /**
    * Opens up a read-only container for the application's filesystem.
@@ -289,11 +295,11 @@ struct StorageBase : Resource<SDL_Storage*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa StorageRef.Close
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.StorageBase
-   * @sa StorageBase.ReadFile
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.StorageRef
+   * @sa StorageRef.ReadFile
    */
-  StorageBase(StringParam override, PropertiesBase& props)
+  StorageRef(StringParam override, PropertiesRef& props)
     : Resource(CheckError(SDL_OpenTitleStorage(override, props.get())))
   {
   }
@@ -314,14 +320,14 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.GetSpaceRemaining
-   * @sa StorageBase.StorageBase
-   * @sa StorageBase.ReadFile
-   * @sa StorageBase.Ready
-   * @sa StorageBase.WriteFile
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.GetSpaceRemaining
+   * @sa StorageRef.StorageRef
+   * @sa StorageRef.ReadFile
+   * @sa StorageRef.Ready
+   * @sa StorageRef.WriteFile
    */
-  StorageBase(StringParam org, StringParam app, PropertiesBase& props)
+  StorageRef(StringParam org, StringParam app, PropertiesRef& props)
     : Resource(CheckError(SDL_OpenUserStorage(org, app, props.get())))
   {
   }
@@ -330,8 +336,8 @@ struct StorageBase : Resource<SDL_Storage*>
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use StorageBase.StorageBase() for access to game data and
-   * StorageBase.StorageBase() for access to user data.
+   * use StorageRef.StorageRef() for access to game data and
+   * StorageRef.StorageRef() for access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
@@ -340,14 +346,14 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.GetSpaceRemaining
-   * @sa StorageBase.StorageBase
-   * @sa StorageBase.StorageBase
-   * @sa StorageBase.ReadFile
-   * @sa StorageBase.WriteFile
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.GetSpaceRemaining
+   * @sa StorageRef.StorageRef
+   * @sa StorageRef.StorageRef
+   * @sa StorageRef.ReadFile
+   * @sa StorageRef.WriteFile
    */
-  StorageBase(StringParam path)
+  StorageRef(StringParam path)
     : Resource(CheckError(SDL_OpenFileStorage(path)))
   {
   }
@@ -356,9 +362,9 @@ struct StorageBase : Resource<SDL_Storage*>
    * Opens up a container using a client-provided storage interface.
    *
    * Applications do not need to use this function unless they are providing
-   * their own StorageBase implementation. If you just need an StorageBase, you
+   * their own StorageRef implementation. If you just need an StorageRef, you
    * should use the built-in implementations in SDL, like
-   * StorageBase.StorageBase() or StorageBase.StorageBase().
+   * StorageRef.StorageRef() or StorageRef.StorageRef().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -371,16 +377,25 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.GetSpaceRemaining
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.GetSpaceRemaining
    * @sa SDL_INIT_INTERFACE
-   * @sa StorageBase.ReadFile
-   * @sa StorageBase.Ready
-   * @sa StorageBase.WriteFile
+   * @sa StorageRef.ReadFile
+   * @sa StorageRef.Ready
+   * @sa StorageRef.WriteFile
    */
-  StorageBase(const StorageInterface& iface, void* userdata)
+  StorageRef(const StorageInterface& iface, void* userdata)
     : Resource(CheckError(SDL_OpenStorage(&iface, userdata)))
   {
+  }
+
+  /**
+   * Assignment operator.
+   */
+  StorageRef& operator=(StorageRef other)
+  {
+    release(other.release());
+    return *this;
   }
 
   /**
@@ -406,8 +421,8 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.ReadFile
-   * @sa StorageBase.Ready
+   * @sa StorageRef.ReadFile
+   * @sa StorageRef.Ready
    */
   std::optional<Uint64> GetFileSize(StringParam path) const
   {
@@ -422,7 +437,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * StorageBase.GetFileSize() to get this value. This behavior may be relaxed
+   * StorageRef.GetFileSize() to get this value. This behavior may be relaxed
    * in a future release.
    *
    * @param path the relative path of the file to read.
@@ -431,9 +446,9 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.Ready
-   * @sa StorageBase.WriteFile
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.Ready
+   * @sa StorageRef.WriteFile
    */
   std::string ReadFile(StringParam path) const
   {
@@ -449,7 +464,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * StorageBase.GetFileSize() to get this value. This behavior may be relaxed
+   * StorageRef.GetFileSize() to get this value. This behavior may be relaxed
    * in a future release.
    *
    * @param path the relative path of the file to read.
@@ -459,9 +474,9 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.Ready
-   * @sa StorageBase.WriteFile
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.Ready
+   * @sa StorageRef.WriteFile
    */
   bool ReadFile(StringParam path, TargetBytes destination) const
   {
@@ -474,7 +489,7 @@ struct StorageBase : Resource<SDL_Storage*>
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * StorageBase.GetFileSize() to get this value. This behavior may be relaxed
+   * StorageRef.GetFileSize() to get this value. This behavior may be relaxed
    * in a future release.
    *
    * @param path the relative path of the file to read.
@@ -483,9 +498,9 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.GetFileSize
-   * @sa StorageBase.Ready
-   * @sa StorageBase.WriteFile
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.Ready
+   * @sa StorageRef.WriteFile
    */
   template<class T>
   std::vector<T> ReadFileAs(StringParam path) const
@@ -506,9 +521,9 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.GetSpaceRemaining
-   * @sa StorageBase.ReadFile
-   * @sa StorageBase.Ready
+   * @sa StorageRef.GetSpaceRemaining
+   * @sa StorageRef.ReadFile
+   * @sa StorageRef.Ready
    */
   void WriteFile(StringParam path, SourceBytes source)
   {
@@ -523,7 +538,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.Ready
+   * @sa StorageRef.Ready
    */
   void CreateDirectory(StringParam path)
   {
@@ -571,7 +586,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.Ready
+   * @sa StorageRef.Ready
    */
   void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
   {
@@ -608,7 +623,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.Ready
+   * @sa StorageRef.Ready
    */
   void EnumerateDirectory(StringParam path,
                           EnumerateDirectoryCallback callback,
@@ -625,7 +640,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.Ready
+   * @sa StorageRef.Ready
    */
   void RemovePath(StringParam path)
   {
@@ -641,7 +656,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.Ready
+   * @sa StorageRef.Ready
    */
   void RenamePath(StringParam oldpath, StringParam newpath)
   {
@@ -657,7 +672,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.Ready
+   * @sa StorageRef.Ready
    */
   void CopyFile(StringParam oldpath, StringParam newpath)
   {
@@ -673,7 +688,7 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.Ready
+   * @sa StorageRef.Ready
    */
   PathInfo GetPathInfo(StringParam path) const
   {
@@ -690,8 +705,8 @@ struct StorageBase : Resource<SDL_Storage*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.Ready
-   * @sa StorageBase.WriteFile
+   * @sa StorageRef.Ready
+   * @sa StorageRef.WriteFile
    */
   Uint64 GetSpaceRemaining() const
   {
@@ -740,49 +755,21 @@ struct StorageBase : Resource<SDL_Storage*>
       CheckError(SDL_GlobStorageDirectory(get(), path, pattern, flags, &count));
     return OwnArray<char*>{data, size_t(count)};
   }
-};
 
-/**
- * Handle to a non owned storage
- *
- * @cat resource
- *
- * @sa StorageBase
- * @sa Storage
- */
-struct StorageRef : StorageBase
-{
-  using StorageBase::StorageBase;
-
+protected:
   /**
-   * Copy constructor.
+   * Closes and frees a storage container.
+   *
+   * @returns true if the container was freed with no errors, false otherwise;
+   *          call GetError() for more information. Even if the function
+   *          returns an error, the container data will be freed; the error is
+   *          only for informational purposes.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa StorageRef.StorageRef
    */
-  constexpr StorageRef(const StorageRef& other)
-    : StorageBase(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr StorageRef(StorageRef&& other)
-    : StorageBase(other.release())
-  {
-  }
-
-  /**
-   * Default constructor
-   */
-  constexpr ~StorageRef() = default;
-
-  /**
-   * Assignment operator.
-   */
-  StorageRef& operator=(StorageRef other)
-  {
-    release(other.release());
-    return *this;
-  }
+  bool Close() { return reset(); }
 
   /**
    * Closes and frees a storage container.
@@ -794,29 +781,30 @@ struct StorageRef : StorageBase
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageBase.StorageBase
-   * @sa StorageBase.StorageBase
-   * @sa StorageBase.StorageBase
-   * @sa StorageBase.StorageBase
+   * @sa StorageRef.StorageRef
    */
   bool reset(SDL_Storage* newResource = {})
   {
     return SDL_CloseStorage(release(newResource));
   }
+};
 
-  /**
-   * Closes and frees a storage container.
-   *
-   * @returns true if the container was freed with no errors, false otherwise;
-   *          call GetError() for more information. Even if the function
-   *          returns an error, the container data will be freed; the error is
-   *          only for informational purposes.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageBase.StorageBase
-   */
-  bool Close() { return reset(); }
+/**
+ * Unsafe Handle to storage
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa StorageRef
+ */
+struct StorageUnsafe : StorageRef
+{
+  using StorageRef::Close;
+
+  using StorageRef::StorageRef;
+
+  using StorageRef::reset;
 };
 
 /**
@@ -824,18 +812,17 @@ struct StorageRef : StorageBase
  *
  * @cat resource
  *
- * @sa StorageBase
  * @sa StorageRef
  */
-struct Storage : StorageRef
+struct Storage : StorageUnsafe
 {
-  using StorageRef::StorageRef;
+  using StorageUnsafe::StorageUnsafe;
 
   /**
    * Constructs from the underlying resource.
    */
-  constexpr explicit Storage(SDL_Storage* resource = {})
-    : StorageRef(resource)
+  constexpr explicit Storage(SDL_Storage* resource)
+    : StorageUnsafe(resource)
   {
   }
 

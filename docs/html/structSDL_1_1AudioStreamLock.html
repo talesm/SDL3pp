@@ -104,9 +104,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AudioStreamLock<
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>AudioStreamLock</b> (<a class="el" href="structSDL_1_1AudioStreamLock.html">AudioStreamLock</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:adc6e20396e0ac81e278a07fcc0d28ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move ctor. <br /></td></tr>
 <tr class="separator:adc6e20396e0ac81e278a07fcc0d28ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cee2b0933fdba23ec80b72094fdf1bf" id="r_a6cee2b0933fdba23ec80b72094fdf1bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamLock.html#a6cee2b0933fdba23ec80b72094fdf1bf">AudioStreamLock</a> (<a class="el" href="structSDL_1_1AudioStreamBase.html">AudioStreamBase</a> &amp;stream)</td></tr>
-<tr class="memdesc:a6cee2b0933fdba23ec80b72094fdf1bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock an audio stream for serialized access.  <br /></td></tr>
-<tr class="separator:a6cee2b0933fdba23ec80b72094fdf1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8b31ea8fa2ac9c90371c9ebf6cc1673" id="r_ae8b31ea8fa2ac9c90371c9ebf6cc1673"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamLock.html#ae8b31ea8fa2ac9c90371c9ebf6cc1673">AudioStreamLock</a> (<a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> &amp;stream)</td></tr>
+<tr class="memdesc:ae8b31ea8fa2ac9c90371c9ebf6cc1673"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock an audio stream for serialized access.  <br /></td></tr>
+<tr class="separator:ae8b31ea8fa2ac9c90371c9ebf6cc1673"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a997e9ef7a38e096e17d2a8a17722bf40" id="r_a997e9ef7a38e096e17d2a8a17722bf40"><td class="memItemLeft" align="right" valign="top"><a id="a997e9ef7a38e096e17d2a8a17722bf40" name="a997e9ef7a38e096e17d2a8a17722bf40"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~AudioStreamLock</b> ()</td></tr>
 <tr class="memdesc:a997e9ef7a38e096e17d2a8a17722bf40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
@@ -155,8 +155,8 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>LockBase</b> (<a
 <tr class="separator:a83f4e6944aed098d04722d2b116dd9e4 inherit pro_methods_classSDL_1_1LockBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6cee2b0933fdba23ec80b72094fdf1bf" name="a6cee2b0933fdba23ec80b72094fdf1bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cee2b0933fdba23ec80b72094fdf1bf">&#9670;&#160;</a></span>AudioStreamLock()</h2>
+<a id="ae8b31ea8fa2ac9c90371c9ebf6cc1673" name="ae8b31ea8fa2ac9c90371c9ebf6cc1673"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8b31ea8fa2ac9c90371c9ebf6cc1673">&#9670;&#160;</a></span>AudioStreamLock()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,7 +167,7 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>LockBase</b> (<a
         <tr>
           <td class="memname">SDL::AudioStreamLock::AudioStreamLock </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1AudioStreamBase.html">AudioStreamBase</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a> &amp;&#160;</td>
           <td class="paramname"><em>stream</em></td><td>)</td>
           <td></td>
         </tr>
@@ -178,9 +178,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>LockBase</b> (<a
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Each <a class="el" href="structSDL_1_1AudioStreamBase.html" title="The opaque handle that represents an audio stream.">AudioStreamBase</a> has an internal mutex it uses to protect its data structures from threading conflicts. This function allows an app to lock that mutex, which could be useful if registering callbacks on this stream.</p>
+<p>Each <a class="el" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream.">AudioStreamRef</a> has an internal mutex it uses to protect its data structures from threading conflicts. This function allows an app to lock that mutex, which could be useful if registering callbacks on this stream.</p>
 <p>One does not need to lock a stream to use in it most cases, as the stream manages this lock internally. However, this lock is held during callbacks, which may run from arbitrary threads at any time, so if an app needs to protect shared data during those callbacks, locking the stream guarantees that the callback is not running while the lock is held.</p>
-<p>As this is just a wrapper over <a class="el" href="structSDL_1_1MutexBase.html#ab02ccb2a0939bdb4ec88f96c13df13b3" title="Lock the mutex.">MutexBase.Lock</a> for an internal lock; it has all the same attributes (recursive locks are allowed, etc).</p>
+<p>As this is just a wrapper over <a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490" title="Lock the mutex.">MutexRef.Lock</a> for an internal lock; it has all the same attributes (recursive locks are allowed, etc).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stream</td><td>the audio stream to lock. </td></tr>
@@ -222,16 +222,16 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>LockBase</b> (<a
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This unlocks an audio stream after a call to <a class="el" href="structSDL_1_1AudioStreamLock.html#af8a8afb5c73f94277cff5492f95bbb5a" title="Creates an empty lock.">AudioStreamLock.AudioStreamLock</a>.</p>
+<p>This unlocks an audio stream after a call to <a class="el" href="group__CategoryAudio.html#gac5cf7026d0330daa1eec716a321908b0" title="Lock an audio stream for serialized access.">AudioStreamRef.Lock</a>.</p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>You should only call this from the same thread that previously called <a class="el" href="structSDL_1_1AudioStreamLock.html#af8a8afb5c73f94277cff5492f95bbb5a" title="Creates an empty lock.">AudioStreamLock.AudioStreamLock</a>.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>You should only call this from the same thread that previously called <a class="el" href="group__CategoryAudio.html#gac5cf7026d0330daa1eec716a321908b0" title="Lock an audio stream for serialized access.">AudioStreamRef.Lock</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStreamLock.html#af8a8afb5c73f94277cff5492f95bbb5a" title="Creates an empty lock.">AudioStreamLock.AudioStreamLock</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAudio.html#gac5cf7026d0330daa1eec716a321908b0" title="Lock an audio stream for serialized access.">AudioStreamRef.Lock</a> </dd></dl>
 
 </div>
 </div>

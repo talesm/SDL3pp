@@ -88,22 +88,22 @@ Inheritance diagram for SDL::GLContext:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1GLContext__inherit__graph.png" border="0" usemap="#aSDL_1_1GLContext_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1GLContext_inherit__map" id="aSDL_1_1GLContext_inherit__map">
-<area shape="rect" title="Handle to an owned gLContext." alt="" coords="23,240,145,265"/>
-<area shape="rect" href="structSDL_1_1GLContextRef.html" title="Handle to a non owned gLContext." alt="" coords="11,167,157,192"/>
-<area shape="poly" title=" " alt="" coords="87,206,87,240,81,240,81,206"/>
-<area shape="rect" href="structSDL_1_1GLContextBase.html" title="An opaque handle to an OpenGL context." alt="" coords="7,93,161,119"/>
-<area shape="poly" title=" " alt="" coords="87,132,87,167,81,167,81,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,163,45"/>
-<area shape="poly" title=" " alt="" coords="87,59,87,93,81,93,81,59"/>
+<area shape="rect" title="Handle to an owned gLContext." alt="" coords="29,240,151,265"/>
+<area shape="rect" href="structSDL_1_1GLContextUnsafe.html" title="Unsafe Handle to gLContext." alt="" coords="5,167,175,192"/>
+<area shape="poly" title=" " alt="" coords="93,206,93,240,87,240,87,206"/>
+<area shape="rect" href="structSDL_1_1GLContextRef.html" title="An opaque handle to an OpenGL context." alt="" coords="17,93,163,119"/>
+<area shape="poly" title=" " alt="" coords="93,132,93,167,87,167,87,132"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="11,5,169,45"/>
+<area shape="poly" title=" " alt="" coords="93,59,93,93,87,93,87,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab377f2227170a6fd3e0d10a81441ec9e" id="r_ab377f2227170a6fd3e0d10a81441ec9e"><td class="memItemLeft" align="right" valign="top"><a id="ab377f2227170a6fd3e0d10a81441ec9e" name="ab377f2227170a6fd3e0d10a81441ec9e"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContext</b> (SDL_GLContextState *resource={})</td></tr>
-<tr class="memdesc:ab377f2227170a6fd3e0d10a81441ec9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:ab377f2227170a6fd3e0d10a81441ec9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a1638f4f16ac68e2669bdb350d76644" id="r_a9a1638f4f16ac68e2669bdb350d76644"><td class="memItemLeft" align="right" valign="top"><a id="a9a1638f4f16ac68e2669bdb350d76644" name="a9a1638f4f16ac68e2669bdb350d76644"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContext</b> (SDL_GLContextState *resource)</td></tr>
+<tr class="memdesc:a9a1638f4f16ac68e2669bdb350d76644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
+<tr class="separator:a9a1638f4f16ac68e2669bdb350d76644"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d895d207c25f5799fe6738548c9fff4" id="r_a5d895d207c25f5799fe6738548c9fff4"><td class="memItemLeft" align="right" valign="top"><a id="a5d895d207c25f5799fe6738548c9fff4" name="a5d895d207c25f5799fe6738548c9fff4"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContext</b> (const <a class="el" href="structSDL_1_1GLContext.html">GLContext</a> &amp;other)=delete</td></tr>
 <tr class="separator:a5d895d207c25f5799fe6738548c9fff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,14 +119,24 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContext</b> (<
 <a class="el" href="structSDL_1_1GLContext.html">GLContext</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1GLContext.html">GLContext</a> other)</td></tr>
 <tr class="memdesc:ade581977d4eb8cfbf6aa30857e0ef6d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:ade581977d4eb8cfbf6aa30857e0ef6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93a02b688efa7c1f2b80cb334f4a889d" id="r_a93a02b688efa7c1f2b80cb334f4a889d"><td class="memItemLeft" align="right" valign="top"><a id="a93a02b688efa7c1f2b80cb334f4a889d" name="a93a02b688efa7c1f2b80cb334f4a889d"></a>
+<tr class="inherit_header pub_methods_structSDL_1_1GLContextUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1GLContextUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1GLContextUnsafe.html">SDL::GLContextUnsafe</a></td></tr>
+<tr class="memitem:ae6a5799e48b87da2a47ab7de6e994660 inherit pub_methods_structSDL_1_1GLContextUnsafe" id="r_ae6a5799e48b87da2a47ab7de6e994660"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextUnsafe.html#ae6a5799e48b87da2a47ab7de6e994660">Destroy</a> ()</td></tr>
+<tr class="memdesc:ae6a5799e48b87da2a47ab7de6e994660 inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
+<tr class="separator:ae6a5799e48b87da2a47ab7de6e994660 inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93a02b688efa7c1f2b80cb334f4a889d inherit pub_methods_structSDL_1_1GLContextUnsafe" id="r_a93a02b688efa7c1f2b80cb334f4a889d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContextRef</b> (const <a class="el" href="structSDL_1_1GLContextRef.html">GLContextRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a93a02b688efa7c1f2b80cb334f4a889d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:a93a02b688efa7c1f2b80cb334f4a889d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac369e422112a49681b5df8511af4fdcf" id="r_ac369e422112a49681b5df8511af4fdcf"><td class="memItemLeft" align="right" valign="top"><a id="ac369e422112a49681b5df8511af4fdcf" name="ac369e422112a49681b5df8511af4fdcf"></a>
+<tr class="memdesc:a93a02b688efa7c1f2b80cb334f4a889d inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a93a02b688efa7c1f2b80cb334f4a889d inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac369e422112a49681b5df8511af4fdcf inherit pub_methods_structSDL_1_1GLContextUnsafe" id="r_ac369e422112a49681b5df8511af4fdcf"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContextRef</b> (<a class="el" href="structSDL_1_1GLContextRef.html">GLContextRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ac369e422112a49681b5df8511af4fdcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:ac369e422112a49681b5df8511af4fdcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ac369e422112a49681b5df8511af4fdcf inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:ac369e422112a49681b5df8511af4fdcf inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8024402ff6db7537567a4408e81a6f2 inherit pub_methods_structSDL_1_1GLContextUnsafe" id="r_aa8024402ff6db7537567a4408e81a6f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextUnsafe.html#aa8024402ff6db7537567a4408e81a6f2">GLContextRef</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> &amp;window)</td></tr>
+<tr class="memdesc:aa8024402ff6db7537567a4408e81a6f2 inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenGL context for an OpenGL window, and make it current.  <br /></td></tr>
+<tr class="separator:aa8024402ff6db7537567a4408e81a6f2 inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af54eb271b6c4b021185e5a5e319d946e inherit pub_methods_structSDL_1_1GLContextUnsafe" id="r_af54eb271b6c4b021185e5a5e319d946e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextUnsafe.html#af54eb271b6c4b021185e5a5e319d946e">reset</a> (SDL_GLContextState *newResource={})</td></tr>
+<tr class="memdesc:af54eb271b6c4b021185e5a5e319d946e inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
+<tr class="separator:af54eb271b6c4b021185e5a5e319d946e inherit pub_methods_structSDL_1_1GLContextUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1GLContextRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1GLContextRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1GLContextRef.html">SDL::GLContextRef</a></td></tr>
 <tr class="memitem:a93a02b688efa7c1f2b80cb334f4a889d inherit pub_methods_structSDL_1_1GLContextRef" id="r_a93a02b688efa7c1f2b80cb334f4a889d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContextRef</b> (const <a class="el" href="structSDL_1_1GLContextRef.html">GLContextRef</a> &amp;other)</td></tr>
@@ -136,45 +146,34 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContextRef</b>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>GLContextRef</b> (<a class="el" href="structSDL_1_1GLContextRef.html">GLContextRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:ac369e422112a49681b5df8511af4fdcf inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:ac369e422112a49681b5df8511af4fdcf inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a402cadb469a01122e7b2d6541415a983 inherit pub_methods_structSDL_1_1GLContextRef" id="r_a402cadb469a01122e7b2d6541415a983"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>~GLContextRef</b> ()=default</td></tr>
-<tr class="memdesc:a402cadb469a01122e7b2d6541415a983 inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:a402cadb469a01122e7b2d6541415a983 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8024402ff6db7537567a4408e81a6f2 inherit pub_methods_structSDL_1_1GLContextRef" id="r_aa8024402ff6db7537567a4408e81a6f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#aa8024402ff6db7537567a4408e81a6f2">GLContextRef</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> &amp;window)</td></tr>
+<tr class="memdesc:aa8024402ff6db7537567a4408e81a6f2 inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenGL context for an OpenGL window, and make it current.  <br /></td></tr>
+<tr class="separator:aa8024402ff6db7537567a4408e81a6f2 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa814f71900bbad24f104dd843f723cb7 inherit pub_methods_structSDL_1_1GLContextRef" id="r_aa814f71900bbad24f104dd843f723cb7"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="structSDL_1_1GLContextRef.html">GLContextRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1GLContextRef.html">GLContextRef</a> other)</td></tr>
 <tr class="memdesc:aa814f71900bbad24f104dd843f723cb7 inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:aa814f71900bbad24f104dd843f723cb7 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13a18df930691adc57124ff4eb145232 inherit pub_methods_structSDL_1_1GLContextRef" id="r_a13a18df930691adc57124ff4eb145232"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#a13a18df930691adc57124ff4eb145232">reset</a> (SDL_GLContextState *newResource={})</td></tr>
-<tr class="memdesc:a13a18df930691adc57124ff4eb145232 inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
-<tr class="separator:a13a18df930691adc57124ff4eb145232 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextRef" id="r_a65e0e76fc8043319de3efbf16bc6cb10"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#a65e0e76fc8043319de3efbf16bc6cb10">GLContextBase</a> (<a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a> &amp;window)</td></tr>
-<tr class="memdesc:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenGL context for an OpenGL window, and make it current.  <br /></td></tr>
-<tr class="separator:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structSDL_1_1GLContextBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1GLContextBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1GLContextBase.html">SDL::GLContextBase</a></td></tr>
-<tr class="memitem:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextBase" id="r_a65e0e76fc8043319de3efbf16bc6cb10"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextBase.html#a65e0e76fc8043319de3efbf16bc6cb10">GLContextBase</a> (<a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a> &amp;window)</td></tr>
-<tr class="memdesc:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenGL context for an OpenGL window, and make it current.  <br /></td></tr>
-<tr class="separator:a65e0e76fc8043319de3efbf16bc6cb10 inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe7815071638a42310da00c82c3b272e inherit pub_methods_structSDL_1_1GLContextBase" id="r_abe7815071638a42310da00c82c3b272e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextBase.html#abe7815071638a42310da00c82c3b272e">MakeCurrent</a> (<a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a> &amp;window)</td></tr>
-<tr class="memdesc:abe7815071638a42310da00c82c3b272e inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up an OpenGL context for rendering into an OpenGL window.  <br /></td></tr>
-<tr class="separator:abe7815071638a42310da00c82c3b272e inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1GLContextBase" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
+<tr class="memitem:ac378d9839d895485868403616f58efe8 inherit pub_methods_structSDL_1_1GLContextRef" id="r_ac378d9839d895485868403616f58efe8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#ac378d9839d895485868403616f58efe8">MakeCurrent</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> &amp;window)</td></tr>
+<tr class="memdesc:ac378d9839d895485868403616f58efe8 inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up an OpenGL context for rendering into an OpenGL window.  <br /></td></tr>
+<tr class="separator:ac378d9839d895485868403616f58efe8 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1GLContextRef" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (T resource={})</td></tr>
-<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
-<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1GLContextBase" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the underlying resource. <br /></td></tr>
+<tr class="separator:a959604d891dcae230bf4c378c046a21d inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1GLContextRef" id="r_a988d47fefd6d7a5f623d3de9fce5ea59"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullptr_t)</td></tr>
-<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1GLContextBase" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:a988d47fefd6d7a5f623d3de9fce5ea59 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1GLContextRef" id="r_afbb3168108af6a8bd0e23edc712b6a09"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
-<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1GLContextBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
-<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1GLContextBase" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
+<tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
+<tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1GLContextRef" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1GLContextBase" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
+<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1GLContextRef" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1GLContextBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_GLContextState * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_GLContextState * resource={})</td></tr>
@@ -232,12 +231,20 @@ constexpr const SDL_GLContextState *&#160;</td><td class="memItemRight" valign="
 constexpr SDL_GLContextState *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_structSDL_1_1GLContextRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1GLContextRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1GLContextRef.html">SDL::GLContextRef</a></td></tr>
+<tr class="memitem:ae6a5799e48b87da2a47ab7de6e994660 inherit pro_methods_structSDL_1_1GLContextRef" id="r_ae6a5799e48b87da2a47ab7de6e994660"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#ae6a5799e48b87da2a47ab7de6e994660">Destroy</a> ()</td></tr>
+<tr class="memdesc:ae6a5799e48b87da2a47ab7de6e994660 inherit pro_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
+<tr class="separator:ae6a5799e48b87da2a47ab7de6e994660 inherit pro_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af54eb271b6c4b021185e5a5e319d946e inherit pro_methods_structSDL_1_1GLContextRef" id="r_af54eb271b6c4b021185e5a5e319d946e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html#af54eb271b6c4b021185e5a5e319d946e">reset</a> (SDL_GLContextState *newResource={})</td></tr>
+<tr class="memdesc:af54eb271b6c4b021185e5a5e319d946e inherit pro_methods_structSDL_1_1GLContextRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
+<tr class="separator:af54eb271b6c4b021185e5a5e319d946e inherit pro_methods_structSDL_1_1GLContextRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GLContextBase.html" title="An opaque handle to an OpenGL context.">GLContextBase</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1GLContextRef.html" title="Handle to a non owned gLContext.">GLContextRef</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GLContextRef.html" title="An opaque handle to an OpenGL context.">GLContextRef</a> </dd></dl>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a></li>
 </ul>

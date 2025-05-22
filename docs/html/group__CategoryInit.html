@@ -906,7 +906,7 @@ template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </div>
 </table>
 </div><div class="memdoc">
 <p>The class Init is probably what you are looking for, as it automatically handles de-initialization.</p>
-<p>The file I/O (for example: <a class="el" href="structSDL_1_1IOStreamBase.html#a9f95542b4f9ed519d181002e945df588" title="Use this function to create a new IOStreamBase structure for reading from and/or writing to a named f...">IOStreamBase.IOStreamBase</a>) and threading (<a class="el" href="structSDL_1_1ThreadBase.html#a6dfea610e20b063d4ce12453a68b3afb" title="Create a new thread with a default stack size.">ThreadBase.ThreadBase</a>) subsystems are initialized by default. Message boxes (ShowSimpleMessageBox) also attempt to work without initializing the video subsystem, in hopes of being useful in showing an error dialog when Init fails. You must specifically initialize other subsystems if you use them in your application.</p>
+<p>The file I/O (for example: <a class="el" href="structSDL_1_1IOStreamRef.html#a8b76e37e156393479492ad62d6e86a51" title="Copy constructor.">IOStreamRef.IOStreamRef</a>) and threading (<a class="el" href="structSDL_1_1ThreadRef.html#a49bb818fa09c344c92c0aa4001171f7c" title="Copy constructor.">ThreadRef.ThreadRef</a>) subsystems are initialized by default. Message boxes (ShowSimpleMessageBox) also attempt to work without initializing the video subsystem, in hopes of being useful in showing an error dialog when Init fails. You must specifically initialize other subsystems if you use them in your application.</p>
 <p>Logging (such as Log) works without initialization, too.</p>
 <p><code>flags</code> may be any of the following OR'd together:</p>
 <ul>

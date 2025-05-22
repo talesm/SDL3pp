@@ -1,0 +1,9 @@
+<map id="SDL::IOStreamUnsafe" name="SDL::IOStreamUnsafe">
+<area shape="rect" id="Node000001" title="Unsafe Handle to iOStream." alt="" coords="5,167,168,192"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1IOStream.html" title="Handle to an owned iOStream." alt="" coords="29,240,145,265"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="89,206,89,240,84,240,84,206"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1IOStreamRef.html" title="The read/write operation structure." alt="" coords="17,93,156,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,132,89,167,84,167,84,132"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1Resource.html" title=" " alt="" coords="9,5,164,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,59,89,93,84,93,84,59"/>
+</map>
