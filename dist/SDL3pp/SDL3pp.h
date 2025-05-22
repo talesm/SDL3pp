@@ -5668,7 +5668,7 @@ inline float atan(float x) { return SDL_atanf(x); }
  *
  * Domain: `-INF <= x <= INF`, `-INF <= y <= INF`
  *
- * Range: `-Pi/2 <= y <= Pi/2`
+ * Range: `-Pi <= y <= Pi`
  *
  * This function operates on double-precision floating point values, use
  * atan2f for single-precision floats.
@@ -5701,7 +5701,7 @@ inline double atan2(double y, double x) { return SDL_atan2(y, x); }
  *
  * Domain: `-INF <= x <= INF`, `-INF <= y <= INF`
  *
- * Range: `-Pi/2 <= y <= Pi/2`
+ * Range: `-Pi <= y <= Pi`
  *
  * This function operates on single-precision floating point values, use
  * atan2 for double-precision floats.
