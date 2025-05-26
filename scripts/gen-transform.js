@@ -7428,9 +7428,7 @@ const transform = {
           entries: {
             "SDL_CreateWindow": {
               kind: "function",
-              name: "WindowRef",
-              type: "",
-              static: false,
+              name: "ctor",
               parameters: [
                 {
                   name: "title",
@@ -7449,8 +7447,7 @@ const transform = {
             },
             "SDL_CreatePopupWindow": {
               kind: "function",
-              name: "WindowRef",
-              type: "",
+              name: "ctor",
               parameters: [
                 {
                   name: "parent",
