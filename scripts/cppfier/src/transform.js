@@ -991,7 +991,6 @@ function expandResources(sourceEntries, file, context) {
           if (subEntry === "immutable") entry.entries[subName] = { proto: true, immutable: true };
           else entry.entries[subName] = { proto: true };
         }
-        if (subName === "SDL_GetWindowParent") console.log(sourceEntry);
       } else {
         if (context.prefixToRemove.test(subName)) pointToIncludeFunc = subName;
         const sourceEntry = /** @type {ApiEntry}*/(sourceEntries[subName]);
