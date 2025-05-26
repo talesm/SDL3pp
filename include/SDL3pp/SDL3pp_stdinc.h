@@ -761,29 +761,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
   {
   }
 
-  /**
-   * Create a set of environment variables
-   *
-   * @param populated true to initialize it from the C runtime environment,
-   *                  false to create an empty environment.
-   * @post the new environment on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety If `populated` is false, it is safe to call this function
-   *               from any thread, otherwise it is safe if no other threads are
-   *               calling setenv() or unsetenv()
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa EnvironmentRef.GetVariable
-   * @sa EnvironmentRef.GetVariables
-   * @sa EnvironmentRef.SetVariable
-   * @sa EnvironmentRef.UnsetVariable
-   */
-  EnvironmentRef(bool populated)
-    : Resource(CheckError(SDL_CreateEnvironment(populated)))
-  {
-  }
+  EnvironmentRef(Environment&& other) = delete;
 
   /**
    * Assignment operator.
@@ -976,6 +954,30 @@ struct Environment : EnvironmentUnsafe
    * Move constructor.
    */
   constexpr Environment(Environment&& other) = default;
+
+  /**
+   * Create a set of environment variables
+   *
+   * @param populated true to initialize it from the C runtime environment,
+   *                  false to create an empty environment.
+   * @post the new environment on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety If `populated` is false, it is safe to call this function
+   *               from any thread, otherwise it is safe if no other threads are
+   *               calling setenv() or unsetenv()
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa EnvironmentRef.GetVariable
+   * @sa EnvironmentRef.GetVariables
+   * @sa EnvironmentRef.SetVariable
+   * @sa EnvironmentRef.UnsetVariable
+   */
+  Environment(bool populated)
+    : Environment(CheckError(SDL_CreateEnvironment(populated)))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.
@@ -5163,25 +5165,7 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
   {
   }
 
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @post this becomes a valid handle convertible to true on success, or
-   *       convertible to false on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IConvRef.iconv
-   * @sa iconv_string
-   */
-  IConvRef(StringParam tocode, StringParam fromcode)
-    : Resource(SDL_iconv_open(tocode, fromcode))
-  {
-  }
-
+  IConvRef(IConv&& other) = delete;
   /**
    * Assignment operator.
    */
@@ -5307,6 +5291,25 @@ struct IConv : IConvUnsafe
    * Move constructor.
    */
   constexpr IConv(IConv&& other) = default;
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @post this becomes a valid handle convertible to true on success, or
+   *       convertible to false on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConvRef.iconv
+   * @sa iconv_string
+   */
+  IConv(StringParam tocode, StringParam fromcode)
+    : IConv(SDL_iconv_open(tocode, fromcode))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

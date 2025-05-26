@@ -751,41 +751,78 @@ function expandResources(sourceEntries, file, context) {
       };
     }
     /** @type {ApiEntryTransform[]} */
-    const ctors = [
-      {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [{
-          type: `const ${refName} &`,
-          name: "other"
-        }],
-        doc: "Copy constructor.",
-        hints: {
-          init: [`${refName}(other.get())`],
-        }
-      }, {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [{
-          type: `${refName} &&`,
-          name: "other"
-        }],
-        doc: "Move constructor.",
-        hints: {
-          init: [`${refName}(other.release())`],
-        }
+    const refCtors = [{
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [{
+        type: `const ${refName} &`,
+        name: "other"
+      }],
+      doc: "Copy constructor.",
+      hints: {
+        init: [`${refName}(other.get())`],
       }
-    ];
-    const extraCtors = subEntries[refName];
-    if (extraCtors) {
+    }, {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [{
+        type: `${refName} &&`,
+        name: "other"
+      }],
+      doc: "Move constructor.",
+      hints: {
+        init: [`${refName}(other.release())`],
+      }
+    }, {
+      kind: "function",
+      type: "",
+      proto: true,
+      parameters: [{
+        type: `${uniqueName} &&`,
+        name: "other"
+      }],
+      hints: {
+        delete: true,
+      }
+    }];
+    const extraRefCtors = subEntries[refName];
+    if (extraRefCtors) {
       delete subEntries[refName];
-      if (Array.isArray(extraCtors)) {
-        ctors.push(...extraCtors);
+      if (Array.isArray(extraRefCtors)) {
+        refCtors.push(...extraRefCtors);
       } else {
         // @ts-ignore
-        ctors.push(extraCtors);
+        refCtors.push(extraRefCtors);
+      }
+    }
+
+    /** @type {ApiEntryTransform[]} */
+    const uniqueCtors = [];
+    const extraUniqueCtors = subEntries[uniqueName];
+    if (extraUniqueCtors) {
+      delete subEntries[uniqueName];
+      if (Array.isArray(extraUniqueCtors)) {
+        uniqueCtors.push(...extraUniqueCtors);
+      } else {
+        // @ts-ignore
+        uniqueCtors.push(extraUniqueCtors);
+      }
+    }
+    /** @type {Dict<ApiEntryTransform|"ctor">} */
+    const transformedToCtors = {};
+    for (const [sourceName, entry] of Object.entries(subEntries)) {
+      if (typeof entry === "string") {
+        if (entry === "ctor") {
+          delete subEntries[sourceName];
+          transformedToCtors[sourceName] = "ctor";
+        }
+      } else if (!Array.isArray(entry)) {
+        if (entry.name === "ctor") {
+          delete subEntries[sourceName];
+          transformedToCtors[sourceName] = entry;
+        }
       }
     }
     /** @type {ApiEntryTransform} */
@@ -796,7 +833,7 @@ function expandResources(sourceEntries, file, context) {
       doc: transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource\n\n@sa ${uniqueName}\n@sa ${refName}`,
       entries: {
         "Resource::Resource": "alias",
-        [refName]: ctors,
+        [refName]: refCtors,
         "operator=": {
           kind: "function",
           type: refName + " &",
@@ -879,7 +916,8 @@ function expandResources(sourceEntries, file, context) {
             hints: {
               default: true,
             }
-          }],
+          }, ...uniqueCtors],
+          ...transformedToCtors,
           ["~" + uniqueName]: {
             kind: "function",
             type: "",
@@ -901,7 +939,8 @@ function expandResources(sourceEntries, file, context) {
               body: `reset(other.release());\nreturn *this;`,
             }
           }
-        }
+        },
+        hints: { "super": uniqueName }
       }
     ];
     const derivedNames = new Set([uniqueName, unsafeName, optionalName]);

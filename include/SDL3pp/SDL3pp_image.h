@@ -1970,57 +1970,7 @@ struct AnimationRef : Resource<IMG_Animation*>
   {
   }
 
-  /**
-   * Load an animation from a file.
-   *
-   * @param file path on the filesystem containing an animated image.
-   * @post a new Animation, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa AnimationRef.reset
-   */
-  AnimationRef(StringParam file)
-    : Resource(IMG_LoadAnimation(file))
-  {
-  }
-
-  /**
-   * Load an animation from an IOStreamRef.
-   *
-   * @param src an IOStreamRef that data will be read from.
-   * @post a new AnimationRef, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa AnimationRef.reset
-   */
-  AnimationRef(IOStreamRef& src)
-    : Resource(IMG_LoadAnimation_IO(src.get(), false))
-  {
-  }
-
-  /**
-   * Load an animation from an SDL datasource
-   *
-   * Even though this function accepts a file type, SDL_image may still try
-   * other decoders that are capable of detecting file type from the contents of
-   * the image data, but may rely on the caller-provided type string for formats
-   * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
-   * on its ability to guess the format.
-   *
-   * @param src an SDL_IOStream that data will be read from.
-   * @param type a filename extension that represent this data ("GIF", etc).
-   * @post a new AnimationRef, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa AnimationRef.reset
-   */
-  AnimationRef(IOStreamRef& src, StringParam type)
-    : Resource(IMG_LoadAnimationTyped_IO(src.get(), false, type))
-  {
-  }
+  AnimationRef(Animation&& other) = delete;
 
   /**
    * Assignment operator.
@@ -2132,6 +2082,58 @@ struct Animation : AnimationUnsafe
   constexpr Animation(Animation&& other) = default;
 
   /**
+   * Load an animation from a file.
+   *
+   * @param file path on the filesystem containing an animated image.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa AnimationRef.reset
+   */
+  Animation(StringParam file)
+    : Animation(IMG_LoadAnimation(file))
+  {
+  }
+
+  /**
+   * Load an animation from an IOStreamRef.
+   *
+   * @param src an IOStreamRef that data will be read from.
+   * @post a new AnimationRef, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa AnimationRef.reset
+   */
+  Animation(IOStreamRef& src)
+    : Animation(IMG_LoadAnimation_IO(src.get(), false))
+  {
+  }
+
+  /**
+   * Load an animation from an SDL datasource
+   *
+   * Even though this function accepts a file type, SDL_image may still try
+   * other decoders that are capable of detecting file type from the contents of
+   * the image data, but may rely on the caller-provided type string for formats
+   * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
+   * on its ability to guess the format.
+   *
+   * @param src an SDL_IOStream that data will be read from.
+   * @param type a filename extension that represent this data ("GIF", etc).
+   * @post a new AnimationRef, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa AnimationRef.reset
+   */
+  Animation(IOStreamRef& src, StringParam type)
+    : Animation(IMG_LoadAnimationTyped_IO(src.get(), false, type))
+  {
+  }
+
+  /**
    * Frees up resource when object goes out of scope.
    */
   ~Animation() { reset(); }
@@ -2191,23 +2193,23 @@ inline Animation LoadWEBPAnimation(IOStreamRef& src)
 
 /// @}
 
-inline SurfaceRef::SurfaceRef(StringParam file)
-  : Resource(CheckError(IMG_Load(file)))
+inline Surface::Surface(StringParam file)
+  : Surface(CheckError(IMG_Load(file)))
 {
 }
 
-inline SurfaceRef::SurfaceRef(IOStreamRef& src)
-  : Resource(CheckError(IMG_Load_IO(src.get(), false)))
+inline Surface::Surface(IOStreamRef& src)
+  : Surface(CheckError(IMG_Load_IO(src.get(), false)))
 {
 }
 
-inline TextureRef::TextureRef(RendererRef& renderer, StringParam file)
-  : Resource(CheckError(IMG_LoadTexture(renderer.get(), file)))
+inline Texture::Texture(RendererRef& renderer, StringParam file)
+  : Texture(CheckError(IMG_LoadTexture(renderer.get(), file)))
 {
 }
 
-inline TextureRef::TextureRef(RendererRef& renderer, IOStream& src)
-  : Resource(CheckError(IMG_LoadTexture_IO(renderer.get(), src.get(), false)))
+inline Texture::Texture(RendererRef& renderer, IOStream& src)
+  : Texture(CheckError(IMG_LoadTexture_IO(renderer.get(), src.get(), false)))
 {
 }
 
@@ -2219,23 +2221,23 @@ inline TextureRef::TextureRef(RendererRef& renderer, IOStream& src)
 
 namespace SDL {
 
-inline SurfaceRef::SurfaceRef(StringParam file)
-  : Resource(CheckError(SDL_LoadBMP(file)))
+inline Surface::Surface(StringParam file)
+  : Surface(CheckError(SDL_LoadBMP(file)))
 {
 }
 
-inline SurfaceRef::SurfaceRef(IOStreamRef& src)
-  : Resource(CheckError(SDL_LoadBMP_IO(src.get(), false)))
+inline Surface::Surface(IOStreamRef& src)
+  : Surface(CheckError(SDL_LoadBMP_IO(src.get(), false)))
 {
 }
 
-inline TextureRef::TextureRef(RendererRef& renderer, StringParam file)
-  : Resource(CheckError(LoadTextureBMP(renderer, std::move(file)).release()))
+inline Texture::Texture(RendererRef& renderer, StringParam file)
+  : Texture(CheckError(LoadTextureBMP(renderer, std::move(file)).release()))
 {
 }
 
-inline TextureRef::TextureRef(RendererRef& renderer, IOStream& src)
-  : Resource(CheckError(LoadTextureBMP(renderer, src).release()))
+inline Texture::Texture(RendererRef& renderer, IOStream& src)
+  : Texture(CheckError(LoadTextureBMP(renderer, src).release()))
 {
 }
 

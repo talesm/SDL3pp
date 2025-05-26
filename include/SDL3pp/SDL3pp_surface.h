@@ -151,88 +151,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
   {
   }
 
-  /**
-   * Load an image from a filesystem path into a software surface.
-   *
-   * If available, this uses LoadSurface(StringParam), otherwise it uses
-   * LoadBMP(StringParam).
-   *
-   * @param file a path on the filesystem to load an image from.
-   * @post the new Surface with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadSurface(StringParam)
-   * @sa LoadBMP(StringParam)
-   */
-  SurfaceRef(StringParam file);
-
-  /**
-   * Load an image from a IOStreamRef into a software surface.
-   *
-   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
-   * LoadBMP(IOStreamRef&).
-   *
-   * @param src an IOStreamRef to load an image from.
-   * @post the new Surface with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadSurface(StringParam)
-   * @sa LoadBMP(StringParam)
-   */
-  SurfaceRef(IOStreamRef& src);
-
-  /**
-   * Allocate a new surface with a specific pixel format.
-   *
-   * The pixels of the new surface are initialized to zero.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @post the new SurfaceRef structure that is created.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SurfaceRef.Destroy
-   */
-  SurfaceRef(const SDL_Point& size, PixelFormat format)
-    : Resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
-  {
-  }
-
-  /**
-   * Allocate a new surface with a specific pixel format and existing pixel
-   * data.
-   *
-   * No copy is made of the pixel data. Pixel data is not managed automatically;
-   * you must free the surface before you free the pixel data.
-   *
-   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
-   * `width*4` for `PIXELFORMAT_RGBA8888`.
-   *
-   * You may pass nullptr for pixels and 0 for pitch to create a surface that
-   * you will fill in with valid values later.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @param pixels a pointer to existing pixel data.
-   * @param pitch the number of bytes between each row, including padding.
-   * @post the new SurfaceRef structure that is created.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SurfaceRef.Destroy
-   */
-  SurfaceRef(const SDL_Point& size, PixelFormat format, void* pixels, int pitch)
-    : Resource(CheckError(
-        SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
-  {
-  }
+  SurfaceRef(Surface&& other) = delete;
 
   /**
    * Assignment operator.
@@ -1900,6 +1819,89 @@ struct Surface : SurfaceUnsafe
    * Move constructor.
    */
   constexpr Surface(Surface&& other) = default;
+
+  /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param file a path on the filesystem to load an image from.
+   * @post the new Surface with loaded contents on success.
+   * @throws Error on failure.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
+  Surface(StringParam file);
+
+  /**
+   * Load an image from a IOStreamRef into a software surface.
+   *
+   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
+   * LoadBMP(IOStreamRef&).
+   *
+   * @param src an IOStreamRef to load an image from.
+   * @post the new Surface with loaded contents on success.
+   * @throws Error on failure.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
+  Surface(IOStreamRef& src);
+
+  /**
+   * Allocate a new surface with a specific pixel format.
+   *
+   * The pixels of the new surface are initialized to zero.
+   *
+   * @param size the width and height of the surface.
+   * @param format the PixelFormat for the new surface's pixel format.
+   * @post the new Surface structure that is created.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Destroy
+   */
+  Surface(const SDL_Point& size, PixelFormat format)
+    : Surface(CheckError(SDL_CreateSurface(size.x, size.y, format)))
+  {
+  }
+
+  /**
+   * Allocate a new surface with a specific pixel format and existing pixel
+   * data.
+   *
+   * No copy is made of the pixel data. Pixel data is not managed automatically;
+   * you must free the surface before you free the pixel data.
+   *
+   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
+   * `width*4` for `PIXELFORMAT_RGBA8888`.
+   *
+   * You may pass nullptr for pixels and 0 for pitch to create a surface that
+   * you will fill in with valid values later.
+   *
+   * @param size the width and height of the surface.
+   * @param format the PixelFormat for the new surface's pixel format.
+   * @param pixels a pointer to existing pixel data.
+   * @param pitch the number of bytes between each row, including padding.
+   * @post the new Surface structure that is created.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Destroy
+   */
+  Surface(const SDL_Point& size, PixelFormat format, void* pixels, int pitch)
+    : Surface(CheckError(
+        SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

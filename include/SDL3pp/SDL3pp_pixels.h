@@ -1967,6 +1967,8 @@ struct PaletteRef : Resource<SDL_Palette*>
   {
   }
 
+  PaletteRef(Palette&& other) = delete;
+
   /**
    * Assignment operator.
    */
@@ -1974,27 +1976,6 @@ struct PaletteRef : Resource<SDL_Palette*>
   {
     release(other.release());
     return *this;
-  }
-
-  /**
-   * Create a palette structure with the specified number of color entries.
-   *
-   * The palette entries are initialized to white.
-   *
-   * @param ncolors represents the number of color entries in the color palette.
-   * @post a new Palette structure on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PaletteRef.SetColors
-   * @sa SurfaceRef.SetPalette
-   */
-  PaletteRef(int ncolors)
-    : Resource(CheckError(SDL_CreatePalette(ncolors)))
-  {
   }
 
   /// Return the number of colors
@@ -2115,6 +2096,27 @@ struct Palette : PaletteUnsafe
    * Move constructor.
    */
   constexpr Palette(Palette&& other) = default;
+
+  /**
+   * Create a palette structure with the specified number of color entries.
+   *
+   * The palette entries are initialized to white.
+   *
+   * @param ncolors represents the number of color entries in the color palette.
+   * @post a new Palette structure on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PaletteRef.SetColors
+   * @sa SurfaceRef.SetPalette
+   */
+  Palette(int ncolors)
+    : Palette(CheckError(SDL_CreatePalette(ncolors)))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

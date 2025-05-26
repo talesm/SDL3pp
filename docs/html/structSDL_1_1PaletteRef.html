@@ -109,13 +109,13 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>PaletteRef</b> (
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>PaletteRef</b> (<a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a6848eff8cc6ba8a646137001d591ec50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a6848eff8cc6ba8a646137001d591ec50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0a585ff2762558cff397ab0314b38b" id="r_a8d0a585ff2762558cff397ab0314b38b"><td class="memItemLeft" align="right" valign="top"><a id="a8d0a585ff2762558cff397ab0314b38b" name="a8d0a585ff2762558cff397ab0314b38b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PaletteRef</b> (<a class="el" href="structSDL_1_1Palette.html">Palette</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a8d0a585ff2762558cff397ab0314b38b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4bf215a15840bc3501cebb73e839507" id="r_ab4bf215a15840bc3501cebb73e839507"><td class="memItemLeft" align="right" valign="top"><a id="ab4bf215a15840bc3501cebb73e839507" name="ab4bf215a15840bc3501cebb73e839507"></a>
 <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> other)</td></tr>
 <tr class="memdesc:ab4bf215a15840bc3501cebb73e839507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:ab4bf215a15840bc3501cebb73e839507"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07b4ab251a43cb86bd09ebf1258e46e5" id="r_a07b4ab251a43cb86bd09ebf1258e46e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteRef.html#a07b4ab251a43cb86bd09ebf1258e46e5">PaletteRef</a> (int ncolors)</td></tr>
-<tr class="memdesc:a07b4ab251a43cb86bd09ebf1258e46e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a palette structure with the specified number of color entries.  <br /></td></tr>
-<tr class="separator:a07b4ab251a43cb86bd09ebf1258e46e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9d8aff23cfa1c69f84b5e572650500c" id="r_ae9d8aff23cfa1c69f84b5e572650500c"><td class="memItemLeft" align="right" valign="top"><a id="ae9d8aff23cfa1c69f84b5e572650500c" name="ae9d8aff23cfa1c69f84b5e572650500c"></a>
 constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
 <tr class="memdesc:ae9d8aff23cfa1c69f84b5e572650500c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of colors. <br /></td></tr>
@@ -223,53 +223,7 @@ Protected Member Functions</h2></td></tr>
 <a class="el" href="structSDL_1_1Palette.html" title="Handle to an owned palette.">Palette</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PaletteRef.html" title="A set of indexed colors representing a palette.">PaletteRef</a> </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a07b4ab251a43cb86bd09ebf1258e46e5" name="a07b4ab251a43cb86bd09ebf1258e46e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07b4ab251a43cb86bd09ebf1258e46e5">&#9670;&#160;</a></span>PaletteRef()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::PaletteRef::PaletteRef </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>ncolors</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The palette entries are initialized to white.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ncolors</td><td>represents the number of color entries in the color palette. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a new <a class="el" href="structSDL_1_1Palette.html" title="Handle to an owned palette.">Palette</a> structure on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteRef.html#a5ee1a355fdb134e4b036bc43e48ce488" title="Set a range of colors in a palette.">PaletteRef.SetColors</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html#a16217d5ce818435f104e01f359392401" title="Set the palette used by a surface.">SurfaceRef.SetPalette</a> </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aacad16d3b9b0bddbd61c1411a2eb6920" name="aacad16d3b9b0bddbd61c1411a2eb6920"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aacad16d3b9b0bddbd61c1411a2eb6920">&#9670;&#160;</a></span>Destroy()</h2>
 

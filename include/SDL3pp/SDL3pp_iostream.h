@@ -120,125 +120,7 @@ struct IOStreamRef : Resource<SDL_IOStream*>
   {
   }
 
-  /**
-   * Use this function to create a new IOStreamRef structure for reading from
-   * and/or writing to a named file.
-   *
-   * The `mode` string is treated roughly the same as in a call to the C
-   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
-   * scenes.
-   *
-   * Available `mode` strings:
-   *
-   * - "r": Open a file for reading. The file must exist.
-   * - "w": Create an empty file for writing. If a file with the same name
-   *   already exists its content is erased and the file is treated as a new
-   *   empty file.
-   * - "a": Append to a file. Writing operations append data at the end of the
-   *   file. The file is created if it does not exist.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   * - "a+": Open a file for reading and appending. All writing operations are
-   *   performed at the end of the file, protecting the previous content to be
-   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-   *   anywhere in the file for reading, but writing operations will move it
-   *   back to the end of file. The file is created if it does not exist.
-   *
-   * **NOTE**: In order to open a file as a binary file, a "b" character has to
-   * be included in the `mode` string. This additional "b" character can either
-   * be appended at the end of the string (thus making the following compound
-   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
-   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
-   * Additional characters may follow the sequence, although they should have no
-   * effect. For example, "t" is sometimes appended to make explicit the file is
-   * a text file.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * In Android, IOStreamRef.IOStreamRef() can be used to open content://
-   * URIs. As a fallback, IOStreamRef.IOStreamRef() will transparently open a
-   * matching filename in the app's `assets`.
-   *
-   * Closing the IOStreamRef will close SDL's internal file handle.
-   *
-   * The following properties may be set at creation time by SDL:
-   *
-   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this IOStreamRef is using to access the
-   *   filesystem. If the program isn't running on Windows, or SDL used some
-   *   other method to access the filesystem, this property will not be set.
-   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStreamRef is using to access the filesystem.
-   *   If SDL used some other method to access the filesystem, this property
-   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
-   *   than your app, trying to use this pointer will almost certainly result in
-   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
-   *   your app with the same compiler and settings to avoid it.
-   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   IOStreamRef is using to access the filesystem.
-   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this IOStreamRef is using to access
-   *   the filesystem. If SDL used some other method to access the filesystem,
-   *   this property will not be set.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @post the object is convertible to true if valid or false on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa IOStreamRef.Flush
-   * @sa IOStreamRef.Read
-   * @sa IOStreamRef.Seek
-   * @sa IOStreamRef.Tell
-   * @sa IOStreamRef.Write
-   */
-  IOStreamRef(StringParam file, StringParam mode)
-    : Resource(SDL_IOFromFile(file, mode))
-  {
-  }
-
-  /**
-   * Create a custom IOStreamRef.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own IOStreamRef implementation. If you just need an IOStreamRef to
-   * read/write a common data source, you should use the built-in
-   * implementations in SDL, like
-   * IOStreamRef.IOStreamRef(StringParam,StringParam) or IOFromMem(), etc.
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this IOStreamRef, initialized
-   *              using SDL_INIT_INTERFACE().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a valid stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOStreamRef.Close
-   * @sa SDL_INIT_INTERFACE
-   * @sa IOFromConstMem
-   * @sa IOStreamRef.IOStreamRef
-   * @sa IOFromMem
-   */
-  IOStreamRef(const IOStreamInterface& iface, void* userdata)
-    : Resource(CheckError(SDL_OpenIO(&iface, userdata)))
-  {
-  }
+  IOStreamRef(IOStream&& other) = delete;
 
   /**
    * Assignment operator.
@@ -1624,6 +1506,126 @@ struct IOStream : IOStreamUnsafe
    * Move constructor.
    */
   constexpr IOStream(IOStream&& other) = default;
+
+  /**
+   * Use this function to create a new IOStreamRef structure for reading from
+   * and/or writing to a named file.
+   *
+   * The `mode` string is treated roughly the same as in a call to the C
+   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
+   * scenes.
+   *
+   * Available `mode` strings:
+   *
+   * - "r": Open a file for reading. The file must exist.
+   * - "w": Create an empty file for writing. If a file with the same name
+   *   already exists its content is erased and the file is treated as a new
+   *   empty file.
+   * - "a": Append to a file. Writing operations append data at the end of the
+   *   file. The file is created if it does not exist.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   * - "a+": Open a file for reading and appending. All writing operations are
+   *   performed at the end of the file, protecting the previous content to be
+   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+   *   anywhere in the file for reading, but writing operations will move it
+   *   back to the end of file. The file is created if it does not exist.
+   *
+   * **NOTE**: In order to open a file as a binary file, a "b" character has to
+   * be included in the `mode` string. This additional "b" character can either
+   * be appended at the end of the string (thus making the following compound
+   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
+   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
+   * Additional characters may follow the sequence, although they should have no
+   * effect. For example, "t" is sometimes appended to make explicit the file is
+   * a text file.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * In Android, IOStreamRef.IOStreamRef() can be used to open content://
+   * URIs. As a fallback, IOStreamRef.IOStreamRef() will transparently open a
+   * matching filename in the app's `assets`.
+   *
+   * Closing the IOStreamRef will close SDL's internal file handle.
+   *
+   * The following properties may be set at creation time by SDL:
+   *
+   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
+   *   to a win32 `HANDLE`, that this IOStreamRef is using to access the
+   *   filesystem. If the program isn't running on Windows, or SDL used some
+   *   other method to access the filesystem, this property will not be set.
+   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   *   stdio `FILE *`, that this IOStreamRef is using to access the filesystem.
+   *   If SDL used some other method to access the filesystem, this property
+   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
+   *   than your app, trying to use this pointer will almost certainly result in
+   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   your app with the same compiler and settings to avoid it.
+   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   *   IOStreamRef is using to access the filesystem.
+   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
+   *   to an Android NDK `AAsset *`, that this IOStreamRef is using to access
+   *   the filesystem. If SDL used some other method to access the filesystem,
+   *   this property will not be set.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @post the object is convertible to true if valid or false on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.Close
+   * @sa IOStreamRef.Flush
+   * @sa IOStreamRef.Read
+   * @sa IOStreamRef.Seek
+   * @sa IOStreamRef.Tell
+   * @sa IOStreamRef.Write
+   */
+  IOStream(StringParam file, StringParam mode)
+    : IOStream(SDL_IOFromFile(file, mode))
+  {
+  }
+
+  /**
+   * Create a custom IOStreamRef.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own IOStreamRef implementation. If you just need an IOStreamRef to
+   * read/write a common data source, you should use the built-in
+   * implementations in SDL, like
+   * IOStreamRef.IOStreamRef(StringParam,StringParam) or IOFromMem(), etc.
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this IOStreamRef, initialized
+   *              using SDL_INIT_INTERFACE().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @post a valid stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.Close
+   * @sa SDL_INIT_INTERFACE
+   * @sa IOFromConstMem
+   * @sa IOStreamRef.IOStreamRef
+   * @sa IOFromMem
+   */
+  IOStream(const IOStreamInterface& iface, void* userdata)
+    : IOStream(CheckError(SDL_OpenIO(&iface, userdata)))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

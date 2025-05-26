@@ -132,116 +132,7 @@ struct ProcessRef : Resource<SDL_Process*>
   {
   }
 
-  /**
-   * Create a new process.
-   *
-   * The path to the executable is supplied in args[0]. args[1..N] are
-   * additional arguments passed on the command line of the new process, and the
-   * argument list should be terminated with a nullptr, e.g.:
-   *
-   * ```c
-   * const char *args[] = { "myprogram", "argument", nullptr };
-   * ```
-   *
-   * Setting pipe_stdio to true is equivalent to setting
-   * `prop::process.CREATE_STDIN_NUMBER` and
-   * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and
-   * will allow the use of ProcessRef.Read() or ProcessRef.GetInput() and
-   * ProcessRef.GetOutput().
-   *
-   * See ProcessRef.ProcessRef() for more details.
-   *
-   * @param args the path and arguments for the new process.
-   * @param pipe_stdio true to create pipes to the process's standard input and
-   *                   from the process's standard output, false for the process
-   *                   to have no input and inherit the application's standard
-   *                   output.
-   * @post the newly created and running process.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ProcessRef.ProcessRef
-   * @sa ProcessRef.GetProperties
-   * @sa ProcessRef.Read
-   * @sa ProcessRef.GetInput
-   * @sa ProcessRef.GetOutput
-   * @sa ProcessRef.Kill
-   * @sa ProcessRef.Wait
-   * @sa ProcessRef.reset
-   */
-  ProcessRef(const char* const* args, bool pipe_stdio)
-    : Resource(CheckError(SDL_CreateProcess(args, pipe_stdio)))
-  {
-  }
-
-  /**
-   * Create a new process with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing
-   *   the program to run, any arguments, and a nullptr pointer, e.g. const char
-   *   *args[] = { "myprogram", "argument", nullptr }. This is a required
-   * property.
-   * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an EnvironmentRef
-   *   pointer. If this property is set, it will be the entire environment for
-   *   the process, otherwise the current environment is used.
-   * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing
-   *   where standard input for the process comes from, defaults to
-   *   `SDL_PROCESS_STDIO_NULL`.
-   * - `prop::process.CREATE_STDIN_POINTER`: an IOStreamRef pointer used for
-   *   standard input when `prop::process.CREATE_STDIN_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value
-   *   describing where standard output for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDOUT_POINTER`: an IOStreamRef pointer used
-   *   for standard output when `prop::process.CREATE_STDOUT_NUMBER` is set
-   *   to `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value
-   *   describing where standard error for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDERR_POINTER`: an IOStreamRef pointer used
-   *   for standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error
-   *   output of the process should be redirected into the standard output of
-   *   the process. This property has no effect if
-   *   `prop::process.CREATE_STDERR_NUMBER` is set.
-   * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should
-   *   run in the background. In this case the default input and output is
-   *   `SDL_PROCESS_STDIO_NULL` and the exitcode of the process is not
-   *   available, and will always be 0.
-   *
-   * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
-   * SIGCHLD should not be ignored or handled because those would prevent SDL
-   * from properly tracking the lifetime of the underlying process. You should
-   * use ProcessRef.Wait() instead.
-   *
-   * @param props the properties to use.
-   * @post the newly created and running process.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ProcessRef.ProcessRef
-   * @sa ProcessRef.GetProperties
-   * @sa ProcessRef.Read
-   * @sa ProcessRef.GetInput
-   * @sa ProcessRef.GetOutput
-   * @sa ProcessRef.Kill
-   * @sa ProcessRef.Wait
-   * @sa ProcessRef.Destroy
-   */
-  ProcessRef(PropertiesRef& props)
-    : Resource(CheckError(SDL_CreateProcessWithProperties(props.get())))
-  {
-  }
+  ProcessRef(Process&& other) = delete;
 
   /**
    * Assignment operator.
@@ -531,6 +422,117 @@ struct Process : ProcessUnsafe
    * Move constructor.
    */
   constexpr Process(Process&& other) = default;
+
+  /**
+   * Create a new process.
+   *
+   * The path to the executable is supplied in args[0]. args[1..N] are
+   * additional arguments passed on the command line of the new process, and the
+   * argument list should be terminated with a nullptr, e.g.:
+   *
+   * ```c
+   * const char *args[] = { "myprogram", "argument", nullptr };
+   * ```
+   *
+   * Setting pipe_stdio to true is equivalent to setting
+   * `prop::process.CREATE_STDIN_NUMBER` and
+   * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and
+   * will allow the use of ProcessRef.Read() or ProcessRef.GetInput() and
+   * ProcessRef.GetOutput().
+   *
+   * See ProcessRef.ProcessRef() for more details.
+   *
+   * @param args the path and arguments for the new process.
+   * @param pipe_stdio true to create pipes to the process's standard input and
+   *                   from the process's standard output, false for the process
+   *                   to have no input and inherit the application's standard
+   *                   output.
+   * @post the newly created and running process.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.GetProperties
+   * @sa ProcessRef.Read
+   * @sa ProcessRef.GetInput
+   * @sa ProcessRef.GetOutput
+   * @sa ProcessRef.Kill
+   * @sa ProcessRef.Wait
+   * @sa ProcessRef.reset
+   */
+  Process(const char* const* args, bool pipe_stdio)
+    : Process(CheckError(SDL_CreateProcess(args, pipe_stdio)))
+  {
+  }
+
+  /**
+   * Create a new process with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing
+   *   the program to run, any arguments, and a nullptr pointer, e.g. const char
+   *   *args[] = { "myprogram", "argument", nullptr }. This is a required
+   * property.
+   * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an EnvironmentRef
+   *   pointer. If this property is set, it will be the entire environment for
+   *   the process, otherwise the current environment is used.
+   * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing
+   *   where standard input for the process comes from, defaults to
+   *   `SDL_PROCESS_STDIO_NULL`.
+   * - `prop::process.CREATE_STDIN_POINTER`: an IOStreamRef pointer used for
+   *   standard input when `prop::process.CREATE_STDIN_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value
+   *   describing where standard output for the process goes to, defaults to
+   *   `PROCESS_STDIO_INHERITED`.
+   * - `prop::process.CREATE_STDOUT_POINTER`: an IOStreamRef pointer used
+   *   for standard output when `prop::process.CREATE_STDOUT_NUMBER` is set
+   *   to `PROCESS_STDIO_REDIRECT`.
+   * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value
+   *   describing where standard error for the process goes to, defaults to
+   *   `PROCESS_STDIO_INHERITED`.
+   * - `prop::process.CREATE_STDERR_POINTER`: an IOStreamRef pointer used
+   *   for standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error
+   *   output of the process should be redirected into the standard output of
+   *   the process. This property has no effect if
+   *   `prop::process.CREATE_STDERR_NUMBER` is set.
+   * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should
+   *   run in the background. In this case the default input and output is
+   *   `SDL_PROCESS_STDIO_NULL` and the exitcode of the process is not
+   *   available, and will always be 0.
+   *
+   * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
+   * SIGCHLD should not be ignored or handled because those would prevent SDL
+   * from properly tracking the lifetime of the underlying process. You should
+   * use ProcessRef.Wait() instead.
+   *
+   * @param props the properties to use.
+   * @post the newly created and running process.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ProcessRef.ProcessRef
+   * @sa ProcessRef.GetProperties
+   * @sa ProcessRef.Read
+   * @sa ProcessRef.GetInput
+   * @sa ProcessRef.GetOutput
+   * @sa ProcessRef.Kill
+   * @sa ProcessRef.Wait
+   * @sa ProcessRef.Destroy
+   */
+  Process(PropertiesRef& props)
+    : Process(CheckError(SDL_CreateProcessWithProperties(props.get())))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

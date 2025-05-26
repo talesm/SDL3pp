@@ -844,292 +844,7 @@ struct WindowRef : Resource<SDL_Window*>
   {
   }
 
-  /**
-   * Create a window with the specified dimensions and flags.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * `flags` may be any of the following OR'd together:
-   *
-   * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
-   * - `WINDOW_OPENGL`: window usable with an OpenGL context
-   * - `WINDOW_OCCLUDED`: window partially or completely obscured by another
-   *   window
-   * - `WINDOW_HIDDEN`: window is not visible
-   * - `WINDOW_BORDERLESS`: no window decoration
-   * - `WINDOW_RESIZABLE`: window can be resized
-   * - `WINDOW_MINIMIZED`: window is minimized
-   * - `WINDOW_MAXIMIZED`: window is maximized
-   * - `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus
-   * - `WINDOW_INPUT_FOCUS`: window has input focus
-   * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
-   * - `WINDOW_EXTERNAL`: window not created by SDL
-   * - `WINDOW_MODAL`: window is modal
-   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back
-   *   buffer if possible
-   * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
-   *   MOUSE_GRABBED)
-   * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
-   * - `WINDOW_UTILITY`: window should be treated as a utility window, not
-   *   showing in the task bar and window list
-   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not
-   *   get mouse or keyboard focus, requires a parent window
-   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu,
-   *   requires a parent window
-   * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
-   * - `WINDOW_VULKAN`: window usable with a Vulkan instance
-   * - `WINDOW_METAL`: window usable with a Metal instance
-   * - `WINDOW_TRANSPARENT`: window with transparent buffer
-   * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
-   *
-   * The WindowRef is implicitly shown if WINDOW_HIDDEN is not set.
-   *
-   * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
-   * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
-   *
-   * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use WindowRef.GetSize() to
-   * query the client area's size in window coordinates, and
-   * WindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the
-   * drawable size in pixels. Note that the drawable size can vary after the
-   * window is created and should be queried again if you get an
-   * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
-   *
-   * If the window is created with any of the WINDOW_OPENGL or
-   * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
-   * (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the
-   * corresponding UnloadLibrary function is called by WindowRef.reset().
-   *
-   * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * WindowRef.WindowRef() will fail, because SDL_Vulkan_LoadLibrary() will
-   * fail.
-   *
-   * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * WindowRef.WindowRef() will fail.
-   *
-   * If you intend to use this window with an RendererRef, you should use
-   * CreateWindowAndRenderer() instead of this function, to avoid window
-   * flicker.
-   *
-   * On non-Apple devices, SDL requires you to either not link to the Vulkan
-   * loader or link to a dynamic library version. This limitation may be removed
-   * in a future version of SDL.
-   *
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param size the width and height of the window.
-   * @param flags 0, or one or more WindowFlags OR'd together.
-   * @post the window that was created.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateWindowAndRenderer()
-   */
-  WindowRef(StringParam title, const SDL_Point& size, WindowFlags flags = 0)
-    : Resource(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)))
-  {
-  }
-
-  /**
-   * Create a child popup window of the specified parent window.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * The flags parameter **must** contain at least one of the following:
-   *
-   * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
-   *   input events.
-   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost
-   *   popup menu will implicitly gain the keyboard focus.
-   *
-   * The following flags are not relevant to popup window creation and will be
-   * ignored:
-   *
-   * - `WINDOW_MINIMIZED`
-   * - `WINDOW_MAXIMIZED`
-   * - `WINDOW_FULLSCREEN`
-   * - `WINDOW_BORDERLESS`
-   *
-   * The following flags are incompatible with popup window creation and will
-   * cause it to fail:
-   *
-   * - `WINDOW_UTILITY`
-   * - `WINDOW_MODAL`
-   *
-   * The parent parameter **must** be non-null and a valid window. The parent of
-   * a popup window can be either a regular, toplevel window, or another popup
-   * window.
-   *
-   * Popup windows cannot be minimized, maximized, made fullscreen, raised,
-   * flash, be made a modal window, be the parent of a toplevel window, or grab
-   * the mouse and/or keyboard. Attempts to do so will fail.
-   *
-   * Popup windows implicitly do not have a border/decorations and do not appear
-   * on the taskbar/dock or in lists of windows such as alt-tab menus.
-   *
-   * If a parent window is hidden or destroyed, any child popup windows will be
-   * recursively hidden or destroyed as well. Child popup windows not explicitly
-   * hidden will be restored when the parent is shown.
-   *
-   * @param parent the parent of the window, must not be nullptr.
-   * @param offset the x, y position of the popup window relative to the origin
-   *               of the parent.
-   * @param size the width and height of the window.
-   * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
-   *              additional WindowFlags OR'd together.
-   * @post the window that was created.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa WindowRef.GetParent
-   */
-  WindowRef(WindowRef& parent,
-            const SDL_Point& offset,
-            const SDL_Point& size,
-            WindowFlags flags = 0)
-    : Resource(CheckError(SDL_CreatePopupWindow(parent.get(),
-                                                offset.x,
-                                                offset.y,
-                                                size.x,
-                                                size.y,
-                                                flags)))
-  {
-  }
-
-  /**
-   * Create a window with the specified properties.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
-   *   be always on top
-   * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no
-   *   window decoration
-   * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
-   *   window will be used with an externally managed graphics context.
-   * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should
-   *   accept keyboard input (defaults true)
-   * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should
-   *   start in fullscreen mode at desktop resolution
-   * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
-   * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
-   *   hidden
-   * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window
-   *   uses a high pixel density buffer if possible
-   * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should
-   *   start maximized
-   * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
-   * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used
-   *   with Metal rendering
-   * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should
-   *   start minimized
-   * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to
-   *   its parent
-   * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
-   *   with grabbed mouse focus
-   * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
-   *   with OpenGL rendering
-   * - `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the
-   *   parent of this window, required for windows with the "tooltip", "menu",
-   *   and "modal" properties
-   * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
-   *   resizable
-   * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
-   *   encoding
-   * - `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
-   *   transparent in the areas with alpha of 0
-   * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
-   * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
-   *   window, not showing in the task bar and window list
-   * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used
-   *   with Vulkan rendering
-   * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
-   * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
-   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
-   *   relative to the parent for windows with the "tooltip" or "menu" property
-   *   set.
-   * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
-   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
-   *   relative to the parent for windows with the "tooltip" or "menu" property
-   *   set.
-   *
-   * These are additional supported properties on macOS:
-   *
-   * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the
-   *   `(__unsafe_unretained)` NSWindow associated with the window, if you want
-   *   to wrap an existing window.
-   * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
-   *   NSView associated with the window, defaults to `[window contentView]`
-   *
-   * These are additional supported properties on Wayland:
-   *
-   * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if
-   *   the application wants to use the Wayland surface for a custom role and
-   *   does not want it attached to an XDG toplevel window. See
-   *   [README/wayland](README/wayland) for more information on using custom
-   *   surfaces.
-   * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
-   *   application wants an associated `wl_egl_window` object to be created and
-   *   attached to the window, even if the window does not have the OpenGL
-   *   property or `WINDOW_OPENGL` flag set.
-   * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
-   *   associated with the window, if you want to wrap an existing window. See
-   *   [README/wayland](README/wayland) for more information.
-   *
-   * These are additional supported properties on Windows:
-   *
-   * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
-   *   window, if you want to wrap an existing window.
-   * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,
-   *   another window to share pixel format with, useful for OpenGL windows
-   *
-   * These are additional supported properties with X11:
-   *
-   * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated
-   *   with the window, if you want to wrap an existing window.
-   *
-   * The window is implicitly shown if the "hidden" property is not set.
-   *
-   * Windows with the "tooltip" and "menu" properties are popup windows and have
-   * the behaviors and guidelines outlined in WindowRef.WindowRef().
-   *
-   * If this window is being created to be used with an RendererRef, you should
-   * not add a graphics API specific property
-   * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
-   * internally when it chooses a renderer. However, SDL might need to recreate
-   * your window at that point, which may cause the window to appear briefly,
-   * and then flicker as it is recreated. The correct approach to this is to
-   * create the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property
-   * set to true, then create the renderer, then show the window with
-   * WindowRef.Show().
-   *
-   * @param props the properties to use.
-   * @post the window that was created.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Properties
-   */
-  WindowRef(PropertiesRef& props)
-    : Resource(CheckError(SDL_CreateWindowWithProperties(props.get())))
-  {
-  }
+  WindowRef(Window&& other) = delete;
 
   /**
    * Assignment operator.
@@ -2902,6 +2617,293 @@ struct Window : WindowUnsafe
   constexpr Window(Window&& other) = default;
 
   /**
+   * Create a window with the specified dimensions and flags.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * `flags` may be any of the following OR'd together:
+   *
+   * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
+   * - `WINDOW_OPENGL`: window usable with an OpenGL context
+   * - `WINDOW_OCCLUDED`: window partially or completely obscured by another
+   *   window
+   * - `WINDOW_HIDDEN`: window is not visible
+   * - `WINDOW_BORDERLESS`: no window decoration
+   * - `WINDOW_RESIZABLE`: window can be resized
+   * - `WINDOW_MINIMIZED`: window is minimized
+   * - `WINDOW_MAXIMIZED`: window is maximized
+   * - `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus
+   * - `WINDOW_INPUT_FOCUS`: window has input focus
+   * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
+   * - `WINDOW_EXTERNAL`: window not created by SDL
+   * - `WINDOW_MODAL`: window is modal
+   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back
+   *   buffer if possible
+   * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
+   *   MOUSE_GRABBED)
+   * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
+   * - `WINDOW_UTILITY`: window should be treated as a utility window, not
+   *   showing in the task bar and window list
+   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not
+   *   get mouse or keyboard focus, requires a parent window
+   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu,
+   *   requires a parent window
+   * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
+   * - `WINDOW_VULKAN`: window usable with a Vulkan instance
+   * - `WINDOW_METAL`: window usable with a Metal instance
+   * - `WINDOW_TRANSPARENT`: window with transparent buffer
+   * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
+   *
+   * The WindowRef is implicitly shown if WINDOW_HIDDEN is not set.
+   *
+   * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
+   * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use WindowRef.GetSize() to
+   * query the client area's size in window coordinates, and
+   * WindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the
+   * drawable size in pixels. Note that the drawable size can vary after the
+   * window is created and should be queried again if you get an
+   * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+   *
+   * If the window is created with any of the WINDOW_OPENGL or
+   * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
+   * (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the
+   * corresponding UnloadLibrary function is called by WindowRef.reset().
+   *
+   * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
+   * WindowRef.WindowRef() will fail, because SDL_Vulkan_LoadLibrary() will
+   * fail.
+   *
+   * If WINDOW_METAL is specified on an OS that does not support Metal,
+   * WindowRef.WindowRef() will fail.
+   *
+   * If you intend to use this window with an RendererRef, you should use
+   * CreateWindowAndRenderer() instead of this function, to avoid window
+   * flicker.
+   *
+   * On non-Apple devices, SDL requires you to either not link to the Vulkan
+   * loader or link to a dynamic library version. This limitation may be removed
+   * in a future version of SDL.
+   *
+   * @param title the title of the window, in UTF-8 encoding.
+   * @param size the width and height of the window.
+   * @param flags 0, or one or more WindowFlags OR'd together.
+   * @post the window that was created.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateWindowAndRenderer()
+   */
+  Window(StringParam title, const SDL_Point& size, WindowFlags flags = 0)
+    : Window(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)))
+  {
+  }
+
+  /**
+   * Create a child popup window of the specified parent window.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * The flags parameter **must** contain at least one of the following:
+   *
+   * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
+   *   input events.
+   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost
+   *   popup menu will implicitly gain the keyboard focus.
+   *
+   * The following flags are not relevant to popup window creation and will be
+   * ignored:
+   *
+   * - `WINDOW_MINIMIZED`
+   * - `WINDOW_MAXIMIZED`
+   * - `WINDOW_FULLSCREEN`
+   * - `WINDOW_BORDERLESS`
+   *
+   * The following flags are incompatible with popup window creation and will
+   * cause it to fail:
+   *
+   * - `WINDOW_UTILITY`
+   * - `WINDOW_MODAL`
+   *
+   * The parent parameter **must** be non-null and a valid window. The parent of
+   * a popup window can be either a regular, toplevel window, or another popup
+   * window.
+   *
+   * Popup windows cannot be minimized, maximized, made fullscreen, raised,
+   * flash, be made a modal window, be the parent of a toplevel window, or grab
+   * the mouse and/or keyboard. Attempts to do so will fail.
+   *
+   * Popup windows implicitly do not have a border/decorations and do not appear
+   * on the taskbar/dock or in lists of windows such as alt-tab menus.
+   *
+   * If a parent window is hidden or destroyed, any child popup windows will be
+   * recursively hidden or destroyed as well. Child popup windows not explicitly
+   * hidden will be restored when the parent is shown.
+   *
+   * @param parent the parent of the window, must not be nullptr.
+   * @param offset the x, y position of the popup window relative to the origin
+   *               of the parent.
+   * @param size the width and height of the window.
+   * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
+   *              additional WindowFlags OR'd together.
+   * @post the window that was created.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa WindowRef.GetParent
+   */
+  Window(WindowRef& parent,
+         const SDL_Point& offset,
+         const SDL_Point& size,
+         WindowFlags flags = 0)
+    : Window(CheckError(SDL_CreatePopupWindow(parent.get(),
+                                              offset.x,
+                                              offset.y,
+                                              size.x,
+                                              size.y,
+                                              flags)))
+  {
+  }
+
+  /**
+   * Create a window with the specified properties.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
+   *   be always on top
+   * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no
+   *   window decoration
+   * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
+   *   window will be used with an externally managed graphics context.
+   * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should
+   *   accept keyboard input (defaults true)
+   * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should
+   *   start in fullscreen mode at desktop resolution
+   * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
+   * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
+   *   hidden
+   * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window
+   *   uses a high pixel density buffer if possible
+   * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should
+   *   start maximized
+   * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
+   * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used
+   *   with Metal rendering
+   * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should
+   *   start minimized
+   * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to
+   *   its parent
+   * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
+   *   with grabbed mouse focus
+   * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
+   *   with OpenGL rendering
+   * - `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the
+   *   parent of this window, required for windows with the "tooltip", "menu",
+   *   and "modal" properties
+   * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+   *   resizable
+   * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
+   *   encoding
+   * - `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+   *   transparent in the areas with alpha of 0
+   * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
+   * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+   *   window, not showing in the task bar and window list
+   * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used
+   *   with Vulkan rendering
+   * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
+   * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
+   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
+   *   relative to the parent for windows with the "tooltip" or "menu" property
+   *   set.
+   * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
+   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
+   *   relative to the parent for windows with the "tooltip" or "menu" property
+   *   set.
+   *
+   * These are additional supported properties on macOS:
+   *
+   * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the
+   *   `(__unsafe_unretained)` NSWindow associated with the window, if you want
+   *   to wrap an existing window.
+   * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
+   *   NSView associated with the window, defaults to `[window contentView]`
+   *
+   * These are additional supported properties on Wayland:
+   *
+   * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if
+   *   the application wants to use the Wayland surface for a custom role and
+   *   does not want it attached to an XDG toplevel window. See
+   *   [README/wayland](README/wayland) for more information on using custom
+   *   surfaces.
+   * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+   *   application wants an associated `wl_egl_window` object to be created and
+   *   attached to the window, even if the window does not have the OpenGL
+   *   property or `WINDOW_OPENGL` flag set.
+   * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
+   *   associated with the window, if you want to wrap an existing window. See
+   *   [README/wayland](README/wayland) for more information.
+   *
+   * These are additional supported properties on Windows:
+   *
+   * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+   *   window, if you want to wrap an existing window.
+   * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,
+   *   another window to share pixel format with, useful for OpenGL windows
+   *
+   * These are additional supported properties with X11:
+   *
+   * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated
+   *   with the window, if you want to wrap an existing window.
+   *
+   * The window is implicitly shown if the "hidden" property is not set.
+   *
+   * Windows with the "tooltip" and "menu" properties are popup windows and have
+   * the behaviors and guidelines outlined in WindowRef.WindowRef().
+   *
+   * If this window is being created to be used with an RendererRef, you should
+   * not add a graphics API specific property
+   * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
+   * internally when it chooses a renderer. However, SDL might need to recreate
+   * your window at that point, which may cause the window to appear briefly,
+   * and then flicker as it is recreated. The correct approach to this is to
+   * create the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property
+   * set to true, then create the renderer, then show the window with
+   * WindowRef.Show().
+   *
+   * @param props the properties to use.
+   * @post the window that was created.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Properties
+   */
+  Window(PropertiesRef& props)
+    : Window(CheckError(SDL_CreateWindowWithProperties(props.get())))
+  {
+  }
+
+  /**
    * Frees up resource when object goes out of scope.
    */
   ~Window() { reset(); }
@@ -3032,32 +3034,7 @@ struct GLContextRef : Resource<SDL_GLContextState*>
   {
   }
 
-  /**
-   * Create an OpenGL context for an OpenGL window, and make it current.
-   *
-   * Windows users new to OpenGL should note that, for historical reasons, GL
-   * functions added after OpenGL version 1.1 are not available by default.
-   * Those functions must be loaded at run-time, either with an OpenGL
-   * extension-handling library or with GL_GetProcAddress() and its related
-   * functions.
-   *
-   * GLContextRef is opaque to the application.
-   *
-   * @param window the window to associate with the context.
-   * @post the OpenGL context associated with `window`.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GLContextRef.reset
-   * @sa GLContextRef.MakeCurrent
-   */
-  GLContextRef(WindowRef& window)
-    : Resource(CheckError(SDL_GL_CreateContext(window.get())))
-  {
-  }
+  GLContextRef(GLContext&& other) = delete;
 
   /**
    * Assignment operator.
@@ -3161,6 +3138,33 @@ struct GLContext : GLContextUnsafe
    * Move constructor.
    */
   constexpr GLContext(GLContext&& other) = default;
+
+  /**
+   * Create an OpenGL context for an OpenGL window, and make it current.
+   *
+   * Windows users new to OpenGL should note that, for historical reasons, GL
+   * functions added after OpenGL version 1.1 are not available by default.
+   * Those functions must be loaded at run-time, either with an OpenGL
+   * extension-handling library or with GL_GetProcAddress() and its related
+   * functions.
+   *
+   * GLContextRef is opaque to the application.
+   *
+   * @param window the window to associate with the context.
+   * @post the OpenGL context associated with `window`.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GLContextRef.reset
+   * @sa GLContextRef.MakeCurrent
+   */
+  GLContext(WindowRef& window)
+    : GLContext(CheckError(SDL_GL_CreateContext(window.get())))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

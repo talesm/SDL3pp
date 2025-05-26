@@ -166,141 +166,7 @@ struct RendererRef : Resource<SDL_Renderer*>
   {
   }
 
-  /**
-   * Create a 2D rendering context for a window.
-   *
-   * By default the rendering size matches the window size in pixels, but you
-   * can call SDL_SetRenderLogicalPresentation() to change the content size and
-   * scaling options.
-   *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
-   * @param window the window where rendering is displayed.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   */
-  RendererRef(WindowRef window)
-    : Resource(SDL_CreateRenderer(window.get(), nullptr))
-  {
-  }
-
-  /**
-   * Create a 2D rendering context for a window.
-   *
-   * If you want a specific renderer, you can specify its name here. A list of
-   * available renderers can be obtained by calling GetRenderDriver()
-   * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
-   * don't need a specific renderer, specify nullptr and SDL will attempt to
-   * choose the best option for you, based on what is available on the user's
-   * system.
-   *
-   * If `name` is a comma-separated list, SDL will try each name, in the order
-   * listed, until one succeeds or all of them fail.
-   *
-   * By default the rendering size matches the window size in pixels, but you
-   * can call RendererRef.SetLogicalPresentation() to change the content size
-   * and scaling options.
-   *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
-   * @param window the window where rendering is displayed.
-   * @param name the name of the rendering driver to initialize, or nullptr to
-   *             let SDL choose one.
-   * @post a valid rendering context.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetNumRenderDrivers
-   * @sa GetRenderDriver
-   * @sa RendererRef.GetName
-   */
-  RendererRef(WindowRef& window, StringParam name)
-    : Resource(CheckError(SDL_CreateRenderer(window.get(), name)))
-  {
-  }
-
-  /**
-   * Create a 2D rendering context for a window, with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver
-   *   to use, if a specific one is desired
-   * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
-   *   displayed, required if this isn't a software renderer using a surface
-   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering
-   *   is displayed, if you want a software renderer without a window
-   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace
-   *   value describing the colorspace for output to the display, defaults to
-   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
-   *   support COLORSPACE_SRGB_LINEAR, which is a linear color space and
-   *   supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing
-   *   still uses the sRGB colorspace, but values can go beyond 1.0 and float
-   *   (linear) format textures can be used for HDR content.
-   * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
-   *   present synchronized with the refresh rate. This property can take any
-   *   value that is supported by RendererRef.SetVSync() for the renderer.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
-   *   VkPhysicalDevice to use with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
-   *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
-   *   queue family index used for rendering.
-   * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
-   *   queue family index used for presentation.
-   *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
-   * @param props the properties to use.
-   * @post a valid rendering context.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Properties
-   * @sa RendererRef.GetName
-   */
-  RendererRef(PropertiesRef& props)
-    : Resource(CheckError(SDL_CreateRendererWithProperties(props.get())))
-  {
-  }
-
-  /**
-   * Create a 2D software rendering context for a surface.
-   *
-   * Two other API which can be used to create RendererRef:
-   * RendererRef.RendererRef() and CreateWindowAndRenderer(). These can _also_
-   * create a software renderer, but they are intended to be used with an
-   * WindowRef as the final destination and not an SurfaceRef.
-   *
-   * @param surface the Surface structure representing the surface where
-   *                rendering is done.
-   * @post a valid rendering context.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  RendererRef(SurfaceRef& surface)
-    : Resource(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
-  {
-  }
+  RendererRef(Renderer&& other) = delete;
 
   /**
    * Assignment operator.
@@ -1970,6 +1836,142 @@ struct Renderer : RendererUnsafe
   constexpr Renderer(Renderer&& other) = default;
 
   /**
+   * Create a 2D rendering context for a window.
+   *
+   * By default the rendering size matches the window size in pixels, but you
+   * can call SDL_SetRenderLogicalPresentation() to change the content size and
+   * scaling options.
+   *
+   * It renderer creation fails for any reason this object is falsy; call
+   * GetError() for more information.
+   *
+   * @param window the window where rendering is displayed.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   */
+  Renderer(WindowRef window)
+    : Renderer(SDL_CreateRenderer(window.get(), nullptr))
+  {
+  }
+
+  /**
+   * Create a 2D rendering context for a window.
+   *
+   * If you want a specific renderer, you can specify its name here. A list of
+   * available renderers can be obtained by calling GetRenderDriver()
+   * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
+   * don't need a specific renderer, specify nullptr and SDL will attempt to
+   * choose the best option for you, based on what is available on the user's
+   * system.
+   *
+   * If `name` is a comma-separated list, SDL will try each name, in the order
+   * listed, until one succeeds or all of them fail.
+   *
+   * By default the rendering size matches the window size in pixels, but you
+   * can call RendererRef.SetLogicalPresentation() to change the content size
+   * and scaling options.
+   *
+   * It renderer creation fails for any reason this object is falsy; call
+   * GetError() for more information.
+   *
+   * @param window the window where rendering is displayed.
+   * @param name the name of the rendering driver to initialize, or nullptr to
+   *             let SDL choose one.
+   * @post a valid rendering context.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetNumRenderDrivers
+   * @sa GetRenderDriver
+   * @sa RendererRef.GetName
+   */
+  Renderer(WindowRef& window, StringParam name)
+    : Renderer(CheckError(SDL_CreateRenderer(window.get(), name)))
+  {
+  }
+
+  /**
+   * Create a 2D rendering context for a window, with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver
+   *   to use, if a specific one is desired
+   * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
+   *   displayed, required if this isn't a software renderer using a surface
+   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering
+   *   is displayed, if you want a software renderer without a window
+   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace
+   *   value describing the colorspace for output to the display, defaults to
+   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
+   *   support COLORSPACE_SRGB_LINEAR, which is a linear color space and
+   *   supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing
+   *   still uses the sRGB colorspace, but values can go beyond 1.0 and float
+   *   (linear) format textures can be used for HDR content.
+   * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
+   *   present synchronized with the refresh rate. This property can take any
+   *   value that is supported by RendererRef.SetVSync() for the renderer.
+   *
+   * With the vulkan renderer:
+   *
+   * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
+   *   with the renderer, optional.
+   * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
+   *   with the renderer, optional.
+   * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
+   *   VkPhysicalDevice to use with the renderer, optional.
+   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
+   *   with the renderer, optional.
+   * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
+   *   queue family index used for rendering.
+   * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
+   *   queue family index used for presentation.
+   *
+   * It renderer creation fails for any reason this object is falsy; call
+   * GetError() for more information.
+   *
+   * @param props the properties to use.
+   * @post a valid rendering context.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Properties
+   * @sa RendererRef.GetName
+   */
+  Renderer(PropertiesRef& props)
+    : Renderer(CheckError(SDL_CreateRendererWithProperties(props.get())))
+  {
+  }
+
+  /**
+   * Create a 2D software rendering context for a surface.
+   *
+   * Two other API which can be used to create Renderer:
+   * Renderer.Renderer() and CreateWindowAndRenderer(). These can _also_
+   * create a software renderer, but they are intended to be used with an
+   * WindowRef as the final destination and not an SurfaceRef.
+   *
+   * @param surface the Surface structure representing the surface where
+   *                rendering is done.
+   * @post a valid rendering context.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Renderer(SurfaceRef& surface)
+    : Renderer(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
+  {
+  }
+
+  /**
    * Frees up resource when object goes out of scope.
    */
   ~Renderer() { reset(); }
@@ -2018,209 +2020,7 @@ struct TextureRef : Resource<SDL_Texture*>
   {
   }
 
-  /**
-   * Load an image from a filesystem path into a software surface.
-   *
-   * If available, this uses LoadSurface(StringParam), otherwise it uses
-   * LoadBMP(StringParam).
-   *
-   * @param renderer the rendering context.
-   * @param file a path on the filesystem to load an image from.
-   * @post the new Texture with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadTexture(RendererRef&, StringParam)
-   */
-  TextureRef(RendererRef& renderer, StringParam file);
-
-  /**
-   * Load an image from a IOStreamRef into a software surface.
-   *
-   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
-   * LoadBMP(IOStreamRef&).
-   *
-   * @param renderer the rendering context.
-   * @param src an IOStreamRef to load an image from.
-   * @post the new Texture with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadTexture(RendererRef&StringParam)
-   * @sa LoadTextureBMP(RendererRef&, StringParam)
-   */
-  TextureRef(RendererRef& renderer, IOStream& src);
-
-  /**
-   * Create a texture for a rendering context.
-   *
-   * The contents of a texture when first created are not defined.
-   *
-   * @param renderer the rendering context.
-   * @param format one of the enumerated values in PixelFormat.
-   * @param access one of the enumerated values in TextureAccess.
-   * @param size the width and height of the texture in pixels.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TextureRef.GetSize
-   * @sa TextureRef.Update
-   */
-  TextureRef(RendererRef& renderer,
-             PixelFormat format,
-             TextureAccess access,
-             const SDL_Point& size)
-    : Resource(CheckError(
-        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y)))
-  {
-  }
-
-  /**
-   * Create a texture from an existing surface.
-   *
-   * The surface is not modified or freed by this function.
-   *
-   * The TextureAccess hint for the created texture is
-   * `TEXTUREACCESS_STATIC`.
-   *
-   * The pixel format of the created texture may be different from the pixel
-   * format of the surface, and can be queried using the
-   * prop::Texture.FORMAT_NUMBER property.
-   *
-   * @param renderer the rendering context.
-   * @param surface the SurfaceRef structure containing pixel data used to fill
-   *                the texture.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  TextureRef(RendererRef& renderer, SurfaceRef& surface)
-    : Resource(
-        CheckError(SDL_CreateTextureFromSurface(renderer.get(), surface.get())))
-  {
-  }
-
-  /**
-   * Create a texture for a rendering context with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
-   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
-   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
-   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
-   *   YUV textures.
-   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
-   *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
-   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the value of 100% diffuse white, with higher
-   *   values being displayed in the High Dynamic Range headroom. This defaults
-   *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the maximum dynamic range used by the
-   *   content, in terms of the SDR white point. This would be equivalent to
-   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
-   *   If this is defined, any values outside the range supported by the display
-   *   will be scaled into the available HDR headroom, otherwise they are
-   *   clipped.
-   *
-   * With the direct3d11 renderer:
-   *
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the direct3d12 renderer:
-   *
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the metal renderer:
-   *
-   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
-   *   associated with the texture, if you want to create a texture from an
-   *   existing pixel buffer.
-   *
-   * With the opengl renderer:
-   *
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the opengles2 renderer:
-   *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
-   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-   *   you want to wrap an existing texture.
-   *
-   * @param renderer the rendering context.
-   * @param props the properties to use.
-   * @post the created texture is convertible to true on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Properties
-   * @sa TextureRef.TextureRef
-   * @sa TextureRef.TextureRef
-   * @sa TextureRef.reset
-   * @sa TextureRef.GetSize
-   * @sa TextureRef.Update
-   */
-  TextureRef(RendererRef& renderer, PropertiesRef& props)
-    : Resource(CheckError(
-        SDL_CreateTextureWithProperties(renderer.get(), props.get())))
-  {
-  }
-
+  TextureRef(Texture&& other) = delete;
   /**
    * Assignment operator.
    */
@@ -2957,6 +2757,209 @@ struct Texture : TextureUnsafe
    * Move constructor.
    */
   constexpr Texture(Texture&& other) = default;
+
+  /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param renderer the rendering context.
+   * @param file a path on the filesystem to load an image from.
+   * @post the new Texture with loaded contents on success.
+   * @throws Error on failure.
+   *
+   * @sa LoadTexture(RendererRef&, StringParam)
+   */
+  Texture(RendererRef& renderer, StringParam file);
+
+  /**
+   * Load an image from a IOStreamRef into a software surface.
+   *
+   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
+   * LoadBMP(IOStreamRef&).
+   *
+   * @param renderer the rendering context.
+   * @param src an IOStreamRef to load an image from.
+   * @post the new Texture with loaded contents on success.
+   * @throws Error on failure.
+   *
+   * @sa LoadTexture(RendererRef&StringParam)
+   * @sa LoadTextureBMP(RendererRef&, StringParam)
+   */
+  Texture(RendererRef& renderer, IOStream& src);
+
+  /**
+   * Create a texture for a rendering context.
+   *
+   * The contents of a texture when first created are not defined.
+   *
+   * @param renderer the rendering context.
+   * @param format one of the enumerated values in PixelFormat.
+   * @param access one of the enumerated values in TextureAccess.
+   * @param size the width and height of the texture in pixels.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TextureRef.GetSize
+   * @sa TextureRef.Update
+   */
+  Texture(RendererRef& renderer,
+          PixelFormat format,
+          TextureAccess access,
+          const SDL_Point& size)
+    : Texture(CheckError(
+        SDL_CreateTexture(renderer.get(), format, access, size.x, size.y)))
+  {
+  }
+
+  /**
+   * Create a texture from an existing surface.
+   *
+   * The surface is not modified or freed by this function.
+   *
+   * The TextureAccess hint for the created texture is
+   * `TEXTUREACCESS_STATIC`.
+   *
+   * The pixel format of the created texture may be different from the pixel
+   * format of the surface, and can be queried using the
+   * prop::Texture.FORMAT_NUMBER property.
+   *
+   * @param renderer the rendering context.
+   * @param surface the SurfaceRef structure containing pixel data used to fill
+   *                the texture.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Texture(RendererRef& renderer, SurfaceRef& surface)
+    : Texture(
+        CheckError(SDL_CreateTextureFromSurface(renderer.get(), surface.get())))
+  {
+  }
+
+  /**
+   * Create a texture for a rendering context with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
+   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
+   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
+   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
+   *   YUV textures.
+   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   *   PixelFormat, defaults to the best RGBA format for the renderer
+   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
+   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
+   *   pixels, required
+   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
+   *   pixels, required
+   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
+   *   point textures, this defines the value of 100% diffuse white, with higher
+   *   values being displayed in the High Dynamic Range headroom. This defaults
+   *   to 100 for HDR10 textures and 1.0 for floating point textures.
+   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
+   *   point textures, this defines the maximum dynamic range used by the
+   *   content, in terms of the SDR white point. This would be equivalent to
+   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
+   *   If this is defined, any values outside the range supported by the display
+   *   will be scaled into the available HDR headroom, otherwise they are
+   *   clipped.
+   *
+   * With the direct3d11 renderer:
+   *
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the direct3d12 renderer:
+   *
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the metal renderer:
+   *
+   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   *   associated with the texture, if you want to create a texture from an
+   *   existing pixel buffer.
+   *
+   * With the opengl renderer:
+   *
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the opengles2 renderer:
+   *
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the vulkan renderer:
+   *
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
+   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
+   *   you want to wrap an existing texture.
+   *
+   * @param renderer the rendering context.
+   * @param props the properties to use.
+   * @post the created texture is convertible to true on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Properties
+   * @sa TextureRef.TextureRef
+   * @sa TextureRef.TextureRef
+   * @sa TextureRef.reset
+   * @sa TextureRef.GetSize
+   * @sa TextureRef.Update
+   */
+  Texture(RendererRef& renderer, PropertiesRef& props)
+    : Texture(CheckError(
+        SDL_CreateTextureWithProperties(renderer.get(), props.get())))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

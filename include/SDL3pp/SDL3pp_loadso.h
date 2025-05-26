@@ -80,24 +80,7 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
   {
   }
 
-  /**
-   * Dynamically load a shared object.
-   *
-   * @param sofile a system-dependent name of the object file.
-   * @post an opaque pointer to the object handle or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SharedObjectRef.LoadFunction
-   * @sa SharedObjectRef.Unload
-   */
-  SharedObjectRef(StringParam sofile)
-    : Resource(SDL_LoadObject(sofile))
-  {
-  }
+  SharedObjectRef(SharedObject&& other) = delete;
 
   /**
    * Assignment operator.
@@ -215,6 +198,25 @@ struct SharedObject : SharedObjectUnsafe
    * Move constructor.
    */
   constexpr SharedObject(SharedObject&& other) = default;
+
+  /**
+   * Dynamically load a shared object.
+   *
+   * @param sofile a system-dependent name of the object file.
+   * @post an opaque pointer to the object handle or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObjectRef.LoadFunction
+   * @sa SharedObjectRef.Unload
+   */
+  SharedObject(StringParam sofile)
+    : SharedObject(SDL_LoadObject(sofile))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

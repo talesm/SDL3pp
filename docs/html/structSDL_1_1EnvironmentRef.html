@@ -109,9 +109,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>EnvironmentRef</
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>EnvironmentRef</b> (<a class="el" href="structSDL_1_1EnvironmentRef.html">EnvironmentRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a0ab5a1bdd3d8112fd11ed2dc9a48c0d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a0ab5a1bdd3d8112fd11ed2dc9a48c0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b96498697a9710b56ab8a2b307dc545" id="r_a0b96498697a9710b56ab8a2b307dc545"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#a0b96498697a9710b56ab8a2b307dc545">EnvironmentRef</a> (bool populated)</td></tr>
-<tr class="memdesc:a0b96498697a9710b56ab8a2b307dc545"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a set of environment variables.  <br /></td></tr>
-<tr class="separator:a0b96498697a9710b56ab8a2b307dc545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab969ac851e783bdb5c4eb6c9a9bf81e3" id="r_ab969ac851e783bdb5c4eb6c9a9bf81e3"><td class="memItemLeft" align="right" valign="top"><a id="ab969ac851e783bdb5c4eb6c9a9bf81e3" name="ab969ac851e783bdb5c4eb6c9a9bf81e3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EnvironmentRef</b> (<a class="el" href="structSDL_1_1Environment.html">Environment</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:ab969ac851e783bdb5c4eb6c9a9bf81e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a37262ee1b59623fb9b8a6ed131b094" id="r_a4a37262ee1b59623fb9b8a6ed131b094"><td class="memItemLeft" align="right" valign="top"><a id="a4a37262ee1b59623fb9b8a6ed131b094" name="a4a37262ee1b59623fb9b8a6ed131b094"></a>
 <a class="el" href="structSDL_1_1EnvironmentRef.html">EnvironmentRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1EnvironmentRef.html">EnvironmentRef</a> other)</td></tr>
 <tr class="memdesc:a4a37262ee1b59623fb9b8a6ed131b094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
@@ -232,56 +232,7 @@ Protected Member Functions</h2></td></tr>
 <a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0b96498697a9710b56ab8a2b307dc545" name="a0b96498697a9710b56ab8a2b307dc545"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b96498697a9710b56ab8a2b307dc545">&#9670;&#160;</a></span>EnvironmentRef()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::EnvironmentRef::EnvironmentRef </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>populated</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">populated</td><td>true to initialize it from the C runtime environment, false to create an empty environment. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>the new environment on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>If <code>populated</code> is false, it is safe to call this function from any thread, otherwise it is safe if no other threads are calling setenv() or unsetenv()</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1EnvironmentRef.html#af38b4128673800ba9e46e954a9b38998" title="Get the value of a variable in the environment.">EnvironmentRef.GetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#ae1f456248fc1c89c2c486671d75d25c8" title="Set the value of a variable in the environment.">EnvironmentRef.SetVariable</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6a586e850f99bf507bd510a402e4241e" name="a6a586e850f99bf507bd510a402e4241e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a586e850f99bf507bd510a402e4241e">&#9670;&#160;</a></span>Destroy()</h2>
 

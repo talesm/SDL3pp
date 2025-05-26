@@ -215,6 +215,8 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
   {
   }
 
+  PropertiesRef(Properties&& other) = delete;
+
   /**
    * Assignment operator.
    */

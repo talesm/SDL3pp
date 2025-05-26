@@ -328,11 +328,11 @@ const transform = {
         "SDL_OpenAudioDeviceStream": {
           kind: "function",
           type: "",
-          name: "AudioStreamRef.AudioStreamRef",
+          name: "AudioStream.AudioStream",
           parameters: [
             {
               name: "devid",
-              type: "const AudioDeviceRef &"
+              type: "AudioDeviceRef"
             },
             {
               name: "spec",
@@ -4280,7 +4280,7 @@ const transform = {
       resources: {
         "SDL_Renderer": {
           entries: {
-            "RendererRef": {
+            "Renderer": {
               "kind": "function",
               "type": "",
               "parameters": [
@@ -4904,7 +4904,7 @@ const transform = {
         "SDL_Texture": {
           aliasOptional: true,
           entries: {
-            "TextureRef": [{
+            "Texture": [{
               kind: "function",
               type: "",
               proto: true,
@@ -6060,7 +6060,7 @@ const transform = {
       resources: {
         "SDL_Surface": {
           entries: {
-            "SurfaceRef": [{
+            "Surface": [{
               kind: "function",
               type: "",
               proto: true,
@@ -6940,7 +6940,7 @@ const transform = {
         "SDL_Thread": {
           free: "SDL_DetachThread",
           entries: {
-            "ThreadRef": {
+            "Thread": {
               kind: "function",
               type: "",
               parameters: [
@@ -8568,6 +8568,21 @@ const transform = {
               parameters: [
                 "*m_destroy"
               ],
+            },
+            "TextEngine": {
+              type: "",
+              kind: "function",
+              constexpr: true,
+              parameters: [
+                {
+                  type: "TTF_TextEngine *",
+                  name: "engine"
+                },
+                {
+                  name: "engine)",
+                  type: "void (*destroy)(TTF_TextEngine *"
+                },
+              ]
             },
             "TextEngineRef": {
               type: "",

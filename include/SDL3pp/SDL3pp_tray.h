@@ -102,32 +102,7 @@ struct TrayRef : Resource<SDL_Tray*>
   {
   }
 
-  /**
-   * Create an icon to be placed in the operating system's tray, or equivalent.
-   *
-   * Many platforms advise not using a system tray unless persistence is a
-   * necessary feature. Avoid needlessly creating a tray icon, as the user may
-   * feel like it clutters their interface.
-   *
-   * Using tray icons require the video subsystem.
-   *
-   * @param icon a surface to be used as icon. May be nullptr.
-   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
-   *                UTF-8 encoding. Not supported on all platforms. May be
-   *                nullptr.
-   * @post The newly created system tray icon.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TrayRef.CreateMenu
-   * @sa TrayRef.GetMenu
-   */
-  TrayRef(SurfaceRef& icon, StringParam tooltip)
-    : Resource(CheckError(SDL_CreateTray(icon.get(), tooltip)))
-  {
-  }
+  TrayRef(Tray&& other) = delete;
 
   /**
    * Assignment operator.
@@ -289,6 +264,34 @@ struct Tray : TrayUnsafe
    * Move constructor.
    */
   constexpr Tray(Tray&& other) = default;
+
+  /**
+   * Create an icon to be placed in the operating system's tray, or equivalent.
+   *
+   * Many platforms advise not using a system tray unless persistence is a
+   * necessary feature. Avoid needlessly creating a tray icon, as the user may
+   * feel like it clutters their interface.
+   *
+   * Using tray icons require the video subsystem.
+   *
+   * @param icon a surface to be used as icon. May be nullptr.
+   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
+   *                UTF-8 encoding. Not supported on all platforms. May be
+   * nullptr.
+   * @post The newly created system tray icon.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayRef.CreateMenu
+   * @sa TrayRef.GetMenu
+   * @sa TrayRef.Destroy
+   */
+  Tray(SurfaceRef& icon, StringParam tooltip)
+    : Tray(SDL_CreateTray(icon.get(), tooltip))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.
@@ -517,6 +520,8 @@ struct TrayEntryRef : Resource<SDL_TrayEntry*>
     : TrayEntryRef(other.release())
   {
   }
+
+  TrayEntryRef(TrayEntry&& other) = delete;
 
   /**
    * Assignment operator.

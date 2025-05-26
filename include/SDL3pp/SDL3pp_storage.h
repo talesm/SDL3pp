@@ -284,110 +284,7 @@ struct StorageRef : Resource<SDL_Storage*>
   {
   }
 
-  /**
-   * Opens up a read-only container for the application's filesystem.
-   *
-   * @param override a path to override the backend's default title root.
-   * @param props a property list that may contain backend-specific information.
-   * @post a title storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.Close
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.StorageRef
-   * @sa StorageRef.ReadFile
-   */
-  StorageRef(StringParam override, PropertiesRef& props)
-    : Resource(CheckError(SDL_OpenTitleStorage(override, props.get())))
-  {
-  }
-
-  /**
-   * Opens up a container for a user's unique read/write filesystem.
-   *
-   * While title storage can generally be kept open throughout runtime, user
-   * storage should only be opened when the client is ready to read/write files.
-   * This allows the backend to properly batch file operations and flush them
-   * when the container has been closed; ensuring safe and optimal save I/O.
-   *
-   * @param org the name of your organization.
-   * @param app the name of your application.
-   * @param props a property list that may contain backend-specific information.
-   * @post a user storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.StorageRef
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.Ready
-   * @sa StorageRef.WriteFile
-   */
-  StorageRef(StringParam org, StringParam app, PropertiesRef& props)
-    : Resource(CheckError(SDL_OpenUserStorage(org, app, props.get())))
-  {
-  }
-
-  /**
-   * Opens up a container for local filesystem storage.
-   *
-   * This is provided for development and tools. Portable applications should
-   * use StorageRef.StorageRef() for access to game data and
-   * StorageRef.StorageRef() for access to user data.
-   *
-   * @param path the base path prepended to all storage paths, or nullptr for no
-   *             base path.
-   * @post a filesystem storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.StorageRef
-   * @sa StorageRef.StorageRef
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.WriteFile
-   */
-  StorageRef(StringParam path)
-    : Resource(CheckError(SDL_OpenFileStorage(path)))
-  {
-  }
-
-  /**
-   * Opens up a container using a client-provided storage interface.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own StorageRef implementation. If you just need an StorageRef, you
-   * should use the built-in implementations in SDL, like
-   * StorageRef.StorageRef() or StorageRef.StorageRef().
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this storage, initialized using
-   *              SDL_INIT_INTERFACE().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa StorageRef.GetFileSize
-   * @sa StorageRef.GetSpaceRemaining
-   * @sa SDL_INIT_INTERFACE
-   * @sa StorageRef.ReadFile
-   * @sa StorageRef.Ready
-   * @sa StorageRef.WriteFile
-   */
-  StorageRef(const StorageInterface& iface, void* userdata)
-    : Resource(CheckError(SDL_OpenStorage(&iface, userdata)))
-  {
-  }
+  StorageRef(Storage&& other) = delete;
 
   /**
    * Assignment operator.
@@ -832,6 +729,111 @@ struct Storage : StorageUnsafe
    * Move constructor.
    */
   constexpr Storage(Storage&& other) = default;
+
+  /**
+   * Opens up a read-only container for the application's filesystem.
+   *
+   * @param override a path to override the backend's default title root.
+   * @param props a property list that may contain backend-specific information.
+   * @post a title storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa StorageRef.Close
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.StorageRef
+   * @sa StorageRef.ReadFile
+   */
+  Storage(StringParam override, PropertiesRef& props)
+    : Storage(CheckError(SDL_OpenTitleStorage(override, props.get())))
+  {
+  }
+
+  /**
+   * Opens up a container for a user's unique read/write filesystem.
+   *
+   * While title storage can generally be kept open throughout runtime, user
+   * storage should only be opened when the client is ready to read/write files.
+   * This allows the backend to properly batch file operations and flush them
+   * when the container has been closed; ensuring safe and optimal save I/O.
+   *
+   * @param org the name of your organization.
+   * @param app the name of your application.
+   * @param props a property list that may contain backend-specific information.
+   * @post a user storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.GetSpaceRemaining
+   * @sa StorageRef.StorageRef
+   * @sa StorageRef.ReadFile
+   * @sa StorageRef.Ready
+   * @sa StorageRef.WriteFile
+   */
+  Storage(StringParam org, StringParam app, PropertiesRef& props)
+    : Storage(CheckError(SDL_OpenUserStorage(org, app, props.get())))
+  {
+  }
+
+  /**
+   * Opens up a container for local filesystem storage.
+   *
+   * This is provided for development and tools. Portable applications should
+   * use StorageRef.StorageRef() for access to game data and
+   * StorageRef.StorageRef() for access to user data.
+   *
+   * @param path the base path prepended to all storage paths, or nullptr for no
+   *             base path.
+   * @post a filesystem storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.GetSpaceRemaining
+   * @sa StorageRef.StorageRef
+   * @sa StorageRef.StorageRef
+   * @sa StorageRef.ReadFile
+   * @sa StorageRef.WriteFile
+   */
+  Storage(StringParam path)
+    : Storage(CheckError(SDL_OpenFileStorage(path)))
+  {
+  }
+
+  /**
+   * Opens up a container using a client-provided storage interface.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own StorageRef implementation. If you just need an StorageRef, you
+   * should use the built-in implementations in SDL, like
+   * StorageRef.StorageRef() or StorageRef.StorageRef().
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this storage, initialized using
+   *              SDL_INIT_INTERFACE().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @post a storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa StorageRef.GetFileSize
+   * @sa StorageRef.GetSpaceRemaining
+   * @sa SDL_INIT_INTERFACE
+   * @sa StorageRef.ReadFile
+   * @sa StorageRef.Ready
+   * @sa StorageRef.WriteFile
+   */
+  Storage(const StorageInterface& iface, void* userdata)
+    : Storage(CheckError(SDL_OpenStorage(&iface, userdata)))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.

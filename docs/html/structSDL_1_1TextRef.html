@@ -109,6 +109,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextRef</b> (con
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextRef</b> (<a class="el" href="structSDL_1_1TextRef.html">TextRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a63d3670acb548a9541d20ba9cf7adf5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a63d3670acb548a9541d20ba9cf7adf5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dc70de14dac4e4cdc5b6da199591480" id="r_a6dc70de14dac4e4cdc5b6da199591480"><td class="memItemLeft" align="right" valign="top"><a id="a6dc70de14dac4e4cdc5b6da199591480" name="a6dc70de14dac4e4cdc5b6da199591480"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TextRef</b> (<a class="el" href="structSDL_1_1Text.html">Text</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:a6dc70de14dac4e4cdc5b6da199591480"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05fbb028e3a080e4e965785937f24701" id="r_a05fbb028e3a080e4e965785937f24701"><td class="memItemLeft" align="right" valign="top"><a id="a05fbb028e3a080e4e965785937f24701" name="a05fbb028e3a080e4e965785937f24701"></a>
 <a class="el" href="structSDL_1_1TextRef.html">TextRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextRef.html">TextRef</a> other)</td></tr>
 <tr class="memdesc:a05fbb028e3a080e4e965785937f24701"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
@@ -122,9 +125,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextRef</b> (<a 
 <tr class="memitem:a94afbdaef01a909da9dbe9777b5242ac" id="r_a94afbdaef01a909da9dbe9777b5242ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1">GPUAtlasDrawSequence</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextRef.html#a94afbdaef01a909da9dbe9777b5242ac">GetGPUDrawData</a> () const</td></tr>
 <tr class="memdesc:a94afbdaef01a909da9dbe9777b5242ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the geometry data needed for drawing the text.  <br /></td></tr>
 <tr class="separator:a94afbdaef01a909da9dbe9777b5242ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2cdc72403cf54a897c93c9e9d68451f" id="r_ae2cdc72403cf54a897c93c9e9d68451f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextRef.html#ae2cdc72403cf54a897c93c9e9d68451f">TextRef</a> (<a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> &amp;engine, <a class="el" href="structSDL_1_1FontRef.html">FontRef</a> font, std::string_view text)</td></tr>
-<tr class="memdesc:ae2cdc72403cf54a897c93c9e9d68451f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text object from UTF-8 text and a text engine.  <br /></td></tr>
-<tr class="separator:ae2cdc72403cf54a897c93c9e9d68451f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7bdbe1d563256a5558ef9ce27740420" id="r_aa7bdbe1d563256a5558ef9ce27740420"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextRef.html#aa7bdbe1d563256a5558ef9ce27740420">GetProperties</a> () const</td></tr>
 <tr class="memdesc:aa7bdbe1d563256a5558ef9ce27740420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a text object.  <br /></td></tr>
 <tr class="separator:aa7bdbe1d563256a5558ef9ce27740420"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -351,62 +351,7 @@ Protected Member Functions</h2></td></tr>
 <a class="el" href="structSDL_1_1TextRef.html#aa7bdbe1d563256a5558ef9ce27740420" title="Get the properties associated with a text object.">TextRef.GetProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Text.html" title="Handle to an owned text.">Text</a> </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae2cdc72403cf54a897c93c9e9d68451f" name="ae2cdc72403cf54a897c93c9e9d68451f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2cdc72403cf54a897c93c9e9d68451f">&#9670;&#160;</a></span>TextRef()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL::TextRef::TextRef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> &amp;&#160;</td>
-          <td class="paramname"><em>engine</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1FontRef.html">FontRef</a>&#160;</td>
-          <td class="paramname"><em>font</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>text</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">engine</td><td>the text engine to use when creating the text object, may be nullptr. </td></tr>
-    <tr><td class="paramname">font</td><td>the font to render with. </td></tr>
-    <tr><td class="paramname">text</td><td>the text to use, in UTF-8 encoding. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a <a class="el" href="structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()">TextRef</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font and text engine.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextRef.html#a16415947dc5150a92ab97e0259575e13" title="Destroy a text object created by a text engine.">TextRef.reset</a> </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a1a87df01be503014614796ad1a173195" name="a1a87df01be503014614796ad1a173195"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a87df01be503014614796ad1a173195">&#9670;&#160;</a></span>AppendString()</h2>
 

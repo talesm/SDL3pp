@@ -110,10 +110,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (<a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a19648977a42e885ae0486c14464909c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a19648977a42e885ae0486c14464909c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a151b48a7c30a79eeb8d6490859d87340" id="r_a151b48a7c30a79eeb8d6490859d87340"><td class="memItemLeft" align="right" valign="top"><a id="a151b48a7c30a79eeb8d6490859d87340" name="a151b48a7c30a79eeb8d6490859d87340"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
-<tr class="memdesc:a151b48a7c30a79eeb8d6490859d87340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
-<tr class="separator:a151b48a7c30a79eeb8d6490859d87340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabcfa084fd4cc868095d635ef51b85b2" id="r_aabcfa084fd4cc868095d635ef51b85b2"><td class="memItemLeft" align="right" valign="top"><a id="aabcfa084fd4cc868095d635ef51b85b2" name="aabcfa084fd4cc868095d635ef51b85b2"></a>
 <a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextEngineRef.html">TextEngineRef</a> other)</td></tr>
 <tr class="memdesc:aabcfa084fd4cc868095d635ef51b85b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
@@ -202,6 +198,13 @@ constexpr TTF_TextEngine *&#160;</td><td class="memItemRight" valign="bottom"><b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:aa963f0f95abac0d679adf158ba6546c0" id="r_aa963f0f95abac0d679adf158ba6546c0"><td class="memItemLeft" align="right" valign="top"><a id="aa963f0f95abac0d679adf158ba6546c0" name="aa963f0f95abac0d679adf158ba6546c0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (<a class="el" href="structSDL_1_1TextEngine.html">TextEngine</a> &amp;&amp;other)=delete</td></tr>
+<tr class="separator:aa963f0f95abac0d679adf158ba6546c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a151b48a7c30a79eeb8d6490859d87340" id="r_a151b48a7c30a79eeb8d6490859d87340"><td class="memItemLeft" align="right" valign="top"><a id="a151b48a7c30a79eeb8d6490859d87340" name="a151b48a7c30a79eeb8d6490859d87340"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextEngineRef</b> (TTF_TextEngine *engine, void(*destroy)(TTF_TextEngine *engine))</td></tr>
+<tr class="memdesc:a151b48a7c30a79eeb8d6490859d87340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from engine and custom destroyer. <br /></td></tr>
+<tr class="separator:a151b48a7c30a79eeb8d6490859d87340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a967eb00b8b07787e1c9fa3600d88b306" id="r_a967eb00b8b07787e1c9fa3600d88b306"><td class="memItemLeft" align="right" valign="top"><a id="a967eb00b8b07787e1c9fa3600d88b306" name="a967eb00b8b07787e1c9fa3600d88b306"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> (TTF_TextEngine *newResource={})</td></tr>
 <tr class="memdesc:a967eb00b8b07787e1c9fa3600d88b306"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees up <a class="el" href="structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects.">TextEngineRef</a>. <br /></td></tr>

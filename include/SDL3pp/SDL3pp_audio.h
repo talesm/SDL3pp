@@ -557,85 +557,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
   {
   }
 
-  /**
-   * Open a specific audio device.
-   *
-   * You can open both playback and recording devices through this function.
-   * Playback devices will take data from bound audio streams, mix it, and send
-   * it to the hardware. Recording devices will feed any bound audio streams
-   * with a copy of any incoming data.
-   *
-   * An opened audio device starts out with no audio streams bound. To start
-   * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
-   * there is no audio callback; you only bind audio streams and make sure they
-   * have data flowing into them (however, you can simulate SDL2's semantics
-   * fairly closely by using AudioStreamRef.AudioStreamRef instead of this
-   * function).
-   *
-   * If you don't care about opening a specific device, pass a `devid` of either
-   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or
-   * `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick
-   * the most reasonable default, and may also switch between physical devices
-   * seamlessly later, if the most reasonable default changes during the
-   * lifetime of this opened device (user changed the default in the OS's system
-   * preferences, the default got unplugged so the system jumped to a new
-   * default, the user plugged in headphones on a mobile device, etc). Unless
-   * you have a good reason to choose a specific device, this is probably what
-   * you want.
-   *
-   * You may request a specific format for the audio device, but there is no
-   * promise the device will honor that request for several reasons. As such,
-   * it's only meant to be a hint as to what data your app will provide. Audio
-   * streams will accept data in whatever format you specify and manage
-   * conversion for you as appropriate. AudioDeviceRef.GetFormat can tell you
-   * the preferred format for the device before opening and the actual format
-   * the device is using after opening.
-   *
-   * It's legal to open the same device ID more than once; each successful open
-   * will generate a new logical AudioDeviceRef that is managed separately
-   * from others on the same physical device. This allows libraries to open a
-   * device separately from the main app and bind its own streams without
-   * conflicting.
-   *
-   * It is also legal to open a device ID returned by a previous call to this
-   * function; doing so just creates another logical device on the same physical
-   * device. This may be useful for making logical groupings of audio streams.
-   *
-   * This function returns the opened device ID on success. This is a new,
-   * unique AudioDeviceRef that represents a logical device.
-   *
-   * Some backends might offer arbitrary devices (for example, a networked audio
-   * protocol that can connect to an arbitrary server). For these, as a change
-   * from SDL2, you should open a default device ID and use an SDL hint to
-   * specify the target if you care, or otherwise let the backend figure out a
-   * reasonable default. Most backends don't offer anything like this, and often
-   * this would be an end user setting an environment variable for their custom
-   * need, and not something an application should specifically manage.
-   *
-   * When done with an audio device, possibly at the end of the app's life, one
-   * should call AudioDeviceRef.Close() on the returned device id.
-   *
-   * @param devid the device instance id to open, or
-   *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
-   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
-   *              default device.
-   * @param spec the requested device configuration. Can be nullptr to use
-   *             reasonable defaults.
-   * @post the device ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioDeviceRef.Close
-   * @sa AudioDeviceRef.GetFormat
-   */
-  AudioDeviceRef(const AudioDeviceRef& devid,
-                 OptionalRef<const SDL_AudioSpec> spec)
-    : Resource(CheckError(SDL_OpenAudioDevice(devid.get(), spec)))
-  {
-  }
+  AudioDeviceRef(AudioDevice&& other) = delete;
 
   /**
    * Assignment operator.
@@ -1144,6 +1066,86 @@ struct AudioDevice : AudioDeviceUnsafe
   constexpr AudioDevice(AudioDevice&& other) = default;
 
   /**
+   * Open a specific audio device.
+   *
+   * You can open both playback and recording devices through this function.
+   * Playback devices will take data from bound audio streams, mix it, and send
+   * it to the hardware. Recording devices will feed any bound audio streams
+   * with a copy of any incoming data.
+   *
+   * An opened audio device starts out with no audio streams bound. To start
+   * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
+   * there is no audio callback; you only bind audio streams and make sure they
+   * have data flowing into them (however, you can simulate SDL2's semantics
+   * fairly closely by using AudioStream.AudioStream instead of this
+   * function).
+   *
+   * If you don't care about opening a specific device, pass a `devid` of either
+   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or
+   * `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick
+   * the most reasonable default, and may also switch between physical devices
+   * seamlessly later, if the most reasonable default changes during the
+   * lifetime of this opened device (user changed the default in the OS's system
+   * preferences, the default got unplugged so the system jumped to a new
+   * default, the user plugged in headphones on a mobile device, etc). Unless
+   * you have a good reason to choose a specific device, this is probably what
+   * you want.
+   *
+   * You may request a specific format for the audio device, but there is no
+   * promise the device will honor that request for several reasons. As such,
+   * it's only meant to be a hint as to what data your app will provide. Audio
+   * streams will accept data in whatever format you specify and manage
+   * conversion for you as appropriate. AudioDeviceRef.GetFormat can tell you
+   * the preferred format for the device before opening and the actual format
+   * the device is using after opening.
+   *
+   * It's legal to open the same device ID more than once; each successful open
+   * will generate a new logical AudioDeviceRef that is managed separately
+   * from others on the same physical device. This allows libraries to open a
+   * device separately from the main app and bind its own streams without
+   * conflicting.
+   *
+   * It is also legal to open a device ID returned by a previous call to this
+   * function; doing so just creates another logical device on the same physical
+   * device. This may be useful for making logical groupings of audio streams.
+   *
+   * This function returns the opened device ID on success. This is a new,
+   * unique AudioDeviceRef that represents a logical device.
+   *
+   * Some backends might offer arbitrary devices (for example, a networked audio
+   * protocol that can connect to an arbitrary server). For these, as a change
+   * from SDL2, you should open a default device ID and use an SDL hint to
+   * specify the target if you care, or otherwise let the backend figure out a
+   * reasonable default. Most backends don't offer anything like this, and often
+   * this would be an end user setting an environment variable for their custom
+   * need, and not something an application should specifically manage.
+   *
+   * When done with an audio device, possibly at the end of the app's life, one
+   * should call AudioDeviceRef.Close() on the returned device id.
+   *
+   * @param devid the device instance id to open, or
+   *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
+   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
+   *              default device.
+   * @param spec the requested device configuration. Can be nullptr to use
+   *             reasonable defaults.
+   * @post the device ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioDeviceRef.Close
+   * @sa AudioDeviceRef.GetFormat
+   */
+  AudioDevice(const AudioDeviceRef& devid,
+              OptionalRef<const SDL_AudioSpec> spec)
+    : AudioDevice(CheckError(SDL_OpenAudioDevice(devid.get(), spec)))
+  {
+  }
+
+  /**
    * Frees up resource when object goes out of scope.
    */
   ~AudioDevice() { reset(); }
@@ -1332,164 +1334,7 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
   {
   }
 
-  /**
-   * Create a new audio stream.
-   *
-   * @param src_spec the format details of the input audio.
-   * @param dst_spec the format details of the output audio.
-   * @post a new audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStreamRef.PutData
-   * @sa AudioStreamRef.GetData
-   * @sa AudioStreamRef.GetAvailable
-   * @sa AudioStreamRef.Flush
-   * @sa AudioStreamRef.Clear
-   * @sa AudioStreamRef.SetFormat
-   * @sa AudioStreamRef.Destroy
-   */
-  AudioStreamRef(OptionalRef<const AudioSpec> src_spec,
-                 OptionalRef<const AudioSpec> dst_spec)
-    : Resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
-  {
-  }
-
-  /**
-   * Convenience function for straightforward audio init for the common case.
-   *
-   * If all your app intends to do is provide a single source of PCM audio, this
-   * function allows you to do all your audio setup in a single call.
-   *
-   * This is also intended to be a clean means to migrate apps from SDL2.
-   *
-   * This function will open an audio device, create a stream and bind it.
-   * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStreamRef as
-   * the only object needed to manage audio playback.
-   *
-   * Also unlike other functions, the audio device begins paused. This is to map
-   * more closely to SDL2-style behavior, since there is no extra step here to
-   * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStreamRef.ResumeDevice(stream);`
-   *
-   * This function works with both playback and recording devices.
-   *
-   * The `spec` parameter represents the app's side of the audio stream. That
-   * is, for recording audio, this will be the output format, and for playing
-   * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStreamRef.GetFormat() to obtain
-   * this information later.
-   *
-   * If you don't care about opening a specific audio device, you can (and
-   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
-   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
-   *
-   * One can optionally provide a callback function; if nullptr, the app is
-   * expected to queue audio data for playback (or unqueue audio data if
-   * capturing). Otherwise, the callback will begin to fire once the device is
-   * unpaused.
-   *
-   * Destroying the returned stream with AudioStreamRef.Destroy will also close
-   * the audio device associated with this stream.
-   *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
-   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-   * @param spec the audio stream's data format. Can be std::nullopt.
-   * @param callback a callback where the app will provide new data for
-   *                 playback, or receive new data for recording. Can be
-   *                 nullptr, in which case the app will need to call
-   *                 AudioStreamRef.PutData or AudioStreamRef.GetData as
-   *                 necessary.
-   * @param userdata app-controlled pointer passed to callback. Can be nullptr.
-   *                 Ignored if callback is nullptr.
-   * @post an audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStreamRef.GetDevice
-   * @sa AudioStreamRef.ResumeDevice
-   */
-  AudioStreamRef(const AudioDeviceRef& devid,
-                 OptionalRef<const AudioSpec> spec = std::nullopt,
-                 AudioStreamCallback callback = nullptr,
-                 void* userdata = nullptr)
-    : Resource(CheckError(
-        SDL_OpenAudioDeviceStream(devid.get(), spec, callback, userdata)))
-  {
-  }
-
-  /**
-   * Convenience function for straightforward audio init for the common case.
-   *
-   * If all your app intends to do is provide a single source of PCM audio, this
-   * function allows you to do all your audio setup in a single call.
-   *
-   * This is also intended to be a clean means to migrate apps from SDL2.
-   *
-   * This function will open an audio device, create a stream and bind it.
-   * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStreamRef as
-   * the only object needed to manage audio playback.
-   *
-   * Also unlike other functions, the audio device begins paused. This is to map
-   * more closely to SDL2-style behavior, since there is no extra step here to
-   * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStreamRef.ResumeDevice(stream);`
-   *
-   * This function works with both playback and recording devices.
-   *
-   * The `spec` parameter represents the app's side of the audio stream. That
-   * is, for recording audio, this will be the output format, and for playing
-   * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStreamRef.GetFormat() to
-   * obtain this information later.
-   *
-   * If you don't care about opening a specific audio device, you can (and
-   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
-   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
-   *
-   * One can optionally provide a callback function; if nullptr, the app is
-   * expected to queue audio data for playback (or unqueue audio data if
-   * capturing). Otherwise, the callback will begin to fire once the device is
-   * unpaused.
-   *
-   * Destroying the returned stream with AudioStreamRef,Destroy() will also
-   * close the audio device associated with this stream.
-   *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
-   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-   * @param spec the audio stream's data format. Can be std::nullopt.
-   * @param callback a callback where the app will provide new data for
-   *                 playback, or receive new data for recording. Can not be
-   *                 nullptr.
-   * @post an audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStreamRef.GetDevice
-   * @sa AudioStreamRef.ResumeDevice
-   */
-  AudioStreamRef(const AudioDeviceRef& devid,
-                 OptionalRef<const AudioSpec> spec,
-                 AudioStreamCB callback)
-    : AudioStreamRef(devid, std::move(spec))
-  {
-    if (devid.IsPlayback()) {
-      SetGetCallback(std::move(callback));
-    } else {
-      SetPutCallback(std::move(callback));
-    }
-  }
+  AudioStreamRef(AudioStream&& other) = delete;
 
   /**
    * Assignment operator.
@@ -2517,6 +2362,165 @@ struct AudioStream : AudioStreamUnsafe
    * Move constructor.
    */
   constexpr AudioStream(AudioStream&& other) = default;
+
+  /**
+   * Create a new audio stream.
+   *
+   * @param src_spec the format details of the input audio.
+   * @param dst_spec the format details of the output audio.
+   * @post a new audio stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStreamRef.PutData
+   * @sa AudioStreamRef.GetData
+   * @sa AudioStreamRef.GetAvailable
+   * @sa AudioStreamRef.Flush
+   * @sa AudioStreamRef.Clear
+   * @sa AudioStreamRef.SetFormat
+   * @sa AudioStreamRef.Destroy
+   */
+  AudioStream(OptionalRef<const AudioSpec> src_spec,
+              OptionalRef<const AudioSpec> dst_spec)
+    : AudioStream(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
+  {
+  }
+
+  /**
+   * Convenience function for straightforward audio init for the common case.
+   *
+   * If all your app intends to do is provide a single source of PCM audio, this
+   * function allows you to do all your audio setup in a single call.
+   *
+   * This is also intended to be a clean means to migrate apps from SDL2.
+   *
+   * This function will open an audio device, create a stream and bind it.
+   * Unlike other methods of setup, the audio device will be closed when this
+   * stream is destroyed, so the app can treat the returned AudioStreamRef as
+   * the only object needed to manage audio playback.
+   *
+   * Also unlike other functions, the audio device begins paused. This is to map
+   * more closely to SDL2-style behavior, since there is no extra step here to
+   * bind a stream to begin audio flowing. The audio device should be resumed
+   * with `AudioStreamRef.ResumeDevice(stream);`
+   *
+   * This function works with both playback and recording devices.
+   *
+   * The `spec` parameter represents the app's side of the audio stream. That
+   * is, for recording audio, this will be the output format, and for playing
+   * audio, this will be the input format. If spec is nullptr, the system will
+   * choose the format, and the app can use AudioStreamRef.GetFormat() to obtain
+   * this information later.
+   *
+   * If you don't care about opening a specific audio device, you can (and
+   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
+   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
+   *
+   * One can optionally provide a callback function; if nullptr, the app is
+   * expected to queue audio data for playback (or unqueue audio data if
+   * capturing). Otherwise, the callback will begin to fire once the device is
+   * unpaused.
+   *
+   * Destroying the returned stream with AudioStreamRef.Destroy will also close
+   * the audio device associated with this stream.
+   *
+   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
+   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+   * @param spec the audio stream's data format. Can be std::nullopt.
+   * @param callback a callback where the app will provide new data for
+   *                 playback, or receive new data for recording. Can be
+   *                 nullptr, in which case the app will need to call
+   *                 AudioStreamRef.PutData or AudioStreamRef.GetData as
+   *                 necessary.
+   * @param userdata app-controlled pointer passed to callback. Can be nullptr.
+   *                 Ignored if callback is nullptr.
+   * @post an audio stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStreamRef.GetDevice
+   * @sa AudioStreamRef.ResumeDevice
+   */
+  AudioStream(const AudioDeviceRef& devid,
+              OptionalRef<const AudioSpec> spec = std::nullopt,
+              AudioStreamCallback callback = nullptr,
+              void* userdata = nullptr)
+    : AudioStream(CheckError(
+        SDL_OpenAudioDeviceStream(devid.get(), spec, callback, userdata)))
+  {
+  }
+
+  /**
+   * Convenience function for straightforward audio init for the common case.
+   *
+   * If all your app intends to do is provide a single source of PCM audio, this
+   * function allows you to do all your audio setup in a single call.
+   *
+   * This is also intended to be a clean means to migrate apps from SDL2.
+   *
+   * This function will open an audio device, create a stream and bind it.
+   * Unlike other methods of setup, the audio device will be closed when this
+   * stream is destroyed, so the app can treat the returned AudioStreamRef as
+   * the only object needed to manage audio playback.
+   *
+   * Also unlike other functions, the audio device begins paused. This is to map
+   * more closely to SDL2-style behavior, since there is no extra step here to
+   * bind a stream to begin audio flowing. The audio device should be resumed
+   * with `AudioStreamRef.ResumeDevice(stream);`
+   *
+   * This function works with both playback and recording devices.
+   *
+   * The `spec` parameter represents the app's side of the audio stream. That
+   * is, for recording audio, this will be the output format, and for playing
+   * audio, this will be the input format. If spec is nullptr, the system will
+   * choose the format, and the app can use AudioStreamRef.GetFormat() to
+   * obtain this information later.
+   *
+   * If you don't care about opening a specific audio device, you can (and
+   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
+   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
+   *
+   * One can optionally provide a callback function; if nullptr, the app is
+   * expected to queue audio data for playback (or unqueue audio data if
+   * capturing). Otherwise, the callback will begin to fire once the device is
+   * unpaused.
+   *
+   * Destroying the returned stream with AudioStreamRef,Destroy() will also
+   * close the audio device associated with this stream.
+   *
+   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
+   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+   * @param spec the audio stream's data format. Can be std::nullopt.
+   * @param callback a callback where the app will provide new data for
+   *                 playback, or receive new data for recording. Can not be
+   *                 nullptr.
+   * @post an audio stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStreamRef.GetDevice
+   * @sa AudioStreamRef.ResumeDevice
+   */
+  AudioStream(AudioDeviceRef devid,
+              OptionalRef<const AudioSpec> spec,
+              AudioStreamCB callback)
+    : AudioStream(devid, std::move(spec))
+  {
+    if (devid.IsPlayback()) {
+      SetGetCallback(std::move(callback));
+    } else {
+      SetPutCallback(std::move(callback));
+    }
+  }
 
   /**
    * Frees up resource when object goes out of scope.

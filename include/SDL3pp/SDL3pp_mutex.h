@@ -88,30 +88,7 @@ struct MutexRef : Resource<SDL_Mutex*>
   {
   }
 
-  /**
-   * Create a new mutex.
-   *
-   * All newly-created mutexes begin in the _unlocked_ state.
-   *
-   * Calls to MutexRef.Lock() will not return while the mutex is locked by
-   * another thread. See MutexRef.TryLock() to attempt to lock without
-   * blocking.
-   *
-   * SDL mutexes are reentrant.
-   *
-   * @post the initialized and unlocked mutex or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa MutexRef.Lock
-   * @sa MutexRef.TryLock
-   * @sa MutexRef.Unlock
-   */
-  MutexRef()
-    : Resource(SDL_CreateMutex())
-  {
-  }
+  MutexRef(Mutex&& other) = delete;
 
   /**
    * Assignment operator.
@@ -265,6 +242,31 @@ struct Mutex : MutexUnsafe
   constexpr Mutex(Mutex&& other) = default;
 
   /**
+   * Create a new mutex.
+   *
+   * All newly-created mutexes begin in the _unlocked_ state.
+   *
+   * Calls to MutexRef.Lock() will not return while the mutex is locked by
+   * another thread. See MutexRef.TryLock() to attempt to lock without blocking.
+   *
+   * SDL mutexes are reentrant.
+   *
+   * @post the initialized and unlocked mutex or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MutexRef.Destroy
+   * @sa MutexRef.Lock
+   * @sa MutexRef.TryLock
+   * @sa MutexRef.Unlock
+   */
+  Mutex()
+    : Mutex(SDL_CreateMutex())
+  {
+  }
+
+  /**
    * Frees up resource when object goes out of scope.
    */
   ~Mutex() { reset(); }
@@ -321,49 +323,7 @@ struct RWLockRef : Resource<SDL_RWLock*>
   {
   }
 
-  /**
-   * Create a new read/write lock.
-   *
-   * A read/write lock is useful for situations where you have multiple threads
-   * trying to access a resource that is rarely updated. All threads requesting
-   * a read-only lock will be allowed to run in parallel; if a thread requests a
-   * write lock, it will be provided exclusive access. This makes it safe for
-   * multiple threads to use a resource at the same time if they promise not to
-   * change it, and when it has to be changed, the rwlock will serve as a
-   * gateway to make sure those changes can be made safely.
-   *
-   * In the right situation, a rwlock can be more efficient than a mutex, which
-   * only lets a single thread proceed at a time, even if it won't be modifying
-   * the data.
-   *
-   * All newly-created read/write locks begin in the _unlocked_ state.
-   *
-   * Calls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not
-   * return while the rwlock is locked _for writing_ by another thread. See
-   * RWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to
-   * attempt to lock without blocking.
-   *
-   * SDL read/write locks are only recursive for read-only locks! They are not
-   * guaranteed to be fair, or provide access in a FIFO manner! They are not
-   * guaranteed to favor writers. You may not lock a rwlock for both read-only
-   * and write access at the same time from the same thread (so you can't
-   * promote your read-only lock to a write lock without unlocking first).
-   *
-   * @post the initialized and unlocked read/write lock or nullptr on failure;
-   *          call GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa RWLockRef.LockForReading
-   * @sa RWLockRef.LockForWriting
-   * @sa RWLockRef.TryLockForReading
-   * @sa RWLockRef.TryLockForWriting
-   * @sa RWLockRef.Unlock
-   */
-  RWLockRef()
-    : Resource(SDL_CreateRWLock())
-  {
-  }
+  RWLockRef(RWLock&& other) = delete;
 
   /**
    * Assignment operator.
@@ -598,6 +558,50 @@ struct RWLock : RWLockUnsafe
   constexpr RWLock(RWLock&& other) = default;
 
   /**
+   * Create a new read/write lock.
+   *
+   * A read/write lock is useful for situations where you have multiple threads
+   * trying to access a resource that is rarely updated. All threads requesting
+   * a read-only lock will be allowed to run in parallel; if a thread requests a
+   * write lock, it will be provided exclusive access. This makes it safe for
+   * multiple threads to use a resource at the same time if they promise not to
+   * change it, and when it has to be changed, the rwlock will serve as a
+   * gateway to make sure those changes can be made safely.
+   *
+   * In the right situation, a rwlock can be more efficient than a mutex, which
+   * only lets a single thread proceed at a time, even if it won't be modifying
+   * the data.
+   *
+   * All newly-created read/write locks begin in the _unlocked_ state.
+   *
+   * Calls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not
+   * return while the rwlock is locked _for writing_ by another thread. See
+   * RWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to attempt
+   * to lock without blocking.
+   *
+   * SDL read/write locks are only recursive for read-only locks! They are not
+   * guaranteed to be fair, or provide access in a FIFO manner! They are not
+   * guaranteed to favor writers. You may not lock a rwlock for both read-only
+   * and write access at the same time from the same thread (so you can't
+   * promote your read-only lock to a write lock without unlocking first).
+   *
+   * @post the initialized and unlocked read/write lock or nullptr on failure;
+   *          call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RWLockRef.Destroy
+   * @sa RWLockRef.LockForReading
+   * @sa RWLockRef.LockForWriting
+   * @sa RWLockRef.TryLockForReading
+   * @sa RWLockRef.TryLockForWriting
+   * @sa RWLockRef.Unlock
+   */
+  RWLock()
+    : RWLock(SDL_CreateRWLock())
+  {
+  }
+  /**
    * Frees up resource when object goes out of scope.
    */
   ~RWLock() { reset(); }
@@ -651,31 +655,7 @@ struct SemaphoreRef : Resource<SDL_Semaphore*>
   {
   }
 
-  /**
-   * Create a semaphore.
-   *
-   * This function creates a new semaphore and initializes it with the value
-   * `initial_value`. Each wait operation on the semaphore will atomically
-   * decrement the semaphore value and potentially block if the semaphore value
-   * is 0. Each post operation will atomically increment the semaphore value and
-   * wake waiting threads and allow them to retry the wait operation.
-   *
-   * @param initial_value the starting value of the semaphore.
-   * @post a new semaphore or nullptr on failure; call GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SemaphoreRef.Signal
-   * @sa SemaphoreRef.TryWait
-   * @sa SemaphoreRef.GetValue
-   * @sa SemaphoreRef.Wait
-   * @sa SemaphoreRef.WaitTimeout
-   */
-  SemaphoreRef(Uint32 initial_value)
-    : Resource(SDL_CreateSemaphore(initial_value))
-  {
-  }
+  SemaphoreRef(Semaphore&& other) = delete;
 
   /**
    * Assignment operator.
@@ -840,6 +820,32 @@ struct Semaphore : SemaphoreUnsafe
   constexpr Semaphore(Semaphore&& other) = default;
 
   /**
+   * Create a semaphore.
+   *
+   * This function creates a new semaphore and initializes it with the value
+   * `initial_value`. Each wait operation on the semaphore will atomically
+   * decrement the semaphore value and potentially block if the semaphore value
+   * is 0. Each post operation will atomically increment the semaphore value and
+   * wake waiting threads and allow them to retry the wait operation.
+   *
+   * @param initial_value the starting value of the semaphore.
+   * @post a new semaphore or nullptr on failure; call GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SemaphoreRef.Destroy
+   * @sa SemaphoreRef.Signal
+   * @sa SemaphoreRef.TryWait
+   * @sa SemaphoreRef.GetValue
+   * @sa SemaphoreRef.Wait
+   * @sa SemaphoreRef.WaitTimeout
+   */
+  Semaphore(Uint32 initial_value)
+    : Semaphore(SDL_CreateSemaphore(initial_value))
+  {
+  }
+  /**
    * Frees up resource when object goes out of scope.
    */
   ~Semaphore() { reset(); }
@@ -891,23 +897,7 @@ struct ConditionRef : Resource<SDL_Condition*>
   {
   }
 
-  /**
-   * Create a condition variable.
-   *
-   * @post a new condition variable or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ConditionRef.Broadcast
-   * @sa ConditionRef.Signal
-   * @sa ConditionRef.Wait
-   * @sa ConditionRef.WaitTimeout
-   */
-  ConditionRef()
-    : Resource(SDL_CreateCondition())
-  {
-  }
+  ConditionRef(Condition&& other) = delete;
 
   /**
    * Assignment operator.
@@ -1073,6 +1063,24 @@ struct Condition : ConditionUnsafe
    */
   constexpr Condition(Condition&& other) = default;
 
+  /**
+   * Create a condition variable.
+   *
+   * @post a new condition variable or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ConditionRef.Broadcast
+   * @sa ConditionRef.Signal
+   * @sa ConditionRef.Wait
+   * @sa ConditionRef.WaitTimeout
+   * @sa ConditionRef.Destroy
+   */
+  Condition()
+    : Condition(SDL_CreateCondition())
+  {
+  }
   /**
    * Frees up resource when object goes out of scope.
    */

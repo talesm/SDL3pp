@@ -184,125 +184,7 @@ struct ThreadRef : Resource<SDL_Thread*>
   {
   }
 
-  /**
-   * Create a new thread with a default stack size.
-   *
-   * @param fn the ThreadFunction function to call in the new thread.
-   * @param name the name of the thread.
-   * @post an opaque pointer to the new thread object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadRef.ThreadRef
-   * @sa ThreadRef.Wait
-   */
-  ThreadRef(ThreadCB fn, StringParam name)
-    : ThreadRef(
-        [](void* handler) {
-          return CallbackWrapper<ThreadCB>::CallOnce(handler);
-        },
-        std::move(name),
-        CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
-  {
-  }
-
-  /**
-   * Create a new thread with a default stack size.
-   *
-   * This is a convenience function, equivalent to calling
-   * ThreadRef.ThreadRef with the following properties set:
-   *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
-   * - `prop::thread.CREATE_NAME_STRING`: `name`
-   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
-   *
-   * Usually, apps should just call this function the same way on every platform
-   * and let the macros hide the details.
-   *
-   * @param fn the ThreadFunction function to call in the new thread.
-   * @param name the name of the thread.
-   * @param data a pointer that is passed to `fn`.
-   * @post an opaque pointer to the new thread object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadRef.ThreadRef
-   * @sa ThreadRef.Wait
-   */
-  ThreadRef(ThreadFunction fn, StringParam name, void* data)
-    : Resource(CheckError(SDL_CreateThread(fn, name, data)))
-  {
-  }
-
-  /**
-   * Create a new thread with with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction
-   *   value that will be called at the start of the new thread's life.
-   *   Required.
-   * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which
-   *   might be available to debuggers. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined
-   *   pointer, which is passed to the entry function on the new thread, as its
-   *   only parameter. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
-   *   thread's stack. Optional, defaults to 0 (system-defined default).
-   *
-   * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
-   * system, so that debuggers can display it. Not all platforms support this.
-   *
-   * Thread naming is a little complicated: Most systems have very small limits
-   * for the string length (Haiku has 32 bytes, Linux currently has 16, Visual
-   * C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to
-   * see what happens with your system's debugger. The name should be UTF-8 (but
-   * using the naming limits of C identifiers is a better bet). There are no
-   * requirements for thread naming conventions, so long as the string is
-   * null-terminated UTF-8, but these guidelines are helpful in choosing a name:
-   *
-   * https://stackoverflow.com/questions/149932/naming-conventions-for-threads
-   *
-   * If a system imposes requirements, SDL will try to munge the string for it
-   * (truncate, etc), but the original string contents will be available from
-   * ThreadRef.GetName().
-   *
-   * The size (in bytes) of the new stack can be specified with
-   * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system
-   * default" which might be wildly different between platforms. x86 Linux
-   * generally defaults to eight megabytes, an embedded device might be a few
-   * kilobytes instead. You generally need to specify a stack that is a multiple
-   * of the system's page size (in many cases, this is 4 kilobytes, but check
-   * your system documentation).
-   *
-   * Note that this "function" is actually a macro that calls an internal
-   * function with two extra parameters not listed here; they are hidden through
-   * preprocessor macros and are needed to support various C runtimes at the
-   * point of the function call. Language bindings that aren't using the C
-   * headers will need to deal with this.
-   *
-   * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
-   * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "ThreadRef.ThreadRef" will fail.
-   *
-   * Usually, apps should just call this function the same way on every platform
-   * and let the macros hide the details.
-   *
-   * @param props the properties to use.
-   * @post an opaque pointer to the new thread object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadRef.ThreadRef
-   * @sa ThreadRef.Wait
-   */
-  ThreadRef(PropertiesRef& props)
-    : Resource(CheckError(SDL_CreateThreadWithProperties(props.get())))
-  {
-  }
+  ThreadRef(Thread&& other) = delete;
 
   /**
    * Assignment operator.
@@ -515,6 +397,126 @@ struct Thread : ThreadUnsafe
    * Move constructor.
    */
   constexpr Thread(Thread&& other) = default;
+
+  /**
+   * Create a new thread with a default stack size.
+   *
+   * @param fn the ThreadFunction function to call in the new thread.
+   * @param name the name of the thread.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadRef.ThreadRef
+   * @sa ThreadRef.Wait
+   */
+  Thread(ThreadCB fn, StringParam name)
+    : Thread(
+        [](void* handler) {
+          return CallbackWrapper<ThreadCB>::CallOnce(handler);
+        },
+        std::move(name),
+        CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
+  {
+  }
+
+  /**
+   * Create a new thread with a default stack size.
+   *
+   * This is a convenience function, equivalent to calling
+   * ThreadRef.ThreadRef with the following properties set:
+   *
+   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop::thread.CREATE_NAME_STRING`: `name`
+   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+   *
+   * Usually, apps should just call this function the same way on every platform
+   * and let the macros hide the details.
+   *
+   * @param fn the ThreadFunction function to call in the new thread.
+   * @param name the name of the thread.
+   * @param data a pointer that is passed to `fn`.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadRef.ThreadRef
+   * @sa ThreadRef.Wait
+   */
+  Thread(ThreadFunction fn, StringParam name, void* data)
+    : Thread(CheckError(SDL_CreateThread(fn, name, data)))
+  {
+  }
+
+  /**
+   * Create a new thread with with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction
+   *   value that will be called at the start of the new thread's life.
+   *   Required.
+   * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which
+   *   might be available to debuggers. Optional, defaults to nullptr.
+   * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined
+   *   pointer, which is passed to the entry function on the new thread, as its
+   *   only parameter. Optional, defaults to nullptr.
+   * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
+   *   thread's stack. Optional, defaults to 0 (system-defined default).
+   *
+   * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
+   * system, so that debuggers can display it. Not all platforms support this.
+   *
+   * Thread naming is a little complicated: Most systems have very small limits
+   * for the string length (Haiku has 32 bytes, Linux currently has 16, Visual
+   * C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to
+   * see what happens with your system's debugger. The name should be UTF-8 (but
+   * using the naming limits of C identifiers is a better bet). There are no
+   * requirements for thread naming conventions, so long as the string is
+   * null-terminated UTF-8, but these guidelines are helpful in choosing a name:
+   *
+   * https://stackoverflow.com/questions/149932/naming-conventions-for-threads
+   *
+   * If a system imposes requirements, SDL will try to munge the string for it
+   * (truncate, etc), but the original string contents will be available from
+   * ThreadRef.GetName().
+   *
+   * The size (in bytes) of the new stack can be specified with
+   * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system
+   * default" which might be wildly different between platforms. x86 Linux
+   * generally defaults to eight megabytes, an embedded device might be a few
+   * kilobytes instead. You generally need to specify a stack that is a multiple
+   * of the system's page size (in many cases, this is 4 kilobytes, but check
+   * your system documentation).
+   *
+   * Note that this "function" is actually a macro that calls an internal
+   * function with two extra parameters not listed here; they are hidden through
+   * preprocessor macros and are needed to support various C runtimes at the
+   * point of the function call. Language bindings that aren't using the C
+   * headers will need to deal with this.
+   *
+   * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
+   * there is no symbol clash, but trying to load an SDL shared library and look
+   * for "ThreadRef.ThreadRef" will fail.
+   *
+   * Usually, apps should just call this function the same way on every platform
+   * and let the macros hide the details.
+   *
+   * @param props the properties to use.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadRef.ThreadRef
+   * @sa ThreadRef.Wait
+   */
+  Thread(PropertiesRef& props)
+    : Thread(CheckError(SDL_CreateThreadWithProperties(props.get())))
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.
