@@ -1558,7 +1558,7 @@
           "sourceName": "SDL_HINT_JOYSTICK_MFI"
         },
         "SDL_HINT_JOYSTICK_RAWINPUT": {
-          "doc": "A variable controlling whether the RAWINPUT joystick drivers should be used\nfor better handling XInput-capable devices.\n\nThe variable can be set to the following values:\n\n- \"0\": RAWINPUT drivers are not used.\n- \"1\": RAWINPUT drivers are used. (default)\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable controlling whether the RAWINPUT joystick drivers should be used\nfor better handling XInput-capable devices.\n\nThe variable can be set to the following values:\n\n- \"0\": RAWINPUT drivers are not used. (default)\n- \"1\": RAWINPUT drivers are used.\n\nThis hint should be set before SDL is initialized.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_JOYSTICK_RAWINPUT",
           "kind": "def",
           "value": "\"SDL_JOYSTICK_RAWINPUT\"",
