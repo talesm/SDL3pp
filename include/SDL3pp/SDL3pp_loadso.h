@@ -171,6 +171,13 @@ struct SharedObjectUnsafe : SharedObjectRef
   using SharedObjectRef::Unload;
 
   using SharedObjectRef::reset;
+
+  SharedObjectUnsafe(const SharedObject& other) = delete;
+
+  /**
+   * Constructs SharedObjectUnsafe from SharedObject.
+   */
+  explicit SharedObjectUnsafe(SharedObject&& other);
 };
 
 /**
@@ -183,6 +190,14 @@ struct SharedObjectUnsafe : SharedObjectRef
 struct SharedObject : SharedObjectUnsafe
 {
   using SharedObjectUnsafe::SharedObjectUnsafe;
+
+  /**
+   * Constructs an empty SharedObject.
+   */
+  constexpr SharedObject()
+    : SharedObjectUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -232,6 +247,11 @@ struct SharedObject : SharedObjectUnsafe
     return *this;
   }
 };
+
+inline SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
+  : SharedObjectUnsafe(other.release())
+{
+}
 
 /// @}
 

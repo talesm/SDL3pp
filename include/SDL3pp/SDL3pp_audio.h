@@ -1037,6 +1037,13 @@ struct AudioDeviceUnsafe : AudioDeviceRef
   using AudioDeviceRef::Close;
 
   using AudioDeviceRef::reset;
+
+  AudioDeviceUnsafe(const AudioDevice& other) = delete;
+
+  /**
+   * Constructs AudioDeviceUnsafe from AudioDevice.
+   */
+  explicit AudioDeviceUnsafe(AudioDevice&& other);
 };
 
 /**
@@ -1049,6 +1056,14 @@ struct AudioDeviceUnsafe : AudioDeviceRef
 struct AudioDevice : AudioDeviceUnsafe
 {
   using AudioDeviceUnsafe::AudioDeviceUnsafe;
+
+  /**
+   * Constructs an empty AudioDevice.
+   */
+  constexpr AudioDevice()
+    : AudioDeviceUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -1159,6 +1174,11 @@ struct AudioDevice : AudioDeviceUnsafe
     return *this;
   }
 };
+
+inline AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
+  : AudioDeviceUnsafe(other.release())
+{
+}
 
 /**
  * A value used to request a default playback audio device.
@@ -2335,6 +2355,13 @@ struct AudioStreamUnsafe : AudioStreamRef
   using AudioStreamRef::Destroy;
 
   using AudioStreamRef::reset;
+
+  AudioStreamUnsafe(const AudioStream& other) = delete;
+
+  /**
+   * Constructs AudioStreamUnsafe from AudioStream.
+   */
+  explicit AudioStreamUnsafe(AudioStream&& other);
 };
 
 /**
@@ -2347,6 +2374,14 @@ struct AudioStreamUnsafe : AudioStreamRef
 struct AudioStream : AudioStreamUnsafe
 {
   using AudioStreamUnsafe::AudioStreamUnsafe;
+
+  /**
+   * Constructs an empty AudioStream.
+   */
+  constexpr AudioStream()
+    : AudioStreamUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -2612,6 +2647,11 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
    */
   void reset() { Unlock(); }
 };
+
+inline AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
+  : AudioStreamUnsafe(other.release())
+{
+}
 
 /**
  * Use this function to get the number of built-in audio drivers.

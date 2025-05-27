@@ -1792,6 +1792,13 @@ struct SurfaceUnsafe : SurfaceRef
   using SurfaceRef::SurfaceRef;
 
   using SurfaceRef::reset;
+
+  SurfaceUnsafe(const Surface& other) = delete;
+
+  /**
+   * Constructs SurfaceUnsafe from Surface.
+   */
+  explicit SurfaceUnsafe(Surface&& other);
 };
 
 /**
@@ -1804,6 +1811,14 @@ struct SurfaceUnsafe : SurfaceRef
 struct Surface : SurfaceUnsafe
 {
   using SurfaceUnsafe::SurfaceUnsafe;
+
+  /**
+   * Constructs an empty Surface.
+   */
+  constexpr Surface()
+    : SurfaceUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -1895,7 +1910,7 @@ struct Surface : SurfaceUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Destroy
+   * @sa SurfaceRef.Destroy
    */
   Surface(const SDL_Point& size, PixelFormat format, void* pixels, int pitch)
     : Surface(CheckError(
@@ -1996,6 +2011,11 @@ public:
 
   friend class SurfaceRef;
 };
+
+inline SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
+  : SurfaceUnsafe(other.release())
+{
+}
 
 namespace prop::Surface {
 

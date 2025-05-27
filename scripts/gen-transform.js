@@ -3237,6 +3237,7 @@ const transform = {
       ],
       resources: {
         "SDL_Mutex": {
+          omitDefaultCtor: true,
           entries: {
             "SDL_CreateMutex": "ctor",
             "SDL_LockMutex": {
@@ -3257,6 +3258,7 @@ const transform = {
           }
         },
         "SDL_RWLock": {
+          omitDefaultCtor: true,
           entries: {
             "SDL_CreateRWLock": "ctor",
             "SDL_LockRWLockForReading": {
@@ -3305,6 +3307,7 @@ const transform = {
           }
         },
         "SDL_Condition": {
+          omitDefaultCtor: true,
           entries: {
             "SDL_CreateCondition": "ctor",
             "SDL_SignalCondition": "function",
@@ -3454,11 +3457,16 @@ const transform = {
       resources: {
         "SDL_PropertiesID": {
           uniqueName: "Properties",
+          omitDefaultCtor: true,
           entries: {
+            "SDL_CreateProperties": {
+              name: "ctor",
+              explicit: true,
+            },
             "SDL_CopyProperties": {
-              "kind": "function",
-              "name": "CopyPropertiesTo",
-              "immutable": true
+              kind: "function",
+              name: "CopyPropertiesTo",
+              immutable: true
             },
             "SDL_LockProperties": {
               type: "PropertiesLock",
@@ -3596,11 +3604,6 @@ const transform = {
       transform: {
         "EnumeratePropertiesCB": {
           type: "std::function<void(PropertiesRef props, const char *name)>"
-        },
-        "SDL_CreateProperties": {
-          name: "Properties.Properties",
-          type: "",
-          explicit: true,
         }
       }
     },

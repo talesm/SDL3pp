@@ -175,6 +175,11 @@ export interface ApiResource extends ApiEntryTransform {
    * The unlock function name to be added to the lock class
    */
   unlockFunction?: string;
+
+  /**
+   * Prevent generation of default constructor. Defaults to false
+   */
+  omitDefaultCtor?: boolean
 }
 
 export interface ApiLock extends ApiEntryTransform {

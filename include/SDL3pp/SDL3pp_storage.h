@@ -702,6 +702,13 @@ struct StorageUnsafe : StorageRef
   using StorageRef::StorageRef;
 
   using StorageRef::reset;
+
+  StorageUnsafe(const Storage& other) = delete;
+
+  /**
+   * Constructs StorageUnsafe from Storage.
+   */
+  explicit StorageUnsafe(Storage&& other);
 };
 
 /**
@@ -714,6 +721,14 @@ struct StorageUnsafe : StorageRef
 struct Storage : StorageUnsafe
 {
   using StorageUnsafe::StorageUnsafe;
+
+  /**
+   * Constructs an empty Storage.
+   */
+  constexpr Storage()
+    : StorageUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -742,7 +757,6 @@ struct Storage : StorageUnsafe
    *
    * @sa StorageRef.Close
    * @sa StorageRef.GetFileSize
-   * @sa StorageRef.StorageRef
    * @sa StorageRef.ReadFile
    */
   Storage(StringParam override, PropertiesRef& props)
@@ -766,9 +780,9 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa StorageRef.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.StorageRef
    * @sa StorageRef.ReadFile
    * @sa StorageRef.Ready
    * @sa StorageRef.WriteFile
@@ -782,8 +796,8 @@ struct Storage : StorageUnsafe
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use StorageRef.StorageRef() for access to game data and
-   * StorageRef.StorageRef() for access to user data.
+   * use Storage.Storage() for access to game data and
+   * Storage.Storage() for access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
@@ -792,10 +806,9 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa StorageRef.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.StorageRef
-   * @sa StorageRef.StorageRef
    * @sa StorageRef.ReadFile
    * @sa StorageRef.WriteFile
    */
@@ -809,8 +822,8 @@ struct Storage : StorageUnsafe
    *
    * Applications do not need to use this function unless they are providing
    * their own StorageRef implementation. If you just need an StorageRef, you
-   * should use the built-in implementations in SDL, like
-   * StorageRef.StorageRef() or StorageRef.StorageRef().
+   * should use the built-in implementations in SDL, like Storage.Storage()
+   * or Storage.Storage().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -823,6 +836,7 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa StorageRef.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
    * @sa SDL_INIT_INTERFACE
@@ -849,6 +863,11 @@ struct Storage : StorageUnsafe
     return *this;
   }
 };
+
+inline StorageUnsafe::StorageUnsafe(Storage&& other)
+  : StorageUnsafe(other.release())
+{
+}
 
 /// @}
 } // namespace SDL

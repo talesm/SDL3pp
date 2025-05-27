@@ -2069,6 +2069,13 @@ struct PaletteUnsafe : PaletteRef
   using PaletteRef::PaletteRef;
 
   using PaletteRef::reset;
+
+  PaletteUnsafe(const Palette& other) = delete;
+
+  /**
+   * Constructs PaletteUnsafe from Palette.
+   */
+  explicit PaletteUnsafe(Palette&& other);
 };
 
 /**
@@ -2081,6 +2088,14 @@ struct PaletteUnsafe : PaletteRef
 struct Palette : PaletteUnsafe
 {
   using PaletteUnsafe::PaletteUnsafe;
+
+  /**
+   * Constructs an empty Palette.
+   */
+  constexpr Palette()
+    : PaletteUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -2110,6 +2125,7 @@ struct Palette : PaletteUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa PaletteRef.Destroy
    * @sa PaletteRef.SetColors
    * @sa SurfaceRef.SetPalette
    */
@@ -2132,6 +2148,11 @@ struct Palette : PaletteUnsafe
     return *this;
   }
 };
+
+inline PaletteUnsafe::PaletteUnsafe(Palette&& other)
+  : PaletteUnsafe(other.release())
+{
+}
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.

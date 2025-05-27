@@ -2388,6 +2388,13 @@ struct EnvironmentUnsafe : EnvironmentRef
   using EnvironmentRef::EnvironmentRef;
 
   using EnvironmentRef::reset;
+
+  EnvironmentUnsafe(const Environment& other) = delete;
+
+  /**
+   * Constructs EnvironmentUnsafe from Environment.
+   */
+  explicit EnvironmentUnsafe(Environment&& other);
 };
 
 /**
@@ -2400,6 +2407,14 @@ struct EnvironmentUnsafe : EnvironmentRef
 struct Environment : EnvironmentUnsafe
 {
   using EnvironmentUnsafe::EnvironmentUnsafe;
+
+  /**
+   * Constructs an empty Environment.
+   */
+  constexpr Environment()
+    : EnvironmentUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -2434,6 +2449,7 @@ struct Environment : EnvironmentUnsafe
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
    * @sa EnvironmentRef.UnsetVariable
+   * @sa EnvironmentRef.Destroy
    */
   Environment(bool populated)
     : Environment(CheckError(SDL_CreateEnvironment(populated)))
@@ -2454,6 +2470,11 @@ struct Environment : EnvironmentUnsafe
     return *this;
   }
 };
+
+inline EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
+  : EnvironmentUnsafe(other.release())
+{
+}
 
 /**
  * Get the process environment.
@@ -6725,6 +6746,13 @@ struct IConvUnsafe : IConvRef
   using IConvRef::close;
 
   using IConvRef::reset;
+
+  IConvUnsafe(const IConv& other) = delete;
+
+  /**
+   * Constructs IConvUnsafe from IConv.
+   */
+  explicit IConvUnsafe(IConv&& other);
 };
 
 /**
@@ -6737,6 +6765,14 @@ struct IConvUnsafe : IConvRef
 struct IConv : IConvUnsafe
 {
   using IConvUnsafe::IConvUnsafe;
+
+  /**
+   * Constructs an empty IConv.
+   */
+  constexpr IConv()
+    : IConvUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -6765,6 +6801,7 @@ struct IConv : IConvUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConvRef.iconv
+   * @sa IConvRef.close
    * @sa iconv_string
    */
   IConv(StringParam tocode, StringParam fromcode)
@@ -6786,6 +6823,11 @@ struct IConv : IConvUnsafe
     return *this;
   }
 };
+
+inline IConvUnsafe::IConvUnsafe(IConv&& other)
+  : IConvUnsafe(other.release())
+{
+}
 
 #ifdef SDL3PP_DOC
 
@@ -15322,6 +15364,13 @@ struct SharedObjectUnsafe : SharedObjectRef
   using SharedObjectRef::Unload;
 
   using SharedObjectRef::reset;
+
+  SharedObjectUnsafe(const SharedObject& other) = delete;
+
+  /**
+   * Constructs SharedObjectUnsafe from SharedObject.
+   */
+  explicit SharedObjectUnsafe(SharedObject&& other);
 };
 
 /**
@@ -15334,6 +15383,14 @@ struct SharedObjectUnsafe : SharedObjectRef
 struct SharedObject : SharedObjectUnsafe
 {
   using SharedObjectUnsafe::SharedObjectUnsafe;
+
+  /**
+   * Constructs an empty SharedObject.
+   */
+  constexpr SharedObject()
+    : SharedObjectUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -15383,6 +15440,11 @@ struct SharedObject : SharedObjectUnsafe
     return *this;
   }
 };
+
+inline SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
+  : SharedObjectUnsafe(other.release())
+{
+}
 
 /// @}
 
@@ -18343,6 +18405,13 @@ struct PaletteUnsafe : PaletteRef
   using PaletteRef::PaletteRef;
 
   using PaletteRef::reset;
+
+  PaletteUnsafe(const Palette& other) = delete;
+
+  /**
+   * Constructs PaletteUnsafe from Palette.
+   */
+  explicit PaletteUnsafe(Palette&& other);
 };
 
 /**
@@ -18355,6 +18424,14 @@ struct PaletteUnsafe : PaletteRef
 struct Palette : PaletteUnsafe
 {
   using PaletteUnsafe::PaletteUnsafe;
+
+  /**
+   * Constructs an empty Palette.
+   */
+  constexpr Palette()
+    : PaletteUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -18384,6 +18461,7 @@ struct Palette : PaletteUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa PaletteRef.Destroy
    * @sa PaletteRef.SetColors
    * @sa SurfaceRef.SetPalette
    */
@@ -18406,6 +18484,11 @@ struct Palette : PaletteUnsafe
     return *this;
   }
 };
+
+inline PaletteUnsafe::PaletteUnsafe(Palette&& other)
+  : PaletteUnsafe(other.release())
+{
+}
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -19756,6 +19839,13 @@ struct PropertiesUnsafe : PropertiesRef
   using PropertiesRef::PropertiesRef;
 
   using PropertiesRef::reset;
+
+  PropertiesUnsafe(const Properties& other) = delete;
+
+  /**
+   * Constructs PropertiesUnsafe from Properties.
+   */
+  explicit PropertiesUnsafe(Properties&& other);
 };
 
 /**
@@ -19876,6 +19966,11 @@ public:
 
   friend class PropertiesRef;
 };
+
+inline PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
+  : PropertiesUnsafe(other.release())
+{
+}
 
 /**
  * Get the global SDL properties.
@@ -26317,6 +26412,13 @@ struct IOStreamUnsafe : IOStreamRef
   using IOStreamRef::IOStreamRef;
 
   using IOStreamRef::reset;
+
+  IOStreamUnsafe(const IOStream& other) = delete;
+
+  /**
+   * Constructs IOStreamUnsafe from IOStream.
+   */
+  explicit IOStreamUnsafe(IOStream&& other);
 };
 
 /**
@@ -26329,6 +26431,14 @@ struct IOStreamUnsafe : IOStreamRef
 struct IOStream : IOStreamUnsafe
 {
   using IOStreamUnsafe::IOStreamUnsafe;
+
+  /**
+   * Constructs an empty IOStream.
+   */
+  constexpr IOStream()
+    : IOStreamUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -26384,9 +26494,9 @@ struct IOStream : IOStreamUnsafe
    * This function supports Unicode filenames, but they must be encoded in UTF-8
    * format, regardless of the underlying operating system.
    *
-   * In Android, IOStreamRef.IOStreamRef() can be used to open content://
-   * URIs. As a fallback, IOStreamRef.IOStreamRef() will transparently open a
-   * matching filename in the app's `assets`.
+   * In Android, IOStream.IOStream() can be used to open content:// URIs. As a
+   * fallback, IOStream.IOStream() will transparently open a matching filename
+   * in the app's `assets`.
    *
    * Closing the IOStreamRef will close SDL's internal file handle.
    *
@@ -26438,8 +26548,8 @@ struct IOStream : IOStreamUnsafe
    * Applications do not need to use this function unless they are providing
    * their own IOStreamRef implementation. If you just need an IOStreamRef to
    * read/write a common data source, you should use the built-in
-   * implementations in SDL, like
-   * IOStreamRef.IOStreamRef(StringParam,StringParam) or IOFromMem(), etc.
+   * implementations in SDL, like IOStream.IOStream(StringParam,StringParam) or
+   * IOFromMem(), etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -26457,7 +26567,7 @@ struct IOStream : IOStreamUnsafe
    * @sa IOStreamRef.Close
    * @sa SDL_INIT_INTERFACE
    * @sa IOFromConstMem
-   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStream.IOStream
    * @sa IOFromMem
    */
   IOStream(const IOStreamInterface& iface, void* userdata)
@@ -26479,6 +26589,11 @@ struct IOStream : IOStreamUnsafe
     return *this;
   }
 };
+
+inline IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
+  : IOStreamUnsafe(other.release())
+{
+}
 
 namespace prop::IOStream {
 
@@ -28297,6 +28412,13 @@ struct StorageUnsafe : StorageRef
   using StorageRef::StorageRef;
 
   using StorageRef::reset;
+
+  StorageUnsafe(const Storage& other) = delete;
+
+  /**
+   * Constructs StorageUnsafe from Storage.
+   */
+  explicit StorageUnsafe(Storage&& other);
 };
 
 /**
@@ -28309,6 +28431,14 @@ struct StorageUnsafe : StorageRef
 struct Storage : StorageUnsafe
 {
   using StorageUnsafe::StorageUnsafe;
+
+  /**
+   * Constructs an empty Storage.
+   */
+  constexpr Storage()
+    : StorageUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -28337,7 +28467,6 @@ struct Storage : StorageUnsafe
    *
    * @sa StorageRef.Close
    * @sa StorageRef.GetFileSize
-   * @sa StorageRef.StorageRef
    * @sa StorageRef.ReadFile
    */
   Storage(StringParam override, PropertiesRef& props)
@@ -28361,9 +28490,9 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa StorageRef.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.StorageRef
    * @sa StorageRef.ReadFile
    * @sa StorageRef.Ready
    * @sa StorageRef.WriteFile
@@ -28377,8 +28506,8 @@ struct Storage : StorageUnsafe
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use StorageRef.StorageRef() for access to game data and
-   * StorageRef.StorageRef() for access to user data.
+   * use Storage.Storage() for access to game data and
+   * Storage.Storage() for access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
@@ -28387,10 +28516,9 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa StorageRef.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
-   * @sa StorageRef.StorageRef
-   * @sa StorageRef.StorageRef
    * @sa StorageRef.ReadFile
    * @sa StorageRef.WriteFile
    */
@@ -28404,8 +28532,8 @@ struct Storage : StorageUnsafe
    *
    * Applications do not need to use this function unless they are providing
    * their own StorageRef implementation. If you just need an StorageRef, you
-   * should use the built-in implementations in SDL, like
-   * StorageRef.StorageRef() or StorageRef.StorageRef().
+   * should use the built-in implementations in SDL, like Storage.Storage()
+   * or Storage.Storage().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -28418,6 +28546,7 @@ struct Storage : StorageUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa StorageRef.Close
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.GetSpaceRemaining
    * @sa SDL_INIT_INTERFACE
@@ -28444,6 +28573,11 @@ struct Storage : StorageUnsafe
     return *this;
   }
 };
+
+inline StorageUnsafe::StorageUnsafe(Storage&& other)
+  : StorageUnsafe(other.release())
+{
+}
 
 /// @}
 
@@ -28809,6 +28943,13 @@ struct ThreadUnsafe : ThreadRef
   using ThreadRef::ThreadRef;
 
   using ThreadRef::reset;
+
+  ThreadUnsafe(const Thread& other) = delete;
+
+  /**
+   * Constructs ThreadUnsafe from Thread.
+   */
+  explicit ThreadUnsafe(Thread&& other);
 };
 
 /**
@@ -28821,6 +28962,14 @@ struct ThreadUnsafe : ThreadRef
 struct Thread : ThreadUnsafe
 {
   using ThreadUnsafe::ThreadUnsafe;
+
+  /**
+   * Constructs an empty Thread.
+   */
+  constexpr Thread()
+    : ThreadUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -28847,7 +28996,6 @@ struct Thread : ThreadUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
    * @sa ThreadRef.Wait
    */
   Thread(ThreadCB fn, StringParam name)
@@ -28864,7 +29012,7 @@ struct Thread : ThreadUnsafe
    * Create a new thread with a default stack size.
    *
    * This is a convenience function, equivalent to calling
-   * ThreadRef.ThreadRef with the following properties set:
+   * Thread.Thread with the following properties set:
    *
    * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
    * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -28881,7 +29029,6 @@ struct Thread : ThreadUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
    * @sa ThreadRef.Wait
    */
   Thread(ThreadFunction fn, StringParam name, void* data)
@@ -28938,7 +29085,7 @@ struct Thread : ThreadUnsafe
    *
    * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
    * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "ThreadRef.ThreadRef" will fail.
+   * for "Thread.Thread" will fail.
    *
    * Usually, apps should just call this function the same way on every platform
    * and let the macros hide the details.
@@ -28949,7 +29096,6 @@ struct Thread : ThreadUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
    * @sa ThreadRef.Wait
    */
   Thread(PropertiesRef& props)
@@ -28971,6 +29117,11 @@ struct Thread : ThreadUnsafe
     return *this;
   }
 };
+
+inline ThreadUnsafe::ThreadUnsafe(Thread&& other)
+  : ThreadUnsafe(other.release())
+{
+}
 
 namespace prop::thread {
 
@@ -30096,6 +30247,13 @@ struct AudioDeviceUnsafe : AudioDeviceRef
   using AudioDeviceRef::Close;
 
   using AudioDeviceRef::reset;
+
+  AudioDeviceUnsafe(const AudioDevice& other) = delete;
+
+  /**
+   * Constructs AudioDeviceUnsafe from AudioDevice.
+   */
+  explicit AudioDeviceUnsafe(AudioDevice&& other);
 };
 
 /**
@@ -30108,6 +30266,14 @@ struct AudioDeviceUnsafe : AudioDeviceRef
 struct AudioDevice : AudioDeviceUnsafe
 {
   using AudioDeviceUnsafe::AudioDeviceUnsafe;
+
+  /**
+   * Constructs an empty AudioDevice.
+   */
+  constexpr AudioDevice()
+    : AudioDeviceUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -30218,6 +30384,11 @@ struct AudioDevice : AudioDeviceUnsafe
     return *this;
   }
 };
+
+inline AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
+  : AudioDeviceUnsafe(other.release())
+{
+}
 
 /**
  * A value used to request a default playback audio device.
@@ -31394,6 +31565,13 @@ struct AudioStreamUnsafe : AudioStreamRef
   using AudioStreamRef::Destroy;
 
   using AudioStreamRef::reset;
+
+  AudioStreamUnsafe(const AudioStream& other) = delete;
+
+  /**
+   * Constructs AudioStreamUnsafe from AudioStream.
+   */
+  explicit AudioStreamUnsafe(AudioStream&& other);
 };
 
 /**
@@ -31406,6 +31584,14 @@ struct AudioStreamUnsafe : AudioStreamRef
 struct AudioStream : AudioStreamUnsafe
 {
   using AudioStreamUnsafe::AudioStreamUnsafe;
+
+  /**
+   * Constructs an empty AudioStream.
+   */
+  constexpr AudioStream()
+    : AudioStreamUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -31671,6 +31857,11 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
    */
   void reset() { Unlock(); }
 };
+
+inline AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
+  : AudioStreamUnsafe(other.release())
+{
+}
 
 /**
  * Use this function to get the number of built-in audio drivers.
@@ -32337,6 +32528,13 @@ struct MutexUnsafe : MutexRef
   using MutexRef::MutexRef;
 
   using MutexRef::reset;
+
+  MutexUnsafe(const Mutex& other) = delete;
+
+  /**
+   * Constructs MutexUnsafe from Mutex.
+   */
+  explicit MutexUnsafe(Mutex&& other);
 };
 
 /**
@@ -32404,6 +32602,11 @@ struct Mutex : MutexUnsafe
     return *this;
   }
 };
+
+inline MutexUnsafe::MutexUnsafe(Mutex&& other)
+  : MutexUnsafe(other.release())
+{
+}
 
 /**
  * A mutex that allows read-only threads to run in parallel.
@@ -32653,6 +32856,13 @@ struct RWLockUnsafe : RWLockRef
   using RWLockRef::RWLockRef;
 
   using RWLockRef::reset;
+
+  RWLockUnsafe(const RWLock& other) = delete;
+
+  /**
+   * Constructs RWLockUnsafe from RWLock.
+   */
+  explicit RWLockUnsafe(RWLock&& other);
 };
 
 /**
@@ -32725,6 +32935,7 @@ struct RWLock : RWLockUnsafe
     : RWLock(SDL_CreateRWLock())
   {
   }
+
   /**
    * Frees up resource when object goes out of scope.
    */
@@ -32739,6 +32950,11 @@ struct RWLock : RWLockUnsafe
     return *this;
   }
 };
+
+inline RWLockUnsafe::RWLockUnsafe(RWLock&& other)
+  : RWLockUnsafe(other.release())
+{
+}
 
 /**
  * A means to manage access to a resource, by count, between threads.
@@ -32915,6 +33131,13 @@ struct SemaphoreUnsafe : SemaphoreRef
   using SemaphoreRef::SemaphoreRef;
 
   using SemaphoreRef::reset;
+
+  SemaphoreUnsafe(const Semaphore& other) = delete;
+
+  /**
+   * Constructs SemaphoreUnsafe from Semaphore.
+   */
+  explicit SemaphoreUnsafe(Semaphore&& other);
 };
 
 /**
@@ -32927,6 +33150,14 @@ struct SemaphoreUnsafe : SemaphoreRef
 struct Semaphore : SemaphoreUnsafe
 {
   using SemaphoreUnsafe::SemaphoreUnsafe;
+
+  /**
+   * Constructs an empty Semaphore.
+   */
+  constexpr Semaphore()
+    : SemaphoreUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -32983,6 +33214,11 @@ struct Semaphore : SemaphoreUnsafe
     return *this;
   }
 };
+
+inline SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
+  : SemaphoreUnsafe(other.release())
+{
+}
 
 /**
  * A means to block multiple threads until a condition is satisfied.
@@ -33159,6 +33395,13 @@ struct ConditionUnsafe : ConditionRef
   using ConditionRef::Destroy;
 
   using ConditionRef::reset;
+
+  ConditionUnsafe(const Condition& other) = delete;
+
+  /**
+   * Constructs ConditionUnsafe from Condition.
+   */
+  explicit ConditionUnsafe(Condition&& other);
 };
 
 /**
@@ -33205,6 +33448,7 @@ struct Condition : ConditionUnsafe
     : Condition(SDL_CreateCondition())
   {
   }
+
   /**
    * Frees up resource when object goes out of scope.
    */
@@ -33219,6 +33463,11 @@ struct Condition : ConditionUnsafe
     return *this;
   }
 };
+
+inline ConditionUnsafe::ConditionUnsafe(Condition&& other)
+  : ConditionUnsafe(other.release())
+{
+}
 
 /**
  * The current status of an InitState structure.
@@ -33760,6 +34009,13 @@ struct ProcessUnsafe : ProcessRef
   using ProcessRef::ProcessRef;
 
   using ProcessRef::reset;
+
+  ProcessUnsafe(const Process& other) = delete;
+
+  /**
+   * Constructs ProcessUnsafe from Process.
+   */
+  explicit ProcessUnsafe(Process&& other);
 };
 
 /**
@@ -33772,6 +34028,14 @@ struct ProcessUnsafe : ProcessRef
 struct Process : ProcessUnsafe
 {
   using ProcessUnsafe::ProcessUnsafe;
+
+  /**
+   * Constructs an empty Process.
+   */
+  constexpr Process()
+    : ProcessUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -33805,7 +34069,7 @@ struct Process : ProcessUnsafe
    * will allow the use of ProcessRef.Read() or ProcessRef.GetInput() and
    * ProcessRef.GetOutput().
    *
-   * See ProcessRef.ProcessRef() for more details.
+   * See Process.Process() for more details.
    *
    * @param args the path and arguments for the new process.
    * @param pipe_stdio true to create pipes to the process's standard input and
@@ -33819,14 +34083,13 @@ struct Process : ProcessUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
    * @sa ProcessRef.GetProperties
    * @sa ProcessRef.Read
    * @sa ProcessRef.GetInput
    * @sa ProcessRef.GetOutput
    * @sa ProcessRef.Kill
    * @sa ProcessRef.Wait
-   * @sa ProcessRef.reset
+   * @sa ProcessRef.Destroy
    */
   Process(const char* const* args, bool pipe_stdio)
     : Process(CheckError(SDL_CreateProcess(args, pipe_stdio)))
@@ -33885,7 +34148,6 @@ struct Process : ProcessUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
    * @sa ProcessRef.GetProperties
    * @sa ProcessRef.Read
    * @sa ProcessRef.GetInput
@@ -33913,6 +34175,11 @@ struct Process : ProcessUnsafe
     return *this;
   }
 };
+
+inline ProcessUnsafe::ProcessUnsafe(Process&& other)
+  : ProcessUnsafe(other.release())
+{
+}
 
 namespace prop::process {
 
@@ -35733,6 +36000,13 @@ struct SurfaceUnsafe : SurfaceRef
   using SurfaceRef::SurfaceRef;
 
   using SurfaceRef::reset;
+
+  SurfaceUnsafe(const Surface& other) = delete;
+
+  /**
+   * Constructs SurfaceUnsafe from Surface.
+   */
+  explicit SurfaceUnsafe(Surface&& other);
 };
 
 /**
@@ -35745,6 +36019,14 @@ struct SurfaceUnsafe : SurfaceRef
 struct Surface : SurfaceUnsafe
 {
   using SurfaceUnsafe::SurfaceUnsafe;
+
+  /**
+   * Constructs an empty Surface.
+   */
+  constexpr Surface()
+    : SurfaceUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -35836,7 +36118,7 @@ struct Surface : SurfaceUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Destroy
+   * @sa SurfaceRef.Destroy
    */
   Surface(const SDL_Point& size, PixelFormat format, void* pixels, int pitch)
     : Surface(CheckError(
@@ -35937,6 +36219,11 @@ public:
 
   friend class SurfaceRef;
 };
+
+inline SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
+  : SurfaceUnsafe(other.release())
+{
+}
 
 namespace prop::Surface {
 
@@ -36437,6 +36724,13 @@ struct TrayUnsafe : TrayRef
   using TrayRef::TrayRef;
 
   using TrayRef::reset;
+
+  TrayUnsafe(const Tray& other) = delete;
+
+  /**
+   * Constructs TrayUnsafe from Tray.
+   */
+  explicit TrayUnsafe(Tray&& other);
 };
 
 /**
@@ -36449,6 +36743,14 @@ struct TrayUnsafe : TrayRef
 struct Tray : TrayUnsafe
 {
   using TrayUnsafe::TrayUnsafe;
+
+  /**
+   * Constructs an empty Tray.
+   */
+  constexpr Tray()
+    : TrayUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -36531,6 +36833,11 @@ using TrayCallback = SDL_TrayCallback;
  * @sa TrayEntryRef.SetCallback
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
+
+inline TrayUnsafe::TrayUnsafe(Tray&& other)
+  : TrayUnsafe(other.release())
+{
+}
 
 /**
  * An opaque handle representing a menu/submenu on a system tray object.
@@ -36992,6 +37299,13 @@ struct TrayEntryUnsafe : TrayEntryRef
   using TrayEntryRef::TrayEntryRef;
 
   using TrayEntryRef::reset;
+
+  TrayEntryUnsafe(const TrayEntry& other) = delete;
+
+  /**
+   * Constructs TrayEntryUnsafe from TrayEntry.
+   */
+  explicit TrayEntryUnsafe(TrayEntry&& other);
 };
 
 /**
@@ -37004,6 +37318,14 @@ struct TrayEntryUnsafe : TrayEntryRef
 struct TrayEntry : TrayEntryUnsafe
 {
   using TrayEntryUnsafe::TrayEntryUnsafe;
+
+  /**
+   * Constructs an empty TrayEntry.
+   */
+  constexpr TrayEntry()
+    : TrayEntryUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -37034,6 +37356,11 @@ struct TrayEntry : TrayEntryUnsafe
     return *this;
   }
 };
+
+inline TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
+  : TrayEntryUnsafe(other.release())
+{
+}
 
 inline TrayMenu TrayRef::CreateMenu() { return SDL_CreateTrayMenu(get()); }
 
@@ -39674,6 +40001,13 @@ struct WindowUnsafe : WindowRef
   using WindowRef::WindowRef;
 
   using WindowRef::reset;
+
+  WindowUnsafe(const Window& other) = delete;
+
+  /**
+   * Constructs WindowUnsafe from Window.
+   */
+  explicit WindowUnsafe(Window&& other);
 };
 
 /**
@@ -39686,6 +40020,14 @@ struct WindowUnsafe : WindowRef
 struct Window : WindowUnsafe
 {
   using WindowUnsafe::WindowUnsafe;
+
+  /**
+   * Constructs an empty Window.
+   */
+  constexpr Window()
+    : WindowUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -39748,8 +40090,8 @@ struct Window : WindowUnsafe
    * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use WindowRef.GetSize() to
-   * query the client area's size in window coordinates, and
+   * window is on a high pixel density display. Use WindowRef.GetSize() to query
+   * the client area's size in window coordinates, and
    * WindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the
    * drawable size in pixels. Note that the drawable size can vary after the
    * window is created and should be queried again if you get an
@@ -39758,14 +40100,13 @@ struct Window : WindowUnsafe
    * If the window is created with any of the WINDOW_OPENGL or
    * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
    * (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the
-   * corresponding UnloadLibrary function is called by WindowRef.reset().
+   * corresponding UnloadLibrary function is called by WindowRef.Destroy().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * WindowRef.WindowRef() will fail, because SDL_Vulkan_LoadLibrary() will
-   * fail.
+   * Window.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.
    *
    * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * WindowRef.WindowRef() will fail.
+   * Window.Window() will fail.
    *
    * If you intend to use this window with an RendererRef, you should use
    * CreateWindowAndRenderer() instead of this function, to avoid window
@@ -39785,7 +40126,8 @@ struct Window : WindowUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CreateWindowAndRenderer()
+   * @sa CreateWindowAndRenderer
+   * @sa WindowRef.Destroy
    */
   Window(StringParam title, const SDL_Point& size, WindowFlags flags = 0)
     : Window(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)))
@@ -39848,6 +40190,7 @@ struct Window : WindowUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa WindowRef.Destroy
    * @sa WindowRef.GetParent
    */
   Window(WindowRef& parent,
@@ -39962,7 +40305,7 @@ struct Window : WindowUnsafe
    * The window is implicitly shown if the "hidden" property is not set.
    *
    * Windows with the "tooltip" and "menu" properties are popup windows and have
-   * the behaviors and guidelines outlined in WindowRef.WindowRef().
+   * the behaviors and guidelines outlined in Window.Window().
    *
    * If this window is being created to be used with an RendererRef, you should
    * not add a graphics API specific property
@@ -39983,6 +40326,7 @@ struct Window : WindowUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Properties
+   * @sa WindowRef.Destroy
    */
   Window(PropertiesRef& props)
     : Window(CheckError(SDL_CreateWindowWithProperties(props.get())))
@@ -40003,6 +40347,11 @@ struct Window : WindowUnsafe
     return *this;
   }
 };
+
+inline WindowUnsafe::WindowUnsafe(Window&& other)
+  : WindowUnsafe(other.release())
+{
+}
 
 #ifdef SDL3PP_DOC
 
@@ -40197,6 +40546,13 @@ struct GLContextUnsafe : GLContextRef
   using GLContextRef::GLContextRef;
 
   using GLContextRef::reset;
+
+  GLContextUnsafe(const GLContext& other) = delete;
+
+  /**
+   * Constructs GLContextUnsafe from GLContext.
+   */
+  explicit GLContextUnsafe(GLContext&& other);
 };
 
 /**
@@ -40209,6 +40565,14 @@ struct GLContextUnsafe : GLContextRef
 struct GLContext : GLContextUnsafe
 {
   using GLContextUnsafe::GLContextUnsafe;
+
+  /**
+   * Constructs an empty GLContext.
+   */
+  constexpr GLContext()
+    : GLContextUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -40244,7 +40608,7 @@ struct GLContext : GLContextUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextRef.reset
+   * @sa GLContextRef.Destroy
    * @sa GLContextRef.MakeCurrent
    */
   GLContext(WindowRef& window)
@@ -40266,6 +40630,11 @@ struct GLContext : GLContextUnsafe
     return *this;
   }
 };
+
+inline GLContextUnsafe::GLContextUnsafe(GLContext&& other)
+  : GLContextUnsafe(other.release())
+{
+}
 
 /**
  * Opaque type for an EGL display.
@@ -45286,6 +45655,13 @@ struct CursorUnsafe : CursorRef
   using CursorRef::Destroy;
 
   using CursorRef::reset;
+
+  CursorUnsafe(const Cursor& other) = delete;
+
+  /**
+   * Constructs CursorUnsafe from Cursor.
+   */
+  explicit CursorUnsafe(Cursor&& other);
 };
 
 /**
@@ -45298,6 +45674,14 @@ struct CursorUnsafe : CursorRef
 struct Cursor : CursorUnsafe
 {
   using CursorUnsafe::CursorUnsafe;
+
+  /**
+   * Constructs an empty Cursor.
+   */
+  constexpr Cursor()
+    : CursorUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -45329,11 +45713,11 @@ struct Cursor : CursorUnsafe
    * - data=1, mask=0: inverted color if possible, black if not.
    *
    * If you want to have a color cursor, or create your cursor from an
-   * SurfaceRef, you should use CursorRef.CursorRef(). Alternately, you can
+   * SurfaceRef, you should use Cursor.Cursor(). Alternately, you can
    * hide the cursor and draw your own as part of your game's rendering, but it
    * will be bound to the framerate.
    *
-   * Also, CursorRef.CursorRef() is available, which provides several
+   * Also, Cursor.Cursor() is available, which provides several
    * readily-available system cursors to pick from.
    *
    * @param data the color value for each pixel of the cursor.
@@ -45351,7 +45735,6 @@ struct Cursor : CursorUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.CursorRef
    * @sa CursorRef.Destroy
    * @sa SetCursor
    */
@@ -45388,7 +45771,6 @@ struct Cursor : CursorUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.CursorRef
    * @sa CursorRef.Destroy
    * @sa SetCursor
    */
@@ -45429,6 +45811,11 @@ struct Cursor : CursorUnsafe
     return *this;
   }
 };
+
+inline CursorUnsafe::CursorUnsafe(Cursor&& other)
+  : CursorUnsafe(other.release())
+{
+}
 
 /**
  * Represents a button index.
@@ -47726,6 +48113,13 @@ struct RendererUnsafe : RendererRef
   using RendererRef::RendererRef;
 
   using RendererRef::reset;
+
+  RendererUnsafe(const Renderer& other) = delete;
+
+  /**
+   * Constructs RendererUnsafe from Renderer.
+   */
+  explicit RendererUnsafe(Renderer&& other);
 };
 
 /**
@@ -47738,6 +48132,14 @@ struct RendererUnsafe : RendererRef
 struct Renderer : RendererUnsafe
 {
   using RendererUnsafe::RendererUnsafe;
+
+  /**
+   * Constructs an empty Renderer.
+   */
+  constexpr Renderer()
+    : RendererUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -47790,9 +48192,6 @@ struct Renderer : RendererUnsafe
    * can call RendererRef.SetLogicalPresentation() to change the content size
    * and scaling options.
    *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
    * @param window the window where rendering is displayed.
    * @param name the name of the rendering driver to initialize, or nullptr to
    *             let SDL choose one.
@@ -47803,6 +48202,7 @@ struct Renderer : RendererUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa RendererRef.Destroy
    * @sa GetNumRenderDrivers
    * @sa GetRenderDriver
    * @sa RendererRef.GetName
@@ -47849,9 +48249,6 @@ struct Renderer : RendererUnsafe
    * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for presentation.
    *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
    * @param props the properties to use.
    * @post a valid rendering context.
    * @throws Error on failure.
@@ -47861,6 +48258,7 @@ struct Renderer : RendererUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Properties
+   * @sa RendererRef.Destroy
    * @sa RendererRef.GetName
    */
   Renderer(PropertiesRef& props)
@@ -47884,6 +48282,8 @@ struct Renderer : RendererUnsafe
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RendererRef.Destroy
    */
   Renderer(SurfaceRef& surface)
     : Renderer(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
@@ -47904,6 +48304,11 @@ struct Renderer : RendererUnsafe
     return *this;
   }
 };
+
+inline RendererUnsafe::RendererUnsafe(Renderer&& other)
+  : RendererUnsafe(other.release())
+{
+}
 
 /**
  * An efficient driver-specific representation of pixel data
@@ -48649,6 +49054,13 @@ struct TextureUnsafe : TextureRef
   using TextureRef::TextureRef;
 
   using TextureRef::reset;
+
+  TextureUnsafe(const Texture& other) = delete;
+
+  /**
+   * Constructs TextureUnsafe from Texture.
+   */
+  explicit TextureUnsafe(Texture&& other);
 };
 
 /**
@@ -48661,6 +49073,14 @@ struct TextureUnsafe : TextureRef
 struct Texture : TextureUnsafe
 {
   using TextureUnsafe::TextureUnsafe;
+
+  /**
+   * Constructs an empty Texture.
+   */
+  constexpr Texture()
+    : TextureUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -48724,6 +49144,7 @@ struct Texture : TextureUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa TextureRef.Destroy
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
@@ -48757,6 +49178,8 @@ struct Texture : TextureUnsafe
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TextureRef.Destroy
    */
   Texture(RendererRef& renderer, SurfaceRef& surface)
     : Texture(
@@ -48868,9 +49291,7 @@ struct Texture : TextureUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Properties
-   * @sa TextureRef.TextureRef
-   * @sa TextureRef.TextureRef
-   * @sa TextureRef.reset
+   * @sa TextureRef.Destroy
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
@@ -48985,6 +49406,11 @@ public:
 
   friend class TextureRef;
 };
+
+inline TextureUnsafe::TextureUnsafe(Texture&& other)
+  : TextureUnsafe(other.release())
+{
+}
 
 /**
  * Get the number of 2D rendering drivers available for the current display.
@@ -52656,6 +53082,13 @@ struct AnimationUnsafe : AnimationRef
   using AnimationRef::Free;
 
   using AnimationRef::reset;
+
+  AnimationUnsafe(const Animation& other) = delete;
+
+  /**
+   * Constructs AnimationUnsafe from Animation.
+   */
+  explicit AnimationUnsafe(Animation&& other);
 };
 
 /**
@@ -52668,6 +53101,14 @@ struct AnimationUnsafe : AnimationRef
 struct Animation : AnimationUnsafe
 {
   using AnimationUnsafe::AnimationUnsafe;
+
+  /**
+   * Constructs an empty Animation.
+   */
+  constexpr Animation()
+    : AnimationUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -52688,11 +53129,11 @@ struct Animation : AnimationUnsafe
    * Load an animation from a file.
    *
    * @param file path on the filesystem containing an animated image.
-   * @post a new Animation, or nullptr on error.
+   * @post a new AnimationRef, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.reset
+   * @sa AnimationRef.Free
    */
   Animation(StringParam file)
     : Animation(IMG_LoadAnimation(file))
@@ -52707,7 +53148,7 @@ struct Animation : AnimationUnsafe
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.reset
+   * @sa AnimationRef.Free
    */
   Animation(IOStreamRef& src)
     : Animation(IMG_LoadAnimation_IO(src.get(), false))
@@ -52723,13 +53164,13 @@ struct Animation : AnimationUnsafe
    * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
    * on its ability to guess the format.
    *
-   * @param src an SDL_IOStream that data will be read from.
+   * @param src an IOStreamRef that data will be read from.
    * @param type a filename extension that represent this data ("GIF", etc).
    * @post a new AnimationRef, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.reset
+   * @sa AnimationRef.Free
    */
   Animation(IOStreamRef& src, StringParam type)
     : Animation(IMG_LoadAnimationTyped_IO(src.get(), false, type))
@@ -52750,6 +53191,11 @@ struct Animation : AnimationUnsafe
     return *this;
   }
 };
+
+inline AnimationUnsafe::AnimationUnsafe(Animation&& other)
+  : AnimationUnsafe(other.release())
+{
+}
 
 /**
  * Load a GIF animation directly.
@@ -54708,6 +55154,13 @@ struct FontUnsafe : FontRef
 
   using FontRef::FontRef;
   using FontRef::reset;
+
+  FontUnsafe(const Font& other) = delete;
+
+  /**
+   * Constructs FontUnsafe from Font.
+   */
+  explicit FontUnsafe(Font&& other);
 };
 
 /**
@@ -54720,6 +55173,14 @@ struct FontUnsafe : FontRef
 struct Font : FontUnsafe
 {
   using FontUnsafe::FontUnsafe;
+
+  /**
+   * Constructs an empty Font.
+   */
+  constexpr Font()
+    : FontUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -54751,6 +55212,8 @@ struct Font : FontUnsafe
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
    */
   Font(StringParam file, float ptsize)
     : Font(CheckError(TTF_OpenFont(file, ptsize)))
@@ -54772,6 +55235,8 @@ struct Font : FontUnsafe
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
    */
   Font(IOStreamRef& src, float ptsize)
     : Font(CheckError(TTF_OpenFontIO(src.get(), false, ptsize)))
@@ -54786,11 +55251,11 @@ struct Font : FontUnsafe
    * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
    *   IOStreamRef isn't being used. This is required if
    *   `prop::Font.CREATE_IOSTREAM_POINTER` and
-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
+   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamRef containing the
    *   font to be opened. This should not be closed until the font is closed.
    *   This is required if `prop::Font.CREATE_FILENAME_STRING` and
-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
+   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
    *   for the beginning of the font, defaults to 0.
    * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the
@@ -54807,8 +55272,8 @@ struct Font : FontUnsafe
    * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for
    *   font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`
    *   if set, or 72 otherwise.
-   * - `prop::Font.CREATE_EXISTING_FONT`: an optional FontRef that, if set,
-   *   will be used as the font data source and the initial size and style of
+   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional FontRef that, if
+   * set, will be used as the font data source and the initial size and style of
    *   the new font.
    *
    * @param props the properties to use.
@@ -54818,6 +55283,8 @@ struct Font : FontUnsafe
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
    */
   Font(PropertiesRef& props)
     : Font(CheckError(TTF_OpenFontWithProperties(props.get())))
@@ -54838,6 +55305,11 @@ struct Font : FontUnsafe
     return *this;
   }
 };
+
+inline FontUnsafe::FontUnsafe(Font&& other)
+  : FontUnsafe(other.release())
+{
+}
 
 /**
  * Initialize SDL_ttf.
@@ -54984,6 +55456,13 @@ protected:
 struct TextEngineUnsafe : TextEngineRef
 {
   using TextEngineRef::TextEngineRef;
+
+  TextEngineUnsafe(const TextEngine& other) = delete;
+
+  /**
+   * Constructs TextEngineUnsafe from TextEngine.
+   */
+  explicit TextEngineUnsafe(TextEngine&& other);
 };
 
 /**
@@ -54996,6 +55475,14 @@ struct TextEngineUnsafe : TextEngineRef
 struct TextEngine : TextEngineUnsafe
 {
   using TextEngineUnsafe::TextEngineUnsafe;
+
+  /**
+   * Constructs an empty TextEngine.
+   */
+  constexpr TextEngine()
+    : TextEngineUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -55062,6 +55549,11 @@ using SubString = TTF_SubString;
 
 // Forward decl
 struct SubStringIterator;
+
+inline TextEngineUnsafe::TextEngineUnsafe(TextEngine&& other)
+  : TextEngineUnsafe(other.release())
+{
+}
 
 namespace prop::Font {
 
@@ -56191,6 +56683,13 @@ struct TextUnsafe : TextRef
   using TextRef::TextRef;
 
   using TextRef::reset;
+
+  TextUnsafe(const Text& other) = delete;
+
+  /**
+   * Constructs TextUnsafe from Text.
+   */
+  explicit TextUnsafe(Text&& other);
 };
 
 /**
@@ -56203,6 +56702,14 @@ struct TextUnsafe : TextRef
 struct Text : TextUnsafe
 {
   using TextUnsafe::TextUnsafe;
+
+  /**
+   * Constructs an empty Text.
+   */
+  constexpr Text()
+    : TextUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -56326,6 +56833,11 @@ public:
 
   friend class TextRef;
 };
+
+inline TextUnsafe::TextUnsafe(Text&& other)
+  : TextUnsafe(other.release())
+{
+}
 
 /**
  * Create a text engine for drawing text on SDL surfaces.

@@ -100,6 +100,10 @@ Inheritance diagram for SDL::Process:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a7bbc743cdaabfd76e1401193e802d24e" id="r_a7bbc743cdaabfd76e1401193e802d24e"><td class="memItemLeft" align="right" valign="top"><a id="a7bbc743cdaabfd76e1401193e802d24e" name="a7bbc743cdaabfd76e1401193e802d24e"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Process</b> ()</td></tr>
+<tr class="memdesc:a7bbc743cdaabfd76e1401193e802d24e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1Process.html" title="Handle to an owned process.">Process</a>. <br /></td></tr>
+<tr class="separator:a7bbc743cdaabfd76e1401193e802d24e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f741ab163c444c041f621a557363b8a" id="r_a6f741ab163c444c041f621a557363b8a"><td class="memItemLeft" align="right" valign="top"><a id="a6f741ab163c444c041f621a557363b8a" name="a6f741ab163c444c041f621a557363b8a"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Process</b> (SDL_Process *resource)</td></tr>
 <tr class="memdesc:a6f741ab163c444c041f621a557363b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
@@ -125,7 +129,21 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Process</b> (<a 
 <a class="el" href="structSDL_1_1Process.html">Process</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Process.html">Process</a> other)</td></tr>
 <tr class="memdesc:af48471e2381cdc3ab603c150a412ebc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:af48471e2381cdc3ab603c150a412ebc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3adb42e52b91d6c862069a81559c00f1" id="r_a3adb42e52b91d6c862069a81559c00f1"><td class="memItemLeft" align="right" valign="top"><a id="a3adb42e52b91d6c862069a81559c00f1" name="a3adb42e52b91d6c862069a81559c00f1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessUnsafe</b> (const <a class="el" href="structSDL_1_1Process.html">Process</a> &amp;other)=delete</td></tr>
+<tr class="separator:a3adb42e52b91d6c862069a81559c00f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a885da4094839e743d731c9afdbc6056c" id="r_a885da4094839e743d731c9afdbc6056c"><td class="memItemLeft" align="right" valign="top"><a id="a885da4094839e743d731c9afdbc6056c" name="a885da4094839e743d731c9afdbc6056c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessUnsafe</b> (<a class="el" href="structSDL_1_1Process.html">Process</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:a885da4094839e743d731c9afdbc6056c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1ProcessUnsafe.html" title="Unsafe Handle to process.">ProcessUnsafe</a> from <a class="el" href="structSDL_1_1Process.html" title="Handle to an owned process.">Process</a>. <br /></td></tr>
+<tr class="separator:a885da4094839e743d731c9afdbc6056c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1ProcessUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1ProcessUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1ProcessUnsafe.html">SDL::ProcessUnsafe</a></td></tr>
+<tr class="memitem:a3adb42e52b91d6c862069a81559c00f1 inherit pub_methods_structSDL_1_1ProcessUnsafe" id="r_a3adb42e52b91d6c862069a81559c00f1"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessUnsafe</b> (const <a class="el" href="structSDL_1_1Process.html">Process</a> &amp;other)=delete</td></tr>
+<tr class="separator:a3adb42e52b91d6c862069a81559c00f1 inherit pub_methods_structSDL_1_1ProcessUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga885da4094839e743d731c9afdbc6056c inherit pub_methods_structSDL_1_1ProcessUnsafe" id="r_ga885da4094839e743d731c9afdbc6056c"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessUnsafe</b> (<a class="el" href="structSDL_1_1Process.html">Process</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:ga885da4094839e743d731c9afdbc6056c inherit pub_methods_structSDL_1_1ProcessUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1ProcessUnsafe.html" title="Unsafe Handle to process.">ProcessUnsafe</a> from <a class="el" href="structSDL_1_1Process.html" title="Handle to an owned process.">Process</a>. <br /></td></tr>
+<tr class="separator:ga885da4094839e743d731c9afdbc6056c inherit pub_methods_structSDL_1_1ProcessUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13f00b0e648058edaf58bbf4fac161f1 inherit pub_methods_structSDL_1_1ProcessUnsafe" id="r_a13f00b0e648058edaf58bbf4fac161f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ProcessUnsafe.html#a13f00b0e648058edaf58bbf4fac161f1">Destroy</a> ()</td></tr>
 <tr class="memdesc:a13f00b0e648058edaf58bbf4fac161f1 inherit pub_methods_structSDL_1_1ProcessUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a previously created process object.  <br /></td></tr>
 <tr class="separator:a13f00b0e648058edaf58bbf4fac161f1 inherit pub_methods_structSDL_1_1ProcessUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -307,7 +325,7 @@ Additional Inherited Members</h2></td></tr>
 <p>The path to the executable is supplied in args[0]. args[1..N] are additional arguments passed on the command line of the new process, and the argument list should be terminated with a nullptr, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *args[] = { <span class="stringliteral">&quot;myprogram&quot;</span>, <span class="stringliteral">&quot;argument&quot;</span>, <span class="keyword">nullptr</span> };</div>
 </div><!-- fragment --><p>Setting pipe_stdio to true is equivalent to setting <code>prop::process.CREATE_STDIN_NUMBER</code> and <code>prop::process.CREATE_STDOUT_NUMBER</code> to <code>PROCESS_STDIO_APP</code>, and will allow the use of <a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read()</a> or <a class="el" href="structSDL_1_1ProcessRef.html#a3095592c81bcc60c5184fee150e9266b" title="Get the IOStreamRef associated with process standard input.">ProcessRef.GetInput()</a> and <a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput()</a>.</p>
-<p>See <a class="el" href="structSDL_1_1ProcessRef.html#a648b540dae7140cfa0307f347bfda306" title="Copy constructor.">ProcessRef.ProcessRef()</a> for more details.</p>
+<p>See <a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process()</a> for more details.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">args</td><td>the path and arguments for the new process. </td></tr>
@@ -324,9 +342,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessRef.html#a648b540dae7140cfa0307f347bfda306" title="Copy constructor.">ProcessRef.ProcessRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#ad885ab1d694d7b6e5d18bb0b2de088c8" title="Get the properties associated with a process.">ProcessRef.GetProperties</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessRef.html#ad885ab1d694d7b6e5d18bb0b2de088c8" title="Get the properties associated with a process.">ProcessRef.GetProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read</a> </dd>
 <dd>
@@ -338,7 +354,7 @@ Additional Inherited Members</h2></td></tr>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#ae2211b6a1888aa6181a99cc54db4b9e5" title="Wait for a process to finish.">ProcessRef.Wait</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#a43d0ca6bf60894daeb0d56cc0f6f8b97" title="Destroy a previously created process object.">ProcessRef.reset</a> </dd></dl>
+<a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1" title="Destroy a previously created process object.">ProcessRef.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -394,9 +410,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessRef.html#a648b540dae7140cfa0307f347bfda306" title="Copy constructor.">ProcessRef.ProcessRef</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1ProcessRef.html#ad885ab1d694d7b6e5d18bb0b2de088c8" title="Get the properties associated with a process.">ProcessRef.GetProperties</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessRef.html#ad885ab1d694d7b6e5d18bb0b2de088c8" title="Get the properties associated with a process.">ProcessRef.GetProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read</a> </dd>
 <dd>

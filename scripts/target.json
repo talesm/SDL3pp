@@ -3311,7 +3311,44 @@
               "kind": "alias",
               "name": "PropertiesRef::reset",
               "doc": ""
-            }
+            },
+            "PropertiesUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Properties &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "PropertiesUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "PropertiesUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Properties &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs PropertiesUnsafe from Properties.",
+                "hints": {
+                  "init": [
+                    "PropertiesUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Properties": {
@@ -3386,7 +3423,8 @@
                 "type": "",
                 "parameters": [],
                 "sourceName": "SDL_CreateProperties",
-                "explicit": true
+                "explicit": true,
+                "proto": false
               }
             ],
             "~Properties": {
@@ -3513,6 +3551,22 @@
             }
           },
           "doc": ""
+        },
+        "PropertiesUnsafe::PropertiesUnsafe": {
+          "kind": "function",
+          "name": "PropertiesUnsafe::PropertiesUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Properties &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "PropertiesUnsafe(other.release())"
+            ]
+          }
         },
         "GetGlobalProperties": {
           "doc": "Get the global SDL properties.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
@@ -6906,7 +6960,44 @@
               "kind": "alias",
               "name": "WindowRef::reset",
               "doc": ""
-            }
+            },
+            "WindowUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Window &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "WindowUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "WindowUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Window &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs WindowUnsafe from Window.",
+                "hints": {
+                  "init": [
+                    "WindowUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Window": {
@@ -6921,6 +7012,19 @@
               "doc": ""
             },
             "Window": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Window.",
+                "hints": {
+                  "init": [
+                    "WindowUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Window"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -7066,6 +7170,22 @@
           },
           "hints": {
             "super": "Window"
+          }
+        },
+        "WindowUnsafe::WindowUnsafe": {
+          "kind": "function",
+          "name": "WindowUnsafe::WindowUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Window &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "WindowUnsafe(other.release())"
+            ]
           }
         },
         "SDL_WINDOWPOS_UNDEFINED_MASK": {
@@ -7290,7 +7410,44 @@
               "kind": "alias",
               "name": "GLContextRef::reset",
               "doc": ""
-            }
+            },
+            "GLContextUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const GLContext &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "GLContextUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "GLContextUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "GLContext &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs GLContextUnsafe from GLContext.",
+                "hints": {
+                  "init": [
+                    "GLContextUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "GLContext": {
@@ -7305,6 +7462,19 @@
               "doc": ""
             },
             "GLContext": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty GLContext.",
+                "hints": {
+                  "init": [
+                    "GLContextUnsafe(nullptr)"
+                  ]
+                },
+                "name": "GLContext"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -7400,6 +7570,22 @@
           },
           "hints": {
             "super": "GLContext"
+          }
+        },
+        "GLContextUnsafe::GLContextUnsafe": {
+          "kind": "function",
+          "name": "GLContextUnsafe::GLContextUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "GLContext &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "GLContextUnsafe(other.release())"
+            ]
           }
         },
         "EGLDisplay": {
@@ -10176,7 +10362,44 @@
               "kind": "alias",
               "name": "RendererRef::reset",
               "doc": ""
-            }
+            },
+            "RendererUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Renderer &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "RendererUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "RendererUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Renderer &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs RendererUnsafe from Renderer.",
+                "hints": {
+                  "init": [
+                    "RendererUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Renderer": {
@@ -10191,6 +10414,19 @@
               "doc": ""
             },
             "Renderer": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Renderer.",
+                "hints": {
+                  "init": [
+                    "RendererUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Renderer"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -10328,6 +10564,22 @@
           },
           "hints": {
             "super": "Renderer"
+          }
+        },
+        "RendererUnsafe::RendererUnsafe": {
+          "kind": "function",
+          "name": "RendererUnsafe::RendererUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Renderer &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "RendererUnsafe(other.release())"
+            ]
           }
         },
         "TextureRef": {
@@ -10930,7 +11182,44 @@
               "kind": "alias",
               "name": "TextureRef::reset",
               "doc": ""
-            }
+            },
+            "TextureUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Texture &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "TextureUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "TextureUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Texture &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TextureUnsafe from Texture.",
+                "hints": {
+                  "init": [
+                    "TextureUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Texture": {
@@ -10945,6 +11234,19 @@
               "doc": ""
             },
             "Texture": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Texture.",
+                "hints": {
+                  "init": [
+                    "TextureUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Texture"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -11232,6 +11534,22 @@
             }
           },
           "doc": ""
+        },
+        "TextureUnsafe::TextureUnsafe": {
+          "kind": "function",
+          "name": "TextureUnsafe::TextureUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Texture &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "TextureUnsafe(other.release())"
+            ]
+          }
         },
         "GetNumRenderDrivers": {
           "doc": "Get the number of 2D rendering drivers available for the current display.\n\nA render driver is a set of code that handles rendering and texture\nmanagement on a particular display. Normally there is only one, but some\ndrivers may have several available with different capabilities.\n\nThere may be none if SDL was compiled without render support.\n\n@returns the number of built in render drivers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa GetRenderDriver",
@@ -15319,7 +15637,44 @@
               "kind": "alias",
               "name": "PaletteRef::reset",
               "doc": ""
-            }
+            },
+            "PaletteUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Palette &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "PaletteUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "PaletteUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Palette &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs PaletteUnsafe from Palette.",
+                "hints": {
+                  "init": [
+                    "PaletteUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Palette": {
@@ -15334,6 +15689,19 @@
               "doc": ""
             },
             "Palette": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Palette.",
+                "hints": {
+                  "init": [
+                    "PaletteUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Palette"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -15432,6 +15800,22 @@
           },
           "hints": {
             "super": "Palette"
+          }
+        },
+        "PaletteUnsafe::PaletteUnsafe": {
+          "kind": "function",
+          "name": "PaletteUnsafe::PaletteUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Palette &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "PaletteUnsafe(other.release())"
+            ]
           }
         },
         "MapRGB": {
@@ -18783,7 +19167,44 @@
               "kind": "alias",
               "name": "SurfaceRef::reset",
               "doc": ""
-            }
+            },
+            "SurfaceUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Surface &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "SurfaceUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "SurfaceUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Surface &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs SurfaceUnsafe from Surface.",
+                "hints": {
+                  "init": [
+                    "SurfaceUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Surface": {
@@ -18798,6 +19219,19 @@
               "doc": ""
             },
             "Surface": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Surface.",
+                "hints": {
+                  "init": [
+                    "SurfaceUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Surface"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -19070,6 +19504,22 @@
             }
           },
           "doc": ""
+        },
+        "SurfaceUnsafe::SurfaceUnsafe": {
+          "kind": "function",
+          "name": "SurfaceUnsafe::SurfaceUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Surface &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "SurfaceUnsafe(other.release())"
+            ]
+          }
         },
         "prop::Surface": {
           "kind": "ns",
@@ -20391,7 +20841,44 @@
               "kind": "alias",
               "name": "AudioDeviceRef::reset",
               "doc": ""
-            }
+            },
+            "AudioDeviceUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const AudioDevice &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AudioDeviceUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "AudioDeviceUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "AudioDevice &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs AudioDeviceUnsafe from AudioDevice.",
+                "hints": {
+                  "init": [
+                    "AudioDeviceUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "AudioDevice": {
@@ -20406,6 +20893,19 @@
               "doc": ""
             },
             "AudioDevice": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty AudioDevice.",
+                "hints": {
+                  "init": [
+                    "AudioDeviceUnsafe(nullptr)"
+                  ]
+                },
+                "name": "AudioDevice"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -20509,6 +21009,22 @@
           },
           "hints": {
             "super": "AudioDevice"
+          }
+        },
+        "AudioDeviceUnsafe::AudioDeviceUnsafe": {
+          "kind": "function",
+          "name": "AudioDeviceUnsafe::AudioDeviceUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "AudioDevice &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "AudioDeviceUnsafe(other.release())"
+            ]
           }
         },
         "AUDIO_DEVICE_DEFAULT_PLAYBACK": {
@@ -21096,7 +21612,44 @@
               "kind": "alias",
               "name": "AudioStreamRef::reset",
               "doc": ""
-            }
+            },
+            "AudioStreamUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const AudioStream &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AudioStreamUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "AudioStreamUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "AudioStream &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs AudioStreamUnsafe from AudioStream.",
+                "hints": {
+                  "init": [
+                    "AudioStreamUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "AudioStream": {
@@ -21111,6 +21664,19 @@
               "doc": ""
             },
             "AudioStream": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty AudioStream.",
+                "hints": {
+                  "init": [
+                    "AudioStreamUnsafe(nullptr)"
+                  ]
+                },
+                "name": "AudioStream"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -21359,6 +21925,22 @@
               },
               "name": "reset"
             }
+          }
+        },
+        "AudioStreamUnsafe::AudioStreamUnsafe": {
+          "kind": "function",
+          "name": "AudioStreamUnsafe::AudioStreamUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "AudioStream &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "AudioStreamUnsafe(other.release())"
+            ]
           }
         },
         "GetNumAudioDrivers": {
@@ -29018,7 +29600,44 @@
               "kind": "alias",
               "name": "CursorRef::reset",
               "doc": ""
-            }
+            },
+            "CursorUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Cursor &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "CursorUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "CursorUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Cursor &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs CursorUnsafe from Cursor.",
+                "hints": {
+                  "init": [
+                    "CursorUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Cursor": {
@@ -29033,6 +29652,19 @@
               "doc": ""
             },
             "Cursor": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Cursor.",
+                "hints": {
+                  "init": [
+                    "CursorUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Cursor"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -29192,6 +29824,22 @@
           },
           "hints": {
             "super": "Cursor"
+          }
+        },
+        "CursorUnsafe::CursorUnsafe": {
+          "kind": "function",
+          "name": "CursorUnsafe::CursorUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Cursor &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "CursorUnsafe(other.release())"
+            ]
           }
         },
         "MouseButton": {
@@ -29896,7 +30544,44 @@
               "kind": "alias",
               "name": "ThreadRef::reset",
               "doc": ""
-            }
+            },
+            "ThreadUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Thread &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "ThreadUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "ThreadUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Thread &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs ThreadUnsafe from Thread.",
+                "hints": {
+                  "init": [
+                    "ThreadUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Thread": {
@@ -29911,6 +30596,19 @@
               "doc": ""
             },
             "Thread": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Thread.",
+                "hints": {
+                  "init": [
+                    "ThreadUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Thread"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -30049,6 +30747,22 @@
           },
           "hints": {
             "super": "Thread"
+          }
+        },
+        "ThreadUnsafe::ThreadUnsafe": {
+          "kind": "function",
+          "name": "ThreadUnsafe::ThreadUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Thread &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "ThreadUnsafe(other.release())"
+            ]
           }
         },
         "prop::thread": {
@@ -30355,7 +31069,44 @@
               "kind": "alias",
               "name": "MutexRef::reset",
               "doc": ""
-            }
+            },
+            "MutexUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Mutex &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "MutexUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "MutexUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Mutex &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs MutexUnsafe from Mutex.",
+                "hints": {
+                  "init": [
+                    "MutexUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Mutex": {
@@ -30460,6 +31211,22 @@
           },
           "hints": {
             "super": "Mutex"
+          }
+        },
+        "MutexUnsafe::MutexUnsafe": {
+          "kind": "function",
+          "name": "MutexUnsafe::MutexUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Mutex &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "MutexUnsafe(other.release())"
+            ]
           }
         },
         "RWLockRef": {
@@ -30643,7 +31410,44 @@
               "kind": "alias",
               "name": "RWLockRef::reset",
               "doc": ""
-            }
+            },
+            "RWLockUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const RWLock &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "RWLockUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "RWLockUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "RWLock &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs RWLockUnsafe from RWLock.",
+                "hints": {
+                  "init": [
+                    "RWLockUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "RWLock": {
@@ -30748,6 +31552,22 @@
           },
           "hints": {
             "super": "RWLock"
+          }
+        },
+        "RWLockUnsafe::RWLockUnsafe": {
+          "kind": "function",
+          "name": "RWLockUnsafe::RWLockUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "RWLock &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "RWLockUnsafe(other.release())"
+            ]
           }
         },
         "SemaphoreRef": {
@@ -30931,7 +31751,44 @@
               "kind": "alias",
               "name": "SemaphoreRef::reset",
               "doc": ""
-            }
+            },
+            "SemaphoreUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Semaphore &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "SemaphoreUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "SemaphoreUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Semaphore &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs SemaphoreUnsafe from Semaphore.",
+                "hints": {
+                  "init": [
+                    "SemaphoreUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Semaphore": {
@@ -30946,6 +31803,19 @@
               "doc": ""
             },
             "Semaphore": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Semaphore.",
+                "hints": {
+                  "init": [
+                    "SemaphoreUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Semaphore"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -31041,6 +31911,22 @@
           },
           "hints": {
             "super": "Semaphore"
+          }
+        },
+        "SemaphoreUnsafe::SemaphoreUnsafe": {
+          "kind": "function",
+          "name": "SemaphoreUnsafe::SemaphoreUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Semaphore &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "SemaphoreUnsafe(other.release())"
+            ]
           }
         },
         "ConditionRef": {
@@ -31224,7 +32110,44 @@
               "kind": "alias",
               "name": "ConditionRef::reset",
               "doc": ""
-            }
+            },
+            "ConditionUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Condition &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "ConditionUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "ConditionUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Condition &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs ConditionUnsafe from Condition.",
+                "hints": {
+                  "init": [
+                    "ConditionUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Condition": {
@@ -31329,6 +32252,22 @@
           },
           "hints": {
             "super": "Condition"
+          }
+        },
+        "ConditionUnsafe::ConditionUnsafe": {
+          "kind": "function",
+          "name": "ConditionUnsafe::ConditionUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Condition &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "ConditionUnsafe(other.release())"
+            ]
           }
         },
         "InitStatus": {
@@ -33591,7 +34530,44 @@
               "kind": "alias",
               "name": "StorageRef::reset",
               "doc": ""
-            }
+            },
+            "StorageUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Storage &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "StorageUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "StorageUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Storage &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs StorageUnsafe from Storage.",
+                "hints": {
+                  "init": [
+                    "StorageUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Storage": {
@@ -33606,6 +34582,19 @@
               "doc": ""
             },
             "Storage": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Storage.",
+                "hints": {
+                  "init": [
+                    "StorageUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Storage"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -33768,6 +34757,22 @@
           },
           "hints": {
             "super": "Storage"
+          }
+        },
+        "StorageUnsafe::StorageUnsafe": {
+          "kind": "function",
+          "name": "StorageUnsafe::StorageUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Storage &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "StorageUnsafe(other.release())"
+            ]
           }
         }
       }
@@ -34703,7 +35708,44 @@
               "kind": "alias",
               "name": "IOStreamRef::reset",
               "doc": ""
-            }
+            },
+            "IOStreamUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const IOStream &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "IOStreamUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "IOStreamUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "IOStream &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs IOStreamUnsafe from IOStream.",
+                "hints": {
+                  "init": [
+                    "IOStreamUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "IOStream": {
@@ -34718,6 +35760,19 @@
               "doc": ""
             },
             "IOStream": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty IOStream.",
+                "hints": {
+                  "init": [
+                    "IOStreamUnsafe(nullptr)"
+                  ]
+                },
+                "name": "IOStream"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -34837,6 +35892,22 @@
           },
           "hints": {
             "super": "IOStream"
+          }
+        },
+        "IOStreamUnsafe::IOStreamUnsafe": {
+          "kind": "function",
+          "name": "IOStreamUnsafe::IOStreamUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "IOStream &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "IOStreamUnsafe(other.release())"
+            ]
           }
         },
         "prop::IOStream": {
@@ -35691,7 +36762,44 @@
               "kind": "alias",
               "name": "SharedObjectRef::reset",
               "doc": ""
-            }
+            },
+            "SharedObjectUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const SharedObject &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "SharedObjectUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "SharedObjectUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "SharedObject &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs SharedObjectUnsafe from SharedObject.",
+                "hints": {
+                  "init": [
+                    "SharedObjectUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "SharedObject": {
@@ -35706,6 +36814,19 @@
               "doc": ""
             },
             "SharedObject": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty SharedObject.",
+                "hints": {
+                  "init": [
+                    "SharedObjectUnsafe(nullptr)"
+                  ]
+                },
+                "name": "SharedObject"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -35801,6 +36922,22 @@
           },
           "hints": {
             "super": "SharedObject"
+          }
+        },
+        "SharedObjectUnsafe::SharedObjectUnsafe": {
+          "kind": "function",
+          "name": "SharedObjectUnsafe::SharedObjectUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "SharedObject &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "SharedObjectUnsafe(other.release())"
+            ]
           }
         }
       }
@@ -36087,7 +37224,44 @@
               "kind": "alias",
               "name": "ProcessRef::reset",
               "doc": ""
-            }
+            },
+            "ProcessUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Process &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "ProcessUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "ProcessUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Process &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs ProcessUnsafe from Process.",
+                "hints": {
+                  "init": [
+                    "ProcessUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Process": {
@@ -36102,6 +37276,19 @@
               "doc": ""
             },
             "Process": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Process.",
+                "hints": {
+                  "init": [
+                    "ProcessUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Process"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -36214,6 +37401,22 @@
           },
           "hints": {
             "super": "Process"
+          }
+        },
+        "ProcessUnsafe::ProcessUnsafe": {
+          "kind": "function",
+          "name": "ProcessUnsafe::ProcessUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Process &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "ProcessUnsafe(other.release())"
+            ]
           }
         },
         "prop::process": {
@@ -37323,7 +38526,44 @@
               "kind": "alias",
               "name": "TrayRef::reset",
               "doc": ""
-            }
+            },
+            "TrayUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Tray &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "TrayUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "TrayUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Tray &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TrayUnsafe from Tray.",
+                "hints": {
+                  "init": [
+                    "TrayUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Tray": {
@@ -37338,6 +38578,19 @@
               "doc": ""
             },
             "Tray": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Tray.",
+                "hints": {
+                  "init": [
+                    "TrayUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Tray"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -37451,6 +38704,22 @@
           "name": "TrayCB",
           "type": "std::function<void(TrayEntryRef)>",
           "doc": "A callback that is invoked when a tray entry is selected.\n\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param entry the tray entry that was selected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa TrayEntryRef.SetCallback\n@sa TrayCallback"
+        },
+        "TrayUnsafe::TrayUnsafe": {
+          "kind": "function",
+          "name": "TrayUnsafe::TrayUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Tray &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "TrayUnsafe(other.release())"
+            ]
+          }
         },
         "TrayMenu": {
           "doc": "An opaque handle representing a menu/submenu on a system tray object.\n\n@since This struct is available since SDL 3.2.0.",
@@ -37884,7 +39153,44 @@
               "kind": "alias",
               "name": "TrayEntryRef::reset",
               "doc": ""
-            }
+            },
+            "TrayEntryUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const TrayEntry &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "TrayEntryUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "TrayEntryUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "TrayEntry &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TrayEntryUnsafe from TrayEntry.",
+                "hints": {
+                  "init": [
+                    "TrayEntryUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "TrayEntry": {
@@ -37899,6 +39205,19 @@
               "doc": ""
             },
             "TrayEntry": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty TrayEntry.",
+                "hints": {
+                  "init": [
+                    "TrayEntryUnsafe(nullptr)"
+                  ]
+                },
+                "name": "TrayEntry"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -37981,6 +39300,22 @@
           },
           "hints": {
             "super": "TrayEntry"
+          }
+        },
+        "TrayEntryUnsafe::TrayEntryUnsafe": {
+          "kind": "function",
+          "name": "TrayEntryUnsafe::TrayEntryUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "TrayEntry &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "TrayEntryUnsafe(other.release())"
+            ]
           }
         },
         "TrayRef::CreateMenu": {
@@ -39702,7 +41037,44 @@
               "kind": "alias",
               "name": "EnvironmentRef::reset",
               "doc": ""
-            }
+            },
+            "EnvironmentUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Environment &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "EnvironmentUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "EnvironmentUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Environment &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs EnvironmentUnsafe from Environment.",
+                "hints": {
+                  "init": [
+                    "EnvironmentUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Environment": {
@@ -39717,6 +41089,19 @@
               "doc": ""
             },
             "Environment": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Environment.",
+                "hints": {
+                  "init": [
+                    "EnvironmentUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Environment"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -39812,6 +41197,22 @@
           },
           "hints": {
             "super": "Environment"
+          }
+        },
+        "EnvironmentUnsafe::EnvironmentUnsafe": {
+          "kind": "function",
+          "name": "EnvironmentUnsafe::EnvironmentUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Environment &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "EnvironmentUnsafe(other.release())"
+            ]
           }
         },
         "GetEnvironment": {
@@ -42640,7 +44041,44 @@
               "kind": "alias",
               "name": "IConvRef::reset",
               "doc": ""
-            }
+            },
+            "IConvUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const IConv &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "IConvUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "IConvUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "IConv &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs IConvUnsafe from IConv.",
+                "hints": {
+                  "init": [
+                    "IConvUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "IConv": {
@@ -42655,6 +44093,19 @@
               "doc": ""
             },
             "IConv": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty IConv.",
+                "hints": {
+                  "init": [
+                    "IConvUnsafe(nullptr)"
+                  ]
+                },
+                "name": "IConv"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -42754,6 +44205,22 @@
           },
           "hints": {
             "super": "IConv"
+          }
+        },
+        "IConvUnsafe::IConvUnsafe": {
+          "kind": "function",
+          "name": "IConvUnsafe::IConvUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "IConv &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "IConvUnsafe(other.release())"
+            ]
           }
         },
         "SDL_ICONV_ERROR": {
@@ -44000,7 +45467,44 @@
               "kind": "alias",
               "name": "AnimationRef::reset",
               "doc": ""
-            }
+            },
+            "AnimationUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Animation &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "AnimationUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "AnimationUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Animation &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs AnimationUnsafe from Animation.",
+                "hints": {
+                  "init": [
+                    "AnimationUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Animation": {
@@ -44015,6 +45519,19 @@
               "doc": ""
             },
             "Animation": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Animation.",
+                "hints": {
+                  "init": [
+                    "AnimationUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Animation"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -44142,6 +45659,22 @@
           },
           "hints": {
             "super": "Animation"
+          }
+        },
+        "AnimationUnsafe::AnimationUnsafe": {
+          "kind": "function",
+          "name": "AnimationUnsafe::AnimationUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Animation &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "AnimationUnsafe(other.release())"
+            ]
           }
         },
         "LoadGIFAnimation": {
@@ -45727,7 +47260,44 @@
               "kind": "alias",
               "name": "FontRef::reset",
               "doc": ""
-            }
+            },
+            "FontUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Font &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "FontUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FontUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Font &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs FontUnsafe from Font.",
+                "hints": {
+                  "init": [
+                    "FontUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Font": {
@@ -45742,6 +47312,19 @@
               "doc": ""
             },
             "Font": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Font.",
+                "hints": {
+                  "init": [
+                    "FontUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Font"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -45881,6 +47464,22 @@
           },
           "hints": {
             "super": "Font"
+          }
+        },
+        "FontUnsafe::FontUnsafe": {
+          "kind": "function",
+          "name": "FontUnsafe::FontUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Font &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "FontUnsafe(other.release())"
+            ]
           }
         },
         "InitSubSystem": {
@@ -46058,7 +47657,44 @@
               "kind": "alias",
               "name": "TextEngineRef::TextEngineRef",
               "doc": ""
-            }
+            },
+            "TextEngineUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const TextEngine &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "TextEngineUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "TextEngineUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "TextEngine &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TextEngineUnsafe from TextEngine.",
+                "hints": {
+                  "init": [
+                    "TextEngineUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "TextEngine": {
@@ -46073,6 +47709,19 @@
               "doc": ""
             },
             "TextEngine": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty TextEngine.",
+                "hints": {
+                  "init": [
+                    "TextEngineUnsafe(nullptr)"
+                  ]
+                },
+                "name": "TextEngine"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -46192,6 +47841,22 @@
           "name": "SubStringIterator",
           "kind": "forward",
           "doc": ""
+        },
+        "TextEngineUnsafe::TextEngineUnsafe": {
+          "kind": "function",
+          "name": "TextEngineUnsafe::TextEngineUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "TextEngine &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "TextEngineUnsafe(other.release())"
+            ]
+          }
         },
         "prop::Font": {
           "kind": "ns",
@@ -47260,7 +48925,44 @@
               "kind": "alias",
               "name": "TextRef::reset",
               "doc": ""
-            }
+            },
+            "TextUnsafe": [
+              {
+                "kind": "function",
+                "type": "",
+                "proto": true,
+                "parameters": [
+                  {
+                    "type": "const Text &",
+                    "name": "other"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "name": "TextUnsafe",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "TextUnsafe",
+                "type": "",
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "Text &&",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TextUnsafe from Text.",
+                "hints": {
+                  "init": [
+                    "TextUnsafe(other.release())"
+                  ]
+                },
+                "proto": true
+              }
+            ]
           }
         },
         "Text": {
@@ -47275,6 +48977,19 @@
               "doc": ""
             },
             "Text": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "doc": "Constructs an empty Text.",
+                "hints": {
+                  "init": [
+                    "TextUnsafe(nullptr)"
+                  ]
+                },
+                "name": "Text"
+              },
               {
                 "kind": "function",
                 "type": "",
@@ -47503,6 +49218,22 @@
             ]
           },
           "doc": ""
+        },
+        "TextUnsafe::TextUnsafe": {
+          "kind": "function",
+          "name": "TextUnsafe::TextUnsafe",
+          "type": "",
+          "parameters": [
+            {
+              "type": "Text &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "TextUnsafe(other.release())"
+            ]
+          }
         },
         "CreateSurfaceTextEngine": {
           "doc": "Create a text engine for drawing text on SDL surfaces.\n\n@returns a TextEngineRef object or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DestroySurfaceTextEngine\n@sa TextRef.DrawSurface",

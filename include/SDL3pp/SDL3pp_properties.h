@@ -757,6 +757,13 @@ struct PropertiesUnsafe : PropertiesRef
   using PropertiesRef::PropertiesRef;
 
   using PropertiesRef::reset;
+
+  PropertiesUnsafe(const Properties& other) = delete;
+
+  /**
+   * Constructs PropertiesUnsafe from Properties.
+   */
+  explicit PropertiesUnsafe(Properties&& other);
 };
 
 /**
@@ -877,6 +884,11 @@ public:
 
   friend class PropertiesRef;
 };
+
+inline PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
+  : PropertiesUnsafe(other.release())
+{
+}
 
 /**
  * Get the global SDL properties.

@@ -395,6 +395,13 @@ struct ProcessUnsafe : ProcessRef
   using ProcessRef::ProcessRef;
 
   using ProcessRef::reset;
+
+  ProcessUnsafe(const Process& other) = delete;
+
+  /**
+   * Constructs ProcessUnsafe from Process.
+   */
+  explicit ProcessUnsafe(Process&& other);
 };
 
 /**
@@ -407,6 +414,14 @@ struct ProcessUnsafe : ProcessRef
 struct Process : ProcessUnsafe
 {
   using ProcessUnsafe::ProcessUnsafe;
+
+  /**
+   * Constructs an empty Process.
+   */
+  constexpr Process()
+    : ProcessUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -440,7 +455,7 @@ struct Process : ProcessUnsafe
    * will allow the use of ProcessRef.Read() or ProcessRef.GetInput() and
    * ProcessRef.GetOutput().
    *
-   * See ProcessRef.ProcessRef() for more details.
+   * See Process.Process() for more details.
    *
    * @param args the path and arguments for the new process.
    * @param pipe_stdio true to create pipes to the process's standard input and
@@ -454,14 +469,13 @@ struct Process : ProcessUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
    * @sa ProcessRef.GetProperties
    * @sa ProcessRef.Read
    * @sa ProcessRef.GetInput
    * @sa ProcessRef.GetOutput
    * @sa ProcessRef.Kill
    * @sa ProcessRef.Wait
-   * @sa ProcessRef.reset
+   * @sa ProcessRef.Destroy
    */
   Process(const char* const* args, bool pipe_stdio)
     : Process(CheckError(SDL_CreateProcess(args, pipe_stdio)))
@@ -520,7 +534,6 @@ struct Process : ProcessUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
    * @sa ProcessRef.GetProperties
    * @sa ProcessRef.Read
    * @sa ProcessRef.GetInput
@@ -548,6 +561,11 @@ struct Process : ProcessUnsafe
     return *this;
   }
 };
+
+inline ProcessUnsafe::ProcessUnsafe(Process&& other)
+  : ProcessUnsafe(other.release())
+{
+}
 
 namespace prop::process {
 

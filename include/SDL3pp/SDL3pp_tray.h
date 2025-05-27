@@ -237,6 +237,13 @@ struct TrayUnsafe : TrayRef
   using TrayRef::TrayRef;
 
   using TrayRef::reset;
+
+  TrayUnsafe(const Tray& other) = delete;
+
+  /**
+   * Constructs TrayUnsafe from Tray.
+   */
+  explicit TrayUnsafe(Tray&& other);
 };
 
 /**
@@ -249,6 +256,14 @@ struct TrayUnsafe : TrayRef
 struct Tray : TrayUnsafe
 {
   using TrayUnsafe::TrayUnsafe;
+
+  /**
+   * Constructs an empty Tray.
+   */
+  constexpr Tray()
+    : TrayUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -331,6 +346,11 @@ using TrayCallback = SDL_TrayCallback;
  * @sa TrayEntryRef.SetCallback
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
+
+inline TrayUnsafe::TrayUnsafe(Tray&& other)
+  : TrayUnsafe(other.release())
+{
+}
 
 /**
  * An opaque handle representing a menu/submenu on a system tray object.
@@ -792,6 +812,13 @@ struct TrayEntryUnsafe : TrayEntryRef
   using TrayEntryRef::TrayEntryRef;
 
   using TrayEntryRef::reset;
+
+  TrayEntryUnsafe(const TrayEntry& other) = delete;
+
+  /**
+   * Constructs TrayEntryUnsafe from TrayEntry.
+   */
+  explicit TrayEntryUnsafe(TrayEntry&& other);
 };
 
 /**
@@ -804,6 +831,14 @@ struct TrayEntryUnsafe : TrayEntryRef
 struct TrayEntry : TrayEntryUnsafe
 {
   using TrayEntryUnsafe::TrayEntryUnsafe;
+
+  /**
+   * Constructs an empty TrayEntry.
+   */
+  constexpr TrayEntry()
+    : TrayEntryUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -834,6 +869,11 @@ struct TrayEntry : TrayEntryUnsafe
     return *this;
   }
 };
+
+inline TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
+  : TrayEntryUnsafe(other.release())
+{
+}
 
 inline TrayMenu TrayRef::CreateMenu() { return SDL_CreateTrayMenu(get()); }
 

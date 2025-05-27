@@ -2588,6 +2588,13 @@ struct WindowUnsafe : WindowRef
   using WindowRef::WindowRef;
 
   using WindowRef::reset;
+
+  WindowUnsafe(const Window& other) = delete;
+
+  /**
+   * Constructs WindowUnsafe from Window.
+   */
+  explicit WindowUnsafe(Window&& other);
 };
 
 /**
@@ -2600,6 +2607,14 @@ struct WindowUnsafe : WindowRef
 struct Window : WindowUnsafe
 {
   using WindowUnsafe::WindowUnsafe;
+
+  /**
+   * Constructs an empty Window.
+   */
+  constexpr Window()
+    : WindowUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -2662,8 +2677,8 @@ struct Window : WindowUnsafe
    * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use WindowRef.GetSize() to
-   * query the client area's size in window coordinates, and
+   * window is on a high pixel density display. Use WindowRef.GetSize() to query
+   * the client area's size in window coordinates, and
    * WindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the
    * drawable size in pixels. Note that the drawable size can vary after the
    * window is created and should be queried again if you get an
@@ -2672,14 +2687,13 @@ struct Window : WindowUnsafe
    * If the window is created with any of the WINDOW_OPENGL or
    * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
    * (GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the
-   * corresponding UnloadLibrary function is called by WindowRef.reset().
+   * corresponding UnloadLibrary function is called by WindowRef.Destroy().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * WindowRef.WindowRef() will fail, because SDL_Vulkan_LoadLibrary() will
-   * fail.
+   * Window.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.
    *
    * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * WindowRef.WindowRef() will fail.
+   * Window.Window() will fail.
    *
    * If you intend to use this window with an RendererRef, you should use
    * CreateWindowAndRenderer() instead of this function, to avoid window
@@ -2699,7 +2713,8 @@ struct Window : WindowUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CreateWindowAndRenderer()
+   * @sa CreateWindowAndRenderer
+   * @sa WindowRef.Destroy
    */
   Window(StringParam title, const SDL_Point& size, WindowFlags flags = 0)
     : Window(CheckError(SDL_CreateWindow(title, size.x, size.y, flags)))
@@ -2762,6 +2777,7 @@ struct Window : WindowUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa WindowRef.Destroy
    * @sa WindowRef.GetParent
    */
   Window(WindowRef& parent,
@@ -2876,7 +2892,7 @@ struct Window : WindowUnsafe
    * The window is implicitly shown if the "hidden" property is not set.
    *
    * Windows with the "tooltip" and "menu" properties are popup windows and have
-   * the behaviors and guidelines outlined in WindowRef.WindowRef().
+   * the behaviors and guidelines outlined in Window.Window().
    *
    * If this window is being created to be used with an RendererRef, you should
    * not add a graphics API specific property
@@ -2897,6 +2913,7 @@ struct Window : WindowUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Properties
+   * @sa WindowRef.Destroy
    */
   Window(PropertiesRef& props)
     : Window(CheckError(SDL_CreateWindowWithProperties(props.get())))
@@ -2917,6 +2934,11 @@ struct Window : WindowUnsafe
     return *this;
   }
 };
+
+inline WindowUnsafe::WindowUnsafe(Window&& other)
+  : WindowUnsafe(other.release())
+{
+}
 
 #ifdef SDL3PP_DOC
 
@@ -3111,6 +3133,13 @@ struct GLContextUnsafe : GLContextRef
   using GLContextRef::GLContextRef;
 
   using GLContextRef::reset;
+
+  GLContextUnsafe(const GLContext& other) = delete;
+
+  /**
+   * Constructs GLContextUnsafe from GLContext.
+   */
+  explicit GLContextUnsafe(GLContext&& other);
 };
 
 /**
@@ -3123,6 +3152,14 @@ struct GLContextUnsafe : GLContextRef
 struct GLContext : GLContextUnsafe
 {
   using GLContextUnsafe::GLContextUnsafe;
+
+  /**
+   * Constructs an empty GLContext.
+   */
+  constexpr GLContext()
+    : GLContextUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -3158,7 +3195,7 @@ struct GLContext : GLContextUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextRef.reset
+   * @sa GLContextRef.Destroy
    * @sa GLContextRef.MakeCurrent
    */
   GLContext(WindowRef& window)
@@ -3180,6 +3217,11 @@ struct GLContext : GLContextUnsafe
     return *this;
   }
 };
+
+inline GLContextUnsafe::GLContextUnsafe(GLContext&& other)
+  : GLContextUnsafe(other.release())
+{
+}
 
 /**
  * Opaque type for an EGL display.

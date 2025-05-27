@@ -1869,6 +1869,13 @@ struct FontUnsafe : FontRef
 
   using FontRef::FontRef;
   using FontRef::reset;
+
+  FontUnsafe(const Font& other) = delete;
+
+  /**
+   * Constructs FontUnsafe from Font.
+   */
+  explicit FontUnsafe(Font&& other);
 };
 
 /**
@@ -1881,6 +1888,14 @@ struct FontUnsafe : FontRef
 struct Font : FontUnsafe
 {
   using FontUnsafe::FontUnsafe;
+
+  /**
+   * Constructs an empty Font.
+   */
+  constexpr Font()
+    : FontUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -1912,6 +1927,8 @@ struct Font : FontUnsafe
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
    */
   Font(StringParam file, float ptsize)
     : Font(CheckError(TTF_OpenFont(file, ptsize)))
@@ -1933,6 +1950,8 @@ struct Font : FontUnsafe
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
    */
   Font(IOStreamRef& src, float ptsize)
     : Font(CheckError(TTF_OpenFontIO(src.get(), false, ptsize)))
@@ -1947,11 +1966,11 @@ struct Font : FontUnsafe
    * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
    *   IOStreamRef isn't being used. This is required if
    *   `prop::Font.CREATE_IOSTREAM_POINTER` and
-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
+   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamRef containing the
    *   font to be opened. This should not be closed until the font is closed.
    *   This is required if `prop::Font.CREATE_FILENAME_STRING` and
-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
+   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
    *   for the beginning of the font, defaults to 0.
    * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the
@@ -1968,8 +1987,8 @@ struct Font : FontUnsafe
    * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for
    *   font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`
    *   if set, or 72 otherwise.
-   * - `prop::Font.CREATE_EXISTING_FONT`: an optional FontRef that, if set,
-   *   will be used as the font data source and the initial size and style of
+   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional FontRef that, if
+   * set, will be used as the font data source and the initial size and style of
    *   the new font.
    *
    * @param props the properties to use.
@@ -1979,6 +1998,8 @@ struct Font : FontUnsafe
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
    */
   Font(PropertiesRef& props)
     : Font(CheckError(TTF_OpenFontWithProperties(props.get())))
@@ -1999,6 +2020,11 @@ struct Font : FontUnsafe
     return *this;
   }
 };
+
+inline FontUnsafe::FontUnsafe(Font&& other)
+  : FontUnsafe(other.release())
+{
+}
 
 /**
  * Initialize SDL_ttf.
@@ -2145,6 +2171,13 @@ protected:
 struct TextEngineUnsafe : TextEngineRef
 {
   using TextEngineRef::TextEngineRef;
+
+  TextEngineUnsafe(const TextEngine& other) = delete;
+
+  /**
+   * Constructs TextEngineUnsafe from TextEngine.
+   */
+  explicit TextEngineUnsafe(TextEngine&& other);
 };
 
 /**
@@ -2157,6 +2190,14 @@ struct TextEngineUnsafe : TextEngineRef
 struct TextEngine : TextEngineUnsafe
 {
   using TextEngineUnsafe::TextEngineUnsafe;
+
+  /**
+   * Constructs an empty TextEngine.
+   */
+  constexpr TextEngine()
+    : TextEngineUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -2223,6 +2264,11 @@ using SubString = TTF_SubString;
 
 // Forward decl
 struct SubStringIterator;
+
+inline TextEngineUnsafe::TextEngineUnsafe(TextEngine&& other)
+  : TextEngineUnsafe(other.release())
+{
+}
 
 namespace prop::Font {
 
@@ -3352,6 +3398,13 @@ struct TextUnsafe : TextRef
   using TextRef::TextRef;
 
   using TextRef::reset;
+
+  TextUnsafe(const Text& other) = delete;
+
+  /**
+   * Constructs TextUnsafe from Text.
+   */
+  explicit TextUnsafe(Text&& other);
 };
 
 /**
@@ -3364,6 +3417,14 @@ struct TextUnsafe : TextRef
 struct Text : TextUnsafe
 {
   using TextUnsafe::TextUnsafe;
+
+  /**
+   * Constructs an empty Text.
+   */
+  constexpr Text()
+    : TextUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -3487,6 +3548,11 @@ public:
 
   friend class TextRef;
 };
+
+inline TextUnsafe::TextUnsafe(Text&& other)
+  : TextUnsafe(other.release())
+{
+}
 
 /**
  * Create a text engine for drawing text on SDL surfaces.

@@ -100,6 +100,10 @@ Inheritance diagram for SDL::IOStream:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:afc716ed30645f0aeabfc13748ec84701" id="r_afc716ed30645f0aeabfc13748ec84701"><td class="memItemLeft" align="right" valign="top"><a id="afc716ed30645f0aeabfc13748ec84701" name="afc716ed30645f0aeabfc13748ec84701"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IOStream</b> ()</td></tr>
+<tr class="memdesc:afc716ed30645f0aeabfc13748ec84701"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a>. <br /></td></tr>
+<tr class="separator:afc716ed30645f0aeabfc13748ec84701"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77d0ebb8187a6263cbebcabfdf69eeda" id="r_a77d0ebb8187a6263cbebcabfdf69eeda"><td class="memItemLeft" align="right" valign="top"><a id="a77d0ebb8187a6263cbebcabfdf69eeda" name="a77d0ebb8187a6263cbebcabfdf69eeda"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IOStream</b> (SDL_IOStream *resource)</td></tr>
 <tr class="memdesc:a77d0ebb8187a6263cbebcabfdf69eeda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
@@ -125,7 +129,21 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>IOStream</b> (<a
 <a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1IOStream.html">IOStream</a> other)</td></tr>
 <tr class="memdesc:a938e7a39687902f97492e83a68e692f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a938e7a39687902f97492e83a68e692f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc3be96c519d0e579ab1b9b89e051b43" id="r_acc3be96c519d0e579ab1b9b89e051b43"><td class="memItemLeft" align="right" valign="top"><a id="acc3be96c519d0e579ab1b9b89e051b43" name="acc3be96c519d0e579ab1b9b89e051b43"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>IOStreamUnsafe</b> (const <a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &amp;other)=delete</td></tr>
+<tr class="separator:acc3be96c519d0e579ab1b9b89e051b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b83749dda5dc23ba6e977b2b0fec3b3" id="r_a4b83749dda5dc23ba6e977b2b0fec3b3"><td class="memItemLeft" align="right" valign="top"><a id="a4b83749dda5dc23ba6e977b2b0fec3b3" name="a4b83749dda5dc23ba6e977b2b0fec3b3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>IOStreamUnsafe</b> (<a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:a4b83749dda5dc23ba6e977b2b0fec3b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1IOStreamUnsafe.html" title="Unsafe Handle to iOStream.">IOStreamUnsafe</a> from <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a>. <br /></td></tr>
+<tr class="separator:a4b83749dda5dc23ba6e977b2b0fec3b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1IOStreamUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1IOStreamUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1IOStreamUnsafe.html">SDL::IOStreamUnsafe</a></td></tr>
+<tr class="memitem:acc3be96c519d0e579ab1b9b89e051b43 inherit pub_methods_structSDL_1_1IOStreamUnsafe" id="r_acc3be96c519d0e579ab1b9b89e051b43"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>IOStreamUnsafe</b> (const <a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &amp;other)=delete</td></tr>
+<tr class="separator:acc3be96c519d0e579ab1b9b89e051b43 inherit pub_methods_structSDL_1_1IOStreamUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b83749dda5dc23ba6e977b2b0fec3b3 inherit pub_methods_structSDL_1_1IOStreamUnsafe" id="r_ga4b83749dda5dc23ba6e977b2b0fec3b3"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>IOStreamUnsafe</b> (<a class="el" href="structSDL_1_1IOStream.html">IOStream</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:ga4b83749dda5dc23ba6e977b2b0fec3b3 inherit pub_methods_structSDL_1_1IOStreamUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1IOStreamUnsafe.html" title="Unsafe Handle to iOStream.">IOStreamUnsafe</a> from <a class="el" href="structSDL_1_1IOStream.html" title="Handle to an owned iOStream.">IOStream</a>. <br /></td></tr>
+<tr class="separator:ga4b83749dda5dc23ba6e977b2b0fec3b3 inherit pub_methods_structSDL_1_1IOStreamUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3df3b2e4929e33683c0509b0175150f5 inherit pub_methods_structSDL_1_1IOStreamUnsafe" id="r_a3df3b2e4929e33683c0509b0175150f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamUnsafe.html#a3df3b2e4929e33683c0509b0175150f5">Close</a> ()</td></tr>
 <tr class="memdesc:a3df3b2e4929e33683c0509b0175150f5 inherit pub_methods_structSDL_1_1IOStreamUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close and free an allocated <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> structure.  <br /></td></tr>
 <tr class="separator:a3df3b2e4929e33683c0509b0175150f5 inherit pub_methods_structSDL_1_1IOStreamUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -467,7 +485,7 @@ Additional Inherited Members</h2></td></tr>
 </ul>
 <p><b>NOTE</b>: In order to open a file as a binary file, a "b" character has to be included in the <code>mode</code> string. This additional "b" character can either be appended at the end of the string (thus making the following compound modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+"). Additional characters may follow the sequence, although they should have no effect. For example, "t" is sometimes appended to make explicit the file is a text file.</p>
 <p>This function supports Unicode filenames, but they must be encoded in UTF-8 format, regardless of the underlying operating system.</p>
-<p>In Android, <a class="el" href="structSDL_1_1IOStreamRef.html#a8b76e37e156393479492ad62d6e86a51" title="Copy constructor.">IOStreamRef.IOStreamRef()</a> can be used to open content:// URIs. As a fallback, <a class="el" href="structSDL_1_1IOStreamRef.html#a8b76e37e156393479492ad62d6e86a51" title="Copy constructor.">IOStreamRef.IOStreamRef()</a> will transparently open a matching filename in the app's <code>assets</code>.</p>
+<p>In Android, <a class="el" href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701" title="Constructs an empty IOStream.">IOStream.IOStream()</a> can be used to open content:// URIs. As a fallback, <a class="el" href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701" title="Constructs an empty IOStream.">IOStream.IOStream()</a> will transparently open a matching filename in the app's <code>assets</code>.</p>
 <p>Closing the <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> will close <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s internal file handle.</p>
 <p>The following properties may be set at creation time by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
 <ul>
@@ -533,7 +551,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Applications do not need to use this function unless they are providing their own <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> implementation. If you just need an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to read/write a common data source, you should use the built-in implementations in <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>, like IOStreamRef.IOStreamRef(StringParam,StringParam) or <a class="el" href="group__CategoryIOStream.html#ga0ab32e06de9f87b1e8a61ac39f5b2bdd" title="Use this function to prepare a read-write memory buffer for use with IOStreamRef.">IOFromMem()</a>, etc.</p>
+<p>Applications do not need to use this function unless they are providing their own <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> implementation. If you just need an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to read/write a common data source, you should use the built-in implementations in <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>, like <a class="el" href="structSDL_1_1IOStream.html#a4c2cf9e475db5facda4c1813001ff41e" title="Use this function to create a new IOStreamRef structure for reading from and/or writing to a named fi...">IOStream.IOStream(StringParam,StringParam)</a> or <a class="el" href="group__CategoryIOStream.html#ga0ab32e06de9f87b1e8a61ac39f5b2bdd" title="Use this function to prepare a read-write memory buffer for use with IOStreamRef.">IOFromMem()</a>, etc.</p>
 <p>This function makes a copy of <code>iface</code> and the caller does not need to keep it around after this call.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -557,7 +575,7 @@ Additional Inherited Members</h2></td></tr>
 <dd>
 <a class="el" href="group__CategoryIOStream.html#ga4a4eff43e61e78e8ea35fdaf3c64be0f" title="Use this function to prepare a read-only memory buffer for use with IOStreamRef.">IOFromConstMem</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1IOStreamRef.html#a8b76e37e156393479492ad62d6e86a51" title="Copy constructor.">IOStreamRef.IOStreamRef</a> </dd>
+<a class="el" href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701" title="Constructs an empty IOStream.">IOStream.IOStream</a> </dd>
 <dd>
 <a class="el" href="group__CategoryIOStream.html#ga0ab32e06de9f87b1e8a61ac39f5b2bdd" title="Use this function to prepare a read-write memory buffer for use with IOStreamRef.">IOFromMem</a> </dd></dl>
 

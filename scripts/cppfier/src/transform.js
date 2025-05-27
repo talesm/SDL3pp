@@ -799,7 +799,56 @@ function expandResources(sourceEntries, file, context) {
     }
 
     /** @type {ApiEntryTransform[]} */
-    const uniqueCtors = [];
+    const uniqueCtors = [{
+      kind: "function",
+      type: "",
+      constexpr: true,
+      explicit: true,
+      parameters: [{
+        type: pointerType,
+        name: "resource"
+      }],
+      doc: "Constructs from the underlying resource.",
+      hints: {
+        init: [`${unsafeName}(resource)`],
+      }
+    }, {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      proto: true,
+      parameters: [{
+        type: `const ${uniqueName} &`,
+        name: "other"
+      }],
+      hints: {
+        delete: true,
+      }
+    }, {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      proto: true,
+      parameters: [{
+        type: `${uniqueName} &&`,
+        name: "other"
+      }],
+      doc: "Move constructor.",
+      hints: {
+        default: true,
+      }
+    }];
+    if (!resourceEntry.omitDefaultCtor) uniqueCtors.unshift({
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [],
+      doc: `Constructs an empty ${uniqueName}.`,
+      hints: {
+        init: [`${unsafeName}(nullptr)`],
+      }
+    });
+
     const extraUniqueCtors = subEntries[uniqueName];
     if (extraUniqueCtors) {
       delete subEntries[uniqueName];
@@ -857,9 +906,18 @@ function expandResources(sourceEntries, file, context) {
 
     const includeAfterKey = resourceEntry.includeAfter ?? sourceName;
 
-    /** @type {ApiSubEntryTransformMap} */
-    const unsafeEntries = {};
-    unsafeAliases.sort().forEach(alias => unsafeEntries[`${refName}::${alias}`] = "alias");
+    includeAfter({
+      kind: "function",
+      name: `${unsafeName}::${unsafeName}`,
+      type: "",
+      explicit: true,
+      parameters: [{
+        type: `${uniqueName} &&`,
+        name: "other"
+      }],
+      doc: `Constructs ${unsafeName} from ${uniqueName}.`,
+      hints: { init: [`${unsafeName}(other.release())`] }
+    }, file, sourceName);
 
 
     /** @type {ApiEntryTransform[]} */
@@ -869,7 +927,19 @@ function expandResources(sourceEntries, file, context) {
         kind: "struct",
         type: refName,
         doc: `Unsafe Handle to ${title}\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
-        entries: unsafeEntries,
+        entries: {
+          ...Object.fromEntries(unsafeAliases.sort().map(alias => [`${refName}::${alias}`, "alias"])),
+          [unsafeName]: {
+            kind: "function",
+            type: "",
+            proto: true,
+            parameters: [{
+              type: `const ${uniqueName} &`,
+              name: "other"
+            }],
+            hints: { delete: true }
+          }
+        },
       },
       {
         name: uniqueName,
@@ -878,45 +948,7 @@ function expandResources(sourceEntries, file, context) {
         doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
           [`${unsafeName}::${unsafeName}`]: "alias",
-          [uniqueName]: [{
-            kind: "function",
-            type: "",
-            constexpr: true,
-            explicit: true,
-            parameters: [{
-              type: pointerType,
-              name: "resource"
-            }],
-            doc: "Constructs from the underlying resource.",
-            hints: {
-              init: [`${unsafeName}(resource)`],
-            }
-          }, {
-            kind: "function",
-            type: "",
-            constexpr: true,
-            proto: true,
-            parameters: [{
-              type: `const ${uniqueName} &`,
-              name: "other"
-            }],
-            hints: {
-              delete: true,
-            }
-          }, {
-            kind: "function",
-            type: "",
-            constexpr: true,
-            proto: true,
-            parameters: [{
-              type: `${uniqueName} &&`,
-              name: "other"
-            }],
-            doc: "Move constructor.",
-            hints: {
-              default: true,
-            }
-          }, ...uniqueCtors],
+          [uniqueName]: uniqueCtors,
           ...transformedToCtors,
           ["~" + uniqueName]: {
             kind: "function",
@@ -1306,23 +1338,15 @@ function transformHierarchy(targetEntries, context) {
       delete targetEntries[key];
       insertEntry(obj.entries, entry);
     } else if (Array.isArray(entry)) {
-      entry.forEach(e => {
-        insertEntry(obj.entries, {
-          ...e,
-          doc: (isSameFile && e.doc) || "",
-          proto: true,
-        });
-        e.name = makeMemberName(key, obj.template);;
-        e.template = obj.template;
-        if (obj.hints) combineHints(e, obj.hints);
-        if (e.static) {
-          if (!e.hints) e.hints = { static: true };
-          else e.hints.static = true;
-        }
-        delete e.static;
-        if (isSameFile) delete e.doc;
-      });
+      entry.forEach(e => insertCopyEntry(e));
     } else {
+      insertCopyEntry(entry);
+    }
+
+    /**
+     * @param {ApiEntry} entry 
+     */
+    function insertCopyEntry(entry) {
       insertEntry(obj.entries, {
         ...entry,
         doc: (isSameFile && entry.doc) || "",
@@ -1331,11 +1355,9 @@ function transformHierarchy(targetEntries, context) {
       entry.name = makeMemberName(key, obj.template);
       entry.template = obj.template;
       if (obj.hints) combineHints(entry, obj.hints);
-      if (entry.static) {
-        if (!entry.hints) entry.hints = { static: true };
-        else entry.hints.static = true;
-      }
+      if (entry.static) addHints(entry, { static: true });
       delete entry.static;
+      delete entry.explicit;
       if (isSameFile) delete entry.doc;
     }
   }

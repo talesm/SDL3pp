@@ -2053,6 +2053,13 @@ struct AnimationUnsafe : AnimationRef
   using AnimationRef::Free;
 
   using AnimationRef::reset;
+
+  AnimationUnsafe(const Animation& other) = delete;
+
+  /**
+   * Constructs AnimationUnsafe from Animation.
+   */
+  explicit AnimationUnsafe(Animation&& other);
 };
 
 /**
@@ -2065,6 +2072,14 @@ struct AnimationUnsafe : AnimationRef
 struct Animation : AnimationUnsafe
 {
   using AnimationUnsafe::AnimationUnsafe;
+
+  /**
+   * Constructs an empty Animation.
+   */
+  constexpr Animation()
+    : AnimationUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -2085,11 +2100,11 @@ struct Animation : AnimationUnsafe
    * Load an animation from a file.
    *
    * @param file path on the filesystem containing an animated image.
-   * @post a new Animation, or nullptr on error.
+   * @post a new AnimationRef, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.reset
+   * @sa AnimationRef.Free
    */
   Animation(StringParam file)
     : Animation(IMG_LoadAnimation(file))
@@ -2104,7 +2119,7 @@ struct Animation : AnimationUnsafe
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.reset
+   * @sa AnimationRef.Free
    */
   Animation(IOStreamRef& src)
     : Animation(IMG_LoadAnimation_IO(src.get(), false))
@@ -2120,13 +2135,13 @@ struct Animation : AnimationUnsafe
    * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
    * on its ability to guess the format.
    *
-   * @param src an SDL_IOStream that data will be read from.
+   * @param src an IOStreamRef that data will be read from.
    * @param type a filename extension that represent this data ("GIF", etc).
    * @post a new AnimationRef, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.reset
+   * @sa AnimationRef.Free
    */
   Animation(IOStreamRef& src, StringParam type)
     : Animation(IMG_LoadAnimationTyped_IO(src.get(), false, type))
@@ -2147,6 +2162,11 @@ struct Animation : AnimationUnsafe
     return *this;
   }
 };
+
+inline AnimationUnsafe::AnimationUnsafe(Animation&& other)
+  : AnimationUnsafe(other.release())
+{
+}
 
 /**
  * Load a GIF animation directly.

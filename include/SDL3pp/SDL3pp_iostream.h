@@ -1479,6 +1479,13 @@ struct IOStreamUnsafe : IOStreamRef
   using IOStreamRef::IOStreamRef;
 
   using IOStreamRef::reset;
+
+  IOStreamUnsafe(const IOStream& other) = delete;
+
+  /**
+   * Constructs IOStreamUnsafe from IOStream.
+   */
+  explicit IOStreamUnsafe(IOStream&& other);
 };
 
 /**
@@ -1491,6 +1498,14 @@ struct IOStreamUnsafe : IOStreamRef
 struct IOStream : IOStreamUnsafe
 {
   using IOStreamUnsafe::IOStreamUnsafe;
+
+  /**
+   * Constructs an empty IOStream.
+   */
+  constexpr IOStream()
+    : IOStreamUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -1546,9 +1561,9 @@ struct IOStream : IOStreamUnsafe
    * This function supports Unicode filenames, but they must be encoded in UTF-8
    * format, regardless of the underlying operating system.
    *
-   * In Android, IOStreamRef.IOStreamRef() can be used to open content://
-   * URIs. As a fallback, IOStreamRef.IOStreamRef() will transparently open a
-   * matching filename in the app's `assets`.
+   * In Android, IOStream.IOStream() can be used to open content:// URIs. As a
+   * fallback, IOStream.IOStream() will transparently open a matching filename
+   * in the app's `assets`.
    *
    * Closing the IOStreamRef will close SDL's internal file handle.
    *
@@ -1600,8 +1615,8 @@ struct IOStream : IOStreamUnsafe
    * Applications do not need to use this function unless they are providing
    * their own IOStreamRef implementation. If you just need an IOStreamRef to
    * read/write a common data source, you should use the built-in
-   * implementations in SDL, like
-   * IOStreamRef.IOStreamRef(StringParam,StringParam) or IOFromMem(), etc.
+   * implementations in SDL, like IOStream.IOStream(StringParam,StringParam) or
+   * IOFromMem(), etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -1619,7 +1634,7 @@ struct IOStream : IOStreamUnsafe
    * @sa IOStreamRef.Close
    * @sa SDL_INIT_INTERFACE
    * @sa IOFromConstMem
-   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStream.IOStream
    * @sa IOFromMem
    */
   IOStream(const IOStreamInterface& iface, void* userdata)
@@ -1641,6 +1656,11 @@ struct IOStream : IOStreamUnsafe
     return *this;
   }
 };
+
+inline IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
+  : IOStreamUnsafe(other.release())
+{
+}
 
 namespace prop::IOStream {
 

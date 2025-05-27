@@ -213,6 +213,13 @@ struct MutexUnsafe : MutexRef
   using MutexRef::MutexRef;
 
   using MutexRef::reset;
+
+  MutexUnsafe(const Mutex& other) = delete;
+
+  /**
+   * Constructs MutexUnsafe from Mutex.
+   */
+  explicit MutexUnsafe(Mutex&& other);
 };
 
 /**
@@ -280,6 +287,11 @@ struct Mutex : MutexUnsafe
     return *this;
   }
 };
+
+inline MutexUnsafe::MutexUnsafe(Mutex&& other)
+  : MutexUnsafe(other.release())
+{
+}
 
 /**
  * A mutex that allows read-only threads to run in parallel.
@@ -529,6 +541,13 @@ struct RWLockUnsafe : RWLockRef
   using RWLockRef::RWLockRef;
 
   using RWLockRef::reset;
+
+  RWLockUnsafe(const RWLock& other) = delete;
+
+  /**
+   * Constructs RWLockUnsafe from RWLock.
+   */
+  explicit RWLockUnsafe(RWLock&& other);
 };
 
 /**
@@ -601,6 +620,7 @@ struct RWLock : RWLockUnsafe
     : RWLock(SDL_CreateRWLock())
   {
   }
+
   /**
    * Frees up resource when object goes out of scope.
    */
@@ -615,6 +635,11 @@ struct RWLock : RWLockUnsafe
     return *this;
   }
 };
+
+inline RWLockUnsafe::RWLockUnsafe(RWLock&& other)
+  : RWLockUnsafe(other.release())
+{
+}
 
 /**
  * A means to manage access to a resource, by count, between threads.
@@ -791,6 +816,13 @@ struct SemaphoreUnsafe : SemaphoreRef
   using SemaphoreRef::SemaphoreRef;
 
   using SemaphoreRef::reset;
+
+  SemaphoreUnsafe(const Semaphore& other) = delete;
+
+  /**
+   * Constructs SemaphoreUnsafe from Semaphore.
+   */
+  explicit SemaphoreUnsafe(Semaphore&& other);
 };
 
 /**
@@ -803,6 +835,14 @@ struct SemaphoreUnsafe : SemaphoreRef
 struct Semaphore : SemaphoreUnsafe
 {
   using SemaphoreUnsafe::SemaphoreUnsafe;
+
+  /**
+   * Constructs an empty Semaphore.
+   */
+  constexpr Semaphore()
+    : SemaphoreUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -859,6 +899,11 @@ struct Semaphore : SemaphoreUnsafe
     return *this;
   }
 };
+
+inline SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
+  : SemaphoreUnsafe(other.release())
+{
+}
 
 /**
  * A means to block multiple threads until a condition is satisfied.
@@ -1035,6 +1080,13 @@ struct ConditionUnsafe : ConditionRef
   using ConditionRef::Destroy;
 
   using ConditionRef::reset;
+
+  ConditionUnsafe(const Condition& other) = delete;
+
+  /**
+   * Constructs ConditionUnsafe from Condition.
+   */
+  explicit ConditionUnsafe(Condition&& other);
 };
 
 /**
@@ -1081,6 +1133,7 @@ struct Condition : ConditionUnsafe
     : Condition(SDL_CreateCondition())
   {
   }
+
   /**
    * Frees up resource when object goes out of scope.
    */
@@ -1095,6 +1148,11 @@ struct Condition : ConditionUnsafe
     return *this;
   }
 };
+
+inline ConditionUnsafe::ConditionUnsafe(Condition&& other)
+  : ConditionUnsafe(other.release())
+{
+}
 
 /**
  * The current status of an InitState structure.

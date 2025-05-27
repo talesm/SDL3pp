@@ -370,6 +370,13 @@ struct ThreadUnsafe : ThreadRef
   using ThreadRef::ThreadRef;
 
   using ThreadRef::reset;
+
+  ThreadUnsafe(const Thread& other) = delete;
+
+  /**
+   * Constructs ThreadUnsafe from Thread.
+   */
+  explicit ThreadUnsafe(Thread&& other);
 };
 
 /**
@@ -382,6 +389,14 @@ struct ThreadUnsafe : ThreadRef
 struct Thread : ThreadUnsafe
 {
   using ThreadUnsafe::ThreadUnsafe;
+
+  /**
+   * Constructs an empty Thread.
+   */
+  constexpr Thread()
+    : ThreadUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -408,7 +423,6 @@ struct Thread : ThreadUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
    * @sa ThreadRef.Wait
    */
   Thread(ThreadCB fn, StringParam name)
@@ -425,7 +439,7 @@ struct Thread : ThreadUnsafe
    * Create a new thread with a default stack size.
    *
    * This is a convenience function, equivalent to calling
-   * ThreadRef.ThreadRef with the following properties set:
+   * Thread.Thread with the following properties set:
    *
    * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
    * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -442,7 +456,6 @@ struct Thread : ThreadUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
    * @sa ThreadRef.Wait
    */
   Thread(ThreadFunction fn, StringParam name, void* data)
@@ -499,7 +512,7 @@ struct Thread : ThreadUnsafe
    *
    * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
    * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "ThreadRef.ThreadRef" will fail.
+   * for "Thread.Thread" will fail.
    *
    * Usually, apps should just call this function the same way on every platform
    * and let the macros hide the details.
@@ -510,7 +523,6 @@ struct Thread : ThreadUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
    * @sa ThreadRef.Wait
    */
   Thread(PropertiesRef& props)
@@ -532,6 +544,11 @@ struct Thread : ThreadUnsafe
     return *this;
   }
 };
+
+inline ThreadUnsafe::ThreadUnsafe(Thread&& other)
+  : ThreadUnsafe(other.release())
+{
+}
 
 namespace prop::thread {
 

@@ -1807,6 +1807,13 @@ struct RendererUnsafe : RendererRef
   using RendererRef::RendererRef;
 
   using RendererRef::reset;
+
+  RendererUnsafe(const Renderer& other) = delete;
+
+  /**
+   * Constructs RendererUnsafe from Renderer.
+   */
+  explicit RendererUnsafe(Renderer&& other);
 };
 
 /**
@@ -1819,6 +1826,14 @@ struct RendererUnsafe : RendererRef
 struct Renderer : RendererUnsafe
 {
   using RendererUnsafe::RendererUnsafe;
+
+  /**
+   * Constructs an empty Renderer.
+   */
+  constexpr Renderer()
+    : RendererUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -1871,9 +1886,6 @@ struct Renderer : RendererUnsafe
    * can call RendererRef.SetLogicalPresentation() to change the content size
    * and scaling options.
    *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
    * @param window the window where rendering is displayed.
    * @param name the name of the rendering driver to initialize, or nullptr to
    *             let SDL choose one.
@@ -1884,6 +1896,7 @@ struct Renderer : RendererUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa RendererRef.Destroy
    * @sa GetNumRenderDrivers
    * @sa GetRenderDriver
    * @sa RendererRef.GetName
@@ -1930,9 +1943,6 @@ struct Renderer : RendererUnsafe
    * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for presentation.
    *
-   * It renderer creation fails for any reason this object is falsy; call
-   * GetError() for more information.
-   *
    * @param props the properties to use.
    * @post a valid rendering context.
    * @throws Error on failure.
@@ -1942,6 +1952,7 @@ struct Renderer : RendererUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Properties
+   * @sa RendererRef.Destroy
    * @sa RendererRef.GetName
    */
   Renderer(PropertiesRef& props)
@@ -1965,6 +1976,8 @@ struct Renderer : RendererUnsafe
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RendererRef.Destroy
    */
   Renderer(SurfaceRef& surface)
     : Renderer(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
@@ -1985,6 +1998,11 @@ struct Renderer : RendererUnsafe
     return *this;
   }
 };
+
+inline RendererUnsafe::RendererUnsafe(Renderer&& other)
+  : RendererUnsafe(other.release())
+{
+}
 
 /**
  * An efficient driver-specific representation of pixel data
@@ -2730,6 +2748,13 @@ struct TextureUnsafe : TextureRef
   using TextureRef::TextureRef;
 
   using TextureRef::reset;
+
+  TextureUnsafe(const Texture& other) = delete;
+
+  /**
+   * Constructs TextureUnsafe from Texture.
+   */
+  explicit TextureUnsafe(Texture&& other);
 };
 
 /**
@@ -2742,6 +2767,14 @@ struct TextureUnsafe : TextureRef
 struct Texture : TextureUnsafe
 {
   using TextureUnsafe::TextureUnsafe;
+
+  /**
+   * Constructs an empty Texture.
+   */
+  constexpr Texture()
+    : TextureUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -2805,6 +2838,7 @@ struct Texture : TextureUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa TextureRef.Destroy
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
@@ -2838,6 +2872,8 @@ struct Texture : TextureUnsafe
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TextureRef.Destroy
    */
   Texture(RendererRef& renderer, SurfaceRef& surface)
     : Texture(
@@ -2949,9 +2985,7 @@ struct Texture : TextureUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Properties
-   * @sa TextureRef.TextureRef
-   * @sa TextureRef.TextureRef
-   * @sa TextureRef.reset
+   * @sa TextureRef.Destroy
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
@@ -3066,6 +3100,11 @@ public:
 
   friend class TextureRef;
 };
+
+inline TextureUnsafe::TextureUnsafe(Texture&& other)
+  : TextureUnsafe(other.release())
+{
+}
 
 /**
  * Get the number of 2D rendering drivers available for the current display.

@@ -244,6 +244,13 @@ struct CursorUnsafe : CursorRef
   using CursorRef::Destroy;
 
   using CursorRef::reset;
+
+  CursorUnsafe(const Cursor& other) = delete;
+
+  /**
+   * Constructs CursorUnsafe from Cursor.
+   */
+  explicit CursorUnsafe(Cursor&& other);
 };
 
 /**
@@ -256,6 +263,14 @@ struct CursorUnsafe : CursorRef
 struct Cursor : CursorUnsafe
 {
   using CursorUnsafe::CursorUnsafe;
+
+  /**
+   * Constructs an empty Cursor.
+   */
+  constexpr Cursor()
+    : CursorUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -287,11 +302,11 @@ struct Cursor : CursorUnsafe
    * - data=1, mask=0: inverted color if possible, black if not.
    *
    * If you want to have a color cursor, or create your cursor from an
-   * SurfaceRef, you should use CursorRef.CursorRef(). Alternately, you can
+   * SurfaceRef, you should use Cursor.Cursor(). Alternately, you can
    * hide the cursor and draw your own as part of your game's rendering, but it
    * will be bound to the framerate.
    *
-   * Also, CursorRef.CursorRef() is available, which provides several
+   * Also, Cursor.Cursor() is available, which provides several
    * readily-available system cursors to pick from.
    *
    * @param data the color value for each pixel of the cursor.
@@ -309,7 +324,6 @@ struct Cursor : CursorUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.CursorRef
    * @sa CursorRef.Destroy
    * @sa SetCursor
    */
@@ -346,7 +360,6 @@ struct Cursor : CursorUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.CursorRef
    * @sa CursorRef.Destroy
    * @sa SetCursor
    */
@@ -387,6 +400,11 @@ struct Cursor : CursorUnsafe
     return *this;
   }
 };
+
+inline CursorUnsafe::CursorUnsafe(Cursor&& other)
+  : CursorUnsafe(other.release())
+{
+}
 
 /**
  * Represents a button index.

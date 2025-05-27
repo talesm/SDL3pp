@@ -494,11 +494,13 @@ function generateBody(entry, prefix) {
   const hint = entry.hints;
   if (hint?.delete) return " = delete;";
   if (hint?.default) return " = default;";
-  if (hint?.body) {
-    return `\n${prefix}{\n${prefix}  ${hint.body.replaceAll("\n", `\n${prefix}  `)}\n${prefix}}`;
-  }
-  if (hint?.init?.length) {
-    return `\n${prefix}  : ${hint.init.join(`\n${prefix}  , `)}\n${prefix}{}`;
+  if (!entry.proto) {
+    if (hint?.body) {
+      return `\n${prefix}{\n${prefix}  ${hint.body.replaceAll("\n", `\n${prefix}  `)}\n${prefix}}`;
+    }
+    if (hint?.init?.length) {
+      return `\n${prefix}  : ${hint.init.join(`\n${prefix}  , `)}\n${prefix}{}`;
+    }
   }
   const sourceName = entry.sourceName === entry.name ? ("::" + entry.sourceName) : entry.sourceName;
   if (!sourceName) {

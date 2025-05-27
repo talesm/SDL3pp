@@ -927,6 +927,13 @@ struct EnvironmentUnsafe : EnvironmentRef
   using EnvironmentRef::EnvironmentRef;
 
   using EnvironmentRef::reset;
+
+  EnvironmentUnsafe(const Environment& other) = delete;
+
+  /**
+   * Constructs EnvironmentUnsafe from Environment.
+   */
+  explicit EnvironmentUnsafe(Environment&& other);
 };
 
 /**
@@ -939,6 +946,14 @@ struct EnvironmentUnsafe : EnvironmentRef
 struct Environment : EnvironmentUnsafe
 {
   using EnvironmentUnsafe::EnvironmentUnsafe;
+
+  /**
+   * Constructs an empty Environment.
+   */
+  constexpr Environment()
+    : EnvironmentUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -973,6 +988,7 @@ struct Environment : EnvironmentUnsafe
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
    * @sa EnvironmentRef.UnsetVariable
+   * @sa EnvironmentRef.Destroy
    */
   Environment(bool populated)
     : Environment(CheckError(SDL_CreateEnvironment(populated)))
@@ -993,6 +1009,11 @@ struct Environment : EnvironmentUnsafe
     return *this;
   }
 };
+
+inline EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
+  : EnvironmentUnsafe(other.release())
+{
+}
 
 /**
  * Get the process environment.
@@ -5264,6 +5285,13 @@ struct IConvUnsafe : IConvRef
   using IConvRef::close;
 
   using IConvRef::reset;
+
+  IConvUnsafe(const IConv& other) = delete;
+
+  /**
+   * Constructs IConvUnsafe from IConv.
+   */
+  explicit IConvUnsafe(IConv&& other);
 };
 
 /**
@@ -5276,6 +5304,14 @@ struct IConvUnsafe : IConvRef
 struct IConv : IConvUnsafe
 {
   using IConvUnsafe::IConvUnsafe;
+
+  /**
+   * Constructs an empty IConv.
+   */
+  constexpr IConv()
+    : IConvUnsafe(nullptr)
+  {
+  }
 
   /**
    * Constructs from the underlying resource.
@@ -5304,6 +5340,7 @@ struct IConv : IConvUnsafe
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConvRef.iconv
+   * @sa IConvRef.close
    * @sa iconv_string
    */
   IConv(StringParam tocode, StringParam fromcode)
@@ -5325,6 +5362,11 @@ struct IConv : IConvUnsafe
     return *this;
   }
 };
+
+inline IConvUnsafe::IConvUnsafe(IConv&& other)
+  : IConvUnsafe(other.release())
+{
+}
 
 #ifdef SDL3PP_DOC
 
