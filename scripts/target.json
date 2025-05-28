@@ -48803,7 +48803,7 @@
               }
             ],
             "GetPreviousSubString": {
-              "doc": "Get the previous substring in a text object\n\nIf called at the start of the text, this will return a zero length\nsubstring with the SUBSTRING_TEXT_START flag set.\n\n@param substring the SubString to query.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "doc": "Get the previous substring in a text object\n\nIf called at the start of the text, this will return a zero length\nsubstring with the SUBSTRING_TEXT_START flag set.\n\n@param substring the SubString to query.\n@param previous a pointer filled in with the previous substring in the text\n                object.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
               "name": "GetPreviousSubString",
               "kind": "function",
               "type": "void",

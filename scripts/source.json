@@ -33777,7 +33777,7 @@
           ]
         },
         "TTF_GetPreviousTextSubString": {
-          "doc": "Get the previous substring in a text object\n\nIf called at the start of the text, this will return a zero length\nsubstring with the TTF_SUBSTRING_TEXT_START flag set.\n\n\\param text the TTF_Text to query.\n\\param substring the TTF_SubString to query.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function should be called on the thread that created the\n              text.\n\n\\since This function is available since SDL_ttf 3.0.0.",
+          "doc": "Get the previous substring in a text object\n\nIf called at the start of the text, this will return a zero length\nsubstring with the TTF_SUBSTRING_TEXT_START flag set.\n\n\\param text the TTF_Text to query.\n\\param substring the TTF_SubString to query.\n\\param previous a pointer filled in with the previous substring in the text\n                object.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function should be called on the thread that created the\n              text.\n\n\\since This function is available since SDL_ttf 3.0.0.",
           "name": "TTF_GetPreviousTextSubString",
           "kind": "function",
           "type": "bool",
