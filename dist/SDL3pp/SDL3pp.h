@@ -23894,11 +23894,8 @@ constexpr InitFlags INIT_AUDIO =
  */
 constexpr InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
 
-/**
- * `INIT_JOYSTICK` implies `INIT_EVENTS`, should be initialized on the same
- * thread as INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD
- */
-constexpr InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
+constexpr InitFlags INIT_JOYSTICK =
+  SDL_INIT_JOYSTICK; ///< `INIT_JOYSTICK` implies `INIT_EVENTS`
 
 constexpr InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC; ///< HAPTIC
 
