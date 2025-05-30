@@ -518,7 +518,7 @@ struct Thread : ThreadUnsafe
    *
    * @sa ThreadRef.Wait
    */
-  Thread(PropertiesRef& props)
+  Thread(PropertiesRef props)
     : Thread(CheckError(SDL_CreateThreadWithProperties(props.get())))
   {
   }

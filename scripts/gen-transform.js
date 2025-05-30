@@ -438,7 +438,7 @@ const transform = {
             "SDL_OpenAudioDevice": {
               name: "ctor",
               parameters: [
-                { type: "const AudioDeviceRef &" },
+                { type: "AudioDeviceRef" },
                 { type: "OptionalRef<const SDL_AudioSpec>" }
               ]
             },
@@ -447,7 +447,7 @@ const transform = {
               constexpr: true,
               immutable: true,
               type: "auto",
-              parameters: [{ type: "const AudioDeviceRef &", name: "other" }],
+              parameters: [{ type: "AudioDeviceRef", name: "other" }],
               hints: { default: true }
             },
             "SDL_GetAudioDeviceName": "immutable",
@@ -509,7 +509,7 @@ const transform = {
               parameters: [
                 {
                   name: "devid",
-                  type: "const AudioDeviceRef &"
+                  type: "AudioDeviceRef"
                 },
                 {
                   name: "spec",
@@ -629,7 +629,7 @@ const transform = {
               type: "void",
               doc: "@see AudioDeviceRef.BindAudioStream",
               parameters: [{
-                type: "AudioDeviceRef &",
+                type: "AudioDeviceRef",
                 name: "devid"
               }]
             },
@@ -4638,7 +4638,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -4656,7 +4656,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -4686,7 +4686,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -4712,7 +4712,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -4734,7 +4734,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -4913,7 +4913,7 @@ const transform = {
               proto: true,
               parameters: [
                 {
-                  type: "RendererRef &",
+                  type: "RendererRef",
                   name: "renderer"
                 },
                 {
@@ -4927,11 +4927,11 @@ const transform = {
               proto: true,
               parameters: [
                 {
-                  type: "RendererRef &",
+                  type: "RendererRef",
                   name: "renderer"
                 },
                 {
-                  type: "IOStream &",
+                  type: "IOStreamRef",
                   name: "src"
                 }
               ]
@@ -4941,7 +4941,7 @@ const transform = {
               parameters: [
                 {
                   name: "renderer",
-                  type: "RendererRef &"
+                  type: "RendererRef"
                 },
                 {
                   name: "format",
@@ -6076,7 +6076,7 @@ const transform = {
               type: "",
               proto: true,
               parameters: [{
-                type: "IOStreamRef &",
+                type: "IOStreamRef",
                 name: "src"
               }],
             }],
@@ -6360,7 +6360,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6380,7 +6380,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6400,7 +6400,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6420,7 +6420,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6444,7 +6444,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6499,7 +6499,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6520,7 +6520,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6547,7 +6547,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6584,7 +6584,7 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
@@ -6819,7 +6819,7 @@ const transform = {
           type: "Surface",
           parameters: [
             {
-              type: "IOStreamRef &"
+              type: "IOStreamRef"
             }
           ]
         },
@@ -6831,7 +6831,7 @@ const transform = {
           parameters: [
             {},
             {
-              type: "IOStreamRef &"
+              type: "IOStreamRef"
             }
           ]
         }
@@ -6868,7 +6868,7 @@ const transform = {
           parameters: [
             {
               name: "window",
-              type: "WindowRef &"
+              type: "WindowRef"
             },
             {
               name: "interval",
@@ -7454,7 +7454,7 @@ const transform = {
               parameters: [
                 {
                   name: "parent",
-                  type: "WindowRef &"
+                  type: "WindowRef"
                 },
                 {
                   name: "offset",
@@ -7681,7 +7681,7 @@ const transform = {
               "static": false,
               "parameters": [
                 {
-                  "type": "WindowRef &",
+                  "type": "WindowRef",
                   "name": "window"
                 }
               ]
@@ -7963,7 +7963,7 @@ const transform = {
               parameters: [
                 {
                   "name": "src",
-                  "type": "IOStreamRef &"
+                  "type": "IOStreamRef"
                 }
               ]
             },
@@ -7972,7 +7972,7 @@ const transform = {
               parameters: [
                 {
                   "name": "src",
-                  "type": "IOStreamRef &"
+                  "type": "IOStreamRef"
                 },
                 {
                   "name": "type",
@@ -8039,7 +8039,7 @@ const transform = {
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             },
             {
               "name": "type",
@@ -8057,7 +8057,7 @@ const transform = {
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ]
         },
@@ -8070,11 +8070,11 @@ const transform = {
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef &"
+              "type": "RendererRef"
             },
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ]
         },
@@ -8084,11 +8084,11 @@ const transform = {
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef &"
+              "type": "RendererRef"
             },
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             },
             {
               "name": "type",
@@ -8189,7 +8189,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             },
             {
               "name": "quality",
@@ -8206,7 +8206,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ]
         },
@@ -8219,7 +8219,7 @@ const transform = {
             },
             {
               "name": "dst",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             },
             {
               "name": "quality",
@@ -8641,7 +8641,7 @@ const transform = {
               "type": "",
               "parameters": [
                 {
-                  "type": "TextEngineRef &",
+                  "type": "TextEngineRef",
                   "name": "engine"
                 },
                 {
@@ -8660,7 +8660,7 @@ const transform = {
                 {},
                 {
                   name: "engine",
-                  type: "TextEngineRef &"
+                  type: "TextEngineRef"
                 }
               ],
             },

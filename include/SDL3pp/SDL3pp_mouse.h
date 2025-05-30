@@ -354,7 +354,7 @@ struct Cursor : CursorUnsafe
    * @sa CursorRef.Destroy
    * @sa SetCursor
    */
-  Cursor(SurfaceRef& surface, int hot_x, int hot_y)
+  Cursor(SurfaceRef surface, int hot_x, int hot_y)
     : Cursor(CheckError(SDL_CreateColorCursor(surface.get(), hot_x, hot_y)))
   {
   }
@@ -815,7 +815,7 @@ inline void CaptureMouse(bool enabled)
  *
  * @sa GetCursor
  */
-inline void SetCursor(CursorRef& cursor)
+inline void SetCursor(CursorRef cursor)
 {
   CheckError(SDL_SetCursor(cursor.get()));
 }

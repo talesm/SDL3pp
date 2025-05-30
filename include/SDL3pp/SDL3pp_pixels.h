@@ -2184,7 +2184,7 @@ constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)
  * @sa SurfaceRef.MapColor
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
-                     const PaletteRef& palette,
+                     PaletteRef palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
@@ -2230,7 +2230,7 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
  * @sa SurfaceRef.MapColor
  */
 inline Uint32 MapRGBA(const PixelFormatDetails& format,
-                      const PaletteRef& palette,
+                      PaletteRef palette,
                       Uint8 r,
                       Uint8 g,
                       Uint8 b,
@@ -2267,7 +2267,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  */
 inline void GetRGB(Uint32 pixel,
                    const PixelFormatDetails& format,
-                   const PaletteRef& palette,
+                   PaletteRef palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
@@ -2307,7 +2307,7 @@ inline void GetRGB(Uint32 pixel,
  */
 inline void GetRGBA(Uint32 pixel,
                     const PixelFormatDetails& format,
-                    const PaletteRef& palette,
+                    PaletteRef palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,

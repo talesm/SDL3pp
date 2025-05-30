@@ -1317,7 +1317,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    * @sa RendererRef.RenderTextureRotated
    * @sa RendererRef.RenderTextureTiled
    */
-  void RenderTexture(TextureRef& texture,
+  void RenderTexture(TextureRef texture,
                      OptionalRef<const SDL_FRect> srcrect,
                      OptionalRef<const SDL_FRect> dstrect);
 
@@ -1345,7 +1345,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderTexture
    */
-  void RenderTextureRotated(TextureRef& texture,
+  void RenderTextureRotated(TextureRef texture,
                             OptionalRef<const SDL_FRect> srcrect,
                             OptionalRef<const SDL_FRect> dstrect,
                             double angle,
@@ -1376,7 +1376,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderTexture
    */
-  void RenderTextureAffine(TextureRef& texture,
+  void RenderTextureAffine(TextureRef texture,
                            OptionalRef<const SDL_FRect> srcrect,
                            OptionalRef<const SDL_FPoint> origin,
                            OptionalRef<const SDL_FPoint> right,
@@ -1405,7 +1405,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderTexture
    */
-  void RenderTextureTiled(TextureRef& texture,
+  void RenderTextureTiled(TextureRef texture,
                           OptionalRef<const SDL_FRect> srcrect,
                           float scale,
                           OptionalRef<const SDL_FRect> dstrect);
@@ -1440,7 +1440,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderTexture
    */
-  void RenderTexture9Grid(TextureRef& texture,
+  void RenderTexture9Grid(TextureRef texture,
                           OptionalRef<const SDL_FRect> srcrect,
                           float left_width,
                           float right_width,
@@ -1896,7 +1896,7 @@ struct Renderer : RendererUnsafe
    * @sa GetRenderDriver
    * @sa RendererRef.GetName
    */
-  Renderer(WindowRef& window, StringParam name)
+  Renderer(WindowRef window, StringParam name)
     : Renderer(CheckError(SDL_CreateRenderer(window.get(), name)))
   {
   }
@@ -1950,7 +1950,7 @@ struct Renderer : RendererUnsafe
    * @sa RendererRef.Destroy
    * @sa RendererRef.GetName
    */
-  Renderer(PropertiesRef& props)
+  Renderer(PropertiesRef props)
     : Renderer(CheckError(SDL_CreateRendererWithProperties(props.get())))
   {
   }
@@ -1974,7 +1974,7 @@ struct Renderer : RendererUnsafe
    *
    * @sa RendererRef.Destroy
    */
-  Renderer(SurfaceRef& surface)
+  Renderer(SurfaceRef surface)
     : Renderer(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
   {
   }
@@ -2793,7 +2793,7 @@ struct Texture : TextureUnsafe
    *
    * @sa LoadTexture(RendererRef&, StringParam)
    */
-  Texture(RendererRef& renderer, StringParam file);
+  Texture(RendererRef renderer, StringParam file);
 
   /**
    * Load an image from a IOStreamRef into a software surface.
@@ -2809,7 +2809,7 @@ struct Texture : TextureUnsafe
    * @sa LoadTexture(RendererRef&StringParam)
    * @sa LoadTextureBMP(RendererRef&, StringParam)
    */
-  Texture(RendererRef& renderer, IOStream& src);
+  Texture(RendererRef renderer, IOStreamRef src);
 
   /**
    * Create a texture for a rendering context.
@@ -2831,7 +2831,7 @@ struct Texture : TextureUnsafe
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
-  Texture(RendererRef& renderer,
+  Texture(RendererRef renderer,
           PixelFormat format,
           TextureAccess access,
           const SDL_Point& size)
@@ -2864,7 +2864,7 @@ struct Texture : TextureUnsafe
    *
    * @sa TextureRef.Destroy
    */
-  Texture(RendererRef& renderer, SurfaceRef& surface)
+  Texture(RendererRef renderer, SurfaceRef surface)
     : Texture(
         CheckError(SDL_CreateTextureFromSurface(renderer.get(), surface.get())))
   {
@@ -2978,7 +2978,7 @@ struct Texture : TextureUnsafe
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
-  Texture(RendererRef& renderer, PropertiesRef& props)
+  Texture(RendererRef renderer, PropertiesRef props)
     : Texture(CheckError(
         SDL_CreateTextureWithProperties(renderer.get(), props.get())))
   {
@@ -3424,7 +3424,7 @@ inline TextureRef RendererRef::GetTarget() const
   return SDL_GetRenderTarget(get());
 }
 
-inline void RendererRef::RenderTexture(TextureRef& texture,
+inline void RendererRef::RenderTexture(TextureRef texture,
                                        OptionalRef<const SDL_FRect> srcrect,
                                        OptionalRef<const SDL_FRect> dstrect)
 {
@@ -3432,7 +3432,7 @@ inline void RendererRef::RenderTexture(TextureRef& texture,
 }
 
 inline void RendererRef::RenderTextureRotated(
-  TextureRef& texture,
+  TextureRef texture,
   OptionalRef<const SDL_FRect> srcrect,
   OptionalRef<const SDL_FRect> dstrect,
   double angle,
@@ -3444,7 +3444,7 @@ inline void RendererRef::RenderTextureRotated(
 }
 
 inline void RendererRef::RenderTextureAffine(
-  TextureRef& texture,
+  TextureRef texture,
   OptionalRef<const SDL_FRect> srcrect,
   OptionalRef<const SDL_FPoint> origin,
   OptionalRef<const SDL_FPoint> right,
@@ -3455,7 +3455,7 @@ inline void RendererRef::RenderTextureAffine(
 }
 
 inline void RendererRef::RenderTextureTiled(
-  TextureRef& texture,
+  TextureRef texture,
   OptionalRef<const SDL_FRect> srcrect,
   float scale,
   OptionalRef<const SDL_FRect> dstrect)
@@ -3465,7 +3465,7 @@ inline void RendererRef::RenderTextureTiled(
 }
 
 inline void RendererRef::RenderTexture9Grid(
-  TextureRef& texture,
+  TextureRef texture,
   OptionalRef<const SDL_FRect> srcrect,
   float left_width,
   float right_width,
@@ -3539,7 +3539,7 @@ inline void RendererRef::RenderGeometryRaw(OptionalTexture texture,
  *
  * @sa GetRenderMetalCommandEncoder
  */
-inline void* GetRenderMetalLayer(RendererRef& renderer)
+inline void* GetRenderMetalLayer(RendererRef renderer)
 {
   return CheckError(SDL_GetRenderMetalLayer(renderer.get()));
 }
@@ -3565,7 +3565,7 @@ inline void* GetRenderMetalLayer(RendererRef& renderer)
  *
  * @sa GetRenderMetalLayer
  */
-inline void* GetRenderMetalCommandEncoder(RendererRef& renderer)
+inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
 {
   return CheckError(SDL_GetRenderMetalCommandEncoder(renderer.get()));
 }
@@ -3597,7 +3597,7 @@ inline void* GetRenderMetalCommandEncoder(RendererRef& renderer)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void AddVulkanRenderSemaphores(RendererRef& renderer,
+inline void AddVulkanRenderSemaphores(RendererRef renderer,
                                       Uint32 wait_stage_mask,
                                       Sint64 wait_semaphore,
                                       Sint64 signal_semaphore)

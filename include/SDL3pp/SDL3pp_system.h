@@ -355,7 +355,7 @@ using iOSAnimationCB = std::function<void()>;
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowRef& window,
+inline void SetiOSAnimationCallback(WindowRef window,
                                     int interval,
                                     iOSAnimationCallback callback,
                                     void* callbackParam)
@@ -399,7 +399,7 @@ inline void SetiOSAnimationCallback(WindowRef& window,
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowRef& window,
+inline void SetiOSAnimationCallback(WindowRef window,
                                     int interval,
                                     iOSAnimationCB callback)
 {

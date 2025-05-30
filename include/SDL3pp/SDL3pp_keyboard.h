@@ -423,7 +423,7 @@ inline void WindowRef::StartTextInput()
  * @sa WindowRef.StopTextInput
  * @sa WindowRef.IsTextInputActive
  */
-inline void WindowRef::StartTextInput(PropertiesRef& props)
+inline void WindowRef::StartTextInput(PropertiesRef props)
 {
   CheckError(SDL_StartTextInputWithProperties(get(), props.get()));
 }

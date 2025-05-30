@@ -3,7 +3,7 @@ var searchData=
   ['egl_5fgetcurrentconfig_0',['EGL_GetCurrentConfig',['../group__CategoryVideo.html#gae68ab6ffb4d3cf2ba086f783e8b1e20c',1,'SDL']]],
   ['egl_5fgetcurrentdisplay_1',['EGL_GetCurrentDisplay',['../group__CategoryVideo.html#gaf7a215247d95db258fcef5ea80e54fe2',1,'SDL']]],
   ['egl_5fgetprocaddress_2',['EGL_GetProcAddress',['../group__CategoryVideo.html#ga37eb8e6a189cd293223a7cb1d0a2a32f',1,'SDL']]],
-  ['egl_5fgetwindowsurface_3',['EGL_GetWindowSurface',['../group__CategoryVideo.html#ga8f8e93b77bf5e512af7d98fd21b56726',1,'SDL']]],
+  ['egl_5fgetwindowsurface_3',['EGL_GetWindowSurface',['../group__CategoryVideo.html#ga3c3eba82b74f0a3ba746a97420c0963f',1,'SDL']]],
   ['egl_5fsetattributecallbacks_4',['EGL_SetAttributeCallbacks',['../group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683',1,'SDL']]],
   ['empty_5',['empty',['../structSDL_1_1Rect.html#a69592160d95cc8d1d81dcf321559bfae',1,'SDL::Rect::Empty()'],['../classSDL_1_1OwnArray.html#a2fd8799a55c9af74fb011cb52774f36c',1,'SDL::OwnArray::empty()'],['../structSDL_1_1FRect.html#a815a929d9f6b4e0866f458155d07c23e',1,'SDL::FRect::Empty()']]],
   ['enablescreensaver_6',['EnableScreenSaver',['../group__CategoryVideo.html#ga17e9494d914dc92aa87bedd2a910d29b',1,'SDL']]],

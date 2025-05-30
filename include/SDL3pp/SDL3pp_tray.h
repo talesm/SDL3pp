@@ -98,7 +98,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @sa Tray.Tray
    */
-  void SetIcon(SurfaceRef& icon) { SDL_SetTrayIcon(get(), icon.get()); }
+  void SetIcon(SurfaceRef icon) { SDL_SetTrayIcon(get(), icon.get()); }
 
   /**
    * Updates the system tray icon's tooltip.
@@ -296,7 +296,7 @@ struct Tray : TrayUnsafe
    * @sa TrayRef.GetMenu
    * @sa TrayRef.Destroy
    */
-  Tray(SurfaceRef& icon, StringParam tooltip)
+  Tray(SurfaceRef icon, StringParam tooltip)
     : Tray(SDL_CreateTray(icon.get(), tooltip))
   {
   }

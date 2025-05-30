@@ -752,7 +752,7 @@ struct Storage : StorageUnsafe
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.ReadFile
    */
-  Storage(StringParam override, PropertiesRef& props)
+  Storage(StringParam override, PropertiesRef props)
     : Storage(CheckError(SDL_OpenTitleStorage(override, props.get())))
   {
   }
@@ -780,7 +780,7 @@ struct Storage : StorageUnsafe
    * @sa StorageRef.Ready
    * @sa StorageRef.WriteFile
    */
-  Storage(StringParam org, StringParam app, PropertiesRef& props)
+  Storage(StringParam org, StringParam app, PropertiesRef props)
     : Storage(CheckError(SDL_OpenUserStorage(org, app, props.get())))
   {
   }

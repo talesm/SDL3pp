@@ -1197,7 +1197,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetIcon(SurfaceRef& icon)
+  void SetIcon(SurfaceRef icon)
   {
     CheckError(SDL_SetWindowIcon(get(), icon.get()));
   }
@@ -2430,7 +2430,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetShape(SurfaceRef& shape)
+  void SetShape(SurfaceRef shape)
   {
     CheckError(SDL_SetWindowShape(get(), shape.get()));
   }
@@ -2527,7 +2527,7 @@ public:
 
   void StartTextInput();
 
-  void StartTextInput(PropertiesRef& props);
+  void StartTextInput(PropertiesRef props);
 
   bool IsTextInputActive() const;
 
@@ -2776,7 +2776,7 @@ struct Window : WindowUnsafe
    * @sa WindowRef.Destroy
    * @sa WindowRef.GetParent
    */
-  Window(WindowRef& parent,
+  Window(WindowRef parent,
          const SDL_Point& offset,
          const SDL_Point& size,
          WindowFlags flags = 0)
@@ -2911,7 +2911,7 @@ struct Window : WindowUnsafe
    * @sa Properties.Properties
    * @sa WindowRef.Destroy
    */
-  Window(PropertiesRef& props)
+  Window(PropertiesRef props)
     : Window(CheckError(SDL_CreateWindowWithProperties(props.get())))
   {
   }
@@ -3050,7 +3050,7 @@ struct GLContextRef : Resource<SDL_GLContextState*>
    *
    * @sa GLContext.GLContext
    */
-  void MakeCurrent(WindowRef& window)
+  void MakeCurrent(WindowRef window)
   {
     CheckError(SDL_GL_MakeCurrent(window.get(), get()));
   }
@@ -3187,7 +3187,7 @@ struct GLContext : GLContextUnsafe
    * @sa GLContextRef.Destroy
    * @sa GLContextRef.MakeCurrent
    */
-  GLContext(WindowRef& window)
+  GLContext(WindowRef window)
     : GLContext(CheckError(SDL_GL_CreateContext(window.get())))
   {
   }
@@ -4224,7 +4224,7 @@ inline EGLConfig EGL_GetCurrentConfig()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline EGLSurface EGL_GetWindowSurface(WindowRef& window)
+inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 {
   return CheckError(SDL_EGL_GetWindowSurface(window.get()));
 }
@@ -4334,7 +4334,7 @@ inline void GL_GetSwapInterval(int* interval)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GL_SwapWindow(WindowRef& window)
+inline void GL_SwapWindow(WindowRef window)
 {
   CheckError(SDL_GL_SwapWindow(window.get()));
 }

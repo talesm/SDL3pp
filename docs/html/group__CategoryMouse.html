@@ -145,9 +145,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4545ed8ad78078db5e70b80883cb5c3a" id="r_ga4545ed8ad78078db5e70b80883cb5c3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga4545ed8ad78078db5e70b80883cb5c3a">SDL::CaptureMouse</a> (bool enabled)</td></tr>
 <tr class="memdesc:ga4545ed8ad78078db5e70b80883cb5c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Capture the mouse and to track input outside an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> window.  <br /></td></tr>
 <tr class="separator:ga4545ed8ad78078db5e70b80883cb5c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0cabce2fcea4d30c16666f021d1615ab" id="r_ga0cabce2fcea4d30c16666f021d1615ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga0cabce2fcea4d30c16666f021d1615ab">SDL::SetCursor</a> (<a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;cursor)</td></tr>
-<tr class="memdesc:ga0cabce2fcea4d30c16666f021d1615ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the active cursor.  <br /></td></tr>
-<tr class="separator:ga0cabce2fcea4d30c16666f021d1615ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae0ba45c3fe4be52a1f708d2773e29e44" id="r_gae0ba45c3fe4be52a1f708d2773e29e44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#gae0ba45c3fe4be52a1f708d2773e29e44">SDL::SetCursor</a> (<a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> cursor)</td></tr>
+<tr class="memdesc:gae0ba45c3fe4be52a1f708d2773e29e44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the active cursor.  <br /></td></tr>
+<tr class="separator:gae0ba45c3fe4be52a1f708d2773e29e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f844c5e311014fb6fbd27d2f6105c09" id="r_ga2f844c5e311014fb6fbd27d2f6105c09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga2f844c5e311014fb6fbd27d2f6105c09">SDL::GetCursor</a> ()</td></tr>
 <tr class="memdesc:ga2f844c5e311014fb6fbd27d2f6105c09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the active cursor.  <br /></td></tr>
 <tr class="separator:ga2f844c5e311014fb6fbd27d2f6105c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -289,7 +289,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Most interactions with the mouse will come through the event subsystem. Moving a mouse generates an EVENT_MOUSE_MOTION event, pushing a button generates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the current state of the mouse at any time with <a class="el" href="group__CategoryMouse.html#ga83b4f3753f840a29688be524a83f610f" title="Query SDL&#39;s cache for the synchronous mouse button state and the window-relative SDL-cursor position.">GetMouseState()</a>.</p>
 <p>For certain games, it's useful to disassociate the mouse cursor from mouse input. An FPS, for example, would not want the player's motion to stop as the mouse hits the edge of the window. For these scenarios, use <a class="el" href="group__CategoryMouse.html#ga76b2b4117079a4a17a0b61684c25d343" title="Set relative mouse mode for a window.">WindowRef.SetRelativeMouseMode()</a>, which hides the cursor, grabs mouse input to the window, and reads mouse input no matter how far it moves.</p>
-<p>Games that want the system to track the mouse but want to draw their own cursor can use <a class="el" href="group__CategoryMouse.html#gaf0f9b4279e667e985373bed9f896385e" title="Hide the cursor.">HideCursor()</a> and <a class="el" href="group__CategoryMouse.html#gaf819a266866ac1cbc7491c5ad4bd6fdd" title="Show the cursor.">ShowCursor()</a>. It might be more efficient to let the system manage the cursor, if possible, using <a class="el" href="group__CategoryMouse.html#ga0cabce2fcea4d30c16666f021d1615ab" title="Set the active cursor.">SetCursor()</a> with a custom image made through CursorRef.CursorRef(), or perhaps just a specific system cursor from CursorRef.CursorRef().</p>
+<p>Games that want the system to track the mouse but want to draw their own cursor can use <a class="el" href="group__CategoryMouse.html#gaf0f9b4279e667e985373bed9f896385e" title="Hide the cursor.">HideCursor()</a> and <a class="el" href="group__CategoryMouse.html#gaf819a266866ac1cbc7491c5ad4bd6fdd" title="Show the cursor.">ShowCursor()</a>. It might be more efficient to let the system manage the cursor, if possible, using <a class="el" href="group__CategoryMouse.html#gae0ba45c3fe4be52a1f708d2773e29e44" title="Set the active cursor.">SetCursor()</a> with a custom image made through CursorRef.CursorRef(), or perhaps just a specific system cursor from CursorRef.CursorRef().</p>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can, on many platforms, differentiate between multiple connected mice, allowing for interesting input scenarios and multiplayer games. They can be enumerated with <a class="el" href="group__CategoryMouse.html#gae6a2284e9cbc6ed3904dbcc27ea066ad" title="Get a list of currently connected mice.">GetMice()</a>, and <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will send EVENT_MOUSE_ADDED and EVENT_MOUSE_REMOVED events as they are connected and unplugged.</p>
 <p>Since many apps only care about basic mouse input, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> offers a virtual mouse device for touch and pen input, which often can make a desktop application work on a touchscreen phone without any code changes. Apps that care about touch/pen separately from mouse input should filter out events with a <code>which</code> field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -504,7 +504,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 <dl class="section return"><dt>Returns</dt><dd>the active cursor or nullptr if there is no mouse.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#ga0cabce2fcea4d30c16666f021d1615ab" title="Set the active cursor.">SetCursor</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryMouse.html#gae0ba45c3fe4be52a1f708d2773e29e44" title="Set the active cursor.">SetCursor</a> </dd></dl>
 
 </div>
 </div>
@@ -907,8 +907,8 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
 
 </div>
 </div>
-<a id="ga0cabce2fcea4d30c16666f021d1615ab" name="ga0cabce2fcea4d30c16666f021d1615ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0cabce2fcea4d30c16666f021d1615ab">&#9670;&#160;</a></span>SetCursor()</h2>
+<a id="gae0ba45c3fe4be52a1f708d2773e29e44" name="gae0ba45c3fe4be52a1f708d2773e29e44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae0ba45c3fe4be52a1f708d2773e29e44">&#9670;&#160;</a></span>SetCursor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -919,7 +919,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
         <tr>
           <td class="memname">void SDL::SetCursor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1CursorRef.html">CursorRef</a>&#160;</td>
           <td class="paramname"><em>cursor</em></td><td>)</td>
           <td></td>
         </tr>

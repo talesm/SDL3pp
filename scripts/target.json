@@ -2816,7 +2816,7 @@
               "parameters": [
                 {
                   "name": "dst",
-                  "type": "PropertiesRef &"
+                  "type": "PropertiesRef"
                 }
               ],
               "sourceName": "SDL_CopyProperties",
@@ -5839,7 +5839,7 @@
               "parameters": [
                 {
                   "name": "icon",
-                  "type": "SurfaceRef &"
+                  "type": "SurfaceRef"
                 }
               ],
               "sourceName": "SDL_SetWindowIcon",
@@ -6583,7 +6583,7 @@
               "parameters": [
                 {
                   "name": "shape",
-                  "type": "SurfaceRef &"
+                  "type": "SurfaceRef"
                 }
               ],
               "sourceName": "SDL_SetWindowShape",
@@ -6692,7 +6692,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_StartTextInputWithProperties",
@@ -7044,7 +7044,7 @@
                 "parameters": [
                   {
                     "name": "parent",
-                    "type": "WindowRef &"
+                    "type": "WindowRef"
                   },
                   {
                     "name": "offset",
@@ -7071,7 +7071,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_CreateWindowWithProperties"
@@ -7212,7 +7212,7 @@
               "parameters": [
                 {
                   "name": "window",
-                  "type": "WindowRef &"
+                  "type": "WindowRef"
                 }
               ],
               "sourceName": "SDL_GL_MakeCurrent",
@@ -7439,7 +7439,7 @@
                 "parameters": [
                   {
                     "name": "window",
-                    "type": "WindowRef &"
+                    "type": "WindowRef"
                   }
                 ],
                 "sourceName": "SDL_GL_CreateContext"
@@ -8807,7 +8807,7 @@
           "parameters": [
             {
               "name": "window",
-              "type": "WindowRef &"
+              "type": "WindowRef"
             }
           ],
           "sourceName": "SDL_EGL_GetWindowSurface"
@@ -8877,7 +8877,7 @@
           "parameters": [
             {
               "name": "window",
-              "type": "WindowRef &"
+              "type": "WindowRef"
             }
           ],
           "sourceName": "SDL_GL_SwapWindow",
@@ -9778,7 +9778,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -9804,7 +9804,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -9842,7 +9842,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -9876,7 +9876,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -9906,7 +9906,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "TextureRef &"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "srcrect",
@@ -10371,7 +10371,7 @@
                 "parameters": [
                   {
                     "name": "window",
-                    "type": "WindowRef &"
+                    "type": "WindowRef"
                   },
                   {
                     "name": "name",
@@ -10388,7 +10388,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_CreateRendererWithProperties"
@@ -10401,7 +10401,7 @@
                 "parameters": [
                   {
                     "name": "surface",
-                    "type": "SurfaceRef &"
+                    "type": "SurfaceRef"
                   }
                 ],
                 "sourceName": "SDL_CreateSoftwareRenderer"
@@ -11145,7 +11145,7 @@
                 "proto": true,
                 "parameters": [
                   {
-                    "type": "RendererRef &",
+                    "type": "RendererRef",
                     "name": "renderer"
                   },
                   {
@@ -11162,11 +11162,11 @@
                 "proto": true,
                 "parameters": [
                   {
-                    "type": "RendererRef &",
+                    "type": "RendererRef",
                     "name": "renderer"
                   },
                   {
-                    "type": "IOStream &",
+                    "type": "IOStreamRef",
                     "name": "src"
                   }
                 ],
@@ -11181,7 +11181,7 @@
                 "parameters": [
                   {
                     "name": "renderer",
-                    "type": "RendererRef &"
+                    "type": "RendererRef"
                   },
                   {
                     "name": "format",
@@ -11207,11 +11207,11 @@
                 "parameters": [
                   {
                     "name": "renderer",
-                    "type": "RendererRef &"
+                    "type": "RendererRef"
                   },
                   {
                     "name": "surface",
-                    "type": "SurfaceRef &"
+                    "type": "SurfaceRef"
                   }
                 ],
                 "sourceName": "SDL_CreateTextureFromSurface"
@@ -11224,11 +11224,11 @@
                 "parameters": [
                   {
                     "name": "renderer",
-                    "type": "RendererRef &"
+                    "type": "RendererRef"
                   },
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_CreateTextureWithProperties"
@@ -12257,7 +12257,7 @@
           "parameters": [
             {
               "name": "texture",
-              "type": "TextureRef &"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -12282,7 +12282,7 @@
           "parameters": [
             {
               "name": "texture",
-              "type": "TextureRef &"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -12319,7 +12319,7 @@
           "parameters": [
             {
               "name": "texture",
-              "type": "TextureRef &"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -12352,7 +12352,7 @@
           "parameters": [
             {
               "name": "texture",
-              "type": "TextureRef &"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -12381,7 +12381,7 @@
           "parameters": [
             {
               "name": "texture",
-              "type": "TextureRef &"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -12509,7 +12509,7 @@
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef &"
+              "type": "RendererRef"
             }
           ],
           "sourceName": "SDL_GetRenderMetalLayer",
@@ -12525,7 +12525,7 @@
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef &"
+              "type": "RendererRef"
             }
           ],
           "sourceName": "SDL_GetRenderMetalCommandEncoder",
@@ -12541,7 +12541,7 @@
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef &"
+              "type": "RendererRef"
             },
             {
               "name": "wait_stage_mask",
@@ -15638,7 +15638,7 @@
             },
             {
               "name": "palette",
-              "type": "const PaletteRef &"
+              "type": "PaletteRef"
             },
             {
               "name": "r",
@@ -15667,7 +15667,7 @@
             },
             {
               "name": "palette",
-              "type": "const PaletteRef &"
+              "type": "PaletteRef"
             },
             {
               "name": "r",
@@ -15704,7 +15704,7 @@
             },
             {
               "name": "palette",
-              "type": "const PaletteRef &"
+              "type": "PaletteRef"
             },
             {
               "name": "r",
@@ -15737,7 +15737,7 @@
             },
             {
               "name": "palette",
-              "type": "const PaletteRef &"
+              "type": "PaletteRef"
             },
             {
               "name": "r",
@@ -17721,7 +17721,7 @@
               "parameters": [
                 {
                   "name": "palette",
-                  "type": "PaletteRef &"
+                  "type": "PaletteRef"
                 }
               ],
               "sourceName": "SDL_SetSurfacePalette",
@@ -17746,7 +17746,7 @@
               "parameters": [
                 {
                   "name": "image",
-                  "type": "SurfaceRef &"
+                  "type": "SurfaceRef"
                 }
               ],
               "sourceName": "SDL_AddSurfaceAlternateImage",
@@ -18149,7 +18149,7 @@
                   },
                   {
                     "name": "palette",
-                    "type": "PaletteRef &"
+                    "type": "PaletteRef"
                   },
                   {
                     "name": "colorspace",
@@ -18157,7 +18157,7 @@
                   },
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_ConvertSurfaceAndColorspace",
@@ -18306,7 +18306,7 @@
                 "type": "void",
                 "parameters": [
                   {
-                    "type": "const SurfaceRef &",
+                    "type": "SurfaceRef",
                     "name": "src"
                   },
                   {
@@ -18329,7 +18329,7 @@
                 "parameters": [
                   {
                     "name": "src",
-                    "type": "const SurfaceRef &"
+                    "type": "SurfaceRef"
                   },
                   {
                     "name": "srcrect",
@@ -18354,7 +18354,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "const SurfaceRef &"
+                  "type": "SurfaceRef"
                 },
                 {
                   "name": "srcrect",
@@ -18378,7 +18378,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "const SurfaceRef &"
+                  "type": "SurfaceRef"
                 },
                 {
                   "name": "srcrect",
@@ -18406,7 +18406,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "const SurfaceRef &"
+                  "type": "SurfaceRef"
                 },
                 {
                   "name": "srcrect",
@@ -18468,7 +18468,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "const SurfaceRef &"
+                  "type": "SurfaceRef"
                 },
                 {
                   "name": "srcrect",
@@ -18492,7 +18492,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "const SurfaceRef &"
+                  "type": "SurfaceRef"
                 },
                 {
                   "name": "srcrect",
@@ -18522,7 +18522,7 @@
               "type": "void",
               "parameters": [
                 {
-                  "type": "const SurfaceRef &",
+                  "type": "SurfaceRef",
                   "name": "src"
                 },
                 {
@@ -18560,7 +18560,7 @@
               "parameters": [
                 {
                   "name": "src",
-                  "type": "const SurfaceRef &"
+                  "type": "SurfaceRef"
                 },
                 {
                   "name": "srcrect",
@@ -19079,7 +19079,7 @@
                 "proto": true,
                 "parameters": [
                   {
-                    "type": "IOStreamRef &",
+                    "type": "IOStreamRef",
                     "name": "src"
                   }
                 ],
@@ -19358,7 +19358,7 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               }
             ],
             "sourceName": "SDL_LoadBMP_IO"
@@ -19386,11 +19386,11 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef &"
+                "type": "SurfaceRef"
               },
               {
                 "name": "dst",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               }
             ],
             "sourceName": "SDL_SaveBMP_IO",
@@ -19406,7 +19406,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef &"
+                "type": "SurfaceRef"
               },
               {
                 "name": "file",
@@ -19485,7 +19485,7 @@
               },
               {
                 "name": "palette",
-                "type": "PaletteRef &"
+                "type": "PaletteRef"
               },
               {
                 "name": "colorspace",
@@ -19493,7 +19493,7 @@
               },
               {
                 "name": "props",
-                "type": "PropertiesRef &"
+                "type": "PropertiesRef"
               }
             ],
             "sourceName": "SDL_ConvertSurfaceAndColorspace",
@@ -19572,7 +19572,7 @@
             },
             {
               "name": "src_properties",
-              "type": "PropertiesRef &"
+              "type": "PropertiesRef"
             },
             {
               "name": "src",
@@ -19592,7 +19592,7 @@
             },
             {
               "name": "dst_properties",
-              "type": "PropertiesRef &"
+              "type": "PropertiesRef"
             },
             {
               "name": "dst",
@@ -20305,7 +20305,7 @@
               "type": "auto",
               "parameters": [
                 {
-                  "type": "const AudioDeviceRef &",
+                  "type": "AudioDeviceRef",
                   "name": "other"
                 }
               ],
@@ -20450,7 +20450,7 @@
               "parameters": [
                 {
                   "name": "stream",
-                  "type": "AudioStreamRef &"
+                  "type": "AudioStreamRef"
                 }
               ],
               "sourceName": "SDL_BindAudioStream",
@@ -20710,7 +20710,7 @@
                 "parameters": [
                   {
                     "name": "devid",
-                    "type": "const AudioDeviceRef &"
+                    "type": "AudioDeviceRef"
                   },
                   {
                     "name": "spec",
@@ -21210,7 +21210,7 @@
               "doc": "@see AudioDeviceRef.BindAudioStream",
               "parameters": [
                 {
-                  "type": "AudioDeviceRef &",
+                  "type": "AudioDeviceRef",
                   "name": "devid"
                 }
               ],
@@ -21470,7 +21470,7 @@
                 "parameters": [
                   {
                     "name": "devid",
-                    "type": "const AudioDeviceRef &"
+                    "type": "AudioDeviceRef"
                   },
                   {
                     "name": "spec",
@@ -21593,7 +21593,7 @@
                 "parameters": [
                   {
                     "name": "stream",
-                    "type": "AudioStreamRef &"
+                    "type": "AudioStreamRef"
                   }
                 ],
                 "sourceName": "SDL_LockAudioStream",
@@ -21724,7 +21724,7 @@
           "parameters": [
             {
               "name": "stream",
-              "type": "AudioStreamRef &"
+              "type": "AudioStreamRef"
             }
           ],
           "sourceName": "SDL_BindAudioStream",
@@ -21768,7 +21768,7 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               },
               {
                 "name": "spec",
@@ -23859,7 +23859,7 @@
             "parameters": [
               {
                 "name": "props",
-                "type": "PropertiesRef &"
+                "type": "PropertiesRef"
               }
             ],
             "sourceName": "SDL_StartTextInputWithProperties",
@@ -29442,7 +29442,7 @@
                 "parameters": [
                   {
                     "name": "surface",
-                    "type": "SurfaceRef &"
+                    "type": "SurfaceRef"
                   },
                   {
                     "name": "hot_x",
@@ -29847,7 +29847,7 @@
           "parameters": [
             {
               "name": "cursor",
-              "type": "CursorRef &"
+              "type": "CursorRef"
             }
           ],
           "sourceName": "SDL_SetCursor",
@@ -30357,7 +30357,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_CreateThreadWithProperties",
@@ -31517,7 +31517,7 @@
               "parameters": [
                 {
                   "name": "mutex",
-                  "type": "MutexRef &"
+                  "type": "MutexRef"
                 }
               ],
               "sourceName": "SDL_WaitCondition"
@@ -31530,7 +31530,7 @@
               "parameters": [
                 {
                   "name": "mutex",
-                  "type": "MutexRef &"
+                  "type": "MutexRef"
                 },
                 {
                   "name": "timeout",
@@ -34147,7 +34147,7 @@
                   },
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_OpenTitleStorage",
@@ -34171,7 +34171,7 @@
                   },
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_OpenUserStorage",
@@ -36758,7 +36758,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "SDL_CreateProcessWithProperties"
@@ -37544,7 +37544,7 @@
               },
               {
                 "name": "props",
-                "type": "PropertiesRef &"
+                "type": "PropertiesRef"
               }
             ],
             "sourceName": "SDL_ShowFileDialogWithProperties"
@@ -37758,7 +37758,7 @@
               "parameters": [
                 {
                   "name": "icon",
-                  "type": "SurfaceRef &"
+                  "type": "SurfaceRef"
                 }
               ],
               "sourceName": "SDL_SetTrayIcon"
@@ -38011,7 +38011,7 @@
                 "parameters": [
                   {
                     "name": "icon",
-                    "type": "SurfaceRef &"
+                    "type": "SurfaceRef"
                   },
                   {
                     "name": "tooltip",
@@ -38953,7 +38953,7 @@
             "parameters": [
               {
                 "name": "window",
-                "type": "WindowRef &"
+                "type": "WindowRef"
               },
               {
                 "name": "interval",
@@ -38980,7 +38980,7 @@
             "parameters": [
               {
                 "name": "window",
-                "type": "WindowRef &"
+                "type": "WindowRef"
               },
               {
                 "name": "interval",
@@ -43788,7 +43788,7 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               },
               {
                 "name": "type",
@@ -43818,7 +43818,7 @@
             "parameters": [
               {
                 "name": "src",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               }
             ],
             "sourceName": "IMG_Load_IO"
@@ -43833,7 +43833,7 @@
             "parameters": [
               {
                 "name": "renderer",
-                "type": "RendererRef &"
+                "type": "RendererRef"
               },
               {
                 "name": "file",
@@ -43850,11 +43850,11 @@
             "parameters": [
               {
                 "name": "renderer",
-                "type": "RendererRef &"
+                "type": "RendererRef"
               },
               {
                 "name": "src",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               }
             ],
             "sourceName": "IMG_LoadTexture_IO"
@@ -43867,11 +43867,11 @@
             "parameters": [
               {
                 "name": "renderer",
-                "type": "RendererRef &"
+                "type": "RendererRef"
               },
               {
                 "name": "src",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               },
               {
                 "name": "type",
@@ -43889,7 +43889,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isAVIF"
@@ -43902,7 +43902,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isICO"
@@ -43915,7 +43915,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isCUR"
@@ -43928,7 +43928,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isBMP"
@@ -43941,7 +43941,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isGIF"
@@ -43954,7 +43954,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isJPG"
@@ -43967,7 +43967,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isJXL"
@@ -43980,7 +43980,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isLBM"
@@ -43993,7 +43993,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isPCX"
@@ -44006,7 +44006,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isPNG"
@@ -44019,7 +44019,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isPNM"
@@ -44032,7 +44032,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isSVG"
@@ -44045,7 +44045,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isQOI"
@@ -44058,7 +44058,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isTIF"
@@ -44071,7 +44071,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isXCF"
@@ -44084,7 +44084,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isXPM"
@@ -44097,7 +44097,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isXV"
@@ -44110,7 +44110,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_isWEBP"
@@ -44123,7 +44123,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadAVIF_IO"
@@ -44136,7 +44136,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadICO_IO"
@@ -44149,7 +44149,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadCUR_IO"
@@ -44162,7 +44162,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadGIF_IO"
@@ -44175,7 +44175,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadJPG_IO"
@@ -44188,7 +44188,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadJXL_IO"
@@ -44201,7 +44201,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadLBM_IO"
@@ -44214,7 +44214,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadPCX_IO"
@@ -44227,7 +44227,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadPNG_IO"
@@ -44240,7 +44240,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadPNM_IO"
@@ -44253,7 +44253,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadSVG_IO"
@@ -44266,7 +44266,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadQOI_IO"
@@ -44279,7 +44279,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadTGA_IO"
@@ -44292,7 +44292,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadTIF_IO"
@@ -44305,7 +44305,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadXCF_IO"
@@ -44318,7 +44318,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadXPM_IO"
@@ -44331,7 +44331,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadXV_IO"
@@ -44344,7 +44344,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadWEBP_IO"
@@ -44357,7 +44357,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             },
             {
               "name": "width",
@@ -44405,7 +44405,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef &"
+                "type": "SurfaceRef"
               },
               {
                 "name": "file",
@@ -44433,7 +44433,7 @@
               },
               {
                 "name": "dst",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               },
               {
                 "name": "quality",
@@ -44455,7 +44455,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef &"
+                "type": "SurfaceRef"
               },
               {
                 "name": "file",
@@ -44479,7 +44479,7 @@
               },
               {
                 "name": "dst",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               }
             ],
             "sourceName": "IMG_SavePNG_IO",
@@ -44497,7 +44497,7 @@
             "parameters": [
               {
                 "name": "surface",
-                "type": "SurfaceRef &"
+                "type": "SurfaceRef"
               },
               {
                 "name": "file",
@@ -44525,7 +44525,7 @@
               },
               {
                 "name": "dst",
-                "type": "IOStreamRef &"
+                "type": "IOStreamRef"
               },
               {
                 "name": "quality",
@@ -44837,7 +44837,7 @@
                 "parameters": [
                   {
                     "name": "src",
-                    "type": "IOStreamRef &"
+                    "type": "IOStreamRef"
                   }
                 ],
                 "sourceName": "IMG_LoadAnimation_IO",
@@ -44851,7 +44851,7 @@
                 "parameters": [
                   {
                     "name": "src",
-                    "type": "IOStreamRef &"
+                    "type": "IOStreamRef"
                   },
                   {
                     "name": "type",
@@ -44917,7 +44917,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadGIFAnimation_IO"
@@ -44930,7 +44930,7 @@
           "parameters": [
             {
               "name": "src",
-              "type": "IOStreamRef &"
+              "type": "IOStreamRef"
             }
           ],
           "sourceName": "IMG_LoadWEBPAnimation_IO"
@@ -45448,7 +45448,7 @@
               "parameters": [
                 {
                   "name": "fallback",
-                  "type": "FontRef &"
+                  "type": "FontRef"
                 }
               ],
               "sourceName": "TTF_AddFallbackFont",
@@ -45464,7 +45464,7 @@
               "parameters": [
                 {
                   "name": "fallback",
-                  "type": "FontRef &"
+                  "type": "FontRef"
                 }
               ],
               "sourceName": "TTF_RemoveFallbackFont"
@@ -46605,7 +46605,7 @@
                 "parameters": [
                   {
                     "name": "src",
-                    "type": "IOStreamRef &"
+                    "type": "IOStreamRef"
                   },
                   {
                     "name": "ptsize",
@@ -46626,7 +46626,7 @@
                 "parameters": [
                   {
                     "name": "props",
-                    "type": "PropertiesRef &"
+                    "type": "PropertiesRef"
                   }
                 ],
                 "sourceName": "TTF_OpenFontWithProperties",
@@ -47339,7 +47339,7 @@
               "parameters": [
                 {
                   "name": "engine",
-                  "type": "TextEngineRef &"
+                  "type": "TextEngineRef"
                 }
               ],
               "sourceName": "TTF_SetTextEngine",
@@ -47367,7 +47367,7 @@
               "parameters": [
                 {
                   "name": "font",
-                  "type": "FontRef &"
+                  "type": "FontRef"
                 }
               ],
               "sourceName": "TTF_SetTextFont"
@@ -48186,7 +48186,7 @@
                 "parameters": [
                   {
                     "name": "engine",
-                    "type": "TextEngineRef &"
+                    "type": "TextEngineRef"
                   },
                   {
                     "name": "font",
@@ -48387,7 +48387,7 @@
           "parameters": [
             {
               "name": "renderer",
-              "type": "RendererRef &"
+              "type": "RendererRef"
             }
           ],
           "sourceName": "TTF_CreateRendererTextEngine"
@@ -48400,7 +48400,7 @@
           "parameters": [
             {
               "name": "props",
-              "type": "PropertiesRef &"
+              "type": "PropertiesRef"
             }
           ],
           "sourceName": "TTF_CreateRendererTextEngineWithProperties"
@@ -48451,7 +48451,7 @@
           "parameters": [
             {
               "name": "props",
-              "type": "PropertiesRef &"
+              "type": "PropertiesRef"
             }
           ],
           "sourceName": "TTF_CreateGPUTextEngineWithProperties"

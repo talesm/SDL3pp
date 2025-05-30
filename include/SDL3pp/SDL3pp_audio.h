@@ -542,7 +542,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
   using Resource::Resource;
 
   /// Comparison
-  constexpr auto operator<=>(const AudioDeviceRef& other) const
+  constexpr auto operator<=>(AudioDeviceRef other) const
   {
     return get() <=> other.get();
   }
@@ -844,7 +844,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * @sa AudioStreamRef.Unbind
    * @sa AudioStreamRef.GetDevice
    */
-  void BindAudioStream(AudioStreamRef& stream);
+  void BindAudioStream(AudioStreamRef stream);
 
   /**
    * Set a callback that fires when data is about to be fed to an audio device.
@@ -1147,8 +1147,7 @@ struct AudioDevice : AudioDeviceUnsafe
    * @sa AudioDeviceRef.Close
    * @sa AudioDeviceRef.GetFormat
    */
-  AudioDevice(const AudioDeviceRef& devid,
-              OptionalRef<const SDL_AudioSpec> spec)
+  AudioDevice(AudioDeviceRef devid, OptionalRef<const SDL_AudioSpec> spec)
     : AudioDevice(CheckError(SDL_OpenAudioDevice(devid.get(), spec)))
   {
   }
@@ -2224,7 +2223,7 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    * @sa AudioStreamRef.GetDevice
    * @sa AudioDeviceRef.BindAudioStream
    */
-  void Bind(AudioDeviceRef& devid) { devid.BindAudioStream(*this); }
+  void Bind(AudioDeviceRef devid) { devid.BindAudioStream(*this); }
 
   /**
    * Unbind a single audio stream from its audio device.
@@ -2468,7 +2467,7 @@ struct AudioStream : AudioStreamUnsafe
    * @sa AudioStreamRef.GetDevice
    * @sa AudioStreamRef.ResumeDevice
    */
-  AudioStream(const AudioDeviceRef& devid,
+  AudioStream(AudioDeviceRef devid,
               OptionalRef<const AudioSpec> spec = std::nullopt,
               AudioStreamCallback callback = nullptr,
               void* userdata = nullptr)
@@ -2601,7 +2600,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
    *
    * @sa AudioStreamLock.Unlock
    */
-  AudioStreamLock(AudioStreamRef& stream)
+  AudioStreamLock(AudioStreamRef stream)
     : LockBase(stream.get())
   {
     CheckError(SDL_LockAudioStream(stream.get()));
@@ -2783,7 +2782,7 @@ inline void AudioDeviceRef::BindAudioStreams(std::span<AudioStreamRef> streams)
     streams.size()));
 }
 
-inline void AudioDeviceRef::BindAudioStream(AudioStreamRef& stream)
+inline void AudioDeviceRef::BindAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_BindAudioStream(get(), stream.get()));
 }
@@ -2856,8 +2855,7 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  * Example:
  *
  * ```c
- * LoadWAV(IOStreamRef.IOStreamRef("sample.wav", "rb"), true, &spec, &buf,
- * &len);
+ * LoadWAV(IOStream.IOStream("sample.wav", "rb"), true, &spec, &buf, &len);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
@@ -2881,7 +2879,7 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  *
  * @sa LoadWAV
  */
-inline OwnArray<Uint8> LoadWAV(IOStreamRef& src, AudioSpec* spec)
+inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
 {
   Uint8* buf;
   Uint32 len;

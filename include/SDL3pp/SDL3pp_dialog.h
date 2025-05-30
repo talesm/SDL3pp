@@ -552,7 +552,7 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCallback callback,
                                          void* userdata,
-                                         PropertiesRef& props)
+                                         PropertiesRef props)
 {
   SDL_ShowFileDialogWithProperties(type, callback, userdata, props.get());
 }

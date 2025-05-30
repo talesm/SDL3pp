@@ -214,7 +214,7 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void CopyPropertiesTo(PropertiesRef& dst) const
+  void CopyPropertiesTo(PropertiesRef dst) const
   {
     CheckError(SDL_CopyProperties(get(), dst.get()));
   }

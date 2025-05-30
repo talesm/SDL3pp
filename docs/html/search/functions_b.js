@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['makecurrent_0',['MakeCurrent',['../structSDL_1_1GLContextRef.html#ac378d9839d895485868403616f58efe8',1,'SDL::GLContextRef']]],
+  ['makecurrent_0',['MakeCurrent',['../structSDL_1_1GLContextRef.html#ae585d2c2a6a1b2a5afe8b5b87d4e2cce',1,'SDL::GLContextRef']]],
   ['malloc_1',['malloc',['../group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70',1,'SDL']]],
   ['map_2',['map',['../classSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880',1,'SDL::PixelFormat::Map()'],['../structSDL_1_1Color.html#a152048e6de3cdaae27438893d5c4bfac',1,'SDL::Color::Map()']]],
   ['mapcolor_3',['mapcolor',['../structSDL_1_1SurfaceRef.html#a8e52373eccd909bc58357160d05112c7',1,'SDL::SurfaceRef::MapColor(SDL_Color color) const'],['../structSDL_1_1SurfaceRef.html#a42e9cc0ae405df54c7efac508b9322a7',1,'SDL::SurfaceRef::MapColor(Uint8 r, Uint8 g, Uint8 b) const'],['../structSDL_1_1SurfaceRef.html#af57c906cabe52ed0e3f5833d16a5b2d4',1,'SDL::SurfaceRef::MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const']]],
-  ['maprgb_4',['MapRGB',['../group__CategoryPixels.html#gaffd17bffce7d22dd94ab1dc8257af1b9',1,'SDL']]],
-  ['maprgba_5',['MapRGBA',['../group__CategoryPixels.html#ga771b5a63cb9c353eb4e51f3f0d65040d',1,'SDL']]],
+  ['maprgb_4',['MapRGB',['../group__CategoryPixels.html#ga4cbff25e6b58ddcdabed09145b23ad89',1,'SDL']]],
+  ['maprgba_5',['MapRGBA',['../group__CategoryPixels.html#gad02ad21af6f4472fc42d05601e77723b',1,'SDL']]],
   ['max_6',['max',['../group__CategoryStdinc.html#ga74fda1cb69f4e000dc8a42aba05136a0',1,'SDL']]],
   ['maximize_7',['Maximize',['../structSDL_1_1WindowRef.html#a39039f50fb10131fd59a9200fc92024e',1,'SDL::WindowRef']]],
   ['measurestring_8',['MeasureString',['../structSDL_1_1FontRef.html#ae0feb5ba458ea229b62ee932f1db2fe0',1,'SDL::FontRef']]],

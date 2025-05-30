@@ -18496,7 +18496,7 @@ constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)
  * @sa SurfaceRef.MapColor
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
-                     const PaletteRef& palette,
+                     PaletteRef palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
@@ -18542,7 +18542,7 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
  * @sa SurfaceRef.MapColor
  */
 inline Uint32 MapRGBA(const PixelFormatDetails& format,
-                      const PaletteRef& palette,
+                      PaletteRef palette,
                       Uint8 r,
                       Uint8 g,
                       Uint8 b,
@@ -18579,7 +18579,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  */
 inline void GetRGB(Uint32 pixel,
                    const PixelFormatDetails& format,
-                   const PaletteRef& palette,
+                   PaletteRef palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
@@ -18619,7 +18619,7 @@ inline void GetRGB(Uint32 pixel,
  */
 inline void GetRGBA(Uint32 pixel,
                     const PixelFormatDetails& format,
-                    const PaletteRef& palette,
+                    PaletteRef palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,
@@ -19265,7 +19265,7 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void CopyPropertiesTo(PropertiesRef& dst) const
+  void CopyPropertiesTo(PropertiesRef dst) const
   {
     CheckError(SDL_CopyProperties(get(), dst.get()));
   }
@@ -28414,7 +28414,7 @@ struct Storage : StorageUnsafe
    * @sa StorageRef.GetFileSize
    * @sa StorageRef.ReadFile
    */
-  Storage(StringParam override, PropertiesRef& props)
+  Storage(StringParam override, PropertiesRef props)
     : Storage(CheckError(SDL_OpenTitleStorage(override, props.get())))
   {
   }
@@ -28442,7 +28442,7 @@ struct Storage : StorageUnsafe
    * @sa StorageRef.Ready
    * @sa StorageRef.WriteFile
    */
-  Storage(StringParam org, StringParam app, PropertiesRef& props)
+  Storage(StringParam org, StringParam app, PropertiesRef props)
     : Storage(CheckError(SDL_OpenUserStorage(org, app, props.get())))
   {
   }
@@ -29036,7 +29036,7 @@ struct Thread : ThreadUnsafe
    *
    * @sa ThreadRef.Wait
    */
-  Thread(PropertiesRef& props)
+  Thread(PropertiesRef props)
     : Thread(CheckError(SDL_CreateThreadWithProperties(props.get())))
   {
   }
@@ -29690,7 +29690,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
   using Resource::Resource;
 
   /// Comparison
-  constexpr auto operator<=>(const AudioDeviceRef& other) const
+  constexpr auto operator<=>(AudioDeviceRef other) const
   {
     return get() <=> other.get();
   }
@@ -29992,7 +29992,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * @sa AudioStreamRef.Unbind
    * @sa AudioStreamRef.GetDevice
    */
-  void BindAudioStream(AudioStreamRef& stream);
+  void BindAudioStream(AudioStreamRef stream);
 
   /**
    * Set a callback that fires when data is about to be fed to an audio device.
@@ -30295,8 +30295,7 @@ struct AudioDevice : AudioDeviceUnsafe
    * @sa AudioDeviceRef.Close
    * @sa AudioDeviceRef.GetFormat
    */
-  AudioDevice(const AudioDeviceRef& devid,
-              OptionalRef<const SDL_AudioSpec> spec)
+  AudioDevice(AudioDeviceRef devid, OptionalRef<const SDL_AudioSpec> spec)
     : AudioDevice(CheckError(SDL_OpenAudioDevice(devid.get(), spec)))
   {
   }
@@ -31372,7 +31371,7 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    * @sa AudioStreamRef.GetDevice
    * @sa AudioDeviceRef.BindAudioStream
    */
-  void Bind(AudioDeviceRef& devid) { devid.BindAudioStream(*this); }
+  void Bind(AudioDeviceRef devid) { devid.BindAudioStream(*this); }
 
   /**
    * Unbind a single audio stream from its audio device.
@@ -31616,7 +31615,7 @@ struct AudioStream : AudioStreamUnsafe
    * @sa AudioStreamRef.GetDevice
    * @sa AudioStreamRef.ResumeDevice
    */
-  AudioStream(const AudioDeviceRef& devid,
+  AudioStream(AudioDeviceRef devid,
               OptionalRef<const AudioSpec> spec = std::nullopt,
               AudioStreamCallback callback = nullptr,
               void* userdata = nullptr)
@@ -31749,7 +31748,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
    *
    * @sa AudioStreamLock.Unlock
    */
-  AudioStreamLock(AudioStreamRef& stream)
+  AudioStreamLock(AudioStreamRef stream)
     : LockBase(stream.get())
   {
     CheckError(SDL_LockAudioStream(stream.get()));
@@ -31931,7 +31930,7 @@ inline void AudioDeviceRef::BindAudioStreams(std::span<AudioStreamRef> streams)
     streams.size()));
 }
 
-inline void AudioDeviceRef::BindAudioStream(AudioStreamRef& stream)
+inline void AudioDeviceRef::BindAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_BindAudioStream(get(), stream.get()));
 }
@@ -32004,8 +32003,7 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  * Example:
  *
  * ```c
- * LoadWAV(IOStreamRef.IOStreamRef("sample.wav", "rb"), true, &spec, &buf,
- * &len);
+ * LoadWAV(IOStream.IOStream("sample.wav", "rb"), true, &spec, &buf, &len);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
@@ -32029,7 +32027,7 @@ inline AudioStreamLock AudioStreamRef::Lock() { return AudioStreamLock(*this); }
  *
  * @sa LoadWAV
  */
-inline OwnArray<Uint8> LoadWAV(IOStreamRef& src, AudioSpec* spec)
+inline OwnArray<Uint8> LoadWAV(IOStreamRef src, AudioSpec* spec)
 {
   Uint8* buf;
   Uint32 len;
@@ -33195,7 +33193,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa ConditionRef.Signal
    * @sa ConditionRef.WaitTimeout
    */
-  void Wait(MutexRef& mutex) { SDL_WaitCondition(get(), mutex.get()); }
+  void Wait(MutexRef mutex) { SDL_WaitCondition(get(), mutex.get()); }
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
@@ -33224,7 +33222,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa ConditionRef.Signal
    * @sa ConditionRef.Wait
    */
-  bool WaitTimeout(MutexRef& mutex, std::chrono::milliseconds timeout)
+  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout)
   {
     return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
   }
@@ -34041,7 +34039,7 @@ struct Process : ProcessUnsafe
    * @sa ProcessRef.Wait
    * @sa ProcessRef.Destroy
    */
-  Process(PropertiesRef& props)
+  Process(PropertiesRef props)
     : Process(CheckError(SDL_CreateProcessWithProperties(props.get())))
   {
   }
@@ -34348,7 +34346,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @sa Palette.Palette
    * @sa SurfaceRef.GetPalette
    */
-  void SetPalette(PaletteRef& palette)
+  void SetPalette(PaletteRef palette)
   {
     CheckError(SDL_SetSurfacePalette(get(), palette.get()));
   }
@@ -34389,7 +34387,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @sa SurfaceRef.GetImages
    * @sa SurfaceRef.HasAlternateImages
    */
-  void AddAlternateImage(SurfaceRef& image)
+  void AddAlternateImage(SurfaceRef image)
   {
     CheckError(SDL_AddSurfaceAlternateImage(get(), image.get()));
   }
@@ -34977,9 +34975,9 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @sa SurfaceRef.Destroy
    */
   Surface Convert(PixelFormat format,
-                  PaletteRef& palette,
+                  PaletteRef palette,
                   Colorspace colorspace,
-                  PropertiesRef& props) const;
+                  PropertiesRef props) const;
 
   /**
    * Premultiply the alpha in a surface.
@@ -35219,7 +35217,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.BlitScaled
    */
-  void Blit(const SurfaceRef& src,
+  void Blit(SurfaceRef src,
             OptionalRef<const SDL_Rect> srcrect,
             const SDL_Point& dstpos)
   {
@@ -35280,11 +35278,11 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
-   *                copied, or NULL to copy the entire surface.
+   *                copied, or std::nullopt to copy the entire surface.
    * @param dstrect the SDL_Rect structure representing the x and y position in
-   *                the destination surface, or NULL for (0,0). The width and
-   *                height are ignored, and are copied from `srcrect`. If you
-   *                want a specific width and height, you should use
+   *                the destination surface, or std::nullopt for (0,0). The
+   *                width and height are ignored, and are copied from `srcrect`.
+   *                If you want a specific width and height, you should use
    *                SurfaceRef.BlitScaled().
    * @throws Error on failure.
    *
@@ -35295,7 +35293,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.BlitScaled
    */
-  void Blit(const SurfaceRef& src,
+  void Blit(SurfaceRef src,
             OptionalRef<const SDL_Rect> srcrect,
             OptionalRef<const SDL_Rect> dstrect)
   {
@@ -35322,7 +35320,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void BlitUnchecked(const SurfaceRef& src,
+  void BlitUnchecked(SurfaceRef src,
                      const SDL_Rect& srcrect,
                      const SDL_Rect& dstrect)
   {
@@ -35349,7 +35347,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void BlitScaled(const SurfaceRef& src,
+  void BlitScaled(SurfaceRef src,
                   OptionalRef<const SDL_Rect> srcrect,
                   OptionalRef<const SDL_Rect> dstrect,
                   ScaleMode scaleMode)
@@ -35379,7 +35377,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.BlitScaled
    */
-  void BlitUncheckedScaled(const SurfaceRef& src,
+  void BlitUncheckedScaled(SurfaceRef src,
                            const SDL_Rect& srcrect,
                            const SDL_Rect& dstrect,
                            ScaleMode scaleMode)
@@ -35441,7 +35439,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void BlitTiled(const SurfaceRef& src,
+  void BlitTiled(SurfaceRef src,
                  OptionalRef<const SDL_Rect> srcrect,
                  OptionalRef<const SDL_Rect> dstrect)
   {
@@ -35474,7 +35472,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void BlitTiledWithScale(const SurfaceRef& src,
+  void BlitTiledWithScale(SurfaceRef src,
                           OptionalRef<const SDL_Rect> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
@@ -35514,7 +35512,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void Blit9Grid(const SurfaceRef& src,
+  void Blit9Grid(SurfaceRef src,
                  OptionalRef<const SDL_Rect> srcrect,
                  int left_width,
                  int right_width,
@@ -35566,7 +35564,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void Blit9GridWithScale(const SurfaceRef& src,
+  void Blit9GridWithScale(SurfaceRef src,
                           OptionalRef<const SDL_Rect> srcrect,
                           int left_width,
                           int right_width,
@@ -36003,7 +36001,7 @@ struct Surface : SurfaceUnsafe
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
    */
-  Surface(IOStreamRef& src);
+  Surface(IOStreamRef src);
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -36189,7 +36187,7 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *
  * @sa SaveBMP
  */
-inline Surface LoadBMP(IOStreamRef& src)
+inline Surface LoadBMP(IOStreamRef src)
 {
   return Surface{SDL_LoadBMP_IO(src.get(), false)};
 }
@@ -36228,7 +36226,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @sa LoadBMP
  */
-inline void SaveBMP(SurfaceRef& surface, IOStreamRef& dst)
+inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
 {
   CheckError(SDL_SaveBMP_IO(surface.get(), dst.get(), false));
 }
@@ -36252,7 +36250,7 @@ inline void SaveBMP(SurfaceRef& surface, IOStreamRef& dst)
  *
  * @sa LoadBMP
  */
-inline void SaveBMP(SurfaceRef& surface, StringParam file)
+inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
   CheckError(SDL_SaveBMP(surface.get(), file));
 }
@@ -36275,9 +36273,9 @@ inline Surface SurfaceRef::Convert(PixelFormat format) const
 }
 
 inline Surface SurfaceRef::Convert(PixelFormat format,
-                                   PaletteRef& palette,
+                                   PaletteRef palette,
                                    Colorspace colorspace,
-                                   PropertiesRef& props) const
+                                   PropertiesRef props) const
 {
   return Surface{SDL_ConvertSurfaceAndColorspace(
     get(), format, palette.get(), colorspace, props.get())};
@@ -36351,12 +36349,12 @@ inline void ConvertPixelsAndColorspace(int width,
                                        int height,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
-                                       PropertiesRef& src_properties,
+                                       PropertiesRef src_properties,
                                        const void* src,
                                        int src_pitch,
                                        PixelFormat dst_format,
                                        Colorspace dst_colorspace,
-                                       PropertiesRef& dst_properties,
+                                       PropertiesRef dst_properties,
                                        void* dst,
                                        int dst_pitch)
 {
@@ -36517,7 +36515,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @sa Tray.Tray
    */
-  void SetIcon(SurfaceRef& icon) { SDL_SetTrayIcon(get(), icon.get()); }
+  void SetIcon(SurfaceRef icon) { SDL_SetTrayIcon(get(), icon.get()); }
 
   /**
    * Updates the system tray icon's tooltip.
@@ -36715,7 +36713,7 @@ struct Tray : TrayUnsafe
    * @sa TrayRef.GetMenu
    * @sa TrayRef.Destroy
    */
-  Tray(SurfaceRef& icon, StringParam tooltip)
+  Tray(SurfaceRef icon, StringParam tooltip)
     : Tray(SDL_CreateTray(icon.get(), tooltip))
   {
   }
@@ -38528,7 +38526,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetIcon(SurfaceRef& icon)
+  void SetIcon(SurfaceRef icon)
   {
     CheckError(SDL_SetWindowIcon(get(), icon.get()));
   }
@@ -39761,7 +39759,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetShape(SurfaceRef& shape)
+  void SetShape(SurfaceRef shape)
   {
     CheckError(SDL_SetWindowShape(get(), shape.get()));
   }
@@ -39858,7 +39856,7 @@ public:
 
   void StartTextInput();
 
-  void StartTextInput(PropertiesRef& props);
+  void StartTextInput(PropertiesRef props);
 
   bool IsTextInputActive() const;
 
@@ -40107,7 +40105,7 @@ struct Window : WindowUnsafe
    * @sa WindowRef.Destroy
    * @sa WindowRef.GetParent
    */
-  Window(WindowRef& parent,
+  Window(WindowRef parent,
          const SDL_Point& offset,
          const SDL_Point& size,
          WindowFlags flags = 0)
@@ -40242,7 +40240,7 @@ struct Window : WindowUnsafe
    * @sa Properties.Properties
    * @sa WindowRef.Destroy
    */
-  Window(PropertiesRef& props)
+  Window(PropertiesRef props)
     : Window(CheckError(SDL_CreateWindowWithProperties(props.get())))
   {
   }
@@ -40381,7 +40379,7 @@ struct GLContextRef : Resource<SDL_GLContextState*>
    *
    * @sa GLContext.GLContext
    */
-  void MakeCurrent(WindowRef& window)
+  void MakeCurrent(WindowRef window)
   {
     CheckError(SDL_GL_MakeCurrent(window.get(), get()));
   }
@@ -40518,7 +40516,7 @@ struct GLContext : GLContextUnsafe
    * @sa GLContextRef.Destroy
    * @sa GLContextRef.MakeCurrent
    */
-  GLContext(WindowRef& window)
+  GLContext(WindowRef window)
     : GLContext(CheckError(SDL_GL_CreateContext(window.get())))
   {
   }
@@ -41555,7 +41553,7 @@ inline EGLConfig EGL_GetCurrentConfig()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline EGLSurface EGL_GetWindowSurface(WindowRef& window)
+inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 {
   return CheckError(SDL_EGL_GetWindowSurface(window.get()));
 }
@@ -41665,7 +41663,7 @@ inline void GL_GetSwapInterval(int* interval)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GL_SwapWindow(WindowRef& window)
+inline void GL_SwapWindow(WindowRef window)
 {
   CheckError(SDL_GL_SwapWindow(window.get()));
 }
@@ -42231,7 +42229,7 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCallback callback,
                                          void* userdata,
-                                         PropertiesRef& props)
+                                         PropertiesRef props)
 {
   SDL_ShowFileDialogWithProperties(type, callback, userdata, props.get());
 }
@@ -44721,7 +44719,7 @@ inline void WindowRef::StartTextInput()
  * @sa WindowRef.StopTextInput
  * @sa WindowRef.IsTextInputActive
  */
-inline void WindowRef::StartTextInput(PropertiesRef& props)
+inline void WindowRef::StartTextInput(PropertiesRef props)
 {
   CheckError(SDL_StartTextInputWithProperties(get(), props.get()));
 }
@@ -45672,7 +45670,7 @@ struct Cursor : CursorUnsafe
    * @sa CursorRef.Destroy
    * @sa SetCursor
    */
-  Cursor(SurfaceRef& surface, int hot_x, int hot_y)
+  Cursor(SurfaceRef surface, int hot_x, int hot_y)
     : Cursor(CheckError(SDL_CreateColorCursor(surface.get(), hot_x, hot_y)))
   {
   }
@@ -46133,7 +46131,7 @@ inline void CaptureMouse(bool enabled)
  *
  * @sa GetCursor
  */
-inline void SetCursor(CursorRef& cursor)
+inline void SetCursor(CursorRef cursor)
 {
   CheckError(SDL_SetCursor(cursor.get()));
 }
@@ -47521,7 +47519,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    * @sa RendererRef.RenderTextureRotated
    * @sa RendererRef.RenderTextureTiled
    */
-  void RenderTexture(TextureRef& texture,
+  void RenderTexture(TextureRef texture,
                      OptionalRef<const SDL_FRect> srcrect,
                      OptionalRef<const SDL_FRect> dstrect);
 
@@ -47549,7 +47547,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderTexture
    */
-  void RenderTextureRotated(TextureRef& texture,
+  void RenderTextureRotated(TextureRef texture,
                             OptionalRef<const SDL_FRect> srcrect,
                             OptionalRef<const SDL_FRect> dstrect,
                             double angle,
@@ -47580,7 +47578,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderTexture
    */
-  void RenderTextureAffine(TextureRef& texture,
+  void RenderTextureAffine(TextureRef texture,
                            OptionalRef<const SDL_FRect> srcrect,
                            OptionalRef<const SDL_FPoint> origin,
                            OptionalRef<const SDL_FPoint> right,
@@ -47609,7 +47607,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderTexture
    */
-  void RenderTextureTiled(TextureRef& texture,
+  void RenderTextureTiled(TextureRef texture,
                           OptionalRef<const SDL_FRect> srcrect,
                           float scale,
                           OptionalRef<const SDL_FRect> dstrect);
@@ -47644,7 +47642,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderTexture
    */
-  void RenderTexture9Grid(TextureRef& texture,
+  void RenderTexture9Grid(TextureRef texture,
                           OptionalRef<const SDL_FRect> srcrect,
                           float left_width,
                           float right_width,
@@ -48100,7 +48098,7 @@ struct Renderer : RendererUnsafe
    * @sa GetRenderDriver
    * @sa RendererRef.GetName
    */
-  Renderer(WindowRef& window, StringParam name)
+  Renderer(WindowRef window, StringParam name)
     : Renderer(CheckError(SDL_CreateRenderer(window.get(), name)))
   {
   }
@@ -48154,7 +48152,7 @@ struct Renderer : RendererUnsafe
    * @sa RendererRef.Destroy
    * @sa RendererRef.GetName
    */
-  Renderer(PropertiesRef& props)
+  Renderer(PropertiesRef props)
     : Renderer(CheckError(SDL_CreateRendererWithProperties(props.get())))
   {
   }
@@ -48178,7 +48176,7 @@ struct Renderer : RendererUnsafe
    *
    * @sa RendererRef.Destroy
    */
-  Renderer(SurfaceRef& surface)
+  Renderer(SurfaceRef surface)
     : Renderer(CheckError(SDL_CreateSoftwareRenderer(surface.get())))
   {
   }
@@ -48997,7 +48995,7 @@ struct Texture : TextureUnsafe
    *
    * @sa LoadTexture(RendererRef&, StringParam)
    */
-  Texture(RendererRef& renderer, StringParam file);
+  Texture(RendererRef renderer, StringParam file);
 
   /**
    * Load an image from a IOStreamRef into a software surface.
@@ -49013,7 +49011,7 @@ struct Texture : TextureUnsafe
    * @sa LoadTexture(RendererRef&StringParam)
    * @sa LoadTextureBMP(RendererRef&, StringParam)
    */
-  Texture(RendererRef& renderer, IOStream& src);
+  Texture(RendererRef renderer, IOStreamRef src);
 
   /**
    * Create a texture for a rendering context.
@@ -49035,7 +49033,7 @@ struct Texture : TextureUnsafe
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
-  Texture(RendererRef& renderer,
+  Texture(RendererRef renderer,
           PixelFormat format,
           TextureAccess access,
           const SDL_Point& size)
@@ -49068,7 +49066,7 @@ struct Texture : TextureUnsafe
    *
    * @sa TextureRef.Destroy
    */
-  Texture(RendererRef& renderer, SurfaceRef& surface)
+  Texture(RendererRef renderer, SurfaceRef surface)
     : Texture(
         CheckError(SDL_CreateTextureFromSurface(renderer.get(), surface.get())))
   {
@@ -49182,7 +49180,7 @@ struct Texture : TextureUnsafe
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
    */
-  Texture(RendererRef& renderer, PropertiesRef& props)
+  Texture(RendererRef renderer, PropertiesRef props)
     : Texture(CheckError(
         SDL_CreateTextureWithProperties(renderer.get(), props.get())))
   {
@@ -49628,7 +49626,7 @@ inline TextureRef RendererRef::GetTarget() const
   return SDL_GetRenderTarget(get());
 }
 
-inline void RendererRef::RenderTexture(TextureRef& texture,
+inline void RendererRef::RenderTexture(TextureRef texture,
                                        OptionalRef<const SDL_FRect> srcrect,
                                        OptionalRef<const SDL_FRect> dstrect)
 {
@@ -49636,7 +49634,7 @@ inline void RendererRef::RenderTexture(TextureRef& texture,
 }
 
 inline void RendererRef::RenderTextureRotated(
-  TextureRef& texture,
+  TextureRef texture,
   OptionalRef<const SDL_FRect> srcrect,
   OptionalRef<const SDL_FRect> dstrect,
   double angle,
@@ -49648,7 +49646,7 @@ inline void RendererRef::RenderTextureRotated(
 }
 
 inline void RendererRef::RenderTextureAffine(
-  TextureRef& texture,
+  TextureRef texture,
   OptionalRef<const SDL_FRect> srcrect,
   OptionalRef<const SDL_FPoint> origin,
   OptionalRef<const SDL_FPoint> right,
@@ -49659,7 +49657,7 @@ inline void RendererRef::RenderTextureAffine(
 }
 
 inline void RendererRef::RenderTextureTiled(
-  TextureRef& texture,
+  TextureRef texture,
   OptionalRef<const SDL_FRect> srcrect,
   float scale,
   OptionalRef<const SDL_FRect> dstrect)
@@ -49669,7 +49667,7 @@ inline void RendererRef::RenderTextureTiled(
 }
 
 inline void RendererRef::RenderTexture9Grid(
-  TextureRef& texture,
+  TextureRef texture,
   OptionalRef<const SDL_FRect> srcrect,
   float left_width,
   float right_width,
@@ -49743,7 +49741,7 @@ inline void RendererRef::RenderGeometryRaw(OptionalTexture texture,
  *
  * @sa GetRenderMetalCommandEncoder
  */
-inline void* GetRenderMetalLayer(RendererRef& renderer)
+inline void* GetRenderMetalLayer(RendererRef renderer)
 {
   return CheckError(SDL_GetRenderMetalLayer(renderer.get()));
 }
@@ -49769,7 +49767,7 @@ inline void* GetRenderMetalLayer(RendererRef& renderer)
  *
  * @sa GetRenderMetalLayer
  */
-inline void* GetRenderMetalCommandEncoder(RendererRef& renderer)
+inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
 {
   return CheckError(SDL_GetRenderMetalCommandEncoder(renderer.get()));
 }
@@ -49801,7 +49799,7 @@ inline void* GetRenderMetalCommandEncoder(RendererRef& renderer)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void AddVulkanRenderSemaphores(RendererRef& renderer,
+inline void AddVulkanRenderSemaphores(RendererRef renderer,
                                       Uint32 wait_stage_mask,
                                       Sint64 wait_semaphore,
                                       Sint64 signal_semaphore)
@@ -50224,7 +50222,7 @@ using iOSAnimationCB = std::function<void()>;
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowRef& window,
+inline void SetiOSAnimationCallback(WindowRef window,
                                     int interval,
                                     iOSAnimationCallback callback,
                                     void* callbackParam)
@@ -50268,7 +50266,7 @@ inline void SetiOSAnimationCallback(WindowRef& window,
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowRef& window,
+inline void SetiOSAnimationCallback(WindowRef window,
                                     int interval,
                                     iOSAnimationCB callback)
 {
@@ -51041,7 +51039,7 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * @sa LoadSurface
  * @sa LoadSurface
  */
-inline Surface LoadSurface(IOStreamRef& src, StringParam type)
+inline Surface LoadSurface(IOStreamRef src, StringParam type)
 {
   return Surface{IMG_LoadTyped_IO(src.get(), false, type)};
 }
@@ -51123,9 +51121,9 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  *
  * @sa LoadSurface
  * @sa LoadSurface
- * @sa SurfaceRef.reset
+ * @sa SurfaceRef.Destroy
  */
-inline Surface LoadSurface(IOStreamRef& src)
+inline Surface LoadSurface(IOStreamRef src)
 {
   return Surface{IMG_Load_IO(src.get(), false)};
 }
@@ -51152,7 +51150,7 @@ inline Surface LoadSurface(IOStreamRef& src)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Texture LoadTexture(RendererRef& renderer, StringParam file)
+inline Texture LoadTexture(RendererRef renderer, StringParam file)
 {
   return Texture{IMG_LoadTexture(renderer.get(), file)};
 }
@@ -51188,8 +51186,10 @@ inline Texture LoadTexture(RendererRef& renderer, StringParam file)
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa TextureRef.Destroy
  */
-inline Texture LoadTexture(RendererRef& renderer, IOStreamRef& src)
+inline Texture LoadTexture(RendererRef renderer, IOStreamRef src)
 {
   return Texture{IMG_LoadTexture_IO(renderer.get(), src.get(), false)};
 }
@@ -51233,9 +51233,11 @@ inline Texture LoadTexture(RendererRef& renderer, IOStreamRef& src)
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa TextureRef.Destroy
  */
-inline Texture LoadTexture(RendererRef& renderer,
-                           IOStreamRef& src,
+inline Texture LoadTexture(RendererRef renderer,
+                           IOStreamRef src,
                            StringParam type)
 {
   return Texture{
@@ -51284,7 +51286,7 @@ inline Texture LoadTexture(RendererRef& renderer,
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isAVIF(IOStreamRef& src) { return IMG_isAVIF(src.get()); }
+inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src.get()); }
 
 /**
  * Detect ICO image data on a readable/seekable IOStreamRef.
@@ -51327,7 +51329,7 @@ inline bool isAVIF(IOStreamRef& src) { return IMG_isAVIF(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isICO(IOStreamRef& src) { return IMG_isICO(src.get()); }
+inline bool isICO(IOStreamRef src) { return IMG_isICO(src.get()); }
 
 /**
  * Detect CUR image data on a readable/seekable IOStreamRef.
@@ -51370,7 +51372,7 @@ inline bool isICO(IOStreamRef& src) { return IMG_isICO(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isCUR(IOStreamRef& src) { return IMG_isCUR(src.get()); }
+inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src.get()); }
 
 /**
  * Detect BMP image data on a readable/seekable IOStreamRef.
@@ -51413,7 +51415,7 @@ inline bool isCUR(IOStreamRef& src) { return IMG_isCUR(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isBMP(IOStreamRef& src) { return IMG_isBMP(src.get()); }
+inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src.get()); }
 
 /**
  * Detect GIF image data on a readable/seekable IOStreamRef.
@@ -51456,7 +51458,7 @@ inline bool isBMP(IOStreamRef& src) { return IMG_isBMP(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isGIF(IOStreamRef& src) { return IMG_isGIF(src.get()); }
+inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src.get()); }
 
 /**
  * Detect JPG image data on a readable/seekable IOStreamRef.
@@ -51499,7 +51501,7 @@ inline bool isGIF(IOStreamRef& src) { return IMG_isGIF(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJPG(IOStreamRef& src) { return IMG_isJPG(src.get()); }
+inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src.get()); }
 
 /**
  * Detect JXL image data on a readable/seekable IOStreamRef.
@@ -51542,7 +51544,7 @@ inline bool isJPG(IOStreamRef& src) { return IMG_isJPG(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJXL(IOStreamRef& src) { return IMG_isJXL(src.get()); }
+inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src.get()); }
 
 /**
  * Detect LBM image data on a readable/seekable IOStreamRef.
@@ -51585,7 +51587,7 @@ inline bool isJXL(IOStreamRef& src) { return IMG_isJXL(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isLBM(IOStreamRef& src) { return IMG_isLBM(src.get()); }
+inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src.get()); }
 
 /**
  * Detect PCX image data on a readable/seekable IOStreamRef.
@@ -51628,7 +51630,7 @@ inline bool isLBM(IOStreamRef& src) { return IMG_isLBM(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPCX(IOStreamRef& src) { return IMG_isPCX(src.get()); }
+inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src.get()); }
 
 /**
  * Detect PNG image data on a readable/seekable IOStreamRef.
@@ -51671,7 +51673,7 @@ inline bool isPCX(IOStreamRef& src) { return IMG_isPCX(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNG(IOStreamRef& src) { return IMG_isPNG(src.get()); }
+inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src.get()); }
 
 /**
  * Detect PNM image data on a readable/seekable IOStreamRef.
@@ -51714,7 +51716,7 @@ inline bool isPNG(IOStreamRef& src) { return IMG_isPNG(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNM(IOStreamRef& src) { return IMG_isPNM(src.get()); }
+inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src.get()); }
 
 /**
  * Detect SVG image data on a readable/seekable IOStreamRef.
@@ -51757,7 +51759,7 @@ inline bool isPNM(IOStreamRef& src) { return IMG_isPNM(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isSVG(IOStreamRef& src) { return IMG_isSVG(src.get()); }
+inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src.get()); }
 
 /**
  * Detect QOI image data on a readable/seekable IOStreamRef.
@@ -51800,7 +51802,7 @@ inline bool isSVG(IOStreamRef& src) { return IMG_isSVG(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isQOI(IOStreamRef& src) { return IMG_isQOI(src.get()); }
+inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src.get()); }
 
 /**
  * Detect TIFF image data on a readable/seekable IOStreamRef.
@@ -51843,7 +51845,7 @@ inline bool isQOI(IOStreamRef& src) { return IMG_isQOI(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isTIF(IOStreamRef& src) { return IMG_isTIF(src.get()); }
+inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src.get()); }
 
 /**
  * Detect XCF image data on a readable/seekable IOStreamRef.
@@ -51886,7 +51888,7 @@ inline bool isTIF(IOStreamRef& src) { return IMG_isTIF(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXCF(IOStreamRef& src) { return IMG_isXCF(src.get()); }
+inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src.get()); }
 
 /**
  * Detect XPM image data on a readable/seekable IOStreamRef.
@@ -51929,7 +51931,7 @@ inline bool isXCF(IOStreamRef& src) { return IMG_isXCF(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXPM(IOStreamRef& src) { return IMG_isXPM(src.get()); }
+inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src.get()); }
 
 /**
  * Detect XV image data on a readable/seekable IOStreamRef.
@@ -51972,7 +51974,7 @@ inline bool isXPM(IOStreamRef& src) { return IMG_isXPM(src.get()); }
  * @sa isXPM
  * @sa isWEBP
  */
-inline bool isXV(IOStreamRef& src) { return IMG_isXV(src.get()); }
+inline bool isXV(IOStreamRef src) { return IMG_isXV(src.get()); }
 
 /**
  * Detect WEBP image data on a readable/seekable IOStreamRef.
@@ -52015,7 +52017,7 @@ inline bool isXV(IOStreamRef& src) { return IMG_isXV(src.get()); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isWEBP(IOStreamRef& src) { return IMG_isWEBP(src.get()); }
+inline bool isWEBP(IOStreamRef src) { return IMG_isWEBP(src.get()); }
 
 /**
  * Load a AVIF image directly.
@@ -52049,7 +52051,7 @@ inline bool isWEBP(IOStreamRef& src) { return IMG_isWEBP(src.get()); }
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadAVIF(IOStreamRef& src)
+inline Surface LoadAVIF(IOStreamRef src)
 {
   return Surface{IMG_LoadAVIF_IO(src.get())};
 }
@@ -52086,7 +52088,7 @@ inline Surface LoadAVIF(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadICO(IOStreamRef& src)
+inline Surface LoadICO(IOStreamRef src)
 {
   return Surface{IMG_LoadICO_IO(src.get())};
 }
@@ -52123,7 +52125,7 @@ inline Surface LoadICO(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadCUR(IOStreamRef& src)
+inline Surface LoadCUR(IOStreamRef src)
 {
   return Surface{IMG_LoadCUR_IO(src.get())};
 }
@@ -52160,7 +52162,7 @@ inline Surface LoadCUR(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadGIF(IOStreamRef& src)
+inline Surface LoadGIF(IOStreamRef src)
 {
   return Surface{IMG_LoadGIF_IO(src.get())};
 }
@@ -52197,7 +52199,7 @@ inline Surface LoadGIF(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadJPG(IOStreamRef& src)
+inline Surface LoadJPG(IOStreamRef src)
 {
   return Surface{IMG_LoadJPG_IO(src.get())};
 }
@@ -52234,7 +52236,7 @@ inline Surface LoadJPG(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadJXL(IOStreamRef& src)
+inline Surface LoadJXL(IOStreamRef src)
 {
   return Surface{IMG_LoadJXL_IO(src.get())};
 }
@@ -52271,7 +52273,7 @@ inline Surface LoadJXL(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadLBM(IOStreamRef& src)
+inline Surface LoadLBM(IOStreamRef src)
 {
   return Surface{IMG_LoadLBM_IO(src.get())};
 }
@@ -52308,7 +52310,7 @@ inline Surface LoadLBM(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadPCX(IOStreamRef& src)
+inline Surface LoadPCX(IOStreamRef src)
 {
   return Surface{IMG_LoadPCX_IO(src.get())};
 }
@@ -52345,7 +52347,7 @@ inline Surface LoadPCX(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadPNG(IOStreamRef& src)
+inline Surface LoadPNG(IOStreamRef src)
 {
   return Surface{IMG_LoadPNG_IO(src.get())};
 }
@@ -52382,7 +52384,7 @@ inline Surface LoadPNG(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadPNM(IOStreamRef& src)
+inline Surface LoadPNM(IOStreamRef src)
 {
   return Surface{IMG_LoadPNM_IO(src.get())};
 }
@@ -52419,7 +52421,7 @@ inline Surface LoadPNM(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadSVG(IOStreamRef& src)
+inline Surface LoadSVG(IOStreamRef src)
 {
   return Surface{IMG_LoadSVG_IO(src.get())};
 }
@@ -52456,7 +52458,7 @@ inline Surface LoadSVG(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadQOI(IOStreamRef& src)
+inline Surface LoadQOI(IOStreamRef src)
 {
   return Surface{IMG_LoadQOI_IO(src.get())};
 }
@@ -52493,7 +52495,7 @@ inline Surface LoadQOI(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadTGA(IOStreamRef& src)
+inline Surface LoadTGA(IOStreamRef src)
 {
   return Surface{IMG_LoadTGA_IO(src.get())};
 }
@@ -52530,7 +52532,7 @@ inline Surface LoadTGA(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadTIF(IOStreamRef& src)
+inline Surface LoadTIF(IOStreamRef src)
 {
   return Surface{IMG_LoadTIF_IO(src.get())};
 }
@@ -52567,7 +52569,7 @@ inline Surface LoadTIF(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadXCF(IOStreamRef& src)
+inline Surface LoadXCF(IOStreamRef src)
 {
   return Surface{IMG_LoadXCF_IO(src.get())};
 }
@@ -52604,7 +52606,7 @@ inline Surface LoadXCF(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadXPM(IOStreamRef& src)
+inline Surface LoadXPM(IOStreamRef src)
 {
   return Surface{IMG_LoadXPM_IO(src.get())};
 }
@@ -52641,7 +52643,7 @@ inline Surface LoadXPM(IOStreamRef& src)
  * @sa LoadXPM
  * @sa LoadWEBP
  */
-inline Surface LoadXV(IOStreamRef& src)
+inline Surface LoadXV(IOStreamRef src)
 {
   return Surface{IMG_LoadXV_IO(src.get())};
 }
@@ -52678,7 +52680,7 @@ inline Surface LoadXV(IOStreamRef& src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadWEBP(IOStreamRef& src)
+inline Surface LoadWEBP(IOStreamRef src)
 {
   return Surface{IMG_LoadWEBP_IO(src.get())};
 }
@@ -52702,7 +52704,7 @@ inline Surface LoadWEBP(IOStreamRef& src)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface LoadSizedSVG(IOStreamRef& src, int width, int height)
+inline Surface LoadSizedSVG(IOStreamRef src, int width, int height)
 {
   return Surface{IMG_LoadSizedSVG_IO(src.get(), width, height)};
 }
@@ -52764,7 +52766,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SaveAVIF(SurfaceRef& surface, StringParam file, int quality)
+inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 {
   CheckError(IMG_SaveAVIF(surface.get(), file, quality));
 }
@@ -52782,7 +52784,7 @@ inline void SaveAVIF(SurfaceRef& surface, StringParam file, int quality)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SaveAVIF(SurfaceRef surface, IOStreamRef& dst, int quality)
+inline void SaveAVIF(SurfaceRef surface, IOStreamRef dst, int quality)
 {
   CheckError(IMG_SaveAVIF_IO(surface.get(), dst.get(), false, quality));
 }
@@ -52800,7 +52802,7 @@ inline void SaveAVIF(SurfaceRef surface, IOStreamRef& dst, int quality)
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceRef& surface, StringParam file)
+inline void SavePNG(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SavePNG(surface.get(), file));
 }
@@ -52816,7 +52818,7 @@ inline void SavePNG(SurfaceRef& surface, StringParam file)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SavePNG(SurfaceRef surface, IOStreamRef& dst)
+inline void SavePNG(SurfaceRef surface, IOStreamRef dst)
 {
   CheckError(IMG_SavePNG_IO(surface.get(), dst.get(), false));
 }
@@ -52834,7 +52836,7 @@ inline void SavePNG(SurfaceRef surface, IOStreamRef& dst)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SaveJPG(SurfaceRef& surface, StringParam file, int quality)
+inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 {
   CheckError(IMG_SaveJPG(surface.get(), file, quality));
 }
@@ -52852,7 +52854,7 @@ inline void SaveJPG(SurfaceRef& surface, StringParam file, int quality)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SaveJPG(SurfaceRef surface, IOStreamRef& dst, int quality)
+inline void SaveJPG(SurfaceRef surface, IOStreamRef dst, int quality)
 {
   CheckError(IMG_SaveJPG_IO(surface.get(), dst.get(), false, quality));
 }
@@ -53030,7 +53032,7 @@ struct Animation : AnimationUnsafe
    *
    * @sa AnimationRef.Free
    */
-  Animation(IOStreamRef& src)
+  Animation(IOStreamRef src)
     : Animation(IMG_LoadAnimation_IO(src.get(), false))
   {
   }
@@ -53052,7 +53054,7 @@ struct Animation : AnimationUnsafe
    *
    * @sa AnimationRef.Free
    */
-  Animation(IOStreamRef& src, StringParam type)
+  Animation(IOStreamRef src, StringParam type)
     : Animation(IMG_LoadAnimationTyped_IO(src.get(), false, type))
   {
   }
@@ -53093,7 +53095,7 @@ constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
  * @sa AnimationRef.AnimationRef
  * @sa AnimationRef.reset
  */
-inline Animation LoadGIFAnimation(IOStreamRef& src)
+inline Animation LoadGIFAnimation(IOStreamRef src)
 {
   return Animation{IMG_LoadGIFAnimation_IO(src.get())};
 }
@@ -53113,7 +53115,7 @@ inline Animation LoadGIFAnimation(IOStreamRef& src)
  *
  * @sa AnimationRef.AnimationRef
  */
-inline Animation LoadWEBPAnimation(IOStreamRef& src)
+inline Animation LoadWEBPAnimation(IOStreamRef src)
 {
   return Animation{IMG_LoadWEBPAnimation_IO(src.get())};
 }
@@ -53127,17 +53129,17 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamRef& src)
+inline Surface::Surface(IOStreamRef src)
   : Surface(CheckError(IMG_Load_IO(src.get(), false)))
 {
 }
 
-inline Texture::Texture(RendererRef& renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : Texture(CheckError(IMG_LoadTexture(renderer.get(), file)))
 {
 }
 
-inline Texture::Texture(RendererRef& renderer, IOStream& src)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src)
   : Texture(CheckError(IMG_LoadTexture_IO(renderer.get(), src.get(), false)))
 {
 }
@@ -53155,17 +53157,17 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamRef& src)
+inline Surface::Surface(IOStreamRef src)
   : Surface(CheckError(SDL_LoadBMP_IO(src.get(), false)))
 {
 }
 
-inline Texture::Texture(RendererRef& renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : Texture(CheckError(LoadTextureBMP(renderer, std::move(file)).release()))
 {
 }
 
-inline Texture::Texture(RendererRef& renderer, IOStream& src)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src)
   : Texture(CheckError(LoadTextureBMP(renderer, src).release()))
 {
 }
@@ -53627,7 +53629,7 @@ struct FontRef : Resource<TTF_Font*>
    * @sa FontRef.ClearFallbacks
    * @sa FontRef.RemoveFallback
    */
-  void AddFallback(FontRef& fallback)
+  void AddFallback(FontRef fallback)
   {
     CheckError(TTF_AddFallbackFont(get(), fallback.get()));
   }
@@ -53647,7 +53649,7 @@ struct FontRef : Resource<TTF_Font*>
    * @sa FontRef.AddFallback
    * @sa FontRef.ClearFallbacks
    */
-  void RemoveFallback(FontRef& fallback)
+  void RemoveFallback(FontRef fallback)
   {
     TTF_RemoveFallbackFont(get(), fallback.get());
   }
@@ -55113,7 +55115,7 @@ struct Font : FontUnsafe
    *
    * @sa FontRef.Close
    */
-  Font(IOStreamRef& src, float ptsize)
+  Font(IOStreamRef src, float ptsize)
     : Font(CheckError(TTF_OpenFontIO(src.get(), false, ptsize)))
   {
   }
@@ -55161,7 +55163,7 @@ struct Font : FontUnsafe
    *
    * @sa FontRef.Close
    */
-  Font(PropertiesRef& props)
+  Font(PropertiesRef props)
     : Font(CheckError(TTF_OpenFontWithProperties(props.get())))
   {
   }
@@ -55684,7 +55686,7 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @sa TextRef.GetEngine
    */
-  void SetEngine(TextEngineRef& engine)
+  void SetEngine(TextEngineRef engine)
   {
     CheckError(TTF_SetTextEngine(get(), engine.get()));
   }
@@ -55727,7 +55729,7 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @sa TextRef.GetFont
    */
-  bool SetFont(FontRef& font) { return TTF_SetTextFont(get(), font.get()); }
+  bool SetFont(FontRef font) { return TTF_SetTextFont(get(), font.get()); }
 
   /**
    * Get the font used by a text object.
@@ -56601,7 +56603,7 @@ struct Text : TextUnsafe
    *
    * @sa TextRef.Destroy
    */
-  Text(TextEngineRef& engine, FontRef font, std::string_view text)
+  Text(TextEngineRef engine, FontRef font, std::string_view text)
     : Text(TTF_CreateText(engine.get(), font.get(), text.data(), text.size()))
   {
   }
@@ -56732,7 +56734,7 @@ inline TextEngine CreateSurfaceTextEngine()
  * @sa Text
  * @sa CreateRendererTextEngineWithProperties
  */
-inline TextEngine CreateRendererTextEngine(RendererRef& renderer)
+inline TextEngine CreateRendererTextEngine(RendererRef renderer)
 {
   return TextEngine{TTF_CreateRendererTextEngine(renderer.get()),
                     TTF_DestroyRendererTextEngine};
@@ -56762,7 +56764,7 @@ inline TextEngine CreateRendererTextEngine(RendererRef& renderer)
  * @sa Text
  * @sa TextRef.DrawRenderer
  */
-inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef& props)
+inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef props)
 {
   return TextEngine{TTF_CreateRendererTextEngineWithProperties(props.get()),
                     TTF_DestroyRendererTextEngine};
@@ -56835,7 +56837,7 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  * @sa Text
  * @sa TextRef.GetGPUDrawData
  */
-inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef& props)
+inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
 {
   return TextEngine{TTF_CreateGPUTextEngineWithProperties(props.get()),
                     TTF_DestroyGPUTextEngine};

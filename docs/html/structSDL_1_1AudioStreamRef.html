@@ -188,9 +188,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9d04b2518efcd44d7696c9f45ddbaf27" id="r_a9d04b2518efcd44d7696c9f45ddbaf27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a9d04b2518efcd44d7696c9f45ddbaf27">SetPutCallback</a> (<a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1">AudioStreamCallback</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:a9d04b2518efcd44d7696c9f45ddbaf27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a callback that runs when data is added to an audio stream.  <br /></td></tr>
 <tr class="separator:a9d04b2518efcd44d7696c9f45ddbaf27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30c154acb2d832773ab2f054599a968d" id="r_a30c154acb2d832773ab2f054599a968d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a30c154acb2d832773ab2f054599a968d">Bind</a> (<a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;devid)</td></tr>
-<tr class="memdesc:a30c154acb2d832773ab2f054599a968d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind a single audio stream to an audio device.  <br /></td></tr>
-<tr class="separator:a30c154acb2d832773ab2f054599a968d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad011e5803718571d012612e74a70be03" id="r_ad011e5803718571d012612e74a70be03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#ad011e5803718571d012612e74a70be03">Bind</a> (<a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> devid)</td></tr>
+<tr class="memdesc:ad011e5803718571d012612e74a70be03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind a single audio stream to an audio device.  <br /></td></tr>
+<tr class="separator:ad011e5803718571d012612e74a70be03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3fa302bd61a63c97b4ca3ffb7d4fd7e" id="r_aa3fa302bd61a63c97b4ca3ffb7d4fd7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#aa3fa302bd61a63c97b4ca3ffb7d4fd7e">Unbind</a> ()</td></tr>
 <tr class="memdesc:aa3fa302bd61a63c97b4ca3ffb7d4fd7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbind a single audio stream from its audio device.  <br /></td></tr>
 <tr class="separator:aa3fa302bd61a63c97b4ca3ffb7d4fd7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,8 +284,8 @@ Protected Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream.">AudioStreamRef</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a30c154acb2d832773ab2f054599a968d" name="a30c154acb2d832773ab2f054599a968d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30c154acb2d832773ab2f054599a968d">&#9670;&#160;</a></span>Bind()</h2>
+<a id="ad011e5803718571d012612e74a70be03" name="ad011e5803718571d012612e74a70be03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad011e5803718571d012612e74a70be03">&#9670;&#160;</a></span>Bind()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -296,7 +296,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void SDL::AudioStreamRef::Bind </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a>&#160;</td>
           <td class="paramname"><em>devid</em></td><td>)</td>
           <td></td>
         </tr>
@@ -328,7 +328,7 @@ AudioDeviceRef.UnbindAudioStream </dd>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamRef.html#a0638d4c1d5113a8db10614d6a2f51de0" title="Query an audio stream for its currently-bound device.">AudioStreamRef.GetDevice</a> </dd>
 <dd>
-<a class="el" href="group__CategoryAudio.html#gac5ad89fcbe1ab761e0e2b2865e358fa7" title="Bind a single audio stream to an audio device.">AudioDeviceRef.BindAudioStream</a> </dd></dl>
+<a class="el" href="group__CategoryAudio.html#ga056fd722537c4971f89887d166b887f9" title="Bind a single audio stream to an audio device.">AudioDeviceRef.BindAudioStream</a> </dd></dl>
 
 </div>
 </div>
@@ -572,7 +572,7 @@ AudioDeviceRef.UnbindAudioStream </dd>
 <dl class="section return"><dt>Returns</dt><dd>the bound audio device, or 0 if not bound or invalid.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAudio.html#gac5ad89fcbe1ab761e0e2b2865e358fa7" title="Bind a single audio stream to an audio device.">AudioDeviceRef.BindAudioStream</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAudio.html#ga056fd722537c4971f89887d166b887f9" title="Bind a single audio stream to an audio device.">AudioDeviceRef.BindAudioStream</a> </dd>
 <dd>
 <a class="el" href="group__CategoryAudio.html#gac900e515ecdc88b660fc1e0c49f3b15b" title="Bind a list of audio streams to an audio device.">AudioDeviceRef.BindAudioStreams</a> </dd></dl>
 
@@ -1622,7 +1622,7 @@ AudioDeviceRef.UnbindAudioStream </dd>
 <p>This is a convenience function, equivalent to calling <code>UnbindAudioStreams(&amp;stream, 1)</code>.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAudio.html#gac5ad89fcbe1ab761e0e2b2865e358fa7" title="Bind a single audio stream to an audio device.">AudioDeviceRef.BindAudioStream</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAudio.html#ga056fd722537c4971f89887d166b887f9" title="Bind a single audio stream to an audio device.">AudioDeviceRef.BindAudioStream</a> </dd></dl>
 
 </div>
 </div>

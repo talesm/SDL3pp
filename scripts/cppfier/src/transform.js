@@ -679,8 +679,8 @@ function expandResources(sourceEntries, file, context) {
         doc: `A ${title} result that will be owned only if assigned to a ${uniqueName}.\n\nThis is designed as resource types to cases where ownership might not be required.`
       });
     }
-    context.addParamType(pointerType, `${refName} &`);
-    context.addParamType(constPointerType, `const ${refName} &`);
+    context.addParamType(pointerType, refName);
+    context.addParamType(constPointerType, refName);
 
     switch (resourceEntry.returnType) {
       case "none": break;
@@ -737,6 +737,7 @@ function expandResources(sourceEntries, file, context) {
         body: freeFunction.type === "void" ? "reset();" : "return reset();"
       });
     } else {
+      // @ts-ignore
       subEntries.reset = {
         kind: "function",
         name: "reset",

@@ -533,7 +533,7 @@ struct Process : ProcessUnsafe
    * @sa ProcessRef.Wait
    * @sa ProcessRef.Destroy
    */
-  Process(PropertiesRef& props)
+  Process(PropertiesRef props)
     : Process(CheckError(SDL_CreateProcessWithProperties(props.get())))
   {
   }

@@ -3,7 +3,7 @@ var searchData=
   ['egl_5fgetcurrentconfig_0',['EGL_GetCurrentConfig',['../group__CategoryVideo.html#gae68ab6ffb4d3cf2ba086f783e8b1e20c',1,'SDL']]],
   ['egl_5fgetcurrentdisplay_1',['EGL_GetCurrentDisplay',['../group__CategoryVideo.html#gaf7a215247d95db258fcef5ea80e54fe2',1,'SDL']]],
   ['egl_5fgetprocaddress_2',['EGL_GetProcAddress',['../group__CategoryVideo.html#ga37eb8e6a189cd293223a7cb1d0a2a32f',1,'SDL']]],
-  ['egl_5fgetwindowsurface_3',['EGL_GetWindowSurface',['../group__CategoryVideo.html#ga8f8e93b77bf5e512af7d98fd21b56726',1,'SDL']]],
+  ['egl_5fgetwindowsurface_3',['EGL_GetWindowSurface',['../group__CategoryVideo.html#ga3c3eba82b74f0a3ba746a97420c0963f',1,'SDL']]],
   ['egl_5fsetattributecallbacks_4',['EGL_SetAttributeCallbacks',['../group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683',1,'SDL']]],
   ['eglattrib_5',['EGLAttrib',['../group__CategoryVideo.html#gaef19fa88561b082e2c2c2c4a36b5c343',1,'SDL']]],
   ['eglattribarraycallback_6',['EGLAttribArrayCallback',['../group__CategoryVideo.html#ga5e604d7daaf7ba4fa463a487bbaf4bdd',1,'SDL']]],

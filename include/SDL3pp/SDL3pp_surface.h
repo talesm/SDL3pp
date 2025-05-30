@@ -255,7 +255,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @sa Palette.Palette
    * @sa SurfaceRef.GetPalette
    */
-  void SetPalette(PaletteRef& palette)
+  void SetPalette(PaletteRef palette)
   {
     CheckError(SDL_SetSurfacePalette(get(), palette.get()));
   }
@@ -296,7 +296,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @sa SurfaceRef.GetImages
    * @sa SurfaceRef.HasAlternateImages
    */
-  void AddAlternateImage(SurfaceRef& image)
+  void AddAlternateImage(SurfaceRef image)
   {
     CheckError(SDL_AddSurfaceAlternateImage(get(), image.get()));
   }
@@ -884,9 +884,9 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @sa SurfaceRef.Destroy
    */
   Surface Convert(PixelFormat format,
-                  PaletteRef& palette,
+                  PaletteRef palette,
                   Colorspace colorspace,
-                  PropertiesRef& props) const;
+                  PropertiesRef props) const;
 
   /**
    * Premultiply the alpha in a surface.
@@ -1126,7 +1126,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.BlitScaled
    */
-  void Blit(const SurfaceRef& src,
+  void Blit(SurfaceRef src,
             OptionalRef<const SDL_Rect> srcrect,
             const SDL_Point& dstpos)
   {
@@ -1187,11 +1187,11 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
-   *                copied, or NULL to copy the entire surface.
+   *                copied, or std::nullopt to copy the entire surface.
    * @param dstrect the SDL_Rect structure representing the x and y position in
-   *                the destination surface, or NULL for (0,0). The width and
-   *                height are ignored, and are copied from `srcrect`. If you
-   *                want a specific width and height, you should use
+   *                the destination surface, or std::nullopt for (0,0). The
+   *                width and height are ignored, and are copied from `srcrect`.
+   *                If you want a specific width and height, you should use
    *                SurfaceRef.BlitScaled().
    * @throws Error on failure.
    *
@@ -1202,7 +1202,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.BlitScaled
    */
-  void Blit(const SurfaceRef& src,
+  void Blit(SurfaceRef src,
             OptionalRef<const SDL_Rect> srcrect,
             OptionalRef<const SDL_Rect> dstrect)
   {
@@ -1229,7 +1229,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void BlitUnchecked(const SurfaceRef& src,
+  void BlitUnchecked(SurfaceRef src,
                      const SDL_Rect& srcrect,
                      const SDL_Rect& dstrect)
   {
@@ -1256,7 +1256,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void BlitScaled(const SurfaceRef& src,
+  void BlitScaled(SurfaceRef src,
                   OptionalRef<const SDL_Rect> srcrect,
                   OptionalRef<const SDL_Rect> dstrect,
                   ScaleMode scaleMode)
@@ -1286,7 +1286,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.BlitScaled
    */
-  void BlitUncheckedScaled(const SurfaceRef& src,
+  void BlitUncheckedScaled(SurfaceRef src,
                            const SDL_Rect& srcrect,
                            const SDL_Rect& dstrect,
                            ScaleMode scaleMode)
@@ -1348,7 +1348,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void BlitTiled(const SurfaceRef& src,
+  void BlitTiled(SurfaceRef src,
                  OptionalRef<const SDL_Rect> srcrect,
                  OptionalRef<const SDL_Rect> dstrect)
   {
@@ -1381,7 +1381,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void BlitTiledWithScale(const SurfaceRef& src,
+  void BlitTiledWithScale(SurfaceRef src,
                           OptionalRef<const SDL_Rect> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
@@ -1421,7 +1421,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void Blit9Grid(const SurfaceRef& src,
+  void Blit9Grid(SurfaceRef src,
                  OptionalRef<const SDL_Rect> srcrect,
                  int left_width,
                  int right_width,
@@ -1473,7 +1473,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.Blit
    */
-  void Blit9GridWithScale(const SurfaceRef& src,
+  void Blit9GridWithScale(SurfaceRef src,
                           OptionalRef<const SDL_Rect> srcrect,
                           int left_width,
                           int right_width,
@@ -1910,7 +1910,7 @@ struct Surface : SurfaceUnsafe
    * @sa LoadSurface(StringParam)
    * @sa LoadBMP(StringParam)
    */
-  Surface(IOStreamRef& src);
+  Surface(IOStreamRef src);
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -2096,7 +2096,7 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *
  * @sa SaveBMP
  */
-inline Surface LoadBMP(IOStreamRef& src)
+inline Surface LoadBMP(IOStreamRef src)
 {
   return Surface{SDL_LoadBMP_IO(src.get(), false)};
 }
@@ -2135,7 +2135,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @sa LoadBMP
  */
-inline void SaveBMP(SurfaceRef& surface, IOStreamRef& dst)
+inline void SaveBMP(SurfaceRef surface, IOStreamRef dst)
 {
   CheckError(SDL_SaveBMP_IO(surface.get(), dst.get(), false));
 }
@@ -2159,7 +2159,7 @@ inline void SaveBMP(SurfaceRef& surface, IOStreamRef& dst)
  *
  * @sa LoadBMP
  */
-inline void SaveBMP(SurfaceRef& surface, StringParam file)
+inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
   CheckError(SDL_SaveBMP(surface.get(), file));
 }
@@ -2182,9 +2182,9 @@ inline Surface SurfaceRef::Convert(PixelFormat format) const
 }
 
 inline Surface SurfaceRef::Convert(PixelFormat format,
-                                   PaletteRef& palette,
+                                   PaletteRef palette,
                                    Colorspace colorspace,
-                                   PropertiesRef& props) const
+                                   PropertiesRef props) const
 {
   return Surface{SDL_ConvertSurfaceAndColorspace(
     get(), format, palette.get(), colorspace, props.get())};
@@ -2258,12 +2258,12 @@ inline void ConvertPixelsAndColorspace(int width,
                                        int height,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
-                                       PropertiesRef& src_properties,
+                                       PropertiesRef src_properties,
                                        const void* src,
                                        int src_pitch,
                                        PixelFormat dst_format,
                                        Colorspace dst_colorspace,
-                                       PropertiesRef& dst_properties,
+                                       PropertiesRef dst_properties,
                                        void* dst,
                                        int dst_pitch)
 {

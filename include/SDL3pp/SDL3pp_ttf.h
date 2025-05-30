@@ -462,7 +462,7 @@ struct FontRef : Resource<TTF_Font*>
    * @sa FontRef.ClearFallbacks
    * @sa FontRef.RemoveFallback
    */
-  void AddFallback(FontRef& fallback)
+  void AddFallback(FontRef fallback)
   {
     CheckError(TTF_AddFallbackFont(get(), fallback.get()));
   }
@@ -482,7 +482,7 @@ struct FontRef : Resource<TTF_Font*>
    * @sa FontRef.AddFallback
    * @sa FontRef.ClearFallbacks
    */
-  void RemoveFallback(FontRef& fallback)
+  void RemoveFallback(FontRef fallback)
   {
     TTF_RemoveFallbackFont(get(), fallback.get());
   }
@@ -1948,7 +1948,7 @@ struct Font : FontUnsafe
    *
    * @sa FontRef.Close
    */
-  Font(IOStreamRef& src, float ptsize)
+  Font(IOStreamRef src, float ptsize)
     : Font(CheckError(TTF_OpenFontIO(src.get(), false, ptsize)))
   {
   }
@@ -1996,7 +1996,7 @@ struct Font : FontUnsafe
    *
    * @sa FontRef.Close
    */
-  Font(PropertiesRef& props)
+  Font(PropertiesRef props)
     : Font(CheckError(TTF_OpenFontWithProperties(props.get())))
   {
   }
@@ -2519,7 +2519,7 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @sa TextRef.GetEngine
    */
-  void SetEngine(TextEngineRef& engine)
+  void SetEngine(TextEngineRef engine)
   {
     CheckError(TTF_SetTextEngine(get(), engine.get()));
   }
@@ -2562,7 +2562,7 @@ struct TextRef : Resource<TTF_Text*>
    *
    * @sa TextRef.GetFont
    */
-  bool SetFont(FontRef& font) { return TTF_SetTextFont(get(), font.get()); }
+  bool SetFont(FontRef font) { return TTF_SetTextFont(get(), font.get()); }
 
   /**
    * Get the font used by a text object.
@@ -3436,7 +3436,7 @@ struct Text : TextUnsafe
    *
    * @sa TextRef.Destroy
    */
-  Text(TextEngineRef& engine, FontRef font, std::string_view text)
+  Text(TextEngineRef engine, FontRef font, std::string_view text)
     : Text(TTF_CreateText(engine.get(), font.get(), text.data(), text.size()))
   {
   }
@@ -3567,7 +3567,7 @@ inline TextEngine CreateSurfaceTextEngine()
  * @sa Text
  * @sa CreateRendererTextEngineWithProperties
  */
-inline TextEngine CreateRendererTextEngine(RendererRef& renderer)
+inline TextEngine CreateRendererTextEngine(RendererRef renderer)
 {
   return TextEngine{TTF_CreateRendererTextEngine(renderer.get()),
                     TTF_DestroyRendererTextEngine};
@@ -3597,7 +3597,7 @@ inline TextEngine CreateRendererTextEngine(RendererRef& renderer)
  * @sa Text
  * @sa TextRef.DrawRenderer
  */
-inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef& props)
+inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef props)
 {
   return TextEngine{TTF_CreateRendererTextEngineWithProperties(props.get()),
                     TTF_DestroyRendererTextEngine};
@@ -3670,7 +3670,7 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  * @sa Text
  * @sa TextRef.GetGPUDrawData
  */
-inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef& props)
+inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
 {
   return TextEngine{TTF_CreateGPUTextEngineWithProperties(props.get()),
                     TTF_DestroyGPUTextEngine};

@@ -125,7 +125,7 @@ inline int IMG_Version() { return ::IMG_Version(); }
  * @sa LoadSurface
  * @sa LoadSurface
  */
-inline Surface LoadSurface(IOStreamRef& src, StringParam type)
+inline Surface LoadSurface(IOStreamRef src, StringParam type)
 {
   return Surface{IMG_LoadTyped_IO(src.get(), false, type)};
 }
@@ -207,9 +207,9 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  *
  * @sa LoadSurface
  * @sa LoadSurface
- * @sa SurfaceRef.reset
+ * @sa SurfaceRef.Destroy
  */
-inline Surface LoadSurface(IOStreamRef& src)
+inline Surface LoadSurface(IOStreamRef src)
 {
   return Surface{IMG_Load_IO(src.get(), false)};
 }
@@ -236,7 +236,7 @@ inline Surface LoadSurface(IOStreamRef& src)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Texture LoadTexture(RendererRef& renderer, StringParam file)
+inline Texture LoadTexture(RendererRef renderer, StringParam file)
 {
   return Texture{IMG_LoadTexture(renderer.get(), file)};
 }
@@ -272,8 +272,10 @@ inline Texture LoadTexture(RendererRef& renderer, StringParam file)
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa TextureRef.Destroy
  */
-inline Texture LoadTexture(RendererRef& renderer, IOStreamRef& src)
+inline Texture LoadTexture(RendererRef renderer, IOStreamRef src)
 {
   return Texture{IMG_LoadTexture_IO(renderer.get(), src.get(), false)};
 }
@@ -317,9 +319,11 @@ inline Texture LoadTexture(RendererRef& renderer, IOStreamRef& src)
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa TextureRef.Destroy
  */
-inline Texture LoadTexture(RendererRef& renderer,
-                           IOStreamRef& src,
+inline Texture LoadTexture(RendererRef renderer,
+                           IOStreamRef src,
                            StringParam type)
 {
   return Texture{
@@ -368,7 +372,7 @@ inline Texture LoadTexture(RendererRef& renderer,
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isAVIF(IOStreamRef& src) { return IMG_isAVIF(src.get()); }
+inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src.get()); }
 
 /**
  * Detect ICO image data on a readable/seekable IOStreamRef.
@@ -411,7 +415,7 @@ inline bool isAVIF(IOStreamRef& src) { return IMG_isAVIF(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isICO(IOStreamRef& src) { return IMG_isICO(src.get()); }
+inline bool isICO(IOStreamRef src) { return IMG_isICO(src.get()); }
 
 /**
  * Detect CUR image data on a readable/seekable IOStreamRef.
@@ -454,7 +458,7 @@ inline bool isICO(IOStreamRef& src) { return IMG_isICO(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isCUR(IOStreamRef& src) { return IMG_isCUR(src.get()); }
+inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src.get()); }
 
 /**
  * Detect BMP image data on a readable/seekable IOStreamRef.
@@ -497,7 +501,7 @@ inline bool isCUR(IOStreamRef& src) { return IMG_isCUR(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isBMP(IOStreamRef& src) { return IMG_isBMP(src.get()); }
+inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src.get()); }
 
 /**
  * Detect GIF image data on a readable/seekable IOStreamRef.
@@ -540,7 +544,7 @@ inline bool isBMP(IOStreamRef& src) { return IMG_isBMP(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isGIF(IOStreamRef& src) { return IMG_isGIF(src.get()); }
+inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src.get()); }
 
 /**
  * Detect JPG image data on a readable/seekable IOStreamRef.
@@ -583,7 +587,7 @@ inline bool isGIF(IOStreamRef& src) { return IMG_isGIF(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJPG(IOStreamRef& src) { return IMG_isJPG(src.get()); }
+inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src.get()); }
 
 /**
  * Detect JXL image data on a readable/seekable IOStreamRef.
@@ -626,7 +630,7 @@ inline bool isJPG(IOStreamRef& src) { return IMG_isJPG(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJXL(IOStreamRef& src) { return IMG_isJXL(src.get()); }
+inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src.get()); }
 
 /**
  * Detect LBM image data on a readable/seekable IOStreamRef.
@@ -669,7 +673,7 @@ inline bool isJXL(IOStreamRef& src) { return IMG_isJXL(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isLBM(IOStreamRef& src) { return IMG_isLBM(src.get()); }
+inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src.get()); }
 
 /**
  * Detect PCX image data on a readable/seekable IOStreamRef.
@@ -712,7 +716,7 @@ inline bool isLBM(IOStreamRef& src) { return IMG_isLBM(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPCX(IOStreamRef& src) { return IMG_isPCX(src.get()); }
+inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src.get()); }
 
 /**
  * Detect PNG image data on a readable/seekable IOStreamRef.
@@ -755,7 +759,7 @@ inline bool isPCX(IOStreamRef& src) { return IMG_isPCX(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNG(IOStreamRef& src) { return IMG_isPNG(src.get()); }
+inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src.get()); }
 
 /**
  * Detect PNM image data on a readable/seekable IOStreamRef.
@@ -798,7 +802,7 @@ inline bool isPNG(IOStreamRef& src) { return IMG_isPNG(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNM(IOStreamRef& src) { return IMG_isPNM(src.get()); }
+inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src.get()); }
 
 /**
  * Detect SVG image data on a readable/seekable IOStreamRef.
@@ -841,7 +845,7 @@ inline bool isPNM(IOStreamRef& src) { return IMG_isPNM(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isSVG(IOStreamRef& src) { return IMG_isSVG(src.get()); }
+inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src.get()); }
 
 /**
  * Detect QOI image data on a readable/seekable IOStreamRef.
@@ -884,7 +888,7 @@ inline bool isSVG(IOStreamRef& src) { return IMG_isSVG(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isQOI(IOStreamRef& src) { return IMG_isQOI(src.get()); }
+inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src.get()); }
 
 /**
  * Detect TIFF image data on a readable/seekable IOStreamRef.
@@ -927,7 +931,7 @@ inline bool isQOI(IOStreamRef& src) { return IMG_isQOI(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isTIF(IOStreamRef& src) { return IMG_isTIF(src.get()); }
+inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src.get()); }
 
 /**
  * Detect XCF image data on a readable/seekable IOStreamRef.
@@ -970,7 +974,7 @@ inline bool isTIF(IOStreamRef& src) { return IMG_isTIF(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXCF(IOStreamRef& src) { return IMG_isXCF(src.get()); }
+inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src.get()); }
 
 /**
  * Detect XPM image data on a readable/seekable IOStreamRef.
@@ -1013,7 +1017,7 @@ inline bool isXCF(IOStreamRef& src) { return IMG_isXCF(src.get()); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXPM(IOStreamRef& src) { return IMG_isXPM(src.get()); }
+inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src.get()); }
 
 /**
  * Detect XV image data on a readable/seekable IOStreamRef.
@@ -1056,7 +1060,7 @@ inline bool isXPM(IOStreamRef& src) { return IMG_isXPM(src.get()); }
  * @sa isXPM
  * @sa isWEBP
  */
-inline bool isXV(IOStreamRef& src) { return IMG_isXV(src.get()); }
+inline bool isXV(IOStreamRef src) { return IMG_isXV(src.get()); }
 
 /**
  * Detect WEBP image data on a readable/seekable IOStreamRef.
@@ -1099,7 +1103,7 @@ inline bool isXV(IOStreamRef& src) { return IMG_isXV(src.get()); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isWEBP(IOStreamRef& src) { return IMG_isWEBP(src.get()); }
+inline bool isWEBP(IOStreamRef src) { return IMG_isWEBP(src.get()); }
 
 /**
  * Load a AVIF image directly.
@@ -1133,7 +1137,7 @@ inline bool isWEBP(IOStreamRef& src) { return IMG_isWEBP(src.get()); }
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadAVIF(IOStreamRef& src)
+inline Surface LoadAVIF(IOStreamRef src)
 {
   return Surface{IMG_LoadAVIF_IO(src.get())};
 }
@@ -1170,7 +1174,7 @@ inline Surface LoadAVIF(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadICO(IOStreamRef& src)
+inline Surface LoadICO(IOStreamRef src)
 {
   return Surface{IMG_LoadICO_IO(src.get())};
 }
@@ -1207,7 +1211,7 @@ inline Surface LoadICO(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadCUR(IOStreamRef& src)
+inline Surface LoadCUR(IOStreamRef src)
 {
   return Surface{IMG_LoadCUR_IO(src.get())};
 }
@@ -1244,7 +1248,7 @@ inline Surface LoadCUR(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadGIF(IOStreamRef& src)
+inline Surface LoadGIF(IOStreamRef src)
 {
   return Surface{IMG_LoadGIF_IO(src.get())};
 }
@@ -1281,7 +1285,7 @@ inline Surface LoadGIF(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadJPG(IOStreamRef& src)
+inline Surface LoadJPG(IOStreamRef src)
 {
   return Surface{IMG_LoadJPG_IO(src.get())};
 }
@@ -1318,7 +1322,7 @@ inline Surface LoadJPG(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadJXL(IOStreamRef& src)
+inline Surface LoadJXL(IOStreamRef src)
 {
   return Surface{IMG_LoadJXL_IO(src.get())};
 }
@@ -1355,7 +1359,7 @@ inline Surface LoadJXL(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadLBM(IOStreamRef& src)
+inline Surface LoadLBM(IOStreamRef src)
 {
   return Surface{IMG_LoadLBM_IO(src.get())};
 }
@@ -1392,7 +1396,7 @@ inline Surface LoadLBM(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadPCX(IOStreamRef& src)
+inline Surface LoadPCX(IOStreamRef src)
 {
   return Surface{IMG_LoadPCX_IO(src.get())};
 }
@@ -1429,7 +1433,7 @@ inline Surface LoadPCX(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadPNG(IOStreamRef& src)
+inline Surface LoadPNG(IOStreamRef src)
 {
   return Surface{IMG_LoadPNG_IO(src.get())};
 }
@@ -1466,7 +1470,7 @@ inline Surface LoadPNG(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadPNM(IOStreamRef& src)
+inline Surface LoadPNM(IOStreamRef src)
 {
   return Surface{IMG_LoadPNM_IO(src.get())};
 }
@@ -1503,7 +1507,7 @@ inline Surface LoadPNM(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadSVG(IOStreamRef& src)
+inline Surface LoadSVG(IOStreamRef src)
 {
   return Surface{IMG_LoadSVG_IO(src.get())};
 }
@@ -1540,7 +1544,7 @@ inline Surface LoadSVG(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadQOI(IOStreamRef& src)
+inline Surface LoadQOI(IOStreamRef src)
 {
   return Surface{IMG_LoadQOI_IO(src.get())};
 }
@@ -1577,7 +1581,7 @@ inline Surface LoadQOI(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadTGA(IOStreamRef& src)
+inline Surface LoadTGA(IOStreamRef src)
 {
   return Surface{IMG_LoadTGA_IO(src.get())};
 }
@@ -1614,7 +1618,7 @@ inline Surface LoadTGA(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadTIF(IOStreamRef& src)
+inline Surface LoadTIF(IOStreamRef src)
 {
   return Surface{IMG_LoadTIF_IO(src.get())};
 }
@@ -1651,7 +1655,7 @@ inline Surface LoadTIF(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadXCF(IOStreamRef& src)
+inline Surface LoadXCF(IOStreamRef src)
 {
   return Surface{IMG_LoadXCF_IO(src.get())};
 }
@@ -1688,7 +1692,7 @@ inline Surface LoadXCF(IOStreamRef& src)
  * @sa LoadXV
  * @sa LoadWEBP
  */
-inline Surface LoadXPM(IOStreamRef& src)
+inline Surface LoadXPM(IOStreamRef src)
 {
   return Surface{IMG_LoadXPM_IO(src.get())};
 }
@@ -1725,7 +1729,7 @@ inline Surface LoadXPM(IOStreamRef& src)
  * @sa LoadXPM
  * @sa LoadWEBP
  */
-inline Surface LoadXV(IOStreamRef& src)
+inline Surface LoadXV(IOStreamRef src)
 {
   return Surface{IMG_LoadXV_IO(src.get())};
 }
@@ -1762,7 +1766,7 @@ inline Surface LoadXV(IOStreamRef& src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadWEBP(IOStreamRef& src)
+inline Surface LoadWEBP(IOStreamRef src)
 {
   return Surface{IMG_LoadWEBP_IO(src.get())};
 }
@@ -1786,7 +1790,7 @@ inline Surface LoadWEBP(IOStreamRef& src)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface LoadSizedSVG(IOStreamRef& src, int width, int height)
+inline Surface LoadSizedSVG(IOStreamRef src, int width, int height)
 {
   return Surface{IMG_LoadSizedSVG_IO(src.get(), width, height)};
 }
@@ -1848,7 +1852,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SaveAVIF(SurfaceRef& surface, StringParam file, int quality)
+inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 {
   CheckError(IMG_SaveAVIF(surface.get(), file, quality));
 }
@@ -1866,7 +1870,7 @@ inline void SaveAVIF(SurfaceRef& surface, StringParam file, int quality)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SaveAVIF(SurfaceRef surface, IOStreamRef& dst, int quality)
+inline void SaveAVIF(SurfaceRef surface, IOStreamRef dst, int quality)
 {
   CheckError(IMG_SaveAVIF_IO(surface.get(), dst.get(), false, quality));
 }
@@ -1884,7 +1888,7 @@ inline void SaveAVIF(SurfaceRef surface, IOStreamRef& dst, int quality)
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceRef& surface, StringParam file)
+inline void SavePNG(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SavePNG(surface.get(), file));
 }
@@ -1900,7 +1904,7 @@ inline void SavePNG(SurfaceRef& surface, StringParam file)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SavePNG(SurfaceRef surface, IOStreamRef& dst)
+inline void SavePNG(SurfaceRef surface, IOStreamRef dst)
 {
   CheckError(IMG_SavePNG_IO(surface.get(), dst.get(), false));
 }
@@ -1918,7 +1922,7 @@ inline void SavePNG(SurfaceRef surface, IOStreamRef& dst)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SaveJPG(SurfaceRef& surface, StringParam file, int quality)
+inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 {
   CheckError(IMG_SaveJPG(surface.get(), file, quality));
 }
@@ -1936,7 +1940,7 @@ inline void SaveJPG(SurfaceRef& surface, StringParam file, int quality)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline void SaveJPG(SurfaceRef surface, IOStreamRef& dst, int quality)
+inline void SaveJPG(SurfaceRef surface, IOStreamRef dst, int quality)
 {
   CheckError(IMG_SaveJPG_IO(surface.get(), dst.get(), false, quality));
 }
@@ -2114,7 +2118,7 @@ struct Animation : AnimationUnsafe
    *
    * @sa AnimationRef.Free
    */
-  Animation(IOStreamRef& src)
+  Animation(IOStreamRef src)
     : Animation(IMG_LoadAnimation_IO(src.get(), false))
   {
   }
@@ -2136,7 +2140,7 @@ struct Animation : AnimationUnsafe
    *
    * @sa AnimationRef.Free
    */
-  Animation(IOStreamRef& src, StringParam type)
+  Animation(IOStreamRef src, StringParam type)
     : Animation(IMG_LoadAnimationTyped_IO(src.get(), false, type))
   {
   }
@@ -2177,7 +2181,7 @@ constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
  * @sa AnimationRef.AnimationRef
  * @sa AnimationRef.reset
  */
-inline Animation LoadGIFAnimation(IOStreamRef& src)
+inline Animation LoadGIFAnimation(IOStreamRef src)
 {
   return Animation{IMG_LoadGIFAnimation_IO(src.get())};
 }
@@ -2197,7 +2201,7 @@ inline Animation LoadGIFAnimation(IOStreamRef& src)
  *
  * @sa AnimationRef.AnimationRef
  */
-inline Animation LoadWEBPAnimation(IOStreamRef& src)
+inline Animation LoadWEBPAnimation(IOStreamRef src)
 {
   return Animation{IMG_LoadWEBPAnimation_IO(src.get())};
 }
@@ -2211,17 +2215,17 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamRef& src)
+inline Surface::Surface(IOStreamRef src)
   : Surface(CheckError(IMG_Load_IO(src.get(), false)))
 {
 }
 
-inline Texture::Texture(RendererRef& renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : Texture(CheckError(IMG_LoadTexture(renderer.get(), file)))
 {
 }
 
-inline Texture::Texture(RendererRef& renderer, IOStream& src)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src)
   : Texture(CheckError(IMG_LoadTexture_IO(renderer.get(), src.get(), false)))
 {
 }
@@ -2239,17 +2243,17 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamRef& src)
+inline Surface::Surface(IOStreamRef src)
   : Surface(CheckError(SDL_LoadBMP_IO(src.get(), false)))
 {
 }
 
-inline Texture::Texture(RendererRef& renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : Texture(CheckError(LoadTextureBMP(renderer, std::move(file)).release()))
 {
 }
 
-inline Texture::Texture(RendererRef& renderer, IOStream& src)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src)
   : Texture(CheckError(LoadTextureBMP(renderer, src).release()))
 {
 }

@@ -956,7 +956,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa ConditionRef.Signal
    * @sa ConditionRef.WaitTimeout
    */
-  void Wait(MutexRef& mutex) { SDL_WaitCondition(get(), mutex.get()); }
+  void Wait(MutexRef mutex) { SDL_WaitCondition(get(), mutex.get()); }
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
@@ -985,7 +985,7 @@ struct ConditionRef : Resource<SDL_Condition*>
    * @sa ConditionRef.Signal
    * @sa ConditionRef.Wait
    */
-  bool WaitTimeout(MutexRef& mutex, std::chrono::milliseconds timeout)
+  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout)
   {
     return SDL_WaitConditionTimeout(get(), mutex.get(), timeout.count());
   }
