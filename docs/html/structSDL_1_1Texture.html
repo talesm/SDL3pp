@@ -111,10 +111,10 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> (SDL
 <tr class="memitem:a7b31242e05c12ac98d1097048b7a34fe" id="r_a7b31242e05c12ac98d1097048b7a34fe"><td class="memItemLeft" align="right" valign="top"><a id="a7b31242e05c12ac98d1097048b7a34fe" name="a7b31242e05c12ac98d1097048b7a34fe"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> (const <a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;other)=delete</td></tr>
 <tr class="separator:a7b31242e05c12ac98d1097048b7a34fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2462bacd51f3ae0cd63d9ee6d0e5d2a" id="r_ab2462bacd51f3ae0cd63d9ee6d0e5d2a"><td class="memItemLeft" align="right" valign="top"><a id="ab2462bacd51f3ae0cd63d9ee6d0e5d2a" name="ab2462bacd51f3ae0cd63d9ee6d0e5d2a"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)=default</td></tr>
-<tr class="memdesc:ab2462bacd51f3ae0cd63d9ee6d0e5d2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:ab2462bacd51f3ae0cd63d9ee6d0e5d2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aade208f89a657a949f25db5c9d826516" id="r_aade208f89a657a949f25db5c9d826516"><td class="memItemLeft" align="right" valign="top"><a id="aade208f89a657a949f25db5c9d826516" name="aade208f89a657a949f25db5c9d826516"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:aade208f89a657a949f25db5c9d826516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:aade208f89a657a949f25db5c9d826516"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8f8227d6ad1b42c3f00e00a9207d246" id="r_ab8f8227d6ad1b42c3f00e00a9207d246"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html#ab8f8227d6ad1b42c3f00e00a9207d246">Texture</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
 <tr class="memdesc:ab8f8227d6ad1b42c3f00e00a9207d246"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
 <tr class="separator:ab8f8227d6ad1b42c3f00e00a9207d246"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,54 +138,40 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b> (<a 
 <a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> other)</td></tr>
 <tr class="memdesc:a2fb76659cf21f918749b1813af13104f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a2fb76659cf21f918749b1813af13104f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1836a0ae3348b55a353ba63318754b7" id="r_aa1836a0ae3348b55a353ba63318754b7"><td class="memItemLeft" align="right" valign="top"><a id="aa1836a0ae3348b55a353ba63318754b7" name="aa1836a0ae3348b55a353ba63318754b7"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (const <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;other)</td></tr>
+<tr class="memdesc:aa1836a0ae3348b55a353ba63318754b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1TextureRef.html" title="An efficient driver-specific representation of pixel data.">TextureRef</a>. <br /></td></tr>
+<tr class="separator:aa1836a0ae3348b55a353ba63318754b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad47cb1616d18ee70f7921e1ee735f460" id="r_ad47cb1616d18ee70f7921e1ee735f460"><td class="memItemLeft" align="right" valign="top"><a id="ad47cb1616d18ee70f7921e1ee735f460" name="ad47cb1616d18ee70f7921e1ee735f460"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (const <a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;other)=delete</td></tr>
 <tr class="separator:ad47cb1616d18ee70f7921e1ee735f460"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a204087cef1676f02cd522d7e7bccff27" id="r_a204087cef1676f02cd522d7e7bccff27"><td class="memItemLeft" align="right" valign="top"><a id="a204087cef1676f02cd522d7e7bccff27" name="a204087cef1676f02cd522d7e7bccff27"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a204087cef1676f02cd522d7e7bccff27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a>. <br /></td></tr>
-<tr class="separator:a204087cef1676f02cd522d7e7bccff27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee48c85e2507ee929240042f70aa6b2f" id="r_aee48c85e2507ee929240042f70aa6b2f"><td class="memItemLeft" align="right" valign="top"><a id="aee48c85e2507ee929240042f70aa6b2f" name="aee48c85e2507ee929240042f70aa6b2f"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:aee48c85e2507ee929240042f70aa6b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a>. <br /></td></tr>
+<tr class="separator:aee48c85e2507ee929240042f70aa6b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1TextureUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TextureUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TextureUnsafe.html">SDL::TextureUnsafe</a></td></tr>
+<tr class="memitem:aa1836a0ae3348b55a353ba63318754b7 inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_aa1836a0ae3348b55a353ba63318754b7"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (const <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;other)</td></tr>
+<tr class="memdesc:aa1836a0ae3348b55a353ba63318754b7 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1TextureRef.html" title="An efficient driver-specific representation of pixel data.">TextureRef</a>. <br /></td></tr>
+<tr class="separator:aa1836a0ae3348b55a353ba63318754b7 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad47cb1616d18ee70f7921e1ee735f460 inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_ad47cb1616d18ee70f7921e1ee735f460"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (const <a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;other)=delete</td></tr>
 <tr class="separator:ad47cb1616d18ee70f7921e1ee735f460 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga204087cef1676f02cd522d7e7bccff27 inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_ga204087cef1676f02cd522d7e7bccff27"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga204087cef1676f02cd522d7e7bccff27 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a>. <br /></td></tr>
-<tr class="separator:ga204087cef1676f02cd522d7e7bccff27 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaee48c85e2507ee929240042f70aa6b2f inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_gaee48c85e2507ee929240042f70aa6b2f"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureUnsafe</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:gaee48c85e2507ee929240042f70aa6b2f inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a>. <br /></td></tr>
+<tr class="separator:gaee48c85e2507ee929240042f70aa6b2f inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5d217f9fe9fa91447e934386b105e9d inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_ad5d217f9fe9fa91447e934386b105e9d"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="structSDL_1_1TextureUnsafe.html">TextureUnsafe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextureUnsafe.html">TextureUnsafe</a> other)</td></tr>
+<tr class="memdesc:ad5d217f9fe9fa91447e934386b105e9d inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:ad5d217f9fe9fa91447e934386b105e9d inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af20105a4009e6eb825f065389249d18d inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_af20105a4009e6eb825f065389249d18d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureUnsafe.html#af20105a4009e6eb825f065389249d18d">Destroy</a> ()</td></tr>
 <tr class="memdesc:af20105a4009e6eb825f065389249d18d inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
 <tr class="separator:af20105a4009e6eb825f065389249d18d inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a623c64a7bebf96b55e94dc04e24f0dac inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_a623c64a7bebf96b55e94dc04e24f0dac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureRef</b> (const <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a623c64a7bebf96b55e94dc04e24f0dac inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:a623c64a7bebf96b55e94dc04e24f0dac inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90bff2142a676d3424b9f2b54a2c7d1c inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_a90bff2142a676d3424b9f2b54a2c7d1c"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureRef</b> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a90bff2142a676d3424b9f2b54a2c7d1c inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a90bff2142a676d3424b9f2b54a2c7d1c inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a179c2618e51ff32e947ba55cb20d7050 inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_a179c2618e51ff32e947ba55cb20d7050"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextureRef</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a179c2618e51ff32e947ba55cb20d7050 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2c68d8aee6027792b70fe2c9957d846 inherit pub_methods_structSDL_1_1TextureUnsafe" id="r_ac2c68d8aee6027792b70fe2c9957d846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureUnsafe.html#ac2c68d8aee6027792b70fe2c9957d846">reset</a> (SDL_Texture *newResource={})</td></tr>
 <tr class="memdesc:ac2c68d8aee6027792b70fe2c9957d846 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the specified texture.  <br /></td></tr>
 <tr class="separator:ac2c68d8aee6027792b70fe2c9957d846 inherit pub_methods_structSDL_1_1TextureUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1TextureRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1TextureRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1TextureRef.html">SDL::TextureRef</a></td></tr>
-<tr class="memitem:a623c64a7bebf96b55e94dc04e24f0dac inherit pub_methods_structSDL_1_1TextureRef" id="r_a623c64a7bebf96b55e94dc04e24f0dac"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureRef</b> (const <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a623c64a7bebf96b55e94dc04e24f0dac inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:a623c64a7bebf96b55e94dc04e24f0dac inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90bff2142a676d3424b9f2b54a2c7d1c inherit pub_methods_structSDL_1_1TextureRef" id="r_a90bff2142a676d3424b9f2b54a2c7d1c"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TextureRef</b> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a90bff2142a676d3424b9f2b54a2c7d1c inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a90bff2142a676d3424b9f2b54a2c7d1c inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a179c2618e51ff32e947ba55cb20d7050 inherit pub_methods_structSDL_1_1TextureRef" id="r_a179c2618e51ff32e947ba55cb20d7050"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextureRef</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a179c2618e51ff32e947ba55cb20d7050 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28917c6b514af64cca6b974a55245667 inherit pub_methods_structSDL_1_1TextureRef" id="r_a28917c6b514af64cca6b974a55245667"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> other)</td></tr>
-<tr class="memdesc:a28917c6b514af64cca6b974a55245667 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a28917c6b514af64cca6b974a55245667 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35de7a36a162339e8193a33a6d0fc8fa inherit pub_methods_structSDL_1_1TextureRef" id="r_a35de7a36a162339e8193a33a6d0fc8fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html#a35de7a36a162339e8193a33a6d0fc8fa">GetProperties</a> () const</td></tr>
 <tr class="memdesc:a35de7a36a162339e8193a33a6d0fc8fa inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a texture.  <br /></td></tr>
 <tr class="separator:a35de7a36a162339e8193a33a6d0fc8fa inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -286,12 +272,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
 <tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextureRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
 <tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1TextureRef" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1TextureRef" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1TextureRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_Texture * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_Texture * resource={})</td></tr>
@@ -305,18 +285,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
 <tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
 <tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_classSDL_1_1Resource" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_classSDL_1_1Resource" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c0c941509c77a00db1167982f4fe4c5 inherit pub_methods_classSDL_1_1Resource" id="r_a6c0c941509c77a00db1167982f4fe4c5"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:a6c0c941509c77a00db1167982f4fe4c5 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a261c48262a2a2cd5d535bdcd998d4fb6 inherit pub_methods_classSDL_1_1Resource" id="r_a261c48262a2a2cd5d535bdcd998d4fb6"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a261c48262a2a2cd5d535bdcd998d4fb6 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
 <tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>

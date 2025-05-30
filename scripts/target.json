@@ -2808,75 +2808,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "PropertiesRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const PropertiesRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "PropertiesRef(other.get())"
-                  ]
-                },
-                "name": "PropertiesRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "PropertiesRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "PropertiesRef(other.release())"
-                  ]
-                },
-                "name": "PropertiesRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Properties &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "PropertiesRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "PropertiesRef &",
-              "parameters": [
-                {
-                  "type": "PropertiesRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "CopyPropertiesTo": {
               "doc": "Copy a group of properties.\n\nCopy all the properties from one group of properties to another, with the\nexception of properties requiring cleanup (set using\nPropertiesRef.SetPointerWithCleanup()), which will not be copied. Any\nproperty that already exists on `dst` will be overwritten.\n\n@param dst the destination properties.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "CopyPropertiesTo",
@@ -3316,6 +3247,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const PropertiesRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs PropertiesUnsafe from PropertiesRef.",
+                "hints": {
+                  "init": [
+                    "PropertiesRef(other.get())"
+                  ]
+                },
+                "name": "PropertiesUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -3334,6 +3283,7 @@
                 "name": "PropertiesUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Properties &&",
@@ -3348,7 +3298,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "PropertiesUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "PropertiesUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Properties": {
@@ -3403,7 +3369,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Properties &&",
@@ -3412,7 +3377,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Properties(other.release())"
+                  ]
                 },
                 "name": "Properties"
               },
@@ -3556,6 +3523,7 @@
           "kind": "function",
           "name": "PropertiesUnsafe::PropertiesUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Properties &&",
@@ -5712,75 +5680,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "WindowRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const WindowRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "WindowRef(other.get())"
-                  ]
-                },
-                "name": "WindowRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "WindowRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "WindowRef(other.release())"
-                  ]
-                },
-                "name": "WindowRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Window &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "WindowRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "WindowRef &",
-              "parameters": [
-                {
-                  "type": "WindowRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "GetDisplay": {
               "doc": "Get the display associated with a window.\n\n@returns the instance ID of the display containing the center of the window\n         on success or 0 on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Display.GetBounds\n@sa Display.GetAll",
               "name": "GetDisplay",
@@ -6965,6 +6864,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const WindowRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs WindowUnsafe from WindowRef.",
+                "hints": {
+                  "init": [
+                    "WindowRef(other.get())"
+                  ]
+                },
+                "name": "WindowUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -6983,6 +6900,7 @@
                 "name": "WindowUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Window &&",
@@ -6997,7 +6915,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "WindowUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "WindowUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Window": {
@@ -7065,7 +6999,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Window &&",
@@ -7074,7 +7007,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Window(other.release())"
+                  ]
                 },
                 "name": "Window"
               },
@@ -7176,6 +7111,7 @@
           "kind": "function",
           "name": "WindowUnsafe::WindowUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Window &&",
@@ -7268,75 +7204,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "GLContextRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const GLContextRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "GLContextRef(other.get())"
-                  ]
-                },
-                "name": "GLContextRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "GLContextRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "GLContextRef(other.release())"
-                  ]
-                },
-                "name": "GLContextRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "GLContext &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "GLContextRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "GLContextRef &",
-              "parameters": [
-                {
-                  "type": "GLContextRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "MakeCurrent": {
               "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext.GLContext",
               "name": "MakeCurrent",
@@ -7415,6 +7282,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const GLContextRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs GLContextUnsafe from GLContextRef.",
+                "hints": {
+                  "init": [
+                    "GLContextRef(other.get())"
+                  ]
+                },
+                "name": "GLContextUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -7433,6 +7318,7 @@
                 "name": "GLContextUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "GLContext &&",
@@ -7447,7 +7333,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "GLContextUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "GLContextUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "GLContext": {
@@ -7515,7 +7417,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "GLContext &&",
@@ -7524,7 +7425,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "GLContext(other.release())"
+                  ]
                 },
                 "name": "GLContext"
               },
@@ -7576,6 +7479,7 @@
           "kind": "function",
           "name": "GLContextUnsafe::GLContextUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "GLContext &&",
@@ -9122,75 +9026,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "RendererRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const RendererRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "RendererRef(other.get())"
-                  ]
-                },
-                "name": "RendererRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "RendererRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "RendererRef(other.release())"
-                  ]
-                },
-                "name": "RendererRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Renderer &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "RendererRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "RendererRef &",
-              "parameters": [
-                {
-                  "type": "RendererRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "GetWindow": {
               "doc": "Get the window associated with a renderer.\n\n@returns the window on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetWindow",
@@ -10367,6 +10202,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const RendererRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs RendererUnsafe from RendererRef.",
+                "hints": {
+                  "init": [
+                    "RendererRef(other.get())"
+                  ]
+                },
+                "name": "RendererUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -10385,6 +10238,7 @@
                 "name": "RendererUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Renderer &&",
@@ -10399,7 +10253,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "RendererUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "RendererUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Renderer": {
@@ -10467,7 +10337,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Renderer &&",
@@ -10476,7 +10345,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Renderer(other.release())"
+                  ]
                 },
                 "name": "Renderer"
               },
@@ -10570,6 +10441,7 @@
           "kind": "function",
           "name": "RendererUnsafe::RendererUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Renderer &&",
@@ -10593,75 +10465,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "TextureRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const TextureRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "TextureRef(other.get())"
-                  ]
-                },
-                "name": "TextureRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TextureRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "TextureRef(other.release())"
-                  ]
-                },
-                "name": "TextureRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Texture &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "TextureRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "TextureRef &",
-              "parameters": [
-                {
-                  "type": "TextureRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "GetProperties": {
               "doc": "Get the properties associated with a texture.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing\n  the texture colorspace.\n- `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat.\n- `prop::Texture.ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess.\n- `prop::Texture.WIDTH_NUMBER`: the width of the texture in pixels.\n- `prop::Texture.HEIGHT_NUMBER`: the height of the texture in pixels.\n- `prop::Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for other textures.\n- `prop::Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  textures, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. If this is defined, any values outside the\n  range supported by the display will be scaled into the available HDR\n  headroom, otherwise they are clipped. This defaults to 1.0 for SDR\n  textures, 4.0 for HDR10 textures, and no default for floating point\n  textures.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated\n  with the texture\n- `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture\n- `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated\n  with the texture\n- `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated\n  with the U plane of a YUV texture\n- `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated\n  with the V plane of a YUV texture\n\nWith the vulkan renderer:\n\n- `prop::Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the\n  texture\n\nWith the opengl renderer:\n\n- `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated\n  with the texture\n- `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture\n- `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated\n  with the U plane of a YUV texture\n- `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated\n  with the V plane of a YUV texture\n- `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the\n  texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)\n- `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of\n  the texture (0.0 - 1.0)\n- `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of\n  the texture (0.0 - 1.0)\n\nWith the opengles2 renderer:\n\n- `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture\n- `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture\n- `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture\n- `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture\n- `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the\n  texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -11187,6 +10990,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const TextureRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TextureUnsafe from TextureRef.",
+                "hints": {
+                  "init": [
+                    "TextureRef(other.get())"
+                  ]
+                },
+                "name": "TextureUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -11205,6 +11026,7 @@
                 "name": "TextureUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Texture &&",
@@ -11219,7 +11041,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "TextureUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "TextureUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Texture": {
@@ -11287,7 +11125,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Texture &&",
@@ -11296,7 +11133,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Texture(other.release())"
+                  ]
                 },
                 "name": "Texture"
               },
@@ -11539,6 +11378,7 @@
           "kind": "function",
           "name": "TextureUnsafe::TextureUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Texture &&",
@@ -15450,75 +15290,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "PaletteRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const PaletteRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "PaletteRef(other.get())"
-                  ]
-                },
-                "name": "PaletteRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "PaletteRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "PaletteRef(other.release())"
-                  ]
-                },
-                "name": "PaletteRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Palette &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "PaletteRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "PaletteRef &",
-              "parameters": [
-                {
-                  "type": "PaletteRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "GetSize": {
               "kind": "function",
               "type": "int",
@@ -15642,6 +15413,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const PaletteRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs PaletteUnsafe from PaletteRef.",
+                "hints": {
+                  "init": [
+                    "PaletteRef(other.get())"
+                  ]
+                },
+                "name": "PaletteUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -15660,6 +15449,7 @@
                 "name": "PaletteUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Palette &&",
@@ -15674,7 +15464,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "PaletteUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "PaletteUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Palette": {
@@ -15742,7 +15548,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Palette &&",
@@ -15751,7 +15556,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Palette(other.release())"
+                  ]
                 },
                 "name": "Palette"
               },
@@ -15806,6 +15613,7 @@
           "kind": "function",
           "name": "PaletteUnsafe::PaletteUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Palette &&",
@@ -17857,75 +17665,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "SurfaceRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const SurfaceRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "SurfaceRef(other.get())"
-                  ]
-                },
-                "name": "SurfaceRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "SurfaceRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "SurfaceRef(other.release())"
-                  ]
-                },
-                "name": "SurfaceRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Surface &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "SurfaceRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "SurfaceRef &",
-              "parameters": [
-                {
-                  "type": "SurfaceRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "GetProperties": {
               "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
@@ -19172,6 +18911,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SurfaceRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs SurfaceUnsafe from SurfaceRef.",
+                "hints": {
+                  "init": [
+                    "SurfaceRef(other.get())"
+                  ]
+                },
+                "name": "SurfaceUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -19190,6 +18947,7 @@
                 "name": "SurfaceUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Surface &&",
@@ -19204,7 +18962,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "SurfaceUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "SurfaceUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Surface": {
@@ -19272,7 +19046,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Surface &&",
@@ -19281,7 +19054,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Surface(other.release())"
+                  ]
                 },
                 "name": "Surface"
               },
@@ -19509,6 +19284,7 @@
           "kind": "function",
           "name": "SurfaceUnsafe::SurfaceUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Surface &&",
@@ -20522,75 +20298,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "AudioDeviceRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const AudioDeviceRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "AudioDeviceRef(other.get())"
-                  ]
-                },
-                "name": "AudioDeviceRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "AudioDeviceRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "AudioDeviceRef(other.release())"
-                  ]
-                },
-                "name": "AudioDeviceRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "AudioDevice &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "AudioDeviceRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "AudioDeviceRef &",
-              "parameters": [
-                {
-                  "type": "AudioDeviceRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "operator<=>": {
               "kind": "function",
               "constexpr": true,
@@ -20846,6 +20553,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const AudioDeviceRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs AudioDeviceUnsafe from AudioDeviceRef.",
+                "hints": {
+                  "init": [
+                    "AudioDeviceRef(other.get())"
+                  ]
+                },
+                "name": "AudioDeviceUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -20864,6 +20589,7 @@
                 "name": "AudioDeviceUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "AudioDevice &&",
@@ -20878,7 +20604,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "AudioDeviceUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "AudioDeviceUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "AudioDevice": {
@@ -20946,7 +20688,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "AudioDevice &&",
@@ -20955,7 +20696,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "AudioDevice(other.release())"
+                  ]
                 },
                 "name": "AudioDevice"
               },
@@ -21015,6 +20758,7 @@
           "kind": "function",
           "name": "AudioDeviceUnsafe::AudioDeviceUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "AudioDevice &&",
@@ -21084,75 +20828,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "AudioStreamRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const AudioStreamRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "AudioStreamRef(other.get())"
-                  ]
-                },
-                "name": "AudioStreamRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "AudioStreamRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "AudioStreamRef(other.release())"
-                  ]
-                },
-                "name": "AudioStreamRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "AudioStream &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "AudioStreamRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "AudioStreamRef &",
-              "parameters": [
-                {
-                  "type": "AudioStreamRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "GetProperties": {
               "doc": "Get the properties associated with an audio stream.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21617,6 +21292,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const AudioStreamRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs AudioStreamUnsafe from AudioStreamRef.",
+                "hints": {
+                  "init": [
+                    "AudioStreamRef(other.get())"
+                  ]
+                },
+                "name": "AudioStreamUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -21635,6 +21328,7 @@
                 "name": "AudioStreamUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "AudioStream &&",
@@ -21649,7 +21343,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "AudioStreamUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "AudioStreamUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "AudioStream": {
@@ -21717,7 +21427,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "AudioStream &&",
@@ -21726,7 +21435,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "AudioStream(other.release())"
+                  ]
                 },
                 "name": "AudioStream"
               },
@@ -21931,6 +21642,7 @@
           "kind": "function",
           "name": "AudioStreamUnsafe::AudioStreamUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "AudioStream &&",
@@ -29477,75 +29189,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "CursorRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const CursorRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "CursorRef(other.get())"
-                  ]
-                },
-                "name": "CursorRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "CursorRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "CursorRef(other.release())"
-                  ]
-                },
-                "name": "CursorRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Cursor &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "CursorRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "CursorRef &",
-              "parameters": [
-                {
-                  "type": "CursorRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Destroy": {
               "doc": "Free a previously-created cursor.\n\nUse this function to free cursor resources created with Cursor.Cursor(),\nCursor.Cursor() or Cursor.Cursor().\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa Cursor.Cursor",
               "name": "Destroy",
@@ -29605,6 +29248,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const CursorRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs CursorUnsafe from CursorRef.",
+                "hints": {
+                  "init": [
+                    "CursorRef(other.get())"
+                  ]
+                },
+                "name": "CursorUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -29623,6 +29284,7 @@
                 "name": "CursorUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Cursor &&",
@@ -29637,7 +29299,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "CursorUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "CursorUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Cursor": {
@@ -29705,7 +29383,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Cursor &&",
@@ -29714,7 +29391,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Cursor(other.release())"
+                  ]
                 },
                 "name": "Cursor"
               },
@@ -29830,6 +29509,7 @@
           "kind": "function",
           "name": "CursorUnsafe::CursorUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Cursor &&",
@@ -30364,75 +30044,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "ThreadRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const ThreadRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "ThreadRef(other.get())"
-                  ]
-                },
-                "name": "ThreadRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "ThreadRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "ThreadRef(other.release())"
-                  ]
-                },
-                "name": "ThreadRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Thread &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "ThreadRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "ThreadRef &",
-              "parameters": [
-                {
-                  "type": "ThreadRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "GetName": {
               "doc": "Get the thread name as it was specified in Thread.Thread().\n\n@returns a pointer to a UTF-8 string that names the specified thread, or\n         nullptr if it doesn't have a name.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetName",
@@ -30549,6 +30160,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const ThreadRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs ThreadUnsafe from ThreadRef.",
+                "hints": {
+                  "init": [
+                    "ThreadRef(other.get())"
+                  ]
+                },
+                "name": "ThreadUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -30567,6 +30196,7 @@
                 "name": "ThreadUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Thread &&",
@@ -30581,7 +30211,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "ThreadUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "ThreadUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Thread": {
@@ -30649,7 +30295,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Thread &&",
@@ -30658,7 +30303,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Thread(other.release())"
+                  ]
                 },
                 "name": "Thread"
               },
@@ -30753,6 +30400,7 @@
           "kind": "function",
           "name": "ThreadUnsafe::ThreadUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Thread &&",
@@ -30919,75 +30567,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "MutexRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const MutexRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "MutexRef(other.get())"
-                  ]
-                },
-                "name": "MutexRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "MutexRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "MutexRef(other.release())"
-                  ]
-                },
-                "name": "MutexRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Mutex &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "MutexRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "MutexRef &",
-              "parameters": [
-                {
-                  "type": "MutexRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Lock": {
               "doc": "Lock the mutex.\n\nThis will block until the mutex is available, which is to say it is in the\nunlocked state and the OS has chosen the caller as the next thread to lock\nit. Of all threads waiting to lock the mutex, only one may do so at a time.\n\nIt is legal for the owning thread to lock an already-locked mutex. It must\nunlock it the same number of times before it is actually made available for\nother threads in the system (this is known as a \"recursive mutex\").\n\nThis function does not fail; if mutex is nullptr, it will return immediately\nhaving locked nothing. If the mutex is valid, this function will always\nblock until it can lock the mutex, and return with it locked.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexRef.TryLock\n@sa MutexRef.Unlock",
               "name": "Lock",
@@ -31074,6 +30653,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const MutexRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs MutexUnsafe from MutexRef.",
+                "hints": {
+                  "init": [
+                    "MutexRef(other.get())"
+                  ]
+                },
+                "name": "MutexUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -31092,6 +30689,7 @@
                 "name": "MutexUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Mutex &&",
@@ -31106,7 +30704,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "MutexUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "MutexUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Mutex": {
@@ -31161,7 +30775,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Mutex &&",
@@ -31170,7 +30783,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Mutex(other.release())"
+                  ]
                 },
                 "name": "Mutex"
               },
@@ -31217,6 +30832,7 @@
           "kind": "function",
           "name": "MutexUnsafe::MutexUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Mutex &&",
@@ -31240,75 +30856,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "RWLockRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const RWLockRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "RWLockRef(other.get())"
-                  ]
-                },
-                "name": "RWLockRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "RWLockRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "RWLockRef(other.release())"
-                  ]
-                },
-                "name": "RWLockRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "RWLock &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "RWLockRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "RWLockRef &",
-              "parameters": [
-                {
-                  "type": "RWLockRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "LockForReading": {
               "doc": "Lock the read/write lock for _read only_ operations.\n\nThis will block until the rwlock is available, which is to say it is not\nlocked for writing by any other thread. Of all threads waiting to lock the\nrwlock, all may do so at the same time as long as they are requesting\nread-only access; if a thread wants to lock for writing, only one may do so\nat a time, and no other threads, read-only or not, may hold the lock at the\nsame time.\n\nIt is legal for the owning thread to lock an already-locked rwlock for\nreading. It must unlock it the same number of times before it is actually\nmade available for other threads in the system (this is known as a\n\"recursive rwlock\").\n\nNote that locking for writing is not recursive (this is only available to\nread-only locks).\n\nIt is illegal to request a read-only lock from a thread that already holds\nthe write lock. Doing so results in undefined behavior. Unlock the write\nlock before requesting a read-only lock. (But, of course, if you have the\nwrite lock, you don't need further locks to read in any case.)\n\nThis function does not fail; if rwlock is nullptr, it will return immediately\nhaving locked nothing. If the rwlock is valid, this function will always\nblock until it can lock the mutex, and return with it locked.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockRef.LockForWriting\n@sa RWLockRef.TryLockForReading\n@sa RWLockRef.Unlock",
@@ -31415,6 +30962,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const RWLockRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs RWLockUnsafe from RWLockRef.",
+                "hints": {
+                  "init": [
+                    "RWLockRef(other.get())"
+                  ]
+                },
+                "name": "RWLockUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -31433,6 +30998,7 @@
                 "name": "RWLockUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "RWLock &&",
@@ -31447,7 +31013,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "RWLockUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "RWLockUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "RWLock": {
@@ -31502,7 +31084,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "RWLock &&",
@@ -31511,7 +31092,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "RWLock(other.release())"
+                  ]
                 },
                 "name": "RWLock"
               },
@@ -31558,6 +31141,7 @@
           "kind": "function",
           "name": "RWLockUnsafe::RWLockUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "RWLock &&",
@@ -31581,75 +31165,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "SemaphoreRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const SemaphoreRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "SemaphoreRef(other.get())"
-                  ]
-                },
-                "name": "SemaphoreRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "SemaphoreRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "SemaphoreRef(other.release())"
-                  ]
-                },
-                "name": "SemaphoreRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Semaphore &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "SemaphoreRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "SemaphoreRef &",
-              "parameters": [
-                {
-                  "type": "SemaphoreRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "Wait": {
               "doc": "Wait until a semaphore has a positive value and then decrements it.\n\nThis function suspends the calling thread until the semaphore pointed to by\n`sem` has a positive value, and then atomically decrement the semaphore\nvalue.\n\nThis function is the equivalent of calling SemaphoreRef.WaitTimeout() with\na time length of -1.\n\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreRef.Signal\n@sa SemaphoreRef.TryWait\n@sa SemaphoreRef.WaitTimeout",
@@ -31756,6 +31271,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SemaphoreRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs SemaphoreUnsafe from SemaphoreRef.",
+                "hints": {
+                  "init": [
+                    "SemaphoreRef(other.get())"
+                  ]
+                },
+                "name": "SemaphoreUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -31774,6 +31307,7 @@
                 "name": "SemaphoreUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Semaphore &&",
@@ -31788,7 +31322,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "SemaphoreUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "SemaphoreUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Semaphore": {
@@ -31856,7 +31406,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Semaphore &&",
@@ -31865,7 +31414,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Semaphore(other.release())"
+                  ]
                 },
                 "name": "Semaphore"
               },
@@ -31917,6 +31468,7 @@
           "kind": "function",
           "name": "SemaphoreUnsafe::SemaphoreUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Semaphore &&",
@@ -31940,75 +31492,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "ConditionRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const ConditionRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "ConditionRef(other.get())"
-                  ]
-                },
-                "name": "ConditionRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "ConditionRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "ConditionRef(other.release())"
-                  ]
-                },
-                "name": "ConditionRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Condition &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "ConditionRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "ConditionRef &",
-              "parameters": [
-                {
-                  "type": "ConditionRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "Signal": {
               "doc": "Restart one of the threads that are waiting on the condition variable.\n\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionRef.Broadcast\n@sa ConditionRef.Wait\n@sa ConditionRef.WaitTimeout",
@@ -32115,6 +31598,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const ConditionRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs ConditionUnsafe from ConditionRef.",
+                "hints": {
+                  "init": [
+                    "ConditionRef(other.get())"
+                  ]
+                },
+                "name": "ConditionUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -32133,6 +31634,7 @@
                 "name": "ConditionUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Condition &&",
@@ -32147,7 +31649,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "ConditionUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "ConditionUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Condition": {
@@ -32202,7 +31720,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Condition &&",
@@ -32211,7 +31728,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Condition(other.release())"
+                  ]
                 },
                 "name": "Condition"
               },
@@ -32258,6 +31777,7 @@
           "kind": "function",
           "name": "ConditionUnsafe::ConditionUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Condition &&",
@@ -34139,75 +33659,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "StorageRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const StorageRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "StorageRef(other.get())"
-                  ]
-                },
-                "name": "StorageRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "StorageRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "StorageRef(other.release())"
-                  ]
-                },
-                "name": "StorageRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Storage &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "StorageRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "StorageRef &",
-              "parameters": [
-                {
-                  "type": "StorageRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Ready": {
               "doc": "Checks if the storage container is ready to use.\n\nThis function should be called in regular intervals until it returns true -\nhowever, it is not recommended to spinwait on this call, as the backend may\ndepend on a synchronous message loop. You might instead poll this in your\ngame's main loop while processing events and drawing a loading screen.\n\n@returns true if the container is ready, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
               "name": "Ready",
@@ -34535,6 +33986,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const StorageRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs StorageUnsafe from StorageRef.",
+                "hints": {
+                  "init": [
+                    "StorageRef(other.get())"
+                  ]
+                },
+                "name": "StorageUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -34553,6 +34022,7 @@
                 "name": "StorageUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Storage &&",
@@ -34567,7 +34037,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "StorageUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "StorageUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Storage": {
@@ -34635,7 +34121,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Storage &&",
@@ -34644,7 +34129,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Storage(other.release())"
+                  ]
                 },
                 "name": "Storage"
               },
@@ -34763,6 +34250,7 @@
           "kind": "function",
           "name": "StorageUnsafe::StorageUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Storage &&",
@@ -34895,75 +34383,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "IOStreamRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const IOStreamRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "IOStreamRef(other.get())"
-                  ]
-                },
-                "name": "IOStreamRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "IOStreamRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "IOStreamRef(other.release())"
-                  ]
-                },
-                "name": "IOStreamRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "IOStream &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "IOStreamRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "IOStreamRef &",
-              "parameters": [
-                {
-                  "type": "IOStreamRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "GetProperties": {
               "doc": "Get the properties associated with an IOStreamRef.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
@@ -35713,6 +35132,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const IOStreamRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs IOStreamUnsafe from IOStreamRef.",
+                "hints": {
+                  "init": [
+                    "IOStreamRef(other.get())"
+                  ]
+                },
+                "name": "IOStreamUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -35731,6 +35168,7 @@
                 "name": "IOStreamUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "IOStream &&",
@@ -35745,7 +35183,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "IOStreamUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "IOStreamUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "IOStream": {
@@ -35813,7 +35267,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "IOStream &&",
@@ -35822,7 +35275,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "IOStream(other.release())"
+                  ]
                 },
                 "name": "IOStream"
               },
@@ -35898,6 +35353,7 @@
           "kind": "function",
           "name": "IOStreamUnsafe::IOStreamUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "IOStream &&",
@@ -36626,75 +36082,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "SharedObjectRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const SharedObjectRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "SharedObjectRef(other.get())"
-                  ]
-                },
-                "name": "SharedObjectRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "SharedObjectRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "SharedObjectRef(other.release())"
-                  ]
-                },
-                "name": "SharedObjectRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "SharedObject &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "SharedObjectRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "SharedObjectRef &",
-              "parameters": [
-                {
-                  "type": "SharedObjectRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "LoadFunction": {
               "doc": "Look up the address of the named function in a shared object.\n\nThis function pointer is no longer valid after calling SharedObjectRef.Unload().\n\nThis function can only look up C function names. Other languages may have\nname mangling and intrinsic language support that varies from compiler to\ncompiler.\n\nMake sure you declare your function pointers with the same calling\nconvention as the actual library function. Your code will crash\nmysteriously if you do not do this.\n\nIf the requested function doesn't exist, nullptr is returned.\n\n@param name the name of the function to look up.\n@returns a pointer to the function or nullptr on failure; call GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObject.SharedObject",
               "name": "LoadFunction",
@@ -36767,6 +36154,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SharedObjectRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs SharedObjectUnsafe from SharedObjectRef.",
+                "hints": {
+                  "init": [
+                    "SharedObjectRef(other.get())"
+                  ]
+                },
+                "name": "SharedObjectUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -36785,6 +36190,7 @@
                 "name": "SharedObjectUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "SharedObject &&",
@@ -36799,7 +36205,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "SharedObjectUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "SharedObjectUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "SharedObject": {
@@ -36867,7 +36289,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "SharedObject &&",
@@ -36876,7 +36297,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "SharedObject(other.release())"
+                  ]
                 },
                 "name": "SharedObject"
               },
@@ -36928,6 +36351,7 @@
           "kind": "function",
           "name": "SharedObjectUnsafe::SharedObjectUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "SharedObject &&",
@@ -37006,75 +36430,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "ProcessRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const ProcessRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "ProcessRef(other.get())"
-                  ]
-                },
-                "name": "ProcessRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "ProcessRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "ProcessRef(other.release())"
-                  ]
-                },
-                "name": "ProcessRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Process &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "ProcessRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "ProcessRef &",
-              "parameters": [
-                {
-                  "type": "ProcessRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "GetProperties": {
               "doc": "Get the properties associated with a process.\n\nThe following read-only properties are provided by SDL:\n\n- `prop::process.PID_NUMBER`: the process ID of the process.\n- `prop::process.STDIN_POINTER`: an IOStreamRef that can be used to\n  write input to the process, if it was created with\n  `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.\n- `prop::process.STDOUT_POINTER`: a non-blocking IOStreamRef that can\n  be used to read output from the process, if it was created with\n  `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.\n- `prop::process.STDERR_POINTER`: a non-blocking IOStreamRef that can\n  be used to read error output from the process, if it was created with\n  `prop::process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.\n- `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in\n  the background.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Process.Process\n@sa Process.Process",
@@ -37229,6 +36584,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const ProcessRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs ProcessUnsafe from ProcessRef.",
+                "hints": {
+                  "init": [
+                    "ProcessRef(other.get())"
+                  ]
+                },
+                "name": "ProcessUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -37247,6 +36620,7 @@
                 "name": "ProcessUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Process &&",
@@ -37261,7 +36635,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "ProcessUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "ProcessUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Process": {
@@ -37329,7 +36719,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Process &&",
@@ -37338,7 +36727,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Process(other.release())"
+                  ]
                 },
                 "name": "Process"
               },
@@ -37407,6 +36798,7 @@
           "kind": "function",
           "name": "ProcessUnsafe::ProcessUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Process &&",
@@ -38358,75 +37750,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "TrayRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const TrayRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "TrayRef(other.get())"
-                  ]
-                },
-                "name": "TrayRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TrayRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "TrayRef(other.release())"
-                  ]
-                },
-                "name": "TrayRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Tray &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "TrayRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "TrayRef &",
-              "parameters": [
-                {
-                  "type": "TrayRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "SetIcon": {
               "doc": "Updates the system tray icon's icon.\n\n@param icon the new icon. May be nullptr.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Tray.Tray",
               "name": "SetIcon",
@@ -38531,6 +37854,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const TrayRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TrayUnsafe from TrayRef.",
+                "hints": {
+                  "init": [
+                    "TrayRef(other.get())"
+                  ]
+                },
+                "name": "TrayUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -38549,6 +37890,7 @@
                 "name": "TrayUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Tray &&",
@@ -38563,7 +37905,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "TrayUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "TrayUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Tray": {
@@ -38631,7 +37989,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Tray &&",
@@ -38640,7 +37997,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Tray(other.release())"
+                  ]
                 },
                 "name": "Tray"
               },
@@ -38709,6 +38068,7 @@
           "kind": "function",
           "name": "TrayUnsafe::TrayUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Tray &&",
@@ -38900,75 +38260,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "TrayEntryRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const TrayEntryRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "TrayEntryRef(other.get())"
-                  ]
-                },
-                "name": "TrayEntryRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TrayEntryRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "TrayEntryRef(other.release())"
-                  ]
-                },
-                "name": "TrayEntryRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "TrayEntry &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "TrayEntryRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "TrayEntryRef &",
-              "parameters": [
-                {
-                  "type": "TrayEntryRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "CreateSubmenu": {
               "doc": "Create a submenu for a system tray entry.\n\nThis should be called at most once per tray entry.\n\nThis function does the same thing as TrayRef.CreateMenu, except that it\ntakes a TrayEntryRef instead of a TrayRef.\n\nA menu does not need to be destroyed; it will be destroyed with the tray.\n\n@returns the newly created menu.\n\n@threadsafety This function should be called on the thread that created the\n              tray.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayMenu.InsertEntry\n@sa TrayEntryRef.GetSubmenu\n@sa TrayMenu.GetParentEntry",
               "name": "CreateSubmenu",
@@ -39158,6 +38449,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const TrayEntryRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TrayEntryUnsafe from TrayEntryRef.",
+                "hints": {
+                  "init": [
+                    "TrayEntryRef(other.get())"
+                  ]
+                },
+                "name": "TrayEntryUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -39176,6 +38485,7 @@
                 "name": "TrayEntryUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "TrayEntry &&",
@@ -39190,7 +38500,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "TrayEntryUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "TrayEntryUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "TrayEntry": {
@@ -39258,7 +38584,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "TrayEntry &&",
@@ -39267,7 +38592,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "TrayEntry(other.release())"
+                  ]
                 },
                 "name": "TrayEntry"
               }
@@ -39306,6 +38633,7 @@
           "kind": "function",
           "name": "TrayEntryUnsafe::TrayEntryUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "TrayEntry &&",
@@ -40846,75 +40174,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "EnvironmentRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const EnvironmentRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "EnvironmentRef(other.get())"
-                  ]
-                },
-                "name": "EnvironmentRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "EnvironmentRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "EnvironmentRef(other.release())"
-                  ]
-                },
-                "name": "EnvironmentRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Environment &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "EnvironmentRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "EnvironmentRef &",
-              "parameters": [
-                {
-                  "type": "EnvironmentRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "GetVariable": {
               "doc": "Get the value of a variable in the environment.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or nullptr if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment\n@sa Environment.Environment\n@sa EnvironmentRef.GetVariables\n@sa EnvironmentRef.SetVariable\n@sa EnvironmentRef.UnsetVariable",
               "name": "GetVariable",
@@ -41042,6 +40301,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const EnvironmentRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs EnvironmentUnsafe from EnvironmentRef.",
+                "hints": {
+                  "init": [
+                    "EnvironmentRef(other.get())"
+                  ]
+                },
+                "name": "EnvironmentUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -41060,6 +40337,7 @@
                 "name": "EnvironmentUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Environment &&",
@@ -41074,7 +40352,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "EnvironmentUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "EnvironmentUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Environment": {
@@ -41142,7 +40436,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Environment &&",
@@ -41151,7 +40444,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Environment(other.release())"
+                  ]
                 },
                 "name": "Environment"
               },
@@ -41203,6 +40498,7 @@
           "kind": "function",
           "name": "EnvironmentUnsafe::EnvironmentUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Environment &&",
@@ -43889,75 +43185,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "IConvRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const IConvRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "IConvRef(other.get())"
-                  ]
-                },
-                "name": "IConvRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "IConvRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "IConvRef(other.release())"
-                  ]
-                },
-                "name": "IConvRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "IConv &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "IConvRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "IConvRef &",
-              "parameters": [
-                {
-                  "type": "IConvRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "iconv": {
               "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of succesful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n          IConv.IConv().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConv.IConv\n@sa IConvRef.close\n@sa iconv_string",
               "name": "iconv",
@@ -44046,6 +43273,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const IConvRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs IConvUnsafe from IConvRef.",
+                "hints": {
+                  "init": [
+                    "IConvRef(other.get())"
+                  ]
+                },
+                "name": "IConvUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -44064,6 +43309,7 @@
                 "name": "IConvUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "IConv &&",
@@ -44078,7 +43324,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "IConvUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "IConvUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "IConv": {
@@ -44146,7 +43408,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "IConv &&",
@@ -44155,7 +43416,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "IConv(other.release())"
+                  ]
                 },
                 "name": "IConv"
               },
@@ -44211,6 +43474,7 @@
           "kind": "function",
           "name": "IConvUnsafe::IConvUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "IConv &&",
@@ -45286,75 +44550,6 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "AnimationRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const AnimationRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "AnimationRef(other.get())"
-                  ]
-                },
-                "name": "AnimationRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "AnimationRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "AnimationRef(other.release())"
-                  ]
-                },
-                "name": "AnimationRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Animation &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "AnimationRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "AnimationRef &",
-              "parameters": [
-                {
-                  "type": "AnimationRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "GetWidth": {
               "kind": "function",
               "immutable": true,
@@ -45472,6 +44667,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const AnimationRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs AnimationUnsafe from AnimationRef.",
+                "hints": {
+                  "init": [
+                    "AnimationRef(other.get())"
+                  ]
+                },
+                "name": "AnimationUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -45490,6 +44703,7 @@
                 "name": "AnimationUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Animation &&",
@@ -45504,7 +44718,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "AnimationUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "AnimationUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Animation": {
@@ -45572,7 +44802,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Animation &&",
@@ -45581,7 +44810,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Animation(other.release())"
+                  ]
                 },
                 "name": "Animation"
               },
@@ -45665,6 +44896,7 @@
           "kind": "function",
           "name": "AnimationUnsafe::AnimationUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Animation &&",
@@ -46174,75 +45406,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "FontRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const FontRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "FontRef(other.get())"
-                  ]
-                },
-                "name": "FontRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "FontRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "FontRef(other.release())"
-                  ]
-                },
-                "name": "FontRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Font &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "FontRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "FontRef &",
-              "parameters": [
-                {
-                  "type": "FontRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "Copy": {
               "doc": "Create a copy of an existing font.\n\nThe copy will be distinct from the original, but will share the font file\nand have the same size and style as the original.\n\nWhen done with the returned FontRef, use FontRef.Close() to dispose of it.\n\n@returns a valid FontRef on success.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              original font.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.Close",
@@ -47265,6 +46428,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const FontRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs FontUnsafe from FontRef.",
+                "hints": {
+                  "init": [
+                    "FontRef(other.get())"
+                  ]
+                },
+                "name": "FontUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -47283,6 +46464,7 @@
                 "name": "FontUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Font &&",
@@ -47297,7 +46479,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "FontUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "FontUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Font": {
@@ -47365,7 +46563,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Font &&",
@@ -47374,7 +46571,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Font(other.release())"
+                  ]
                 },
                 "name": "Font"
               },
@@ -47470,6 +46669,7 @@
           "kind": "function",
           "name": "FontUnsafe::FontUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Font &&",
@@ -47510,91 +46710,22 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "TextEngineRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const TextEngineRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "TextEngineRef(other.get())"
-                  ]
-                },
-                "name": "TextEngineRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TextEngineRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "TextEngineRef(other.release())"
-                  ]
-                },
-                "name": "TextEngineRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "TextEngine &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "TextEngineRef",
-                "doc": ""
-              },
-              {
-                "type": "",
-                "kind": "function",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TTF_TextEngine *",
-                    "name": "engine"
-                  },
-                  {
-                    "name": "engine)",
-                    "type": "void (*destroy)(TTF_TextEngine *"
-                  }
-                ],
-                "name": "TextEngineRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
+            "TextEngineRef": {
+              "type": "",
               "kind": "function",
-              "type": "TextEngineRef &",
+              "constexpr": true,
               "parameters": [
                 {
-                  "type": "TextEngineRef",
-                  "name": "other"
+                  "type": "TTF_TextEngine *",
+                  "name": "engine"
+                },
+                {
+                  "name": "engine)",
+                  "type": "void (*destroy)(TTF_TextEngine *"
                 }
               ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
+              "name": "TextEngineRef",
+              "doc": ""
             },
             "void": {
               "kind": "function",
@@ -47662,6 +46793,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const TextEngineRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TextEngineUnsafe from TextEngineRef.",
+                "hints": {
+                  "init": [
+                    "TextEngineRef(other.get())"
+                  ]
+                },
+                "name": "TextEngineUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -47680,6 +46829,7 @@
                 "name": "TextEngineUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "TextEngine &&",
@@ -47694,7 +46844,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "TextEngineUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "TextEngineUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "TextEngine": {
@@ -47762,7 +46928,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "TextEngine &&",
@@ -47771,7 +46936,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "TextEngine(other.release())"
+                  ]
                 },
                 "name": "TextEngine"
               },
@@ -47846,6 +47013,7 @@
           "kind": "function",
           "name": "TextEngineUnsafe::TextEngineUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "TextEngine &&",
@@ -48101,75 +47269,6 @@
               "kind": "alias",
               "name": "Resource::Resource",
               "doc": ""
-            },
-            "TextRef": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const TextRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Copy constructor.",
-                "hints": {
-                  "init": [
-                    "TextRef(other.get())"
-                  ]
-                },
-                "name": "TextRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "TextRef &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "TextRef(other.release())"
-                  ]
-                },
-                "name": "TextRef"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "Text &&",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "TextRef",
-                "doc": ""
-              }
-            ],
-            "operator=": {
-              "kind": "function",
-              "type": "TextRef &",
-              "parameters": [
-                {
-                  "type": "TextRef",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "release(other.release());\nreturn *this;"
-              },
-              "name": "operator="
             },
             "DrawSurface": {
               "doc": "Draw text to an SDL surface.\n\n`text` must have been created using a TextEngineRef from\nCreateSurfaceTextEngine().\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@param surface the surface to draw on.\n@throws Error on failure.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa CreateSurfaceTextEngine\n@sa Text.Text",
@@ -48930,6 +48029,24 @@
               {
                 "kind": "function",
                 "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const TextRef &",
+                    "name": "other"
+                  }
+                ],
+                "doc": "Constructs TextUnsafe from TextRef.",
+                "hints": {
+                  "init": [
+                    "TextRef(other.get())"
+                  ]
+                },
+                "name": "TextUnsafe"
+              },
+              {
+                "kind": "function",
+                "type": "",
                 "proto": true,
                 "parameters": [
                   {
@@ -48948,6 +48065,7 @@
                 "name": "TextUnsafe",
                 "type": "",
                 "explicit": true,
+                "constexpr": true,
                 "parameters": [
                   {
                     "type": "Text &&",
@@ -48962,7 +48080,23 @@
                 },
                 "proto": true
               }
-            ]
+            ],
+            "operator=": {
+              "kind": "function",
+              "type": "TextUnsafe &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "TextUnsafe",
+                  "name": "other"
+                }
+              ],
+              "doc": "Assignment operator.",
+              "hints": {
+                "body": "release(other.release()); return *this;"
+              },
+              "name": "operator="
+            }
           }
         },
         "Text": {
@@ -49030,7 +48164,6 @@
                 "kind": "function",
                 "type": "",
                 "constexpr": true,
-                "proto": true,
                 "parameters": [
                   {
                     "type": "Text &&",
@@ -49039,7 +48172,9 @@
                 ],
                 "doc": "Move constructor.",
                 "hints": {
-                  "default": true
+                  "init": [
+                    "Text(other.release())"
+                  ]
                 },
                 "name": "Text"
               },
@@ -49223,6 +48358,7 @@
           "kind": "function",
           "name": "TextUnsafe::TextUnsafe",
           "type": "",
+          "constexpr": true,
           "parameters": [
             {
               "type": "Text &&",

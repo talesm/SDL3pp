@@ -73,33 +73,6 @@ struct MutexRef : Resource<SDL_Mutex*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr MutexRef(const MutexRef& other)
-    : MutexRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr MutexRef(MutexRef&& other)
-    : MutexRef(other.release())
-  {
-  }
-
-  MutexRef(Mutex&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  MutexRef& operator=(MutexRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Lock the mutex.
    *
    * This will block until the mutex is available, which is to say it is in the
@@ -113,7 +86,6 @@ struct MutexRef : Resource<SDL_Mutex*>
    * This function does not fail; if mutex is nullptr, it will return
    * immediately having locked nothing. If the mutex is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -162,7 +134,7 @@ struct MutexRef : Resource<SDL_Mutex*>
 
 protected:
   /**
-   * Destroy a mutex created with MutexRef.MutexRef().
+   * Destroy a mutex created with Mutex.Mutex().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -173,12 +145,12 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexRef.MutexRef
+   * @sa Mutex.Mutex
    */
   void Destroy() { reset(); }
 
   /**
-   * Destroy a mutex created with MutexRef.MutexRef().
+   * Destroy a mutex created with Mutex.Mutex().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -186,10 +158,9 @@ protected:
    * to destroy a locked mutex, and may result in undefined behavior depending
    * on the platform.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexRef.MutexRef
+   * @sa Mutex.Mutex
    */
   void reset(SDL_Mutex* newResource = {})
   {
@@ -214,12 +185,29 @@ struct MutexUnsafe : MutexRef
 
   using MutexRef::reset;
 
+  /**
+   * Constructs MutexUnsafe from MutexRef.
+   */
+  constexpr MutexUnsafe(const MutexRef& other)
+    : MutexRef(other.get())
+  {
+  }
+
   MutexUnsafe(const Mutex& other) = delete;
 
   /**
    * Constructs MutexUnsafe from Mutex.
    */
-  explicit MutexUnsafe(Mutex&& other);
+  constexpr explicit MutexUnsafe(Mutex&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr MutexUnsafe& operator=(MutexUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -246,7 +234,10 @@ struct Mutex : MutexUnsafe
   /**
    * Move constructor.
    */
-  constexpr Mutex(Mutex&& other) = default;
+  constexpr Mutex(Mutex&& other)
+    : Mutex(other.release())
+  {
+  }
 
   /**
    * Create a new mutex.
@@ -288,7 +279,7 @@ struct Mutex : MutexUnsafe
   }
 };
 
-inline MutexUnsafe::MutexUnsafe(Mutex&& other)
+constexpr MutexUnsafe::MutexUnsafe(Mutex&& other)
   : MutexUnsafe(other.release())
 {
 }
@@ -318,33 +309,6 @@ inline MutexUnsafe::MutexUnsafe(Mutex&& other)
 struct RWLockRef : Resource<SDL_RWLock*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr RWLockRef(const RWLockRef& other)
-    : RWLockRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr RWLockRef(RWLockRef&& other)
-    : RWLockRef(other.release())
-  {
-  }
-
-  RWLockRef(RWLock&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  RWLockRef& operator=(RWLockRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Lock the read/write lock for _read only_ operations.
@@ -491,7 +455,7 @@ struct RWLockRef : Resource<SDL_RWLock*>
 
 protected:
   /**
-   * Destroy a read/write lock created with RWLockRef.RWLockRef().
+   * Destroy a read/write lock created with RWLock.RWLock().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -502,12 +466,12 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockRef.RWLockRef
+   * @sa RWLock.RWLock
    */
   void Destroy() { reset(); }
 
   /**
-   * Destroy a read/write lock created with RWLockRef.RWLockRef().
+   * Destroy a read/write lock created with RWLock.RWLock().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -517,7 +481,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockRef.RWLockRef
+   * @sa RWLock.RWLock
    */
   void reset(SDL_RWLock* newResource = {})
   {
@@ -542,12 +506,29 @@ struct RWLockUnsafe : RWLockRef
 
   using RWLockRef::reset;
 
+  /**
+   * Constructs RWLockUnsafe from RWLockRef.
+   */
+  constexpr RWLockUnsafe(const RWLockRef& other)
+    : RWLockRef(other.get())
+  {
+  }
+
   RWLockUnsafe(const RWLock& other) = delete;
 
   /**
    * Constructs RWLockUnsafe from RWLock.
    */
-  explicit RWLockUnsafe(RWLock&& other);
+  constexpr explicit RWLockUnsafe(RWLock&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr RWLockUnsafe& operator=(RWLockUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -574,7 +555,10 @@ struct RWLock : RWLockUnsafe
   /**
    * Move constructor.
    */
-  constexpr RWLock(RWLock&& other) = default;
+  constexpr RWLock(RWLock&& other)
+    : RWLock(other.release())
+  {
+  }
 
   /**
    * Create a new read/write lock.
@@ -636,7 +620,7 @@ struct RWLock : RWLockUnsafe
   }
 };
 
-inline RWLockUnsafe::RWLockUnsafe(RWLock&& other)
+constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
   : RWLockUnsafe(other.release())
 {
 }
@@ -663,33 +647,6 @@ inline RWLockUnsafe::RWLockUnsafe(RWLock&& other)
 struct SemaphoreRef : Resource<SDL_Semaphore*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr SemaphoreRef(const SemaphoreRef& other)
-    : SemaphoreRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SemaphoreRef(SemaphoreRef&& other)
-    : SemaphoreRef(other.release())
-  {
-  }
-
-  SemaphoreRef(Semaphore&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  SemaphoreRef& operator=(SemaphoreRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Wait until a semaphore has a positive value and then decrements it.
@@ -780,7 +737,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreRef.SemaphoreRef
+   * @sa Semaphore.Semaphore
    */
   void Destroy() { reset(); }
 
@@ -792,7 +749,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreRef.SemaphoreRef
+   * @sa Semaphore.Semaphore
    */
   void reset(SDL_Semaphore* newResource = {})
   {
@@ -817,12 +774,29 @@ struct SemaphoreUnsafe : SemaphoreRef
 
   using SemaphoreRef::reset;
 
+  /**
+   * Constructs SemaphoreUnsafe from SemaphoreRef.
+   */
+  constexpr SemaphoreUnsafe(const SemaphoreRef& other)
+    : SemaphoreRef(other.get())
+  {
+  }
+
   SemaphoreUnsafe(const Semaphore& other) = delete;
 
   /**
    * Constructs SemaphoreUnsafe from Semaphore.
    */
-  explicit SemaphoreUnsafe(Semaphore&& other);
+  constexpr explicit SemaphoreUnsafe(Semaphore&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr SemaphoreUnsafe& operator=(SemaphoreUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -857,7 +831,10 @@ struct Semaphore : SemaphoreUnsafe
   /**
    * Move constructor.
    */
-  constexpr Semaphore(Semaphore&& other) = default;
+  constexpr Semaphore(Semaphore&& other)
+    : Semaphore(other.release())
+  {
+  }
 
   /**
    * Create a semaphore.
@@ -900,7 +877,7 @@ struct Semaphore : SemaphoreUnsafe
   }
 };
 
-inline SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
+constexpr SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
   : SemaphoreUnsafe(other.release())
 {
 }
@@ -925,33 +902,6 @@ inline SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
 struct ConditionRef : Resource<SDL_Condition*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr ConditionRef(const ConditionRef& other)
-    : ConditionRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ConditionRef(ConditionRef&& other)
-    : ConditionRef(other.release())
-  {
-  }
-
-  ConditionRef(Condition&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  ConditionRef& operator=(ConditionRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Restart one of the threads that are waiting on the condition variable.
@@ -1047,7 +997,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionRef.ConditionRef
+   * @sa Condition.Condition
    */
   void Destroy() { reset(); }
 
@@ -1056,7 +1006,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionRef.ConditionRef
+   * @sa Condition.Condition
    */
   void reset(SDL_Condition* newResource = {})
   {
@@ -1081,12 +1031,29 @@ struct ConditionUnsafe : ConditionRef
 
   using ConditionRef::reset;
 
+  /**
+   * Constructs ConditionUnsafe from ConditionRef.
+   */
+  constexpr ConditionUnsafe(const ConditionRef& other)
+    : ConditionRef(other.get())
+  {
+  }
+
   ConditionUnsafe(const Condition& other) = delete;
 
   /**
    * Constructs ConditionUnsafe from Condition.
    */
-  explicit ConditionUnsafe(Condition&& other);
+  constexpr explicit ConditionUnsafe(Condition&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr ConditionUnsafe& operator=(ConditionUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -1113,7 +1080,10 @@ struct Condition : ConditionUnsafe
   /**
    * Move constructor.
    */
-  constexpr Condition(Condition&& other) = default;
+  constexpr Condition(Condition&& other)
+    : Condition(other.release())
+  {
+  }
 
   /**
    * Create a condition variable.
@@ -1149,7 +1119,7 @@ struct Condition : ConditionUnsafe
   }
 };
 
-inline ConditionUnsafe::ConditionUnsafe(Condition&& other)
+constexpr ConditionUnsafe::ConditionUnsafe(Condition&& other)
   : ConditionUnsafe(other.release())
 {
 }

@@ -200,33 +200,6 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr PropertiesRef(const PropertiesRef& other)
-    : PropertiesRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr PropertiesRef(PropertiesRef&& other)
-    : PropertiesRef(other.release())
-  {
-  }
-
-  PropertiesRef(Properties&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  PropertiesRef& operator=(PropertiesRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Copy a group of properties.
    *
    * Copy all the properties from one group of properties to another, with the
@@ -758,12 +731,29 @@ struct PropertiesUnsafe : PropertiesRef
 
   using PropertiesRef::reset;
 
+  /**
+   * Constructs PropertiesUnsafe from PropertiesRef.
+   */
+  constexpr PropertiesUnsafe(const PropertiesRef& other)
+    : PropertiesRef(other.get())
+  {
+  }
+
   PropertiesUnsafe(const Properties& other) = delete;
 
   /**
    * Constructs PropertiesUnsafe from Properties.
    */
-  explicit PropertiesUnsafe(Properties&& other);
+  constexpr explicit PropertiesUnsafe(Properties&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr PropertiesUnsafe& operator=(PropertiesUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -790,7 +780,10 @@ struct Properties : PropertiesUnsafe
   /**
    * Move constructor.
    */
-  constexpr Properties(Properties&& other) = default;
+  constexpr Properties(Properties&& other)
+    : Properties(other.release())
+  {
+  }
 
   /**
    * Create a group of properties.
@@ -885,7 +878,7 @@ public:
   friend class PropertiesRef;
 };
 
-inline PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
+constexpr PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
   : PropertiesUnsafe(other.release())
 {
 }

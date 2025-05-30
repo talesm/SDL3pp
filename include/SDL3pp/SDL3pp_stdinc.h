@@ -746,33 +746,6 @@ struct EnvironmentRef : Resource<SDL_Environment*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr EnvironmentRef(const EnvironmentRef& other)
-    : EnvironmentRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr EnvironmentRef(EnvironmentRef&& other)
-    : EnvironmentRef(other.release())
-  {
-  }
-
-  EnvironmentRef(Environment&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  EnvironmentRef& operator=(EnvironmentRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the value of a variable in the environment.
    *
    * @param name the name of the variable to get.
@@ -784,7 +757,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
    * @sa EnvironmentRef.UnsetVariable
@@ -808,7 +781,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
    * @sa EnvironmentRef.UnsetVariable
@@ -847,7 +820,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    * @sa EnvironmentRef.GetVariable
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.UnsetVariable
@@ -868,7 +841,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    * @sa EnvironmentRef.GetVariable
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
@@ -889,7 +862,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    */
   void Destroy() { reset(); }
 
@@ -903,7 +876,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    */
   void reset(SDL_Environment* newResource = {})
   {
@@ -928,12 +901,29 @@ struct EnvironmentUnsafe : EnvironmentRef
 
   using EnvironmentRef::reset;
 
+  /**
+   * Constructs EnvironmentUnsafe from EnvironmentRef.
+   */
+  constexpr EnvironmentUnsafe(const EnvironmentRef& other)
+    : EnvironmentRef(other.get())
+  {
+  }
+
   EnvironmentUnsafe(const Environment& other) = delete;
 
   /**
    * Constructs EnvironmentUnsafe from Environment.
    */
-  explicit EnvironmentUnsafe(Environment&& other);
+  constexpr explicit EnvironmentUnsafe(Environment&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr EnvironmentUnsafe& operator=(EnvironmentUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -968,7 +958,10 @@ struct Environment : EnvironmentUnsafe
   /**
    * Move constructor.
    */
-  constexpr Environment(Environment&& other) = default;
+  constexpr Environment(Environment&& other)
+    : Environment(other.release())
+  {
+  }
 
   /**
    * Create a set of environment variables
@@ -1010,7 +1003,7 @@ struct Environment : EnvironmentUnsafe
   }
 };
 
-inline EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
+constexpr EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
   : EnvironmentUnsafe(other.release())
 {
 }
@@ -5171,32 +5164,6 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr IConvRef(const IConvRef& other)
-    : IConvRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr IConvRef(IConvRef&& other)
-    : IConvRef(other.release())
-  {
-  }
-
-  IConvRef(IConv&& other) = delete;
-  /**
-   * Assignment operator.
-   */
-  IConvRef& operator=(IConvRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * This function converts text between encodings, reading from and writing to
    * a buffer.
    *
@@ -5226,7 +5193,8 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConvRef.IConvRef
+   * @sa IConv.IConv
+   * @sa IConvRef.close
    * @sa iconv_string
    */
   size_t iconv(const char** inbuf,
@@ -5247,7 +5215,7 @@ protected:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConvRef.iconv
-   * @sa IConvRef.IConvRef
+   * @sa IConv.IConv
    * @sa iconv_string
    */
   int close() { return reset(); }
@@ -5260,7 +5228,7 @@ protected:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConvRef.iconv
-   * @sa IConvRef.IConvRef
+   * @sa IConv.IConv
    * @sa iconv_string
    */
   int reset(SDL_iconv_data_t* newResource = {})
@@ -5286,12 +5254,29 @@ struct IConvUnsafe : IConvRef
 
   using IConvRef::reset;
 
+  /**
+   * Constructs IConvUnsafe from IConvRef.
+   */
+  constexpr IConvUnsafe(const IConvRef& other)
+    : IConvRef(other.get())
+  {
+  }
+
   IConvUnsafe(const IConv& other) = delete;
 
   /**
    * Constructs IConvUnsafe from IConv.
    */
-  explicit IConvUnsafe(IConv&& other);
+  constexpr explicit IConvUnsafe(IConv&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr IConvUnsafe& operator=(IConvUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -5326,7 +5311,10 @@ struct IConv : IConvUnsafe
   /**
    * Move constructor.
    */
-  constexpr IConv(IConv&& other) = default;
+  constexpr IConv(IConv&& other)
+    : IConv(other.release())
+  {
+  }
 
   /**
    * This function allocates a context for the specified character set
@@ -5363,7 +5351,7 @@ struct IConv : IConvUnsafe
   }
 };
 
-inline IConvUnsafe::IConvUnsafe(IConv&& other)
+constexpr IConvUnsafe::IConvUnsafe(IConv&& other)
   : IConvUnsafe(other.release())
 {
 }

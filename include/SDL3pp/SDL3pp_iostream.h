@@ -105,33 +105,6 @@ struct IOStreamRef : Resource<SDL_IOStream*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr IOStreamRef(const IOStreamRef& other)
-    : IOStreamRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr IOStreamRef(IOStreamRef&& other)
-    : IOStreamRef(other.release())
-  {
-  }
-
-  IOStreamRef(IOStream&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  IOStreamRef& operator=(IOStreamRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the properties associated with an IOStreamRef.
    *
    * @returns a valid property ID on success.
@@ -153,9 +126,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * to an error, an EOF, or a non-blocking operation that isn't yet ready to
    * complete.
    *
-   * An IOStreamRef's status is only expected to change after a
-   * IOStreamRef.Read or IOStreamRef.Write call; don't expect it to change if
-   * you just call this query function in a tight loop.
+   * An IOStreamRef's status is only expected to change after a IOStreamRef.Read
+   * or IOStreamRef.Write call; don't expect it to change if you just call this
+   * query function in a tight loop.
    *
    * @returns an IOStatus enum with the current state.
    *
@@ -216,9 +189,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
   /**
    * Determine the current read/write offset in an IOStreamRef data stream.
    *
-   * This is actually a wrapper function that calls the IOStreamRef's `seek`
-   * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
-   * application development.
+   * IOStreamRef.Tell is actually a wrapper function that calls the
+   * IOStreamRef's `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`,
+   * to simplify application development.
    *
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
@@ -417,7 +390,7 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStream.IOStream
    * @sa IOStreamRef.Write
    */
   void Flush() { CheckError(SDL_FlushIO(get())); }
@@ -494,9 +467,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * Use this function to read a byte from an IOStreamRef.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -516,9 +489,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * Use this function to read a signed byte from an IOStreamRef.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -542,9 +515,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -568,9 +541,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -594,9 +567,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -620,9 +593,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -646,9 +619,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -672,9 +645,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -698,9 +671,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -724,9 +697,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -750,9 +723,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -776,9 +749,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -802,9 +775,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -828,9 +801,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -1401,9 +1374,9 @@ protected:
    * Close and free an allocated IOStreamRef structure.
    *
    * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
-   * releases any resources used by the stream and frees the IOStreamRef
-   * itself. This returns true on success, or false if the stream failed to
-   * flush to its output (e.g. to disk).
+   * releases any resources used by the stream and frees the IOStreamRef itself.
+   * This returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
    * reports an error, but the IOStreamRef is still invalid once this function
@@ -1424,7 +1397,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStream.IOStream
    */
   void Close() { reset(); }
 
@@ -1432,9 +1405,9 @@ protected:
    * Close and free an allocated IOStreamRef structure.
    *
    * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
-   * releases any resources used by the stream and frees the IOStreamRef
-   * itself. This returns true on success, or false if the stream failed to
-   * flush to its output (e.g. to disk).
+   * releases any resources used by the stream and frees the IOStreamRef itself.
+   * This returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
    * reports an error, but the IOStreamRef is still invalid once this function
@@ -1455,7 +1428,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStream.IOStream
    */
   void reset(SDL_IOStream* newResource = {})
   {
@@ -1480,12 +1453,29 @@ struct IOStreamUnsafe : IOStreamRef
 
   using IOStreamRef::reset;
 
+  /**
+   * Constructs IOStreamUnsafe from IOStreamRef.
+   */
+  constexpr IOStreamUnsafe(const IOStreamRef& other)
+    : IOStreamRef(other.get())
+  {
+  }
+
   IOStreamUnsafe(const IOStream& other) = delete;
 
   /**
    * Constructs IOStreamUnsafe from IOStream.
    */
-  explicit IOStreamUnsafe(IOStream&& other);
+  constexpr explicit IOStreamUnsafe(IOStream&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr IOStreamUnsafe& operator=(IOStreamUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -1520,7 +1510,10 @@ struct IOStream : IOStreamUnsafe
   /**
    * Move constructor.
    */
-  constexpr IOStream(IOStream&& other) = default;
+  constexpr IOStream(IOStream&& other)
+    : IOStream(other.release())
+  {
+  }
 
   /**
    * Use this function to create a new IOStreamRef structure for reading from
@@ -1657,7 +1650,7 @@ struct IOStream : IOStreamUnsafe
   }
 };
 
-inline IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
+constexpr IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
   : IOStreamUnsafe(other.release())
 {
 }

@@ -87,33 +87,6 @@ struct TrayRef : Resource<SDL_Tray*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr TrayRef(const TrayRef& other)
-    : TrayRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TrayRef(TrayRef&& other)
-    : TrayRef(other.release())
-  {
-  }
-
-  TrayRef(Tray&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  TrayRef& operator=(TrayRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Updates the system tray icon's icon.
    *
    * @param icon the new icon. May be nullptr.
@@ -123,7 +96,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    */
   void SetIcon(SurfaceRef& icon) { SDL_SetTrayIcon(get(), icon.get()); }
 
@@ -137,7 +110,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    */
   void SetTooltip(StringParam tooltip) { SDL_SetTrayTooltip(get(), tooltip); }
 
@@ -158,7 +131,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    * @sa TrayRef.GetMenu
    * @sa TrayMenu.GetParentTray
    */
@@ -170,8 +143,8 @@ struct TrayRef : Resource<SDL_Tray*>
    * You should have called TrayRef.CreateMenu() on the tray object. This
    * function allows you to fetch it again later.
    *
-   * This function does the same thing as TrayEntryRef.GetSubmenu(), except
-   * that it takes a TrayRef instead of a TrayEntryRef.
+   * This function does the same thing as TrayEntryRef.GetSubmenu(), except that
+   * it takes a TrayRef instead of a TrayEntryRef.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
@@ -182,7 +155,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    * @sa TrayRef.CreateMenu
    */
   TrayMenu GetMenu() const;
@@ -199,7 +172,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    */
   void Destroy() { reset(); }
 
@@ -213,7 +186,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    */
   void reset(SDL_Tray* newResource = {})
   {
@@ -238,12 +211,29 @@ struct TrayUnsafe : TrayRef
 
   using TrayRef::reset;
 
+  /**
+   * Constructs TrayUnsafe from TrayRef.
+   */
+  constexpr TrayUnsafe(const TrayRef& other)
+    : TrayRef(other.get())
+  {
+  }
+
   TrayUnsafe(const Tray& other) = delete;
 
   /**
    * Constructs TrayUnsafe from Tray.
    */
-  explicit TrayUnsafe(Tray&& other);
+  constexpr explicit TrayUnsafe(Tray&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TrayUnsafe& operator=(TrayUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -278,7 +268,10 @@ struct Tray : TrayUnsafe
   /**
    * Move constructor.
    */
-  constexpr Tray(Tray&& other) = default;
+  constexpr Tray(Tray&& other)
+    : Tray(other.release())
+  {
+  }
 
   /**
    * Create an icon to be placed in the operating system's tray, or equivalent.
@@ -347,7 +340,7 @@ using TrayCallback = SDL_TrayCallback;
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
 
-inline TrayUnsafe::TrayUnsafe(Tray&& other)
+constexpr TrayUnsafe::TrayUnsafe(Tray&& other)
   : TrayUnsafe(other.release())
 {
 }
@@ -524,33 +517,6 @@ public:
 struct TrayEntryRef : Resource<SDL_TrayEntry*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr TrayEntryRef(const TrayEntryRef& other)
-    : TrayEntryRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TrayEntryRef(TrayEntryRef&& other)
-    : TrayEntryRef(other.release())
-  {
-  }
-
-  TrayEntryRef(TrayEntry&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  TrayEntryRef& operator=(TrayEntryRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Create a submenu for a system tray entry.
@@ -813,12 +779,29 @@ struct TrayEntryUnsafe : TrayEntryRef
 
   using TrayEntryRef::reset;
 
+  /**
+   * Constructs TrayEntryUnsafe from TrayEntryRef.
+   */
+  constexpr TrayEntryUnsafe(const TrayEntryRef& other)
+    : TrayEntryRef(other.get())
+  {
+  }
+
   TrayEntryUnsafe(const TrayEntry& other) = delete;
 
   /**
    * Constructs TrayEntryUnsafe from TrayEntry.
    */
-  explicit TrayEntryUnsafe(TrayEntry&& other);
+  constexpr explicit TrayEntryUnsafe(TrayEntry&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TrayEntryUnsafe& operator=(TrayEntryUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -853,7 +836,10 @@ struct TrayEntry : TrayEntryUnsafe
   /**
    * Move constructor.
    */
-  constexpr TrayEntry(TrayEntry&& other) = default;
+  constexpr TrayEntry(TrayEntry&& other)
+    : TrayEntry(other.release())
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.
@@ -870,7 +856,7 @@ struct TrayEntry : TrayEntryUnsafe
   }
 };
 
-inline TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
+constexpr TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
   : TrayEntryUnsafe(other.release())
 {
 }

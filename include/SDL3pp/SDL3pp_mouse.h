@@ -166,61 +166,32 @@ struct CursorRef : Resource<SDL_Cursor*>
 {
   using Resource::Resource;
 
-  /**
-   * Copy constructor.
-   */
-  constexpr CursorRef(const CursorRef& other)
-    : CursorRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr CursorRef(CursorRef&& other)
-    : CursorRef(other.release())
-  {
-  }
-
-  CursorRef(Cursor&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  CursorRef& operator=(CursorRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
 protected:
   /**
    * Free a previously-created cursor.
    *
-   * Use this function to free cursor resources created with
-   * CursorRef.CursorRef(), CursorRef.CursorRef() or
-   * CursorRef.CursorRef().
+   * Use this function to free cursor resources created with Cursor.Cursor(),
+   * Cursor.Cursor() or Cursor.Cursor().
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.CursorRef
+   * @sa Cursor.Cursor
    */
   void Destroy() { reset(); }
 
   /**
    * Free a previously-created cursor.
    *
-   * Use this function to free cursor resources created with
-   * CursorRef.CursorRef(), CursorRef.CursorRef() or
-   * CursorRef.CursorRef().
+   * Use this function to free cursor resources created with Cursor.Cursor(),
+   * Cursor.Cursor() or Cursor.Cursor().
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.CursorRef
+   * @sa Cursor.Cursor
    */
   void reset(SDL_Cursor* newResource = {})
   {
@@ -245,12 +216,29 @@ struct CursorUnsafe : CursorRef
 
   using CursorRef::reset;
 
+  /**
+   * Constructs CursorUnsafe from CursorRef.
+   */
+  constexpr CursorUnsafe(const CursorRef& other)
+    : CursorRef(other.get())
+  {
+  }
+
   CursorUnsafe(const Cursor& other) = delete;
 
   /**
    * Constructs CursorUnsafe from Cursor.
    */
-  explicit CursorUnsafe(Cursor&& other);
+  constexpr explicit CursorUnsafe(Cursor&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr CursorUnsafe& operator=(CursorUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -285,7 +273,10 @@ struct Cursor : CursorUnsafe
   /**
    * Move constructor.
    */
-  constexpr Cursor(Cursor&& other) = default;
+  constexpr Cursor(Cursor&& other)
+    : Cursor(other.release())
+  {
+  }
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -401,7 +392,7 @@ struct Cursor : CursorUnsafe
   }
 };
 
-inline CursorUnsafe::CursorUnsafe(Cursor&& other)
+constexpr CursorUnsafe::CursorUnsafe(Cursor&& other)
   : CursorUnsafe(other.release())
 {
 }

@@ -151,33 +151,6 @@ struct RendererRef : Resource<SDL_Renderer*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr RendererRef(const RendererRef& other)
-    : RendererRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr RendererRef(RendererRef&& other)
-    : RendererRef(other.release())
-  {
-  }
-
-  RendererRef(Renderer&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  RendererRef& operator=(RendererRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the window associated with a renderer.
    *
    * @returns the window on success.
@@ -199,6 +172,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa Renderer.Renderer
    */
   const char* GetName() const { return CheckError(SDL_GetRendererName(get())); }
 
@@ -208,8 +182,8 @@ struct RendererRef : Resource<SDL_Renderer*>
    * This returns the true output size in pixels, ignoring any render targets or
    * logical size and presentation.
    *
-   * @returns Point on success or std::nullopt on failure; call GetError() for
-   *          more information.
+   * @returns Point on success.
+   * @throws Error on failure.
    */
   Point GetOutputSize() const
   {
@@ -256,7 +230,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetOutputSize()
+   * @sa RendererRef.GetOutputSize()
    */
   Point GetCurrentOutputSize() const
   {
@@ -824,7 +798,8 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Each render target has its own clip rectangle. This function gets the
    * cliprect for the current render target.
    *
-   * @returns an Rect structure with the current clipping area
+   * @param renderer the rendering context.
+   * @param rect an Rect structure filled in with the current clipping area
    *             or an empty rectangle if clipping is disabled.
    * @throws Error on failure.
    *
@@ -1538,7 +1513,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Read pixels from the current rendering target.
    *
    * The returned surface contains pixels inside the desired area clipped to the
-   * current viewport, and should be freed with SurfaceRef.reset().
+   * current viewport, and should be freed with SurfaceRef.Destroy().
    *
    * Note that this returns the actual pixels on the screen, so if you are using
    * logical presentation you should use
@@ -1568,10 +1543,10 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Update the screen with any rendering performed since the previous call.
    *
    * SDL's rendering functions operate on a backbuffer; that is, calling a
-   * rendering function such as RendererRef.RenderLine() does not directly put
-   * a line on the screen, but rather updates the backbuffer. As such, you
-   * compose your entire scene and *present* the composed backbuffer to the
-   * screen as a complete picture.
+   * rendering function such as RendererRef.RenderLine() does not directly put a
+   * line on the screen, but rather updates the backbuffer. As such, you compose
+   * your entire scene and *present* the composed backbuffer to the screen as a
+   * complete picture.
    *
    * Therefore, when using SDL's rendering API, one does all drawing intended
    * for the frame, and then calls this function once per frame to present the
@@ -1598,7 +1573,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.RendererRef
+   * @sa Renderer.Renderer
    * @sa RendererRef.RenderClear
    * @sa RendererRef.RenderFillRect
    * @sa RendererRef.RenderFillRects
@@ -1769,7 +1744,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.RendererRef
+   * @sa Renderer.Renderer
    */
   void Destroy() { reset(); }
 
@@ -1783,7 +1758,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.RendererRef
+   * @sa Renderer.Renderer
    */
   void reset(SDL_Renderer* newResource = {})
   {
@@ -1808,12 +1783,29 @@ struct RendererUnsafe : RendererRef
 
   using RendererRef::reset;
 
+  /**
+   * Constructs RendererUnsafe from RendererRef.
+   */
+  constexpr RendererUnsafe(const RendererRef& other)
+    : RendererRef(other.get())
+  {
+  }
+
   RendererUnsafe(const Renderer& other) = delete;
 
   /**
    * Constructs RendererUnsafe from Renderer.
    */
-  explicit RendererUnsafe(Renderer&& other);
+  constexpr explicit RendererUnsafe(Renderer&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr RendererUnsafe& operator=(RendererUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -1848,7 +1840,10 @@ struct Renderer : RendererUnsafe
   /**
    * Move constructor.
    */
-  constexpr Renderer(Renderer&& other) = default;
+  constexpr Renderer(Renderer&& other)
+    : Renderer(other.release())
+  {
+  }
 
   /**
    * Create a 2D rendering context for a window.
@@ -1999,7 +1994,7 @@ struct Renderer : RendererUnsafe
   }
 };
 
-inline RendererUnsafe::RendererUnsafe(Renderer&& other)
+constexpr RendererUnsafe::RendererUnsafe(Renderer&& other)
   : RendererUnsafe(other.release())
 {
 }
@@ -2021,32 +2016,6 @@ inline RendererUnsafe::RendererUnsafe(Renderer&& other)
 struct TextureRef : Resource<SDL_Texture*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr TextureRef(const TextureRef& other)
-    : TextureRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TextureRef(TextureRef&& other)
-    : TextureRef(other.release())
-  {
-  }
-
-  TextureRef(Texture&& other) = delete;
-  /**
-   * Assignment operator.
-   */
-  TextureRef& operator=(TextureRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Get the properties associated with a texture.
@@ -2710,7 +2679,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TextureRef.TextureRef
+   * @sa Texture.Texture
    */
   void Destroy() { reset(); }
 
@@ -2724,7 +2693,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TextureRef.TextureRef
+   * @sa Texture.Texture
    */
   void reset(SDL_Texture* newResource = {})
   {
@@ -2749,12 +2718,29 @@ struct TextureUnsafe : TextureRef
 
   using TextureRef::reset;
 
+  /**
+   * Constructs TextureUnsafe from TextureRef.
+   */
+  constexpr TextureUnsafe(const TextureRef& other)
+    : TextureRef(other.get())
+  {
+  }
+
   TextureUnsafe(const Texture& other) = delete;
 
   /**
    * Constructs TextureUnsafe from Texture.
    */
-  explicit TextureUnsafe(Texture&& other);
+  constexpr explicit TextureUnsafe(Texture&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TextureUnsafe& operator=(TextureUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -2789,7 +2775,10 @@ struct Texture : TextureUnsafe
   /**
    * Move constructor.
    */
-  constexpr Texture(Texture&& other) = default;
+  constexpr Texture(Texture&& other)
+    : Texture(other.release())
+  {
+  }
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -3101,7 +3090,7 @@ public:
   friend class TextureRef;
 };
 
-inline TextureUnsafe::TextureUnsafe(Texture&& other)
+constexpr TextureUnsafe::TextureUnsafe(Texture&& other)
   : TextureUnsafe(other.release())
 {
 }

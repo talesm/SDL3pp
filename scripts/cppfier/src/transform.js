@@ -751,42 +751,7 @@ function expandResources(sourceEntries, file, context) {
       };
     }
     /** @type {ApiEntryTransform[]} */
-    const refCtors = [{
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [{
-        type: `const ${refName} &`,
-        name: "other"
-      }],
-      doc: "Copy constructor.",
-      hints: {
-        init: [`${refName}(other.get())`],
-      }
-    }, {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [{
-        type: `${refName} &&`,
-        name: "other"
-      }],
-      doc: "Move constructor.",
-      hints: {
-        init: [`${refName}(other.release())`],
-      }
-    }, {
-      kind: "function",
-      type: "",
-      proto: true,
-      parameters: [{
-        type: `${uniqueName} &&`,
-        name: "other"
-      }],
-      hints: {
-        delete: true,
-      }
-    }];
+    const refCtors = [];
     const extraRefCtors = subEntries[refName];
     if (extraRefCtors) {
       delete subEntries[refName];
@@ -828,15 +793,12 @@ function expandResources(sourceEntries, file, context) {
       kind: "function",
       type: "",
       constexpr: true,
-      proto: true,
       parameters: [{
         type: `${uniqueName} &&`,
         name: "other"
       }],
       doc: "Move constructor.",
-      hints: {
-        default: true,
-      }
+      hints: { init: [`${uniqueName}(other.release())`] },
     }];
     if (!resourceEntry.omitDefaultCtor) uniqueCtors.unshift({
       kind: "function",
@@ -883,18 +845,6 @@ function expandResources(sourceEntries, file, context) {
       entries: {
         "Resource::Resource": "alias",
         [refName]: refCtors,
-        "operator=": {
-          kind: "function",
-          type: refName + " &",
-          parameters: [{
-            type: refName,
-            name: "other"
-          }],
-          doc: "Assignment operator.",
-          hints: {
-            body: `release(other.release());\nreturn *this;`,
-          }
-        },
         ...subEntries,
       },
       hints: {
@@ -911,6 +861,7 @@ function expandResources(sourceEntries, file, context) {
       name: `${unsafeName}::${unsafeName}`,
       type: "",
       explicit: true,
+      constexpr: true,
       parameters: [{
         type: `${uniqueName} &&`,
         name: "other"
@@ -929,7 +880,17 @@ function expandResources(sourceEntries, file, context) {
         doc: `Unsafe Handle to ${title}\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
           ...Object.fromEntries(unsafeAliases.sort().map(alias => [`${refName}::${alias}`, "alias"])),
-          [unsafeName]: {
+          [unsafeName]: [{
+            kind: "function",
+            type: "",
+            constexpr: true,
+            parameters: [{
+              type: `const ${refName} &`,
+              name: "other"
+            }],
+            doc: `Constructs ${unsafeName} from ${refName}.`,
+            hints: { init: [`${refName}(other.get())`] },
+          }, {
             kind: "function",
             type: "",
             proto: true,
@@ -937,8 +898,19 @@ function expandResources(sourceEntries, file, context) {
               type: `const ${uniqueName} &`,
               name: "other"
             }],
-            hints: { delete: true }
-          }
+            hints: { delete: true },
+          }],
+          "operator=": {
+            kind: "function",
+            type: `${unsafeName} &`,
+            constexpr: true,
+            parameters: [{
+              type: unsafeName,
+              name: "other"
+            }],
+            doc: "Assignment operator.",
+            hints: { body: "release(other.release()); return *this;" },
+          },
         },
       },
       {

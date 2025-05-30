@@ -36,11 +36,6 @@ public:
   {
   }
 
-  Resource(const Resource& other) = delete;
-  Resource(Resource&& other) = delete;
-  Resource& operator=(const Resource& other) = delete;
-  Resource& operator=(Resource&& other) = delete;
-
   /// True if contains a valid resource
   constexpr explicit operator bool() const { return m_resource; }
 

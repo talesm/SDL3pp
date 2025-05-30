@@ -107,10 +107,10 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLock</b> (SDL_
 <tr class="memitem:a97f3c00a07ebb49c7ef66e100cd79e58" id="r_a97f3c00a07ebb49c7ef66e100cd79e58"><td class="memItemLeft" align="right" valign="top"><a id="a97f3c00a07ebb49c7ef66e100cd79e58" name="a97f3c00a07ebb49c7ef66e100cd79e58"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLock</b> (const <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;other)=delete</td></tr>
 <tr class="separator:a97f3c00a07ebb49c7ef66e100cd79e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03391b5d2adbe042dbef2a84244c83ea" id="r_a03391b5d2adbe042dbef2a84244c83ea"><td class="memItemLeft" align="right" valign="top"><a id="a03391b5d2adbe042dbef2a84244c83ea" name="a03391b5d2adbe042dbef2a84244c83ea"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLock</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&amp;other)=default</td></tr>
-<tr class="memdesc:a03391b5d2adbe042dbef2a84244c83ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a03391b5d2adbe042dbef2a84244c83ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05396e5aa781c35fe5cf67f3a82d3b7d" id="r_a05396e5aa781c35fe5cf67f3a82d3b7d"><td class="memItemLeft" align="right" valign="top"><a id="a05396e5aa781c35fe5cf67f3a82d3b7d" name="a05396e5aa781c35fe5cf67f3a82d3b7d"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLock</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:a05396e5aa781c35fe5cf67f3a82d3b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:a05396e5aa781c35fe5cf67f3a82d3b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dcdd21f17d07913492090ed97b44b91" id="r_a8dcdd21f17d07913492090ed97b44b91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91">RWLock</a> ()</td></tr>
 <tr class="memdesc:a8dcdd21f17d07913492090ed97b44b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new read/write lock.  <br /></td></tr>
 <tr class="separator:a8dcdd21f17d07913492090ed97b44b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,54 +122,40 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLock</b> (<a c
 <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> other)</td></tr>
 <tr class="memdesc:ac8eeaae944e84ad50efcd57bacb60c94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:ac8eeaae944e84ad50efcd57bacb60c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a93542d7bf2cb370c5fd76b3948d34b" id="r_a2a93542d7bf2cb370c5fd76b3948d34b"><td class="memItemLeft" align="right" valign="top"><a id="a2a93542d7bf2cb370c5fd76b3948d34b" name="a2a93542d7bf2cb370c5fd76b3948d34b"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockUnsafe</b> (const <a class="el" href="structSDL_1_1RWLockRef.html">RWLockRef</a> &amp;other)</td></tr>
+<tr class="memdesc:a2a93542d7bf2cb370c5fd76b3948d34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock.">RWLockUnsafe</a> from <a class="el" href="structSDL_1_1RWLockRef.html" title="A mutex that allows read-only threads to run in parallel.">RWLockRef</a>. <br /></td></tr>
+<tr class="separator:a2a93542d7bf2cb370c5fd76b3948d34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af809d45b937c1aebeac4d3aef7466980" id="r_af809d45b937c1aebeac4d3aef7466980"><td class="memItemLeft" align="right" valign="top"><a id="af809d45b937c1aebeac4d3aef7466980" name="af809d45b937c1aebeac4d3aef7466980"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>RWLockUnsafe</b> (const <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;other)=delete</td></tr>
 <tr class="separator:af809d45b937c1aebeac4d3aef7466980"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f01ef290d43e0ca9feaa5ac13db877b" id="r_a7f01ef290d43e0ca9feaa5ac13db877b"><td class="memItemLeft" align="right" valign="top"><a id="a7f01ef290d43e0ca9feaa5ac13db877b" name="a7f01ef290d43e0ca9feaa5ac13db877b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockUnsafe</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a7f01ef290d43e0ca9feaa5ac13db877b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock.">RWLockUnsafe</a> from <a class="el" href="structSDL_1_1RWLock.html" title="Handle to an owned rWLock.">RWLock</a>. <br /></td></tr>
-<tr class="separator:a7f01ef290d43e0ca9feaa5ac13db877b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5ab0d119ef73b5ff41d713a634cf3a3" id="r_ac5ab0d119ef73b5ff41d713a634cf3a3"><td class="memItemLeft" align="right" valign="top"><a id="ac5ab0d119ef73b5ff41d713a634cf3a3" name="ac5ab0d119ef73b5ff41d713a634cf3a3"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockUnsafe</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:ac5ab0d119ef73b5ff41d713a634cf3a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock.">RWLockUnsafe</a> from <a class="el" href="structSDL_1_1RWLock.html" title="Handle to an owned rWLock.">RWLock</a>. <br /></td></tr>
+<tr class="separator:ac5ab0d119ef73b5ff41d713a634cf3a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1RWLockUnsafe"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1RWLockUnsafe')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1RWLockUnsafe.html">SDL::RWLockUnsafe</a></td></tr>
+<tr class="memitem:a2a93542d7bf2cb370c5fd76b3948d34b inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_a2a93542d7bf2cb370c5fd76b3948d34b"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockUnsafe</b> (const <a class="el" href="structSDL_1_1RWLockRef.html">RWLockRef</a> &amp;other)</td></tr>
+<tr class="memdesc:a2a93542d7bf2cb370c5fd76b3948d34b inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock.">RWLockUnsafe</a> from <a class="el" href="structSDL_1_1RWLockRef.html" title="A mutex that allows read-only threads to run in parallel.">RWLockRef</a>. <br /></td></tr>
+<tr class="separator:a2a93542d7bf2cb370c5fd76b3948d34b inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af809d45b937c1aebeac4d3aef7466980 inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_af809d45b937c1aebeac4d3aef7466980"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>RWLockUnsafe</b> (const <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;other)=delete</td></tr>
 <tr class="separator:af809d45b937c1aebeac4d3aef7466980 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7f01ef290d43e0ca9feaa5ac13db877b inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_ga7f01ef290d43e0ca9feaa5ac13db877b"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockUnsafe</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga7f01ef290d43e0ca9feaa5ac13db877b inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock.">RWLockUnsafe</a> from <a class="el" href="structSDL_1_1RWLock.html" title="Handle to an owned rWLock.">RWLock</a>. <br /></td></tr>
-<tr class="separator:ga7f01ef290d43e0ca9feaa5ac13db877b inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac5ab0d119ef73b5ff41d713a634cf3a3 inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_gac5ab0d119ef73b5ff41d713a634cf3a3"><td class="memItemLeft" align="right" valign="top">
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockUnsafe</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:gac5ab0d119ef73b5ff41d713a634cf3a3 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock.">RWLockUnsafe</a> from <a class="el" href="structSDL_1_1RWLock.html" title="Handle to an owned rWLock.">RWLock</a>. <br /></td></tr>
+<tr class="separator:gac5ab0d119ef73b5ff41d713a634cf3a3 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af963cba23c3e7a40ffbdca918ec197b2 inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_af963cba23c3e7a40ffbdca918ec197b2"><td class="memItemLeft" align="right" valign="top">
+constexpr <a class="el" href="structSDL_1_1RWLockUnsafe.html">RWLockUnsafe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1RWLockUnsafe.html">RWLockUnsafe</a> other)</td></tr>
+<tr class="memdesc:af963cba23c3e7a40ffbdca918ec197b2 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
+<tr class="separator:af963cba23c3e7a40ffbdca918ec197b2 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43020c49c4c6b6b1046ec8b886d7afaa inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_a43020c49c4c6b6b1046ec8b886d7afaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockUnsafe.html#a43020c49c4c6b6b1046ec8b886d7afaa">Destroy</a> ()</td></tr>
-<tr class="memdesc:a43020c49c4c6b6b1046ec8b886d7afaa inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLockRef.html#a903c3f67328daa662762ef11b0b4b912" title="Copy constructor.">RWLockRef.RWLockRef()</a>.  <br /></td></tr>
+<tr class="memdesc:a43020c49c4c6b6b1046ec8b886d7afaa inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91" title="Create a new read/write lock.">RWLock.RWLock()</a>.  <br /></td></tr>
 <tr class="separator:a43020c49c4c6b6b1046ec8b886d7afaa inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a903c3f67328daa662762ef11b0b4b912 inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_a903c3f67328daa662762ef11b0b4b912"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockRef</b> (const <a class="el" href="structSDL_1_1RWLockRef.html">RWLockRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a903c3f67328daa662762ef11b0b4b912 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:a903c3f67328daa662762ef11b0b4b912 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9993f44d0bc05b2052308ecd4efc8e7e inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_a9993f44d0bc05b2052308ecd4efc8e7e"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockRef</b> (<a class="el" href="structSDL_1_1RWLockRef.html">RWLockRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a9993f44d0bc05b2052308ecd4efc8e7e inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a9993f44d0bc05b2052308ecd4efc8e7e inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f3c99c2c6a7bcd8ab4c847370ca47d7 inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_a0f3c99c2c6a7bcd8ab4c847370ca47d7"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockRef</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a0f3c99c2c6a7bcd8ab4c847370ca47d7 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba496f1892ead742c12b8e2ef196db63 inherit pub_methods_structSDL_1_1RWLockUnsafe" id="r_aba496f1892ead742c12b8e2ef196db63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockUnsafe.html#aba496f1892ead742c12b8e2ef196db63">reset</a> (SDL_RWLock *newResource={})</td></tr>
-<tr class="memdesc:aba496f1892ead742c12b8e2ef196db63 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLockRef.html#a903c3f67328daa662762ef11b0b4b912" title="Copy constructor.">RWLockRef.RWLockRef()</a>.  <br /></td></tr>
+<tr class="memdesc:aba496f1892ead742c12b8e2ef196db63 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91" title="Create a new read/write lock.">RWLock.RWLock()</a>.  <br /></td></tr>
 <tr class="separator:aba496f1892ead742c12b8e2ef196db63 inherit pub_methods_structSDL_1_1RWLockUnsafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structSDL_1_1RWLockRef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structSDL_1_1RWLockRef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structSDL_1_1RWLockRef.html">SDL::RWLockRef</a></td></tr>
-<tr class="memitem:a903c3f67328daa662762ef11b0b4b912 inherit pub_methods_structSDL_1_1RWLockRef" id="r_a903c3f67328daa662762ef11b0b4b912"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockRef</b> (const <a class="el" href="structSDL_1_1RWLockRef.html">RWLockRef</a> &amp;other)</td></tr>
-<tr class="memdesc:a903c3f67328daa662762ef11b0b4b912 inherit pub_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
-<tr class="separator:a903c3f67328daa662762ef11b0b4b912 inherit pub_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9993f44d0bc05b2052308ecd4efc8e7e inherit pub_methods_structSDL_1_1RWLockRef" id="r_a9993f44d0bc05b2052308ecd4efc8e7e"><td class="memItemLeft" align="right" valign="top">
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockRef</b> (<a class="el" href="structSDL_1_1RWLockRef.html">RWLockRef</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:a9993f44d0bc05b2052308ecd4efc8e7e inherit pub_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
-<tr class="separator:a9993f44d0bc05b2052308ecd4efc8e7e inherit pub_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f3c99c2c6a7bcd8ab4c847370ca47d7 inherit pub_methods_structSDL_1_1RWLockRef" id="r_a0f3c99c2c6a7bcd8ab4c847370ca47d7"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>RWLockRef</b> (<a class="el" href="structSDL_1_1RWLock.html">RWLock</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a0f3c99c2c6a7bcd8ab4c847370ca47d7 inherit pub_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44b28c999150f7024769bf9cbcab3710 inherit pub_methods_structSDL_1_1RWLockRef" id="r_a44b28c999150f7024769bf9cbcab3710"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="structSDL_1_1RWLockRef.html">RWLockRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structSDL_1_1RWLockRef.html">RWLockRef</a> other)</td></tr>
-<tr class="memdesc:a44b28c999150f7024769bf9cbcab3710 inherit pub_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
-<tr class="separator:a44b28c999150f7024769bf9cbcab3710 inherit pub_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc928549ffbc5818d3d7b2c1002bba81 inherit pub_methods_structSDL_1_1RWLockRef" id="r_afc928549ffbc5818d3d7b2c1002bba81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html#afc928549ffbc5818d3d7b2c1002bba81">LockForReading</a> ()</td></tr>
 <tr class="memdesc:afc928549ffbc5818d3d7b2c1002bba81 inherit pub_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock the read/write lock for <em>read only</em> operations.  <br /></td></tr>
 <tr class="separator:afc928549ffbc5818d3d7b2c1002bba81 inherit pub_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -197,12 +183,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
 <tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
 <tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1RWLockRef" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1RWLockRef" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1Resource"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1Resource')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1Resource.html">SDL::Resource&lt; SDL_RWLock * &gt;</a></td></tr>
 <tr class="memitem:a959604d891dcae230bf4c378c046a21d inherit pub_methods_classSDL_1_1Resource" id="r_a959604d891dcae230bf4c378c046a21d"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (SDL_RWLock * resource={})</td></tr>
@@ -216,18 +196,6 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (st
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (std::nullopt_t)</td></tr>
 <tr class="memdesc:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to default ctor. <br /></td></tr>
 <tr class="separator:afbb3168108af6a8bd0e23edc712b6a09 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_classSDL_1_1Resource" id="r_afbcdc46caa3c15a1b9c9a116a6e32382"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:afbcdc46caa3c15a1b9c9a116a6e32382 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_classSDL_1_1Resource" id="r_a6035b9f529e0e8bdfd7174d0cb4f7cd6"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>Resource</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a6035b9f529e0e8bdfd7174d0cb4f7cd6 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c0c941509c77a00db1167982f4fe4c5 inherit pub_methods_classSDL_1_1Resource" id="r_a6c0c941509c77a00db1167982f4fe4c5"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;other)=delete</td></tr>
-<tr class="separator:a6c0c941509c77a00db1167982f4fe4c5 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a261c48262a2a2cd5d535bdcd998d4fb6 inherit pub_methods_classSDL_1_1Resource" id="r_a261c48262a2a2cd5d535bdcd998d4fb6"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classSDL_1_1Resource.html">Resource</a> &amp;&amp;other)=delete</td></tr>
-<tr class="separator:a261c48262a2a2cd5d535bdcd998d4fb6 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource" id="r_a0c1e912fa44fa869f6db73e4ba7720a9"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
 <tr class="memdesc:a0c1e912fa44fa869f6db73e4ba7720a9 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if contains a valid resource. <br /></td></tr>
@@ -265,10 +233,10 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1RWLockRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1RWLockRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1RWLockRef.html">SDL::RWLockRef</a></td></tr>
 <tr class="memitem:a43020c49c4c6b6b1046ec8b886d7afaa inherit pro_methods_structSDL_1_1RWLockRef" id="r_a43020c49c4c6b6b1046ec8b886d7afaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html#a43020c49c4c6b6b1046ec8b886d7afaa">Destroy</a> ()</td></tr>
-<tr class="memdesc:a43020c49c4c6b6b1046ec8b886d7afaa inherit pro_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLockRef.html#a903c3f67328daa662762ef11b0b4b912" title="Copy constructor.">RWLockRef.RWLockRef()</a>.  <br /></td></tr>
+<tr class="memdesc:a43020c49c4c6b6b1046ec8b886d7afaa inherit pro_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91" title="Create a new read/write lock.">RWLock.RWLock()</a>.  <br /></td></tr>
 <tr class="separator:a43020c49c4c6b6b1046ec8b886d7afaa inherit pro_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba496f1892ead742c12b8e2ef196db63 inherit pro_methods_structSDL_1_1RWLockRef" id="r_aba496f1892ead742c12b8e2ef196db63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLockRef.html#aba496f1892ead742c12b8e2ef196db63">reset</a> (SDL_RWLock *newResource={})</td></tr>
-<tr class="memdesc:aba496f1892ead742c12b8e2ef196db63 inherit pro_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLockRef.html#a903c3f67328daa662762ef11b0b4b912" title="Copy constructor.">RWLockRef.RWLockRef()</a>.  <br /></td></tr>
+<tr class="memdesc:aba496f1892ead742c12b8e2ef196db63 inherit pro_methods_structSDL_1_1RWLockRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a read/write lock created with <a class="el" href="structSDL_1_1RWLock.html#a8dcdd21f17d07913492090ed97b44b91" title="Create a new read/write lock.">RWLock.RWLock()</a>.  <br /></td></tr>
 <tr class="separator:aba496f1892ead742c12b8e2ef196db63 inherit pro_methods_structSDL_1_1RWLockRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -304,7 +272,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> read/write locks are only recursive for read-only locks! They are not guaranteed to be fair, or provide access in a FIFO manner! They are not guaranteed to favor writers. You may not lock a rwlock for both read-only and write access at the same time from the same thread (so you can't promote your read-only lock to a write lock without unlocking first).</p>
 <dl class="section post"><dt>Postcondition</dt><dd>the initialized and unlocked read/write lock or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockRef.html#a43020c49c4c6b6b1046ec8b886d7afaa" title="Destroy a read/write lock created with RWLockRef.RWLockRef().">RWLockRef.Destroy</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockRef.html#a43020c49c4c6b6b1046ec8b886d7afaa" title="Destroy a read/write lock created with RWLock.RWLock().">RWLockRef.Destroy</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RWLockRef.html#afc928549ffbc5818d3d7b2c1002bba81" title="Lock the read/write lock for read only operations.">RWLockRef.LockForReading</a> </dd>
 <dd>

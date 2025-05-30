@@ -33,6 +33,7 @@ export interface ApiEntryBase {
   since?: VersionTag;
   explicit?: boolean;
   hints?: EntryHint;
+  forceUpdate?: true;
 }
 
 export interface EntryHint {

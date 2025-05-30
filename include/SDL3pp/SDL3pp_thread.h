@@ -169,34 +169,7 @@ struct ThreadRef : Resource<SDL_Thread*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr ThreadRef(const ThreadRef& other)
-    : ThreadRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ThreadRef(ThreadRef&& other)
-    : ThreadRef(other.release())
-  {
-  }
-
-  ThreadRef(Thread&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  ThreadRef& operator=(ThreadRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Get the thread name as it was specified in ThreadRef.ThreadRef().
+   * Get the thread name as it was specified in Thread.Thread().
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
@@ -260,14 +233,13 @@ struct ThreadRef : Resource<SDL_Thread*>
    * Note that the thread pointer is freed by this function and is not valid
    * afterward.
    *
-   *               ThreadRef.ThreadRef() call that started this thread.
    * @param status a pointer filled in with the value returned from the thread
    *               function by its 'return', or -1 if the thread has been
    *               detached or isn't valid, may be nullptr.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
+   * @sa Thread.Thread
    * @sa ThreadRef.Detach
    */
   void Wait(int* status) { SDL_WaitThread(get(), status); }
@@ -303,8 +275,8 @@ protected:
    * thread more than once.
    *
    * If a thread has already exited when passed to ThreadRef.Detach(), it will
-   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It
-   * is not safe to detach a thread that might be used with ThreadRef.Wait().
+   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It is
+   * not safe to detach a thread that might be used with ThreadRef.Wait().
    *
    * You may not call ThreadRef.Wait() on a thread that has been detached. Use
    * either that function or this one, but not both, or behavior is undefined.
@@ -313,10 +285,11 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
+   * @sa Thread.Thread
    * @sa ThreadRef.Wait
    */
   void Detach() { reset(); }
+
   /**
    * Let a thread clean up on exit without intervention.
    *
@@ -335,8 +308,8 @@ protected:
    * thread more than once.
    *
    * If a thread has already exited when passed to ThreadRef.Detach(), it will
-   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It
-   * is not safe to detach a thread that might be used with ThreadRef.Wait().
+   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It is
+   * not safe to detach a thread that might be used with ThreadRef.Wait().
    *
    * You may not call ThreadRef.Wait() on a thread that has been detached. Use
    * either that function or this one, but not both, or behavior is undefined.
@@ -345,7 +318,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
+   * @sa Thread.Thread
    * @sa ThreadRef.Wait
    */
   void reset(SDL_Thread* newResource = {})
@@ -371,12 +344,29 @@ struct ThreadUnsafe : ThreadRef
 
   using ThreadRef::reset;
 
+  /**
+   * Constructs ThreadUnsafe from ThreadRef.
+   */
+  constexpr ThreadUnsafe(const ThreadRef& other)
+    : ThreadRef(other.get())
+  {
+  }
+
   ThreadUnsafe(const Thread& other) = delete;
 
   /**
    * Constructs ThreadUnsafe from Thread.
    */
-  explicit ThreadUnsafe(Thread&& other);
+  constexpr explicit ThreadUnsafe(Thread&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr ThreadUnsafe& operator=(ThreadUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -411,7 +401,10 @@ struct Thread : ThreadUnsafe
   /**
    * Move constructor.
    */
-  constexpr Thread(Thread&& other) = default;
+  constexpr Thread(Thread&& other)
+    : Thread(other.release())
+  {
+  }
 
   /**
    * Create a new thread with a default stack size.
@@ -545,7 +538,7 @@ struct Thread : ThreadUnsafe
   }
 };
 
-inline ThreadUnsafe::ThreadUnsafe(Thread&& other)
+constexpr ThreadUnsafe::ThreadUnsafe(Thread&& other)
   : ThreadUnsafe(other.release())
 {
 }

@@ -117,33 +117,6 @@ struct ProcessRef : Resource<SDL_Process*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr ProcessRef(const ProcessRef& other)
-    : ProcessRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ProcessRef(ProcessRef&& other)
-    : ProcessRef(other.release())
-  {
-  }
-
-  ProcessRef(Process&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  ProcessRef& operator=(ProcessRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the properties associated with a process.
    *
    * The following read-only properties are provided by SDL:
@@ -168,7 +141,7 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    */
   PropertiesRef GetProperties() const
   {
@@ -197,7 +170,8 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
+   * @sa ProcessRef.Destroy
    */
   StringResult Read(int* exitcode = nullptr)
   {
@@ -242,8 +216,8 @@ struct ProcessRef : Resource<SDL_Process*>
   /**
    * Get the IOStreamRef associated with process standard input.
    *
-   * The process must have been created with ProcessRef.ProcessRef() and
-   * pipe_stdio set to true, or with ProcessRef.ProcessRef() and
+   * The process must have been created with Process.Process() and pipe_stdio
+   * set to true, or with Process.Process() and
    * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Writing to this stream can return less data than expected if the process
@@ -258,8 +232,7 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.GetOutput
    */
   IOStreamRef GetInput() { return SDL_GetProcessInput(get()); }
@@ -267,8 +240,8 @@ struct ProcessRef : Resource<SDL_Process*>
   /**
    * Get the IOStreamRef associated with process standard output.
    *
-   * The process must have been created with ProcessRef.ProcessRef() and
-   * pipe_stdio set to true, or with ProcessRef.ProcessRef() and
+   * The process must have been created with Process.Process() and pipe_stdio
+   * set to true, or with Process.Process() and
    * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Reading from this stream can return 0 with IOStreamRef.GetStatus()
@@ -281,8 +254,7 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.GetInput
    */
   IOStreamRef GetOutput() { return SDL_GetProcessOutput(get()); }
@@ -301,10 +273,9 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.Wait
-   * @sa ProcessRef.reset
+   * @sa ProcessRef.Destroy
    */
   void Kill(bool force) { CheckError(SDL_KillProcess(get(), force)); }
 
@@ -319,9 +290,9 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * If you create a process with standard output piped to the application
    * (`pipe_stdio` being true) then you should read all of the process output
-   * before calling ProcessRef.Wait(). If you don't do this the process might
-   * be blocked indefinitely waiting for output to be read and
-   * ProcessRef.Wait() will never return true;
+   * before calling ProcessRef.Wait(). If you don't do this the process might be
+   * blocked indefinitely waiting for output to be read and ProcessRef.Wait()
+   * will never return true;
    *
    * @param block If true, block until the process finishes; otherwise, report
    *              on the process' status.
@@ -333,9 +304,9 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.Kill
-   * @sa ProcessRef.reset
+   * @sa ProcessRef.Destroy
    */
   bool Wait(bool block, int* exitcode)
   {
@@ -354,7 +325,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.Kill
    */
   void Destroy() { reset(); }
@@ -370,7 +341,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.Kill
    */
   void reset(SDL_Process* newResource = {})
@@ -396,12 +367,29 @@ struct ProcessUnsafe : ProcessRef
 
   using ProcessRef::reset;
 
+  /**
+   * Constructs ProcessUnsafe from ProcessRef.
+   */
+  constexpr ProcessUnsafe(const ProcessRef& other)
+    : ProcessRef(other.get())
+  {
+  }
+
   ProcessUnsafe(const Process& other) = delete;
 
   /**
    * Constructs ProcessUnsafe from Process.
    */
-  explicit ProcessUnsafe(Process&& other);
+  constexpr explicit ProcessUnsafe(Process&& other);
+  /**
+   * Assignment operator.
+   */
+
+  constexpr ProcessUnsafe& operator=(ProcessUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -436,7 +424,10 @@ struct Process : ProcessUnsafe
   /**
    * Move constructor.
    */
-  constexpr Process(Process&& other) = default;
+  constexpr Process(Process&& other)
+    : Process(other.release())
+  {
+  }
 
   /**
    * Create a new process.
@@ -562,7 +553,7 @@ struct Process : ProcessUnsafe
   }
 };
 
-inline ProcessUnsafe::ProcessUnsafe(Process&& other)
+constexpr ProcessUnsafe::ProcessUnsafe(Process&& other)
   : ProcessUnsafe(other.release())
 {
 }

@@ -28,4 +28,18 @@ TEST_CASE("Int resource")
     REQUIRE(res == none);
     REQUIRE(res == nullptr);
   }
+
+  SUBCASE("copy")
+  {
+    REQUIRE(res);
+    IntResource resCopy{res};
+    REQUIRE(res == resCopy);
+  }
+
+  SUBCASE("move")
+  {
+    REQUIRE(res);
+    IntResource resCopy{std::move(res)};
+    REQUIRE(res == resCopy);
+  }
 }

@@ -101,10 +101,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga8a2c7bea5053e572590505eda36ceca8" id="r_ga8a2c7bea5053e572590505eda36ceca8"><td class="memItemLeft" align="right" valign="top"><a id="ga8a2c7bea5053e572590505eda36ceca8" name="ga8a2c7bea5053e572590505eda36ceca8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::StorageUnsafe::StorageUnsafe</b> (<a class="el" href="structSDL_1_1Storage.html">Storage</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:ga8a2c7bea5053e572590505eda36ceca8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1StorageUnsafe.html" title="Unsafe Handle to storage.">StorageUnsafe</a> from <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a>. <br /></td></tr>
-<tr class="separator:ga8a2c7bea5053e572590505eda36ceca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3170593566321f9e2270fe3e4b7cc50b" id="r_ga3170593566321f9e2270fe3e4b7cc50b"><td class="memItemLeft" align="right" valign="top"><a id="ga3170593566321f9e2270fe3e4b7cc50b" name="ga3170593566321f9e2270fe3e4b7cc50b"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::StorageUnsafe::StorageUnsafe</b> (<a class="el" href="structSDL_1_1Storage.html">Storage</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:ga3170593566321f9e2270fe3e4b7cc50b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1StorageUnsafe.html" title="Unsafe Handle to storage.">StorageUnsafe</a> from <a class="el" href="structSDL_1_1Storage.html" title="Handle to an owned storage.">Storage</a>. <br /></td></tr>
+<tr class="separator:ga3170593566321f9e2270fe3e4b7cc50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>It is significantly more restrictive than a typical filesystem API, for a number of reasons:</p>
@@ -262,7 +262,7 @@ Notes on valid paths</h2>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Apps that want to supply a custom implementation of <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> will fill in all the functions in this struct, and then pass it to <a class="el" href="structSDL_1_1StorageRef.html#a5fed623bd720bde7222d25f344be3199" title="Copy constructor.">StorageRef.StorageRef</a> to create a custom <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> object.</p>
+<p>Apps that want to supply a custom implementation of <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> will fill in all the functions in this struct, and then pass it to StorageRef.StorageRef to create a custom <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a> object.</p>
 <p>It is not usually necessary to do this; <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> provides standard implementations for many things you might expect to do with an <a class="el" href="structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access.">StorageRef</a>.</p>
 <p>This structure should be initialized using <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE()</a></p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>

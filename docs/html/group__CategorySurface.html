@@ -132,10 +132,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gaefae22d0ebf9382d8200ef17fb08aca4" id="r_gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4">SDL::PremultiplyAlpha</a> (int width, int height, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch, bool linear)</td></tr>
 <tr class="memdesc:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Premultiply the alpha on a block of pixels.  <br /></td></tr>
 <tr class="separator:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacc3b2d382aae4404b0edd47122867f20" id="r_gacc3b2d382aae4404b0edd47122867f20"><td class="memItemLeft" align="right" valign="top"><a id="gacc3b2d382aae4404b0edd47122867f20" name="gacc3b2d382aae4404b0edd47122867f20"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SurfaceUnsafe::SurfaceUnsafe</b> (<a class="el" href="structSDL_1_1Surface.html">Surface</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:gacc3b2d382aae4404b0edd47122867f20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1SurfaceUnsafe.html" title="Unsafe Handle to surface.">SurfaceUnsafe</a> from <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a>. <br /></td></tr>
-<tr class="separator:gacc3b2d382aae4404b0edd47122867f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga120e65132943adbab539b6b9dec2eb65" id="r_ga120e65132943adbab539b6b9dec2eb65"><td class="memItemLeft" align="right" valign="top"><a id="ga120e65132943adbab539b6b9dec2eb65" name="ga120e65132943adbab539b6b9dec2eb65"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SurfaceUnsafe::SurfaceUnsafe</b> (<a class="el" href="structSDL_1_1Surface.html">Surface</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:ga120e65132943adbab539b6b9dec2eb65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1SurfaceUnsafe.html" title="Unsafe Handle to surface.">SurfaceUnsafe</a> from <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a>. <br /></td></tr>
+<tr class="separator:ga120e65132943adbab539b6b9dec2eb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga612e23a1e94cd1c9b31aa10564ac9606" id="r_ga612e23a1e94cd1c9b31aa10564ac9606"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga612e23a1e94cd1c9b31aa10564ac9606">SDL::SurfaceRef::Duplicate</a> () const</td></tr>
 <tr class="memdesc:ga612e23a1e94cd1c9b31aa10564ac9606"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new surface identical to the existing surface.  <br /></td></tr>
 <tr class="separator:ga612e23a1e94cd1c9b31aa10564ac9606"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -275,7 +275,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga36c7e088e8fbd0bec746e65c951a320e" title="Copy an existing surface to a new surface of the specified format.">SurfaceRef.Convert</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c" title="Free a surface.">SurfaceRef.reset</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -340,7 +340,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga36c7e088e8fbd0bec746e65c951a320e" title="Copy an existing surface to a new surface of the specified format.">SurfaceRef.Convert</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c" title="Free a surface.">SurfaceRef.reset</a> </dd></dl>
+<a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -586,7 +586,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section return"><dt>Returns</dt><dd>a copy of the surface or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c" title="Free a surface.">SurfaceRef.reset</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -919,7 +919,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section return"><dt>Returns</dt><dd>a copy of the surface or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a5ea34b21fc4000f27321f0e049f1b69c" title="Free a surface.">SurfaceRef.reset</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
 
 </div>
 </div>

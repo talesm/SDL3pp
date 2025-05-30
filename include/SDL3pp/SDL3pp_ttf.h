@@ -382,33 +382,6 @@ struct FontRef : Resource<TTF_Font*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr FontRef(const FontRef& other)
-    : FontRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr FontRef(FontRef&& other)
-    : FontRef(other.release())
-  {
-  }
-
-  FontRef(Font&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  FontRef& operator=(FontRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Create a copy of an existing font.
    *
    * The copy will be distinct from the original, but will share the font file
@@ -421,6 +394,8 @@ struct FontRef : Resource<TTF_Font*>
    *               original font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
    */
   Font Copy() const;
 
@@ -1813,7 +1788,7 @@ protected:
    *
    * Call this when done with a font. This function will free any resources
    * associated with it. It is safe to call this function on nullptr, for
-   * example on the result of a failed call to FontRef.FontRef().
+   * example on the result of a failed call to Font.Font().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
@@ -1825,7 +1800,7 @@ protected:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa FontRef.FontRef
+   * @sa Font.Font
    */
   void Close() { reset(); }
 
@@ -1834,7 +1809,7 @@ protected:
    *
    * Call this when done with a font. This function will free any resources
    * associated with it. It is safe to call this function on nullptr, for
-   * example on the result of a failed call to FontRef.FontRef().
+   * example on the result of a failed call to Font.Font().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
@@ -1846,7 +1821,7 @@ protected:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa FontRef.FontRef
+   * @sa Font.Font
    */
   void reset(TTF_Font* newResource = {})
   {
@@ -1870,12 +1845,29 @@ struct FontUnsafe : FontRef
   using FontRef::FontRef;
   using FontRef::reset;
 
+  /**
+   * Constructs FontUnsafe from FontRef.
+   */
+  constexpr FontUnsafe(const FontRef& other)
+    : FontRef(other.get())
+  {
+  }
+
   FontUnsafe(const Font& other) = delete;
 
   /**
    * Constructs FontUnsafe from Font.
    */
-  explicit FontUnsafe(Font&& other);
+  constexpr explicit FontUnsafe(Font&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr FontUnsafe& operator=(FontUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -1910,7 +1902,10 @@ struct Font : FontUnsafe
   /**
    * Move constructor.
    */
-  constexpr Font(Font&& other) = default;
+  constexpr Font(Font&& other)
+    : Font(other.release())
+  {
+  }
 
   /**
    * Create a font from a file, using a specified point size.
@@ -2021,7 +2016,7 @@ struct Font : FontUnsafe
   }
 };
 
-inline FontUnsafe::FontUnsafe(Font&& other)
+constexpr FontUnsafe::FontUnsafe(Font&& other)
   : FontUnsafe(other.release())
 {
 }
@@ -2068,41 +2063,13 @@ struct TextEngineRef : Resource<TTF_TextEngine*>
 {
   using Resource::Resource;
 
-  /**
-   * Copy constructor.
-   */
-  constexpr TextEngineRef(const TextEngineRef& other)
-    : TextEngineRef(other.get(), other.m_destroy)
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TextEngineRef(TextEngineRef&& other)
-    : TextEngineRef(other.release(), other.m_destroy)
-  {
-  }
-
 protected:
-  TextEngineRef(TextEngine&& other) = delete;
-
   /// Create from engine and custom destroyer
   constexpr TextEngineRef(TTF_TextEngine* engine,
                           void (*destroy)(TTF_TextEngine* engine))
     : Resource(engine)
     , m_destroy(destroy)
   {
-  }
-
-public:
-  /**
-   * Assignment operator.
-   */
-  TextEngineRef& operator=(TextEngineRef other)
-  {
-    release(other.release());
-    return *this;
   }
 
 protected:
@@ -2172,12 +2139,29 @@ struct TextEngineUnsafe : TextEngineRef
 {
   using TextEngineRef::TextEngineRef;
 
+  /**
+   * Constructs TextEngineUnsafe from TextEngineRef.
+   */
+  constexpr TextEngineUnsafe(const TextEngineRef& other)
+    : TextEngineRef(other.get())
+  {
+  }
+
   TextEngineUnsafe(const TextEngine& other) = delete;
 
   /**
    * Constructs TextEngineUnsafe from TextEngine.
    */
-  explicit TextEngineUnsafe(TextEngine&& other);
+  constexpr explicit TextEngineUnsafe(TextEngine&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TextEngineUnsafe& operator=(TextEngineUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -2212,7 +2196,10 @@ struct TextEngine : TextEngineUnsafe
   /**
    * Move constructor.
    */
-  constexpr TextEngine(TextEngine&& other) = default;
+  constexpr TextEngine(TextEngine&& other)
+    : TextEngine(other.release())
+  {
+  }
 
   /// Create from engine and custom destroyer
   constexpr TextEngine(TTF_TextEngine* engine,
@@ -2265,7 +2252,7 @@ using SubString = TTF_SubString;
 // Forward decl
 struct SubStringIterator;
 
-inline TextEngineUnsafe::TextEngineUnsafe(TextEngine&& other)
+constexpr TextEngineUnsafe::TextEngineUnsafe(TextEngine&& other)
   : TextEngineUnsafe(other.release())
 {
 }
@@ -2423,33 +2410,6 @@ struct TextRef : Resource<TTF_Text*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr TextRef(const TextRef& other)
-    : TextRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TextRef(TextRef&& other)
-    : TextRef(other.release())
-  {
-  }
-
-  TextRef(Text&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  TextRef& operator=(TextRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Draw text to an SDL surface.
    *
    * `text` must have been created using a TextEngineRef from
@@ -2466,7 +2426,7 @@ struct TextRef : Resource<TTF_Text*>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateSurfaceTextEngine
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   void DrawSurface(Point p, SurfaceRef surface) const
   {
@@ -2490,7 +2450,7 @@ struct TextRef : Resource<TTF_Text*>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateRendererTextEngine
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   void DrawRenderer(FPoint p) const
   {
@@ -2521,7 +2481,7 @@ struct TextRef : Resource<TTF_Text*>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateGPUTextEngine
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const
   {
@@ -3127,8 +3087,6 @@ struct TextRef : Resource<TTF_Text*>
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @see GetSize() if you need both coordinates.
    */
   void GetSize(int* w, int* h) const
   {
@@ -3362,7 +3320,7 @@ protected:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   void Destroy() { reset(); }
 
@@ -3374,7 +3332,7 @@ protected:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   void reset(TTF_Text* newResource = {})
   {
@@ -3399,12 +3357,29 @@ struct TextUnsafe : TextRef
 
   using TextRef::reset;
 
+  /**
+   * Constructs TextUnsafe from TextRef.
+   */
+  constexpr TextUnsafe(const TextRef& other)
+    : TextRef(other.get())
+  {
+  }
+
   TextUnsafe(const Text& other) = delete;
 
   /**
    * Constructs TextUnsafe from Text.
    */
-  explicit TextUnsafe(Text&& other);
+  constexpr explicit TextUnsafe(Text&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TextUnsafe& operator=(TextUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -3439,7 +3414,10 @@ struct Text : TextUnsafe
   /**
    * Move constructor.
    */
-  constexpr Text(Text&& other) = default;
+  constexpr Text(Text&& other)
+    : Text(other.release())
+  {
+  }
 
   /**
    * Create a text object from UTF-8 text and a text engine.
@@ -3549,7 +3527,7 @@ public:
   friend class TextRef;
 };
 
-inline TextUnsafe::TextUnsafe(Text&& other)
+constexpr TextUnsafe::TextUnsafe(Text&& other)
   : TextUnsafe(other.release())
 {
 }

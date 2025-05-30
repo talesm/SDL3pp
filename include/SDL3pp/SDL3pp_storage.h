@@ -269,33 +269,6 @@ struct StorageRef : Resource<SDL_Storage*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr StorageRef(const StorageRef& other)
-    : StorageRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr StorageRef(StorageRef&& other)
-    : StorageRef(other.release())
-  {
-  }
-
-  StorageRef(Storage&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  StorageRef& operator=(StorageRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Checks if the storage container is ready to use.
    *
    * This function should be called in regular intervals until it returns true -
@@ -361,8 +334,8 @@ struct StorageRef : Resource<SDL_Storage*>
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * StorageRef.GetFileSize() to get this value. This behavior may be relaxed
-   * in a future release.
+   * StorageRef.GetFileSize() to get this value. This behavior may be relaxed in
+   * a future release.
    *
    * @param path the relative path of the file to read.
    * @param destination a client-provided buffer to read the file into.
@@ -664,7 +637,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.StorageRef
+   * @sa Storage.Storage
    */
   bool Close() { return reset(); }
 
@@ -678,7 +651,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.StorageRef
+   * @sa Storage.Storage
    */
   bool reset(SDL_Storage* newResource = {})
   {
@@ -703,12 +676,29 @@ struct StorageUnsafe : StorageRef
 
   using StorageRef::reset;
 
+  /**
+   * Constructs StorageUnsafe from StorageRef.
+   */
+  constexpr StorageUnsafe(const StorageRef& other)
+    : StorageRef(other.get())
+  {
+  }
+
   StorageUnsafe(const Storage& other) = delete;
 
   /**
    * Constructs StorageUnsafe from Storage.
    */
-  explicit StorageUnsafe(Storage&& other);
+  constexpr explicit StorageUnsafe(Storage&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr StorageUnsafe& operator=(StorageUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -743,7 +733,10 @@ struct Storage : StorageUnsafe
   /**
    * Move constructor.
    */
-  constexpr Storage(Storage&& other) = default;
+  constexpr Storage(Storage&& other)
+    : Storage(other.release())
+  {
+  }
 
   /**
    * Opens up a read-only container for the application's filesystem.
@@ -864,7 +857,7 @@ struct Storage : StorageUnsafe
   }
 };
 
-inline StorageUnsafe::StorageUnsafe(Storage&& other)
+constexpr StorageUnsafe::StorageUnsafe(Storage&& other)
   : StorageUnsafe(other.release())
 {
 }

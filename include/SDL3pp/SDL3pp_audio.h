@@ -541,33 +541,6 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 {
   using Resource::Resource;
 
-  /**
-   * Copy constructor.
-   */
-  constexpr AudioDeviceRef(const AudioDeviceRef& other)
-    : AudioDeviceRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr AudioDeviceRef(AudioDeviceRef&& other)
-    : AudioDeviceRef(other.release())
-  {
-  }
-
-  AudioDeviceRef(AudioDevice&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  AudioDeviceRef& operator=(AudioDeviceRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
   /// Comparison
   constexpr auto operator<=>(const AudioDeviceRef& other) const
   {
@@ -657,8 +630,8 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    *
    * An AudioDeviceRef that represents physical hardware is a physical
    * device; there is one for each piece of hardware that SDL can see. Logical
-   * devices are created by calling AudioDeviceRef.AudioDeviceRef or
-   * AudioStreamRef.AudioStreamRef, and while each is associated with a physical
+   * devices are created by calling AudioDevice.AudioDevice or
+   * AudioStream.AudioStream, and while each is associated with a physical
    * device, there can be any number of logical devices on one physical device.
    *
    * For the most part, logical and physical IDs are interchangeable--if you try
@@ -705,7 +678,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * loading, etc.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDeviceRef.AudioDeviceRef() can be.
+   * created through AudioDevice.AudioDevice() can be.
    *
    * @throws Error on failure.
    *
@@ -731,7 +704,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * device is a legal no-op.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDeviceRef.AudioDeviceRef() can be.
+   * created through AudioDevice.AudioDevice() can be.
    *
    * @throws Error on failure.
    *
@@ -751,8 +724,8 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * has to bind a stream before any audio will flow.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDeviceRef.AudioDeviceRef() can be. Physical and
-   * invalid device IDs will report themselves as unpaused here.
+   * created through AudioDevice.AudioDevice() can be. Physical and invalid
+   * device IDs will report themselves as unpaused here.
    *
    * @returns true if device is valid and paused, false otherwise.
    *
@@ -994,7 +967,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDeviceRef.AudioDeviceRef
+   * @sa AudioDevice.AudioDevice
    */
   void Close() { reset(); }
 
@@ -1012,7 +985,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDeviceRef.AudioDeviceRef
+   * @sa AudioDevice.AudioDevice
    */
   void reset(SDL_AudioDeviceID newResource = {})
   {
@@ -1038,12 +1011,29 @@ struct AudioDeviceUnsafe : AudioDeviceRef
 
   using AudioDeviceRef::reset;
 
+  /**
+   * Constructs AudioDeviceUnsafe from AudioDeviceRef.
+   */
+  constexpr AudioDeviceUnsafe(const AudioDeviceRef& other)
+    : AudioDeviceRef(other.get())
+  {
+  }
+
   AudioDeviceUnsafe(const AudioDevice& other) = delete;
 
   /**
    * Constructs AudioDeviceUnsafe from AudioDevice.
    */
-  explicit AudioDeviceUnsafe(AudioDevice&& other);
+  constexpr explicit AudioDeviceUnsafe(AudioDevice&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr AudioDeviceUnsafe& operator=(AudioDeviceUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -1078,7 +1068,10 @@ struct AudioDevice : AudioDeviceUnsafe
   /**
    * Move constructor.
    */
-  constexpr AudioDevice(AudioDevice&& other) = default;
+  constexpr AudioDevice(AudioDevice&& other)
+    : AudioDevice(other.release())
+  {
+  }
 
   /**
    * Open a specific audio device.
@@ -1175,7 +1168,7 @@ struct AudioDevice : AudioDeviceUnsafe
   }
 };
 
-inline AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
+constexpr AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
   : AudioDeviceUnsafe(other.release())
 {
 }
@@ -1337,33 +1330,6 @@ using AudioStreamCB = std::function<
 struct AudioStreamRef : Resource<SDL_AudioStream*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr AudioStreamRef(const AudioStreamRef& other)
-    : AudioStreamRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr AudioStreamRef(AudioStreamRef&& other)
-    : AudioStreamRef(other.release())
-  {
-  }
-
-  AudioStreamRef(AudioStream&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  AudioStreamRef& operator=(AudioStreamRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Get the properties associated with an audio stream.
@@ -1999,8 +1965,8 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    * previously been paused. Once unpaused, any bound audio streams will begin
    * to progress again, and audio can be generated.
    *
-   * Remember, AudioStreamRef.AudioStreamRef opens device in a paused state, so
-   * this function call is required for audio playback to begin on such device.
+   * Remember, AudioStream.AudioStream opens device in a paused state, so this
+   * function call is required for audio playback to begin on such device.
    *
    * @throws Error on failure.
    *
@@ -2302,15 +2268,15 @@ protected:
    * queued. You do not need to manually clear the stream first.
    *
    * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioStreamRef.AudioStreamRef, the
-   * audio device that was opened alongside this stream's creation will be
-   * closed, too.
+   * call. If this stream was created with AudioStream.AudioStream, the audio
+   * device that was opened alongside this stream's creation will be closed,
+   * too.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStreamRef.AudioStreamRef
+   * @sa AudioStream.AudioStream
    */
   void Destroy() { reset(); }
 
@@ -2321,15 +2287,15 @@ protected:
    * queued. You do not need to manually clear the stream first.
    *
    * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioStreamRef.AudioStreamRef, the
-   * audio device that was opened alongside this stream's creation will be
-   * closed, too.
+   * call. If this stream was created with AudioStream.AudioStream, the audio
+   * device that was opened alongside this stream's creation will be closed,
+   * too.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStreamRef.AudioStreamRef
+   * @sa AudioStream.AudioStream
    */
   void reset(SDL_AudioStream* newResource = {})
   {
@@ -2356,12 +2322,29 @@ struct AudioStreamUnsafe : AudioStreamRef
 
   using AudioStreamRef::reset;
 
+  /**
+   * Constructs AudioStreamUnsafe from AudioStreamRef.
+   */
+  constexpr AudioStreamUnsafe(const AudioStreamRef& other)
+    : AudioStreamRef(other.get())
+  {
+  }
+
   AudioStreamUnsafe(const AudioStream& other) = delete;
 
   /**
    * Constructs AudioStreamUnsafe from AudioStream.
    */
-  explicit AudioStreamUnsafe(AudioStream&& other);
+  constexpr explicit AudioStreamUnsafe(AudioStream&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr AudioStreamUnsafe& operator=(AudioStreamUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -2396,7 +2379,10 @@ struct AudioStream : AudioStreamUnsafe
   /**
    * Move constructor.
    */
-  constexpr AudioStream(AudioStream&& other) = default;
+  constexpr AudioStream(AudioStream&& other)
+    : AudioStream(other.release())
+  {
+  }
 
   /**
    * Create a new audio stream.
@@ -2648,7 +2634,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
   void reset() { Unlock(); }
 };
 
-inline AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
+constexpr AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
   : AudioStreamUnsafe(other.release())
 {
 }

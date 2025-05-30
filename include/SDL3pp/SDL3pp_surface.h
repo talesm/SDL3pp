@@ -136,60 +136,39 @@ struct SurfaceRef : Resource<SDL_Surface*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr SurfaceRef(const SurfaceRef& other)
-    : SurfaceRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SurfaceRef(SurfaceRef&& other)
-    : SurfaceRef(other.release())
-  {
-  }
-
-  SurfaceRef(Surface&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  SurfaceRef& operator=(SurfaceRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the properties associated with a surface.
    *
    * The following properties are understood by SDL:
    *
-   * - `SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   surfaces, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 203 for HDR10 surfaces and 1.0 for floating point surfaces.
-   * - `SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
    *   surfaces, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This defaults to 0.0, which disables tone
    *   mapping.
-   * - `SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING`: the tone mapping operator
+   * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator
    *   used when compressing from a surface with high dynamic range to another
    *   with lower dynamic range. Currently this supports "chrome", which uses
    *   the same tone mapping that Chrome uses for HDR content, the form "*=N",
    *   where N is a floating point scale factor applied in linear space, and
    *   "none", which disables tone mapping. This defaults to "chrome".
+   * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the
+   *   left edge of the image, if this surface is being used as a cursor.
+   * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the
+   *   top edge of the image, if this surface is being used as a cursor.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
   PropertiesRef GetProperties() const
   {
-    return PropertiesRef{SDL_GetSurfaceProperties(get())};
+    return CheckError(SDL_GetSurfaceProperties(get()));
   }
 
   /**
@@ -215,12 +194,18 @@ struct SurfaceRef : Resource<SDL_Surface*>
   /**
    * Get the colorspace used by a surface.
    *
-   * The colorspace defaults to SDL_COLORSPACE_SRGB_LINEAR for floating point
-   * formats, SDL_COLORSPACE_HDR10 for 10-bit formats, SDL_COLORSPACE_SRGB for
-   * other RGB surfaces and SDL_COLORSPACE_BT709_FULL for YUV textures.
+   * The colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point
+   * formats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for
+   * other RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.
    *
-   * @returns the colorspace used by the surface, or SDL_COLORSPACE_UNKNOWN if
-   *          the surface is NULL.
+   * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if
+   *          the surface is nullptr.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetColorspace
    */
   Colorspace GetColorspace() const { return SDL_GetSurfaceColorspace(get()); }
 
@@ -233,23 +218,27 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * destroy the returned palette, it will be freed when the reference count
    * reaches 0, usually when the surface is destroyed.
    *
-   * Bitmap surfaces (with format SDL_PIXELFORMAT_INDEX1LSB or
-   * SDL_PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as
+   * Bitmap surfaces (with format PIXELFORMAT_INDEX1LSB or
+   * PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as
    * white and 1 as black. Other surfaces will get a palette initialized with
    * white in every entry.
    *
    * If this function is called for a surface that already has a palette, a new
    * palette will be created to replace it.
    *
-   * @returns a new SDL_Palette structure on success or NULL on failure (e.g. if
-   *          the surface didn't have an index format); call GetError() for
-   *          more information.
+   * @returns a new PaletteRef structure on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.SetColors()
+   * @sa PaletteRef.SetColors
    */
-  PaletteRef CreatePalette() { return SDL_CreateSurfacePalette(get()); }
+  PaletteRef CreatePalette()
+  {
+    return CheckError(SDL_CreateSurfacePalette(get()));
+  }
 
   /**
    * Set the palette used by a surface.
@@ -263,7 +252,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteRef.PaletteRef
+   * @sa Palette.Palette
    * @sa SurfaceRef.GetPalette
    */
   void SetPalette(PaletteRef& palette)
@@ -276,6 +265,12 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @returns a pointer to the palette used by the surface, or nullptr if there
    *          is no palette used.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetPalette
    */
   PaletteRef GetPalette() const { return SDL_GetSurfacePalette(get()); }
 
@@ -288,10 +283,9 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * alternate versions will not be updated when the original surface changes.
    *
    * This function adds a reference to the alternate version, so you should call
-   * SurfaceRef.reset() on the image after this call.
+   * SurfaceRef.Destroy() on the image after this call.
    *
-   * @param image an alternate SurfaceRef to associate with this
-   *              surface.
+   * @param image an alternate SurfaceRef to associate with this surface.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
@@ -312,11 +306,13 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @returns true if alternate versions are available or false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AddAlternateImage()
-   * @sa RemoveAlternateImages()
-   * @sa GetImages()
+   * @sa SurfaceRef.AddAlternateImage
+   * @sa SurfaceRef.RemoveAlternateImages
+   * @sa SurfaceRef.GetImages
    */
   bool HasAlternateImages() const
   {
@@ -329,17 +325,16 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * This returns all versions of a surface, with the surface being queried as
    * the first element in the returned array.
    *
-   * @returns a NULL terminated array of SDL_Surface pointers or NULL on
-   *          failure; call SDL_GetError() for more information. This should be
-   *          freed with SDL_free() when it is no longer needed.
+   * @returns a NULL terminated array of SurfaceRef pointers or nullptr on
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AddAlternateImage()
-   * @sa RemoveAlternateImages()
-   * @sa HasAlternateImages()
+   * @sa SurfaceRef.AddAlternateImage
+   * @sa SurfaceRef.RemoveAlternateImages
+   * @sa SurfaceRef.HasAlternateImages
    */
   OwnArray<SurfaceRef> GetImages() const
   {
@@ -355,11 +350,14 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * This function removes a reference from all the alternative versions,
    * destroying them if this is the last reference to them.
    *
+   *
+   * @threadsafety This function is not thread safe.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AddAlternateImage()
-   * @sa GetImages()
-   * @sa HasAlternateImages()
+   * @sa SurfaceRef.AddAlternateImage
+   * @sa SurfaceRef.GetImages
+   * @sa SurfaceRef.HasAlternateImages
    */
   void RemoveAlternateImages() { SDL_RemoveSurfaceAlternateImages(get()); }
 
@@ -373,10 +371,10 @@ struct SurfaceRef : Resource<SDL_Surface*>
   /**
    * Set up a surface for directly accessing the pixels.
    *
-   * Between calls to SurfaceRef.Lock() / Unlock(), you can write
-   * to and read from `GetPixels()`, using the pixel format stored in
-   * `GetFormat()`. Once you are done accessing the surface, you should use
-   * Unlock() to release it or let the destructor take care of this
+   * Between calls to SurfaceRef.Lock() / SurfaceLock.Unlock(), you can write to
+   * and read from `surface->pixels`, using the pixel format stored in
+   * `surface->format`. Once you are done accessing the surface, you should use
+   * SurfaceLock.Unlock() to release it or let the destructor take care of this
    * for you.
    *
    * Not all surfaces require locking. If `SurfaceRef.MustLock(surface)`
@@ -390,8 +388,8 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MustLock()
-   * @sa SurfaceLock.Unlock()
+   * @sa SurfaceRef.MustLock
+   * @sa SurfaceLock.Unlock
    */
   SurfaceLock Lock() &;
 
@@ -418,6 +416,12 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * Returns whether the surface is RLE enabled.
    *
    * @returns true if the surface is RLE enabled, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetRLE
    */
   bool HasRLE() const { return SDL_SurfaceHasRLE(get()); }
 
@@ -483,6 +487,13 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * Returns whether the surface has a color key.
    *
    * @returns true if the surface has a color key, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetColorKey
+   * @sa SurfaceRef.GetColorKey
    */
   bool HasColorKey() const { return SDL_SurfaceHasColorKey(get()); }
 
@@ -725,14 +736,17 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * Note that blits are automatically clipped to the edges of the source and
    * destination surfaces.
    *
-   * @param rect the SDL_Rect structure representing the clipping rectangle or
-   *        nullopt to disable it
+   * @param rect the Rect structure representing the clipping rectangle, or
+   *             std::nullopt to disable clipping.
    * @returns true if the rectangle intersects the surface, otherwise false and
    *          blits will be completely clipped.
    *
+   * @threadsafety This function is not thread safe.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ResetClipRect()
+   * @sa SurfaceRef.ResetClipRect()
+   * @sa SurfaceRef.GetClipRect
    */
   bool SetClipRect(OptionalRef<const SDL_Rect> rect)
   {
@@ -753,13 +767,20 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * rectangle is drawn into.
    *
    * @returns the Rect structure filled in with the clipping rectangle for the
-   * surface on success, or false on failure; call GetError() for
-   * more information.
+   *          surface on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetClipRect
    */
   Rect GetClipRect() const
   {
-    if (Rect r; SDL_GetSurfaceClipRect(get(), &r)) return r;
-    return {};
+    Rect r;
+    CheckError(SDL_GetSurfaceClipRect(get(), &r));
+    return r;
   }
 
   /**
@@ -787,7 +808,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.reset
+   * @sa SurfaceRef.Destroy
    */
   Surface Duplicate() const;
 
@@ -805,7 +826,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.reset
+   * @sa SurfaceRef.Destroy
    */
   Surface Scale(int width, int height, ScaleMode scaleMode) const;
 
@@ -832,7 +853,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SurfaceRef.Convert
-   * @sa SurfaceRef.reset
+   * @sa SurfaceRef.Destroy
    */
   Surface Convert(PixelFormat format) const;
 
@@ -860,7 +881,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SurfaceRef.Convert
-   * @sa SurfaceRef.reset
+   * @sa SurfaceRef.Destroy
    */
   Surface Convert(PixelFormat format,
                   PaletteRef& palette,
@@ -884,8 +905,6 @@ struct SurfaceRef : Resource<SDL_Surface*>
   {
     CheckError(SDL_PremultiplySurfaceAlpha(get(), linear));
   }
-
-  // TODO SDL_ConvertSurfaceAndColorspace
 
   /**
    * Clear a surface with a specific color, with floating point precision.
@@ -1121,9 +1140,6 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * If either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or
    * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
    *
-   * The final blit rectangles are saved in `srcrect` and `dstrect` after all
-   * clipping is performed.
-   *
    * The blit function should not be called on a locked surface.
    *
    * The blit semantics for surfaces with and without blending and colorkey are
@@ -1201,7 +1217,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
-   *                copied, may not be NULL.
+   *                copied, may not be nullptr.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, may not be nullptr.
    * @throws Error on failure.
@@ -1527,6 +1543,12 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @param g the green component of the pixel in the range 0-255.
    * @param b the blue component of the pixel in the range 0-255.
    * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.MapColor
    */
   Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b) const
   {
@@ -1555,7 +1577,13 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @param g the green component of the pixel in the range 0-255.
    * @param b the blue component of the pixel in the range 0-255.
    * @param a the alpha component of the pixel in the range 0-255.
-   * @return a pixel value.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.MapColor
    */
   Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
   {
@@ -1754,8 +1782,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.SurfaceRef
-   * @sa SurfaceRef.SurfaceRef
+   * @sa Surface.Surface
    */
   void Destroy() { reset(); }
 
@@ -1768,7 +1795,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.SurfaceRef
+   * @sa Surface.Surface
    */
   void reset(SDL_Surface* newResource = {})
   {
@@ -1793,12 +1820,29 @@ struct SurfaceUnsafe : SurfaceRef
 
   using SurfaceRef::reset;
 
+  /**
+   * Constructs SurfaceUnsafe from SurfaceRef.
+   */
+  constexpr SurfaceUnsafe(const SurfaceRef& other)
+    : SurfaceRef(other.get())
+  {
+  }
+
   SurfaceUnsafe(const Surface& other) = delete;
 
   /**
    * Constructs SurfaceUnsafe from Surface.
    */
-  explicit SurfaceUnsafe(Surface&& other);
+  constexpr explicit SurfaceUnsafe(Surface&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr SurfaceUnsafe& operator=(SurfaceUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -1833,7 +1877,10 @@ struct Surface : SurfaceUnsafe
   /**
    * Move constructor.
    */
-  constexpr Surface(Surface&& other) = default;
+  constexpr Surface(Surface&& other)
+    : Surface(other.release())
+  {
+  }
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -1890,8 +1937,8 @@ struct Surface : SurfaceUnsafe
    * Allocate a new surface with a specific pixel format and existing pixel
    * data.
    *
-   * No copy is made of the pixel data. Pixel data is not managed automatically;
-   * you must free the surface before you free the pixel data.
+   * No copy is made of the pixel data. Pixel data is not managed
+   * automatically; you must free the surface before you free the pixel data.
    *
    * Pitch is the offset in bytes from one row of pixels to the next, e.g.
    * `width*4` for `PIXELFORMAT_RGBA8888`.
@@ -2012,7 +2059,7 @@ public:
   friend class SurfaceRef;
 };
 
-inline SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
+constexpr SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
   : SurfaceUnsafe(other.release())
 {
 }

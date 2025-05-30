@@ -829,33 +829,6 @@ struct WindowRef : Resource<SDL_Window*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr WindowRef(const WindowRef& other)
-    : WindowRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr WindowRef(WindowRef&& other)
-    : WindowRef(other.release())
-  {
-  }
-
-  WindowRef(Window&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  WindowRef& operator=(WindowRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the display associated with a window.
    *
    * @returns the instance ID of the display containing the center of the window
@@ -1024,7 +997,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    */
   WindowRef GetParent() const { return SDL_GetWindowParent(get()); }
 
@@ -1161,7 +1134,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    * @sa WindowRef.Hide
    * @sa WindowRef.Maximize
    * @sa WindowRef.Minimize
@@ -1532,7 +1505,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * Note: This function may fail on systems where the window has not yet been
    * decorated by the display server (for example, immediately after calling
-   * WindowRef.WindowRef). It is recommended that you wait at least until the
+   * Window.Window). It is recommended that you wait at least until the
    * window has been presented and composited, so that the window system has a
    * chance to decorate the window and provide the border dimensions to SDL.
    *
@@ -1593,7 +1566,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    * @sa WindowRef.GetSize
    */
   void GetSizeInPixels(int* w, int* h) const
@@ -1887,8 +1860,8 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * On some windowing systems this request is asynchronous and the new
    * fullscreen state may not have have been applied immediately upon the return
-   * of this function. If an immediate change is required, call
-   * WindowRef.Sync() to block until the changes have taken effect.
+   * of this function. If an immediate change is required, call WindowRef.Sync()
+   * to block until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
    * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
@@ -2266,8 +2239,8 @@ struct WindowRef : Resource<SDL_Window*>
    * the parent is shown.
    *
    * Attempting to set the parent of a window that is currently in the modal
-   * state will fail. Use WindowRef.SetModal() to cancel the modal status
-   * before attempting to change the parent.
+   * state will fail. Use WindowRef.SetModal() to cancel the modal status before
+   * attempting to change the parent.
    *
    * Popup windows cannot change parents and attempts to do so will fail.
    *
@@ -2283,7 +2256,10 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @sa WindowRef.SetModal
    */
-  void SetParent(OptionalWindow parent);
+  void SetParent(OptionalWindow parent)
+  {
+    CheckError(SDL_SetWindowParent(get(), parent.get()));
+  }
 
   /**
    * Toggle the state of the window as modal.
@@ -2521,7 +2497,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    */
   void Destroy() { reset(); }
 
@@ -2539,7 +2515,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    */
   void reset(SDL_Window* newResource = {})
   {
@@ -2589,12 +2565,29 @@ struct WindowUnsafe : WindowRef
 
   using WindowRef::reset;
 
+  /**
+   * Constructs WindowUnsafe from WindowRef.
+   */
+  constexpr WindowUnsafe(const WindowRef& other)
+    : WindowRef(other.get())
+  {
+  }
+
   WindowUnsafe(const Window& other) = delete;
 
   /**
    * Constructs WindowUnsafe from Window.
    */
-  explicit WindowUnsafe(Window&& other);
+  constexpr explicit WindowUnsafe(Window&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr WindowUnsafe& operator=(WindowUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -2629,7 +2622,10 @@ struct Window : WindowUnsafe
   /**
    * Move constructor.
    */
-  constexpr Window(Window&& other) = default;
+  constexpr Window(Window&& other)
+    : Window(other.release())
+  {
+  }
 
   /**
    * Create a window with the specified dimensions and flags.
@@ -2935,7 +2931,7 @@ struct Window : WindowUnsafe
   }
 };
 
-inline WindowUnsafe::WindowUnsafe(Window&& other)
+constexpr WindowUnsafe::WindowUnsafe(Window&& other)
   : WindowUnsafe(other.release())
 {
 }
@@ -3041,33 +3037,6 @@ struct GLContextRef : Resource<SDL_GLContextState*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr GLContextRef(const GLContextRef& other)
-    : GLContextRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr GLContextRef(GLContextRef&& other)
-    : GLContextRef(other.release())
-  {
-  }
-
-  GLContextRef(GLContext&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  GLContextRef& operator=(GLContextRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Set up an OpenGL context for rendering into an OpenGL window.
    *
    * The context must have been created with a compatible window.
@@ -3079,7 +3048,7 @@ struct GLContextRef : Resource<SDL_GLContextState*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextRef.GLContextRef
+   * @sa GLContext.GLContext
    */
   void MakeCurrent(WindowRef& window)
   {
@@ -3096,7 +3065,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextRef.GLContextRef
+   * @sa GLContext.GLContext
    */
   void Destroy() { reset(); }
 
@@ -3109,7 +3078,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextRef.GLContextRef
+   * @sa GLContext.GLContext
    */
   void reset(SDL_GLContextState* newResource = {})
   {
@@ -3134,12 +3103,29 @@ struct GLContextUnsafe : GLContextRef
 
   using GLContextRef::reset;
 
+  /**
+   * Constructs GLContextUnsafe from GLContextRef.
+   */
+  constexpr GLContextUnsafe(const GLContextRef& other)
+    : GLContextRef(other.get())
+  {
+  }
+
   GLContextUnsafe(const GLContext& other) = delete;
 
   /**
    * Constructs GLContextUnsafe from GLContext.
    */
-  explicit GLContextUnsafe(GLContext&& other);
+  constexpr explicit GLContextUnsafe(GLContext&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr GLContextUnsafe& operator=(GLContextUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -3174,7 +3160,10 @@ struct GLContext : GLContextUnsafe
   /**
    * Move constructor.
    */
-  constexpr GLContext(GLContext&& other) = default;
+  constexpr GLContext(GLContext&& other)
+    : GLContext(other.release())
+  {
+  }
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -3218,7 +3207,7 @@ struct GLContext : GLContextUnsafe
   }
 };
 
-inline GLContextUnsafe::GLContextUnsafe(GLContext&& other)
+constexpr GLContextUnsafe::GLContextUnsafe(GLContext&& other)
   : GLContextUnsafe(other.release())
 {
 }

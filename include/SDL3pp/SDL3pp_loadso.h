@@ -65,33 +65,6 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr SharedObjectRef(const SharedObjectRef& other)
-    : SharedObjectRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SharedObjectRef(SharedObjectRef&& other)
-    : SharedObjectRef(other.release())
-  {
-  }
-
-  SharedObjectRef(SharedObject&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  SharedObjectRef& operator=(SharedObjectRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Look up the address of the named function in a shared object.
    *
    * This function pointer is no longer valid after calling
@@ -115,7 +88,7 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectRef.SharedObjectRef
+   * @sa SharedObject.SharedObject
    */
   FunctionPointer LoadFunction(StringParam name)
   {
@@ -133,7 +106,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectRef.SharedObjectRef
+   * @sa SharedObject.SharedObject
    */
   void Unload() { reset(); }
 
@@ -147,7 +120,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectRef.SharedObjectRef
+   * @sa SharedObject.SharedObject
    */
   void reset(SDL_SharedObject* newResource = {})
   {
@@ -172,12 +145,29 @@ struct SharedObjectUnsafe : SharedObjectRef
 
   using SharedObjectRef::reset;
 
+  /**
+   * Constructs SharedObjectUnsafe from SharedObjectRef.
+   */
+  constexpr SharedObjectUnsafe(const SharedObjectRef& other)
+    : SharedObjectRef(other.get())
+  {
+  }
+
   SharedObjectUnsafe(const SharedObject& other) = delete;
 
   /**
    * Constructs SharedObjectUnsafe from SharedObject.
    */
-  explicit SharedObjectUnsafe(SharedObject&& other);
+  constexpr explicit SharedObjectUnsafe(SharedObject&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr SharedObjectUnsafe& operator=(SharedObjectUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -212,7 +202,10 @@ struct SharedObject : SharedObjectUnsafe
   /**
    * Move constructor.
    */
-  constexpr SharedObject(SharedObject&& other) = default;
+  constexpr SharedObject(SharedObject&& other)
+    : SharedObject(other.release())
+  {
+  }
 
   /**
    * Dynamically load a shared object.
@@ -248,7 +241,7 @@ struct SharedObject : SharedObjectUnsafe
   }
 };
 
-inline SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
+constexpr SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
   : SharedObjectUnsafe(other.release())
 {
 }

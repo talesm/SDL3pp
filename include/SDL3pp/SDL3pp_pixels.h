@@ -1951,33 +1951,6 @@ struct PaletteRef : Resource<SDL_Palette*>
 {
   using Resource::Resource;
 
-  /**
-   * Copy constructor.
-   */
-  constexpr PaletteRef(const PaletteRef& other)
-    : PaletteRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr PaletteRef(PaletteRef&& other)
-    : PaletteRef(other.release())
-  {
-  }
-
-  PaletteRef(Palette&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  PaletteRef& operator=(PaletteRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
   /// Return the number of colors
   constexpr int GetSize() const { return get()->ncolors; }
 
@@ -2031,12 +2004,12 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteRef.PaletteRef
+   * @sa Palette.Palette
    */
   void Destroy() { reset(); }
 
   /**
-   * Free a palette created with PaletteRef.PaletteRef().
+   * Free a palette created with Palette.Palette().
    *
    * After calling, this object becomes empty.
    *
@@ -2045,7 +2018,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteRef.PaletteRef
+   * @sa Palette.Palette
    */
   void reset(SDL_Palette* newResource = {})
   {
@@ -2070,12 +2043,29 @@ struct PaletteUnsafe : PaletteRef
 
   using PaletteRef::reset;
 
+  /**
+   * Constructs PaletteUnsafe from PaletteRef.
+   */
+  constexpr PaletteUnsafe(const PaletteRef& other)
+    : PaletteRef(other.get())
+  {
+  }
+
   PaletteUnsafe(const Palette& other) = delete;
 
   /**
    * Constructs PaletteUnsafe from Palette.
    */
-  explicit PaletteUnsafe(Palette&& other);
+  constexpr explicit PaletteUnsafe(Palette&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr PaletteUnsafe& operator=(PaletteUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -2110,7 +2100,10 @@ struct Palette : PaletteUnsafe
   /**
    * Move constructor.
    */
-  constexpr Palette(Palette&& other) = default;
+  constexpr Palette(Palette&& other)
+    : Palette(other.release())
+  {
+  }
 
   /**
    * Create a palette structure with the specified number of color entries.
@@ -2149,7 +2142,7 @@ struct Palette : PaletteUnsafe
   }
 };
 
-inline PaletteUnsafe::PaletteUnsafe(Palette&& other)
+constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)
   : PaletteUnsafe(other.release())
 {
 }

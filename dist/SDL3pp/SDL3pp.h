@@ -581,11 +581,6 @@ public:
   {
   }
 
-  Resource(const Resource& other) = delete;
-  Resource(Resource&& other) = delete;
-  Resource& operator=(const Resource& other) = delete;
-  Resource& operator=(Resource&& other) = delete;
-
   /// True if contains a valid resource
   constexpr explicit operator bool() const { return m_resource; }
 
@@ -2207,33 +2202,6 @@ struct EnvironmentRef : Resource<SDL_Environment*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr EnvironmentRef(const EnvironmentRef& other)
-    : EnvironmentRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr EnvironmentRef(EnvironmentRef&& other)
-    : EnvironmentRef(other.release())
-  {
-  }
-
-  EnvironmentRef(Environment&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  EnvironmentRef& operator=(EnvironmentRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the value of a variable in the environment.
    *
    * @param name the name of the variable to get.
@@ -2245,7 +2213,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
    * @sa EnvironmentRef.UnsetVariable
@@ -2269,7 +2237,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
    * @sa EnvironmentRef.UnsetVariable
@@ -2308,7 +2276,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    * @sa EnvironmentRef.GetVariable
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.UnsetVariable
@@ -2329,7 +2297,7 @@ struct EnvironmentRef : Resource<SDL_Environment*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    * @sa EnvironmentRef.GetVariable
    * @sa EnvironmentRef.GetVariables
    * @sa EnvironmentRef.SetVariable
@@ -2350,7 +2318,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    */
   void Destroy() { reset(); }
 
@@ -2364,7 +2332,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa EnvironmentRef.EnvironmentRef
+   * @sa Environment.Environment
    */
   void reset(SDL_Environment* newResource = {})
   {
@@ -2389,12 +2357,29 @@ struct EnvironmentUnsafe : EnvironmentRef
 
   using EnvironmentRef::reset;
 
+  /**
+   * Constructs EnvironmentUnsafe from EnvironmentRef.
+   */
+  constexpr EnvironmentUnsafe(const EnvironmentRef& other)
+    : EnvironmentRef(other.get())
+  {
+  }
+
   EnvironmentUnsafe(const Environment& other) = delete;
 
   /**
    * Constructs EnvironmentUnsafe from Environment.
    */
-  explicit EnvironmentUnsafe(Environment&& other);
+  constexpr explicit EnvironmentUnsafe(Environment&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr EnvironmentUnsafe& operator=(EnvironmentUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -2429,7 +2414,10 @@ struct Environment : EnvironmentUnsafe
   /**
    * Move constructor.
    */
-  constexpr Environment(Environment&& other) = default;
+  constexpr Environment(Environment&& other)
+    : Environment(other.release())
+  {
+  }
 
   /**
    * Create a set of environment variables
@@ -2471,7 +2459,7 @@ struct Environment : EnvironmentUnsafe
   }
 };
 
-inline EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
+constexpr EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
   : EnvironmentUnsafe(other.release())
 {
 }
@@ -6632,32 +6620,6 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr IConvRef(const IConvRef& other)
-    : IConvRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr IConvRef(IConvRef&& other)
-    : IConvRef(other.release())
-  {
-  }
-
-  IConvRef(IConv&& other) = delete;
-  /**
-   * Assignment operator.
-   */
-  IConvRef& operator=(IConvRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * This function converts text between encodings, reading from and writing to
    * a buffer.
    *
@@ -6687,7 +6649,8 @@ struct IConvRef : Resource<SDL_iconv_data_t*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConvRef.IConvRef
+   * @sa IConv.IConv
+   * @sa IConvRef.close
    * @sa iconv_string
    */
   size_t iconv(const char** inbuf,
@@ -6708,7 +6671,7 @@ protected:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConvRef.iconv
-   * @sa IConvRef.IConvRef
+   * @sa IConv.IConv
    * @sa iconv_string
    */
   int close() { return reset(); }
@@ -6721,7 +6684,7 @@ protected:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConvRef.iconv
-   * @sa IConvRef.IConvRef
+   * @sa IConv.IConv
    * @sa iconv_string
    */
   int reset(SDL_iconv_data_t* newResource = {})
@@ -6747,12 +6710,29 @@ struct IConvUnsafe : IConvRef
 
   using IConvRef::reset;
 
+  /**
+   * Constructs IConvUnsafe from IConvRef.
+   */
+  constexpr IConvUnsafe(const IConvRef& other)
+    : IConvRef(other.get())
+  {
+  }
+
   IConvUnsafe(const IConv& other) = delete;
 
   /**
    * Constructs IConvUnsafe from IConv.
    */
-  explicit IConvUnsafe(IConv&& other);
+  constexpr explicit IConvUnsafe(IConv&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr IConvUnsafe& operator=(IConvUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -6787,7 +6767,10 @@ struct IConv : IConvUnsafe
   /**
    * Move constructor.
    */
-  constexpr IConv(IConv&& other) = default;
+  constexpr IConv(IConv&& other)
+    : IConv(other.release())
+  {
+  }
 
   /**
    * This function allocates a context for the specified character set
@@ -6824,7 +6807,7 @@ struct IConv : IConvUnsafe
   }
 };
 
-inline IConvUnsafe::IConvUnsafe(IConv&& other)
+constexpr IConvUnsafe::IConvUnsafe(IConv&& other)
   : IConvUnsafe(other.release())
 {
 }
@@ -15258,33 +15241,6 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr SharedObjectRef(const SharedObjectRef& other)
-    : SharedObjectRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SharedObjectRef(SharedObjectRef&& other)
-    : SharedObjectRef(other.release())
-  {
-  }
-
-  SharedObjectRef(SharedObject&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  SharedObjectRef& operator=(SharedObjectRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Look up the address of the named function in a shared object.
    *
    * This function pointer is no longer valid after calling
@@ -15308,7 +15264,7 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectRef.SharedObjectRef
+   * @sa SharedObject.SharedObject
    */
   FunctionPointer LoadFunction(StringParam name)
   {
@@ -15326,7 +15282,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectRef.SharedObjectRef
+   * @sa SharedObject.SharedObject
    */
   void Unload() { reset(); }
 
@@ -15340,7 +15296,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObjectRef.SharedObjectRef
+   * @sa SharedObject.SharedObject
    */
   void reset(SDL_SharedObject* newResource = {})
   {
@@ -15365,12 +15321,29 @@ struct SharedObjectUnsafe : SharedObjectRef
 
   using SharedObjectRef::reset;
 
+  /**
+   * Constructs SharedObjectUnsafe from SharedObjectRef.
+   */
+  constexpr SharedObjectUnsafe(const SharedObjectRef& other)
+    : SharedObjectRef(other.get())
+  {
+  }
+
   SharedObjectUnsafe(const SharedObject& other) = delete;
 
   /**
    * Constructs SharedObjectUnsafe from SharedObject.
    */
-  explicit SharedObjectUnsafe(SharedObject&& other);
+  constexpr explicit SharedObjectUnsafe(SharedObject&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr SharedObjectUnsafe& operator=(SharedObjectUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -15405,7 +15378,10 @@ struct SharedObject : SharedObjectUnsafe
   /**
    * Move constructor.
    */
-  constexpr SharedObject(SharedObject&& other) = default;
+  constexpr SharedObject(SharedObject&& other)
+    : SharedObject(other.release())
+  {
+  }
 
   /**
    * Dynamically load a shared object.
@@ -15441,7 +15417,7 @@ struct SharedObject : SharedObjectUnsafe
   }
 };
 
-inline SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
+constexpr SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)
   : SharedObjectUnsafe(other.release())
 {
 }
@@ -18287,33 +18263,6 @@ struct PaletteRef : Resource<SDL_Palette*>
 {
   using Resource::Resource;
 
-  /**
-   * Copy constructor.
-   */
-  constexpr PaletteRef(const PaletteRef& other)
-    : PaletteRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr PaletteRef(PaletteRef&& other)
-    : PaletteRef(other.release())
-  {
-  }
-
-  PaletteRef(Palette&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  PaletteRef& operator=(PaletteRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
   /// Return the number of colors
   constexpr int GetSize() const { return get()->ncolors; }
 
@@ -18367,12 +18316,12 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteRef.PaletteRef
+   * @sa Palette.Palette
    */
   void Destroy() { reset(); }
 
   /**
-   * Free a palette created with PaletteRef.PaletteRef().
+   * Free a palette created with Palette.Palette().
    *
    * After calling, this object becomes empty.
    *
@@ -18381,7 +18330,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteRef.PaletteRef
+   * @sa Palette.Palette
    */
   void reset(SDL_Palette* newResource = {})
   {
@@ -18406,12 +18355,29 @@ struct PaletteUnsafe : PaletteRef
 
   using PaletteRef::reset;
 
+  /**
+   * Constructs PaletteUnsafe from PaletteRef.
+   */
+  constexpr PaletteUnsafe(const PaletteRef& other)
+    : PaletteRef(other.get())
+  {
+  }
+
   PaletteUnsafe(const Palette& other) = delete;
 
   /**
    * Constructs PaletteUnsafe from Palette.
    */
-  explicit PaletteUnsafe(Palette&& other);
+  constexpr explicit PaletteUnsafe(Palette&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr PaletteUnsafe& operator=(PaletteUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -18446,7 +18412,10 @@ struct Palette : PaletteUnsafe
   /**
    * Move constructor.
    */
-  constexpr Palette(Palette&& other) = default;
+  constexpr Palette(Palette&& other)
+    : Palette(other.release())
+  {
+  }
 
   /**
    * Create a palette structure with the specified number of color entries.
@@ -18485,7 +18454,7 @@ struct Palette : PaletteUnsafe
   }
 };
 
-inline PaletteUnsafe::PaletteUnsafe(Palette&& other)
+constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)
   : PaletteUnsafe(other.release())
 {
 }
@@ -19282,33 +19251,6 @@ struct PropertiesRef : Resource<SDL_PropertiesID>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr PropertiesRef(const PropertiesRef& other)
-    : PropertiesRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr PropertiesRef(PropertiesRef&& other)
-    : PropertiesRef(other.release())
-  {
-  }
-
-  PropertiesRef(Properties&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  PropertiesRef& operator=(PropertiesRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Copy a group of properties.
    *
    * Copy all the properties from one group of properties to another, with the
@@ -19840,12 +19782,29 @@ struct PropertiesUnsafe : PropertiesRef
 
   using PropertiesRef::reset;
 
+  /**
+   * Constructs PropertiesUnsafe from PropertiesRef.
+   */
+  constexpr PropertiesUnsafe(const PropertiesRef& other)
+    : PropertiesRef(other.get())
+  {
+  }
+
   PropertiesUnsafe(const Properties& other) = delete;
 
   /**
    * Constructs PropertiesUnsafe from Properties.
    */
-  explicit PropertiesUnsafe(Properties&& other);
+  constexpr explicit PropertiesUnsafe(Properties&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr PropertiesUnsafe& operator=(PropertiesUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -19872,7 +19831,10 @@ struct Properties : PropertiesUnsafe
   /**
    * Move constructor.
    */
-  constexpr Properties(Properties&& other) = default;
+  constexpr Properties(Properties&& other)
+    : Properties(other.release())
+  {
+  }
 
   /**
    * Create a group of properties.
@@ -19967,7 +19929,7 @@ public:
   friend class PropertiesRef;
 };
 
-inline PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
+constexpr PropertiesUnsafe::PropertiesUnsafe(Properties&& other)
   : PropertiesUnsafe(other.release())
 {
 }
@@ -25035,33 +24997,6 @@ struct IOStreamRef : Resource<SDL_IOStream*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr IOStreamRef(const IOStreamRef& other)
-    : IOStreamRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr IOStreamRef(IOStreamRef&& other)
-    : IOStreamRef(other.release())
-  {
-  }
-
-  IOStreamRef(IOStream&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  IOStreamRef& operator=(IOStreamRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the properties associated with an IOStreamRef.
    *
    * @returns a valid property ID on success.
@@ -25083,9 +25018,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * to an error, an EOF, or a non-blocking operation that isn't yet ready to
    * complete.
    *
-   * An IOStreamRef's status is only expected to change after a
-   * IOStreamRef.Read or IOStreamRef.Write call; don't expect it to change if
-   * you just call this query function in a tight loop.
+   * An IOStreamRef's status is only expected to change after a IOStreamRef.Read
+   * or IOStreamRef.Write call; don't expect it to change if you just call this
+   * query function in a tight loop.
    *
    * @returns an IOStatus enum with the current state.
    *
@@ -25146,9 +25081,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
   /**
    * Determine the current read/write offset in an IOStreamRef data stream.
    *
-   * This is actually a wrapper function that calls the IOStreamRef's `seek`
-   * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
-   * application development.
+   * IOStreamRef.Tell is actually a wrapper function that calls the
+   * IOStreamRef's `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`,
+   * to simplify application development.
    *
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
@@ -25347,7 +25282,7 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStream.IOStream
    * @sa IOStreamRef.Write
    */
   void Flush() { CheckError(SDL_FlushIO(get())); }
@@ -25424,9 +25359,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * Use this function to read a byte from an IOStreamRef.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25446,9 +25381,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * Use this function to read a signed byte from an IOStreamRef.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25472,9 +25407,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25498,9 +25433,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25524,9 +25459,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25550,9 +25485,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25576,9 +25511,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25602,9 +25537,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25628,9 +25563,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25654,9 +25589,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25680,9 +25615,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25706,9 +25641,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25732,9 +25667,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -25758,9 +25693,9 @@ struct IOStreamRef : Resource<SDL_IOStream*>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
-   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
-   * a different error value and GetError() will offer a human-readable message.
+   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, IOStreamRef.GetStatus() will return a
+   * different error value and GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -26331,9 +26266,9 @@ protected:
    * Close and free an allocated IOStreamRef structure.
    *
    * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
-   * releases any resources used by the stream and frees the IOStreamRef
-   * itself. This returns true on success, or false if the stream failed to
-   * flush to its output (e.g. to disk).
+   * releases any resources used by the stream and frees the IOStreamRef itself.
+   * This returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
    * reports an error, but the IOStreamRef is still invalid once this function
@@ -26354,7 +26289,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStream.IOStream
    */
   void Close() { reset(); }
 
@@ -26362,9 +26297,9 @@ protected:
    * Close and free an allocated IOStreamRef structure.
    *
    * IOStreamRef.Close() closes and cleans up the IOStreamRef stream. It
-   * releases any resources used by the stream and frees the IOStreamRef
-   * itself. This returns true on success, or false if the stream failed to
-   * flush to its output (e.g. to disk).
+   * releases any resources used by the stream and frees the IOStreamRef itself.
+   * This returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
    * reports an error, but the IOStreamRef is still invalid once this function
@@ -26385,7 +26320,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStreamRef.IOStreamRef
+   * @sa IOStream.IOStream
    */
   void reset(SDL_IOStream* newResource = {})
   {
@@ -26410,12 +26345,29 @@ struct IOStreamUnsafe : IOStreamRef
 
   using IOStreamRef::reset;
 
+  /**
+   * Constructs IOStreamUnsafe from IOStreamRef.
+   */
+  constexpr IOStreamUnsafe(const IOStreamRef& other)
+    : IOStreamRef(other.get())
+  {
+  }
+
   IOStreamUnsafe(const IOStream& other) = delete;
 
   /**
    * Constructs IOStreamUnsafe from IOStream.
    */
-  explicit IOStreamUnsafe(IOStream&& other);
+  constexpr explicit IOStreamUnsafe(IOStream&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr IOStreamUnsafe& operator=(IOStreamUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -26450,7 +26402,10 @@ struct IOStream : IOStreamUnsafe
   /**
    * Move constructor.
    */
-  constexpr IOStream(IOStream&& other) = default;
+  constexpr IOStream(IOStream&& other)
+    : IOStream(other.release())
+  {
+  }
 
   /**
    * Use this function to create a new IOStreamRef structure for reading from
@@ -26587,7 +26542,7 @@ struct IOStream : IOStreamUnsafe
   }
 };
 
-inline IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
+constexpr IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
   : IOStreamUnsafe(other.release())
 {
 }
@@ -27976,33 +27931,6 @@ struct StorageRef : Resource<SDL_Storage*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr StorageRef(const StorageRef& other)
-    : StorageRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr StorageRef(StorageRef&& other)
-    : StorageRef(other.release())
-  {
-  }
-
-  StorageRef(Storage&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  StorageRef& operator=(StorageRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Checks if the storage container is ready to use.
    *
    * This function should be called in regular intervals until it returns true -
@@ -28068,8 +27996,8 @@ struct StorageRef : Resource<SDL_Storage*>
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * StorageRef.GetFileSize() to get this value. This behavior may be relaxed
-   * in a future release.
+   * StorageRef.GetFileSize() to get this value. This behavior may be relaxed in
+   * a future release.
    *
    * @param path the relative path of the file to read.
    * @param destination a client-provided buffer to read the file into.
@@ -28371,7 +28299,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.StorageRef
+   * @sa Storage.Storage
    */
   bool Close() { return reset(); }
 
@@ -28385,7 +28313,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa StorageRef.StorageRef
+   * @sa Storage.Storage
    */
   bool reset(SDL_Storage* newResource = {})
   {
@@ -28410,12 +28338,29 @@ struct StorageUnsafe : StorageRef
 
   using StorageRef::reset;
 
+  /**
+   * Constructs StorageUnsafe from StorageRef.
+   */
+  constexpr StorageUnsafe(const StorageRef& other)
+    : StorageRef(other.get())
+  {
+  }
+
   StorageUnsafe(const Storage& other) = delete;
 
   /**
    * Constructs StorageUnsafe from Storage.
    */
-  explicit StorageUnsafe(Storage&& other);
+  constexpr explicit StorageUnsafe(Storage&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr StorageUnsafe& operator=(StorageUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -28450,7 +28395,10 @@ struct Storage : StorageUnsafe
   /**
    * Move constructor.
    */
-  constexpr Storage(Storage&& other) = default;
+  constexpr Storage(Storage&& other)
+    : Storage(other.release())
+  {
+  }
 
   /**
    * Opens up a read-only container for the application's filesystem.
@@ -28571,7 +28519,7 @@ struct Storage : StorageUnsafe
   }
 };
 
-inline StorageUnsafe::StorageUnsafe(Storage&& other)
+constexpr StorageUnsafe::StorageUnsafe(Storage&& other)
   : StorageUnsafe(other.release())
 {
 }
@@ -28739,34 +28687,7 @@ struct ThreadRef : Resource<SDL_Thread*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr ThreadRef(const ThreadRef& other)
-    : ThreadRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ThreadRef(ThreadRef&& other)
-    : ThreadRef(other.release())
-  {
-  }
-
-  ThreadRef(Thread&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  ThreadRef& operator=(ThreadRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
-   * Get the thread name as it was specified in ThreadRef.ThreadRef().
+   * Get the thread name as it was specified in Thread.Thread().
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
@@ -28830,14 +28751,13 @@ struct ThreadRef : Resource<SDL_Thread*>
    * Note that the thread pointer is freed by this function and is not valid
    * afterward.
    *
-   *               ThreadRef.ThreadRef() call that started this thread.
    * @param status a pointer filled in with the value returned from the thread
    *               function by its 'return', or -1 if the thread has been
    *               detached or isn't valid, may be nullptr.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
+   * @sa Thread.Thread
    * @sa ThreadRef.Detach
    */
   void Wait(int* status) { SDL_WaitThread(get(), status); }
@@ -28873,8 +28793,8 @@ protected:
    * thread more than once.
    *
    * If a thread has already exited when passed to ThreadRef.Detach(), it will
-   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It
-   * is not safe to detach a thread that might be used with ThreadRef.Wait().
+   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It is
+   * not safe to detach a thread that might be used with ThreadRef.Wait().
    *
    * You may not call ThreadRef.Wait() on a thread that has been detached. Use
    * either that function or this one, but not both, or behavior is undefined.
@@ -28883,10 +28803,11 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
+   * @sa Thread.Thread
    * @sa ThreadRef.Wait
    */
   void Detach() { reset(); }
+
   /**
    * Let a thread clean up on exit without intervention.
    *
@@ -28905,8 +28826,8 @@ protected:
    * thread more than once.
    *
    * If a thread has already exited when passed to ThreadRef.Detach(), it will
-   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It
-   * is not safe to detach a thread that might be used with ThreadRef.Wait().
+   * stop waiting for a call to ThreadRef.Wait() and clean up immediately. It is
+   * not safe to detach a thread that might be used with ThreadRef.Wait().
    *
    * You may not call ThreadRef.Wait() on a thread that has been detached. Use
    * either that function or this one, but not both, or behavior is undefined.
@@ -28915,7 +28836,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ThreadRef.ThreadRef
+   * @sa Thread.Thread
    * @sa ThreadRef.Wait
    */
   void reset(SDL_Thread* newResource = {})
@@ -28941,12 +28862,29 @@ struct ThreadUnsafe : ThreadRef
 
   using ThreadRef::reset;
 
+  /**
+   * Constructs ThreadUnsafe from ThreadRef.
+   */
+  constexpr ThreadUnsafe(const ThreadRef& other)
+    : ThreadRef(other.get())
+  {
+  }
+
   ThreadUnsafe(const Thread& other) = delete;
 
   /**
    * Constructs ThreadUnsafe from Thread.
    */
-  explicit ThreadUnsafe(Thread&& other);
+  constexpr explicit ThreadUnsafe(Thread&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr ThreadUnsafe& operator=(ThreadUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -28981,7 +28919,10 @@ struct Thread : ThreadUnsafe
   /**
    * Move constructor.
    */
-  constexpr Thread(Thread&& other) = default;
+  constexpr Thread(Thread&& other)
+    : Thread(other.release())
+  {
+  }
 
   /**
    * Create a new thread with a default stack size.
@@ -29115,7 +29056,7 @@ struct Thread : ThreadUnsafe
   }
 };
 
-inline ThreadUnsafe::ThreadUnsafe(Thread&& other)
+constexpr ThreadUnsafe::ThreadUnsafe(Thread&& other)
   : ThreadUnsafe(other.release())
 {
 }
@@ -29748,33 +29689,6 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
 {
   using Resource::Resource;
 
-  /**
-   * Copy constructor.
-   */
-  constexpr AudioDeviceRef(const AudioDeviceRef& other)
-    : AudioDeviceRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr AudioDeviceRef(AudioDeviceRef&& other)
-    : AudioDeviceRef(other.release())
-  {
-  }
-
-  AudioDeviceRef(AudioDevice&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  AudioDeviceRef& operator=(AudioDeviceRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
   /// Comparison
   constexpr auto operator<=>(const AudioDeviceRef& other) const
   {
@@ -29864,8 +29778,8 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    *
    * An AudioDeviceRef that represents physical hardware is a physical
    * device; there is one for each piece of hardware that SDL can see. Logical
-   * devices are created by calling AudioDeviceRef.AudioDeviceRef or
-   * AudioStreamRef.AudioStreamRef, and while each is associated with a physical
+   * devices are created by calling AudioDevice.AudioDevice or
+   * AudioStream.AudioStream, and while each is associated with a physical
    * device, there can be any number of logical devices on one physical device.
    *
    * For the most part, logical and physical IDs are interchangeable--if you try
@@ -29912,7 +29826,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * loading, etc.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDeviceRef.AudioDeviceRef() can be.
+   * created through AudioDevice.AudioDevice() can be.
    *
    * @throws Error on failure.
    *
@@ -29938,7 +29852,7 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * device is a legal no-op.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDeviceRef.AudioDeviceRef() can be.
+   * created through AudioDevice.AudioDevice() can be.
    *
    * @throws Error on failure.
    *
@@ -29958,8 +29872,8 @@ struct AudioDeviceRef : Resource<SDL_AudioDeviceID>
    * has to bind a stream before any audio will flow.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDeviceRef.AudioDeviceRef() can be. Physical and
-   * invalid device IDs will report themselves as unpaused here.
+   * created through AudioDevice.AudioDevice() can be. Physical and invalid
+   * device IDs will report themselves as unpaused here.
    *
    * @returns true if device is valid and paused, false otherwise.
    *
@@ -30201,7 +30115,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDeviceRef.AudioDeviceRef
+   * @sa AudioDevice.AudioDevice
    */
   void Close() { reset(); }
 
@@ -30219,7 +30133,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDeviceRef.AudioDeviceRef
+   * @sa AudioDevice.AudioDevice
    */
   void reset(SDL_AudioDeviceID newResource = {})
   {
@@ -30245,12 +30159,29 @@ struct AudioDeviceUnsafe : AudioDeviceRef
 
   using AudioDeviceRef::reset;
 
+  /**
+   * Constructs AudioDeviceUnsafe from AudioDeviceRef.
+   */
+  constexpr AudioDeviceUnsafe(const AudioDeviceRef& other)
+    : AudioDeviceRef(other.get())
+  {
+  }
+
   AudioDeviceUnsafe(const AudioDevice& other) = delete;
 
   /**
    * Constructs AudioDeviceUnsafe from AudioDevice.
    */
-  explicit AudioDeviceUnsafe(AudioDevice&& other);
+  constexpr explicit AudioDeviceUnsafe(AudioDevice&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr AudioDeviceUnsafe& operator=(AudioDeviceUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -30285,7 +30216,10 @@ struct AudioDevice : AudioDeviceUnsafe
   /**
    * Move constructor.
    */
-  constexpr AudioDevice(AudioDevice&& other) = default;
+  constexpr AudioDevice(AudioDevice&& other)
+    : AudioDevice(other.release())
+  {
+  }
 
   /**
    * Open a specific audio device.
@@ -30382,7 +30316,7 @@ struct AudioDevice : AudioDeviceUnsafe
   }
 };
 
-inline AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
+constexpr AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
   : AudioDeviceUnsafe(other.release())
 {
 }
@@ -30544,33 +30478,6 @@ using AudioStreamCB = std::function<
 struct AudioStreamRef : Resource<SDL_AudioStream*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr AudioStreamRef(const AudioStreamRef& other)
-    : AudioStreamRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr AudioStreamRef(AudioStreamRef&& other)
-    : AudioStreamRef(other.release())
-  {
-  }
-
-  AudioStreamRef(AudioStream&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  AudioStreamRef& operator=(AudioStreamRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Get the properties associated with an audio stream.
@@ -31206,8 +31113,8 @@ struct AudioStreamRef : Resource<SDL_AudioStream*>
    * previously been paused. Once unpaused, any bound audio streams will begin
    * to progress again, and audio can be generated.
    *
-   * Remember, AudioStreamRef.AudioStreamRef opens device in a paused state, so
-   * this function call is required for audio playback to begin on such device.
+   * Remember, AudioStream.AudioStream opens device in a paused state, so this
+   * function call is required for audio playback to begin on such device.
    *
    * @throws Error on failure.
    *
@@ -31509,15 +31416,15 @@ protected:
    * queued. You do not need to manually clear the stream first.
    *
    * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioStreamRef.AudioStreamRef, the
-   * audio device that was opened alongside this stream's creation will be
-   * closed, too.
+   * call. If this stream was created with AudioStream.AudioStream, the audio
+   * device that was opened alongside this stream's creation will be closed,
+   * too.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStreamRef.AudioStreamRef
+   * @sa AudioStream.AudioStream
    */
   void Destroy() { reset(); }
 
@@ -31528,15 +31435,15 @@ protected:
    * queued. You do not need to manually clear the stream first.
    *
    * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioStreamRef.AudioStreamRef, the
-   * audio device that was opened alongside this stream's creation will be
-   * closed, too.
+   * call. If this stream was created with AudioStream.AudioStream, the audio
+   * device that was opened alongside this stream's creation will be closed,
+   * too.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStreamRef.AudioStreamRef
+   * @sa AudioStream.AudioStream
    */
   void reset(SDL_AudioStream* newResource = {})
   {
@@ -31563,12 +31470,29 @@ struct AudioStreamUnsafe : AudioStreamRef
 
   using AudioStreamRef::reset;
 
+  /**
+   * Constructs AudioStreamUnsafe from AudioStreamRef.
+   */
+  constexpr AudioStreamUnsafe(const AudioStreamRef& other)
+    : AudioStreamRef(other.get())
+  {
+  }
+
   AudioStreamUnsafe(const AudioStream& other) = delete;
 
   /**
    * Constructs AudioStreamUnsafe from AudioStream.
    */
-  explicit AudioStreamUnsafe(AudioStream&& other);
+  constexpr explicit AudioStreamUnsafe(AudioStream&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr AudioStreamUnsafe& operator=(AudioStreamUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -31603,7 +31527,10 @@ struct AudioStream : AudioStreamUnsafe
   /**
    * Move constructor.
    */
-  constexpr AudioStream(AudioStream&& other) = default;
+  constexpr AudioStream(AudioStream&& other)
+    : AudioStream(other.release())
+  {
+  }
 
   /**
    * Create a new audio stream.
@@ -31855,7 +31782,7 @@ struct AudioStreamLock : LockBase<AudioStreamRef>
   void reset() { Unlock(); }
 };
 
-inline AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
+constexpr AudioStreamUnsafe::AudioStreamUnsafe(AudioStream&& other)
   : AudioStreamUnsafe(other.release())
 {
 }
@@ -32385,33 +32312,6 @@ struct MutexRef : Resource<SDL_Mutex*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr MutexRef(const MutexRef& other)
-    : MutexRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr MutexRef(MutexRef&& other)
-    : MutexRef(other.release())
-  {
-  }
-
-  MutexRef(Mutex&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  MutexRef& operator=(MutexRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Lock the mutex.
    *
    * This will block until the mutex is available, which is to say it is in the
@@ -32425,7 +32325,6 @@ struct MutexRef : Resource<SDL_Mutex*>
    * This function does not fail; if mutex is nullptr, it will return
    * immediately having locked nothing. If the mutex is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -32474,7 +32373,7 @@ struct MutexRef : Resource<SDL_Mutex*>
 
 protected:
   /**
-   * Destroy a mutex created with MutexRef.MutexRef().
+   * Destroy a mutex created with Mutex.Mutex().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -32485,12 +32384,12 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexRef.MutexRef
+   * @sa Mutex.Mutex
    */
   void Destroy() { reset(); }
 
   /**
-   * Destroy a mutex created with MutexRef.MutexRef().
+   * Destroy a mutex created with Mutex.Mutex().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -32498,10 +32397,9 @@ protected:
    * to destroy a locked mutex, and may result in undefined behavior depending
    * on the platform.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MutexRef.MutexRef
+   * @sa Mutex.Mutex
    */
   void reset(SDL_Mutex* newResource = {})
   {
@@ -32526,12 +32424,29 @@ struct MutexUnsafe : MutexRef
 
   using MutexRef::reset;
 
+  /**
+   * Constructs MutexUnsafe from MutexRef.
+   */
+  constexpr MutexUnsafe(const MutexRef& other)
+    : MutexRef(other.get())
+  {
+  }
+
   MutexUnsafe(const Mutex& other) = delete;
 
   /**
    * Constructs MutexUnsafe from Mutex.
    */
-  explicit MutexUnsafe(Mutex&& other);
+  constexpr explicit MutexUnsafe(Mutex&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr MutexUnsafe& operator=(MutexUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -32558,7 +32473,10 @@ struct Mutex : MutexUnsafe
   /**
    * Move constructor.
    */
-  constexpr Mutex(Mutex&& other) = default;
+  constexpr Mutex(Mutex&& other)
+    : Mutex(other.release())
+  {
+  }
 
   /**
    * Create a new mutex.
@@ -32600,7 +32518,7 @@ struct Mutex : MutexUnsafe
   }
 };
 
-inline MutexUnsafe::MutexUnsafe(Mutex&& other)
+constexpr MutexUnsafe::MutexUnsafe(Mutex&& other)
   : MutexUnsafe(other.release())
 {
 }
@@ -32630,33 +32548,6 @@ inline MutexUnsafe::MutexUnsafe(Mutex&& other)
 struct RWLockRef : Resource<SDL_RWLock*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr RWLockRef(const RWLockRef& other)
-    : RWLockRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr RWLockRef(RWLockRef&& other)
-    : RWLockRef(other.release())
-  {
-  }
-
-  RWLockRef(RWLock&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  RWLockRef& operator=(RWLockRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Lock the read/write lock for _read only_ operations.
@@ -32803,7 +32694,7 @@ struct RWLockRef : Resource<SDL_RWLock*>
 
 protected:
   /**
-   * Destroy a read/write lock created with RWLockRef.RWLockRef().
+   * Destroy a read/write lock created with RWLock.RWLock().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -32814,12 +32705,12 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockRef.RWLockRef
+   * @sa RWLock.RWLock
    */
   void Destroy() { reset(); }
 
   /**
-   * Destroy a read/write lock created with RWLockRef.RWLockRef().
+   * Destroy a read/write lock created with RWLock.RWLock().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -32829,7 +32720,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLockRef.RWLockRef
+   * @sa RWLock.RWLock
    */
   void reset(SDL_RWLock* newResource = {})
   {
@@ -32854,12 +32745,29 @@ struct RWLockUnsafe : RWLockRef
 
   using RWLockRef::reset;
 
+  /**
+   * Constructs RWLockUnsafe from RWLockRef.
+   */
+  constexpr RWLockUnsafe(const RWLockRef& other)
+    : RWLockRef(other.get())
+  {
+  }
+
   RWLockUnsafe(const RWLock& other) = delete;
 
   /**
    * Constructs RWLockUnsafe from RWLock.
    */
-  explicit RWLockUnsafe(RWLock&& other);
+  constexpr explicit RWLockUnsafe(RWLock&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr RWLockUnsafe& operator=(RWLockUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -32886,7 +32794,10 @@ struct RWLock : RWLockUnsafe
   /**
    * Move constructor.
    */
-  constexpr RWLock(RWLock&& other) = default;
+  constexpr RWLock(RWLock&& other)
+    : RWLock(other.release())
+  {
+  }
 
   /**
    * Create a new read/write lock.
@@ -32948,7 +32859,7 @@ struct RWLock : RWLockUnsafe
   }
 };
 
-inline RWLockUnsafe::RWLockUnsafe(RWLock&& other)
+constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
   : RWLockUnsafe(other.release())
 {
 }
@@ -32975,33 +32886,6 @@ inline RWLockUnsafe::RWLockUnsafe(RWLock&& other)
 struct SemaphoreRef : Resource<SDL_Semaphore*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr SemaphoreRef(const SemaphoreRef& other)
-    : SemaphoreRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SemaphoreRef(SemaphoreRef&& other)
-    : SemaphoreRef(other.release())
-  {
-  }
-
-  SemaphoreRef(Semaphore&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  SemaphoreRef& operator=(SemaphoreRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Wait until a semaphore has a positive value and then decrements it.
@@ -33092,7 +32976,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreRef.SemaphoreRef
+   * @sa Semaphore.Semaphore
    */
   void Destroy() { reset(); }
 
@@ -33104,7 +32988,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SemaphoreRef.SemaphoreRef
+   * @sa Semaphore.Semaphore
    */
   void reset(SDL_Semaphore* newResource = {})
   {
@@ -33129,12 +33013,29 @@ struct SemaphoreUnsafe : SemaphoreRef
 
   using SemaphoreRef::reset;
 
+  /**
+   * Constructs SemaphoreUnsafe from SemaphoreRef.
+   */
+  constexpr SemaphoreUnsafe(const SemaphoreRef& other)
+    : SemaphoreRef(other.get())
+  {
+  }
+
   SemaphoreUnsafe(const Semaphore& other) = delete;
 
   /**
    * Constructs SemaphoreUnsafe from Semaphore.
    */
-  explicit SemaphoreUnsafe(Semaphore&& other);
+  constexpr explicit SemaphoreUnsafe(Semaphore&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr SemaphoreUnsafe& operator=(SemaphoreUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -33169,7 +33070,10 @@ struct Semaphore : SemaphoreUnsafe
   /**
    * Move constructor.
    */
-  constexpr Semaphore(Semaphore&& other) = default;
+  constexpr Semaphore(Semaphore&& other)
+    : Semaphore(other.release())
+  {
+  }
 
   /**
    * Create a semaphore.
@@ -33212,7 +33116,7 @@ struct Semaphore : SemaphoreUnsafe
   }
 };
 
-inline SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
+constexpr SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
   : SemaphoreUnsafe(other.release())
 {
 }
@@ -33237,33 +33141,6 @@ inline SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
 struct ConditionRef : Resource<SDL_Condition*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr ConditionRef(const ConditionRef& other)
-    : ConditionRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ConditionRef(ConditionRef&& other)
-    : ConditionRef(other.release())
-  {
-  }
-
-  ConditionRef(Condition&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  ConditionRef& operator=(ConditionRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Restart one of the threads that are waiting on the condition variable.
@@ -33359,7 +33236,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionRef.ConditionRef
+   * @sa Condition.Condition
    */
   void Destroy() { reset(); }
 
@@ -33368,7 +33245,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ConditionRef.ConditionRef
+   * @sa Condition.Condition
    */
   void reset(SDL_Condition* newResource = {})
   {
@@ -33393,12 +33270,29 @@ struct ConditionUnsafe : ConditionRef
 
   using ConditionRef::reset;
 
+  /**
+   * Constructs ConditionUnsafe from ConditionRef.
+   */
+  constexpr ConditionUnsafe(const ConditionRef& other)
+    : ConditionRef(other.get())
+  {
+  }
+
   ConditionUnsafe(const Condition& other) = delete;
 
   /**
    * Constructs ConditionUnsafe from Condition.
    */
-  explicit ConditionUnsafe(Condition&& other);
+  constexpr explicit ConditionUnsafe(Condition&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr ConditionUnsafe& operator=(ConditionUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -33425,7 +33319,10 @@ struct Condition : ConditionUnsafe
   /**
    * Move constructor.
    */
-  constexpr Condition(Condition&& other) = default;
+  constexpr Condition(Condition&& other)
+    : Condition(other.release())
+  {
+  }
 
   /**
    * Create a condition variable.
@@ -33461,7 +33358,7 @@ struct Condition : ConditionUnsafe
   }
 };
 
-inline ConditionUnsafe::ConditionUnsafe(Condition&& other)
+constexpr ConditionUnsafe::ConditionUnsafe(Condition&& other)
   : ConditionUnsafe(other.release())
 {
 }
@@ -33728,33 +33625,6 @@ struct ProcessRef : Resource<SDL_Process*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr ProcessRef(const ProcessRef& other)
-    : ProcessRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr ProcessRef(ProcessRef&& other)
-    : ProcessRef(other.release())
-  {
-  }
-
-  ProcessRef(Process&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  ProcessRef& operator=(ProcessRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the properties associated with a process.
    *
    * The following read-only properties are provided by SDL:
@@ -33779,7 +33649,7 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    */
   PropertiesRef GetProperties() const
   {
@@ -33808,7 +33678,8 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
+   * @sa ProcessRef.Destroy
    */
   StringResult Read(int* exitcode = nullptr)
   {
@@ -33853,8 +33724,8 @@ struct ProcessRef : Resource<SDL_Process*>
   /**
    * Get the IOStreamRef associated with process standard input.
    *
-   * The process must have been created with ProcessRef.ProcessRef() and
-   * pipe_stdio set to true, or with ProcessRef.ProcessRef() and
+   * The process must have been created with Process.Process() and pipe_stdio
+   * set to true, or with Process.Process() and
    * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Writing to this stream can return less data than expected if the process
@@ -33869,8 +33740,7 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.GetOutput
    */
   IOStreamRef GetInput() { return SDL_GetProcessInput(get()); }
@@ -33878,8 +33748,8 @@ struct ProcessRef : Resource<SDL_Process*>
   /**
    * Get the IOStreamRef associated with process standard output.
    *
-   * The process must have been created with ProcessRef.ProcessRef() and
-   * pipe_stdio set to true, or with ProcessRef.ProcessRef() and
+   * The process must have been created with Process.Process() and pipe_stdio
+   * set to true, or with Process.Process() and
    * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Reading from this stream can return 0 with IOStreamRef.GetStatus()
@@ -33892,8 +33762,7 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.GetInput
    */
   IOStreamRef GetOutput() { return SDL_GetProcessOutput(get()); }
@@ -33912,10 +33781,9 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.Wait
-   * @sa ProcessRef.reset
+   * @sa ProcessRef.Destroy
    */
   void Kill(bool force) { CheckError(SDL_KillProcess(get(), force)); }
 
@@ -33930,9 +33798,9 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * If you create a process with standard output piped to the application
    * (`pipe_stdio` being true) then you should read all of the process output
-   * before calling ProcessRef.Wait(). If you don't do this the process might
-   * be blocked indefinitely waiting for output to be read and
-   * ProcessRef.Wait() will never return true;
+   * before calling ProcessRef.Wait(). If you don't do this the process might be
+   * blocked indefinitely waiting for output to be read and ProcessRef.Wait()
+   * will never return true;
    *
    * @param block If true, block until the process finishes; otherwise, report
    *              on the process' status.
@@ -33944,9 +33812,9 @@ struct ProcessRef : Resource<SDL_Process*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.Kill
-   * @sa ProcessRef.reset
+   * @sa ProcessRef.Destroy
    */
   bool Wait(bool block, int* exitcode)
   {
@@ -33965,7 +33833,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.Kill
    */
   void Destroy() { reset(); }
@@ -33981,7 +33849,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ProcessRef.ProcessRef
+   * @sa Process.Process
    * @sa ProcessRef.Kill
    */
   void reset(SDL_Process* newResource = {})
@@ -34007,12 +33875,29 @@ struct ProcessUnsafe : ProcessRef
 
   using ProcessRef::reset;
 
+  /**
+   * Constructs ProcessUnsafe from ProcessRef.
+   */
+  constexpr ProcessUnsafe(const ProcessRef& other)
+    : ProcessRef(other.get())
+  {
+  }
+
   ProcessUnsafe(const Process& other) = delete;
 
   /**
    * Constructs ProcessUnsafe from Process.
    */
-  explicit ProcessUnsafe(Process&& other);
+  constexpr explicit ProcessUnsafe(Process&& other);
+  /**
+   * Assignment operator.
+   */
+
+  constexpr ProcessUnsafe& operator=(ProcessUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -34047,7 +33932,10 @@ struct Process : ProcessUnsafe
   /**
    * Move constructor.
    */
-  constexpr Process(Process&& other) = default;
+  constexpr Process(Process&& other)
+    : Process(other.release())
+  {
+  }
 
   /**
    * Create a new process.
@@ -34173,7 +34061,7 @@ struct Process : ProcessUnsafe
   }
 };
 
-inline ProcessUnsafe::ProcessUnsafe(Process&& other)
+constexpr ProcessUnsafe::ProcessUnsafe(Process&& other)
   : ProcessUnsafe(other.release())
 {
 }
@@ -34341,60 +34229,39 @@ struct SurfaceRef : Resource<SDL_Surface*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr SurfaceRef(const SurfaceRef& other)
-    : SurfaceRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr SurfaceRef(SurfaceRef&& other)
-    : SurfaceRef(other.release())
-  {
-  }
-
-  SurfaceRef(Surface&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  SurfaceRef& operator=(SurfaceRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the properties associated with a surface.
    *
    * The following properties are understood by SDL:
    *
-   * - `SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   surfaces, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 203 for HDR10 surfaces and 1.0 for floating point surfaces.
-   * - `SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
    *   surfaces, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This defaults to 0.0, which disables tone
    *   mapping.
-   * - `SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING`: the tone mapping operator
+   * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator
    *   used when compressing from a surface with high dynamic range to another
    *   with lower dynamic range. Currently this supports "chrome", which uses
    *   the same tone mapping that Chrome uses for HDR content, the form "*=N",
    *   where N is a floating point scale factor applied in linear space, and
    *   "none", which disables tone mapping. This defaults to "chrome".
+   * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the
+   *   left edge of the image, if this surface is being used as a cursor.
+   * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the
+   *   top edge of the image, if this surface is being used as a cursor.
    *
-   * @returns a valid property ID on success or 0 on failure; call
-   *          GetError() for more information.
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
   PropertiesRef GetProperties() const
   {
-    return PropertiesRef{SDL_GetSurfaceProperties(get())};
+    return CheckError(SDL_GetSurfaceProperties(get()));
   }
 
   /**
@@ -34420,12 +34287,18 @@ struct SurfaceRef : Resource<SDL_Surface*>
   /**
    * Get the colorspace used by a surface.
    *
-   * The colorspace defaults to SDL_COLORSPACE_SRGB_LINEAR for floating point
-   * formats, SDL_COLORSPACE_HDR10 for 10-bit formats, SDL_COLORSPACE_SRGB for
-   * other RGB surfaces and SDL_COLORSPACE_BT709_FULL for YUV textures.
+   * The colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point
+   * formats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for
+   * other RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.
    *
-   * @returns the colorspace used by the surface, or SDL_COLORSPACE_UNKNOWN if
-   *          the surface is NULL.
+   * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if
+   *          the surface is nullptr.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetColorspace
    */
   Colorspace GetColorspace() const { return SDL_GetSurfaceColorspace(get()); }
 
@@ -34438,23 +34311,27 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * destroy the returned palette, it will be freed when the reference count
    * reaches 0, usually when the surface is destroyed.
    *
-   * Bitmap surfaces (with format SDL_PIXELFORMAT_INDEX1LSB or
-   * SDL_PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as
+   * Bitmap surfaces (with format PIXELFORMAT_INDEX1LSB or
+   * PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as
    * white and 1 as black. Other surfaces will get a palette initialized with
    * white in every entry.
    *
    * If this function is called for a surface that already has a palette, a new
    * palette will be created to replace it.
    *
-   * @returns a new SDL_Palette structure on success or NULL on failure (e.g. if
-   *          the surface didn't have an index format); call GetError() for
-   *          more information.
+   * @returns a new PaletteRef structure on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.SetColors()
+   * @sa PaletteRef.SetColors
    */
-  PaletteRef CreatePalette() { return SDL_CreateSurfacePalette(get()); }
+  PaletteRef CreatePalette()
+  {
+    return CheckError(SDL_CreateSurfacePalette(get()));
+  }
 
   /**
    * Set the palette used by a surface.
@@ -34468,7 +34345,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PaletteRef.PaletteRef
+   * @sa Palette.Palette
    * @sa SurfaceRef.GetPalette
    */
   void SetPalette(PaletteRef& palette)
@@ -34481,6 +34358,12 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @returns a pointer to the palette used by the surface, or nullptr if there
    *          is no palette used.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetPalette
    */
   PaletteRef GetPalette() const { return SDL_GetSurfacePalette(get()); }
 
@@ -34493,10 +34376,9 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * alternate versions will not be updated when the original surface changes.
    *
    * This function adds a reference to the alternate version, so you should call
-   * SurfaceRef.reset() on the image after this call.
+   * SurfaceRef.Destroy() on the image after this call.
    *
-   * @param image an alternate SurfaceRef to associate with this
-   *              surface.
+   * @param image an alternate SurfaceRef to associate with this surface.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
@@ -34517,11 +34399,13 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @returns true if alternate versions are available or false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AddAlternateImage()
-   * @sa RemoveAlternateImages()
-   * @sa GetImages()
+   * @sa SurfaceRef.AddAlternateImage
+   * @sa SurfaceRef.RemoveAlternateImages
+   * @sa SurfaceRef.GetImages
    */
   bool HasAlternateImages() const
   {
@@ -34534,17 +34418,16 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * This returns all versions of a surface, with the surface being queried as
    * the first element in the returned array.
    *
-   * @returns a NULL terminated array of SDL_Surface pointers or NULL on
-   *          failure; call SDL_GetError() for more information. This should be
-   *          freed with SDL_free() when it is no longer needed.
+   * @returns a NULL terminated array of SurfaceRef pointers or nullptr on
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AddAlternateImage()
-   * @sa RemoveAlternateImages()
-   * @sa HasAlternateImages()
+   * @sa SurfaceRef.AddAlternateImage
+   * @sa SurfaceRef.RemoveAlternateImages
+   * @sa SurfaceRef.HasAlternateImages
    */
   OwnArray<SurfaceRef> GetImages() const
   {
@@ -34560,11 +34443,14 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * This function removes a reference from all the alternative versions,
    * destroying them if this is the last reference to them.
    *
+   *
+   * @threadsafety This function is not thread safe.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AddAlternateImage()
-   * @sa GetImages()
-   * @sa HasAlternateImages()
+   * @sa SurfaceRef.AddAlternateImage
+   * @sa SurfaceRef.GetImages
+   * @sa SurfaceRef.HasAlternateImages
    */
   void RemoveAlternateImages() { SDL_RemoveSurfaceAlternateImages(get()); }
 
@@ -34578,10 +34464,10 @@ struct SurfaceRef : Resource<SDL_Surface*>
   /**
    * Set up a surface for directly accessing the pixels.
    *
-   * Between calls to SurfaceRef.Lock() / Unlock(), you can write
-   * to and read from `GetPixels()`, using the pixel format stored in
-   * `GetFormat()`. Once you are done accessing the surface, you should use
-   * Unlock() to release it or let the destructor take care of this
+   * Between calls to SurfaceRef.Lock() / SurfaceLock.Unlock(), you can write to
+   * and read from `surface->pixels`, using the pixel format stored in
+   * `surface->format`. Once you are done accessing the surface, you should use
+   * SurfaceLock.Unlock() to release it or let the destructor take care of this
    * for you.
    *
    * Not all surfaces require locking. If `SurfaceRef.MustLock(surface)`
@@ -34595,8 +34481,8 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MustLock()
-   * @sa SurfaceLock.Unlock()
+   * @sa SurfaceRef.MustLock
+   * @sa SurfaceLock.Unlock
    */
   SurfaceLock Lock() &;
 
@@ -34623,6 +34509,12 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * Returns whether the surface is RLE enabled.
    *
    * @returns true if the surface is RLE enabled, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetRLE
    */
   bool HasRLE() const { return SDL_SurfaceHasRLE(get()); }
 
@@ -34688,6 +34580,13 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * Returns whether the surface has a color key.
    *
    * @returns true if the surface has a color key, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetColorKey
+   * @sa SurfaceRef.GetColorKey
    */
   bool HasColorKey() const { return SDL_SurfaceHasColorKey(get()); }
 
@@ -34930,14 +34829,17 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * Note that blits are automatically clipped to the edges of the source and
    * destination surfaces.
    *
-   * @param rect the SDL_Rect structure representing the clipping rectangle or
-   *        nullopt to disable it
+   * @param rect the Rect structure representing the clipping rectangle, or
+   *             std::nullopt to disable clipping.
    * @returns true if the rectangle intersects the surface, otherwise false and
    *          blits will be completely clipped.
    *
+   * @threadsafety This function is not thread safe.
+   *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ResetClipRect()
+   * @sa SurfaceRef.ResetClipRect()
+   * @sa SurfaceRef.GetClipRect
    */
   bool SetClipRect(OptionalRef<const SDL_Rect> rect)
   {
@@ -34958,13 +34860,20 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * rectangle is drawn into.
    *
    * @returns the Rect structure filled in with the clipping rectangle for the
-   * surface on success, or false on failure; call GetError() for
-   * more information.
+   *          surface on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.SetClipRect
    */
   Rect GetClipRect() const
   {
-    if (Rect r; SDL_GetSurfaceClipRect(get(), &r)) return r;
-    return {};
+    Rect r;
+    CheckError(SDL_GetSurfaceClipRect(get(), &r));
+    return r;
   }
 
   /**
@@ -34992,7 +34901,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.reset
+   * @sa SurfaceRef.Destroy
    */
   Surface Duplicate() const;
 
@@ -35010,7 +34919,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.reset
+   * @sa SurfaceRef.Destroy
    */
   Surface Scale(int width, int height, ScaleMode scaleMode) const;
 
@@ -35037,7 +34946,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SurfaceRef.Convert
-   * @sa SurfaceRef.reset
+   * @sa SurfaceRef.Destroy
    */
   Surface Convert(PixelFormat format) const;
 
@@ -35065,7 +34974,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SurfaceRef.Convert
-   * @sa SurfaceRef.reset
+   * @sa SurfaceRef.Destroy
    */
   Surface Convert(PixelFormat format,
                   PaletteRef& palette,
@@ -35089,8 +34998,6 @@ struct SurfaceRef : Resource<SDL_Surface*>
   {
     CheckError(SDL_PremultiplySurfaceAlpha(get(), linear));
   }
-
-  // TODO SDL_ConvertSurfaceAndColorspace
 
   /**
    * Clear a surface with a specific color, with floating point precision.
@@ -35326,9 +35233,6 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * If either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or
    * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
    *
-   * The final blit rectangles are saved in `srcrect` and `dstrect` after all
-   * clipping is performed.
-   *
    * The blit function should not be called on a locked surface.
    *
    * The blit semantics for surfaces with and without blending and colorkey are
@@ -35406,7 +35310,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
-   *                copied, may not be NULL.
+   *                copied, may not be nullptr.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, may not be nullptr.
    * @throws Error on failure.
@@ -35732,6 +35636,12 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @param g the green component of the pixel in the range 0-255.
    * @param b the blue component of the pixel in the range 0-255.
    * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.MapColor
    */
   Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b) const
   {
@@ -35760,7 +35670,13 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @param g the green component of the pixel in the range 0-255.
    * @param b the blue component of the pixel in the range 0-255.
    * @param a the alpha component of the pixel in the range 0-255.
-   * @return a pixel value.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SurfaceRef.MapColor
    */
   Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
   {
@@ -35959,8 +35875,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.SurfaceRef
-   * @sa SurfaceRef.SurfaceRef
+   * @sa Surface.Surface
    */
   void Destroy() { reset(); }
 
@@ -35973,7 +35888,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SurfaceRef.SurfaceRef
+   * @sa Surface.Surface
    */
   void reset(SDL_Surface* newResource = {})
   {
@@ -35998,12 +35913,29 @@ struct SurfaceUnsafe : SurfaceRef
 
   using SurfaceRef::reset;
 
+  /**
+   * Constructs SurfaceUnsafe from SurfaceRef.
+   */
+  constexpr SurfaceUnsafe(const SurfaceRef& other)
+    : SurfaceRef(other.get())
+  {
+  }
+
   SurfaceUnsafe(const Surface& other) = delete;
 
   /**
    * Constructs SurfaceUnsafe from Surface.
    */
-  explicit SurfaceUnsafe(Surface&& other);
+  constexpr explicit SurfaceUnsafe(Surface&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr SurfaceUnsafe& operator=(SurfaceUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -36038,7 +35970,10 @@ struct Surface : SurfaceUnsafe
   /**
    * Move constructor.
    */
-  constexpr Surface(Surface&& other) = default;
+  constexpr Surface(Surface&& other)
+    : Surface(other.release())
+  {
+  }
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -36095,8 +36030,8 @@ struct Surface : SurfaceUnsafe
    * Allocate a new surface with a specific pixel format and existing pixel
    * data.
    *
-   * No copy is made of the pixel data. Pixel data is not managed automatically;
-   * you must free the surface before you free the pixel data.
+   * No copy is made of the pixel data. Pixel data is not managed
+   * automatically; you must free the surface before you free the pixel data.
    *
    * Pitch is the offset in bytes from one row of pixels to the next, e.g.
    * `width*4` for `PIXELFORMAT_RGBA8888`.
@@ -36217,7 +36152,7 @@ public:
   friend class SurfaceRef;
 };
 
-inline SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
+constexpr SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
   : SurfaceUnsafe(other.release())
 {
 }
@@ -36571,33 +36506,6 @@ struct TrayRef : Resource<SDL_Tray*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr TrayRef(const TrayRef& other)
-    : TrayRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TrayRef(TrayRef&& other)
-    : TrayRef(other.release())
-  {
-  }
-
-  TrayRef(Tray&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  TrayRef& operator=(TrayRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Updates the system tray icon's icon.
    *
    * @param icon the new icon. May be nullptr.
@@ -36607,7 +36515,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    */
   void SetIcon(SurfaceRef& icon) { SDL_SetTrayIcon(get(), icon.get()); }
 
@@ -36621,7 +36529,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    */
   void SetTooltip(StringParam tooltip) { SDL_SetTrayTooltip(get(), tooltip); }
 
@@ -36642,7 +36550,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    * @sa TrayRef.GetMenu
    * @sa TrayMenu.GetParentTray
    */
@@ -36654,8 +36562,8 @@ struct TrayRef : Resource<SDL_Tray*>
    * You should have called TrayRef.CreateMenu() on the tray object. This
    * function allows you to fetch it again later.
    *
-   * This function does the same thing as TrayEntryRef.GetSubmenu(), except
-   * that it takes a TrayRef instead of a TrayEntryRef.
+   * This function does the same thing as TrayEntryRef.GetSubmenu(), except that
+   * it takes a TrayRef instead of a TrayEntryRef.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
@@ -36666,7 +36574,7 @@ struct TrayRef : Resource<SDL_Tray*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    * @sa TrayRef.CreateMenu
    */
   TrayMenu GetMenu() const;
@@ -36683,7 +36591,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    */
   void Destroy() { reset(); }
 
@@ -36697,7 +36605,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayRef.TrayRef
+   * @sa Tray.Tray
    */
   void reset(SDL_Tray* newResource = {})
   {
@@ -36722,12 +36630,29 @@ struct TrayUnsafe : TrayRef
 
   using TrayRef::reset;
 
+  /**
+   * Constructs TrayUnsafe from TrayRef.
+   */
+  constexpr TrayUnsafe(const TrayRef& other)
+    : TrayRef(other.get())
+  {
+  }
+
   TrayUnsafe(const Tray& other) = delete;
 
   /**
    * Constructs TrayUnsafe from Tray.
    */
-  explicit TrayUnsafe(Tray&& other);
+  constexpr explicit TrayUnsafe(Tray&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TrayUnsafe& operator=(TrayUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -36762,7 +36687,10 @@ struct Tray : TrayUnsafe
   /**
    * Move constructor.
    */
-  constexpr Tray(Tray&& other) = default;
+  constexpr Tray(Tray&& other)
+    : Tray(other.release())
+  {
+  }
 
   /**
    * Create an icon to be placed in the operating system's tray, or equivalent.
@@ -36831,7 +36759,7 @@ using TrayCallback = SDL_TrayCallback;
  */
 using TrayCB = std::function<void(TrayEntryRef)>;
 
-inline TrayUnsafe::TrayUnsafe(Tray&& other)
+constexpr TrayUnsafe::TrayUnsafe(Tray&& other)
   : TrayUnsafe(other.release())
 {
 }
@@ -37008,33 +36936,6 @@ public:
 struct TrayEntryRef : Resource<SDL_TrayEntry*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr TrayEntryRef(const TrayEntryRef& other)
-    : TrayEntryRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TrayEntryRef(TrayEntryRef&& other)
-    : TrayEntryRef(other.release())
-  {
-  }
-
-  TrayEntryRef(TrayEntry&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  TrayEntryRef& operator=(TrayEntryRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Create a submenu for a system tray entry.
@@ -37297,12 +37198,29 @@ struct TrayEntryUnsafe : TrayEntryRef
 
   using TrayEntryRef::reset;
 
+  /**
+   * Constructs TrayEntryUnsafe from TrayEntryRef.
+   */
+  constexpr TrayEntryUnsafe(const TrayEntryRef& other)
+    : TrayEntryRef(other.get())
+  {
+  }
+
   TrayEntryUnsafe(const TrayEntry& other) = delete;
 
   /**
    * Constructs TrayEntryUnsafe from TrayEntry.
    */
-  explicit TrayEntryUnsafe(TrayEntry&& other);
+  constexpr explicit TrayEntryUnsafe(TrayEntry&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TrayEntryUnsafe& operator=(TrayEntryUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -37337,7 +37255,10 @@ struct TrayEntry : TrayEntryUnsafe
   /**
    * Move constructor.
    */
-  constexpr TrayEntry(TrayEntry&& other) = default;
+  constexpr TrayEntry(TrayEntry&& other)
+    : TrayEntry(other.release())
+  {
+  }
 
   /**
    * Frees up resource when object goes out of scope.
@@ -37354,7 +37275,7 @@ struct TrayEntry : TrayEntryUnsafe
   }
 };
 
-inline TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
+constexpr TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
   : TrayEntryUnsafe(other.release())
 {
 }
@@ -38239,33 +38160,6 @@ struct WindowRef : Resource<SDL_Window*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr WindowRef(const WindowRef& other)
-    : WindowRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr WindowRef(WindowRef&& other)
-    : WindowRef(other.release())
-  {
-  }
-
-  WindowRef(Window&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  WindowRef& operator=(WindowRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the display associated with a window.
    *
    * @returns the instance ID of the display containing the center of the window
@@ -38434,7 +38328,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    */
   WindowRef GetParent() const { return SDL_GetWindowParent(get()); }
 
@@ -38571,7 +38465,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    * @sa WindowRef.Hide
    * @sa WindowRef.Maximize
    * @sa WindowRef.Minimize
@@ -38942,7 +38836,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * Note: This function may fail on systems where the window has not yet been
    * decorated by the display server (for example, immediately after calling
-   * WindowRef.WindowRef). It is recommended that you wait at least until the
+   * Window.Window). It is recommended that you wait at least until the
    * window has been presented and composited, so that the window system has a
    * chance to decorate the window and provide the border dimensions to SDL.
    *
@@ -39003,7 +38897,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    * @sa WindowRef.GetSize
    */
   void GetSizeInPixels(int* w, int* h) const
@@ -39297,8 +39191,8 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * On some windowing systems this request is asynchronous and the new
    * fullscreen state may not have have been applied immediately upon the return
-   * of this function. If an immediate change is required, call
-   * WindowRef.Sync() to block until the changes have taken effect.
+   * of this function. If an immediate change is required, call WindowRef.Sync()
+   * to block until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
    * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
@@ -39676,8 +39570,8 @@ struct WindowRef : Resource<SDL_Window*>
    * the parent is shown.
    *
    * Attempting to set the parent of a window that is currently in the modal
-   * state will fail. Use WindowRef.SetModal() to cancel the modal status
-   * before attempting to change the parent.
+   * state will fail. Use WindowRef.SetModal() to cancel the modal status before
+   * attempting to change the parent.
    *
    * Popup windows cannot change parents and attempts to do so will fail.
    *
@@ -39693,7 +39587,10 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @sa WindowRef.SetModal
    */
-  void SetParent(OptionalWindow parent);
+  void SetParent(OptionalWindow parent)
+  {
+    CheckError(SDL_SetWindowParent(get(), parent.get()));
+  }
 
   /**
    * Toggle the state of the window as modal.
@@ -39931,7 +39828,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    */
   void Destroy() { reset(); }
 
@@ -39949,7 +39846,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowRef.WindowRef
+   * @sa Window.Window
    */
   void reset(SDL_Window* newResource = {})
   {
@@ -39999,12 +39896,29 @@ struct WindowUnsafe : WindowRef
 
   using WindowRef::reset;
 
+  /**
+   * Constructs WindowUnsafe from WindowRef.
+   */
+  constexpr WindowUnsafe(const WindowRef& other)
+    : WindowRef(other.get())
+  {
+  }
+
   WindowUnsafe(const Window& other) = delete;
 
   /**
    * Constructs WindowUnsafe from Window.
    */
-  explicit WindowUnsafe(Window&& other);
+  constexpr explicit WindowUnsafe(Window&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr WindowUnsafe& operator=(WindowUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -40039,7 +39953,10 @@ struct Window : WindowUnsafe
   /**
    * Move constructor.
    */
-  constexpr Window(Window&& other) = default;
+  constexpr Window(Window&& other)
+    : Window(other.release())
+  {
+  }
 
   /**
    * Create a window with the specified dimensions and flags.
@@ -40345,7 +40262,7 @@ struct Window : WindowUnsafe
   }
 };
 
-inline WindowUnsafe::WindowUnsafe(Window&& other)
+constexpr WindowUnsafe::WindowUnsafe(Window&& other)
   : WindowUnsafe(other.release())
 {
 }
@@ -40451,33 +40368,6 @@ struct GLContextRef : Resource<SDL_GLContextState*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr GLContextRef(const GLContextRef& other)
-    : GLContextRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr GLContextRef(GLContextRef&& other)
-    : GLContextRef(other.release())
-  {
-  }
-
-  GLContextRef(GLContext&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  GLContextRef& operator=(GLContextRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Set up an OpenGL context for rendering into an OpenGL window.
    *
    * The context must have been created with a compatible window.
@@ -40489,7 +40379,7 @@ struct GLContextRef : Resource<SDL_GLContextState*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextRef.GLContextRef
+   * @sa GLContext.GLContext
    */
   void MakeCurrent(WindowRef& window)
   {
@@ -40506,7 +40396,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextRef.GLContextRef
+   * @sa GLContext.GLContext
    */
   void Destroy() { reset(); }
 
@@ -40519,7 +40409,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContextRef.GLContextRef
+   * @sa GLContext.GLContext
    */
   void reset(SDL_GLContextState* newResource = {})
   {
@@ -40544,12 +40434,29 @@ struct GLContextUnsafe : GLContextRef
 
   using GLContextRef::reset;
 
+  /**
+   * Constructs GLContextUnsafe from GLContextRef.
+   */
+  constexpr GLContextUnsafe(const GLContextRef& other)
+    : GLContextRef(other.get())
+  {
+  }
+
   GLContextUnsafe(const GLContext& other) = delete;
 
   /**
    * Constructs GLContextUnsafe from GLContext.
    */
-  explicit GLContextUnsafe(GLContext&& other);
+  constexpr explicit GLContextUnsafe(GLContext&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr GLContextUnsafe& operator=(GLContextUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -40584,7 +40491,10 @@ struct GLContext : GLContextUnsafe
   /**
    * Move constructor.
    */
-  constexpr GLContext(GLContext&& other) = default;
+  constexpr GLContext(GLContext&& other)
+    : GLContext(other.release())
+  {
+  }
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -40628,7 +40538,7 @@ struct GLContext : GLContextUnsafe
   }
 };
 
-inline GLContextUnsafe::GLContextUnsafe(GLContext&& other)
+constexpr GLContextUnsafe::GLContextUnsafe(GLContext&& other)
   : GLContextUnsafe(other.release())
 {
 }
@@ -45574,61 +45484,32 @@ struct CursorRef : Resource<SDL_Cursor*>
 {
   using Resource::Resource;
 
-  /**
-   * Copy constructor.
-   */
-  constexpr CursorRef(const CursorRef& other)
-    : CursorRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr CursorRef(CursorRef&& other)
-    : CursorRef(other.release())
-  {
-  }
-
-  CursorRef(Cursor&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  CursorRef& operator=(CursorRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
 protected:
   /**
    * Free a previously-created cursor.
    *
-   * Use this function to free cursor resources created with
-   * CursorRef.CursorRef(), CursorRef.CursorRef() or
-   * CursorRef.CursorRef().
+   * Use this function to free cursor resources created with Cursor.Cursor(),
+   * Cursor.Cursor() or Cursor.Cursor().
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.CursorRef
+   * @sa Cursor.Cursor
    */
   void Destroy() { reset(); }
 
   /**
    * Free a previously-created cursor.
    *
-   * Use this function to free cursor resources created with
-   * CursorRef.CursorRef(), CursorRef.CursorRef() or
-   * CursorRef.CursorRef().
+   * Use this function to free cursor resources created with Cursor.Cursor(),
+   * Cursor.Cursor() or Cursor.Cursor().
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CursorRef.CursorRef
+   * @sa Cursor.Cursor
    */
   void reset(SDL_Cursor* newResource = {})
   {
@@ -45653,12 +45534,29 @@ struct CursorUnsafe : CursorRef
 
   using CursorRef::reset;
 
+  /**
+   * Constructs CursorUnsafe from CursorRef.
+   */
+  constexpr CursorUnsafe(const CursorRef& other)
+    : CursorRef(other.get())
+  {
+  }
+
   CursorUnsafe(const Cursor& other) = delete;
 
   /**
    * Constructs CursorUnsafe from Cursor.
    */
-  explicit CursorUnsafe(Cursor&& other);
+  constexpr explicit CursorUnsafe(Cursor&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr CursorUnsafe& operator=(CursorUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -45693,7 +45591,10 @@ struct Cursor : CursorUnsafe
   /**
    * Move constructor.
    */
-  constexpr Cursor(Cursor&& other) = default;
+  constexpr Cursor(Cursor&& other)
+    : Cursor(other.release())
+  {
+  }
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -45809,7 +45710,7 @@ struct Cursor : CursorUnsafe
   }
 };
 
-inline CursorUnsafe::CursorUnsafe(Cursor&& other)
+constexpr CursorUnsafe::CursorUnsafe(Cursor&& other)
   : CursorUnsafe(other.release())
 {
 }
@@ -46454,33 +46355,6 @@ struct RendererRef : Resource<SDL_Renderer*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr RendererRef(const RendererRef& other)
-    : RendererRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr RendererRef(RendererRef&& other)
-    : RendererRef(other.release())
-  {
-  }
-
-  RendererRef(Renderer&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  RendererRef& operator=(RendererRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the window associated with a renderer.
    *
    * @returns the window on success.
@@ -46502,6 +46376,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa Renderer.Renderer
    */
   const char* GetName() const { return CheckError(SDL_GetRendererName(get())); }
 
@@ -46511,8 +46386,8 @@ struct RendererRef : Resource<SDL_Renderer*>
    * This returns the true output size in pixels, ignoring any render targets or
    * logical size and presentation.
    *
-   * @returns Point on success or std::nullopt on failure; call GetError() for
-   *          more information.
+   * @returns Point on success.
+   * @throws Error on failure.
    */
   Point GetOutputSize() const
   {
@@ -46559,7 +46434,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetOutputSize()
+   * @sa RendererRef.GetOutputSize()
    */
   Point GetCurrentOutputSize() const
   {
@@ -47127,7 +47002,8 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Each render target has its own clip rectangle. This function gets the
    * cliprect for the current render target.
    *
-   * @returns an Rect structure with the current clipping area
+   * @param renderer the rendering context.
+   * @param rect an Rect structure filled in with the current clipping area
    *             or an empty rectangle if clipping is disabled.
    * @throws Error on failure.
    *
@@ -47841,7 +47717,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Read pixels from the current rendering target.
    *
    * The returned surface contains pixels inside the desired area clipped to the
-   * current viewport, and should be freed with SurfaceRef.reset().
+   * current viewport, and should be freed with SurfaceRef.Destroy().
    *
    * Note that this returns the actual pixels on the screen, so if you are using
    * logical presentation you should use
@@ -47871,10 +47747,10 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Update the screen with any rendering performed since the previous call.
    *
    * SDL's rendering functions operate on a backbuffer; that is, calling a
-   * rendering function such as RendererRef.RenderLine() does not directly put
-   * a line on the screen, but rather updates the backbuffer. As such, you
-   * compose your entire scene and *present* the composed backbuffer to the
-   * screen as a complete picture.
+   * rendering function such as RendererRef.RenderLine() does not directly put a
+   * line on the screen, but rather updates the backbuffer. As such, you compose
+   * your entire scene and *present* the composed backbuffer to the screen as a
+   * complete picture.
    *
    * Therefore, when using SDL's rendering API, one does all drawing intended
    * for the frame, and then calls this function once per frame to present the
@@ -47901,7 +47777,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.RendererRef
+   * @sa Renderer.Renderer
    * @sa RendererRef.RenderClear
    * @sa RendererRef.RenderFillRect
    * @sa RendererRef.RenderFillRects
@@ -48072,7 +47948,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.RendererRef
+   * @sa Renderer.Renderer
    */
   void Destroy() { reset(); }
 
@@ -48086,7 +47962,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RendererRef.RendererRef
+   * @sa Renderer.Renderer
    */
   void reset(SDL_Renderer* newResource = {})
   {
@@ -48111,12 +47987,29 @@ struct RendererUnsafe : RendererRef
 
   using RendererRef::reset;
 
+  /**
+   * Constructs RendererUnsafe from RendererRef.
+   */
+  constexpr RendererUnsafe(const RendererRef& other)
+    : RendererRef(other.get())
+  {
+  }
+
   RendererUnsafe(const Renderer& other) = delete;
 
   /**
    * Constructs RendererUnsafe from Renderer.
    */
-  explicit RendererUnsafe(Renderer&& other);
+  constexpr explicit RendererUnsafe(Renderer&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr RendererUnsafe& operator=(RendererUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -48151,7 +48044,10 @@ struct Renderer : RendererUnsafe
   /**
    * Move constructor.
    */
-  constexpr Renderer(Renderer&& other) = default;
+  constexpr Renderer(Renderer&& other)
+    : Renderer(other.release())
+  {
+  }
 
   /**
    * Create a 2D rendering context for a window.
@@ -48302,7 +48198,7 @@ struct Renderer : RendererUnsafe
   }
 };
 
-inline RendererUnsafe::RendererUnsafe(Renderer&& other)
+constexpr RendererUnsafe::RendererUnsafe(Renderer&& other)
   : RendererUnsafe(other.release())
 {
 }
@@ -48324,32 +48220,6 @@ inline RendererUnsafe::RendererUnsafe(Renderer&& other)
 struct TextureRef : Resource<SDL_Texture*>
 {
   using Resource::Resource;
-
-  /**
-   * Copy constructor.
-   */
-  constexpr TextureRef(const TextureRef& other)
-    : TextureRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TextureRef(TextureRef&& other)
-    : TextureRef(other.release())
-  {
-  }
-
-  TextureRef(Texture&& other) = delete;
-  /**
-   * Assignment operator.
-   */
-  TextureRef& operator=(TextureRef other)
-  {
-    release(other.release());
-    return *this;
-  }
 
   /**
    * Get the properties associated with a texture.
@@ -49013,7 +48883,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TextureRef.TextureRef
+   * @sa Texture.Texture
    */
   void Destroy() { reset(); }
 
@@ -49027,7 +48897,7 @@ protected:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TextureRef.TextureRef
+   * @sa Texture.Texture
    */
   void reset(SDL_Texture* newResource = {})
   {
@@ -49052,12 +48922,29 @@ struct TextureUnsafe : TextureRef
 
   using TextureRef::reset;
 
+  /**
+   * Constructs TextureUnsafe from TextureRef.
+   */
+  constexpr TextureUnsafe(const TextureRef& other)
+    : TextureRef(other.get())
+  {
+  }
+
   TextureUnsafe(const Texture& other) = delete;
 
   /**
    * Constructs TextureUnsafe from Texture.
    */
-  explicit TextureUnsafe(Texture&& other);
+  constexpr explicit TextureUnsafe(Texture&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TextureUnsafe& operator=(TextureUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -49092,7 +48979,10 @@ struct Texture : TextureUnsafe
   /**
    * Move constructor.
    */
-  constexpr Texture(Texture&& other) = default;
+  constexpr Texture(Texture&& other)
+    : Texture(other.release())
+  {
+  }
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -49404,7 +49294,7 @@ public:
   friend class TextureRef;
 };
 
-inline TextureUnsafe::TextureUnsafe(Texture&& other)
+constexpr TextureUnsafe::TextureUnsafe(Texture&& other)
   : TextureUnsafe(other.release())
 {
 }
@@ -52981,33 +52871,6 @@ struct AnimationRef : Resource<IMG_Animation*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr AnimationRef(const AnimationRef& other)
-    : AnimationRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr AnimationRef(AnimationRef&& other)
-    : AnimationRef(other.release())
-  {
-  }
-
-  AnimationRef(Animation&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  AnimationRef& operator=(AnimationRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the width in pixels.
    */
   int GetWidth() const { return get()->w; }
@@ -53047,7 +52910,7 @@ protected:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.AnimationRef
+   * @sa Animation.Animation
    */
   void Free() { reset(); }
 
@@ -53056,7 +52919,7 @@ protected:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.AnimationRef
+   * @sa Animation.Animation
    */
   void reset(IMG_Animation* newResource = {})
   {
@@ -53080,12 +52943,29 @@ struct AnimationUnsafe : AnimationRef
 
   using AnimationRef::reset;
 
+  /**
+   * Constructs AnimationUnsafe from AnimationRef.
+   */
+  constexpr AnimationUnsafe(const AnimationRef& other)
+    : AnimationRef(other.get())
+  {
+  }
+
   AnimationUnsafe(const Animation& other) = delete;
 
   /**
    * Constructs AnimationUnsafe from Animation.
    */
-  explicit AnimationUnsafe(Animation&& other);
+  constexpr explicit AnimationUnsafe(Animation&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr AnimationUnsafe& operator=(AnimationUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -53120,7 +53000,10 @@ struct Animation : AnimationUnsafe
   /**
    * Move constructor.
    */
-  constexpr Animation(Animation&& other) = default;
+  constexpr Animation(Animation&& other)
+    : Animation(other.release())
+  {
+  }
 
   /**
    * Load an animation from a file.
@@ -53189,7 +53072,7 @@ struct Animation : AnimationUnsafe
   }
 };
 
-inline AnimationUnsafe::AnimationUnsafe(Animation&& other)
+constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
   : AnimationUnsafe(other.release())
 {
 }
@@ -53664,33 +53547,6 @@ struct FontRef : Resource<TTF_Font*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr FontRef(const FontRef& other)
-    : FontRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr FontRef(FontRef&& other)
-    : FontRef(other.release())
-  {
-  }
-
-  FontRef(Font&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  FontRef& operator=(FontRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Create a copy of an existing font.
    *
    * The copy will be distinct from the original, but will share the font file
@@ -53703,6 +53559,8 @@ struct FontRef : Resource<TTF_Font*>
    *               original font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
    */
   Font Copy() const;
 
@@ -55095,7 +54953,7 @@ protected:
    *
    * Call this when done with a font. This function will free any resources
    * associated with it. It is safe to call this function on nullptr, for
-   * example on the result of a failed call to FontRef.FontRef().
+   * example on the result of a failed call to Font.Font().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
@@ -55107,7 +54965,7 @@ protected:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa FontRef.FontRef
+   * @sa Font.Font
    */
   void Close() { reset(); }
 
@@ -55116,7 +54974,7 @@ protected:
    *
    * Call this when done with a font. This function will free any resources
    * associated with it. It is safe to call this function on nullptr, for
-   * example on the result of a failed call to FontRef.FontRef().
+   * example on the result of a failed call to Font.Font().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
@@ -55128,7 +54986,7 @@ protected:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa FontRef.FontRef
+   * @sa Font.Font
    */
   void reset(TTF_Font* newResource = {})
   {
@@ -55152,12 +55010,29 @@ struct FontUnsafe : FontRef
   using FontRef::FontRef;
   using FontRef::reset;
 
+  /**
+   * Constructs FontUnsafe from FontRef.
+   */
+  constexpr FontUnsafe(const FontRef& other)
+    : FontRef(other.get())
+  {
+  }
+
   FontUnsafe(const Font& other) = delete;
 
   /**
    * Constructs FontUnsafe from Font.
    */
-  explicit FontUnsafe(Font&& other);
+  constexpr explicit FontUnsafe(Font&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr FontUnsafe& operator=(FontUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -55192,7 +55067,10 @@ struct Font : FontUnsafe
   /**
    * Move constructor.
    */
-  constexpr Font(Font&& other) = default;
+  constexpr Font(Font&& other)
+    : Font(other.release())
+  {
+  }
 
   /**
    * Create a font from a file, using a specified point size.
@@ -55303,7 +55181,7 @@ struct Font : FontUnsafe
   }
 };
 
-inline FontUnsafe::FontUnsafe(Font&& other)
+constexpr FontUnsafe::FontUnsafe(Font&& other)
   : FontUnsafe(other.release())
 {
 }
@@ -55350,41 +55228,13 @@ struct TextEngineRef : Resource<TTF_TextEngine*>
 {
   using Resource::Resource;
 
-  /**
-   * Copy constructor.
-   */
-  constexpr TextEngineRef(const TextEngineRef& other)
-    : TextEngineRef(other.get(), other.m_destroy)
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TextEngineRef(TextEngineRef&& other)
-    : TextEngineRef(other.release(), other.m_destroy)
-  {
-  }
-
 protected:
-  TextEngineRef(TextEngine&& other) = delete;
-
   /// Create from engine and custom destroyer
   constexpr TextEngineRef(TTF_TextEngine* engine,
                           void (*destroy)(TTF_TextEngine* engine))
     : Resource(engine)
     , m_destroy(destroy)
   {
-  }
-
-public:
-  /**
-   * Assignment operator.
-   */
-  TextEngineRef& operator=(TextEngineRef other)
-  {
-    release(other.release());
-    return *this;
   }
 
 protected:
@@ -55454,12 +55304,29 @@ struct TextEngineUnsafe : TextEngineRef
 {
   using TextEngineRef::TextEngineRef;
 
+  /**
+   * Constructs TextEngineUnsafe from TextEngineRef.
+   */
+  constexpr TextEngineUnsafe(const TextEngineRef& other)
+    : TextEngineRef(other.get())
+  {
+  }
+
   TextEngineUnsafe(const TextEngine& other) = delete;
 
   /**
    * Constructs TextEngineUnsafe from TextEngine.
    */
-  explicit TextEngineUnsafe(TextEngine&& other);
+  constexpr explicit TextEngineUnsafe(TextEngine&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TextEngineUnsafe& operator=(TextEngineUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -55494,7 +55361,10 @@ struct TextEngine : TextEngineUnsafe
   /**
    * Move constructor.
    */
-  constexpr TextEngine(TextEngine&& other) = default;
+  constexpr TextEngine(TextEngine&& other)
+    : TextEngine(other.release())
+  {
+  }
 
   /// Create from engine and custom destroyer
   constexpr TextEngine(TTF_TextEngine* engine,
@@ -55547,7 +55417,7 @@ using SubString = TTF_SubString;
 // Forward decl
 struct SubStringIterator;
 
-inline TextEngineUnsafe::TextEngineUnsafe(TextEngine&& other)
+constexpr TextEngineUnsafe::TextEngineUnsafe(TextEngine&& other)
   : TextEngineUnsafe(other.release())
 {
 }
@@ -55705,33 +55575,6 @@ struct TextRef : Resource<TTF_Text*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr TextRef(const TextRef& other)
-    : TextRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr TextRef(TextRef&& other)
-    : TextRef(other.release())
-  {
-  }
-
-  TextRef(Text&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  TextRef& operator=(TextRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Draw text to an SDL surface.
    *
    * `text` must have been created using a TextEngineRef from
@@ -55748,7 +55591,7 @@ struct TextRef : Resource<TTF_Text*>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateSurfaceTextEngine
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   void DrawSurface(Point p, SurfaceRef surface) const
   {
@@ -55772,7 +55615,7 @@ struct TextRef : Resource<TTF_Text*>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateRendererTextEngine
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   void DrawRenderer(FPoint p) const
   {
@@ -55803,7 +55646,7 @@ struct TextRef : Resource<TTF_Text*>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateGPUTextEngine
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const
   {
@@ -56409,8 +56252,6 @@ struct TextRef : Resource<TTF_Text*>
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @see GetSize() if you need both coordinates.
    */
   void GetSize(int* w, int* h) const
   {
@@ -56644,7 +56485,7 @@ protected:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   void Destroy() { reset(); }
 
@@ -56656,7 +56497,7 @@ protected:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextRef.TextRef
+   * @sa Text.Text
    */
   void reset(TTF_Text* newResource = {})
   {
@@ -56681,12 +56522,29 @@ struct TextUnsafe : TextRef
 
   using TextRef::reset;
 
+  /**
+   * Constructs TextUnsafe from TextRef.
+   */
+  constexpr TextUnsafe(const TextRef& other)
+    : TextRef(other.get())
+  {
+  }
+
   TextUnsafe(const Text& other) = delete;
 
   /**
    * Constructs TextUnsafe from Text.
    */
-  explicit TextUnsafe(Text&& other);
+  constexpr explicit TextUnsafe(Text&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr TextUnsafe& operator=(TextUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -56721,7 +56579,10 @@ struct Text : TextUnsafe
   /**
    * Move constructor.
    */
-  constexpr Text(Text&& other) = default;
+  constexpr Text(Text&& other)
+    : Text(other.release())
+  {
+  }
 
   /**
    * Create a text object from UTF-8 text and a text engine.
@@ -56831,7 +56692,7 @@ public:
   friend class TextRef;
 };
 
-inline TextUnsafe::TextUnsafe(Text&& other)
+constexpr TextUnsafe::TextUnsafe(Text&& other)
   : TextUnsafe(other.release())
 {
 }

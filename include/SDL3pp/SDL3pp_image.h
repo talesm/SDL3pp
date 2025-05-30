@@ -1955,33 +1955,6 @@ struct AnimationRef : Resource<IMG_Animation*>
   using Resource::Resource;
 
   /**
-   * Copy constructor.
-   */
-  constexpr AnimationRef(const AnimationRef& other)
-    : AnimationRef(other.get())
-  {
-  }
-
-  /**
-   * Move constructor.
-   */
-  constexpr AnimationRef(AnimationRef&& other)
-    : AnimationRef(other.release())
-  {
-  }
-
-  AnimationRef(Animation&& other) = delete;
-
-  /**
-   * Assignment operator.
-   */
-  AnimationRef& operator=(AnimationRef other)
-  {
-    release(other.release());
-    return *this;
-  }
-
-  /**
    * Get the width in pixels.
    */
   int GetWidth() const { return get()->w; }
@@ -2021,7 +1994,7 @@ protected:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.AnimationRef
+   * @sa Animation.Animation
    */
   void Free() { reset(); }
 
@@ -2030,7 +2003,7 @@ protected:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.AnimationRef
+   * @sa Animation.Animation
    */
   void reset(IMG_Animation* newResource = {})
   {
@@ -2054,12 +2027,29 @@ struct AnimationUnsafe : AnimationRef
 
   using AnimationRef::reset;
 
+  /**
+   * Constructs AnimationUnsafe from AnimationRef.
+   */
+  constexpr AnimationUnsafe(const AnimationRef& other)
+    : AnimationRef(other.get())
+  {
+  }
+
   AnimationUnsafe(const Animation& other) = delete;
 
   /**
    * Constructs AnimationUnsafe from Animation.
    */
-  explicit AnimationUnsafe(Animation&& other);
+  constexpr explicit AnimationUnsafe(Animation&& other);
+
+  /**
+   * Assignment operator.
+   */
+  constexpr AnimationUnsafe& operator=(AnimationUnsafe other)
+  {
+    release(other.release());
+    return *this;
+  }
 };
 
 /**
@@ -2094,7 +2084,10 @@ struct Animation : AnimationUnsafe
   /**
    * Move constructor.
    */
-  constexpr Animation(Animation&& other) = default;
+  constexpr Animation(Animation&& other)
+    : Animation(other.release())
+  {
+  }
 
   /**
    * Load an animation from a file.
@@ -2163,7 +2156,7 @@ struct Animation : AnimationUnsafe
   }
 };
 
-inline AnimationUnsafe::AnimationUnsafe(Animation&& other)
+constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
   : AnimationUnsafe(other.release())
 {
 }
