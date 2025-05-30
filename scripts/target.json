@@ -13185,7 +13185,7 @@
           "sourceName": "SDL_PIXELFLAG"
         },
         "PixelFormat": {
-          "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n@since This enum is available since SDL 3.2.0.",
+          "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes (alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "PixelFormat",
           "kind": "struct",
           "sourceName": "SDL_PixelFormat",
@@ -18688,22 +18688,22 @@
               }
             },
             "Stretch": {
-              "doc": "Perform a stretched pixel copy from one surface to another.\n\n@param srcrect the Rect structure representing the rectangle to be\n               copied, may not be nullptr.\n@param dst the SurfaceRef structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, may not be nullptr.\n@param scaleMode the ScaleMode to be used.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.4.0.\n\n@sa SurfaceRef.BlitScaled",
+              "doc": "Perform a stretched pixel copy from one surface to another.\n\n@param srcrect the Rect structure representing the rectangle to be\n               copied, or nullptr to copy the entire surface.\n@param dst the SurfaceRef structure that is the blit target.\n@param dstrect the Rect structure representing the target rectangle in\n               the destination surface, or nullptr to fill the entire\n               destination surface.\n@param scaleMode the ScaleMode to be used.\n@throws Error on failure.\n\n@threadsafety Only one thread should be using the `src` and `dst` surfaces\n              at any given time.\n\n@since This function is available since SDL 3.4.0.\n\n@sa SurfaceRef.BlitScaled",
               "name": "Stretch",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
                   "name": "src",
-                  "type": "const SurfaceRef &"
+                  "type": "SurfaceRef"
                 },
                 {
                   "name": "srcrect",
-                  "type": "const SDL_Rect &"
+                  "type": "OptionalRef<SDL_Rect>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "const SDL_Rect &"
+                  "type": "OptionalRef<SDL_Rect>"
                 },
                 {
                   "name": "scaleMode",

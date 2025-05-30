@@ -35504,13 +35504,13 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.BlitScaled
    */
-  void Stretch(const SurfaceRef& src,
-               const SDL_Rect& srcrect,
-               const SDL_Rect& dstrect,
+  void Stretch(SurfaceRef src,
+               OptionalRef<SDL_Rect> srcrect,
+               OptionalRef<SDL_Rect> dstrect,
                ScaleMode scaleMode)
   {
     CheckError(
-      SDL_StretchSurface(src.get(), &srcrect, get(), &dstrect, scaleMode));
+      SDL_StretchSurface(src.get(), srcrect, get(), dstrect, scaleMode));
   }
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 4)

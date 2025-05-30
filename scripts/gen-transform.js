@@ -6474,15 +6474,15 @@ const transform = {
                   name: "this"
                 },
                 {
-                  type: "const SurfaceRef &",
+                  type: "SurfaceRef",
                   name: "src"
                 },
                 {
-                  type: "const SDL_Rect &",
+                  type: "OptionalRef<SDL_Rect>",
                   name: "srcrect"
                 },
                 {
-                  type: "const SDL_Rect &",
+                  type: "OptionalRef<SDL_Rect>",
                   name: "dstrect"
                 },
                 {
