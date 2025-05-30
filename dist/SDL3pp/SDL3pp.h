@@ -35027,7 +35027,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @param color the color to fill with.
    * @throws Error on failure.
    */
-  void Fill(SDL_Color color) { return Fill(MapColor(color)); }
+  void Fill(SDL_Color color) { return FillRect({}, color); }
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
@@ -35044,10 +35044,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * @param color the color to fill with.
    * @throws Error on failure.
    */
-  void Fill(Uint32 color)
-  {
-    CheckError(SDL_FillSurfaceRect(get(), nullptr, color));
-  }
+  void Fill(Uint32 color) { return FillRect({}, color); }
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
@@ -35066,7 +35063,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.FillRects
    */
-  void FillRect(const SDL_Rect& rect, SDL_Color color)
+  void FillRect(OptionalRef<const SDL_Rect> rect, SDL_Color color)
   {
     FillRect(rect, MapColor(color));
   }
@@ -35093,9 +35090,9 @@ struct SurfaceRef : Resource<SDL_Surface*>
    *
    * @sa SurfaceRef.FillRects
    */
-  void FillRect(const SDL_Rect& rect, Uint32 color)
+  void FillRect(OptionalRef<const SDL_Rect> rect, Uint32 color)
   {
-    CheckError(SDL_FillSurfaceRect(get(), &rect, color));
+    CheckError(SDL_FillSurfaceRect(get(), rect, color));
   }
 
   /**

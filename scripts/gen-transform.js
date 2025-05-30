@@ -6316,7 +6316,7 @@ const transform = {
               type: "void",
               parameters: [
                 {
-                  type: "const SDL_Rect &",
+                  type: "OptionalRef<const SDL_Rect>",
                   name: "rect"
                 },
                 {
@@ -6325,7 +6325,19 @@ const transform = {
                 }
               ]
             },
-            "SDL_FillSurfaceRect": "function",
+            "SDL_FillSurfaceRect": {
+              parameters: [
+                {},
+                {
+                  type: "OptionalRef<const SDL_Rect>",
+                  name: "rect"
+                },
+                {
+                  type: "Uint32",
+                  name: "color"
+                }
+              ]
+            },
             "FillRects": {
               kind: "function",
               type: "void",

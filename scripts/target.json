@@ -18230,7 +18230,7 @@
                 "type": "void",
                 "parameters": [
                   {
-                    "type": "const SDL_Rect &",
+                    "type": "OptionalRef<const SDL_Rect>",
                     "name": "rect"
                   },
                   {
@@ -18249,7 +18249,7 @@
                 "parameters": [
                   {
                     "name": "rect",
-                    "type": "const SDL_Rect &"
+                    "type": "OptionalRef<const SDL_Rect>"
                   },
                   {
                     "name": "color",
