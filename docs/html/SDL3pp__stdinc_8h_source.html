@@ -1368,89 +1368,96 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l05350" name="l05350"></a><span class="lineno"> 5350</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l05351" name="l05351"></a><span class="lineno"> 5351</span>  }</div>
 </div>
-<div class="line"><a id="l05352" name="l05352"></a><span class="lineno"> 5352</span>};</div>
+<div class="line"><a id="l05352" name="l05352"></a><span class="lineno"> 5352</span> </div>
+<div class="foldopen" id="foldopen05368" data-start="{" data-end="}">
+<div class="line"><a id="l05368" name="l05368"></a><span class="lineno"><a class="line" href="structSDL_1_1IConv.html#a48e796161ef683fbbfafcb8a8ebdc83a"> 5368</a></span>  <span class="keyword">static</span> <a class="code hl_struct" href="structSDL_1_1IConv.html">IConv</a> <a class="code hl_function" href="structSDL_1_1IConv.html#a48e796161ef683fbbfafcb8a8ebdc83a">open</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> tocode, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> fromcode)</div>
+<div class="line"><a id="l05369" name="l05369"></a><span class="lineno"> 5369</span>  {</div>
+<div class="line"><a id="l05370" name="l05370"></a><span class="lineno"> 5370</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structSDL_1_1IConv.html#a103f9bb7ff2adfebf953c7924c135031">IConv</a>(std::move(tocode), std::move(fromcode));</div>
+<div class="line"><a id="l05371" name="l05371"></a><span class="lineno"> 5371</span>  }</div>
 </div>
-<div class="line"><a id="l05353" name="l05353"></a><span class="lineno"> 5353</span> </div>
-<div class="foldopen" id="foldopen05354" data-start="{" data-end="}">
-<div class="line"><a id="l05354" name="l05354"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gabf8db39e9e9e5a7df5f74a6fc007a02a"> 5354</a></span><span class="keyword">constexpr</span> <a class="code hl_function" href="structSDL_1_1IConvUnsafe.html#a2ca93efd935de9a3c4432e6832b0ea1b">IConvUnsafe::IConvUnsafe</a>(<a class="code hl_struct" href="structSDL_1_1IConv.html">IConv</a>&amp;&amp; other)</div>
-<div class="line"><a id="l05355" name="l05355"></a><span class="lineno"> 5355</span>  : <a class="code hl_struct" href="structSDL_1_1IConvUnsafe.html">IConvUnsafe</a>(other.release())</div>
-<div class="line"><a id="l05356" name="l05356"></a><span class="lineno"> 5356</span>{</div>
-<div class="line"><a id="l05357" name="l05357"></a><span class="lineno"> 5357</span>}</div>
+<div class="line"><a id="l05372" name="l05372"></a><span class="lineno"> 5372</span>};</div>
+</div>
+<div class="line"><a id="l05373" name="l05373"></a><span class="lineno"> 5373</span> </div>
+<div class="foldopen" id="foldopen05374" data-start="{" data-end="}">
+<div class="line"><a id="l05374" name="l05374"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gabf8db39e9e9e5a7df5f74a6fc007a02a"> 5374</a></span><span class="keyword">constexpr</span> <a class="code hl_function" href="structSDL_1_1IConvUnsafe.html#a2ca93efd935de9a3c4432e6832b0ea1b">IConvUnsafe::IConvUnsafe</a>(<a class="code hl_struct" href="structSDL_1_1IConv.html">IConv</a>&amp;&amp; other)</div>
+<div class="line"><a id="l05375" name="l05375"></a><span class="lineno"> 5375</span>  : <a class="code hl_struct" href="structSDL_1_1IConvUnsafe.html">IConvUnsafe</a>(other.release())</div>
+<div class="line"><a id="l05376" name="l05376"></a><span class="lineno"> 5376</span>{</div>
+<div class="line"><a id="l05377" name="l05377"></a><span class="lineno"> 5377</span>}</div>
 </div>
 </div>
-<div class="line"><a id="l05358" name="l05358"></a><span class="lineno"> 5358</span> </div>
-<div class="line"><a id="l05359" name="l05359"></a><span class="lineno"> 5359</span><span class="preprocessor">#ifdef SDL3PP_DOC</span></div>
-<div class="line"><a id="l05360" name="l05360"></a><span class="lineno"> 5360</span> </div>
-<div class="line"><a id="l05364" name="l05364"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gada422bea61b05ed228c4f42e4aea2144"> 5364</a></span><span class="preprocessor">#define SDL_ICONV_ERROR (size_t)-1</span></div>
-<div class="line"><a id="l05365" name="l05365"></a><span class="lineno"> 5365</span> </div>
-<div class="line"><a id="l05369" name="l05369"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga8147462b96bda427f0b41125e645b9ab"> 5369</a></span><span class="preprocessor">#define SDL_ICONV_E2BIG (size_t)-2</span></div>
-<div class="line"><a id="l05370" name="l05370"></a><span class="lineno"> 5370</span> </div>
-<div class="line"><a id="l05374" name="l05374"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gadc8b6997623c449e7ed53a605faa9eb0"> 5374</a></span><span class="preprocessor">#define SDL_ICONV_EILSEQ (size_t)-3</span></div>
-<div class="line"><a id="l05375" name="l05375"></a><span class="lineno"> 5375</span> </div>
-<div class="line"><a id="l05379" name="l05379"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga03d30a2857731df69d31ffa802424a9e"> 5379</a></span><span class="preprocessor">#define SDL_ICONV_EINVAL (size_t)-4</span></div>
+<div class="line"><a id="l05378" name="l05378"></a><span class="lineno"> 5378</span> </div>
+<div class="line"><a id="l05379" name="l05379"></a><span class="lineno"> 5379</span><span class="preprocessor">#ifdef SDL3PP_DOC</span></div>
 <div class="line"><a id="l05380" name="l05380"></a><span class="lineno"> 5380</span> </div>
-<div class="line"><a id="l05381" name="l05381"></a><span class="lineno"> 5381</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DOC</span></div>
-<div class="line"><a id="l05382" name="l05382"></a><span class="lineno"> 5382</span> </div>
-<div class="foldopen" id="foldopen05404" data-start="{" data-end="}">
-<div class="line"><a id="l05404" name="l05404"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a"> 5404</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryOwnPtr.html#gad344fd7da4e765054e86e182363639c7">OwnPtr&lt;char&gt;</a> <a class="code hl_function" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a">iconv_string</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> tocode,</div>
-<div class="line"><a id="l05405" name="l05405"></a><span class="lineno"> 5405</span>                                 <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> fromcode,</div>
-<div class="line"><a id="l05406" name="l05406"></a><span class="lineno"> 5406</span>                                 <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> inbuf,</div>
-<div class="line"><a id="l05407" name="l05407"></a><span class="lineno"> 5407</span>                                 <span class="keywordtype">size_t</span> inbytesleft)</div>
-<div class="line"><a id="l05408" name="l05408"></a><span class="lineno"> 5408</span>{</div>
-<div class="line"><a id="l05409" name="l05409"></a><span class="lineno"> 5409</span>  <span class="keywordflow">return</span> <a class="code hl_typedef" href="group__CategoryOwnPtr.html#gad344fd7da4e765054e86e182363639c7">OwnPtr&lt;char&gt;</a>{SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft)};</div>
-<div class="line"><a id="l05410" name="l05410"></a><span class="lineno"> 5410</span>}</div>
+<div class="line"><a id="l05384" name="l05384"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gada422bea61b05ed228c4f42e4aea2144"> 5384</a></span><span class="preprocessor">#define SDL_ICONV_ERROR (size_t)-1</span></div>
+<div class="line"><a id="l05385" name="l05385"></a><span class="lineno"> 5385</span> </div>
+<div class="line"><a id="l05389" name="l05389"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga8147462b96bda427f0b41125e645b9ab"> 5389</a></span><span class="preprocessor">#define SDL_ICONV_E2BIG (size_t)-2</span></div>
+<div class="line"><a id="l05390" name="l05390"></a><span class="lineno"> 5390</span> </div>
+<div class="line"><a id="l05394" name="l05394"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gadc8b6997623c449e7ed53a605faa9eb0"> 5394</a></span><span class="preprocessor">#define SDL_ICONV_EILSEQ (size_t)-3</span></div>
+<div class="line"><a id="l05395" name="l05395"></a><span class="lineno"> 5395</span> </div>
+<div class="line"><a id="l05399" name="l05399"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga03d30a2857731df69d31ffa802424a9e"> 5399</a></span><span class="preprocessor">#define SDL_ICONV_EINVAL (size_t)-4</span></div>
+<div class="line"><a id="l05400" name="l05400"></a><span class="lineno"> 5400</span> </div>
+<div class="line"><a id="l05401" name="l05401"></a><span class="lineno"> 5401</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DOC</span></div>
+<div class="line"><a id="l05402" name="l05402"></a><span class="lineno"> 5402</span> </div>
+<div class="foldopen" id="foldopen05424" data-start="{" data-end="}">
+<div class="line"><a id="l05424" name="l05424"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a"> 5424</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryOwnPtr.html#gad344fd7da4e765054e86e182363639c7">OwnPtr&lt;char&gt;</a> <a class="code hl_function" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a">iconv_string</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> tocode,</div>
+<div class="line"><a id="l05425" name="l05425"></a><span class="lineno"> 5425</span>                                 <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> fromcode,</div>
+<div class="line"><a id="l05426" name="l05426"></a><span class="lineno"> 5426</span>                                 <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> inbuf,</div>
+<div class="line"><a id="l05427" name="l05427"></a><span class="lineno"> 5427</span>                                 <span class="keywordtype">size_t</span> inbytesleft)</div>
+<div class="line"><a id="l05428" name="l05428"></a><span class="lineno"> 5428</span>{</div>
+<div class="line"><a id="l05429" name="l05429"></a><span class="lineno"> 5429</span>  <span class="keywordflow">return</span> <a class="code hl_typedef" href="group__CategoryOwnPtr.html#gad344fd7da4e765054e86e182363639c7">OwnPtr&lt;char&gt;</a>{SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft)};</div>
+<div class="line"><a id="l05430" name="l05430"></a><span class="lineno"> 5430</span>}</div>
 </div>
-<div class="line"><a id="l05411" name="l05411"></a><span class="lineno"> 5411</span> </div>
-<div class="line"><a id="l05412" name="l05412"></a><span class="lineno"> 5412</span><span class="preprocessor">#ifdef SDL3PP_DOC</span></div>
-<div class="line"><a id="l05413" name="l05413"></a><span class="lineno"> 5413</span> </div>
-<div class="foldopen" id="foldopen05426" data-start="" data-end="">
-<div class="line"><a id="l05426" name="l05426"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga773e5f83e392495ad8abab8d71aa84c6"> 5426</a></span><span class="preprocessor">#define SDL_iconv_utf8_locale(S)                                               \</span></div>
-<div class="line"><a id="l05427" name="l05427"></a><span class="lineno"> 5427</span><span class="preprocessor">  SDL_iconv_string(&quot;&quot;, &quot;UTF-8&quot;, S, SDL_strlen(S) + 1)</span></div>
+<div class="line"><a id="l05431" name="l05431"></a><span class="lineno"> 5431</span> </div>
+<div class="line"><a id="l05432" name="l05432"></a><span class="lineno"> 5432</span><span class="preprocessor">#ifdef SDL3PP_DOC</span></div>
+<div class="line"><a id="l05433" name="l05433"></a><span class="lineno"> 5433</span> </div>
+<div class="foldopen" id="foldopen05446" data-start="" data-end="">
+<div class="line"><a id="l05446" name="l05446"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga773e5f83e392495ad8abab8d71aa84c6"> 5446</a></span><span class="preprocessor">#define SDL_iconv_utf8_locale(S)                                               \</span></div>
+<div class="line"><a id="l05447" name="l05447"></a><span class="lineno"> 5447</span><span class="preprocessor">  SDL_iconv_string(&quot;&quot;, &quot;UTF-8&quot;, S, SDL_strlen(S) + 1)</span></div>
 </div>
-<div class="line"><a id="l05428" name="l05428"></a><span class="lineno"> 5428</span> </div>
-<div class="foldopen" id="foldopen05441" data-start="" data-end="">
-<div class="line"><a id="l05441" name="l05441"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga59cd43c02306558671fe05c23284ab3b"> 5441</a></span><span class="preprocessor">#define SDL_iconv_utf8_ucs2(S)                                                 \</span></div>
-<div class="line"><a id="l05442" name="l05442"></a><span class="lineno"> 5442</span><span class="preprocessor">  (Uint16*)SDL_iconv_string(&quot;UCS-2&quot;, &quot;UTF-8&quot;, S, SDL_strlen(S) + 1)</span></div>
+<div class="line"><a id="l05448" name="l05448"></a><span class="lineno"> 5448</span> </div>
+<div class="foldopen" id="foldopen05461" data-start="" data-end="">
+<div class="line"><a id="l05461" name="l05461"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga59cd43c02306558671fe05c23284ab3b"> 5461</a></span><span class="preprocessor">#define SDL_iconv_utf8_ucs2(S)                                                 \</span></div>
+<div class="line"><a id="l05462" name="l05462"></a><span class="lineno"> 5462</span><span class="preprocessor">  (Uint16*)SDL_iconv_string(&quot;UCS-2&quot;, &quot;UTF-8&quot;, S, SDL_strlen(S) + 1)</span></div>
 </div>
-<div class="line"><a id="l05443" name="l05443"></a><span class="lineno"> 5443</span> </div>
-<div class="foldopen" id="foldopen05456" data-start="" data-end="">
-<div class="line"><a id="l05456" name="l05456"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gacdced7c8985d280d87e659f583a5479e"> 5456</a></span><span class="preprocessor">#define SDL_iconv_utf8_ucs4(S)                                                 \</span></div>
-<div class="line"><a id="l05457" name="l05457"></a><span class="lineno"> 5457</span><span class="preprocessor">  (Uint32*)SDL_iconv_string(&quot;UCS-4&quot;, &quot;UTF-8&quot;, S, SDL_strlen(S) + 1)</span></div>
+<div class="line"><a id="l05463" name="l05463"></a><span class="lineno"> 5463</span> </div>
+<div class="foldopen" id="foldopen05476" data-start="" data-end="">
+<div class="line"><a id="l05476" name="l05476"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gacdced7c8985d280d87e659f583a5479e"> 5476</a></span><span class="preprocessor">#define SDL_iconv_utf8_ucs4(S)                                                 \</span></div>
+<div class="line"><a id="l05477" name="l05477"></a><span class="lineno"> 5477</span><span class="preprocessor">  (Uint32*)SDL_iconv_string(&quot;UCS-4&quot;, &quot;UTF-8&quot;, S, SDL_strlen(S) + 1)</span></div>
 </div>
-<div class="line"><a id="l05458" name="l05458"></a><span class="lineno"> 5458</span> </div>
-<div class="foldopen" id="foldopen05471" data-start="" data-end="">
-<div class="line"><a id="l05471" name="l05471"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gafaf3cc7fc7c497cbd3f16ddcd85a8fb5"> 5471</a></span><span class="preprocessor">#define SDL_iconv_wchar_utf8(S)                                                \</span></div>
-<div class="line"><a id="l05472" name="l05472"></a><span class="lineno"> 5472</span><span class="preprocessor">  SDL_iconv_string(                                                            \</span></div>
-<div class="line"><a id="l05473" name="l05473"></a><span class="lineno"> 5473</span><span class="preprocessor">    &quot;UTF-8&quot;, &quot;WCHAR_T&quot;, (char*)S, (SDL_wcslen(S) + 1) * sizeof(wchar_t))</span></div>
+<div class="line"><a id="l05478" name="l05478"></a><span class="lineno"> 5478</span> </div>
+<div class="foldopen" id="foldopen05491" data-start="" data-end="">
+<div class="line"><a id="l05491" name="l05491"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#gafaf3cc7fc7c497cbd3f16ddcd85a8fb5"> 5491</a></span><span class="preprocessor">#define SDL_iconv_wchar_utf8(S)                                                \</span></div>
+<div class="line"><a id="l05492" name="l05492"></a><span class="lineno"> 5492</span><span class="preprocessor">  SDL_iconv_string(                                                            \</span></div>
+<div class="line"><a id="l05493" name="l05493"></a><span class="lineno"> 5493</span><span class="preprocessor">    &quot;UTF-8&quot;, &quot;WCHAR_T&quot;, (char*)S, (SDL_wcslen(S) + 1) * sizeof(wchar_t))</span></div>
 </div>
-<div class="line"><a id="l05474" name="l05474"></a><span class="lineno"> 5474</span> </div>
-<div class="line"><a id="l05475" name="l05475"></a><span class="lineno"> 5475</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DOC</span></div>
-<div class="line"><a id="l05476" name="l05476"></a><span class="lineno"> 5476</span> </div>
-<div class="foldopen" id="foldopen05494" data-start="{" data-end="}">
-<div class="line"><a id="l05494" name="l05494"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga5eff841be311c6243e4c36bc358e017f"> 5494</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryStdinc.html#ga5eff841be311c6243e4c36bc358e017f">size_mul_check_overflow</a>(<span class="keywordtype">size_t</span> a, <span class="keywordtype">size_t</span> b, <span class="keywordtype">size_t</span>* ret)</div>
-<div class="line"><a id="l05495" name="l05495"></a><span class="lineno"> 5495</span>{</div>
-<div class="line"><a id="l05496" name="l05496"></a><span class="lineno"> 5496</span>  <span class="keywordflow">return</span> SDL_size_mul_check_overflow(a, b, ret);</div>
-<div class="line"><a id="l05497" name="l05497"></a><span class="lineno"> 5497</span>}</div>
+<div class="line"><a id="l05494" name="l05494"></a><span class="lineno"> 5494</span> </div>
+<div class="line"><a id="l05495" name="l05495"></a><span class="lineno"> 5495</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DOC</span></div>
+<div class="line"><a id="l05496" name="l05496"></a><span class="lineno"> 5496</span> </div>
+<div class="foldopen" id="foldopen05514" data-start="{" data-end="}">
+<div class="line"><a id="l05514" name="l05514"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga5eff841be311c6243e4c36bc358e017f"> 5514</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryStdinc.html#ga5eff841be311c6243e4c36bc358e017f">size_mul_check_overflow</a>(<span class="keywordtype">size_t</span> a, <span class="keywordtype">size_t</span> b, <span class="keywordtype">size_t</span>* ret)</div>
+<div class="line"><a id="l05515" name="l05515"></a><span class="lineno"> 5515</span>{</div>
+<div class="line"><a id="l05516" name="l05516"></a><span class="lineno"> 5516</span>  <span class="keywordflow">return</span> SDL_size_mul_check_overflow(a, b, ret);</div>
+<div class="line"><a id="l05517" name="l05517"></a><span class="lineno"> 5517</span>}</div>
 </div>
-<div class="line"><a id="l05498" name="l05498"></a><span class="lineno"> 5498</span> </div>
-<div class="foldopen" id="foldopen05516" data-start="{" data-end="}">
-<div class="line"><a id="l05516" name="l05516"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga6a8cffac163d32a70c2a38ed43b8aed6"> 5516</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryStdinc.html#ga6a8cffac163d32a70c2a38ed43b8aed6">size_add_check_overflow</a>(<span class="keywordtype">size_t</span> a, <span class="keywordtype">size_t</span> b, <span class="keywordtype">size_t</span>* ret)</div>
-<div class="line"><a id="l05517" name="l05517"></a><span class="lineno"> 5517</span>{</div>
-<div class="line"><a id="l05518" name="l05518"></a><span class="lineno"> 5518</span>  <span class="keywordflow">return</span> SDL_size_add_check_overflow(a, b, ret);</div>
-<div class="line"><a id="l05519" name="l05519"></a><span class="lineno"> 5519</span>}</div>
+<div class="line"><a id="l05518" name="l05518"></a><span class="lineno"> 5518</span> </div>
+<div class="foldopen" id="foldopen05536" data-start="{" data-end="}">
+<div class="line"><a id="l05536" name="l05536"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga6a8cffac163d32a70c2a38ed43b8aed6"> 5536</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryStdinc.html#ga6a8cffac163d32a70c2a38ed43b8aed6">size_add_check_overflow</a>(<span class="keywordtype">size_t</span> a, <span class="keywordtype">size_t</span> b, <span class="keywordtype">size_t</span>* ret)</div>
+<div class="line"><a id="l05537" name="l05537"></a><span class="lineno"> 5537</span>{</div>
+<div class="line"><a id="l05538" name="l05538"></a><span class="lineno"> 5538</span>  <span class="keywordflow">return</span> SDL_size_add_check_overflow(a, b, ret);</div>
+<div class="line"><a id="l05539" name="l05539"></a><span class="lineno"> 5539</span>}</div>
 </div>
-<div class="line"><a id="l05520" name="l05520"></a><span class="lineno"> 5520</span> </div>
-<div class="line"><a id="l05536" name="l05536"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7"> 5536</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a> = SDL_FunctionPointer;</div>
-<div class="line"><a id="l05537" name="l05537"></a><span class="lineno"> 5537</span> </div>
-<div class="line"><a id="l05538" name="l05538"></a><span class="lineno"> 5538</span><span class="preprocessor">#pragma region impl</span></div>
 <div class="line"><a id="l05540" name="l05540"></a><span class="lineno"> 5540</span> </div>
-<div class="line"><a id="l05541" name="l05541"></a><span class="lineno"> 5541</span><span class="keyword">inline</span> <span class="keywordtype">void</span> PtrDeleter::operator()(<span class="keywordtype">void</span>* ptr)<span class="keyword"> const </span>{ SDL_free(ptr); }</div>
-<div class="line"><a id="l05542" name="l05542"></a><span class="lineno"> 5542</span> </div>
-<div class="line"><a id="l05543" name="l05543"></a><span class="lineno"> 5543</span><span class="preprocessor">#pragma endregion impl</span></div>
-<div class="line"><a id="l05544" name="l05544"></a><span class="lineno"> 5544</span> </div>
-<div class="line"><a id="l05545" name="l05545"></a><span class="lineno"> 5545</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l05546" name="l05546"></a><span class="lineno"> 5546</span> </div>
-<div class="line"><a id="l05547" name="l05547"></a><span class="lineno"> 5547</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_STDINC_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l05556" name="l05556"></a><span class="lineno"><a class="line" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7"> 5556</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a> = SDL_FunctionPointer;</div>
+<div class="line"><a id="l05557" name="l05557"></a><span class="lineno"> 5557</span> </div>
+<div class="line"><a id="l05558" name="l05558"></a><span class="lineno"> 5558</span><span class="preprocessor">#pragma region impl</span></div>
+<div class="line"><a id="l05560" name="l05560"></a><span class="lineno"> 5560</span> </div>
+<div class="line"><a id="l05561" name="l05561"></a><span class="lineno"> 5561</span><span class="keyword">inline</span> <span class="keywordtype">void</span> PtrDeleter::operator()(<span class="keywordtype">void</span>* ptr)<span class="keyword"> const </span>{ SDL_free(ptr); }</div>
+<div class="line"><a id="l05562" name="l05562"></a><span class="lineno"> 5562</span> </div>
+<div class="line"><a id="l05563" name="l05563"></a><span class="lineno"> 5563</span><span class="preprocessor">#pragma endregion impl</span></div>
+<div class="line"><a id="l05564" name="l05564"></a><span class="lineno"> 5564</span> </div>
+<div class="line"><a id="l05565" name="l05565"></a><span class="lineno"> 5565</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l05566" name="l05566"></a><span class="lineno"> 5566</span> </div>
+<div class="line"><a id="l05567" name="l05567"></a><span class="lineno"> 5567</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_STDINC_H_ */</span><span class="preprocessor"></span></div>
 </div>
 </div>
 <div class="ttc" id="aclassSDL_1_1OwnArray_html"><div class="ttname"><a href="classSDL_1_1OwnArray.html">SDL::OwnArray</a></div><div class="ttdoc">Base class for SDL memory allocated array wrap.</div><div class="ttdef"><b>Definition</b> SDL3pp_ownPtr.h:43</div></div>
@@ -1504,7 +1511,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryStdinc_html_ga32b6d922e9310ca993a82b84e692e8a5"><div class="ttname"><a href="group__CategoryStdinc.html#ga32b6d922e9310ca993a82b84e692e8a5">SDL::strrev</a></div><div class="ttdeci">char * strrev(char *str)</div><div class="ttdoc">Reverse a string's contents.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:2758</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga37191be89f79920285c912c0544150e8"><div class="ttname"><a href="group__CategoryStdinc.html#ga37191be89f79920285c912c0544150e8">SDL::strncasecmp</a></div><div class="ttdeci">int strncasecmp(StringParam str1, StringParam str2, size_t maxlen)</div><div class="ttdoc">Compare two UTF-8 strings, case-insensitively, up to a number of bytes.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:3415</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga37591dc3dcb6bb89de19a61acdec4ef3"><div class="ttname"><a href="group__CategoryStdinc.html#ga37591dc3dcb6bb89de19a61acdec4ef3">SDL::min</a></div><div class="ttdeci">constexpr T min(T x, U y)</div><div class="ttdoc">Return the lesser of two values.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1601</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_ga379a3713730374c4737a2bfb2004fab7"><div class="ttname"><a href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">SDL::FunctionPointer</a></div><div class="ttdeci">SDL_FunctionPointer FunctionPointer</div><div class="ttdoc">A generic function pointer.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5536</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_ga379a3713730374c4737a2bfb2004fab7"><div class="ttname"><a href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">SDL::FunctionPointer</a></div><div class="ttdeci">SDL_FunctionPointer FunctionPointer</div><div class="ttdoc">A generic function pointer.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5556</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga3869ab21242a2a6fb41be41b382d2af2"><div class="ttname"><a href="group__CategoryStdinc.html#ga3869ab21242a2a6fb41be41b382d2af2">SDL::strtoul</a></div><div class="ttdeci">unsigned long strtoul(StringParam str, char **endp, int base)</div><div class="ttdoc">Parse an unsigned long from a string.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:3254</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga3c4d5430375fa896b58aa1e5a23cd30f"><div class="ttname"><a href="group__CategoryStdinc.html#ga3c4d5430375fa896b58aa1e5a23cd30f">SDL::isdigit</a></div><div class="ttdeci">int isdigit(int x)</div><div class="ttdoc">Report if a character is a numeric digit.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1729</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga3d946d3193f4374bec115170e4e5152a"><div class="ttname"><a href="group__CategoryStdinc.html#ga3d946d3193f4374bec115170e4e5152a">SDL::Seconds</a></div><div class="ttdeci">std::chrono::duration&lt; float &gt; Seconds</div><div class="ttdoc">Duration in seconds (float).</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:211</div></div>
@@ -1525,10 +1532,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryStdinc_html_ga592054168270da087e8630cac0df2530"><div class="ttname"><a href="group__CategoryStdinc.html#ga592054168270da087e8630cac0df2530">SDL::sscanf</a></div><div class="ttdeci">int sscanf(StringParam text, SDL_SCANF_FORMAT_STRING const char *fmt,...)</div><div class="ttdoc">This works exactly like sscanf() but doesn't require access to a C runtime.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:3585</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga598ecc44c77a20ab4de3a96eda46ea76"><div class="ttname"><a href="group__CategoryStdinc.html#ga598ecc44c77a20ab4de3a96eda46ea76">SDL::strlcpy</a></div><div class="ttdeci">size_t strlcpy(char *dst, StringParam src, size_t maxlen)</div><div class="ttdoc">Copy a string.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:2626</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga5a6487beb5a07d1110c8afe1fe030446"><div class="ttname"><a href="group__CategoryStdinc.html#ga5a6487beb5a07d1110c8afe1fe030446">SDL::memset</a></div><div class="ttdeci">void * memset(void *dst, int c, size_t len)</div><div class="ttdoc">Initialize all bytes of buffer of memory to a specific value.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:2074</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_ga5eff841be311c6243e4c36bc358e017f"><div class="ttname"><a href="group__CategoryStdinc.html#ga5eff841be311c6243e4c36bc358e017f">SDL::size_mul_check_overflow</a></div><div class="ttdeci">bool size_mul_check_overflow(size_t a, size_t b, size_t *ret)</div><div class="ttdoc">Multiply two integers, checking for overflow.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5494</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_ga5eff841be311c6243e4c36bc358e017f"><div class="ttname"><a href="group__CategoryStdinc.html#ga5eff841be311c6243e4c36bc358e017f">SDL::size_mul_check_overflow</a></div><div class="ttdeci">bool size_mul_check_overflow(size_t a, size_t b, size_t *ret)</div><div class="ttdoc">Multiply two integers, checking for overflow.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5514</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga6325f645ab936554e7aaa2e4d977d9d7"><div class="ttname"><a href="group__CategoryStdinc.html#ga6325f645ab936554e7aaa2e4d977d9d7">SDL::GetOriginalMemoryFunctions</a></div><div class="ttdeci">void GetOriginalMemoryFunctions(malloc_func *malloc_func, calloc_func *calloc_func, realloc_func *realloc_func, free_func *free_func)</div><div class="ttdoc">Get the original set of SDL memory functions.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:604</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga63d50d9f0b71b04e9b038f0bc71e54c3"><div class="ttname"><a href="group__CategoryStdinc.html#ga63d50d9f0b71b04e9b038f0bc71e54c3">SDL::strcmp</a></div><div class="ttdeci">int strcmp(StringParam str1, StringParam str2)</div><div class="ttdoc">Compare two null-terminated UTF-8 strings.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:3309</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_ga6a8cffac163d32a70c2a38ed43b8aed6"><div class="ttname"><a href="group__CategoryStdinc.html#ga6a8cffac163d32a70c2a38ed43b8aed6">SDL::size_add_check_overflow</a></div><div class="ttdeci">bool size_add_check_overflow(size_t a, size_t b, size_t *ret)</div><div class="ttdoc">Add two integers, checking for overflow.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5516</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_ga6a8cffac163d32a70c2a38ed43b8aed6"><div class="ttname"><a href="group__CategoryStdinc.html#ga6a8cffac163d32a70c2a38ed43b8aed6">SDL::size_add_check_overflow</a></div><div class="ttdeci">bool size_add_check_overflow(size_t a, size_t b, size_t *ret)</div><div class="ttdoc">Add two integers, checking for overflow.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5536</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga6ca0851c2d9980695748c979e2d15608"><div class="ttname"><a href="group__CategoryStdinc.html#ga6ca0851c2d9980695748c979e2d15608">SDL::uitoa</a></div><div class="ttdeci">char * uitoa(unsigned int value, char *str, int radix)</div><div class="ttdoc">Convert an unsigned integer into a string.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:3074</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga6cfca7e593d97a56d7fca043af3ac2ce"><div class="ttname"><a href="group__CategoryStdinc.html#ga6cfca7e593d97a56d7fca043af3ac2ce">SDL::pow</a></div><div class="ttdeci">double pow(double x, double y)</div><div class="ttdoc">Raise x to the power y</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:4839</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga6ff81eceb17060ed3c3c7c32a14bf7b8"><div class="ttname"><a href="group__CategoryStdinc.html#ga6ff81eceb17060ed3c3c7c32a14bf7b8">SDL::isprint</a></div><div class="ttdeci">int isprint(int x)</div><div class="ttdoc">Report if a character is &quot;printable&quot;.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:1833</div></div>
@@ -1613,7 +1620,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryStdinc_html_gae3c9f70ddeadaecb2afeee2b3be34733"><div class="ttname"><a href="group__CategoryStdinc.html#gae3c9f70ddeadaecb2afeee2b3be34733">SDL::aligned_alloc</a></div><div class="ttdeci">void * aligned_alloc(size_t alignment, size_t size)</div><div class="ttdoc">Allocate memory aligned to a specific alignment.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:694</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gae51ea510815eaec3a9b288754a805206"><div class="ttname"><a href="group__CategoryStdinc.html#gae51ea510815eaec3a9b288754a805206">SDL::GetNumAllocations</a></div><div class="ttdeci">int GetNumAllocations()</div><div class="ttdoc">Get the number of outstanding (unfreed) allocations.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:727</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gae6517052066ab937273e6a89c7d1eca8"><div class="ttname"><a href="group__CategoryStdinc.html#gae6517052066ab937273e6a89c7d1eca8">SDL::rand_bits</a></div><div class="ttdeci">Uint32 rand_bits()</div><div class="ttdoc">Generate 32 pseudo-random bits.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:3927</div></div>
-<div class="ttc" id="agroup__CategoryStdinc_html_gae765b6ec212ab3234f6645eb3c53978a"><div class="ttname"><a href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a">SDL::iconv_string</a></div><div class="ttdeci">OwnPtr&lt; char &gt; iconv_string(StringParam tocode, StringParam fromcode, StringParam inbuf, size_t inbytesleft)</div><div class="ttdoc">Helper function to convert a string's encoding in one call.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5404</div></div>
+<div class="ttc" id="agroup__CategoryStdinc_html_gae765b6ec212ab3234f6645eb3c53978a"><div class="ttname"><a href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a">SDL::iconv_string</a></div><div class="ttdeci">OwnPtr&lt; char &gt; iconv_string(StringParam tocode, StringParam fromcode, StringParam inbuf, size_t inbytesleft)</div><div class="ttdoc">Helper function to convert a string's encoding in one call.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5424</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gaeb64b2b465e001720dce40bacec1b937"><div class="ttname"><a href="group__CategoryStdinc.html#gaeb64b2b465e001720dce40bacec1b937">SDL::trunc</a></div><div class="ttdeci">double trunc(double x)</div><div class="ttdoc">Truncate x to an integer.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:4550</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gaee263ca33e533bf8acdd33b20e2323cf"><div class="ttname"><a href="group__CategoryStdinc.html#gaee263ca33e533bf8acdd33b20e2323cf">SDL::ltoa</a></div><div class="ttdeci">char * ltoa(long value, char *str, int radix)</div><div class="ttdoc">Convert a long integer into a string.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:3105</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gaeebfd8bdc9570592d8c1a5083f5d6893"><div class="ttname"><a href="group__CategoryStdinc.html#gaeebfd8bdc9570592d8c1a5083f5d6893">SDL::wcslcat</a></div><div class="ttdeci">size_t wcslcat(wchar_t *dst, const wchar_t *src, size_t maxlen)</div><div class="ttdoc">Concatenate wide strings.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:2312</div></div>
@@ -1664,6 +1671,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="astructSDL_1_1IConv_html_a103f9bb7ff2adfebf953c7924c135031"><div class="ttname"><a href="structSDL_1_1IConv.html#a103f9bb7ff2adfebf953c7924c135031">SDL::IConv::IConv</a></div><div class="ttdeci">constexpr IConv()</div><div class="ttdoc">Constructs an empty IConv.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5296</div></div>
 <div class="ttc" id="astructSDL_1_1IConv_html_a23f9084da3e9fe0f5d60a56f76a789e7"><div class="ttname"><a href="structSDL_1_1IConv.html#a23f9084da3e9fe0f5d60a56f76a789e7">SDL::IConv::IConv</a></div><div class="ttdeci">constexpr IConv(SDL_iconv_data_t *resource)</div><div class="ttdoc">Constructs from the underlying resource.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5304</div></div>
 <div class="ttc" id="astructSDL_1_1IConv_html_a415e459b6982ba314e98d67addc90096"><div class="ttname"><a href="structSDL_1_1IConv.html#a415e459b6982ba314e98d67addc90096">SDL::IConv::~IConv</a></div><div class="ttdeci">~IConv()</div><div class="ttdoc">Frees up resource when object goes out of scope.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5342</div></div>
+<div class="ttc" id="astructSDL_1_1IConv_html_a48e796161ef683fbbfafcb8a8ebdc83a"><div class="ttname"><a href="structSDL_1_1IConv.html#a48e796161ef683fbbfafcb8a8ebdc83a">SDL::IConv::open</a></div><div class="ttdeci">static IConv open(StringParam tocode, StringParam fromcode)</div><div class="ttdoc">This function allocates a context for the specified character set conversion.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5368</div></div>
 <div class="ttc" id="astructSDL_1_1IConv_html_ad00682796994d4371e2a8efb913b1b26"><div class="ttname"><a href="structSDL_1_1IConv.html#ad00682796994d4371e2a8efb913b1b26">SDL::IConv::IConv</a></div><div class="ttdeci">IConv(StringParam tocode, StringParam fromcode)</div><div class="ttdoc">This function allocates a context for the specified character set conversion.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5334</div></div>
 <div class="ttc" id="astructSDL_1_1IConv_html_add45eb34659b553bbbc0754dd8afaf32"><div class="ttname"><a href="structSDL_1_1IConv.html#add45eb34659b553bbbc0754dd8afaf32">SDL::IConv::IConv</a></div><div class="ttdeci">constexpr IConv(IConv &amp;&amp;other)</div><div class="ttdoc">Move constructor.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5314</div></div>
 <div class="ttc" id="astructSDL_1_1IConv_html_ade0023f2b839ca4a255e09eeb6e4fd99"><div class="ttname"><a href="structSDL_1_1IConv.html#ade0023f2b839ca4a255e09eeb6e4fd99">SDL::IConv::operator=</a></div><div class="ttdeci">IConv &amp; operator=(IConv other)</div><div class="ttdoc">Assignment operator.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:5347</div></div>

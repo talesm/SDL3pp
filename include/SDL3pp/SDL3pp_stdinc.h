@@ -5349,6 +5349,26 @@ struct IConv : IConvUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @returns a handle that must be freed with IConvRef.close, or
+   *          SDL_ICONV_ERROR on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IConvRef.iconv
+   * @sa IConvRef.close
+   * @sa iconv_string
+   */
+  static IConv open(StringParam tocode, StringParam fromcode)
+  {
+    return IConv(std::move(tocode), std::move(fromcode));
+  }
 };
 
 constexpr IConvUnsafe::IConvUnsafe(IConv&& other)

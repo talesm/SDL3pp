@@ -43478,7 +43478,8 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "SDL_iconv_open"
+                "sourceName": "SDL_iconv_open",
+                "proto": false
               }
             ],
             "~IConv": {
@@ -43505,6 +43506,27 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "open": {
+              "doc": "This function allocates a context for the specified character set\nconversion.\n\n@param tocode The target character encoding, must not be nullptr.\n@param fromcode The source character encoding, must not be nullptr.\n@returns a handle that must be freed with IConvRef.close, or\n         SDL_ICONV_ERROR on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa IConvRef.iconv\n@sa IConvRef.close\n@sa iconv_string",
+              "name": "open",
+              "kind": "function",
+              "type": "IConv",
+              "parameters": [
+                {
+                  "name": "tocode",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "fromcode",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_iconv_open",
+              "hints": {
+                "body": "return IConv(tocode, fromcode);"
+              },
+              "static": true
             }
           },
           "hints": {

@@ -5430,8 +5430,9 @@ const transform = {
           uniqueName: "IConv",
           type: "SDL_iconv_data_t",
           free: "SDL_iconv_close",
+          ctors: ["SDL_iconv_open"],
           entries: {
-            "SDL_iconv_open": "ctor",
+            "SDL_iconv_open": { name: "open" },
             "SDL_iconv": "function",
             "SDL_iconv_close": { name: "close" },
           }
