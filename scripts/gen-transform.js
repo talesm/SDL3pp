@@ -1874,9 +1874,10 @@ const transform = {
       },
       resources: {
         "SDL_IOStream": {
+          ctors: ["SDL_IOFromFile", "SDL_OpenIO"],
           entries: {
-            "SDL_IOFromFile": "ctor",
-            "SDL_OpenIO": "ctor",
+            "SDL_IOFromFile": { name: "FromFile" },
+            "SDL_OpenIO": { name: "Open" },
             "SDL_CloseIO": {
               name: "Close",
               hints: { mayFail: true },
@@ -2119,14 +2120,22 @@ const transform = {
       },
       transform: {
         "SDL_IOFromMem": {
+          name: "IOStream.FromMem",
           type: "IOStream",
+          static: true,
           parameters: [{ type: "TargetBytes", name: "mem" }]
         },
         "SDL_IOFromConstMem": {
+          name: "IOStream.FromConstMem",
           type: "IOStream",
+          static: true,
           parameters: [{ type: "SourceBytes", name: "mem" }]
         },
-        "SDL_IOFromDynamicMem": { type: "IOStream" },
+        "SDL_IOFromDynamicMem": {
+          name: "IOStream.FromDynamicMem",
+          type: "IOStream",
+          static: true,
+        },
         "SDL_LoadFile": {
           type: "StringResult",
           parameters: [{}]

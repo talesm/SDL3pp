@@ -816,6 +816,21 @@ function expandResources(sourceEntries, file, context) {
     }
     /** @type {Dict<ApiEntryTransform|"ctor">} */
     const transformedToCtors = {};
+    for (const sourceName of resourceEntry.ctors ?? []) {
+      const entry = subEntries[sourceName];
+      if (typeof entry === "string" || Array.isArray(entry) || !entry.name) {
+        system.warn(`${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`);
+        continue;
+      }
+      delete subEntries[sourceName];
+      transformedToCtors[sourceName] = { ...entry, name: "ctor", link: entry };
+      entry.name = `${uniqueName}.${entry.name}`;
+      entry.static = true;
+      // @ts-ignore
+      const parameters = (entry.parameters ?? sourceEntries[sourceName]?.parameters).map(p => typeof p == "string" ? p : p.name) ?? [];
+      entry.hints = { body: `return ${uniqueName}(${parameters.join(", ")});` };
+    }
+    // const staticCreateFunctions = !resourceEntry.noStaticCtors;
     for (const [sourceName, entry] of Object.entries(subEntries)) {
       if (typeof entry === "string") {
         if (entry === "ctor") {

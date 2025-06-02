@@ -1609,7 +1609,7 @@ struct IOStream : IOStreamUnsafe
    * their own IOStreamRef implementation. If you just need an IOStreamRef to
    * read/write a common data source, you should use the built-in
    * implementations in SDL, like IOStream.IOStream(StringParam,StringParam) or
-   * IOFromMem(), etc.
+   * IOStream.FromMem(), etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -1626,9 +1626,9 @@ struct IOStream : IOStreamUnsafe
    *
    * @sa IOStreamRef.Close
    * @sa SDL_INIT_INTERFACE
-   * @sa IOFromConstMem
+   * @sa IOStream.FromConstMem
    * @sa IOStream.IOStream
-   * @sa IOFromMem
+   * @sa IOStream.FromMem
    */
   IOStream(const IOStreamInterface& iface, void* userdata)
     : IOStream(CheckError(SDL_OpenIO(&iface, userdata)))
@@ -1647,6 +1647,242 @@ struct IOStream : IOStreamUnsafe
   {
     reset(other.release());
     return *this;
+  }
+
+  /**
+   * Use this function to create a new IOStreamRef structure for reading from
+   * and/or writing to a named file.
+   *
+   * The `mode` string is treated roughly the same as in a call to the C
+   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
+   * scenes.
+   *
+   * Available `mode` strings:
+   *
+   * - "r": Open a file for reading. The file must exist.
+   * - "w": Create an empty file for writing. If a file with the same name
+   *   already exists its content is erased and the file is treated as a new
+   *   empty file.
+   * - "a": Append to a file. Writing operations append data at the end of the
+   *   file. The file is created if it does not exist.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   * - "a+": Open a file for reading and appending. All writing operations are
+   *   performed at the end of the file, protecting the previous content to be
+   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+   *   anywhere in the file for reading, but writing operations will move it
+   *   back to the end of file. The file is created if it does not exist.
+   *
+   * **NOTE**: In order to open a file as a binary file, a "b" character has to
+   * be included in the `mode` string. This additional "b" character can either
+   * be appended at the end of the string (thus making the following compound
+   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
+   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
+   * Additional characters may follow the sequence, although they should have no
+   * effect. For example, "t" is sometimes appended to make explicit the file is
+   * a text file.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * In Android, IOStream.IOStream() can be used to open content:// URIs. As a
+   * fallback, IOStream.IOStream() will transparently open a matching filename
+   * in the app's `assets`.
+   *
+   * Closing the IOStreamRef will close SDL's internal file handle.
+   *
+   * The following properties may be set at creation time by SDL:
+   *
+   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
+   *   to a win32 `HANDLE`, that this IOStreamRef is using to access the
+   *   filesystem. If the program isn't running on Windows, or SDL used some
+   *   other method to access the filesystem, this property will not be set.
+   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   *   stdio `FILE *`, that this IOStreamRef is using to access the filesystem.
+   *   If SDL used some other method to access the filesystem, this property
+   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
+   *   than your app, trying to use this pointer will almost certainly result in
+   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   your app with the same compiler and settings to avoid it.
+   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   *   IOStreamRef is using to access the filesystem.
+   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
+   *   to an Android NDK `AAsset *`, that this IOStreamRef is using to access
+   *   the filesystem. If SDL used some other method to access the filesystem,
+   *   this property will not be set.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @returns a pointer to the IOStreamRef structure that is created or nullptr
+   * on failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.Close
+   * @sa IOStreamRef.Flush
+   * @sa IOStreamRef.Read
+   * @sa IOStreamRef.Seek
+   * @sa IOStreamRef.Tell
+   * @sa IOStreamRef.Write
+   */
+  static IOStreamRef FromFile(StringParam file, StringParam mode)
+  {
+    return IOStream(std::move(file), std::move(mode));
+  }
+
+  /**
+   * Use this function to prepare a read-write memory buffer for use with
+   * IOStreamRef.
+   *
+   * This function sets up an IOStreamRef struct based on a memory area of a
+   * certain size, for both read and write access.
+   *
+   * This memory buffer is not copied by the IOStreamRef; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to make sure the IOStreamRef never writes to the memory
+   * buffer, you should use IOStream.FromConstMem() with a read-only buffer of
+   * memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
+   *   was passed to this function.
+   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * @param mem a buffer to feed an IOStreamRef stream.
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStream.FromConstMem
+   * @sa IOStreamRef.Close
+   * @sa IOStreamRef.Flush
+   * @sa IOStreamRef.Read
+   * @sa IOStreamRef.Seek
+   * @sa IOStreamRef.Tell
+   * @sa IOStreamRef.Write
+   */
+  static IOStream FromMem(TargetBytes mem)
+  {
+    return IOStream{SDL_IOFromMem(mem.data, mem.size_bytes)};
+  }
+
+  /**
+   * Use this function to prepare a read-only memory buffer for use with
+   * IOStreamRef.
+   *
+   * This function sets up an IOStreamRef struct based on a memory area of a
+   * certain size. It assumes the memory area is not writable.
+   *
+   * Attempting to write to this IOStreamRef stream will report an error
+   * without writing to the memory buffer.
+   *
+   * This memory buffer is not copied by the IOStreamRef; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to write to a memory buffer, you should use IOStream.FromMem()
+   * with a writable buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
+   *   was passed to this function.
+   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * @param mem a read-only buffer to feed an IOStreamRef stream.
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStream.FromMem
+   * @sa IOStreamRef.Close
+   * @sa IOStreamRef.Read
+   * @sa IOStreamRef.Seek
+   * @sa IOStreamRef.Tell
+   */
+  static IOStream FromConstMem(SourceBytes mem)
+  {
+    return IOStream{SDL_IOFromConstMem(mem.data, mem.size_bytes)};
+  }
+
+  /**
+   * Use this function to create an IOStreamRef that is backed by dynamically
+   * allocated memory.
+   *
+   * This supports the following properties to provide access to the memory and
+   * control over allocations:
+   *
+   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
+   *   memory of the stream. This can be set to nullptr to transfer ownership of
+   *   the memory to the application, which should free the memory with
+   *   free(). If this is done, the next operation on the stream must be
+   *   IOStreamRef.Close().
+   * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   *   multiples of this size, defaulting to 1024.
+   *
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.Close
+   * @sa IOStreamRef.Read
+   * @sa IOStreamRef.Seek
+   * @sa IOStreamRef.Tell
+   * @sa IOStreamRef.Write
+   */
+  static IOStream FromDynamicMem() { return IOStream{SDL_IOFromDynamicMem()}; }
+
+  /**
+   * Create a custom IOStreamRef.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own IOStreamRef implementation. If you just need an IOStreamRef to
+   * read/write a common data source, you should use the built-in
+   * implementations in SDL, like IOStream.IOStream() or IOStream.FromMem(),
+   * etc.
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this IOStreamRef, initialized
+   *              using SDL_INIT_INTERFACE().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @returns a pointer to the allocated memory on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOStreamRef.Close
+   * @sa SDL_INIT_INTERFACE
+   * @sa IOStream.FromConstMem
+   * @sa IOStream.IOStream
+   * @sa IOStream.FromMem
+   */
+  static IOStreamRef Open(const IOStreamInterface& iface, void* userdata)
+  {
+    return IOStream(iface, userdata);
   }
 };
 
@@ -1679,122 +1915,6 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
   SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER;
 
 } // namespace prop::IOStream
-
-/**
- * Use this function to prepare a read-write memory buffer for use with
- * IOStreamRef.
- *
- * This function sets up an IOStreamRef struct based on a memory area of a
- * certain size, for both read and write access.
- *
- * This memory buffer is not copied by the IOStreamRef; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
- *
- * If you need to make sure the IOStreamRef never writes to the memory
- * buffer, you should use IOFromConstMem() with a read-only buffer of
- * memory instead.
- *
- * The following properties will be set at creation time by SDL:
- *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
- *   was passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
- *   that was passed to this function.
- *
- * @param mem a buffer to feed an IOStreamRef stream.
- * @returns a valid IOStream on success.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOFromConstMem
- * @sa IOStreamRef.Close
- * @sa IOStreamRef.Flush
- * @sa IOStreamRef.Read
- * @sa IOStreamRef.Seek
- * @sa IOStreamRef.Tell
- * @sa IOStreamRef.Write
- */
-inline IOStream IOFromMem(TargetBytes mem)
-{
-  return IOStream{SDL_IOFromMem(mem.data, mem.size_bytes)};
-}
-
-/**
- * Use this function to prepare a read-only memory buffer for use with
- * IOStreamRef.
- *
- * This function sets up an IOStreamRef struct based on a memory area of a
- * certain size. It assumes the memory area is not writable.
- *
- * Attempting to write to this IOStreamRef stream will report an error
- * without writing to the memory buffer.
- *
- * This memory buffer is not copied by the IOStreamRef; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
- *
- * If you need to write to a memory buffer, you should use IOFromMem()
- * with a writable buffer of memory instead.
- *
- * The following properties will be set at creation time by SDL:
- *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
- *   was passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
- *   that was passed to this function.
- *
- * @param mem a read-only buffer to feed an IOStreamRef stream.
- * @returns a valid IOStream on success.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOFromMem
- * @sa IOStreamRef.Close
- * @sa IOStreamRef.Read
- * @sa IOStreamRef.Seek
- * @sa IOStreamRef.Tell
- */
-inline IOStream IOFromConstMem(SourceBytes mem)
-{
-  return IOStream{SDL_IOFromConstMem(mem.data, mem.size_bytes)};
-}
-
-/**
- * Use this function to create an IOStreamRef that is backed by dynamically
- * allocated memory.
- *
- * This supports the following properties to provide access to the memory and
- * control over allocations:
- *
- * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
- *   memory of the stream. This can be set to nullptr to transfer ownership of
- *   the memory to the application, which should free the memory with
- *   free(). If this is done, the next operation on the stream must be
- *   IOStreamRef.Close().
- * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
- *   multiples of this size, defaulting to 1024.
- *
- * @returns a valid IOStream on success.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOStreamRef.Close
- * @sa IOStreamRef.Read
- * @sa IOStreamRef.Seek
- * @sa IOStreamRef.Tell
- * @sa IOStreamRef.Write
- */
-inline IOStream IOFromDynamicMem() { return IOStream{SDL_IOFromDynamicMem()}; }
 
 /**
  * Load all the data from a file path.

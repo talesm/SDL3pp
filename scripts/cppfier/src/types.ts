@@ -147,6 +147,18 @@ export interface ApiResource extends ApiEntryTransform {
   pointerType?: string;
 
   /**
+   * The source name of constructors
+   * 
+   * Anything marked as "ctor" is automatically added here
+   */
+  ctors?: string[]
+
+  /**
+   * If true does not generate static functions delegating to constructors.
+   */
+  noStaticCtors?: boolean;
+
+  /**
    * If true it prepend an alias to DetachedResource
    */
   aliasDetached?: boolean
