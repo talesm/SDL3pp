@@ -1518,7 +1518,6 @@ const transform = {
       }
     },
     "SDL_hints.h": {
-      enableException: true,
       enumerations: {
         "SDL_HintPriority": {
           prefix: "SDL_HINT_",
@@ -1566,7 +1565,6 @@ const transform = {
     },
     "SDL_init.h": {
       ignoreEntries: ["SDL_InitSubSystem"],
-      enableException: true,
       namespacesMap: {
         "SDL_PROP_APP_METADATA_": "prop::appMetaData",
       },
@@ -2149,7 +2147,6 @@ const transform = {
       }
     },
     "SDL_keyboard.h": {
-      enableException: true,
       namespacesMap: {
         "SDL_PROP_TEXTINPUT_": "prop::TextInput"
       },
@@ -3132,7 +3129,6 @@ const transform = {
       }
     },
     "SDL_mouse.h": {
-      enableException: true,
       enumerations: {
         "SDL_SystemCursor": {
           prefix: "SDL_SYSTEM_CURSOR_",
@@ -3353,7 +3349,6 @@ const transform = {
       }
     },
     "SDL_properties.h": {
-      enableException: true,
       includeAfter: {
         "__begin": [
           { "name": "PropertyType" },
@@ -4180,7 +4175,6 @@ const transform = {
       }
     },
     "SDL_render.h": {
-      enableException: true,
       ignoreEntries: [
         "SDL_LockTextureToSurface",
         "SDL_RenderDebugTextFormat",
@@ -5961,7 +5955,6 @@ const transform = {
       },
     },
     "SDL_surface.h": {
-      enableException: true,
       includeAfter: {
         "__begin": {
           name: "SurfaceLock",
@@ -7261,7 +7254,6 @@ const transform = {
       }
     },
     "SDL_video.h": {
-      enableException: true,
       includeAfter: {
         "__begin": [
           {
@@ -7958,7 +7950,6 @@ const transform = {
       ignoreEntries: [
         "IMG_LoadBMP_IO"
       ],
-      enableException: true,
       includeAfter: {
         "__begin": {
           "name": "SDL3PP_ENABLE_IMAGE"
@@ -8253,7 +8244,6 @@ const transform = {
         "TTF_DestroyRendererTextEngine",
         "TTF_DestroyGPUTextEngine"
       ],
-      enableException: true,
       resources: {
         "TTF_Font": {
           entries: {
