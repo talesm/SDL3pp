@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Renderer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Renderer Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryRender.html">2D Accelerated Rendering</a></div></div></div>
 </div><!--header-->
@@ -417,6 +418,18 @@ constexpr SDL_Renderer *&#160;</td><td class="memItemRight" valign="bottom"><b>o
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac881cd2f4819ddc2badd978d269cce3b" id="r_ac881cd2f4819ddc2badd978d269cce3b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Renderer.html">Renderer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Renderer.html#ac881cd2f4819ddc2badd978d269cce3b">Create</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> window, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name)</td></tr>
+<tr class="memdesc:ac881cd2f4819ddc2badd978d269cce3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a 2D rendering context for a window.  <br /></td></tr>
+<tr class="separator:ac881cd2f4819ddc2badd978d269cce3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a617f0d9aa14b9790b2b401d217283db4" id="r_a617f0d9aa14b9790b2b401d217283db4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Renderer.html">Renderer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Renderer.html#a617f0d9aa14b9790b2b401d217283db4">CreateWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
+<tr class="memdesc:a617f0d9aa14b9790b2b401d217283db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a 2D rendering context for a window, with the specified properties.  <br /></td></tr>
+<tr class="separator:a617f0d9aa14b9790b2b401d217283db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0899e109f034eac86dcea4eb68cfdbb" id="r_ae0899e109f034eac86dcea4eb68cfdbb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Renderer.html">Renderer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Renderer.html#ae0899e109f034eac86dcea4eb68cfdbb">CreateSoftware</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> surface)</td></tr>
+<tr class="memdesc:ae0899e109f034eac86dcea4eb68cfdbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a 2D software rendering context for a surface.  <br /></td></tr>
+<tr class="separator:ae0899e109f034eac86dcea4eb68cfdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1RendererRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1RendererRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1RendererRef.html">SDL::RendererRef</a></td></tr>
@@ -631,6 +644,165 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererRef.html#afd60c4500edfe9b81f8672a5b2c3c14d" title="Destroy the rendering context for a window and free all associated textures.">RendererRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac881cd2f4819ddc2badd978d269cce3b" name="ac881cd2f4819ddc2badd978d269cce3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac881cd2f4819ddc2badd978d269cce3b">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Renderer.html">Renderer</a> SDL::Renderer::Create </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td>
+          <td class="paramname"><em>window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If you want a specific renderer, you can specify its name here. A list of available renderers can be obtained by calling <a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a" title="Use this function to get the name of a built in 2D rendering driver.">GetRenderDriver()</a> multiple times, with indices from 0 to <a class="el" href="group__CategoryRender.html#gaeb8dc812e83b8aee07c7bc37d233d599" title="Get the number of 2D rendering drivers available for the current display.">GetNumRenderDrivers()</a>-1. If you don't need a specific renderer, specify nullptr and <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will attempt to choose the best option for you, based on what is available on the user's system.</p>
+<p>If <code>name</code> is a comma-separated list, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will try each name, in the order listed, until one succeeds or all of them fail.</p>
+<p>By default the rendering size matches the window size in pixels, but you can call <a class="el" href="structSDL_1_1RendererRef.html#a1006f54f033e2de0b77e6c9992c9f939" title="Set a device-independent resolution and presentation mode for rendering.">RendererRef.SetLogicalPresentation()</a> to change the content size and scaling options.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>the window where rendering is displayed. </td></tr>
+    <tr><td class="paramname">name</td><td>the name of the rendering driver to initialize, or nullptr to let <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> choose one. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid rendering context or nullptr if there was an error; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RendererRef.html#afd60c4500edfe9b81f8672a5b2c3c14d" title="Destroy the rendering context for a window and free all associated textures.">RendererRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="group__CategoryRender.html#gaeb8dc812e83b8aee07c7bc37d233d599" title="Get the number of 2D rendering drivers available for the current display.">GetNumRenderDrivers</a> </dd>
+<dd>
+<a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a" title="Use this function to get the name of a built in 2D rendering driver.">GetRenderDriver</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RendererRef.html#a47d88b674da35bfd7b069503d4d1f5fc" title="Get the name of a renderer.">RendererRef.GetName</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae0899e109f034eac86dcea4eb68cfdbb" name="ae0899e109f034eac86dcea4eb68cfdbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0899e109f034eac86dcea4eb68cfdbb">&#9670;&#160;</a></span>CreateSoftware()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Renderer.html">Renderer</a> SDL::Renderer::CreateSoftware </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td>
+          <td class="paramname"><em>surface</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Two other API which can be used to create <a class="el" href="structSDL_1_1RendererRef.html" title="A structure representing rendering state.">RendererRef</a>: <a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer()</a> and <a class="el" href="group__CategoryRender.html#ga6f561280a8311744b01c0615614072e4" title="Create a window and default renderer.">CreateWindowAndRenderer()</a>. These can <em>also</em> create a software renderer, but they are intended to be used with an <a class="el" href="structSDL_1_1WindowRef.html" title="Represents a handle to a window.">WindowRef</a> as the final destination and not an <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">surface</td><td>the <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure representing the surface where rendering is done. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid rendering context or nullptr if there was an error; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererRef.html#afd60c4500edfe9b81f8672a5b2c3c14d" title="Destroy the rendering context for a window and free all associated textures.">RendererRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="a617f0d9aa14b9790b2b401d217283db4" name="a617f0d9aa14b9790b2b401d217283db4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a617f0d9aa14b9790b2b401d217283db4">&#9670;&#160;</a></span>CreateWithProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Renderer.html">Renderer</a> SDL::Renderer::CreateWithProperties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td>
+          <td class="paramname"><em>props</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>These are the supported properties:</p>
+<ul>
+<li><code>prop::Renderer.CREATE_NAME_STRING</code>: the name of the rendering driver to use, if a specific one is desired</li>
+<li><code>prop::Renderer.CREATE_WINDOW_POINTER</code>: the window where rendering is displayed, required if this isn't a software renderer using a surface</li>
+<li><code>prop::Renderer.CREATE_SURFACE_POINTER</code>: the surface where rendering is displayed, if you want a software renderer without a window</li>
+<li><code>prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER</code>: an <a class="el" href="classSDL_1_1Colorspace.html" title="Colorspace definitions.">Colorspace</a> value describing the colorspace for output to the display, defaults to COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB colorspace, but values can go beyond 1.0 and float (linear) format textures can be used for HDR content.</li>
+<li><code>prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER</code>: non-zero if you want present synchronized with the refresh rate. This property can take any value that is supported by <a class="el" href="structSDL_1_1RendererRef.html#ac171882b3b9e8029a03d38cd07f6e459" title="Toggle VSync of the given renderer.">RendererRef.SetVSync()</a> for the renderer.</li>
+</ul>
+<p>With the vulkan renderer:</p>
+<ul>
+<li><code>prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER</code>: the VkInstance to use with the renderer, optional.</li>
+<li><code>prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER</code>: the VkSurfaceKHR to use with the renderer, optional.</li>
+<li><code>prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER</code>: the VkPhysicalDevice to use with the renderer, optional.</li>
+<li><code>prop::Renderer.CREATE_VULKAN_DEVICE_POINTER</code>: the VkDevice to use with the renderer, optional.</li>
+<li><code>prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER</code>: the queue family index used for rendering.</li>
+<li><code>prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER</code>: the queue family index used for presentation.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid rendering context or nullptr if there was an error; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a5bfe865718adfd9f1059350a31fa4a81" title="Constructs from the underlying resource.">Properties.Properties</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Renderer.html#a69a1af6cf20f279e0a703748befc0e10" title="Constructs an empty Renderer.">Renderer.Renderer</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RendererRef.html#afd60c4500edfe9b81f8672a5b2c3c14d" title="Destroy the rendering context for a window and free all associated textures.">RendererRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RendererRef.html#a47d88b674da35bfd7b069503d4d1f5fc" title="Get the name of a renderer.">RendererRef.GetName</a> </dd></dl>
 
 </div>
 </div>

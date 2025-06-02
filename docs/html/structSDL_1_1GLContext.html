@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1GLContext-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::GLContext Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryVideo.html">Display and Window Management</a></div></div></div>
 </div><!--header-->
@@ -221,6 +222,12 @@ constexpr SDL_GLContextState *&#160;</td><td class="memItemRight" valign="bottom
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aae87db37939b5fe9dacdb6cdaf47ad12" id="r_aae87db37939b5fe9dacdb6cdaf47ad12"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1GLContext.html">GLContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContext.html#aae87db37939b5fe9dacdb6cdaf47ad12">Create</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> window)</td></tr>
+<tr class="memdesc:aae87db37939b5fe9dacdb6cdaf47ad12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenGL context for an OpenGL window, and make it current.  <br /></td></tr>
+<tr class="separator:aae87db37939b5fe9dacdb6cdaf47ad12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1GLContextRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1GLContextRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1GLContextRef.html">SDL::GLContextRef</a></td></tr>
@@ -273,6 +280,47 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GLContextRef.html#ae6a5799e48b87da2a47ab7de6e994660" title="Delete an OpenGL context.">GLContextRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1GLContextRef.html#ae585d2c2a6a1b2a5afe8b5b87d4e2cce" title="Set up an OpenGL context for rendering into an OpenGL window.">GLContextRef.MakeCurrent</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aae87db37939b5fe9dacdb6cdaf47ad12" name="aae87db37939b5fe9dacdb6cdaf47ad12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae87db37939b5fe9dacdb6cdaf47ad12">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1GLContext.html">GLContext</a> SDL::GLContext::Create </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a>&#160;</td>
+          <td class="paramname"><em>window</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Windows users new to OpenGL should note that, for historical reasons, GL functions added after OpenGL version 1.1 are not available by default. Those functions must be loaded at run-time, either with an OpenGL extension-handling library or with <a class="el" href="group__CategoryVideo.html#ga5d7565ba20ed7ab90e2799a55185ca0d" title="Get an OpenGL function by name.">GL_GetProcAddress()</a> and its related functions.</p>
+<p><a class="el" href="structSDL_1_1GLContextRef.html" title="An opaque handle to an OpenGL context.">GLContextRef</a> is opaque to the application.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>the window to associate with the context. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the OpenGL context associated with <code>window</code> or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GLContextRef.html#ae6a5799e48b87da2a47ab7de6e994660" title="Delete an OpenGL context.">GLContextRef.Destroy</a> </dd>

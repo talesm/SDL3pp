@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Mutex-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Mutex Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryMutex.html">Thread Synchronization Primitives</a></div></div></div>
 </div><!--header-->
@@ -223,6 +224,12 @@ constexpr SDL_Mutex *&#160;</td><td class="memItemRight" valign="bottom"><b>oper
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a71443f08ef2457078fdc48010a0adc59" id="r_a71443f08ef2457078fdc48010a0adc59"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Mutex.html">Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Mutex.html#a71443f08ef2457078fdc48010a0adc59">Create</a> ()</td></tr>
+<tr class="memdesc:a71443f08ef2457078fdc48010a0adc59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new mutex.  <br /></td></tr>
+<tr class="separator:a71443f08ef2457078fdc48010a0adc59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1MutexRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1MutexRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1MutexRef.html">SDL::MutexRef</a></td></tr>
@@ -263,6 +270,44 @@ Additional Inherited Members</h2></td></tr>
 <p>Calls to <a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490" title="Lock the mutex.">MutexRef.Lock()</a> will not return while the mutex is locked by another thread. See <a class="el" href="structSDL_1_1MutexRef.html#a132045cdbcb356faa6c57be6ff1f5d2c" title="Try to lock a mutex without blocking.">MutexRef.TryLock()</a> to attempt to lock without blocking.</p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> mutexes are reentrant.</p>
 <dl class="section post"><dt>Postcondition</dt><dd>the initialized and unlocked mutex or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MutexRef.html#ad26fc2ee4e61667a0a046e0d75cb5953" title="Destroy a mutex created with Mutex.Mutex().">MutexRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490" title="Lock the mutex.">MutexRef.Lock</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1MutexRef.html#a132045cdbcb356faa6c57be6ff1f5d2c" title="Try to lock a mutex without blocking.">MutexRef.TryLock</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1MutexRef.html#aa6c15ceb8700d3fb796a02fa77a5b576" title="Unlock the mutex.">MutexRef.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a71443f08ef2457078fdc48010a0adc59" name="a71443f08ef2457078fdc48010a0adc59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71443f08ef2457078fdc48010a0adc59">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Mutex.html">Mutex</a> SDL::Mutex::Create </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>All newly-created mutexes begin in the <em>unlocked</em> state.</p>
+<p>Calls to <a class="el" href="structSDL_1_1MutexRef.html#aee56f4bcb72708c15e2f5cddd76d3490" title="Lock the mutex.">MutexRef.Lock()</a> will not return while the mutex is locked by another thread. See <a class="el" href="structSDL_1_1MutexRef.html#a132045cdbcb356faa6c57be6ff1f5d2c" title="Try to lock a mutex without blocking.">MutexRef.TryLock()</a> to attempt to lock without blocking.</p>
+<p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> mutexes are reentrant.</p>
+<dl class="section return"><dt>Returns</dt><dd>the initialized and unlocked mutex or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1MutexRef.html#ad26fc2ee4e61667a0a046e0d75cb5953" title="Destroy a mutex created with Mutex.Mutex().">MutexRef.Destroy</a> </dd>
 <dd>

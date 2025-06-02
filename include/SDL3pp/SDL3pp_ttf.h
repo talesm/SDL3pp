@@ -2014,6 +2014,101 @@ struct Font : FontUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Create a font from a file, using a specified point size.
+   *
+   * Some .fon fonts will have several sizes embedded in the file, so the point
+   * size becomes the index of choosing which size. If the value is too high,
+   * the last indexed size will be the default.
+   *
+   * When done with the returned FontRef, use FontRef.Close() to dispose of it.
+   *
+   * @param file path to font file.
+   * @param ptsize point size to use for the newly-opened font.
+   * @returns a valid FontRef on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
+   */
+  static Font Open(StringParam file, float ptsize)
+  {
+    return Font(std::move(file), ptsize);
+  }
+
+  /**
+   * Create a font from an IOStreamRef, using a specified point size.
+   *
+   * Some .fon fonts will have several sizes embedded in the file, so the point
+   * size becomes the index of choosing which size. If the value is too high,
+   * the last indexed size will be the default.
+   *
+   * If `closeio` is true, `src` will be automatically closed once the font is
+   * closed. Otherwise you should keep `src` open until the font is closed.
+   *
+   * When done with the returned FontRef, use FontRef.Close() to dispose of it.
+   *
+   * @param src an IOStreamRef to provide a font file's data.
+   * @param ptsize point size to use for the newly-opened font.
+   * @returns a valid FontRef on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
+   */
+  static Font Open(IOStreamRef src, float ptsize) { return Font(src, ptsize); }
+
+  /**
+   * Create a font with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
+   *   IOStreamRef isn't being used. This is required if
+   *   `prop::Font.CREATE_IOSTREAM_POINTER` and
+   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+   * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamRef containing the
+   *   font to be opened. This should not be closed until the font is closed.
+   *   This is required if `prop::Font.CREATE_FILENAME_STRING` and
+   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+   * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
+   *   for the beginning of the font, defaults to 0.
+   * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the
+   *   font should also close the associated IOStreamRef.
+   * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
+   *   fonts will have several sizes embedded in the file, so the point size
+   *   becomes the index of choosing which size. If the value is too high, the
+   *   last indexed size will be the default.
+   * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the
+   *   font contains multiple font faces.
+   * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use
+   *   for font rendering, defaults to
+   *   `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.
+   * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for
+   *   font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`
+   *   if set, or 72 otherwise.
+   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional FontRef that, if
+   * set, will be used as the font data source and the initial size and style of
+   *   the new font.
+   *
+   * @param props the properties to use.
+   * @returns a valid FontRef on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa FontRef.Close
+   */
+  static Font OpenWithProperties(PropertiesRef props) { return Font(props); }
 };
 
 constexpr FontUnsafe::FontUnsafe(Font&& other)
@@ -3453,6 +3548,28 @@ struct Text : TextUnsafe
   {
     reset(other.release());
     return *this;
+  }
+
+  /**
+   * Create a text object from UTF-8 text and a text engine.
+   *
+   * @param engine the text engine to use when creating the text object, may be
+   *               nullptr.
+   * @param font the font to render with.
+   * @param text the text to use, in UTF-8 encoding.
+   * @returns a TextRef object or nullptr on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               font and text engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TextRef.Destroy
+   */
+  static Text Create(TextEngineRef engine, FontRef font, std::string_view text)
+  {
+    return Text(engine, font, text);
   }
 };
 

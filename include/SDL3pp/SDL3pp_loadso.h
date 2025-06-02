@@ -239,6 +239,25 @@ struct SharedObject : SharedObjectUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Dynamically load a shared object.
+   *
+   * @param sofile a system-dependent name of the object file.
+   * @returns an opaque pointer to the object handle or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObjectRef.LoadFunction
+   * @sa SharedObjectRef.Unload
+   */
+  static SharedObject LoadObject(StringParam sofile)
+  {
+    return SharedObject(std::move(sofile));
+  }
 };
 
 constexpr SharedObjectUnsafe::SharedObjectUnsafe(SharedObject&& other)

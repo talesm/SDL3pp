@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Thread-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Thread Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryThread.html">Thread Management</a></div></div></div>
 </div><!--header-->
@@ -236,12 +237,21 @@ constexpr SDL_Thread *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a8c4558e5f822a99852a172156b86e5be" id="r_a8c4558e5f822a99852a172156b86e5be"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Thread.html">Thread</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Thread.html#a8c4558e5f822a99852a172156b86e5be">Create</a> (<a class="el" href="group__CategoryThread.html#gadba78156436b2ebd2964937c09368291">ThreadFunction</a> fn, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> name, void *data)</td></tr>
+<tr class="memdesc:a8c4558e5f822a99852a172156b86e5be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new thread with a default stack size.  <br /></td></tr>
+<tr class="separator:a8c4558e5f822a99852a172156b86e5be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae781f85d395de6f37fe43200a8e47e5" id="r_aae781f85d395de6f37fe43200a8e47e5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Thread.html">Thread</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Thread.html#aae781f85d395de6f37fe43200a8e47e5">CreateWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
+<tr class="memdesc:aae781f85d395de6f37fe43200a8e47e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new thread with with the specified properties.  <br /></td></tr>
+<tr class="separator:aae781f85d395de6f37fe43200a8e47e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_structSDL_1_1ThreadRef"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_structSDL_1_1ThreadRef')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="structSDL_1_1ThreadRef.html">SDL::ThreadRef</a></td></tr>
 <tr class="memitem:aa007e9dc0196c86bde2b06e91d8cab07 inherit pub_static_methods_structSDL_1_1ThreadRef" id="r_aa007e9dc0196c86bde2b06e91d8cab07"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#aa007e9dc0196c86bde2b06e91d8cab07">SetCurrentPriority</a> (<a class="el" href="group__CategoryThread.html#ga94fa248708fac73a2db5f33a19694db5">ThreadPriority</a> priority)</td></tr>
 <tr class="memdesc:aa007e9dc0196c86bde2b06e91d8cab07 inherit pub_static_methods_structSDL_1_1ThreadRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the priority for the current thread.  <br /></td></tr>
 <tr class="separator:aa007e9dc0196c86bde2b06e91d8cab07 inherit pub_static_methods_structSDL_1_1ThreadRef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1ThreadRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1ThreadRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1ThreadRef.html">SDL::ThreadRef</a></td></tr>
 <tr class="memitem:ad8683086b8ed04f020f2a81f83ace4f7 inherit pro_methods_structSDL_1_1ThreadRef" id="r_ad8683086b8ed04f020f2a81f83ace4f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ThreadRef.html#ad8683086b8ed04f020f2a81f83ace4f7">Detach</a> ()</td></tr>
 <tr class="memdesc:ad8683086b8ed04f020f2a81f83ace4f7 inherit pro_methods_structSDL_1_1ThreadRef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let a thread clean up on exit without intervention.  <br /></td></tr>
@@ -426,6 +436,135 @@ default" which might be wildly different between platforms. x86 Linux generally 
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8c4558e5f822a99852a172156b86e5be" name="a8c4558e5f822a99852a172156b86e5be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c4558e5f822a99852a172156b86e5be">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Thread.html">Thread</a> SDL::Thread::Create </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryThread.html#gadba78156436b2ebd2964937c09368291">ThreadFunction</a>&#160;</td>
+          <td class="paramname"><em>fn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is a convenience function, equivalent to calling <a class="el" href="structSDL_1_1Thread.html#a4754134c719a53a79801202128537ffa" title="Constructs an empty Thread.">Thread.Thread</a> with the following properties set:</p>
+<ul>
+<li><code>prop::thread.CREATE_ENTRY_FUNCTION_POINTER</code>: <code>fn</code></li>
+<li><code>prop::thread.CREATE_NAME_STRING</code>: <code>name</code></li>
+<li><code>prop::thread.CREATE_USERDATA_POINTER</code>: <code>data</code></li>
+</ul>
+<p>Note that this "function" is actually a macro that calls an internal function with two extra parameters not listed here; they are hidden through preprocessor macros and are needed to support various C runtimes at the point of the function call. Language bindings that aren't using the C headers will need to deal with this.</p>
+<p>Usually, apps should just call this function the same way on every platform and let the macros hide the details.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fn</td><td>the ThreadFunction function to call in the new thread. </td></tr>
+    <tr><td class="paramname">name</td><td>the name of the thread. </td></tr>
+    <tr><td class="paramname">data</td><td>a pointer that is passed to <code>fn</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an opaque pointer to the new thread object on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a4754134c719a53a79801202128537ffa" title="Constructs an empty Thread.">Thread.Thread</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait</a> </dd></dl>
+
+</div>
+</div>
+<a id="aae781f85d395de6f37fe43200a8e47e5" name="aae781f85d395de6f37fe43200a8e47e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae781f85d395de6f37fe43200a8e47e5">&#9670;&#160;</a></span>CreateWithProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Thread.html">Thread</a> SDL::Thread::CreateWithProperties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td>
+          <td class="paramname"><em>props</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>These are the supported properties:</p>
+<ul>
+<li><code>prop::thread.CREATE_ENTRY_FUNCTION_POINTER</code>: an ThreadFunction value that will be called at the start of the new thread's life. Required.</li>
+<li><code>prop::thread.CREATE_NAME_STRING</code>: the name of the new thread, which might be available to debuggers. Optional, defaults to nullptr.</li>
+<li><code>prop::thread.CREATE_USERDATA_POINTER</code>: an arbitrary app-defined pointer, which is passed to the entry function on the new thread, as its only parameter. Optional, defaults to nullptr.</li>
+<li><code>prop::thread.CREATE_STACKSIZE_NUMBER</code>: the size, in bytes, of the new thread's stack. Optional, defaults to 0 (system-defined default).</li>
+</ul>
+<p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> makes an attempt to report <code>prop::thread.CREATE_NAME_STRING</code> to the system, so that debuggers can display it. Not all platforms support this.</p>
+<p><a class="el" href="structSDL_1_1Thread.html" title="Handle to an owned thread.">Thread</a> naming is a little complicated: Most systems have very small limits for the string length (Haiku has 32 bytes, Linux currently has 16, Visual C++ 6.0 has <em>nine</em>!), and possibly other arbitrary rules. You'll have to see what happens with your system's debugger. The name should be UTF-8 (but using the naming limits of C identifiers is a better bet). There are no requirements for thread naming conventions, so long as the string is null-terminated UTF-8, but these guidelines are helpful in choosing a name:</p>
+<p><a href="https://stackoverflow.com/questions/149932/naming-conventions-for-threads">https://stackoverflow.com/questions/149932/naming-conventions-for-threads</a></p>
+<p>If a system imposes requirements, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will try to munge the string for it (truncate, etc), but the original string contents will be available from <a class="el" href="structSDL_1_1ThreadRef.html#a99ad3aaee98ff1ea404cef9e4f45ba76" title="Get the thread name as it was specified in Thread.Thread().">ThreadRef.GetName()</a>.</p>
+<p>The size (in bytes) of the new stack can be specified with <code>prop::thread.CREATE_STACKSIZE_NUMBER</code>. Zero means "use the system
+default" which might be wildly different between platforms. x86 Linux generally defaults to eight megabytes, an embedded device might be a few kilobytes instead. You generally need to specify a stack that is a multiple of the system's page size (in many cases, this is 4 kilobytes, but check your system documentation).</p>
+<p>Note that this "function" is actually a macro that calls an internal function with two extra parameters not listed here; they are hidden through preprocessor macros and are needed to support various C runtimes at the point of the function call. Language bindings that aren't using the C headers will need to deal with this.</p>
+<p>The actual symbol in <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> is <code>SDL_CreateThreadWithPropertiesRuntime</code>, so there is no symbol clash, but trying to load an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> shared library and look for "Thread.Thread" will fail.</p>
+<p>Usually, apps should just call this function the same way on every platform and let the macros hide the details.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an opaque pointer to the new thread object on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Thread.html#a4754134c719a53a79801202128537ffa" title="Constructs an empty Thread.">Thread.Thread</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ThreadRef.html#a62f2c9592ebcf33574634fce19cfbdab" title="Wait for a thread to finish.">ThreadRef.Wait</a> </dd></dl>
 
 </div>
 </div>

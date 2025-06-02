@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1RWLock-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::RWLock Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryMutex.html">Thread Synchronization Primitives</a></div></div></div>
 </div><!--header-->
@@ -229,6 +230,12 @@ constexpr SDL_RWLock *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a41ece4523b5f948bb19fcad38adaa254" id="r_a41ece4523b5f948bb19fcad38adaa254"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1RWLock.html">RWLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RWLock.html#a41ece4523b5f948bb19fcad38adaa254">Create</a> ()</td></tr>
+<tr class="memdesc:a41ece4523b5f948bb19fcad38adaa254"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new read/write lock.  <br /></td></tr>
+<tr class="separator:a41ece4523b5f948bb19fcad38adaa254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1RWLockRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1RWLockRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1RWLockRef.html">SDL::RWLockRef</a></td></tr>
@@ -271,6 +278,50 @@ Additional Inherited Members</h2></td></tr>
 <p>Calls to <a class="el" href="structSDL_1_1RWLockRef.html#afc928549ffbc5818d3d7b2c1002bba81" title="Lock the read/write lock for read only operations.">RWLockRef.LockForReading()</a> and <a class="el" href="structSDL_1_1RWLockRef.html#a09e50c3cdd29d0361b2223282c8bc949" title="Lock the read/write lock for write operations.">RWLockRef.LockForWriting</a> will not return while the rwlock is locked <em>for writing</em> by another thread. See <a class="el" href="structSDL_1_1RWLockRef.html#af343cf53707c69b7b4169ff8d479d4c5" title="Try to lock a read/write lock for reading without blocking.">RWLockRef.TryLockForReading()</a> and <a class="el" href="structSDL_1_1RWLockRef.html#a924afb95590d81ba119392dd2be5c845" title="Try to lock a read/write lock for writing without blocking.">RWLockRef.TryLockForWriting()</a> to attempt to lock without blocking.</p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> read/write locks are only recursive for read-only locks! They are not guaranteed to be fair, or provide access in a FIFO manner! They are not guaranteed to favor writers. You may not lock a rwlock for both read-only and write access at the same time from the same thread (so you can't promote your read-only lock to a write lock without unlocking first).</p>
 <dl class="section post"><dt>Postcondition</dt><dd>the initialized and unlocked read/write lock or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockRef.html#a43020c49c4c6b6b1046ec8b886d7afaa" title="Destroy a read/write lock created with RWLock.RWLock().">RWLockRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RWLockRef.html#afc928549ffbc5818d3d7b2c1002bba81" title="Lock the read/write lock for read only operations.">RWLockRef.LockForReading</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RWLockRef.html#a09e50c3cdd29d0361b2223282c8bc949" title="Lock the read/write lock for write operations.">RWLockRef.LockForWriting</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RWLockRef.html#af343cf53707c69b7b4169ff8d479d4c5" title="Try to lock a read/write lock for reading without blocking.">RWLockRef.TryLockForReading</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RWLockRef.html#a924afb95590d81ba119392dd2be5c845" title="Try to lock a read/write lock for writing without blocking.">RWLockRef.TryLockForWriting</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RWLockRef.html#aa712abde57baa181fec0dda90cd36b2f" title="Unlock the read/write lock.">RWLockRef.Unlock</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a41ece4523b5f948bb19fcad38adaa254" name="a41ece4523b5f948bb19fcad38adaa254"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41ece4523b5f948bb19fcad38adaa254">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1RWLock.html">RWLock</a> SDL::RWLock::Create </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A read/write lock is useful for situations where you have multiple threads trying to access a resource that is rarely updated. All threads requesting a read-only lock will be allowed to run in parallel; if a thread requests a write lock, it will be provided exclusive access. This makes it safe for multiple threads to use a resource at the same time if they promise not to change it, and when it has to be changed, the rwlock will serve as a gateway to make sure those changes can be made safely.</p>
+<p>In the right situation, a rwlock can be more efficient than a mutex, which only lets a single thread proceed at a time, even if it won't be modifying the data.</p>
+<p>All newly-created read/write locks begin in the <em>unlocked</em> state.</p>
+<p>Calls to <a class="el" href="structSDL_1_1RWLockRef.html#afc928549ffbc5818d3d7b2c1002bba81" title="Lock the read/write lock for read only operations.">RWLockRef.LockForReading()</a> and <a class="el" href="structSDL_1_1RWLockRef.html#a09e50c3cdd29d0361b2223282c8bc949" title="Lock the read/write lock for write operations.">RWLockRef.LockForWriting</a> will not return while the rwlock is locked <em>for writing</em> by another thread. See <a class="el" href="structSDL_1_1RWLockRef.html#af343cf53707c69b7b4169ff8d479d4c5" title="Try to lock a read/write lock for reading without blocking.">RWLockRef.TryLockForReading()</a> and <a class="el" href="structSDL_1_1RWLockRef.html#a924afb95590d81ba119392dd2be5c845" title="Try to lock a read/write lock for writing without blocking.">RWLockRef.TryLockForWriting()</a> to attempt to lock without blocking.</p>
+<p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> read/write locks are only recursive for read-only locks! They are not guaranteed to be fair, or provide access in a FIFO manner! They are not guaranteed to favor writers. You may not lock a rwlock for both read-only and write access at the same time from the same thread (so you can't promote your read-only lock to a write lock without unlocking first).</p>
+<dl class="section return"><dt>Returns</dt><dd>the initialized and unlocked read/write lock or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RWLockRef.html#a43020c49c4c6b6b1046ec8b886d7afaa" title="Destroy a read/write lock created with RWLock.RWLock().">RWLockRef.Destroy</a> </dd>
 <dd>

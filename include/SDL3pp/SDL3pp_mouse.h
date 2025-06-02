@@ -390,6 +390,108 @@ struct Cursor : CursorUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Create a cursor using the specified bitmap data and mask (in MSB format).
+   *
+   * `mask` has to be in MSB (Most Significant Bit) format.
+   *
+   * The cursor width (`w`) must be a multiple of 8 bits.
+   *
+   * The cursor is created in black and white according to the following:
+   *
+   * - data=0, mask=1: white
+   * - data=1, mask=1: black
+   * - data=0, mask=0: transparent
+   * - data=1, mask=0: inverted color if possible, black if not.
+   *
+   * Cursors created with this function must be freed with CursorRef.Destroy().
+   *
+   * If you want to have a color cursor, or create your cursor from an
+   * SurfaceRef, you should use Cursor.Cursor(). Alternately, you can
+   * hide the cursor and draw your own as part of your game's rendering, but it
+   * will be bound to the framerate.
+   *
+   * Also, Cursor.Cursor() is available, which provides several
+   * readily-available system cursors to pick from.
+   *
+   * @param data the color value for each pixel of the cursor.
+   * @param mask the mask value for each pixel of the cursor.
+   * @param w the width of the cursor.
+   * @param h the height of the cursor.
+   * @param hot_x the x-axis offset from the left of the cursor image to the
+   *              mouse x position, in the range of 0 to `w` - 1.
+   * @param hot_y the y-axis offset from the top of the cursor image to the
+   *              mouse y position, in the range of 0 to `h` - 1.
+   * @returns a new cursor with the specified parameters on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Cursor.Cursor
+   * @sa Cursor.Cursor
+   * @sa CursorRef.Destroy
+   * @sa SetCursor
+   */
+  static Cursor Create(const Uint8* data,
+                       const Uint8* mask,
+                       int w,
+                       int h,
+                       int hot_x,
+                       int hot_y)
+  {
+    return Cursor(data, mask, w, h, hot_x, hot_y);
+  }
+
+  /**
+   * Create a color cursor.
+   *
+   * If this function is passed a surface with alternate representations, the
+   * surface will be interpreted as the content to be used for 100% display
+   * scale, and the alternate representations will be used for high DPI
+   * situations. For example, if the original surface is 32x32, then on a 2x
+   * macOS display or 200% display scale on Windows, a 64x64 version of the
+   * image will be used, if available. If a matching version of the image isn't
+   * available, the closest larger size image will be downscaled to the
+   * appropriate size and be used instead, if available. Otherwise, the closest
+   * smaller image will be upscaled and be used instead.
+   *
+   * @param surface an SurfaceRef structure representing the cursor image.
+   * @param hot_x the x position of the cursor hot spot.
+   * @param hot_y the y position of the cursor hot spot.
+   * @returns the new cursor on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Cursor.Cursor
+   * @sa Cursor.Cursor
+   * @sa CursorRef.Destroy
+   * @sa SetCursor
+   */
+  static Cursor CreateColor(SurfaceRef surface, int hot_x, int hot_y)
+  {
+    return Cursor(surface, hot_x, hot_y);
+  }
+
+  /**
+   * Create a system cursor.
+   *
+   * @param id an SystemCursor enum value.
+   * @returns a cursor on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CursorRef.Destroy
+   */
+  static Cursor CreateSystem(SystemCursor id) { return Cursor(id); }
 };
 
 constexpr CursorUnsafe::CursorUnsafe(Cursor&& other)

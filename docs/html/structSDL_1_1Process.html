@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Process-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Process Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryProcess.html">Process Control</a></div></div></div>
 </div><!--header-->
@@ -243,6 +244,15 @@ constexpr SDL_Process *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ad1aa8b4ceab0a0d9aae7841f32852c30" id="r_ad1aa8b4ceab0a0d9aae7841f32852c30"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Process.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Process.html#ad1aa8b4ceab0a0d9aae7841f32852c30">Create</a> (const char *const *args, bool pipe_stdio)</td></tr>
+<tr class="memdesc:ad1aa8b4ceab0a0d9aae7841f32852c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new process.  <br /></td></tr>
+<tr class="separator:ad1aa8b4ceab0a0d9aae7841f32852c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ab886a9c3d13f62299f606fab03c409" id="r_a6ab886a9c3d13f62299f606fab03c409"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Process.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Process.html#a6ab886a9c3d13f62299f606fab03c409">CreateWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a> props)</td></tr>
+<tr class="memdesc:a6ab886a9c3d13f62299f606fab03c409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new process with the specified properties.  <br /></td></tr>
+<tr class="separator:a6ab886a9c3d13f62299f606fab03c409"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1ProcessRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1ProcessRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1ProcessRef.html">SDL::ProcessRef</a></td></tr>
@@ -379,6 +389,136 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ProcessRef.html#ad885ab1d694d7b6e5d18bb0b2de088c8" title="Get the properties associated with a process.">ProcessRef.GetProperties</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#a3095592c81bcc60c5184fee150e9266b" title="Get the IOStreamRef associated with process standard input.">ProcessRef.GetInput</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e" title="Stop a process.">ProcessRef.Kill</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#ae2211b6a1888aa6181a99cc54db4b9e5" title="Wait for a process to finish.">ProcessRef.Wait</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1" title="Destroy a previously created process object.">ProcessRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad1aa8b4ceab0a0d9aae7841f32852c30" name="ad1aa8b4ceab0a0d9aae7841f32852c30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1aa8b4ceab0a0d9aae7841f32852c30">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Process.html">Process</a> SDL::Process::Create </td>
+          <td>(</td>
+          <td class="paramtype">const char *const *&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pipe_stdio</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The path to the executable is supplied in args[0]. args[1..N] are additional arguments passed on the command line of the new process, and the argument list should be terminated with a nullptr, e.g.:</p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *args[] = { <span class="stringliteral">&quot;myprogram&quot;</span>, <span class="stringliteral">&quot;argument&quot;</span>, <span class="keyword">nullptr</span> };</div>
+</div><!-- fragment --><p>Setting pipe_stdio to true is equivalent to setting <code>prop::process.CREATE_STDIN_NUMBER</code> and <code>prop::process.CREATE_STDOUT_NUMBER</code> to <code>PROCESS_STDIO_APP</code>, and will allow the use of <a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read()</a> or <a class="el" href="structSDL_1_1ProcessRef.html#a3095592c81bcc60c5184fee150e9266b" title="Get the IOStreamRef associated with process standard input.">ProcessRef.GetInput()</a> and <a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput()</a>.</p>
+<p>See <a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process()</a> for more details.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td>the path and arguments for the new process. </td></tr>
+    <tr><td class="paramname">pipe_stdio</td><td>true to create pipes to the process's standard input and from the process's standard output, false for the process to have no input and inherit the application's standard output. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the newly created and running process, or nullptr if the process couldn't be created.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#ad885ab1d694d7b6e5d18bb0b2de088c8" title="Get the properties associated with a process.">ProcessRef.GetProperties</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#a3095592c81bcc60c5184fee150e9266b" title="Get the IOStreamRef associated with process standard input.">ProcessRef.GetInput</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#a151b8d80dd53ef866957931e5ec54e89" title="Get the IOStreamRef associated with process standard output.">ProcessRef.GetOutput</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#abbdebd7d711567b9f10f2510adaef44e" title="Stop a process.">ProcessRef.Kill</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#ae2211b6a1888aa6181a99cc54db4b9e5" title="Wait for a process to finish.">ProcessRef.Wait</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#a13f00b0e648058edaf58bbf4fac161f1" title="Destroy a previously created process object.">ProcessRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6ab886a9c3d13f62299f606fab03c409" name="a6ab886a9c3d13f62299f606fab03c409"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ab886a9c3d13f62299f606fab03c409">&#9670;&#160;</a></span>CreateWithProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Process.html">Process</a> SDL::Process::CreateWithProperties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1PropertiesRef.html">PropertiesRef</a>&#160;</td>
+          <td class="paramname"><em>props</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>These are the supported properties:</p>
+<ul>
+<li><code>prop::process.CREATE_ARGS_POINTER</code>: an array of strings containing the program to run, any arguments, and a nullptr pointer, e.g. const char *args[] = { "myprogram", "argument", nullptr }. This is a required property.</li>
+<li><code>prop::process.CREATE_ENVIRONMENT_POINTER</code>: an <a class="el" href="structSDL_1_1EnvironmentRef.html" title="A thread-safe set of environment variables.">EnvironmentRef</a> pointer. If this property is set, it will be the entire environment for the process, otherwise the current environment is used.</li>
+<li><code>prop::process.CREATE_STDIN_NUMBER</code>: an ProcessIO value describing where standard input for the process comes from, defaults to <code>SDL_PROCESS_STDIO_nullptr</code>.</li>
+<li><code>prop::process.CREATE_STDIN_POINTER</code>: an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> pointer used for standard input when <code>prop::process.CREATE_STDIN_NUMBER</code> is set to <code>PROCESS_STDIO_REDIRECT</code>.</li>
+<li><code>prop::process.CREATE_STDOUT_NUMBER</code>: an ProcessIO value describing where standard output for the process goes to, defaults to <code>PROCESS_STDIO_INHERITED</code>.</li>
+<li><code>prop::process.CREATE_STDOUT_POINTER</code>: an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> pointer used for standard output when <code>prop::process.CREATE_STDOUT_NUMBER</code> is set to <code>PROCESS_STDIO_REDIRECT</code>.</li>
+<li><code>prop::process.CREATE_STDERR_NUMBER</code>: an ProcessIO value describing where standard error for the process goes to, defaults to <code>PROCESS_STDIO_INHERITED</code>.</li>
+<li><code>prop::process.CREATE_STDERR_POINTER</code>: an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> pointer used for standard error when <code>prop::process.CREATE_STDERR_NUMBER</code> is set to <code>PROCESS_STDIO_REDIRECT</code>.</li>
+<li><code>prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN</code>: true if the error output of the process should be redirected into the standard output of the process. This property has no effect if <code>prop::process.CREATE_STDERR_NUMBER</code> is set.</li>
+<li><code>prop::process.CREATE_BACKGROUND_BOOLEAN</code>: true if the process should run in the background. In this case the default input and output is <code>SDL_PROCESS_STDIO_nullptr</code> and the exitcode of the process is not available, and will always be 0.</li>
+</ul>
+<p>On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and SIGCHLD should not be ignored or handled because those would prevent <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> from properly tracking the lifetime of the underlying process. You should use <a class="el" href="structSDL_1_1ProcessRef.html#ae2211b6a1888aa6181a99cc54db4b9e5" title="Wait for a process to finish.">ProcessRef.Wait()</a> instead.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">props</td><td>the properties to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the newly created and running process, or nullptr if the process couldn't be created.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Process.html#a7bbc743cdaabfd76e1401193e802d24e" title="Constructs an empty Process.">Process.Process</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ProcessRef.html#ad885ab1d694d7b6e5d18bb0b2de088c8" title="Get the properties associated with a process.">ProcessRef.GetProperties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1ProcessRef.html#a1ef162d18b72e70070d066add10ba5ee" title="Read all the output from a process.">ProcessRef.Read</a> </dd>
 <dd>

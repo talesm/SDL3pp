@@ -1890,9 +1890,13 @@ struct Surface : SurfaceUnsafe
    * @throws Error on failure.
    *
    * @sa LoadSurface(StringParam)
-   * @sa LoadBMP(StringParam)
+   * @sa Surface.Load(StringParam)
+   * @sa Surface.LoadBMP(StringParam)
    */
-  Surface(StringParam file);
+  Surface(StringParam file)
+    : Surface(CheckError(Load(std::move(file))))
+  {
+  }
 
   /**
    * Load an image from a IOStreamRef into a software surface.
@@ -1904,10 +1908,14 @@ struct Surface : SurfaceUnsafe
    * @post the new Surface with loaded contents on success.
    * @throws Error on failure.
    *
-   * @sa LoadSurface(StringParam)
-   * @sa LoadBMP(StringParam)
+   * @sa LoadSurface(IOStreamRef)
+   * @sa Surface.Load(IOStreamRef)
+   * @sa Surface.LoadBMP(IOStreamRef)
    */
-  Surface(IOStreamRef src);
+  Surface(IOStreamRef src)
+    : Surface(CheckError(Load(src)))
+  {
+  }
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -1974,6 +1982,95 @@ struct Surface : SurfaceUnsafe
   {
     reset(other.release());
     return *this;
+  }
+
+  /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param file a path on the filesystem to load an image from.
+   * @returns the new Surface with loaded contents on success or nullptr on
+   *          failure; call GetError() for more information.
+   *
+   * @sa Surface.Surface(StringParam)
+   * @sa LoadSurface(StringParam)
+   * @sa Surface.LoadBMP(StringParam)
+   */
+  static Surface Load(StringParam file);
+
+  /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param src an IOStreamRef to load an image from.
+   * @returns the new Surface with loaded contents on success or nullptr on
+   *          failure; call GetError() for more information.
+   *
+   * @sa Surface.Surface(IOStreamRef)
+   * @sa LoadSurface(IOStreamRef)
+   * @sa Surface.LoadBMP(IOStreamRef)
+   */
+  static Surface Load(IOStreamRef src);
+
+  /**
+   * Allocate a new surface with a specific pixel format.
+   *
+   * The pixels of the new surface are initialized to zero.
+   *
+   * @param size the width and height of the surface.
+   * @param format the PixelFormat for the new surface's pixel format.
+   * @returns the new SurfaceRef structure that is created or nullptr on
+   * failure; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Surface
+   * @sa SurfaceRef.Destroy
+   */
+  static Surface Create(const SDL_Point& size, PixelFormat format)
+  {
+    return Surface(size, format);
+  }
+
+  /**
+   * Allocate a new surface with a specific pixel format and existing pixel
+   * data.
+   *
+   * No copy is made of the pixel data. Pixel data is not managed automatically;
+   * you must free the surface before you free the pixel data.
+   *
+   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
+   * `width*4` for `PIXELFORMAT_RGBA8888`.
+   *
+   * You may pass nullptr for pixels and 0 for pitch to create a surface that
+   * you will fill in with valid values later.
+   *
+   * @param size the width and height of the surface.
+   * @param format the PixelFormat for the new surface's pixel format.
+   * @param pixels a pointer to existing pixel data.
+   * @param pitch the number of bytes between each row, including padding.
+   * @returns the new SurfaceRef structure that is created or nullptr on
+   * failure; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Surface
+   * @sa SurfaceRef.Destroy
+   */
+  static Surface CreateFrom(const SDL_Point& size,
+                            PixelFormat format,
+                            void* pixels,
+                            int pitch)
+  {
+    return Surface(size, format, pixels, pitch);
   }
 };
 

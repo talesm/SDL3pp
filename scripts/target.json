@@ -7079,7 +7079,8 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "sourceName": "SDL_CreateWindowWithProperties"
+                "sourceName": "SDL_CreateWindowWithProperties",
+                "proto": false
               }
             ],
             "~Window": {
@@ -7106,6 +7107,79 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a window with the specified dimensions and flags.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\n`flags` may be any of the following OR'd together:\n\n- `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution\n- `WINDOW_OPENGL`: window usable with an OpenGL context\n- `WINDOW_OCCLUDED`: window partially or completely obscured by another\n  window\n- `WINDOW_HIDDEN`: window is not visible\n- `WINDOW_BORDERLESS`: no window decoration\n- `WINDOW_RESIZABLE`: window can be resized\n- `WINDOW_MINIMIZED`: window is minimized\n- `WINDOW_MAXIMIZED`: window is maximized\n- `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus\n- `WINDOW_INPUT_FOCUS`: window has input focus\n- `WINDOW_MOUSE_FOCUS`: window has mouse focus\n- `WINDOW_EXTERNAL`: window not created by SDL\n- `WINDOW_MODAL`: window is modal\n- `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back\n  buffer if possible\n- `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to\n  MOUSE_GRABBED)\n- `WINDOW_ALWAYS_ON_TOP`: window should always be above others\n- `WINDOW_UTILITY`: window should be treated as a utility window, not\n  showing in the task bar and window list\n- `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not\n  get mouse or keyboard focus, requires a parent window\n- `WINDOW_POPUP_MENU`: window should be treated as a popup menu,\n  requires a parent window\n- `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input\n- `WINDOW_VULKAN`: window usable with a Vulkan instance\n- `WINDOW_METAL`: window usable with a Metal instance\n- `WINDOW_TRANSPARENT`: window with transparent buffer\n- `WINDOW_NOT_FOCUSABLE`: window should not be focusable\n\nThe WindowRef is implicitly shown if WINDOW_HIDDEN is not set.\n\nOn Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist\nproperty to YES, otherwise you will not receive a High-DPI OpenGL canvas.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use WindowRef.GetSize() to query\nthe client area's size in window coordinates, and\nWindowRef.GetSizeInPixels() or RendererRef.GetOutputSize() to query the\ndrawable size in pixels. Note that the drawable size can vary after the\nwindow is created and should be queried again if you get an\nEVENT_WINDOW_PIXEL_SIZE_CHANGED event.\n\nIf the window is created with any of the WINDOW_OPENGL or\nWINDOW_VULKAN flags, then the corresponding LoadLibrary function\n(GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the\ncorresponding UnloadLibrary function is called by WindowRef.Destroy().\n\nIf WINDOW_VULKAN is specified and there isn't a working Vulkan driver,\nWindow.Window() will fail, because SDL_Vulkan_LoadLibrary() will fail.\n\nIf WINDOW_METAL is specified on an OS that does not support Metal,\nWindow.Window() will fail.\n\nIf you intend to use this window with an RendererRef, you should use\nCreateWindowAndRenderer() instead of this function, to avoid window\nflicker.\n\nOn non-Apple devices, SDL requires you to either not link to the Vulkan\nloader or link to a dynamic library version. This limitation may be removed\nin a future version of SDL.\n\n@param title the title of the window, in UTF-8 encoding.\n@param w the width of the window.\n@param h the height of the window.\n@param flags 0, or one or more WindowFlags OR'd together.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CreateWindowAndRenderer\n@sa Window.Window\n@sa Window.Window\n@sa WindowRef.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "Window",
+              "parameters": [
+                {
+                  "name": "title",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "size",
+                  "type": "const SDL_Point &"
+                },
+                {
+                  "name": "flags",
+                  "type": "WindowFlags",
+                  "default": "0"
+                }
+              ],
+              "sourceName": "SDL_CreateWindow",
+              "hints": {
+                "body": "return Window(title, size, flags);"
+              },
+              "static": true
+            },
+            "CreatePopup": {
+              "doc": "Create a child popup window of the specified parent window.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThe flags parameter **must** contain at least one of the following:\n\n- `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any\n  input events.\n- `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost\n  popup menu will implicitly gain the keyboard focus.\n\nThe following flags are not relevant to popup window creation and will be\nignored:\n\n- `WINDOW_MINIMIZED`\n- `WINDOW_MAXIMIZED`\n- `WINDOW_FULLSCREEN`\n- `WINDOW_BORDERLESS`\n\nThe following flags are incompatible with popup window creation and will\ncause it to fail:\n\n- `WINDOW_UTILITY`\n- `WINDOW_MODAL`\n\nThe parent parameter **must** be non-null and a valid window. The parent of\na popup window can be either a regular, toplevel window, or another popup\nwindow.\n\nPopup windows cannot be minimized, maximized, made fullscreen, raised,\nflash, be made a modal window, be the parent of a toplevel window, or grab\nthe mouse and/or keyboard. Attempts to do so will fail.\n\nPopup windows implicitly do not have a border/decorations and do not appear\non the taskbar/dock or in lists of windows such as alt-tab menus.\n\nIf a parent window is hidden or destroyed, any child popup windows will be\nrecursively hidden or destroyed as well. Child popup windows not explicitly\nhidden will be restored when the parent is shown.\n\n@param parent the parent of the window, must not be nullptr.\n@param offset_x the x position of the popup window relative to the origin\n                of the parent.\n@param offset_y the y position of the popup window relative to the origin\n                of the parent window.\n@param w the width of the window.\n@param h the height of the window.\n@param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more\n             additional WindowFlags OR'd together.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Window.Window\n@sa Window.Window\n@sa WindowRef.Destroy\n@sa WindowRef.GetParent",
+              "name": "CreatePopup",
+              "kind": "function",
+              "type": "Window",
+              "parameters": [
+                {
+                  "name": "parent",
+                  "type": "WindowRef"
+                },
+                {
+                  "name": "offset",
+                  "type": "const SDL_Point &"
+                },
+                {
+                  "name": "size",
+                  "type": "const SDL_Point &"
+                },
+                {
+                  "name": "flags",
+                  "type": "WindowFlags",
+                  "default": "0"
+                }
+              ],
+              "sourceName": "SDL_CreatePopupWindow",
+              "hints": {
+                "body": "return Window(parent, offset, size, flags);"
+              },
+              "static": true
+            },
+            "CreateWithProperties": {
+              "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window\n- `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window\n- `prop::Window.CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `WINDOW_OPENGL` flag set.\n- `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in Window.Window().\n\nIf this window is being created to be used with an RendererRef, you should\nnot add a graphics API specific property\n(`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nWindowRef.Show().\n\n@param props the properties to use.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Window.Window\n@sa WindowRef.Destroy",
+              "name": "CreateWithProperties",
+              "kind": "function",
+              "type": "Window",
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "SDL_CreateWindowWithProperties",
+              "hints": {
+                "body": "return Window(props);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -7447,7 +7521,8 @@
                     "type": "WindowRef"
                   }
                 ],
-                "sourceName": "SDL_GL_CreateContext"
+                "sourceName": "SDL_GL_CreateContext",
+                "proto": false
               }
             ],
             "~GLContext": {
@@ -7474,6 +7549,23 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with GL_GetProcAddress() and its related\nfunctions.\n\nGLContextRef is opaque to the application.\n\n@param window the window to associate with the context.\n@returns the OpenGL context associated with `window` or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextRef.Destroy\n@sa GLContextRef.MakeCurrent",
+              "name": "Create",
+              "kind": "function",
+              "type": "GLContext",
+              "parameters": [
+                {
+                  "name": "window",
+                  "type": "WindowRef"
+                }
+              ],
+              "sourceName": "SDL_GL_CreateContext",
+              "hints": {
+                "body": "return GLContext(window);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -10377,7 +10469,8 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "SDL_CreateRenderer"
+                "sourceName": "SDL_CreateRenderer",
+                "proto": false
               },
               {
                 "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa RendererRef.GetName",
@@ -10390,7 +10483,8 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "sourceName": "SDL_CreateRendererWithProperties"
+                "sourceName": "SDL_CreateRendererWithProperties",
+                "proto": false
               },
               {
                 "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create RendererRef:\nRenderer.Renderer() and CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nWindowRef as the final destination and not an SurfaceRef.\n\n@param surface the SurfaceRef structure representing the surface where\n               rendering is done.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererRef.Destroy",
@@ -10403,7 +10497,8 @@
                     "type": "SurfaceRef"
                   }
                 ],
-                "sourceName": "SDL_CreateSoftwareRenderer"
+                "sourceName": "SDL_CreateSoftwareRenderer",
+                "proto": false
               }
             ],
             "~Renderer": {
@@ -10430,6 +10525,61 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a 2D rendering context for a window.\n\nIf you want a specific renderer, you can specify its name here. A list of\navailable renderers can be obtained by calling GetRenderDriver()\nmultiple times, with indices from 0 to GetNumRenderDrivers()-1. If you\ndon't need a specific renderer, specify nullptr and SDL will attempt to choose\nthe best option for you, based on what is available on the user's system.\n\nIf `name` is a comma-separated list, SDL will try each name, in the order\nlisted, until one succeeds or all of them fail.\n\nBy default the rendering size matches the window size in pixels, but you\ncan call RendererRef.SetLogicalPresentation() to change the content size and\nscaling options.\n\n@param window the window where rendering is displayed.\n@param name the name of the rendering driver to initialize, or nullptr to let\n            SDL choose one.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa GetNumRenderDrivers\n@sa GetRenderDriver\n@sa RendererRef.GetName",
+              "name": "Create",
+              "kind": "function",
+              "type": "Renderer",
+              "parameters": [
+                {
+                  "name": "window",
+                  "type": "WindowRef"
+                },
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_CreateRenderer",
+              "hints": {
+                "body": "return Renderer(window, name);"
+              },
+              "static": true
+            },
+            "CreateWithProperties": {
+              "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa RendererRef.GetName",
+              "name": "CreateWithProperties",
+              "kind": "function",
+              "type": "Renderer",
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "SDL_CreateRendererWithProperties",
+              "hints": {
+                "body": "return Renderer(props);"
+              },
+              "static": true
+            },
+            "CreateSoftware": {
+              "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create RendererRef:\nRenderer.Renderer() and CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nWindowRef as the final destination and not an SurfaceRef.\n\n@param surface the SurfaceRef structure representing the surface where\n               rendering is done.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RendererRef.Destroy",
+              "name": "CreateSoftware",
+              "kind": "function",
+              "type": "Renderer",
+              "parameters": [
+                {
+                  "name": "surface",
+                  "type": "SurfaceRef"
+                }
+              ],
+              "sourceName": "SDL_CreateSoftwareRenderer",
+              "hints": {
+                "body": "return Renderer(surface);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -11141,7 +11291,6 @@
               {
                 "kind": "function",
                 "type": "",
-                "proto": true,
                 "parameters": [
                   {
                     "type": "RendererRef",
@@ -11158,7 +11307,6 @@
               {
                 "kind": "function",
                 "type": "",
-                "proto": true,
                 "parameters": [
                   {
                     "type": "RendererRef",
@@ -11213,7 +11361,8 @@
                     "type": "SurfaceRef"
                   }
                 ],
-                "sourceName": "SDL_CreateTextureFromSurface"
+                "sourceName": "SDL_CreateTextureFromSurface",
+                "proto": false
               },
               {
                 "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
@@ -11230,7 +11379,8 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "sourceName": "SDL_CreateTextureWithProperties"
+                "sourceName": "SDL_CreateTextureWithProperties",
+                "proto": false
               }
             ],
             "~Texture": {
@@ -11257,6 +11407,115 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Load": [
+              {
+                "name": "Load",
+                "kind": "function",
+                "type": "Texture",
+                "proto": true,
+                "static": true,
+                "parameters": [
+                  {
+                    "type": "RendererRef",
+                    "name": "renderer"
+                  },
+                  {
+                    "type": "StringParam",
+                    "name": "file"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "name": "Load",
+                "kind": "function",
+                "type": "Texture",
+                "proto": true,
+                "static": true,
+                "parameters": [
+                  {
+                    "type": "RendererRef",
+                    "name": "renderer"
+                  },
+                  {
+                    "type": "IOStreamRef",
+                    "name": "src"
+                  }
+                ],
+                "doc": ""
+              }
+            ],
+            "Create": {
+              "doc": "Create a texture for a rendering context.\n\nThe contents of a texture when first created are not defined.\n\n@param renderer the rendering context.\n@param format one of the enumerated values in PixelFormat.\n@param access one of the enumerated values in TextureAccess.\n@param w the width of the texture in pixels.\n@param h the height of the texture in pixels.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
+              "name": "Create",
+              "kind": "function",
+              "type": "Texture",
+              "parameters": [
+                {
+                  "name": "renderer",
+                  "type": "RendererRef"
+                },
+                {
+                  "name": "format",
+                  "type": "PixelFormat"
+                },
+                {
+                  "name": "access",
+                  "type": "TextureAccess"
+                },
+                {
+                  "name": "size",
+                  "type": "const SDL_Point &"
+                }
+              ],
+              "sourceName": "SDL_CreateTexture",
+              "hints": {
+                "body": "return Texture(renderer, format, access, size);"
+              },
+              "static": true
+            },
+            "CreateFromSurface": {
+              "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe TextureAccess hint for the created texture is\n`TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nprop::Texture.FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SurfaceRef structure containing pixel data used to fill\n               the texture.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy",
+              "name": "CreateFromSurface",
+              "kind": "function",
+              "type": "Texture",
+              "parameters": [
+                {
+                  "name": "renderer",
+                  "type": "RendererRef"
+                },
+                {
+                  "name": "surface",
+                  "type": "SurfaceRef"
+                }
+              ],
+              "sourceName": "SDL_CreateTextureFromSurface",
+              "hints": {
+                "body": "return Texture(renderer, surface);"
+              },
+              "static": true
+            },
+            "CreateWithProperties": {
+              "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
+              "name": "CreateWithProperties",
+              "kind": "function",
+              "type": "Texture",
+              "parameters": [
+                {
+                  "name": "renderer",
+                  "type": "RendererRef"
+                },
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "SDL_CreateTextureWithProperties",
+              "hints": {
+                "body": "return Texture(renderer, props);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -15575,7 +15834,8 @@
                 "sourceName": "SDL_CreatePalette",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               }
             ],
             "~Palette": {
@@ -15602,6 +15862,24 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@returns a new PaletteRef structure on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PaletteRef.Destroy\n@sa PaletteRef.SetColors\n@sa SurfaceRef.SetPalette",
+              "name": "Create",
+              "kind": "function",
+              "type": "Palette",
+              "parameters": [
+                {
+                  "name": "ncolors",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_CreatePalette",
+              "hints": {
+                "mayFail": true,
+                "body": "return Palette(ncolors);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -19062,7 +19340,6 @@
               {
                 "kind": "function",
                 "type": "",
-                "proto": true,
                 "parameters": [
                   {
                     "type": "StringParam",
@@ -19075,7 +19352,6 @@
               {
                 "kind": "function",
                 "type": "",
-                "proto": true,
                 "parameters": [
                   {
                     "type": "IOStreamRef",
@@ -19154,6 +19430,86 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Load": [
+              {
+                "name": "Load",
+                "kind": "function",
+                "type": "Surface",
+                "proto": true,
+                "static": true,
+                "parameters": [
+                  {
+                    "type": "StringParam",
+                    "name": "file"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "name": "Load",
+                "kind": "function",
+                "type": "Surface",
+                "proto": true,
+                "static": true,
+                "parameters": [
+                  {
+                    "type": "IOStreamRef",
+                    "name": "src"
+                  }
+                ],
+                "doc": ""
+              }
+            ],
+            "Create": {
+              "doc": "Allocate a new surface with a specific pixel format.\n\nThe pixels of the new surface are initialized to zero.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@returns the new SurfaceRef structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Surface\n@sa SurfaceRef.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "size",
+                  "type": "const SDL_Point &"
+                },
+                {
+                  "name": "format",
+                  "type": "PixelFormat"
+                }
+              ],
+              "sourceName": "SDL_CreateSurface",
+              "hints": {
+                "body": "return Surface(size, format);"
+              },
+              "static": true
+            },
+            "CreateFrom": {
+              "doc": "Allocate a new surface with a specific pixel format and existing pixel\ndata.\n\nNo copy is made of the pixel data. Pixel data is not managed automatically;\nyou must free the surface before you free the pixel data.\n\nPitch is the offset in bytes from one row of pixels to the next, e.g.\n`width*4` for `PIXELFORMAT_RGBA8888`.\n\nYou may pass nullptr for pixels and 0 for pitch to create a surface that you\nwill fill in with valid values later.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the PixelFormat for the new surface's pixel format.\n@param pixels a pointer to existing pixel data.\n@param pitch the number of bytes between each row, including padding.\n@returns the new SurfaceRef structure that is created or nullptr on failure;\n         call GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Surface.Surface\n@sa SurfaceRef.Destroy",
+              "name": "CreateFrom",
+              "kind": "function",
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "size",
+                  "type": "const SDL_Point &"
+                },
+                {
+                  "name": "format",
+                  "type": "PixelFormat"
+                },
+                {
+                  "name": "pixels",
+                  "type": "void *"
+                },
+                {
+                  "name": "pitch",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_CreateSurfaceFrom",
+              "hints": {
+                "body": "return Surface(size, format, pixels, pitch);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -20741,6 +21097,28 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Open": {
+              "doc": "Open a specific audio device.\n\nYou can open both playback and recording devices through this function.\nPlayback devices will take data from bound audio streams, mix it, and send\nit to the hardware. Recording devices will feed any bound audio streams\nwith a copy of any incoming data.\n\nAn opened audio device starts out with no audio streams bound. To start\naudio playing, bind a stream and supply audio data to it. Unlike SDL2,\nthere is no audio callback; you only bind audio streams and make sure they\nhave data flowing into them (however, you can simulate SDL2's semantics\nfairly closely by using AudioStream.AudioStream instead of this\nfunction).\n\nIf you don't care about opening a specific device, pass a `devid` of either\n`AUDIO_DEVICE_DEFAULT_PLAYBACK` or\n`AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick\nthe most reasonable default, and may also switch between physical devices\nseamlessly later, if the most reasonable default changes during the\nlifetime of this opened device (user changed the default in the OS's system\npreferences, the default got unplugged so the system jumped to a new\ndefault, the user plugged in headphones on a mobile device, etc). Unless\nyou have a good reason to choose a specific device, this is probably what\nyou want.\n\nYou may request a specific format for the audio device, but there is no\npromise the device will honor that request for several reasons. As such,\nit's only meant to be a hint as to what data your app will provide. Audio\nstreams will accept data in whatever format you specify and manage\nconversion for you as appropriate. AudioDeviceRef.GetFormat can tell you\nthe preferred format for the device before opening and the actual format\nthe device is using after opening.\n\nIt's legal to open the same device ID more than once; each successful open\nwill generate a new logical AudioDeviceRef that is managed separately\nfrom others on the same physical device. This allows libraries to open a\ndevice separately from the main app and bind its own streams without\nconflicting.\n\nIt is also legal to open a device ID returned by a previous call to this\nfunction; doing so just creates another logical device on the same physical\ndevice. This may be useful for making logical groupings of audio streams.\n\nThis function returns the opened device ID on success. This is a new,\nunique AudioDeviceRef that represents a logical device.\n\nSome backends might offer arbitrary devices (for example, a networked audio\nprotocol that can connect to an arbitrary server). For these, as a change\nfrom SDL2, you should open a default device ID and use an SDL hint to\nspecify the target if you care, or otherwise let the backend figure out a\nreasonable default. Most backends don't offer anything like this, and often\nthis would be an end user setting an environment variable for their custom\nneed, and not something an application should specifically manage.\n\nWhen done with an audio device, possibly at the end of the app's life, one\nshould call AudioDeviceRef.Close() on the returned device id.\n\n@param devid the device instance id to open, or\n             AUDIO_DEVICE_DEFAULT_PLAYBACK or\n             AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable\n             default device.\n@param spec the requested device configuration. Can be nullptr to use\n            reasonable defaults.\n@returns the device ID on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioDeviceRef.Close\n@sa AudioDeviceRef.GetFormat",
+              "name": "Open",
+              "kind": "function",
+              "type": "AudioDevice",
+              "parameters": [
+                {
+                  "name": "devid",
+                  "type": "AudioDeviceRef"
+                },
+                {
+                  "name": "spec",
+                  "type": "OptionalRef<const SDL_AudioSpec>"
+                }
+              ],
+              "sourceName": "SDL_OpenAudioDevice",
+              "hints": {
+                "mayFail": true,
+                "body": "return AudioDevice(, );"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -21532,7 +21910,88 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
-            }
+            },
+            "Create": {
+              "doc": "Create a new audio stream.\n\n@param src_spec the format details of the input audio.\n@param dst_spec the format details of the output audio.\n@returns a new audio stream on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamRef.PutData\n@sa AudioStreamRef.GetData\n@sa AudioStreamRef.GetAvailable\n@sa AudioStreamRef.Flush\n@sa AudioStreamRef.Clear\n@sa AudioStreamRef.SetFormat\n@sa AudioStreamRef.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "AudioStream",
+              "parameters": [
+                {
+                  "name": "src_spec",
+                  "type": "OptionalRef<const AudioSpec>"
+                },
+                {
+                  "name": "dst_spec",
+                  "type": "OptionalRef<const AudioSpec>"
+                }
+              ],
+              "sourceName": "SDL_CreateAudioStream",
+              "hints": {
+                "mayFail": true,
+                "body": "return AudioStream(, );"
+              },
+              "static": true
+            },
+            "OpenAudioDeviceStream": [
+              {
+                "doc": "Convenience function for straightforward audio init for the common case.\n\nIf all your app intends to do is provide a single source of PCM audio, this\nfunction allows you to do all your audio setup in a single call.\n\nThis is also intended to be a clean means to migrate apps from SDL2.\n\nThis function will open an audio device, create a stream and bind it.\nUnlike other methods of setup, the audio device will be closed when this\nstream is destroyed, so the app can treat the returned AudioStreamRef as\nthe only object needed to manage audio playback.\n\nAlso unlike other functions, the audio device begins paused. This is to map\nmore closely to SDL2-style behavior, since there is no extra step here to\nbind a stream to begin audio flowing. The audio device should be resumed\nwith `AudioStreamRef.ResumeDevice(stream);`\n\nThis function works with both playback and recording devices.\n\nThe `spec` parameter represents the app's side of the audio stream. That\nis, for recording audio, this will be the output format, and for playing\naudio, this will be the input format. If spec is nullptr, the system will\nchoose the format, and the app can use AudioStreamRef.GetFormat() to obtain\nthis information later.\n\nIf you don't care about opening a specific audio device, you can (and\nprobably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and\nAUDIO_DEVICE_DEFAULT_RECORDING for recording.\n\nOne can optionally provide a callback function; if nullptr, the app is\nexpected to queue audio data for playback (or unqueue audio data if\ncapturing). Otherwise, the callback will begin to fire once the device is\nunpaused.\n\nDestroying the returned stream with AudioStreamRef.Destroy will also close\nthe audio device associated with this stream.\n\n@param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK\n             or AUDIO_DEVICE_DEFAULT_RECORDING.\n@param spec the audio stream's data format. Can be nullptr.\n@param callback a callback where the app will provide new data for\n                playback, or receive new data for recording. Can be nullptr,\n                in which case the app will need to call\n                AudioStreamRef.PutData or AudioStreamRef.GetData as\n                necessary.\n@param userdata app-controlled pointer passed to callback. Can be nullptr.\n                Ignored if callback is nullptr.\n@returns an audio stream on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa AudioStreamRef.GetDevice\n@sa AudioStreamRef.ResumeDevice",
+                "name": "OpenAudioDeviceStream",
+                "kind": "function",
+                "type": "AudioStream",
+                "parameters": [
+                  {
+                    "name": "devid",
+                    "type": "AudioDeviceRef"
+                  },
+                  {
+                    "name": "spec",
+                    "type": "OptionalRef<const AudioSpec>",
+                    "default": "std::nullopt"
+                  },
+                  {
+                    "name": "callback",
+                    "type": "AudioStreamCallback",
+                    "default": "nullptr"
+                  },
+                  {
+                    "name": "userdata",
+                    "type": "void *",
+                    "default": "nullptr"
+                  }
+                ],
+                "sourceName": "SDL_OpenAudioDeviceStream",
+                "hints": {
+                  "mayFail": true,
+                  "body": "return AudioStream(devid, spec, callback, userdata);"
+                },
+                "static": true
+              },
+              {
+                "kind": "function",
+                "type": "AudioStream",
+                "name": "OpenAudioDeviceStream",
+                "parameters": [
+                  {
+                    "name": "devid",
+                    "type": "AudioDeviceRef"
+                  },
+                  {
+                    "name": "spec",
+                    "type": "OptionalRef<const AudioSpec>"
+                  },
+                  {
+                    "name": "callback",
+                    "type": "AudioStreamCB"
+                  }
+                ],
+                "hints": {
+                  "body": "return AudioStream(devid, std::move(spec), std::move(callback));"
+                },
+                "doc": "",
+                "static": true
+              }
+            ]
           },
           "hints": {
             "super": "AudioStream"
@@ -29449,7 +29908,8 @@
                 "sourceName": "SDL_CreateColorCursor",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               },
               {
                 "doc": "Create a system cursor.\n\n@param id an SystemCursor enum value.\n@post a cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorRef.Destroy",
@@ -29465,7 +29925,8 @@
                 "sourceName": "SDL_CreateSystemCursor",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               }
             ],
             "~Cursor": {
@@ -29492,6 +29953,88 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a cursor using the specified bitmap data and mask (in MSB format).\n\n`mask` has to be in MSB (Most Significant Bit) format.\n\nThe cursor width (`w`) must be a multiple of 8 bits.\n\nThe cursor is created in black and white according to the following:\n\n- data=0, mask=1: white\n- data=1, mask=1: black\n- data=0, mask=0: transparent\n- data=1, mask=0: inverted color if possible, black if not.\n\nCursors created with this function must be freed with CursorRef.Destroy().\n\nIf you want to have a color cursor, or create your cursor from an\nSurfaceRef, you should use Cursor.Cursor(). Alternately, you can\nhide the cursor and draw your own as part of your game's rendering, but it\nwill be bound to the framerate.\n\nAlso, Cursor.Cursor() is available, which provides several\nreadily-available system cursors to pick from.\n\n@param data the color value for each pixel of the cursor.\n@param mask the mask value for each pixel of the cursor.\n@param w the width of the cursor.\n@param h the height of the cursor.\n@param hot_x the x-axis offset from the left of the cursor image to the\n             mouse x position, in the range of 0 to `w` - 1.\n@param hot_y the y-axis offset from the top of the cursor image to the\n             mouse y position, in the range of 0 to `h` - 1.\n@returns a new cursor with the specified parameters on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa CursorRef.Destroy\n@sa SetCursor",
+              "name": "Create",
+              "kind": "function",
+              "type": "Cursor",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "mask",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "w",
+                  "type": "int"
+                },
+                {
+                  "name": "h",
+                  "type": "int"
+                },
+                {
+                  "name": "hot_x",
+                  "type": "int"
+                },
+                {
+                  "name": "hot_y",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_CreateCursor",
+              "hints": {
+                "mayFail": true,
+                "body": "return Cursor(, , , , , );"
+              },
+              "static": true
+            },
+            "CreateColor": {
+              "doc": "Create a color cursor.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param surface an SurfaceRef structure representing the cursor image.\n@param hot_x the x position of the cursor hot spot.\n@param hot_y the y position of the cursor hot spot.\n@returns the new cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa CursorRef.Destroy\n@sa SetCursor",
+              "name": "CreateColor",
+              "kind": "function",
+              "type": "Cursor",
+              "parameters": [
+                {
+                  "name": "surface",
+                  "type": "SurfaceRef"
+                },
+                {
+                  "name": "hot_x",
+                  "type": "int"
+                },
+                {
+                  "name": "hot_y",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_CreateColorCursor",
+              "hints": {
+                "mayFail": true,
+                "body": "return Cursor(surface, hot_x, hot_y);"
+              },
+              "static": true
+            },
+            "CreateSystem": {
+              "doc": "Create a system cursor.\n\n@param id an SystemCursor enum value.\n@returns a cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorRef.Destroy",
+              "name": "CreateSystem",
+              "kind": "function",
+              "type": "Cursor",
+              "parameters": [
+                {
+                  "name": "id",
+                  "type": "SystemCursor"
+                }
+              ],
+              "sourceName": "SDL_CreateSystemCursor",
+              "hints": {
+                "mayFail": true,
+                "body": "return Cursor(id);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -30340,7 +30883,8 @@
                 "sourceName": "SDL_CreateThread",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               },
               {
                 "doc": "Create a new thread with with the specified properties.\n\nThese are the supported properties:\n\n- `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction\n  value that will be called at the start of the new thread's life.\n  Required.\n- `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which\n  might be available to debuggers. Optional, defaults to nullptr.\n- `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined\n  pointer, which is passed to the entry function on the new thread, as its\n  only parameter. Optional, defaults to nullptr.\n- `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new\n  thread's stack. Optional, defaults to 0 (system-defined default).\n\nSDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the\nsystem, so that debuggers can display it. Not all platforms support this.\n\nThread naming is a little complicated: Most systems have very small limits\nfor the string length (Haiku has 32 bytes, Linux currently has 16, Visual\nC++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to\nsee what happens with your system's debugger. The name should be UTF-8 (but\nusing the naming limits of C identifiers is a better bet). There are no\nrequirements for thread naming conventions, so long as the string is\nnull-terminated UTF-8, but these guidelines are helpful in choosing a name:\n\nhttps://stackoverflow.com/questions/149932/naming-conventions-for-threads\n\nIf a system imposes requirements, SDL will try to munge the string for it\n(truncate, etc), but the original string contents will be available from\nThreadRef.GetName().\n\nThe size (in bytes) of the new stack can be specified with\n`prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means \"use the system\ndefault\" which might be wildly different between platforms. x86 Linux\ngenerally defaults to eight megabytes, an embedded device might be a few\nkilobytes instead. You generally need to specify a stack that is a multiple\nof the system's page size (in many cases, this is 4 kilobytes, but check\nyour system documentation).\n\nNote that this \"function\" is actually a macro that calls an internal\nfunction with two extra parameters not listed here; they are hidden through\npreprocessor macros and are needed to support various C runtimes at the\npoint of the function call. Language bindings that aren't using the C\nheaders will need to deal with this.\n\nThe actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so\nthere is no symbol clash, but trying to load an SDL shared library and look\nfor \"Thread.Thread\" will fail.\n\nUsually, apps should just call this function the same way on every platform\nand let the macros hide the details.\n\n@param props the properties to use.\n@post an opaque pointer to the new thread object on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Thread.Thread\n@sa ThreadRef.Wait",
@@ -30356,7 +30900,8 @@
                 "sourceName": "SDL_CreateThreadWithProperties",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               }
             ],
             "~Thread": {
@@ -30383,6 +30928,50 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a new thread with a default stack size.\n\nThis is a convenience function, equivalent to calling\nThread.Thread with the following properties set:\n\n- `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`\n- `prop::thread.CREATE_NAME_STRING`: `name`\n- `prop::thread.CREATE_USERDATA_POINTER`: `data`\n\nNote that this \"function\" is actually a macro that calls an internal\nfunction with two extra parameters not listed here; they are hidden through\npreprocessor macros and are needed to support various C runtimes at the\npoint of the function call. Language bindings that aren't using the C\nheaders will need to deal with this.\n\nUsually, apps should just call this function the same way on every platform\nand let the macros hide the details.\n\n@param fn the ThreadFunction function to call in the new thread.\n@param name the name of the thread.\n@param data a pointer that is passed to `fn`.\n@returns an opaque pointer to the new thread object on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Thread.Thread\n@sa ThreadRef.Wait",
+              "name": "Create",
+              "kind": "function",
+              "type": "Thread",
+              "parameters": [
+                {
+                  "name": "fn",
+                  "type": "ThreadFunction"
+                },
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "data",
+                  "type": "void *"
+                }
+              ],
+              "sourceName": "SDL_CreateThread",
+              "hints": {
+                "mayFail": true,
+                "body": "return Thread(fn, name, data);"
+              },
+              "static": true
+            },
+            "CreateWithProperties": {
+              "doc": "Create a new thread with with the specified properties.\n\nThese are the supported properties:\n\n- `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction\n  value that will be called at the start of the new thread's life.\n  Required.\n- `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which\n  might be available to debuggers. Optional, defaults to nullptr.\n- `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined\n  pointer, which is passed to the entry function on the new thread, as its\n  only parameter. Optional, defaults to nullptr.\n- `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new\n  thread's stack. Optional, defaults to 0 (system-defined default).\n\nSDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the\nsystem, so that debuggers can display it. Not all platforms support this.\n\nThread naming is a little complicated: Most systems have very small limits\nfor the string length (Haiku has 32 bytes, Linux currently has 16, Visual\nC++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to\nsee what happens with your system's debugger. The name should be UTF-8 (but\nusing the naming limits of C identifiers is a better bet). There are no\nrequirements for thread naming conventions, so long as the string is\nnull-terminated UTF-8, but these guidelines are helpful in choosing a name:\n\nhttps://stackoverflow.com/questions/149932/naming-conventions-for-threads\n\nIf a system imposes requirements, SDL will try to munge the string for it\n(truncate, etc), but the original string contents will be available from\nThreadRef.GetName().\n\nThe size (in bytes) of the new stack can be specified with\n`prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means \"use the system\ndefault\" which might be wildly different between platforms. x86 Linux\ngenerally defaults to eight megabytes, an embedded device might be a few\nkilobytes instead. You generally need to specify a stack that is a multiple\nof the system's page size (in many cases, this is 4 kilobytes, but check\nyour system documentation).\n\nNote that this \"function\" is actually a macro that calls an internal\nfunction with two extra parameters not listed here; they are hidden through\npreprocessor macros and are needed to support various C runtimes at the\npoint of the function call. Language bindings that aren't using the C\nheaders will need to deal with this.\n\nThe actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so\nthere is no symbol clash, but trying to load an SDL shared library and look\nfor \"Thread.Thread\" will fail.\n\nUsually, apps should just call this function the same way on every platform\nand let the macros hide the details.\n\n@param props the properties to use.\n@returns an opaque pointer to the new thread object on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Thread.Thread\n@sa ThreadRef.Wait",
+              "name": "CreateWithProperties",
+              "kind": "function",
+              "type": "Thread",
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "SDL_CreateThreadWithProperties",
+              "hints": {
+                "mayFail": true,
+                "body": "return Thread(props);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -30788,7 +31377,8 @@
                 "kind": "function",
                 "type": "",
                 "parameters": [],
-                "sourceName": "SDL_CreateMutex"
+                "sourceName": "SDL_CreateMutex",
+                "proto": false
               }
             ],
             "~Mutex": {
@@ -30815,6 +31405,18 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a new mutex.\n\nAll newly-created mutexes begin in the _unlocked_ state.\n\nCalls to MutexRef.Lock() will not return while the mutex is locked by\nanother thread. See MutexRef.TryLock() to attempt to lock without blocking.\n\nSDL mutexes are reentrant.\n\n@returns the initialized and unlocked mutex or nullptr on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa MutexRef.Destroy\n@sa MutexRef.Lock\n@sa MutexRef.TryLock\n@sa MutexRef.Unlock",
+              "name": "Create",
+              "kind": "function",
+              "type": "Mutex",
+              "parameters": [],
+              "sourceName": "SDL_CreateMutex",
+              "hints": {
+                "body": "return Mutex();"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -31097,7 +31699,8 @@
                 "kind": "function",
                 "type": "",
                 "parameters": [],
-                "sourceName": "SDL_CreateRWLock"
+                "sourceName": "SDL_CreateRWLock",
+                "proto": false
               }
             ],
             "~RWLock": {
@@ -31124,6 +31727,18 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a new read/write lock.\n\nA read/write lock is useful for situations where you have multiple threads\ntrying to access a resource that is rarely updated. All threads requesting\na read-only lock will be allowed to run in parallel; if a thread requests a\nwrite lock, it will be provided exclusive access. This makes it safe for\nmultiple threads to use a resource at the same time if they promise not to\nchange it, and when it has to be changed, the rwlock will serve as a\ngateway to make sure those changes can be made safely.\n\nIn the right situation, a rwlock can be more efficient than a mutex, which\nonly lets a single thread proceed at a time, even if it won't be modifying\nthe data.\n\nAll newly-created read/write locks begin in the _unlocked_ state.\n\nCalls to RWLockRef.LockForReading() and RWLockRef.LockForWriting will not\nreturn while the rwlock is locked _for writing_ by another thread. See\nRWLockRef.TryLockForReading() and RWLockRef.TryLockForWriting() to attempt\nto lock without blocking.\n\nSDL read/write locks are only recursive for read-only locks! They are not\nguaranteed to be fair, or provide access in a FIFO manner! They are not\nguaranteed to favor writers. You may not lock a rwlock for both read-only\nand write access at the same time from the same thread (so you can't\npromote your read-only lock to a write lock without unlocking first).\n\n@returns the initialized and unlocked read/write lock or nullptr on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa RWLockRef.Destroy\n@sa RWLockRef.LockForReading\n@sa RWLockRef.LockForWriting\n@sa RWLockRef.TryLockForReading\n@sa RWLockRef.TryLockForWriting\n@sa RWLockRef.Unlock",
+              "name": "Create",
+              "kind": "function",
+              "type": "RWLock",
+              "parameters": [],
+              "sourceName": "SDL_CreateRWLock",
+              "hints": {
+                "body": "return RWLock();"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -31424,7 +32039,8 @@
                     "type": "Uint32"
                   }
                 ],
-                "sourceName": "SDL_CreateSemaphore"
+                "sourceName": "SDL_CreateSemaphore",
+                "proto": false
               }
             ],
             "~Semaphore": {
@@ -31451,6 +32067,23 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a semaphore.\n\nThis function creates a new semaphore and initializes it with the value\n`initial_value`. Each wait operation on the semaphore will atomically\ndecrement the semaphore value and potentially block if the semaphore value\nis 0. Each post operation will atomically increment the semaphore value and\nwake waiting threads and allow them to retry the wait operation.\n\n@param initial_value the starting value of the semaphore.\n@returns a new semaphore or nullptr on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SemaphoreRef.Destroy\n@sa SemaphoreRef.Signal\n@sa SemaphoreRef.TryWait\n@sa SemaphoreRef.GetValue\n@sa SemaphoreRef.Wait\n@sa SemaphoreRef.WaitTimeout",
+              "name": "Create",
+              "kind": "function",
+              "type": "Semaphore",
+              "parameters": [
+                {
+                  "name": "initial_value",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "SDL_CreateSemaphore",
+              "hints": {
+                "body": "return Semaphore(initial_value);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -31733,7 +32366,8 @@
                 "kind": "function",
                 "type": "",
                 "parameters": [],
-                "sourceName": "SDL_CreateCondition"
+                "sourceName": "SDL_CreateCondition",
+                "proto": false
               }
             ],
             "~Condition": {
@@ -31760,6 +32394,18 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a condition variable.\n\n@returns a new condition variable or nullptr on failure; call GetError()\n         for more information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ConditionRef.Broadcast\n@sa ConditionRef.Signal\n@sa ConditionRef.Wait\n@sa ConditionRef.WaitTimeout\n@sa ConditionRef.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "Condition",
+              "parameters": [],
+              "sourceName": "SDL_CreateCondition",
+              "hints": {
+                "body": "return Condition();"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -34146,7 +34792,8 @@
                 "sourceName": "SDL_OpenTitleStorage",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               },
               {
                 "doc": "Opens up a container for a user's unique read/write filesystem.\n\nWhile title storage can generally be kept open throughout runtime, user\nstorage should only be opened when the client is ready to read/write files.\nThis allows the backend to properly batch file operations and flush them\nwhen the container has been closed; ensuring safe and optimal save I/O.\n\n@param org the name of your organization.\n@param app the name of your application.\n@param props a property list that may contain backend-specific information.\n@post a user storage container on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageRef.GetFileSize\n@sa StorageRef.GetSpaceRemaining\n@sa Storage.Storage\n@sa StorageRef.ReadFile\n@sa StorageRef.Ready\n@sa StorageRef.WriteFile",
@@ -34170,7 +34817,8 @@
                 "sourceName": "SDL_OpenUserStorage",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               },
               {
                 "doc": "Opens up a container for local filesystem storage.\n\nThis is provided for development and tools. Portable applications should\nuse Storage.Storage() for access to game data and\nStorage.Storage() for access to user data.\n\n@param path the base path prepended to all storage paths, or nullptr for no\n            base path.\n@post a filesystem storage container on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageRef.GetFileSize\n@sa StorageRef.GetSpaceRemaining\n@sa Storage.Storage\n@sa Storage.Storage\n@sa StorageRef.ReadFile\n@sa StorageRef.WriteFile",
@@ -34186,7 +34834,8 @@
                 "sourceName": "SDL_OpenFileStorage",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               },
               {
                 "doc": "Opens up a container using a client-provided storage interface.\n\nApplications do not need to use this function unless they are providing\ntheir own StorageRef implementation. If you just need an StorageRef, you\nshould use the built-in implementations in SDL, like Storage.Storage()\nor Storage.Storage().\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this storage, initialized using\n             SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@post a storage container on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageRef.GetFileSize\n@sa StorageRef.GetSpaceRemaining\n@sa SDL_INIT_INTERFACE\n@sa StorageRef.ReadFile\n@sa StorageRef.Ready\n@sa StorageRef.WriteFile",
@@ -34206,7 +34855,8 @@
                 "sourceName": "SDL_OpenStorage",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               }
             ],
             "~Storage": {
@@ -34233,6 +34883,94 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "OpenTitle": {
+              "doc": "Opens up a read-only container for the application's filesystem.\n\n@param override a path to override the backend's default title root.\n@param props a property list that may contain backend-specific information.\n@returns a title storage container on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageRef.GetFileSize\n@sa Storage.Storage\n@sa StorageRef.ReadFile",
+              "name": "OpenTitle",
+              "kind": "function",
+              "type": "Storage",
+              "parameters": [
+                {
+                  "name": "override",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "SDL_OpenTitleStorage",
+              "hints": {
+                "mayFail": true,
+                "body": "return Storage(override, props);"
+              },
+              "static": true
+            },
+            "OpenUser": {
+              "doc": "Opens up a container for a user's unique read/write filesystem.\n\nWhile title storage can generally be kept open throughout runtime, user\nstorage should only be opened when the client is ready to read/write files.\nThis allows the backend to properly batch file operations and flush them\nwhen the container has been closed; ensuring safe and optimal save I/O.\n\n@param org the name of your organization.\n@param app the name of your application.\n@param props a property list that may contain backend-specific information.\n@returns a user storage container on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageRef.GetFileSize\n@sa StorageRef.GetSpaceRemaining\n@sa Storage.Storage\n@sa StorageRef.ReadFile\n@sa StorageRef.Ready\n@sa StorageRef.WriteFile",
+              "name": "OpenUser",
+              "kind": "function",
+              "type": "Storage",
+              "parameters": [
+                {
+                  "name": "org",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "app",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "SDL_OpenUserStorage",
+              "hints": {
+                "mayFail": true,
+                "body": "return Storage(org, app, props);"
+              },
+              "static": true
+            },
+            "OpenFile": {
+              "doc": "Opens up a container for local filesystem storage.\n\nThis is provided for development and tools. Portable applications should\nuse Storage.Storage() for access to game data and\nStorage.Storage() for access to user data.\n\n@param path the base path prepended to all storage paths, or nullptr for no\n            base path.\n@returns a filesystem storage container on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageRef.GetFileSize\n@sa StorageRef.GetSpaceRemaining\n@sa Storage.Storage\n@sa Storage.Storage\n@sa StorageRef.ReadFile\n@sa StorageRef.WriteFile",
+              "name": "OpenFile",
+              "kind": "function",
+              "type": "Storage",
+              "parameters": [
+                {
+                  "name": "path",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_OpenFileStorage",
+              "hints": {
+                "mayFail": true,
+                "body": "return Storage(path);"
+              },
+              "static": true
+            },
+            "Open": {
+              "doc": "Opens up a container using a client-provided storage interface.\n\nApplications do not need to use this function unless they are providing\ntheir own StorageRef implementation. If you just need an StorageRef, you\nshould use the built-in implementations in SDL, like Storage.Storage()\nor Storage.Storage().\n\nThis function makes a copy of `iface` and the caller does not need to keep\nit around after this call.\n\n@param iface the interface that implements this storage, initialized using\n             SDL_INIT_INTERFACE().\n@param userdata the pointer that will be passed to the interface functions.\n@returns a storage container on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StorageRef.Close\n@sa StorageRef.GetFileSize\n@sa StorageRef.GetSpaceRemaining\n@sa SDL_INIT_INTERFACE\n@sa StorageRef.ReadFile\n@sa StorageRef.Ready\n@sa StorageRef.WriteFile",
+              "name": "Open",
+              "kind": "function",
+              "type": "Storage",
+              "parameters": [
+                {
+                  "name": "iface",
+                  "type": "const StorageInterface &"
+                },
+                {
+                  "name": "userdata",
+                  "type": "void *"
+                }
+              ],
+              "sourceName": "SDL_OpenStorage",
+              "hints": {
+                "mayFail": true,
+                "body": "return Storage(iface, userdata);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -36355,7 +37093,8 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "SDL_LoadObject"
+                "sourceName": "SDL_LoadObject",
+                "proto": false
               }
             ],
             "~SharedObject": {
@@ -36382,6 +37121,23 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "LoadObject": {
+              "doc": "Dynamically load a shared object.\n\n@param sofile a system-dependent name of the object file.\n@returns an opaque pointer to the object handle or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SharedObjectRef.LoadFunction\n@sa SharedObjectRef.Unload",
+              "name": "LoadObject",
+              "kind": "function",
+              "type": "SharedObject",
+              "parameters": [
+                {
+                  "name": "sofile",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_LoadObject",
+              "hints": {
+                "body": "return SharedObject(sofile);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -36789,7 +37545,8 @@
                     "type": "bool"
                   }
                 ],
-                "sourceName": "SDL_CreateProcess"
+                "sourceName": "SDL_CreateProcess",
+                "proto": false
               },
               {
                 "doc": "Create a new process with the specified properties.\n\nThese are the supported properties:\n\n- `prop::process.CREATE_ARGS_POINTER`: an array of strings containing\n  the program to run, any arguments, and a nullptr pointer, e.g. const char\n  *args[] = { \"myprogram\", \"argument\", nullptr }. This is a required property.\n- `prop::process.CREATE_ENVIRONMENT_POINTER`: an EnvironmentRef\n  pointer. If this property is set, it will be the entire environment for\n  the process, otherwise the current environment is used.\n- `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing\n  where standard input for the process comes from, defaults to\n  `SDL_PROCESS_STDIO_nullptr`.\n- `prop::process.CREATE_STDIN_POINTER`: an IOStreamRef pointer used for\n  standard input when `prop::process.CREATE_STDIN_NUMBER` is set to\n  `PROCESS_STDIO_REDIRECT`.\n- `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value\n  describing where standard output for the process goes to, defaults to\n  `PROCESS_STDIO_INHERITED`.\n- `prop::process.CREATE_STDOUT_POINTER`: an IOStreamRef pointer used\n  for standard output when `prop::process.CREATE_STDOUT_NUMBER` is set\n  to `PROCESS_STDIO_REDIRECT`.\n- `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value\n  describing where standard error for the process goes to, defaults to\n  `PROCESS_STDIO_INHERITED`.\n- `prop::process.CREATE_STDERR_POINTER`: an IOStreamRef pointer used\n  for standard error when `prop::process.CREATE_STDERR_NUMBER` is set to\n  `PROCESS_STDIO_REDIRECT`.\n- `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error\n  output of the process should be redirected into the standard output of\n  the process. This property has no effect if\n  `prop::process.CREATE_STDERR_NUMBER` is set.\n- `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should\n  run in the background. In this case the default input and output is\n  `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not\n  available, and will always be 0.\n\nOn POSIX platforms, wait() and waitpid(-1, ...) should not be called, and\nSIGCHLD should not be ignored or handled because those would prevent SDL\nfrom properly tracking the lifetime of the underlying process. You should\nuse ProcessRef.Wait() instead.\n\n@param props the properties to use.\n@post the newly created and running process, or nullptr if the process\n         couldn't be created.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Process.Process\n@sa ProcessRef.GetProperties\n@sa ProcessRef.Read\n@sa ProcessRef.GetInput\n@sa ProcessRef.GetOutput\n@sa ProcessRef.Kill\n@sa ProcessRef.Wait\n@sa ProcessRef.Destroy",
@@ -36802,7 +37559,8 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "sourceName": "SDL_CreateProcessWithProperties"
+                "sourceName": "SDL_CreateProcessWithProperties",
+                "proto": false
               }
             ],
             "~Process": {
@@ -36829,6 +37587,44 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a new process.\n\nThe path to the executable is supplied in args[0]. args[1..N] are\nadditional arguments passed on the command line of the new process, and the\nargument list should be terminated with a nullptr, e.g.:\n\n```c\nconst char *args[] = { \"myprogram\", \"argument\", nullptr };\n```\n\nSetting pipe_stdio to true is equivalent to setting\n`prop::process.CREATE_STDIN_NUMBER` and\n`prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and\nwill allow the use of ProcessRef.Read() or ProcessRef.GetInput() and\nProcessRef.GetOutput().\n\nSee Process.Process() for more details.\n\n@param args the path and arguments for the new process.\n@param pipe_stdio true to create pipes to the process's standard input and\n                  from the process's standard output, false for the process\n                  to have no input and inherit the application's standard\n                  output.\n@returns the newly created and running process, or nullptr if the process\n         couldn't be created.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Process.Process\n@sa ProcessRef.GetProperties\n@sa ProcessRef.Read\n@sa ProcessRef.GetInput\n@sa ProcessRef.GetOutput\n@sa ProcessRef.Kill\n@sa ProcessRef.Wait\n@sa ProcessRef.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "Process",
+              "parameters": [
+                {
+                  "name": "args",
+                  "type": "const char *const *"
+                },
+                {
+                  "name": "pipe_stdio",
+                  "type": "bool"
+                }
+              ],
+              "sourceName": "SDL_CreateProcess",
+              "hints": {
+                "body": "return Process(args, pipe_stdio);"
+              },
+              "static": true
+            },
+            "CreateWithProperties": {
+              "doc": "Create a new process with the specified properties.\n\nThese are the supported properties:\n\n- `prop::process.CREATE_ARGS_POINTER`: an array of strings containing\n  the program to run, any arguments, and a nullptr pointer, e.g. const char\n  *args[] = { \"myprogram\", \"argument\", nullptr }. This is a required property.\n- `prop::process.CREATE_ENVIRONMENT_POINTER`: an EnvironmentRef\n  pointer. If this property is set, it will be the entire environment for\n  the process, otherwise the current environment is used.\n- `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing\n  where standard input for the process comes from, defaults to\n  `SDL_PROCESS_STDIO_nullptr`.\n- `prop::process.CREATE_STDIN_POINTER`: an IOStreamRef pointer used for\n  standard input when `prop::process.CREATE_STDIN_NUMBER` is set to\n  `PROCESS_STDIO_REDIRECT`.\n- `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value\n  describing where standard output for the process goes to, defaults to\n  `PROCESS_STDIO_INHERITED`.\n- `prop::process.CREATE_STDOUT_POINTER`: an IOStreamRef pointer used\n  for standard output when `prop::process.CREATE_STDOUT_NUMBER` is set\n  to `PROCESS_STDIO_REDIRECT`.\n- `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value\n  describing where standard error for the process goes to, defaults to\n  `PROCESS_STDIO_INHERITED`.\n- `prop::process.CREATE_STDERR_POINTER`: an IOStreamRef pointer used\n  for standard error when `prop::process.CREATE_STDERR_NUMBER` is set to\n  `PROCESS_STDIO_REDIRECT`.\n- `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error\n  output of the process should be redirected into the standard output of\n  the process. This property has no effect if\n  `prop::process.CREATE_STDERR_NUMBER` is set.\n- `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should\n  run in the background. In this case the default input and output is\n  `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not\n  available, and will always be 0.\n\nOn POSIX platforms, wait() and waitpid(-1, ...) should not be called, and\nSIGCHLD should not be ignored or handled because those would prevent SDL\nfrom properly tracking the lifetime of the underlying process. You should\nuse ProcessRef.Wait() instead.\n\n@param props the properties to use.\n@returns the newly created and running process, or nullptr if the process\n         couldn't be created.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Process.Process\n@sa ProcessRef.GetProperties\n@sa ProcessRef.Read\n@sa ProcessRef.GetInput\n@sa ProcessRef.GetOutput\n@sa ProcessRef.Kill\n@sa ProcessRef.Wait\n@sa ProcessRef.Destroy",
+              "name": "CreateWithProperties",
+              "kind": "function",
+              "type": "Process",
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "SDL_CreateProcessWithProperties",
+              "hints": {
+                "body": "return Process(props);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -38059,7 +38855,8 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "SDL_CreateTray"
+                "sourceName": "SDL_CreateTray",
+                "proto": false
               }
             ],
             "~Tray": {
@@ -38086,6 +38883,27 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create an icon to be placed in the operating system's tray, or equivalent.\n\nMany platforms advise not using a system tray unless persistence is a\nnecessary feature. Avoid needlessly creating a tray icon, as the user may\nfeel like it clutters their interface.\n\nUsing tray icons require the video subsystem.\n\n@param icon a surface to be used as icon. May be nullptr.\n@param tooltip a tooltip to be displayed when the mouse hovers the icon in\n               UTF-8 encoding. Not supported on all platforms. May be nullptr.\n@returns The newly created system tray icon.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa TrayRef.CreateMenu\n@sa TrayRef.GetMenu\n@sa TrayRef.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "Tray",
+              "parameters": [
+                {
+                  "name": "icon",
+                  "type": "SurfaceRef"
+                },
+                {
+                  "name": "tooltip",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_CreateTray",
+              "hints": {
+                "body": "return Tray(icon, tooltip);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -40502,7 +41320,8 @@
                     "type": "bool"
                   }
                 ],
-                "sourceName": "SDL_CreateEnvironment"
+                "sourceName": "SDL_CreateEnvironment",
+                "proto": false
               }
             ],
             "~Environment": {
@@ -40529,6 +41348,23 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a set of environment variables\n\n@param populated true to initialize it from the C runtime environment,\n                 false to create an empty environment.\n@returns a pointer to the new environment or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety If `populated` is false, it is safe to call this function\n              from any thread, otherwise it is safe if no other threads are\n              calling setenv() or unsetenv()\n\n@since This function is available since SDL 3.2.0.\n\n@sa EnvironmentRef.GetVariable\n@sa EnvironmentRef.GetVariables\n@sa EnvironmentRef.SetVariable\n@sa EnvironmentRef.UnsetVariable\n@sa EnvironmentRef.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "Environment",
+              "parameters": [
+                {
+                  "name": "populated",
+                  "type": "bool"
+                }
+              ],
+              "sourceName": "SDL_CreateEnvironment",
+              "hints": {
+                "body": "return Environment(populated);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -44890,7 +45726,8 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "IMG_LoadAnimation"
+                "sourceName": "IMG_LoadAnimation",
+                "proto": false
               },
               {
                 "doc": "Load an animation from an IOStreamRef.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationRef.Free().\n\n@param src an IOStreamRef that data will be read from.\n@param closeio true to close/free the IOStreamRef before returning, false\n               to leave it open.\n@post a new AnimationRef, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationRef.Free",
@@ -44949,7 +45786,64 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
-            }
+            },
+            "Load": [
+              {
+                "doc": "Load an animation from a file.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationRef.Free().\n\n@param file path on the filesystem containing an animated image.\n@returns a new AnimationRef, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationRef.Free",
+                "name": "Load",
+                "kind": "function",
+                "type": "Animation",
+                "parameters": [
+                  {
+                    "name": "file",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "IMG_LoadAnimation",
+                "hints": {
+                  "body": "return Animation(file);"
+                },
+                "static": true
+              },
+              {
+                "doc": "Load an animation from an IOStreamRef.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationRef.Free().\n\n@param src an IOStreamRef that data will be read from.\n@param closeio true to close/free the IOStreamRef before returning, false\n               to leave it open.\n@returns a new AnimationRef, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa AnimationRef.Free",
+                "name": "Load",
+                "kind": "function",
+                "type": "Animation",
+                "parameters": [
+                  {
+                    "name": "src",
+                    "type": "IOStreamRef"
+                  }
+                ],
+                "sourceName": "IMG_LoadAnimation_IO",
+                "hints": {
+                  "body": "return Animation(src);"
+                },
+                "static": true
+              },
+              {
+                "doc": "Load an animation from an SDL datasource\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on\nits ability to guess the format.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to AnimationRef.Free().\n\n@param src an IOStreamRef that data will be read from.\n@param closeio true to close/free the IOStreamRef before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"GIF\", etc).\n@returns a new AnimationRef, or nullptr on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa Animation.Animation\n@sa Animation.Animation\n@sa AnimationRef.Free",
+                "name": "Load",
+                "kind": "function",
+                "type": "Animation",
+                "parameters": [
+                  {
+                    "name": "src",
+                    "type": "IOStreamRef"
+                  },
+                  {
+                    "name": "type",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "IMG_LoadAnimationTyped_IO",
+                "hints": {
+                  "body": "return Animation(src, type);"
+                },
+                "static": true
+              }
+            ]
           },
           "hints": {
             "super": "Animation"
@@ -46658,7 +47552,8 @@
                 "sourceName": "TTF_OpenFont",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               },
               {
                 "doc": "Create a font from an IOStreamRef, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should keep `src` open until the font is closed.\n\nWhen done with the returned FontRef, use FontRef.Close() to dispose of it.\n\n@param src an IOStreamRef to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@post a valid FontRef on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.Close",
@@ -46695,7 +47590,8 @@
                 "sourceName": "TTF_OpenFontWithProperties",
                 "hints": {
                   "mayFail": true
-                }
+                },
+                "proto": false
               }
             ],
             "~Font": {
@@ -46722,6 +47618,70 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Open": [
+              {
+                "doc": "Create a font from a file, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nWhen done with the returned FontRef, use FontRef.Close() to dispose of it.\n\n@param file path to font file.\n@param ptsize point size to use for the newly-opened font.\n@returns a valid FontRef on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.Close",
+                "name": "Open",
+                "kind": "function",
+                "type": "Font",
+                "parameters": [
+                  {
+                    "name": "file",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "ptsize",
+                    "type": "float"
+                  }
+                ],
+                "sourceName": "TTF_OpenFont",
+                "hints": {
+                  "mayFail": true,
+                  "body": "return Font(file, ptsize);"
+                },
+                "static": true
+              },
+              {
+                "doc": "Create a font from an IOStreamRef, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should keep `src` open until the font is closed.\n\nWhen done with the returned FontRef, use FontRef.Close() to dispose of it.\n\n@param src an IOStreamRef to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@returns a valid FontRef on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.Close",
+                "name": "Open",
+                "kind": "function",
+                "type": "Font",
+                "parameters": [
+                  {
+                    "name": "src",
+                    "type": "IOStreamRef"
+                  },
+                  {
+                    "name": "ptsize",
+                    "type": "float"
+                  }
+                ],
+                "sourceName": "TTF_OpenFontIO",
+                "hints": {
+                  "mayFail": true,
+                  "body": "return Font(, ptsize);"
+                },
+                "static": true
+              }
+            ],
+            "OpenWithProperties": {
+              "doc": "Create a font with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an\n  IOStreamRef isn't being used. This is required if\n  `prop::Font.CREATE_IOSTREAM_POINTER` and\n  `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.\n- `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamRef containing the\n  font to be opened. This should not be closed until the font is closed.\n  This is required if `prop::Font.CREATE_FILENAME_STRING` and\n  `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.\n- `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream\n  for the beginning of the font, defaults to 0.\n- `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the\n  font should also close the associated IOStreamRef.\n- `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon\n  fonts will have several sizes embedded in the file, so the point size\n  becomes the index of choosing which size. If the value is too high, the\n  last indexed size will be the default.\n- `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the\n  font contains multiple font faces.\n- `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use\n  for font rendering, defaults to\n  `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.\n- `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for\n  font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`\n  if set, or 72 otherwise.\n- `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional FontRef that, if set,\n  will be used as the font data source and the initial size and style of\n  the new font.\n\n@param props the properties to use.\n@returns a valid FontRef on success.\n@throws Error on failure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontRef.Close",
+              "name": "OpenWithProperties",
+              "kind": "function",
+              "type": "Font",
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
+              "sourceName": "TTF_OpenFontWithProperties",
+              "hints": {
+                "mayFail": true,
+                "body": "return Font(props);"
+              },
+              "static": true
             }
           },
           "hints": {
@@ -48288,6 +49248,31 @@
                 "body": "reset(other.release());\nreturn *this;"
               },
               "name": "operator="
+            },
+            "Create": {
+              "doc": "Create a text object from UTF-8 text and a text engine.\n\n@param engine the text engine to use when creating the text object, may be\n              nullptr.\n@param font the font to render with.\n@param text the text to use, in UTF-8 encoding.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns a TextRef object or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              font and text engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TextRef.Destroy",
+              "name": "Create",
+              "kind": "function",
+              "type": "Text",
+              "parameters": [
+                {
+                  "name": "engine",
+                  "type": "TextEngineRef"
+                },
+                {
+                  "name": "font",
+                  "type": "FontRef"
+                },
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                }
+              ],
+              "sourceName": "TTF_CreateText",
+              "hints": {
+                "body": "return Text(engine, font, text);"
+              },
+              "static": true
             }
           },
           "hints": {

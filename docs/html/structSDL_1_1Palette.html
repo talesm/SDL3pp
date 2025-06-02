@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Palette-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Palette Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryPixels.html">Pixel Formats and Conversion Routines</a></div></div></div>
 </div><!--header-->
@@ -232,6 +233,12 @@ constexpr SDL_Palette *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a6fa13100159245d3764a836e60543d94" id="r_a6fa13100159245d3764a836e60543d94"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Palette.html">Palette</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Palette.html#a6fa13100159245d3764a836e60543d94">Create</a> (int ncolors)</td></tr>
+<tr class="memdesc:a6fa13100159245d3764a836e60543d94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a palette structure with the specified number of color entries.  <br /></td></tr>
+<tr class="separator:a6fa13100159245d3764a836e60543d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1PaletteRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1PaletteRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1PaletteRef.html">SDL::PaletteRef</a></td></tr>
@@ -277,6 +284,54 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section post"><dt>Postcondition</dt><dd>a new <a class="el" href="structSDL_1_1Palette.html" title="Handle to an owned palette.">Palette</a> structure on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteRef.html#aacad16d3b9b0bddbd61c1411a2eb6920" title="Free a palette created with PaletteRef.PaletteRef().">PaletteRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1PaletteRef.html#a5ee1a355fdb134e4b036bc43e48ce488" title="Set a range of colors in a palette.">PaletteRef.SetColors</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SurfaceRef.html#ade0bd9f50b4391dcab131b5b8aa2393b" title="Set the palette used by a surface.">SurfaceRef.SetPalette</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6fa13100159245d3764a836e60543d94" name="a6fa13100159245d3764a836e60543d94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fa13100159245d3764a836e60543d94">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Palette.html">Palette</a> SDL::Palette::Create </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ncolors</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The palette entries are initialized to white.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ncolors</td><td>represents the number of color entries in the color palette. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1PaletteRef.html" title="A set of indexed colors representing a palette.">PaletteRef</a> structure on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>

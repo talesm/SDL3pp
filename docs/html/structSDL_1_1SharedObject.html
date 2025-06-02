@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1SharedObject-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::SharedObject Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategorySharedObject.html">Shared Object/DLL Management</a></div></div></div>
 </div><!--header-->
@@ -221,6 +222,12 @@ constexpr SDL_SharedObject *&#160;</td><td class="memItemRight" valign="bottom">
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:abc058172d0544b3f4049de234bc58cea" id="r_abc058172d0544b3f4049de234bc58cea"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1SharedObject.html">SharedObject</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SharedObject.html#abc058172d0544b3f4049de234bc58cea">LoadObject</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> sofile)</td></tr>
+<tr class="memdesc:abc058172d0544b3f4049de234bc58cea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamically load a shared object.  <br /></td></tr>
+<tr class="separator:abc058172d0544b3f4049de234bc58cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1SharedObjectRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1SharedObjectRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1SharedObjectRef.html">SDL::SharedObjectRef</a></td></tr>
@@ -265,6 +272,45 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section post"><dt>Postcondition</dt><dd>an opaque pointer to the object handle or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2" title="Look up the address of the named function in a shared object.">SharedObjectRef.LoadFunction</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SharedObjectRef.html#a183366ceaeac124bc111e2f57c908707" title="Unload a shared object from memory.">SharedObjectRef.Unload</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="abc058172d0544b3f4049de234bc58cea" name="abc058172d0544b3f4049de234bc58cea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc058172d0544b3f4049de234bc58cea">&#9670;&#160;</a></span>LoadObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1SharedObject.html">SharedObject</a> SDL::SharedObject::LoadObject </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>sofile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sofile</td><td>a system-dependent name of the object file. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an opaque pointer to the object handle or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SharedObjectRef.html#ac0a75bdc0eea4ce18e9801bbf176b2d2" title="Look up the address of the named function in a shared object.">SharedObjectRef.LoadFunction</a> </dd>

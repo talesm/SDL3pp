@@ -2158,6 +2158,71 @@ struct Animation : AnimationUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Load an animation from a file.
+   *
+   * When done with the returned animation, the app should dispose of it with a
+   * call to AnimationRef.Free().
+   *
+   * @param file path on the filesystem containing an animated image.
+   * @returns a new AnimationRef, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa AnimationRef.Free
+   */
+  static Animation Load(StringParam file) { return Animation(std::move(file)); }
+
+  /**
+   * Load an animation from an IOStreamRef.
+   *
+   * If `closeio` is true, `src` will be closed before returning, whether this
+   * function succeeds or not. SDL_image reads everything it needs from `src`
+   * during this call in any case.
+   *
+   * When done with the returned animation, the app should dispose of it with a
+   * call to AnimationRef.Free().
+   *
+   * @param src an IOStreamRef that data will be read from.
+   * @returns a new AnimationRef, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa AnimationRef.Free
+   */
+  static Animation Load(IOStreamRef src) { return Animation(src); }
+
+  /**
+   * Load an animation from an SDL datasource
+   *
+   * Even though this function accepts a file type, SDL_image may still try
+   * other decoders that are capable of detecting file type from the contents of
+   * the image data, but may rely on the caller-provided type string for formats
+   * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
+   * on its ability to guess the format.
+   *
+   * If `closeio` is true, `src` will be closed before returning, whether this
+   * function succeeds or not. SDL_image reads everything it needs from `src`
+   * during this call in any case.
+   *
+   * When done with the returned animation, the app should dispose of it with a
+   * call to AnimationRef.Free().
+   *
+   * @param src an IOStreamRef that data will be read from.
+   * @param type a filename extension that represent this data ("GIF", etc).
+   * @returns a new AnimationRef, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa Animation.Animation
+   * @sa Animation.Animation
+   * @sa AnimationRef.Free
+   */
+  static Animation Load(IOStreamRef src, StringParam type)
+  {
+    return Animation(src, std::move(type));
+  }
 };
 
 constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
@@ -2210,24 +2275,24 @@ inline Animation LoadWEBPAnimation(IOStreamRef src)
 
 /// @}
 
-inline Surface::Surface(StringParam file)
-  : Surface(CheckError(IMG_Load(file)))
+inline Surface Surface::Load(StringParam file)
 {
+  return Surface(IMG_Load(file));
 }
 
-inline Surface::Surface(IOStreamRef src)
-  : Surface(CheckError(IMG_Load_IO(src.get(), false)))
+inline Surface Surface::Load(IOStreamRef src)
 {
+  return Surface(IMG_Load_IO(src.get(), false));
 }
 
-inline Texture::Texture(RendererRef renderer, StringParam file)
-  : Texture(CheckError(IMG_LoadTexture(renderer.get(), file)))
+inline Texture Texture::Load(RendererRef renderer, StringParam file)
 {
+  return Texture(IMG_LoadTexture(renderer.get(), file));
 }
 
-inline Texture::Texture(RendererRef renderer, IOStreamRef src)
-  : Texture(CheckError(IMG_LoadTexture_IO(renderer.get(), src.get(), false)))
+inline Texture Texture::Load(RendererRef renderer, IOStreamRef src)
 {
+  return Texture(IMG_LoadTexture_IO(renderer.get(), src.get(), false));
 }
 
 #pragma endregion impl
@@ -2238,24 +2303,24 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src)
 
 namespace SDL {
 
-inline Surface::Surface(StringParam file)
-  : Surface(CheckError(SDL_LoadBMP(file)))
+inline Surface Surface::Load(StringParam file)
 {
+  return Surface(SDL_LoadBMP(file));
 }
 
-inline Surface::Surface(IOStreamRef src)
-  : Surface(CheckError(SDL_LoadBMP_IO(src.get(), false)))
+inline Surface Surface::Load(IOStreamRef src)
 {
+  return Surface(SDL_LoadBMP_IO(src.get(), false));
 }
 
-inline Texture::Texture(RendererRef renderer, StringParam file)
-  : Texture(CheckError(LoadTextureBMP(renderer, std::move(file)).release()))
+inline Texture Texture::Load(RendererRef renderer, StringParam file)
 {
+  return Texture(LoadTextureBMP(renderer, std::move(file)));
 }
 
-inline Texture::Texture(RendererRef renderer, IOStreamRef src)
-  : Texture(CheckError(LoadTextureBMP(renderer, src).release()))
+inline Texture Texture::Load(RendererRef renderer, IOStreamRef src)
 {
+  return Texture(LoadTextureBMP(renderer, src));
 }
 
 }

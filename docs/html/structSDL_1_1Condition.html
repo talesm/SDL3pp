@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Condition-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Condition Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryMutex.html">Thread Synchronization Primitives</a></div></div></div>
 </div><!--header-->
@@ -226,6 +227,12 @@ constexpr SDL_Condition *&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa70e6c5acbd8b641ca2b32242697c628" id="r_aa70e6c5acbd8b641ca2b32242697c628"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Condition.html">Condition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Condition.html#aa70e6c5acbd8b641ca2b32242697c628">Create</a> ()</td></tr>
+<tr class="memdesc:aa70e6c5acbd8b641ca2b32242697c628"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a condition variable.  <br /></td></tr>
+<tr class="separator:aa70e6c5acbd8b641ca2b32242697c628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1ConditionRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1ConditionRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1ConditionRef.html">SDL::ConditionRef</a></td></tr>
@@ -263,6 +270,43 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <dl class="section post"><dt>Postcondition</dt><dd>a new condition variable or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ConditionRef.html#a1190b8c5edb61fc2fd4bfb2718406572" title="Restart all threads that are waiting on the condition variable.">ConditionRef.Broadcast</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ConditionRef.html#a4ab2314a8a6f8a9d08b9a4bdcfe99213" title="Restart one of the threads that are waiting on the condition variable.">ConditionRef.Signal</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ConditionRef.html#a7384ad18cf30ee1443c15c89ba02750b" title="Wait until a condition variable is signaled.">ConditionRef.Wait</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ConditionRef.html#a89c0f9cbc6295466b210d6e6a39c4159" title="Wait until a condition variable is signaled or a certain time has passed.">ConditionRef.WaitTimeout</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1ConditionRef.html#a5bf9e89c64ed19d0328814582945a41b" title="Destroy a condition variable.">ConditionRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa70e6c5acbd8b641ca2b32242697c628" name="aa70e6c5acbd8b641ca2b32242697c628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa70e6c5acbd8b641ca2b32242697c628">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Condition.html">Condition</a> SDL::Condition::Create </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a new condition variable or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1ConditionRef.html#a1190b8c5edb61fc2fd4bfb2718406572" title="Restart all threads that are waiting on the condition variable.">ConditionRef.Broadcast</a> </dd>
 <dd>

@@ -1001,6 +1001,28 @@ struct Environment : EnvironmentUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Create a set of environment variables
+   *
+   * @param populated true to initialize it from the C runtime environment,
+   *                  false to create an empty environment.
+   * @returns a pointer to the new environment or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety If `populated` is false, it is safe to call this function
+   *               from any thread, otherwise it is safe if no other threads are
+   *               calling setenv() or unsetenv()
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa EnvironmentRef.GetVariable
+   * @sa EnvironmentRef.GetVariables
+   * @sa EnvironmentRef.SetVariable
+   * @sa EnvironmentRef.UnsetVariable
+   * @sa EnvironmentRef.Destroy
+   */
+  static Environment Create(bool populated) { return Environment(populated); }
 };
 
 constexpr EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)

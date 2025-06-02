@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1AudioDevice-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::AudioDevice Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoryAudio.html">Audio Playback, Recording, and Mixing</a></div></div></div>
 </div><!--header-->
@@ -264,6 +265,12 @@ constexpr SDL_AudioDeviceID&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a6f6f17c055cf581ef5436e8e6cb3fcd7" id="r_a6f6f17c055cf581ef5436e8e6cb3fcd7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1AudioDevice.html">AudioDevice</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDevice.html#a6f6f17c055cf581ef5436e8e6cb3fcd7">Open</a> (<a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a> devid, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_AudioSpec &gt; spec)</td></tr>
+<tr class="memdesc:a6f6f17c055cf581ef5436e8e6cb3fcd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a specific audio device.  <br /></td></tr>
+<tr class="separator:a6f6f17c055cf581ef5436e8e6cb3fcd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1AudioDeviceRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1AudioDeviceRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1AudioDeviceRef.html">SDL::AudioDeviceRef</a></td></tr>
@@ -308,6 +315,71 @@ Additional Inherited Members</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>You can open both playback and recording devices through this function. Playback devices will take data from bound audio streams, mix it, and send it to the hardware. Recording devices will feed any bound audio streams with a copy of any incoming data.</p>
+<p>An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using <a class="el" href="structSDL_1_1AudioStream.html#aef481245627fd072c63f49e74dd1f496" title="Constructs an empty AudioStream.">AudioStream.AudioStream</a> instead of this function).</p>
+<p>If you don't care about opening a specific device, pass a <code>devid</code> of either <code>AUDIO_DEVICE_DEFAULT_PLAYBACK</code> or <code>AUDIO_DEVICE_DEFAULT_RECORDING</code>. In this case, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will try to pick the most reasonable default, and may also switch between physical devices seamlessly later, if the most reasonable default changes during the lifetime of this opened device (user changed the default in the OS's system preferences, the default got unplugged so the system jumped to a new default, the user plugged in headphones on a mobile device, etc). Unless you have a good reason to choose a specific device, this is probably what you want.</p>
+<p>You may request a specific format for the audio device, but there is no promise the device will honor that request for several reasons. As such, it's only meant to be a hint as to what data your app will provide. Audio streams will accept data in whatever format you specify and manage conversion for you as appropriate. <a class="el" href="structSDL_1_1AudioDeviceRef.html#a5b242e7b52bcee9dcbe69d10e5d16c64" title="Get the current audio format of a specific audio device.">AudioDeviceRef.GetFormat</a> can tell you the preferred format for the device before opening and the actual format the device is using after opening.</p>
+<p>It's legal to open the same device ID more than once; each successful open will generate a new logical <a class="el" href="structSDL_1_1AudioDeviceRef.html" title="SDL Audio Device instance IDs.">AudioDeviceRef</a> that is managed separately from others on the same physical device. This allows libraries to open a device separately from the main app and bind its own streams without conflicting.</p>
+<p>It is also legal to open a device ID returned by a previous call to this function; doing so just creates another logical device on the same physical device. This may be useful for making logical groupings of audio streams.</p>
+<p>This function returns the opened device ID on success. This is a new, unique <a class="el" href="structSDL_1_1AudioDeviceRef.html" title="SDL Audio Device instance IDs.">AudioDeviceRef</a> that represents a logical device.</p>
+<p>Some backends might offer arbitrary devices (for example, a networked audio protocol that can connect to an arbitrary server). For these, as a change from SDL2, you should open a default device ID and use an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> hint to specify the target if you care, or otherwise let the backend figure out a reasonable default. Most backends don't offer anything like this, and often this would be an end user setting an environment variable for their custom need, and not something an application should specifically manage.</p>
+<p>When done with an audio device, possibly at the end of the app's life, one should call <a class="el" href="structSDL_1_1AudioDeviceRef.html#a6fe3df0c15b9f1d8ff16b50b83aa8dc9" title="Close a previously-opened audio device.">AudioDeviceRef.Close()</a> on the returned device id.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">devid</td><td>the device instance id to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable default device. </td></tr>
+    <tr><td class="paramname">spec</td><td>the requested device configuration. Can be nullptr to use reasonable defaults. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the device ID on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioDeviceRef.html#a6fe3df0c15b9f1d8ff16b50b83aa8dc9" title="Close a previously-opened audio device.">AudioDeviceRef.Close</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1AudioDeviceRef.html#a5b242e7b52bcee9dcbe69d10e5d16c64" title="Get the current audio format of a specific audio device.">AudioDeviceRef.GetFormat</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6f6f17c055cf581ef5436e8e6cb3fcd7" name="a6f6f17c055cf581ef5436e8e6cb3fcd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f6f17c055cf581ef5436e8e6cb3fcd7">&#9670;&#160;</a></span>Open()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1AudioDevice.html">AudioDevice</a> SDL::AudioDevice::Open </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1AudioDeviceRef.html">AudioDeviceRef</a>&#160;</td>
+          <td class="paramname"><em>devid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_AudioSpec &gt;&#160;</td>
+          <td class="paramname"><em>spec</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

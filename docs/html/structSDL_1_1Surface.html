@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Surface-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Surface Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategorySurface.html">Surface Creation and Simple Drawing</a></div></div></div>
 </div><!--header-->
@@ -438,6 +439,21 @@ constexpr SDL_Surface *&#160;</td><td class="memItemRight" valign="bottom"><b>op
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aab66636aceed59f89834330c7ad8f996" id="r_aab66636aceed59f89834330c7ad8f996"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html#aab66636aceed59f89834330c7ad8f996">Load</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
+<tr class="memdesc:aab66636aceed59f89834330c7ad8f996"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
+<tr class="separator:aab66636aceed59f89834330c7ad8f996"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5603c73a02817294070ed6a64a3525cd" id="r_a5603c73a02817294070ed6a64a3525cd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html#a5603c73a02817294070ed6a64a3525cd">Load</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
+<tr class="memdesc:a5603c73a02817294070ed6a64a3525cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a software surface.  <br /></td></tr>
+<tr class="separator:a5603c73a02817294070ed6a64a3525cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34627cb91b18950e89c9e535757d616b" id="r_a34627cb91b18950e89c9e535757d616b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html#a34627cb91b18950e89c9e535757d616b">Create</a> (const SDL_Point &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format)</td></tr>
+<tr class="memdesc:a34627cb91b18950e89c9e535757d616b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format.  <br /></td></tr>
+<tr class="separator:a34627cb91b18950e89c9e535757d616b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c3d3e0972ac213a499ad101f045590d" id="r_a9c3d3e0972ac213a499ad101f045590d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html#a9c3d3e0972ac213a499ad101f045590d">CreateFrom</a> (const SDL_Point &amp;size, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> format, void *pixels, int pitch)</td></tr>
+<tr class="memdesc:a9c3d3e0972ac213a499ad101f045590d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new surface with a specific pixel format and existing pixel data.  <br /></td></tr>
+<tr class="separator:a9c3d3e0972ac213a499ad101f045590d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1SurfaceRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1SurfaceRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1SurfaceRef.html">SDL::SurfaceRef</a></td></tr>
@@ -491,7 +507,9 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a> </dd>
 <dd>
-<a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a> </dd></dl>
+<a class="el" href="structSDL_1_1Surface.html#aab66636aceed59f89834330c7ad8f996" title="Load an image from a filesystem path into a software surface.">Surface.Load(StringParam)</a> </dd>
+<dd>
+Surface.LoadBMP(StringParam) </dd></dl>
 
 </div>
 </div>
@@ -532,9 +550,11 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga94b3510377c9d687144cc97073266908" title="Load an image from an SDL data source into a software surface.">LoadSurface(IOStreamRef)</a> </dd>
 <dd>
-<a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a> </dd></dl>
+<a class="el" href="structSDL_1_1Surface.html#a5603c73a02817294070ed6a64a3525cd" title="Load an image from a filesystem path into a software surface.">Surface.Load(IOStreamRef)</a> </dd>
+<dd>
+Surface.LoadBMP(IOStreamRef) </dd></dl>
 
 </div>
 </div>
@@ -659,6 +679,201 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a34627cb91b18950e89c9e535757d616b" name="a34627cb91b18950e89c9e535757d616b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34627cb91b18950e89c9e535757d616b">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::Surface::Create </td>
+          <td>(</td>
+          <td class="paramtype">const SDL_Point &amp;&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td>
+          <td class="paramname"><em>format</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The pixels of the new surface are initialized to zero.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>the width and height of the surface. </td></tr>
+    <tr><td class="paramname">format</td><td>the <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> for the new surface's pixel format. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure that is created or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a9d6dfabb6ef7bc26600dea089b5707aa" title="Constructs an empty Surface.">Surface.Surface</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9c3d3e0972ac213a499ad101f045590d" name="a9c3d3e0972ac213a499ad101f045590d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c3d3e0972ac213a499ad101f045590d">&#9670;&#160;</a></span>CreateFrom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::Surface::CreateFrom </td>
+          <td>(</td>
+          <td class="paramtype">const SDL_Point &amp;&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pixels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pitch</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>No copy is made of the pixel data. Pixel data is not managed automatically; you must free the surface before you free the pixel data.</p>
+<p>Pitch is the offset in bytes from one row of pixels to the next, e.g. <code>width*4</code> for <code>PIXELFORMAT_RGBA8888</code>.</p>
+<p>You may pass nullptr for pixels and 0 for pitch to create a surface that you will fill in with valid values later.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>the width and height of the surface. </td></tr>
+    <tr><td class="paramname">format</td><td>the <a class="el" href="classSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> for the new surface's pixel format. </td></tr>
+    <tr><td class="paramname">pixels</td><td>a pointer to existing pixel data. </td></tr>
+    <tr><td class="paramname">pitch</td><td>the number of bytes between each row, including padding. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure that is created or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a9d6dfabb6ef7bc26600dea089b5707aa" title="Constructs an empty Surface.">Surface.Surface</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5603c73a02817294070ed6a64a3525cd" name="a5603c73a02817294070ed6a64a3525cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5603c73a02817294070ed6a64a3525cd">&#9670;&#160;</a></span>Load() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::Surface::Load </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a>, otherwise it uses <a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>an <a class="el" href="structSDL_1_1IOStreamRef.html" title="The read/write operation structure.">IOStreamRef</a> to load an image from. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with loaded contents on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a129a306be35054e7a02b4ab829edc6a0" title="Load an image from a IOStreamRef into a software surface.">Surface.Surface(IOStreamRef)</a> </dd>
+<dd>
+<a class="el" href="group__CategorySDLImage.html#ga94b3510377c9d687144cc97073266908" title="Load an image from an SDL data source into a software surface.">LoadSurface(IOStreamRef)</a> </dd>
+<dd>
+Surface.LoadBMP(IOStreamRef) </dd></dl>
+
+</div>
+</div>
+<a id="aab66636aceed59f89834330c7ad8f996" name="aab66636aceed59f89834330c7ad8f996"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab66636aceed59f89834330c7ad8f996">&#9670;&#160;</a></span>Load() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::Surface::Load </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>file</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If available, this uses <a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a>, otherwise it uses <a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076" title="Load a BMP image from a file.">LoadBMP(StringParam)</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file</td><td>a path on the filesystem to load an image from. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with loaded contents on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Surface.html#a75bfc2dbf6397c53b7b3ce6573fdcaff" title="Load an image from a filesystem path into a software surface.">Surface.Surface(StringParam)</a> </dd>
+<dd>
+<a class="el" href="group__CategorySDLImage.html#gaeacee5c47a7d2900f4faad5fb55127b6" title="Load an image from a filesystem path into a software surface.">LoadSurface(StringParam)</a> </dd>
+<dd>
+Surface.LoadBMP(StringParam) </dd></dl>
 
 </div>
 </div>

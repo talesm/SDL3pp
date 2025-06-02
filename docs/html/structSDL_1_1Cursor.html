@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Cursor-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Cursor Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesEvents.html">Input Events</a> &raquo; <a class="el" href="group__CategoryMouse.html">Mouse Support</a></div></div></div>
 </div><!--header-->
@@ -223,6 +224,18 @@ constexpr const SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom">
 constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> ()</td></tr>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a5d71013cd9bbdfb23e3c98f40d993087" id="r_a5d71013cd9bbdfb23e3c98f40d993087"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Cursor.html">Cursor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html#a5d71013cd9bbdfb23e3c98f40d993087">Create</a> (const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y)</td></tr>
+<tr class="memdesc:a5d71013cd9bbdfb23e3c98f40d993087"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a cursor using the specified bitmap data and mask (in MSB format).  <br /></td></tr>
+<tr class="separator:a5d71013cd9bbdfb23e3c98f40d993087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09c4efc09f732cedbe2539810431a123" id="r_a09c4efc09f732cedbe2539810431a123"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Cursor.html">Cursor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html#a09c4efc09f732cedbe2539810431a123">CreateColor</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> surface, int hot_x, int hot_y)</td></tr>
+<tr class="memdesc:a09c4efc09f732cedbe2539810431a123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a color cursor.  <br /></td></tr>
+<tr class="separator:a09c4efc09f732cedbe2539810431a123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba9887ef7e2652a057660a5d9cf0d528" id="r_aba9887ef7e2652a057660a5d9cf0d528"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Cursor.html">Cursor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html#aba9887ef7e2652a057660a5d9cf0d528">CreateSystem</a> (<a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SystemCursor</a> id)</td></tr>
+<tr class="memdesc:aba9887ef7e2652a057660a5d9cf0d528"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a system cursor.  <br /></td></tr>
+<tr class="separator:aba9887ef7e2652a057660a5d9cf0d528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -425,6 +438,215 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section post"><dt>Postcondition</dt><dd>a cursor on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9" title="Free a previously-created cursor.">CursorRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5d71013cd9bbdfb23e3c98f40d993087" name="a5d71013cd9bbdfb23e3c98f40d993087"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d71013cd9bbdfb23e3c98f40d993087">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Cursor.html">Cursor</a> SDL::Cursor::Create </td>
+          <td>(</td>
+          <td class="paramtype">const Uint8 *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Uint8 *&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hot_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hot_y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><code>mask</code> has to be in MSB (Most Significant Bit) format.</p>
+<p>The cursor width (<code>w</code>) must be a multiple of 8 bits.</p>
+<p>The cursor is created in black and white according to the following:</p>
+<ul>
+<li>data=0, mask=1: white</li>
+<li>data=1, mask=1: black</li>
+<li>data=0, mask=0: transparent</li>
+<li>data=1, mask=0: inverted color if possible, black if not.</li>
+</ul>
+<p>Cursors created with this function must be freed with <a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9" title="Free a previously-created cursor.">CursorRef.Destroy()</a>.</p>
+<p>If you want to have a color cursor, or create your cursor from an <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a>, you should use <a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor()</a>. Alternately, you can hide the cursor and draw your own as part of your game's rendering, but it will be bound to the framerate.</p>
+<p>Also, <a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor()</a> is available, which provides several readily-available system cursors to pick from.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>the color value for each pixel of the cursor. </td></tr>
+    <tr><td class="paramname">mask</td><td>the mask value for each pixel of the cursor. </td></tr>
+    <tr><td class="paramname">w</td><td>the width of the cursor. </td></tr>
+    <tr><td class="paramname">h</td><td>the height of the cursor. </td></tr>
+    <tr><td class="paramname">hot_x</td><td>the x-axis offset from the left of the cursor image to the mouse x position, in the range of 0 to <code>w</code> - 1. </td></tr>
+    <tr><td class="paramname">hot_y</td><td>the y-axis offset from the top of the cursor image to the mouse y position, in the range of 0 to <code>h</code> - 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new cursor with the specified parameters on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9" title="Free a previously-created cursor.">CursorRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMouse.html#gae0ba45c3fe4be52a1f708d2773e29e44" title="Set the active cursor.">SetCursor</a> </dd></dl>
+
+</div>
+</div>
+<a id="a09c4efc09f732cedbe2539810431a123" name="a09c4efc09f732cedbe2539810431a123"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09c4efc09f732cedbe2539810431a123">&#9670;&#160;</a></span>CreateColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Cursor.html">Cursor</a> SDL::Cursor::CreateColor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td>
+          <td class="paramname"><em>surface</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hot_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hot_y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If this function is passed a surface with alternate representations, the surface will be interpreted as the content to be used for 100% display scale, and the alternate representations will be used for high DPI situations. For example, if the original surface is 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64 version of the image will be used, if available. If a matching version of the image isn't available, the closest larger size image will be downscaled to the appropriate size and be used instead, if available. Otherwise, the closest smaller image will be upscaled and be used instead.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">surface</td><td>an <a class="el" href="structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting.">SurfaceRef</a> structure representing the cursor image. </td></tr>
+    <tr><td class="paramname">hot_x</td><td>the x position of the cursor hot spot. </td></tr>
+    <tr><td class="paramname">hot_y</td><td>the y position of the cursor hot spot. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new cursor on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9" title="Free a previously-created cursor.">CursorRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="group__CategoryMouse.html#gae0ba45c3fe4be52a1f708d2773e29e44" title="Set the active cursor.">SetCursor</a> </dd></dl>
+
+</div>
+</div>
+<a id="aba9887ef7e2652a057660a5d9cf0d528" name="aba9887ef7e2652a057660a5d9cf0d528"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba9887ef7e2652a057660a5d9cf0d528">&#9670;&#160;</a></span>CreateSystem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Cursor.html">Cursor</a> SDL::Cursor::CreateSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SystemCursor</a>&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>an SystemCursor enum value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a cursor on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>

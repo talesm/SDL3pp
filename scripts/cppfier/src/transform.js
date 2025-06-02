@@ -831,6 +831,11 @@ function expandResources(sourceEntries, file, context) {
      * @param {ApiEntryTransform} entry 
      */
     function expandCtor(sourceName, entry) {
+      if (resourceEntry.noStaticCtors) {
+        transformedToCtors[sourceName] = entry;
+        entry.name = "ctor";
+        return;
+      }
       // @ts-ignore
       const parameters = (entry.parameters ?? sourceEntries[sourceName]?.parameters).map(p => typeof p == "string" ? p : p.name) ?? [];
       transformedToCtors[sourceName] = { ...entry, name: "ctor", link: entry };
@@ -845,12 +850,21 @@ function expandResources(sourceEntries, file, context) {
       if (typeof entry === "string") {
         if (entry === "ctor") {
           delete subEntries[sourceName];
-          transformedToCtors[sourceName] = "ctor";
+          if (resourceEntry.noStaticCtors) {
+            transformedToCtors[sourceName] = "ctor";
+          } else {
+            expandCtor(sourceName, { name: transformName(sourceName, context).replace(uniqueName, "") });
+          }
         }
       } else if (!Array.isArray(entry)) {
         if (entry.name === "ctor") {
           delete subEntries[sourceName];
-          transformedToCtors[sourceName] = entry;
+          if (resourceEntry.noStaticCtors) {
+            transformedToCtors[sourceName] = entry;
+          } else {
+            entry.name = transformName(sourceName, context).replace(uniqueName, "");
+            expandCtor(sourceName, entry);
+          }
         }
       }
     }

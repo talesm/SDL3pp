@@ -2140,6 +2140,25 @@ struct Palette : PaletteUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Create a palette structure with the specified number of color entries.
+   *
+   * The palette entries are initialized to white.
+   *
+   * @param ncolors represents the number of color entries in the color palette.
+   * @returns a new PaletteRef structure on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PaletteRef.Destroy
+   * @sa PaletteRef.SetColors
+   * @sa SurfaceRef.SetPalette
+   */
+  static Palette Create(int ncolors) { return Palette(ncolors); }
 };
 
 constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)

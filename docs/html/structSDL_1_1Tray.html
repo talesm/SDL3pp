@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Tray-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Tray Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryTray.html">System Tray</a></div></div></div>
 </div><!--header-->
@@ -230,6 +231,12 @@ constexpr SDL_Tray *&#160;</td><td class="memItemRight" valign="bottom"><b>opera
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aeaeb63e46f2265c2fb95c64f76174aae" id="r_aeaeb63e46f2265c2fb95c64f76174aae"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Tray.html">Tray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Tray.html#aeaeb63e46f2265c2fb95c64f76174aae">Create</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> icon, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> tooltip)</td></tr>
+<tr class="memdesc:aeaeb63e46f2265c2fb95c64f76174aae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an icon to be placed in the operating system's tray, or equivalent.  <br /></td></tr>
+<tr class="separator:aeaeb63e46f2265c2fb95c64f76174aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1TrayRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1TrayRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1TrayRef.html">SDL::TrayRef</a></td></tr>
@@ -287,6 +294,60 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section post"><dt>Postcondition</dt><dd>The newly created system tray icon.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#ga072195c717d26ce4fd5e4972594d9c01" title="Create a menu for a system tray.">TrayRef.CreateMenu</a> </dd>
+<dd>
+<a class="el" href="group__CategoryTray.html#ga28cad49b1dc92e2791e07f309f5c32b5" title="Gets a previously created tray menu.">TrayRef.GetMenu</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TrayRef.html#a18adc5c36cc23e2e6a9e20a5973af005" title="Destroys a tray object.">TrayRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aeaeb63e46f2265c2fb95c64f76174aae" name="aeaeb63e46f2265c2fb95c64f76174aae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaeb63e46f2265c2fb95c64f76174aae">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Tray.html">Tray</a> SDL::Tray::Create </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a>&#160;</td>
+          <td class="paramname"><em>icon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>tooltip</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Many platforms advise not using a system tray unless persistence is a necessary feature. Avoid needlessly creating a tray icon, as the user may feel like it clutters their interface.</p>
+<p>Using tray icons require the video subsystem.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">icon</td><td>a surface to be used as icon. May be nullptr. </td></tr>
+    <tr><td class="paramname">tooltip</td><td>a tooltip to be displayed when the mouse hovers the icon in UTF-8 encoding. Not supported on all platforms. May be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The newly created system tray icon.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryTray.html#ga072195c717d26ce4fd5e4972594d9c01" title="Create a menu for a system tray.">TrayRef.CreateMenu</a> </dd>

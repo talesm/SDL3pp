@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Semaphore-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Semaphore Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesThreads.html">Threads</a> &raquo; <a class="el" href="group__CategoryMutex.html">Thread Synchronization Primitives</a></div></div></div>
 </div><!--header-->
@@ -233,6 +234,12 @@ constexpr SDL_Semaphore *&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af3fce326bd0690af1ab3d656e1be2302" id="r_af3fce326bd0690af1ab3d656e1be2302"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Semaphore.html#af3fce326bd0690af1ab3d656e1be2302">Create</a> (Uint32 initial_value)</td></tr>
+<tr class="memdesc:af3fce326bd0690af1ab3d656e1be2302"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a semaphore.  <br /></td></tr>
+<tr class="separator:af3fce326bd0690af1ab3d656e1be2302"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1SemaphoreRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1SemaphoreRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1SemaphoreRef.html">SDL::SemaphoreRef</a></td></tr>
@@ -278,6 +285,53 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <dl class="section post"><dt>Postcondition</dt><dd>a new semaphore or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SemaphoreRef.html#a6fb979905ac1da1debe86c580a715d0f" title="Destroy a semaphore.">SemaphoreRef.Destroy</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SemaphoreRef.html#a05c7ea8fe1474654a0e03ed8f3253b13" title="Atomically increment a semaphore&#39;s value and wake waiting threads.">SemaphoreRef.Signal</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SemaphoreRef.html#a4461dcedee7f613b7638893a5533c777" title="See if a semaphore has a positive value and decrement it if it does.">SemaphoreRef.TryWait</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SemaphoreRef.html#a46aed8ff327728773d556cfff6b84e0a" title="Get the current value of a semaphore.">SemaphoreRef.GetValue</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SemaphoreRef.html#a64c011e7ab0357c0a625c7f2dd001b13" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.Wait</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1SemaphoreRef.html#af5c6a2e8b0889eb575e7eed82a8ff19a" title="Wait until a semaphore has a positive value and then decrements it.">SemaphoreRef.WaitTimeout</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af3fce326bd0690af1ab3d656e1be2302" name="af3fce326bd0690af1ab3d656e1be2302"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3fce326bd0690af1ab3d656e1be2302">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Semaphore.html">Semaphore</a> SDL::Semaphore::Create </td>
+          <td>(</td>
+          <td class="paramtype">Uint32&#160;</td>
+          <td class="paramname"><em>initial_value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function creates a new semaphore and initializes it with the value <code>initial_value</code>. Each wait operation on the semaphore will atomically decrement the semaphore value and potentially block if the semaphore value is 0. Each post operation will atomically increment the semaphore value and wake waiting threads and allow them to retry the wait operation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initial_value</td><td>the starting value of the semaphore. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new semaphore or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SemaphoreRef.html#a6fb979905ac1da1debe86c580a715d0f" title="Destroy a semaphore.">SemaphoreRef.Destroy</a> </dd>
 <dd>
