@@ -177,7 +177,7 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  */
 inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               OptionalWindow window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -239,7 +239,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               OptionalWindow window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -302,7 +302,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               OptionalWindow window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
@@ -360,7 +360,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               OptionalWindow window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
@@ -418,7 +418,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 OptionalWindow window = {},
+                                 WindowRef window,
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
@@ -469,7 +469,7 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 OptionalWindow window = {},
+                                 WindowRef window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {

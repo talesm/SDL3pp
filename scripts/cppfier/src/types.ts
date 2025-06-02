@@ -147,11 +147,6 @@ export interface ApiResource extends ApiEntryTransform {
   pointerType?: string;
 
   /**
-   * If true it prepend an alias to OptionalResource
-   */
-  aliasOptional?: boolean
-
-  /**
    * If true it prepend an alias to DetachedResource
    */
   aliasDetached?: boolean

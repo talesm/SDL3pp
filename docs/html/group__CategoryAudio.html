@@ -130,9 +130,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga278e46a8d2922ad0aa9a58e35bbcb92e" id="r_ga278e46a8d2922ad0aa9a58e35bbcb92e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">SDL::AudioSpec</a> = SDL_AudioSpec</td></tr>
 <tr class="memdesc:ga278e46a8d2922ad0aa9a58e35bbcb92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format specifier for audio data.  <br /></td></tr>
 <tr class="separator:ga278e46a8d2922ad0aa9a58e35bbcb92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae12773fac83d661b028da1a429d5cf87" id="r_gae12773fac83d661b028da1a429d5cf87"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gae12773fac83d661b028da1a429d5cf87">SDL::OptionalAudioStream</a> = <a class="el" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&lt; <a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a>, <a class="el" href="structSDL_1_1AudioStream.html">AudioStream</a> &gt;</td></tr>
-<tr class="memdesc:gae12773fac83d661b028da1a429d5cf87"><td class="mdescLeft">&#160;</td><td class="mdescRight">A audioStream parameter that might own its value.  <br /></td></tr>
-<tr class="separator:gae12773fac83d661b028da1a429d5cf87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2e483caf8bcf7944d6f995ad9ab1ffe7" id="r_ga2e483caf8bcf7944d6f995ad9ab1ffe7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga2e483caf8bcf7944d6f995ad9ab1ffe7">SDL::AudioPostmixCallback</a> = SDL_AudioPostmixCallback</td></tr>
 <tr class="memdesc:ga2e483caf8bcf7944d6f995ad9ab1ffe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback that fires when data is about to be fed to an audio device.  <br /></td></tr>
 <tr class="separator:ga2e483caf8bcf7944d6f995ad9ab1ffe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -499,21 +496,6 @@ right, then it repeats for the next audio frame".</p>
 <a class="el" href="structSDL_1_1AudioStreamRef.html#a1a2883172ba0273c79f57e506f6dc3a6" title="Set a callback that runs when data is added to an audio stream.">AudioStreamRef.SetPutCallback</a> </dd>
 <dd>
 <a class="el" href="group__CategoryAudio.html#gaf137bc28b994c19c9e4c214a512a15a1" title="A callback that fires when data passes through an AudioStreamRef.">AudioStreamCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="gae12773fac83d661b028da1a429d5cf87" name="gae12773fac83d661b028da1a429d5cf87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae12773fac83d661b028da1a429d5cf87">&#9670;&#160;</a></span>OptionalAudioStream</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryAudio.html#gae12773fac83d661b028da1a429d5cf87">SDL::OptionalAudioStream</a> = typedef <a class="el" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&lt;<a class="el" href="structSDL_1_1AudioStreamRef.html">AudioStreamRef</a>, <a class="el" href="structSDL_1_1AudioStream.html">AudioStream</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned <a class="el" href="structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream.">AudioStreamRef</a> or an owned <a class="el" href="structSDL_1_1AudioStream.html" title="Handle to an owned audioStream.">AudioStream</a> </p>
 
 </div>
 </div>
@@ -918,7 +900,7 @@ right, then it repeats for the next audio frame".</p>
 <p>It is required that the data source supports seeking.</p>
 <p>Example:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__CategoryAudio.html#gad77a85cd923a784b974e1f5097d9eddd">LoadWAV</a>(<a class="code hl_struct" href="structSDL_1_1IOStream.html">IOStream</a>.<a class="code hl_function" href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701">IOStream</a>(<span class="stringliteral">&quot;sample.wav&quot;</span>, <span class="stringliteral">&quot;rb&quot;</span>), <span class="keyword">true</span>, &amp;spec, &amp;buf, &amp;len);</div>
-<div class="ttc" id="agroup__CategoryAudio_html_gad77a85cd923a784b974e1f5097d9eddd"><div class="ttname"><a href="group__CategoryAudio.html#gad77a85cd923a784b974e1f5097d9eddd">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamRef src, AudioSpec *spec)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:2882</div></div>
+<div class="ttc" id="agroup__CategoryAudio_html_gad77a85cd923a784b974e1f5097d9eddd"><div class="ttname"><a href="group__CategoryAudio.html#gad77a85cd923a784b974e1f5097d9eddd">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamRef src, AudioSpec *spec)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:2874</div></div>
 <div class="ttc" id="astructSDL_1_1IOStream_html"><div class="ttname"><a href="structSDL_1_1IOStream.html">SDL::IOStream</a></div><div class="ttdoc">Handle to an owned iOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:1489</div></div>
 <div class="ttc" id="astructSDL_1_1IOStream_html_afc716ed30645f0aeabfc13748ec84701"><div class="ttname"><a href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701">SDL::IOStream::IOStream</a></div><div class="ttdeci">constexpr IOStream()</div><div class="ttdoc">Constructs an empty IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:1495</div></div>
 </div><!-- fragment --><p>Note that the LoadWAV function does this same thing for you, but in a less messy way:</p>

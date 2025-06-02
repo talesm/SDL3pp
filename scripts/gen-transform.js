@@ -836,7 +836,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "OptionalWindow"
+              "type": "WindowRef"
             },
             {
               "name": "filters",
@@ -863,7 +863,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "OptionalWindow"
+              "type": "WindowRef"
             },
             {
               "name": "filters",
@@ -886,7 +886,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "OptionalWindow"
+              "type": "WindowRef"
             },
             {
               "name": "default_location",
@@ -936,7 +936,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "OptionalWindow"
+              "type": "WindowRef"
             },
             {
               "name": "filters",
@@ -964,7 +964,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "OptionalWindow"
+              "type": "WindowRef"
             },
             {
               "name": "filters",
@@ -988,7 +988,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "OptionalWindow"
+              "type": "WindowRef"
             },
             {
               "name": "default_location",
@@ -3098,7 +3098,7 @@ const transform = {
                     name: "flags"
                   },
                   {
-                    type: "OptionalWindow",
+                    type: "WindowRef",
                     name: "window"
                   },
                   {
@@ -3124,7 +3124,7 @@ const transform = {
           }
         },
         "SDL_ShowSimpleMessageBox": {
-          parameters: [{}, {}, {}, { type: "OptionalWindow" }]
+          parameters: [{}, {}, {}, { type: "WindowRef" }]
         }
       }
     },
@@ -4328,7 +4328,7 @@ const transform = {
               proto: true,
               parameters: [
                 {},
-                { type: "OptionalTexture" }
+                { type: "TextureRef" }
               ]
             },
             "SDL_GetRenderTarget": {
@@ -4766,7 +4766,7 @@ const transform = {
               parameters: [
                 {
                   "name": "texture",
-                  "type": "OptionalTexture"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "vertices",
@@ -4785,7 +4785,7 @@ const transform = {
                 {},
                 {
                   "name": "texture",
-                  "type": "OptionalTexture"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "xy",
@@ -4899,7 +4899,6 @@ const transform = {
           }
         },
         "SDL_Texture": {
-          aliasOptional: true,
           entries: {
             "Texture": [{
               kind: "function",
@@ -7431,7 +7430,6 @@ const transform = {
       resources: {
         "SDL_Window": {
           free: "SDL_DestroyWindow",
-          aliasOptional: true,
           entries: {
             "SDL_CreateWindow": {
               kind: "function",
@@ -7638,7 +7636,7 @@ const transform = {
             "SDL_SetWindowParent": {
               parameters: [
                 {},
-                { type: "OptionalWindow" }
+                { type: "WindowRef" }
               ]
             },
             "SDL_SetWindowModal": "function",

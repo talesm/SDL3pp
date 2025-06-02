@@ -58,14 +58,6 @@ struct TextureRef;
 // Forward decl
 struct Texture;
 
-/**
- * A texture parameter that might own its value.
- *
- * This is designed to be used on parameter's type and accepts that accepts a
- * std::nullopt, a non-owned TextureRef or an owned Texture
- */
-using OptionalTexture = OptionalResource<TextureRef, Texture>;
-
 #ifdef SDL3PP_DOC
 
 /**
@@ -391,7 +383,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.GetTarget
    */
-  void SetTarget(OptionalTexture texture);
+  void SetTarget(TextureRef texture);
 
   /**
    * Get the current render target.
@@ -1466,7 +1458,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderGeometryRaw
    */
-  void RenderGeometry(OptionalTexture texture,
+  void RenderGeometry(TextureRef texture,
                       std::span<const Vertex> vertices,
                       std::span<const int> indices = {});
 
@@ -1496,7 +1488,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderGeometry
    */
-  void RenderGeometryRaw(OptionalTexture texture,
+  void RenderGeometryRaw(TextureRef texture,
                          const float* xy,
                          int xy_stride,
                          const FColor* color,
@@ -3413,7 +3405,7 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
 
 } // namespace prop::Texture
 
-inline void RendererRef::SetTarget(OptionalTexture texture)
+inline void RendererRef::SetTarget(TextureRef texture)
 {
   CheckError(SDL_SetRenderTarget(get(), texture.get()));
 }
@@ -3484,7 +3476,7 @@ inline void RendererRef::RenderTexture9Grid(
                                     dstrect));
 }
 
-inline void RendererRef::RenderGeometry(OptionalTexture texture,
+inline void RendererRef::RenderGeometry(TextureRef texture,
                                         std::span<const Vertex> vertices,
                                         std::span<const int> indices)
 {
@@ -3496,7 +3488,7 @@ inline void RendererRef::RenderGeometry(OptionalTexture texture,
                                 indices.size()));
 }
 
-inline void RendererRef::RenderGeometryRaw(OptionalTexture texture,
+inline void RendererRef::RenderGeometryRaw(TextureRef texture,
                                            const float* xy,
                                            int xy_stride,
                                            const FColor* color,

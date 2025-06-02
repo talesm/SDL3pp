@@ -663,14 +663,6 @@ function expandResources(sourceEntries, file, context) {
       { name: refName, kind: "forward" },
       { name: uniqueName, kind: "forward" }
     );
-    if (resourceEntry.aliasOptional || resourceEntry.lock) {
-      referenceAliases.push({
-        name: optionalName,
-        kind: "alias",
-        type: `OptionalResource<${refName}, ${uniqueName}>`,
-        doc: `A ${title} parameter that might own its value.\n\nThis is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned ${refName} or an owned ${uniqueName}`
-      });
-    }
     if (resourceEntry.aliasDetached) {
       referenceAliases.push({
         name: detachedName,

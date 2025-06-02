@@ -337,14 +337,6 @@ using HitTest = SDL_HitTest;
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
-/**
- * A window parameter that might own its value.
- *
- * This is designed to be used on parameter's type and accepts that accepts a
- * std::nullopt, a non-owned WindowRef or an owned Window
- */
-using OptionalWindow = OptionalResource<WindowRef, Window>;
-
 /// @}
 
 // Forward decl
@@ -2256,7 +2248,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @sa WindowRef.SetModal
    */
-  void SetParent(OptionalWindow parent)
+  void SetParent(WindowRef parent)
   {
     CheckError(SDL_SetWindowParent(get(), parent.get()));
   }

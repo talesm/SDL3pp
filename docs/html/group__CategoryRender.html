@@ -126,9 +126,6 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga67dcd8cf53bbc3effa7dfbca9427ea04" id="r_ga67dcd8cf53bbc3effa7dfbca9427ea04"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">SDL::OptionalTexture</a> = <a class="el" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&lt; <a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>, <a class="el" href="structSDL_1_1Texture.html">Texture</a> &gt;</td></tr>
-<tr class="memdesc:ga67dcd8cf53bbc3effa7dfbca9427ea04"><td class="mdescLeft">&#160;</td><td class="mdescRight">A texture parameter that might own its value.  <br /></td></tr>
-<tr class="separator:ga67dcd8cf53bbc3effa7dfbca9427ea04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4b86011ede078f9ba75274ed30df602b" id="r_ga4b86011ede078f9ba75274ed30df602b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">SDL::Vertex</a> = SDL_Vertex</td></tr>
 <tr class="memdesc:ga4b86011ede078f9ba75274ed30df602b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex structure.  <br /></td></tr>
 <tr class="separator:ga4b86011ede078f9ba75274ed30df602b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,9 +173,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TextureUnsa
 <tr class="memitem:ga590ff79dc216039acd11e6920ae51669" id="r_ga590ff79dc216039acd11e6920ae51669"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga590ff79dc216039acd11e6920ae51669">SDL::WindowRef::GetRenderer</a> () const</td></tr>
 <tr class="memdesc:ga590ff79dc216039acd11e6920ae51669"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer associated with a window.  <br /></td></tr>
 <tr class="separator:ga590ff79dc216039acd11e6920ae51669"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaed6a2262b4f6369ea73a5dd260c6940c" id="r_gaed6a2262b4f6369ea73a5dd260c6940c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaed6a2262b4f6369ea73a5dd260c6940c">SDL::RendererRef::SetTarget</a> (<a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a> texture)</td></tr>
-<tr class="memdesc:gaed6a2262b4f6369ea73a5dd260c6940c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a texture as the current rendering target.  <br /></td></tr>
-<tr class="separator:gaed6a2262b4f6369ea73a5dd260c6940c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77374231241c69653cd0abad8daada53" id="r_ga77374231241c69653cd0abad8daada53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga77374231241c69653cd0abad8daada53">SDL::RendererRef::SetTarget</a> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> texture)</td></tr>
+<tr class="memdesc:ga77374231241c69653cd0abad8daada53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a texture as the current rendering target.  <br /></td></tr>
+<tr class="separator:ga77374231241c69653cd0abad8daada53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3c53cadc1273f8f4b1d3087728192894" id="r_ga3c53cadc1273f8f4b1d3087728192894"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3c53cadc1273f8f4b1d3087728192894">SDL::RendererRef::GetTarget</a> () const</td></tr>
 <tr class="memdesc:ga3c53cadc1273f8f4b1d3087728192894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current render target.  <br /></td></tr>
 <tr class="separator:ga3c53cadc1273f8f4b1d3087728192894"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -197,12 +194,12 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TextureUnsa
 <tr class="memitem:ga3a303f6b866505da598c4554e34dd470" id="r_ga3a303f6b866505da598c4554e34dd470"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3a303f6b866505da598c4554e34dd470">SDL::RendererRef::RenderTexture9Grid</a> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> texture, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_FRect &gt; dstrect)</td></tr>
 <tr class="memdesc:ga3a303f6b866505da598c4554e34dd470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.  <br /></td></tr>
 <tr class="separator:ga3a303f6b866505da598c4554e34dd470"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf2f716f31d8cb5463a8d8291a847401b" id="r_gaf2f716f31d8cb5463a8d8291a847401b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf2f716f31d8cb5463a8d8291a847401b">SDL::RendererRef::RenderGeometry</a> (<a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a> texture, std::span&lt; const <a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">Vertex</a> &gt; vertices, std::span&lt; const int &gt; indices={})</td></tr>
-<tr class="memdesc:gaf2f716f31d8cb5463a8d8291a847401b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex array <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">TextureRef.SetColorMod</a> and <a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d" title="Set an additional alpha value multiplied into render copy operations.">TextureRef.SetAlphaMod</a> are ignored).  <br /></td></tr>
-<tr class="separator:gaf2f716f31d8cb5463a8d8291a847401b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga025a2241e326114e4884f693504f5a80" id="r_ga025a2241e326114e4884f693504f5a80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga025a2241e326114e4884f693504f5a80">SDL::RendererRef::RenderGeometryRaw</a> (<a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a> texture, const float *xy, int xy_stride, const <a class="el" href="structSDL_1_1FColor.html">FColor</a> *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)</td></tr>
-<tr class="memdesc:ga025a2241e326114e4884f693504f5a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex arrays <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">TextureRef.SetColorMod</a> and <a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d" title="Set an additional alpha value multiplied into render copy operations.">TextureRef.SetAlphaMod</a> are ignored).  <br /></td></tr>
-<tr class="separator:ga025a2241e326114e4884f693504f5a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadcd3e7664377588cf097106aed87952b" id="r_gadcd3e7664377588cf097106aed87952b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gadcd3e7664377588cf097106aed87952b">SDL::RendererRef::RenderGeometry</a> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> texture, std::span&lt; const <a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">Vertex</a> &gt; vertices, std::span&lt; const int &gt; indices={})</td></tr>
+<tr class="memdesc:gadcd3e7664377588cf097106aed87952b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex array <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">TextureRef.SetColorMod</a> and <a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d" title="Set an additional alpha value multiplied into render copy operations.">TextureRef.SetAlphaMod</a> are ignored).  <br /></td></tr>
+<tr class="separator:gadcd3e7664377588cf097106aed87952b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7c23df48a666595e522e597bb85e79b8" id="r_ga7c23df48a666595e522e597bb85e79b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga7c23df48a666595e522e597bb85e79b8">SDL::RendererRef::RenderGeometryRaw</a> (<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a> texture, const float *xy, int xy_stride, const <a class="el" href="structSDL_1_1FColor.html">FColor</a> *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices)</td></tr>
+<tr class="memdesc:ga7c23df48a666595e522e597bb85e79b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a list of triangles, optionally using a texture and indices into the vertex arrays <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (<a class="el" href="structSDL_1_1TextureRef.html#a32d80a522dfcc680d32a161edfef3711" title="Set an additional color value multiplied into render copy operations.">TextureRef.SetColorMod</a> and <a class="el" href="structSDL_1_1TextureRef.html#ac1a16a0f4479bc6df3f3fb97e7e59a0d" title="Set an additional alpha value multiplied into render copy operations.">TextureRef.SetAlphaMod</a> are ignored).  <br /></td></tr>
+<tr class="separator:ga7c23df48a666595e522e597bb85e79b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6a5b69eadceafe59004bf1526dbec4af" id="r_ga6a5b69eadceafe59004bf1526dbec4af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga6a5b69eadceafe59004bf1526dbec4af">SDL::RendererRef::ResetTarget</a> ()</td></tr>
 <tr class="memdesc:ga6a5b69eadceafe59004bf1526dbec4af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target texture back to window.  <br /></td></tr>
 <tr class="separator:ga6a5b69eadceafe59004bf1526dbec4af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,21 +281,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga67dcd8cf53bbc3effa7dfbca9427ea04" name="ga67dcd8cf53bbc3effa7dfbca9427ea04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga67dcd8cf53bbc3effa7dfbca9427ea04">&#9670;&#160;</a></span>OptionalTexture</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">SDL::OptionalTexture</a> = typedef <a class="el" href="classSDL_1_1OptionalResource.html">OptionalResource</a>&lt;<a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>, <a class="el" href="structSDL_1_1Texture.html">Texture</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned <a class="el" href="structSDL_1_1TextureRef.html" title="An efficient driver-specific representation of pixel data.">TextureRef</a> or an owned <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> </p>
-
-</div>
-</div>
 <a id="ga91be24b12fa4efe591c43f2ece44e32d" name="ga91be24b12fa4efe591c43f2ece44e32d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga91be24b12fa4efe591c43f2ece44e32d">&#9670;&#160;</a></span>RendererLogicalPresentation</h2>
 
@@ -692,7 +674,7 @@ WindowRef.WindowRef </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>the current render target or nullptr for the default render target.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gaed6a2262b4f6369ea73a5dd260c6940c" title="Set a texture as the current rendering target.">RendererRef.SetTarget</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga77374231241c69653cd0abad8daada53" title="Set a texture as the current rendering target.">RendererRef.SetTarget</a> </dd></dl>
 
 </div>
 </div>
@@ -830,8 +812,8 @@ WindowRef.WindowRef </dd></dl>
 
 </div>
 </div>
-<a id="gaf2f716f31d8cb5463a8d8291a847401b" name="gaf2f716f31d8cb5463a8d8291a847401b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf2f716f31d8cb5463a8d8291a847401b">&#9670;&#160;</a></span>RenderGeometry()</h2>
+<a id="gadcd3e7664377588cf097106aed87952b" name="gadcd3e7664377588cf097106aed87952b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadcd3e7664377588cf097106aed87952b">&#9670;&#160;</a></span>RenderGeometry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -842,7 +824,7 @@ WindowRef.WindowRef </dd></dl>
         <tr>
           <td class="memname">void SDL::RendererRef::RenderGeometry </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>&#160;</td>
           <td class="paramname"><em>texture</em>, </td>
         </tr>
         <tr>
@@ -885,12 +867,12 @@ WindowRef.WindowRef </dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga025a2241e326114e4884f693504f5a80" title="Render a list of triangles, optionally using a texture and indices into the vertex arrays Color and a...">RendererRef.RenderGeometryRaw</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga7c23df48a666595e522e597bb85e79b8" title="Render a list of triangles, optionally using a texture and indices into the vertex arrays Color and a...">RendererRef.RenderGeometryRaw</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga025a2241e326114e4884f693504f5a80" name="ga025a2241e326114e4884f693504f5a80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga025a2241e326114e4884f693504f5a80">&#9670;&#160;</a></span>RenderGeometryRaw()</h2>
+<a id="ga7c23df48a666595e522e597bb85e79b8" name="ga7c23df48a666595e522e597bb85e79b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7c23df48a666595e522e597bb85e79b8">&#9670;&#160;</a></span>RenderGeometryRaw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -901,7 +883,7 @@ WindowRef.WindowRef </dd></dl>
         <tr>
           <td class="memname">void SDL::RendererRef::RenderGeometryRaw </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>&#160;</td>
           <td class="paramname"><em>texture</em>, </td>
         </tr>
         <tr>
@@ -1000,7 +982,7 @@ WindowRef.WindowRef </dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gaf2f716f31d8cb5463a8d8291a847401b" title="Render a list of triangles, optionally using a texture and indices into the vertex array Color and al...">RendererRef.RenderGeometry</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gadcd3e7664377588cf097106aed87952b" title="Render a list of triangles, optionally using a texture and indices into the vertex array Color and al...">RendererRef.RenderGeometry</a> </dd></dl>
 
 </div>
 </div>
@@ -1417,8 +1399,8 @@ WindowRef.WindowRef </dd></dl>
 
 </div>
 </div>
-<a id="gaed6a2262b4f6369ea73a5dd260c6940c" name="gaed6a2262b4f6369ea73a5dd260c6940c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaed6a2262b4f6369ea73a5dd260c6940c">&#9670;&#160;</a></span>SetTarget()</h2>
+<a id="ga77374231241c69653cd0abad8daada53" name="ga77374231241c69653cd0abad8daada53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga77374231241c69653cd0abad8daada53">&#9670;&#160;</a></span>SetTarget()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1429,7 +1411,7 @@ WindowRef.WindowRef </dd></dl>
         <tr>
           <td class="memname">void SDL::RendererRef::SetTarget </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga67dcd8cf53bbc3effa7dfbca9427ea04">OptionalTexture</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TextureRef.html">TextureRef</a>&#160;</td>
           <td class="paramname"><em>texture</em></td><td>)</td>
           <td></td>
         </tr>

@@ -29286,14 +29286,6 @@ struct AudioStreamRef;
 // Forward decl
 struct AudioStream;
 
-/**
- * A audioStream parameter that might own its value.
- *
- * This is designed to be used on parameter's type and accepts that accepts a
- * std::nullopt, a non-owned AudioStreamRef or an owned AudioStream
- */
-using OptionalAudioStream = OptionalResource<AudioStreamRef, AudioStream>;
-
 // Forward decl
 struct AudioStreamLock;
 
@@ -37663,14 +37655,6 @@ using HitTest = SDL_HitTest;
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
-/**
- * A window parameter that might own its value.
- *
- * This is designed to be used on parameter's type and accepts that accepts a
- * std::nullopt, a non-owned WindowRef or an owned Window
- */
-using OptionalWindow = OptionalResource<WindowRef, Window>;
-
 /// @}
 
 // Forward decl
@@ -39582,7 +39566,7 @@ struct WindowRef : Resource<SDL_Window*>
    *
    * @sa WindowRef.SetModal
    */
-  void SetParent(OptionalWindow parent)
+  void SetParent(WindowRef parent)
   {
     CheckError(SDL_SetWindowParent(get(), parent.get()));
   }
@@ -41851,7 +41835,7 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  */
 inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               OptionalWindow window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -41913,7 +41897,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               OptionalWindow window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -41976,7 +41960,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               OptionalWindow window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
@@ -42034,7 +42018,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               OptionalWindow window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
@@ -42092,7 +42076,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 OptionalWindow window = {},
+                                 WindowRef window,
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
@@ -42143,7 +42127,7 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 OptionalWindow window = {},
+                                 WindowRef window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
@@ -45090,7 +45074,7 @@ struct MessageBox : SDL_MessageBoxData
    * @param colorScheme the value for colorScheme.
    */
   constexpr MessageBox(MessageBoxFlags flags,
-                       OptionalWindow window,
+                       WindowRef window,
                        const char* title,
                        const char* message,
                        std::span<const MessageBoxButtonData> buttons,
@@ -45313,7 +45297,7 @@ struct MessageBox : SDL_MessageBoxData
 inline void ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,
                                  StringParam message,
-                                 OptionalWindow window)
+                                 WindowRef window)
 {
   CheckError(SDL_ShowSimpleMessageBox(flags, title, message, window.get()));
 }
@@ -46257,14 +46241,6 @@ struct TextureRef;
 // Forward decl
 struct Texture;
 
-/**
- * A texture parameter that might own its value.
- *
- * This is designed to be used on parameter's type and accepts that accepts a
- * std::nullopt, a non-owned TextureRef or an owned Texture
- */
-using OptionalTexture = OptionalResource<TextureRef, Texture>;
-
 #ifdef SDL3PP_DOC
 
 /**
@@ -46590,7 +46566,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.GetTarget
    */
-  void SetTarget(OptionalTexture texture);
+  void SetTarget(TextureRef texture);
 
   /**
    * Get the current render target.
@@ -46997,9 +46973,8 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Each render target has its own clip rectangle. This function gets the
    * cliprect for the current render target.
    *
-   * @param renderer the rendering context.
-   * @param rect an Rect structure filled in with the current clipping area
-   *             or an empty rectangle if clipping is disabled.
+   * @returns a Rect structure filled in with the current clipping area or an
+   *          empty rectangle if clipping is disabled.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -47666,7 +47641,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderGeometryRaw
    */
-  void RenderGeometry(OptionalTexture texture,
+  void RenderGeometry(TextureRef texture,
                       std::span<const Vertex> vertices,
                       std::span<const int> indices = {});
 
@@ -47696,7 +47671,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    *
    * @sa RendererRef.RenderGeometry
    */
-  void RenderGeometryRaw(OptionalTexture texture,
+  void RenderGeometryRaw(TextureRef texture,
                          const float* xy,
                          int xy_stride,
                          const FColor* color,
@@ -49613,7 +49588,7 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
 
 } // namespace prop::Texture
 
-inline void RendererRef::SetTarget(OptionalTexture texture)
+inline void RendererRef::SetTarget(TextureRef texture)
 {
   CheckError(SDL_SetRenderTarget(get(), texture.get()));
 }
@@ -49684,7 +49659,7 @@ inline void RendererRef::RenderTexture9Grid(
                                     dstrect));
 }
 
-inline void RendererRef::RenderGeometry(OptionalTexture texture,
+inline void RendererRef::RenderGeometry(TextureRef texture,
                                         std::span<const Vertex> vertices,
                                         std::span<const int> indices)
 {
@@ -49696,7 +49671,7 @@ inline void RendererRef::RenderGeometry(OptionalTexture texture,
                                 indices.size()));
 }
 
-inline void RendererRef::RenderGeometryRaw(OptionalTexture texture,
+inline void RendererRef::RenderGeometryRaw(TextureRef texture,
                                            const float* xy,
                                            int xy_stride,
                                            const FColor* color,

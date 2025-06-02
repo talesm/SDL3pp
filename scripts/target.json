@@ -5325,12 +5325,6 @@
           "name": "HitTestCB",
           "doc": "@sa HitTest"
         },
-        "OptionalWindow": {
-          "name": "OptionalWindow",
-          "kind": "alias",
-          "type": "OptionalResource<WindowRef, Window>",
-          "doc": "A window parameter that might own its value.\n\nThis is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned WindowRef or an owned Window"
-        },
         "GLContextRef-forward": {
           "name": "GLContextRef",
           "kind": "forward",
@@ -6484,7 +6478,7 @@
               "parameters": [
                 {
                   "name": "parent",
-                  "type": "OptionalWindow"
+                  "type": "WindowRef"
                 }
               ],
               "sourceName": "SDL_SetWindowParent",
@@ -8916,12 +8910,6 @@
           "kind": "forward",
           "doc": ""
         },
-        "OptionalTexture": {
-          "name": "OptionalTexture",
-          "kind": "alias",
-          "type": "OptionalResource<TextureRef, Texture>",
-          "doc": "A texture parameter that might own its value.\n\nThis is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned TextureRef or an owned Texture"
-        },
         "SDL_SOFTWARE_RENDERER": {
           "doc": "The name of the software renderer.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_SOFTWARE_RENDERER",
@@ -9135,7 +9123,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "OptionalTexture"
+                  "type": "TextureRef"
                 }
               ],
               "sourceName": "SDL_SetRenderTarget",
@@ -9952,7 +9940,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "OptionalTexture"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "vertices",
@@ -9978,7 +9966,7 @@
               "parameters": [
                 {
                   "name": "texture",
-                  "type": "OptionalTexture"
+                  "type": "TextureRef"
                 },
                 {
                   "name": "xy",
@@ -12228,7 +12216,7 @@
           "parameters": [
             {
               "name": "texture",
-              "type": "OptionalTexture"
+              "type": "TextureRef"
             }
           ],
           "sourceName": "SDL_SetRenderTarget",
@@ -12426,7 +12414,7 @@
           "parameters": [
             {
               "name": "texture",
-              "type": "OptionalTexture"
+              "type": "TextureRef"
             },
             {
               "name": "vertices",
@@ -12451,7 +12439,7 @@
           "parameters": [
             {
               "name": "texture",
-              "type": "OptionalTexture"
+              "type": "TextureRef"
             },
             {
               "name": "xy",
@@ -19903,12 +19891,6 @@
           "name": "AudioStream",
           "kind": "forward",
           "doc": ""
-        },
-        "OptionalAudioStream": {
-          "name": "OptionalAudioStream",
-          "kind": "alias",
-          "type": "OptionalResource<AudioStreamRef, AudioStream>",
-          "doc": "A audioStream parameter that might own its value.\n\nThis is designed to be used on parameter's type and accepts that accepts a std::nullopt, a non-owned AudioStreamRef or an owned AudioStream"
         },
         "AudioStreamLock-forward": {
           "kind": "forward",
@@ -37222,7 +37204,7 @@
                     "name": "flags"
                   },
                   {
-                    "type": "OptionalWindow",
+                    "type": "WindowRef",
                     "name": "window"
                   },
                   {
@@ -37285,7 +37267,7 @@
             },
             {
               "name": "window",
-              "type": "OptionalWindow"
+              "type": "WindowRef"
             }
           ],
           "sourceName": "SDL_ShowSimpleMessageBox",
@@ -37336,7 +37318,7 @@
               },
               {
                 "name": "window",
-                "type": "OptionalWindow"
+                "type": "WindowRef"
               },
               {
                 "name": "filters",
@@ -37364,7 +37346,7 @@
               },
               {
                 "name": "window",
-                "type": "OptionalWindow"
+                "type": "WindowRef"
               },
               {
                 "name": "filters",
@@ -37399,7 +37381,7 @@
               },
               {
                 "name": "window",
-                "type": "OptionalWindow"
+                "type": "WindowRef"
               },
               {
                 "name": "filters",
@@ -37423,7 +37405,7 @@
               },
               {
                 "name": "window",
-                "type": "OptionalWindow"
+                "type": "WindowRef"
               },
               {
                 "name": "filters",
@@ -37454,7 +37436,7 @@
               },
               {
                 "name": "window",
-                "type": "OptionalWindow"
+                "type": "WindowRef"
               },
               {
                 "name": "default_location",
@@ -37478,7 +37460,7 @@
               },
               {
                 "name": "window",
-                "type": "OptionalWindow"
+                "type": "WindowRef"
               },
               {
                 "name": "default_location",

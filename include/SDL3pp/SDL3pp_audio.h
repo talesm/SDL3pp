@@ -138,14 +138,6 @@ struct AudioStreamRef;
 // Forward decl
 struct AudioStream;
 
-/**
- * A audioStream parameter that might own its value.
- *
- * This is designed to be used on parameter's type and accepts that accepts a
- * std::nullopt, a non-owned AudioStreamRef or an owned AudioStream
- */
-using OptionalAudioStream = OptionalResource<AudioStreamRef, AudioStream>;
-
 // Forward decl
 struct AudioStreamLock;
 
