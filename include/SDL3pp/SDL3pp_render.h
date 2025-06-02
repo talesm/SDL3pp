@@ -798,9 +798,8 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Each render target has its own clip rectangle. This function gets the
    * cliprect for the current render target.
    *
-   * @param renderer the rendering context.
-   * @param rect an Rect structure filled in with the current clipping area
-   *             or an empty rectangle if clipping is disabled.
+   * @returns a Rect structure filled in with the current clipping area or an
+   *          empty rectangle if clipping is disabled.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
