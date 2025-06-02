@@ -19850,7 +19850,7 @@ struct Properties : PropertiesUnsafe
    *
    * @sa PropertiesRef.Destroy
    */
-  explicit Properties()
+  Properties()
     : Properties(CheckError(SDL_CreateProperties()))
   {
   }
@@ -19868,6 +19868,22 @@ struct Properties : PropertiesUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @post an ID for a new group of properties
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesRef.Destroy
+   */
+  static Properties Create() { return Properties(); }
 };
 
 /**
@@ -26623,7 +26639,7 @@ struct IOStream : IOStreamUnsafe
    * @sa IOStreamRef.Tell
    * @sa IOStreamRef.Write
    */
-  static IOStreamRef FromFile(StringParam file, StringParam mode)
+  static IOStream FromFile(StringParam file, StringParam mode)
   {
     return IOStream(std::move(file), std::move(mode));
   }
@@ -26772,7 +26788,7 @@ struct IOStream : IOStreamUnsafe
    * @sa IOStream.IOStream
    * @sa IOStream.FromMem
    */
-  static IOStreamRef Open(const IOStreamInterface& iface, void* userdata)
+  static IOStream Open(const IOStreamInterface& iface, void* userdata)
   {
     return IOStream(iface, userdata);
   }

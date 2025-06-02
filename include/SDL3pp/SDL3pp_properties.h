@@ -799,7 +799,7 @@ struct Properties : PropertiesUnsafe
    *
    * @sa PropertiesRef.Destroy
    */
-  explicit Properties()
+  Properties()
     : Properties(CheckError(SDL_CreateProperties()))
   {
   }
@@ -817,6 +817,22 @@ struct Properties : PropertiesUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @post an ID for a new group of properties
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesRef.Destroy
+   */
+  static Properties Create() { return Properties(); }
 };
 
 /**

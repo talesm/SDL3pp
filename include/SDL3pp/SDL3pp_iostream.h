@@ -1731,7 +1731,7 @@ struct IOStream : IOStreamUnsafe
    * @sa IOStreamRef.Tell
    * @sa IOStreamRef.Write
    */
-  static IOStreamRef FromFile(StringParam file, StringParam mode)
+  static IOStream FromFile(StringParam file, StringParam mode)
   {
     return IOStream(std::move(file), std::move(mode));
   }
@@ -1880,7 +1880,7 @@ struct IOStream : IOStreamUnsafe
    * @sa IOStream.IOStream
    * @sa IOStream.FromMem
    */
-  static IOStreamRef Open(const IOStreamInterface& iface, void* userdata)
+  static IOStream Open(const IOStreamInterface& iface, void* userdata)
   {
     return IOStream(iface, userdata);
   }

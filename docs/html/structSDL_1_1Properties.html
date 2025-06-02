@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1Properties-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::Properties Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a> &raquo; <a class="el" href="group__CategoryProperties.html">Object Properties</a></div></div></div>
 </div><!--header-->
@@ -278,6 +279,12 @@ constexpr SDL_PropertiesID&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa845d1a39b76e66f15be53f879eb7574" id="r_aa845d1a39b76e66f15be53f879eb7574"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structSDL_1_1Properties.html">Properties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574">Create</a> ()</td></tr>
+<tr class="memdesc:aa845d1a39b76e66f15be53f879eb7574"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a group of properties.  <br /></td></tr>
+<tr class="separator:aa845d1a39b76e66f15be53f879eb7574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_structSDL_1_1PropertiesRef"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structSDL_1_1PropertiesRef')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structSDL_1_1PropertiesRef.html">SDL::PropertiesRef</a></td></tr>
@@ -310,7 +317,44 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>All properties are automatically destroyed when <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> is called.</p>
+<dl class="section post"><dt>Postcondition</dt><dd>an ID for a new group of properties </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesRef.html#a99925951b2107d400258b2145246ebf8" title="Destroy a group of properties.">PropertiesRef.Destroy</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa845d1a39b76e66f15be53f879eb7574" name="aa845d1a39b76e66f15be53f879eb7574"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa845d1a39b76e66f15be53f879eb7574">&#9670;&#160;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structSDL_1_1Properties.html">Properties</a> SDL::Properties::Create </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

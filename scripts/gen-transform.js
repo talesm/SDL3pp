@@ -3462,10 +3462,10 @@ const transform = {
         "SDL_PropertiesID": {
           uniqueName: "Properties",
           omitDefaultCtor: true,
+          ctors: ["SDL_CreateProperties"],
           entries: {
             "SDL_CreateProperties": {
-              name: "ctor",
-              explicit: true,
+              name: "Create",
             },
             "SDL_CopyProperties": {
               kind: "function",
