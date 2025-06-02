@@ -4801,7 +4801,7 @@
           "doc": "The current micro (or patchlevel) version of the SDL headers.\n\nIf this were SDL version 3.2.1, this value would be 1.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "15",
+          "value": "16",
           "sourceName": "SDL_MICRO_VERSION"
         },
         "SDL_VERSIONNUM": {
