@@ -2600,6 +2600,329 @@ const transform = {
         }
       }
     },
+    "SDL_main.h": {
+      definitionPrefix: "SDL3PP_",
+      ignoreEntries: [
+        "main",
+        "SDLMAIN_DECLSPEC",
+        "SDL_main",
+        "SDL_MAIN_AVAILABLE",
+        "SDL_MAIN_NEEDED",
+        "SDL_AppInit",
+        "SDL_AppIterate",
+        "SDL_AppEvent",
+        "SDL_AppQuit"
+      ],
+      enableException: false,
+      includeAfter: {
+        "__begin": [
+          {
+            kind: "def",
+            name: "SDL_MAIN_HANDLED"
+          },
+          {
+            kind: "def",
+            name: "SDL_MAIN_USE_CALLBACKS"
+          }
+        ]
+      }
+    },
+    "SDL_messagebox.h": {
+      enumerations: {
+        "SDL_MessageBoxFlags": {
+          values: [
+            "SDL_MESSAGEBOX_ERROR",
+            "SDL_MESSAGEBOX_WARNING",
+            "SDL_MESSAGEBOX_INFORMATION",
+            "SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
+            "SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT"
+          ]
+        },
+        "SDL_MessageBoxButtonFlags": {
+          prefix: "SDL_MESSAGEBOX_BUTTON_"
+        },
+        "SDL_MessageBoxColorType": {
+          prefix: "SDL_MESSAGEBOX_COLOR_"
+        }
+      },
+      transform: {
+        "SDL_MessageBoxData": {
+          name: "MessageBox",
+          type: "SDL_MessageBoxData",
+          entries: {
+            "MessageBox": [
+              {
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [
+                  {
+                    type: "const SDL_MessageBoxData &",
+                    name: "messageBox",
+                    default: "{}"
+                  }
+                ]
+              },
+              {
+                kind: "function",
+                type: "",
+                constexpr: true,
+                parameters: [
+                  {
+                    type: "MessageBoxFlags",
+                    name: "flags"
+                  },
+                  {
+                    type: "WindowRef",
+                    name: "window"
+                  },
+                  {
+                    type: "const char *",
+                    name: "title"
+                  },
+                  {
+                    type: "const char *",
+                    name: "message"
+                  },
+                  {
+                    type: "std::span<const MessageBoxButtonData>",
+                    name: "buttons"
+                  },
+                  {
+                    type: "OptionalRef<const MessageBoxColorScheme>",
+                    name: "colorScheme"
+                  }
+                ]
+              }
+            ],
+            "SDL_ShowMessageBox": "function"
+          }
+        },
+        "SDL_ShowSimpleMessageBox": {
+          parameters: [{}, {}, {}, { type: "WindowRef" }]
+        }
+      }
+    },
+    "SDL_mouse.h": {
+      enumerations: {
+        "SDL_SystemCursor": {
+          prefix: "SDL_SYSTEM_CURSOR_",
+          includeAfter: "__begin",
+        },
+        "MouseButton": {
+          kind: "alias",
+          type: "Uint8",
+          prefix: "SDL_BUTTON_",
+          includeAfter: "SDL_Cursor",
+          values: [
+            "SDL_BUTTON_LEFT",
+            "SDL_BUTTON_MIDDLE",
+            "SDL_BUTTON_RIGHT",
+            "SDL_BUTTON_X1",
+            "SDL_BUTTON_X2",
+          ],
+        },
+        "SDL_MouseButtonFlags": {
+          prefix: "SDL_BUTTON_",
+          values: [
+            "SDL_BUTTON_LMASK",
+            "SDL_BUTTON_MMASK",
+            "SDL_BUTTON_RMASK",
+            "SDL_BUTTON_X1MASK",
+            "SDL_BUTTON_X2MASK",
+          ],
+        },
+      },
+      resources: {
+        "SDL_Cursor": {
+          entries: {
+            "SDL_CreateCursor": {
+              name: "ctor",
+              parameters: [
+                { type: "const Uint8 *" },
+                { type: "const Uint8 *" },
+                {},
+                {},
+                {},
+                {},
+              ],
+            },
+            "SDL_CreateColorCursor": "ctor",
+            "SDL_CreateSystemCursor": "ctor",
+          }
+        }
+      },
+      transform: {
+        "SDL_BUTTON_MASK": {
+          kind: "function",
+          name: "ButtonMask",
+          constexpr: true,
+          type: "MouseButtonFlags",
+          parameters: [{
+            type: "MouseButton",
+            name: "button"
+          }]
+        },
+        "SDL_GetMice": {
+          type: "OwnArray<MouseID>",
+          parameters: []
+        },
+        "SDL_WarpMouseInWindow": {
+          name: "WindowRef::WarpMouse"
+        },
+        "SDL_WarpMouseGlobal": {
+          name: "WarpMouse"
+        },
+        "SDL_SetWindowRelativeMouseMode": {
+          name: "WindowRef::SetRelativeMouseMode"
+        },
+        "SDL_GetWindowRelativeMouseMode": {
+          name: "WindowRef::GetRelativeMouseMode",
+          immutable: true,
+        }
+      }
+    },
+    "SDL_mutex.h": {
+      ignoreEntries: [
+        "SDL_THREAD_ANNOTATION_ATTRIBUTE__",
+        "SDL_CAPABILITY",
+        "SDL_SCOPED_CAPABILITY",
+        "SDL_GUARDED_BY",
+        "SDL_PT_GUARDED_BY",
+        "SDL_ACQUIRED_BEFORE",
+        "SDL_ACQUIRED_AFTER",
+        "SDL_REQUIRES",
+        "SDL_REQUIRES_SHARED",
+        "SDL_ACQUIRE",
+        "SDL_ACQUIRE_SHARED",
+        "SDL_RELEASE",
+        "SDL_RELEASE_SHARED",
+        "SDL_RELEASE_GENERIC",
+        "SDL_TRY_ACQUIRE",
+        "SDL_TRY_ACQUIRE_SHARED",
+        "SDL_EXCLUDES",
+        "SDL_ASSERT_CAPABILITY",
+        "SDL_ASSERT_SHARED_CAPABILITY",
+        "SDL_RETURN_CAPABILITY",
+        "SDL_NO_THREAD_SAFETY_ANALYSIS",
+      ],
+      resources: {
+        "SDL_Mutex": {
+          omitDefaultCtor: true,
+          entries: {
+            "SDL_CreateMutex": "ctor",
+            "SDL_LockMutex": {
+              parameters: [{
+                type: "SDL_Mutex *"
+              }]
+            },
+            "SDL_TryLockMutex": {
+              parameters: [{
+                type: "SDL_Mutex *"
+              }]
+            },
+            "SDL_UnlockMutex": {
+              parameters: [{
+                type: "SDL_Mutex *"
+              }]
+            },
+          }
+        },
+        "SDL_RWLock": {
+          omitDefaultCtor: true,
+          entries: {
+            "SDL_CreateRWLock": "ctor",
+            "SDL_LockRWLockForReading": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_LockRWLockForWriting": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_TryLockRWLockForReading": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_TryLockRWLockForWriting": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+            "SDL_UnlockRWLock": {
+              parameters: [{
+                type: "SDL_RWLock *"
+              }]
+            },
+          }
+        },
+        "SDL_Semaphore": {
+          entries: {
+            "SDL_CreateSemaphore": "ctor",
+            "SDL_WaitSemaphore": "function",
+            "SDL_TryWaitSemaphore": "function",
+            "SDL_WaitSemaphoreTimeout": {
+              parameters: [
+                {},
+                {
+                  type: "std::chrono::milliseconds",
+                  name: "timeout"
+                },
+              ]
+            },
+            "SDL_SignalSemaphore": "function",
+            "SDL_GetSemaphoreValue": "immutable",
+          }
+        },
+        "SDL_Condition": {
+          omitDefaultCtor: true,
+          entries: {
+            "SDL_CreateCondition": "ctor",
+            "SDL_SignalCondition": "function",
+            "SDL_BroadcastCondition": "function",
+            "SDL_WaitCondition": "function",
+            "SDL_WaitConditionTimeout": {
+              parameters: [
+                {},
+                {},
+                {
+                  type: "std::chrono::milliseconds",
+                  name: "timeout"
+                },
+              ]
+            },
+          }
+        },
+      },
+      enumerations: {
+        "SDL_InitStatus": {
+          prefix: "INIT_STATUS_",
+        },
+      },
+      wrappers: {
+        "SDL_InitState": {
+          invalidState: false,
+          genCtor: false,
+          genMembers: false,
+          comparable: false,
+          entries: {
+            "InitState": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [],
+              hints: { init: ["SDL_InitState{0}"] }
+            },
+            "SDL_ShouldInit": "function",
+            "SDL_ShouldQuit": "function",
+            "SDL_SetInitialized": "function",
+          }
+        }
+      }
+    },
     "SDL_pixels.h": {
       includeAfter: {
         "__begin": {
@@ -3032,329 +3355,6 @@ const transform = {
       },
       namespacesMap: {
         "SDL_PROP_PROCESS_": "prop::process"
-      }
-    },
-    "SDL_main.h": {
-      definitionPrefix: "SDL3PP_",
-      ignoreEntries: [
-        "main",
-        "SDLMAIN_DECLSPEC",
-        "SDL_main",
-        "SDL_MAIN_AVAILABLE",
-        "SDL_MAIN_NEEDED",
-        "SDL_AppInit",
-        "SDL_AppIterate",
-        "SDL_AppEvent",
-        "SDL_AppQuit"
-      ],
-      enableException: false,
-      includeAfter: {
-        "__begin": [
-          {
-            kind: "def",
-            name: "SDL_MAIN_HANDLED"
-          },
-          {
-            kind: "def",
-            name: "SDL_MAIN_USE_CALLBACKS"
-          }
-        ]
-      }
-    },
-    "SDL_messagebox.h": {
-      enumerations: {
-        "SDL_MessageBoxFlags": {
-          values: [
-            "SDL_MESSAGEBOX_ERROR",
-            "SDL_MESSAGEBOX_WARNING",
-            "SDL_MESSAGEBOX_INFORMATION",
-            "SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT",
-            "SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT"
-          ]
-        },
-        "SDL_MessageBoxButtonFlags": {
-          prefix: "SDL_MESSAGEBOX_BUTTON_"
-        },
-        "SDL_MessageBoxColorType": {
-          prefix: "SDL_MESSAGEBOX_COLOR_"
-        }
-      },
-      transform: {
-        "SDL_MessageBoxData": {
-          name: "MessageBox",
-          type: "SDL_MessageBoxData",
-          entries: {
-            "MessageBox": [
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [
-                  {
-                    type: "const SDL_MessageBoxData &",
-                    name: "messageBox",
-                    default: "{}"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [
-                  {
-                    type: "MessageBoxFlags",
-                    name: "flags"
-                  },
-                  {
-                    type: "WindowRef",
-                    name: "window"
-                  },
-                  {
-                    type: "const char *",
-                    name: "title"
-                  },
-                  {
-                    type: "const char *",
-                    name: "message"
-                  },
-                  {
-                    type: "std::span<const MessageBoxButtonData>",
-                    name: "buttons"
-                  },
-                  {
-                    type: "OptionalRef<const MessageBoxColorScheme>",
-                    name: "colorScheme"
-                  }
-                ]
-              }
-            ],
-            "SDL_ShowMessageBox": "function"
-          }
-        },
-        "SDL_ShowSimpleMessageBox": {
-          parameters: [{}, {}, {}, { type: "WindowRef" }]
-        }
-      }
-    },
-    "SDL_mouse.h": {
-      enumerations: {
-        "SDL_SystemCursor": {
-          prefix: "SDL_SYSTEM_CURSOR_",
-          includeAfter: "__begin",
-        },
-        "MouseButton": {
-          kind: "alias",
-          type: "Uint8",
-          prefix: "SDL_BUTTON_",
-          includeAfter: "SDL_Cursor",
-          values: [
-            "SDL_BUTTON_LEFT",
-            "SDL_BUTTON_MIDDLE",
-            "SDL_BUTTON_RIGHT",
-            "SDL_BUTTON_X1",
-            "SDL_BUTTON_X2",
-          ],
-        },
-        "SDL_MouseButtonFlags": {
-          prefix: "SDL_BUTTON_",
-          values: [
-            "SDL_BUTTON_LMASK",
-            "SDL_BUTTON_MMASK",
-            "SDL_BUTTON_RMASK",
-            "SDL_BUTTON_X1MASK",
-            "SDL_BUTTON_X2MASK",
-          ],
-        },
-      },
-      resources: {
-        "SDL_Cursor": {
-          entries: {
-            "SDL_CreateCursor": {
-              name: "ctor",
-              parameters: [
-                { type: "const Uint8 *" },
-                { type: "const Uint8 *" },
-                {},
-                {},
-                {},
-                {},
-              ],
-            },
-            "SDL_CreateColorCursor": "ctor",
-            "SDL_CreateSystemCursor": "ctor",
-          }
-        }
-      },
-      transform: {
-        "SDL_BUTTON_MASK": {
-          kind: "function",
-          name: "ButtonMask",
-          constexpr: true,
-          type: "MouseButtonFlags",
-          parameters: [{
-            type: "MouseButton",
-            name: "button"
-          }]
-        },
-        "SDL_GetMice": {
-          type: "OwnArray<MouseID>",
-          parameters: []
-        },
-        "SDL_WarpMouseInWindow": {
-          name: "WindowRef::WarpMouse"
-        },
-        "SDL_WarpMouseGlobal": {
-          name: "WarpMouse"
-        },
-        "SDL_SetWindowRelativeMouseMode": {
-          name: "WindowRef::SetRelativeMouseMode"
-        },
-        "SDL_GetWindowRelativeMouseMode": {
-          name: "WindowRef::GetRelativeMouseMode",
-          immutable: true,
-        }
-      }
-    },
-    "SDL_mutex.h": {
-      ignoreEntries: [
-        "SDL_THREAD_ANNOTATION_ATTRIBUTE__",
-        "SDL_CAPABILITY",
-        "SDL_SCOPED_CAPABILITY",
-        "SDL_GUARDED_BY",
-        "SDL_PT_GUARDED_BY",
-        "SDL_ACQUIRED_BEFORE",
-        "SDL_ACQUIRED_AFTER",
-        "SDL_REQUIRES",
-        "SDL_REQUIRES_SHARED",
-        "SDL_ACQUIRE",
-        "SDL_ACQUIRE_SHARED",
-        "SDL_RELEASE",
-        "SDL_RELEASE_SHARED",
-        "SDL_RELEASE_GENERIC",
-        "SDL_TRY_ACQUIRE",
-        "SDL_TRY_ACQUIRE_SHARED",
-        "SDL_EXCLUDES",
-        "SDL_ASSERT_CAPABILITY",
-        "SDL_ASSERT_SHARED_CAPABILITY",
-        "SDL_RETURN_CAPABILITY",
-        "SDL_NO_THREAD_SAFETY_ANALYSIS",
-      ],
-      resources: {
-        "SDL_Mutex": {
-          omitDefaultCtor: true,
-          entries: {
-            "SDL_CreateMutex": "ctor",
-            "SDL_LockMutex": {
-              parameters: [{
-                type: "SDL_Mutex *"
-              }]
-            },
-            "SDL_TryLockMutex": {
-              parameters: [{
-                type: "SDL_Mutex *"
-              }]
-            },
-            "SDL_UnlockMutex": {
-              parameters: [{
-                type: "SDL_Mutex *"
-              }]
-            },
-          }
-        },
-        "SDL_RWLock": {
-          omitDefaultCtor: true,
-          entries: {
-            "SDL_CreateRWLock": "ctor",
-            "SDL_LockRWLockForReading": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
-            },
-            "SDL_LockRWLockForWriting": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
-            },
-            "SDL_TryLockRWLockForReading": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
-            },
-            "SDL_TryLockRWLockForWriting": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
-            },
-            "SDL_UnlockRWLock": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
-            },
-          }
-        },
-        "SDL_Semaphore": {
-          entries: {
-            "SDL_CreateSemaphore": "ctor",
-            "SDL_WaitSemaphore": "function",
-            "SDL_TryWaitSemaphore": "function",
-            "SDL_WaitSemaphoreTimeout": {
-              parameters: [
-                {},
-                {
-                  type: "std::chrono::milliseconds",
-                  name: "timeout"
-                },
-              ]
-            },
-            "SDL_SignalSemaphore": "function",
-            "SDL_GetSemaphoreValue": "immutable",
-          }
-        },
-        "SDL_Condition": {
-          omitDefaultCtor: true,
-          entries: {
-            "SDL_CreateCondition": "ctor",
-            "SDL_SignalCondition": "function",
-            "SDL_BroadcastCondition": "function",
-            "SDL_WaitCondition": "function",
-            "SDL_WaitConditionTimeout": {
-              parameters: [
-                {},
-                {},
-                {
-                  type: "std::chrono::milliseconds",
-                  name: "timeout"
-                },
-              ]
-            },
-          }
-        },
-      },
-      enumerations: {
-        "SDL_InitStatus": {
-          prefix: "INIT_STATUS_",
-        },
-      },
-      wrappers: {
-        "SDL_InitState": {
-          invalidState: false,
-          genCtor: false,
-          genMembers: false,
-          comparable: false,
-          entries: {
-            "InitState": {
-              kind: "function",
-              type: "",
-              constexpr: true,
-              parameters: [],
-              hints: { init: ["SDL_InitState{0}"] }
-            },
-            "SDL_ShouldInit": "function",
-            "SDL_ShouldQuit": "function",
-            "SDL_SetInitialized": "function",
-          }
-        }
       }
     },
     "SDL_properties.h": {
