@@ -6109,41 +6109,28 @@ const transform = {
               parameters: []
             }
           }
-        }, {
-          name: "Surface.Load",
-          kind: "function",
-          type: "Surface",
-          proto: true,
-          static: true,
-          parameters: [{
-            type: "StringParam",
-            name: "file"
-          }],
-        }, {
-          name: "Surface.Load",
-          kind: "function",
-          type: "Surface",
-          proto: true,
-          static: true,
-          parameters: [{
-            type: "IOStreamRef",
-            name: "src"
-          }],
         }]
       },
-      resources: {
+      resourcesNew: {
         "SDL_Surface": {
+          ctors: ["SDL_LoadBMP_IO"],
           entries: {
             "Surface": [{
+              name: "Load",
               kind: "function",
-              type: "",
+              type: "Surface",
+              proto: true,
+              static: true,
               parameters: [{
                 type: "StringParam",
                 name: "file"
               }],
             }, {
+              name: "Load",
               kind: "function",
-              type: "",
+              type: "Surface",
+              proto: true,
+              static: true,
               parameters: [{
                 type: "IOStreamRef",
                 name: "src"
@@ -6219,6 +6206,16 @@ const transform = {
               type: "SurfaceLock",
               reference: 1
             },
+            "SDL_LoadBMP_IO": {
+              name: "LoadBMP",
+              type: "Surface",
+              parameters: [
+                {
+                  type: "IOStreamRef"
+                }
+              ]
+            },
+            "SDL_LoadBMP": "ctor",
             "SDL_SetSurfaceRLE": "function",
             "SDL_SurfaceHasRLE": "immutable",
             "SetColorKey": {
@@ -6872,12 +6869,24 @@ const transform = {
               type: "Point",
               parameters: []
             },
+            "GetPitch": {
+              kind: "function",
+              type: "int",
+              immutable: true,
+              parameters: []
+            },
             "GetFormat": {
               kind: "function",
               immutable: true,
               type: "PixelFormat",
               parameters: []
             },
+            "GetPixels": {
+              kind: "function",
+              immutable: true,
+              type: "void *",
+              parameters: []
+            }
           }
         }
       },
@@ -6895,18 +6904,6 @@ const transform = {
         "SDL_PROP_SURFACE_": "prop::Surface"
       },
       transform: {
-        "SDL_LoadBMP_IO": {
-          name: "LoadBMP",
-          type: "Surface",
-          parameters: [
-            {
-              type: "IOStreamRef"
-            }
-          ]
-        },
-        "SDL_LoadBMP": {
-          type: "Surface"
-        },
         "SDL_SaveBMP_IO": {
           name: "SaveBMP",
           parameters: [
@@ -8023,9 +8020,6 @@ const transform = {
 
     // SDL satellite Libraries:
     "SDL_image.h": {
-      ignoreEntries: [
-        "IMG_LoadBMP_IO"
-      ],
       includeAfter: {
         "__begin": {
           "name": "SDL3PP_ENABLE_IMAGE"
@@ -8179,6 +8173,10 @@ const transform = {
         "IMG_LoadAVIF_IO": {
           "type": "Surface",
           "name": "LoadAVIF"
+        },
+        "IMG_LoadBMP_IO": {
+          "type": "Surface",
+          "name": "LoadBMP",
         },
         "IMG_LoadICO_IO": {
           "type": "Surface",

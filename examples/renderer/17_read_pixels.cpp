@@ -59,15 +59,15 @@ struct Main
        expensive copy from the GPU to system RAM! */
     SDL::Surface surface = renderer.ReadPixels();
 
-    if (surface && (surface.GetFormat() != SDL::PIXELFORMAT_RGBA8888)) {
-      surface = surface.Convert(SDL::PIXELFORMAT_RGBA8888);
+    if (surface && (surface->GetFormat() != SDL::PIXELFORMAT_RGBA8888)) {
+      surface = surface->Convert(SDL::PIXELFORMAT_RGBA8888);
     }
 
     if (surface) {
       // Rebuild converted_texture if the dimensions have changed (window
       // resized, etc).
-      if (surface.GetSize() != converted_textureSz) {
-        converted_textureSz = surface.GetSize();
+      if (surface->GetSize() != converted_textureSz) {
+        converted_textureSz = surface->GetSize();
         converted_texture = SDL::Texture(renderer,
                                          SDL::PIXELFORMAT_RGBA8888,
                                          SDL::TEXTUREACCESS_STREAMING,
@@ -78,10 +78,10 @@ struct Main
          but it works here. In real life, something like Floyd-Steinberg
          dithering might work better:
          https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering*/
-      for (int y = 0; y < surface->h; y++) {
+      for (int y = 0; y < surface->GetHeight(); y++) {
         Uint32* pixels =
-          (Uint32*)(((Uint8*)surface->pixels) + (y * surface->pitch));
-        for (int x = 0; x < surface->w; x++) {
+          (Uint32*)(((Uint8*)surface->GetPixels()) + (y * surface->GetPitch()));
+        for (int x = 0; x < surface->GetWidth(); x++) {
           Uint8* p = (Uint8*)(&pixels[x]);
           const Uint32 average =
             (((Uint32)p[1]) + ((Uint32)p[2]) + ((Uint32)p[3])) / 3;
@@ -97,7 +97,7 @@ struct Main
         }
       }
       // upload the processed pixels back into a texture.
-      converted_texture.Update({}, surface->pixels, surface->pitch);
+      converted_texture.Update({}, surface->GetPixels(), surface->GetPitch());
 
       // draw the texture to the top-left of the screen
       renderer.RenderTexture(

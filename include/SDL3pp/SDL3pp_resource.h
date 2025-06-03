@@ -12,7 +12,7 @@ namespace SDL {
  * @tparam RESOURCE
  */
 template<class T, class RESOURCE>
-concept ResourceHandle = requires(T test) {
+concept ResourceHandle = requires(const T& test) {
   { *test } -> std::convertible_to<RESOURCE>;
 };
 
@@ -39,8 +39,8 @@ public:
   }
 
   /// Constructs from pointer like.
-  constexpr Resource(ResourceHandle<Resource<T>> auto resource)
-    : m_resource(*resource)
+  constexpr Resource(const ResourceHandle<Resource<T>> auto& resource)
+    : Resource(*resource)
   {
   }
 
@@ -181,7 +181,7 @@ public:
 
   /// Constructs pointer from anything compatible
   constexpr explicit ResourcePtr(RESOURCE other)
-    : base(std::move(other))
+    : base(other.get())
   {
   }
 

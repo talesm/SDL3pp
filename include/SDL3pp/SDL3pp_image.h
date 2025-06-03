@@ -1217,6 +1217,43 @@ inline Surface LoadCUR(IOStreamRef src)
 }
 
 /**
+ * Load a BMP image directly.
+ *
+ * If you know you definitely have a BMP image, you can call this function,
+ * which will skip SDL_image's file format detection routines. Generally it's
+ * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * interface available here.
+ *
+ * @param src an IOStreamRef to load image data from.
+ * @returns SDL surface, or nullptr on error.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
+ */
+inline Surface LoadBMP(IOStreamRef src)
+{
+  return Surface{IMG_LoadBMP_IO(src.get())};
+}
+
+/**
  * Load a GIF image directly.
  *
  * If you know you definitely have a GIF image, you can call this function,
@@ -1781,7 +1818,7 @@ inline Surface LoadWEBP(IOStreamRef src)
  * preserve aspect ratio.
  *
  * When done with the returned surface, the app should dispose of it with a
- * call to SurfaceRef.reset().
+ * call to Surface.Destroy().
  *
  * @param src an IOStreamRef to load SVG data from.
  * @param width desired width of the generated surface, in pixels.

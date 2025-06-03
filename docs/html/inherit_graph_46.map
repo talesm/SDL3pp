@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1ThreadRef.html" title="The SDL thread object." alt="" coords="208,13,331,38"/>
-<area shape="poly" id="edge73_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1ThreadUnsafe.html" title="Unsafe Handle to thread." alt="" coords="379,13,525,38"/>
-<area shape="poly" id="edge74_Node000001_Node000002" title=" " alt="" coords="344,23,378,23,378,28,344,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Thread.html" title="Handle to an owned thread." alt="" coords="573,13,673,38"/>
-<area shape="poly" id="edge75_Node000002_Node000003" title=" " alt="" coords="539,23,573,23,573,28,539,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1TextureRef.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="208,13,333,38"/>
+<area shape="poly" id="edge68_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture." alt="" coords="381,13,531,38"/>
+<area shape="poly" id="edge69_Node000001_Node000002" title=" " alt="" coords="347,23,381,23,381,28,347,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Texture.html" title="Handle to an owned texture." alt="" coords="579,13,681,38"/>
+<area shape="poly" id="edge70_Node000002_Node000003" title=" " alt="" coords="545,23,578,23,578,28,545,28"/>
 </map>

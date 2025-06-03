@@ -111,12 +111,6 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gaef07ab592f2d059e8c927027d231b705" id="r_gaef07ab592f2d059e8c927027d231b705"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaef07ab592f2d059e8c927027d231b705">SDL::LoadBMP</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
-<tr class="memdesc:gaef07ab592f2d059e8c927027d231b705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP image from a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream.  <br /></td></tr>
-<tr class="separator:gaef07ab592f2d059e8c927027d231b705"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6c3dd4f128eb085c7bc9c0c6dd955076" id="r_ga6c3dd4f128eb085c7bc9c0c6dd955076"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Surface.html">Surface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076">SDL::LoadBMP</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
-<tr class="memdesc:ga6c3dd4f128eb085c7bc9c0c6dd955076"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP image from a file.  <br /></td></tr>
-<tr class="separator:ga6c3dd4f128eb085c7bc9c0c6dd955076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3321db6ca98ab72dd7923962360393f5" id="r_ga3321db6ca98ab72dd7923962360393f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#ga3321db6ca98ab72dd7923962360393f5">SDL::SaveBMP</a> (<a class="el" href="structSDL_1_1SurfaceRef.html">SurfaceRef</a> surface, <a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> dst)</td></tr>
 <tr class="memdesc:ga3321db6ca98ab72dd7923962360393f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save a surface to a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream in BMP format.  <br /></td></tr>
 <tr class="separator:ga3321db6ca98ab72dd7923962360393f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,7 +182,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>These are useful for passing around and manipulating images that are not stored in GPU memory.</p>
 <p>SDL_Surface makes serious efforts to manage images in various formats, and provides a reasonable toolbox for transforming the data, including copying between surfaces, filling rectangles in the image data, etc.</p>
-<p>There is also a simple .bmp loader, <a class="el" href="group__CategorySurface.html#gaef07ab592f2d059e8c927027d231b705" title="Load a BMP image from a seekable SDL data stream.">SDL::LoadBMP()</a>. <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself does not provide loaders for various other file formats, but there are several excellent external libraries that do, including its own satellite library, SDL_image:</p>
+<p>There is also a simple .bmp loader, <a class="el" href="structSDL_1_1Surface.html#a103e9b9ebff6d776cadfc45b0c68e5d7" title="Load a BMP image from a seekable SDL data stream.">Surface.LoadBMP()</a>. <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> itself does not provide loaders for various other file formats, but there are several excellent external libraries that do, including its own satellite library, SDL_image:</p>
 <p><a href="https://github.com/libsdl-org/SDL_image">https://github.com/libsdl-org/SDL_image</a> </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="gaa139652f1cfad9672e6e9898f965812b" name="gaa139652f1cfad9672e6e9898f965812b"></a>
@@ -275,7 +269,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga36c7e088e8fbd0bec746e65c951a320e" title="Copy an existing surface to a new surface of the specified format.">SurfaceRef.Convert</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+SurfaceRef.Destroy </dd></dl>
 
 </div>
 </div>
@@ -340,7 +334,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga36c7e088e8fbd0bec746e65c951a320e" title="Copy an existing surface to a new surface of the specified format.">SurfaceRef.Convert</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+SurfaceRef.Destroy </dd></dl>
 
 </div>
 </div>
@@ -586,79 +580,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section return"><dt>Returns</dt><dd>a copy of the surface or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
-
-</div>
-</div>
-<a id="gaef07ab592f2d059e8c927027d231b705" name="gaef07ab592f2d059e8c927027d231b705"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaef07ab592f2d059e8c927027d231b705">&#9670;&#160;</a></span>LoadBMP() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::LoadBMP </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>the data stream for the surface. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with the loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga3321db6ca98ab72dd7923962360393f5" title="Save a surface to a seekable SDL data stream in BMP format.">SaveBMP</a> </dd></dl>
-
-</div>
-</div>
-<a id="ga6c3dd4f128eb085c7bc9c0c6dd955076" name="ga6c3dd4f128eb085c7bc9c0c6dd955076"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6c3dd4f128eb085c7bc9c0c6dd955076">&#9670;&#160;</a></span>LoadBMP() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSDL_1_1Surface.html">Surface</a> SDL::LoadBMP </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>the BMP file to load. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> with the loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#ga3321db6ca98ab72dd7923962360393f5" title="Save a surface to a seekable SDL data stream in BMP format.">SaveBMP</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SurfaceRef.Destroy </dd></dl>
 
 </div>
 </div>
@@ -812,7 +734,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#gaef07ab592f2d059e8c927027d231b705" title="Load a BMP image from a seekable SDL data stream.">LoadBMP</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaef07ab592f2d059e8c927027d231b705" title="Load a BMP image directly.">LoadBMP</a> </dd></dl>
 
 </div>
 </div>
@@ -865,7 +787,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySurface.html#gaef07ab592f2d059e8c927027d231b705" title="Load a BMP image from a seekable SDL data stream.">LoadBMP</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gaef07ab592f2d059e8c927027d231b705" title="Load a BMP image directly.">LoadBMP</a> </dd></dl>
 
 </div>
 </div>
@@ -919,7 +841,7 @@ constexpr <a class="el" href="group__CategorySurface.html#gaa139652f1cfad9672e6e
 <dl class="section return"><dt>Returns</dt><dd>a copy of the surface or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceRef.html#a0add99a8055fd8cc03299bcfeb55e446" title="Free a surface.">SurfaceRef.Destroy</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SurfaceRef.Destroy </dd></dl>
 
 </div>
 </div>

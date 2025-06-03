@@ -23,14 +23,13 @@ var searchData=
   ['_7esemaphore_20',['~Semaphore',['../structSDL_1_1Semaphore.html#a3d5961d890007b4e98ed5e6cf83cf873',1,'SDL::Semaphore']]],
   ['_7esharedobject_21',['~SharedObject',['../structSDL_1_1SharedObject.html#a77799a94987e1d784acf02ab368c7dac',1,'SDL::SharedObject']]],
   ['_7estorage_22',['~Storage',['../structSDL_1_1Storage.html#a651712f77d6c7fb5b2bce7d4107c94bf',1,'SDL::Storage']]],
-  ['_7esurface_23',['~Surface',['../structSDL_1_1Surface.html#aa3db6ca13e1946ca9fb056882ff2ce59',1,'SDL::Surface']]],
-  ['_7esurfacelock_24',['~SurfaceLock',['../classSDL_1_1SurfaceLock.html#a143fd9ac7ed58d25c97ed44d375d8813',1,'SDL::SurfaceLock']]],
-  ['_7etext_25',['~Text',['../structSDL_1_1Text.html#a8bd0c5280e9f2f72aae83fddcb621b31',1,'SDL::Text']]],
-  ['_7etextengine_26',['~TextEngine',['../structSDL_1_1TextEngine.html#a46b75a01301601b5aa0a3f69d24787a1',1,'SDL::TextEngine']]],
-  ['_7etexture_27',['~Texture',['../structSDL_1_1Texture.html#ac3f843e02662f69fd382fe244a9734f8',1,'SDL::Texture']]],
-  ['_7etexturelock_28',['~TextureLock',['../classSDL_1_1TextureLock.html#a3dda3bd8f0b45fcf18b3fddf8635c395',1,'SDL::TextureLock']]],
-  ['_7ethread_29',['~Thread',['../structSDL_1_1Thread.html#a6ef1b54fff769866dbdbc8d9d63290eb',1,'SDL::Thread']]],
-  ['_7etray_30',['~Tray',['../structSDL_1_1Tray.html#a70a95a3605367d95a82e7a68b377cb57',1,'SDL::Tray']]],
-  ['_7etrayentry_31',['~TrayEntry',['../structSDL_1_1TrayEntry.html#adfcc6f5647e10ce2ae80875bcd8873d7',1,'SDL::TrayEntry']]],
-  ['_7ewindow_32',['~Window',['../structSDL_1_1Window.html#a92f87f6cc7e2f9603f06ee544eef6e59',1,'SDL::Window']]]
+  ['_7esurfacelock_23',['~SurfaceLock',['../classSDL_1_1SurfaceLock.html#a143fd9ac7ed58d25c97ed44d375d8813',1,'SDL::SurfaceLock']]],
+  ['_7etext_24',['~Text',['../structSDL_1_1Text.html#a8bd0c5280e9f2f72aae83fddcb621b31',1,'SDL::Text']]],
+  ['_7etextengine_25',['~TextEngine',['../structSDL_1_1TextEngine.html#a46b75a01301601b5aa0a3f69d24787a1',1,'SDL::TextEngine']]],
+  ['_7etexture_26',['~Texture',['../structSDL_1_1Texture.html#ac3f843e02662f69fd382fe244a9734f8',1,'SDL::Texture']]],
+  ['_7etexturelock_27',['~TextureLock',['../classSDL_1_1TextureLock.html#a3dda3bd8f0b45fcf18b3fddf8635c395',1,'SDL::TextureLock']]],
+  ['_7ethread_28',['~Thread',['../structSDL_1_1Thread.html#a6ef1b54fff769866dbdbc8d9d63290eb',1,'SDL::Thread']]],
+  ['_7etray_29',['~Tray',['../structSDL_1_1Tray.html#a70a95a3605367d95a82e7a68b377cb57',1,'SDL::Tray']]],
+  ['_7etrayentry_30',['~TrayEntry',['../structSDL_1_1TrayEntry.html#adfcc6f5647e10ce2ae80875bcd8873d7',1,'SDL::TrayEntry']]],
+  ['_7ewindow_31',['~Window',['../structSDL_1_1Window.html#a92f87f6cc7e2f9603f06ee544eef6e59',1,'SDL::Window']]]
 ];

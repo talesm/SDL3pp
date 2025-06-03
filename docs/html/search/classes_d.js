@@ -34,10 +34,13 @@ var searchData=
   ['resource_3c_20ttf_5ftext_20_2a_20_3e_31',['Resource&lt; TTF_Text * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['resource_3c_20ttf_5ftextengine_20_2a_20_3e_32',['Resource&lt; TTF_TextEngine * &gt;',['../classSDL_1_1Resource.html',1,'SDL']]],
   ['resourceptr_33',['ResourcePtr',['../classSDL_1_1ResourcePtr.html',1,'SDL']]],
-  ['resourceptrbase_34',['ResourcePtrBase',['../classSDL_1_1ResourcePtrBase.html',1,'SDL']]],
-  ['resourceptrbase_3c_20resource_2c_20defaultdeleter_3c_20resource_20_3e_20_3e_35',['ResourcePtrBase&lt; RESOURCE, DefaultDeleter&lt; RESOURCE &gt; &gt;',['../classSDL_1_1ResourcePtrBase.html',1,'SDL']]],
-  ['resourceunique_36',['ResourceUnique',['../classSDL_1_1ResourceUnique.html',1,'SDL']]],
-  ['rwlock_37',['RWLock',['../structSDL_1_1RWLock.html',1,'SDL']]],
-  ['rwlockref_38',['RWLockRef',['../structSDL_1_1RWLockRef.html',1,'SDL']]],
-  ['rwlockunsafe_39',['RWLockUnsafe',['../structSDL_1_1RWLockUnsafe.html',1,'SDL']]]
+  ['resourceptr_3c_20surfaceref_20_3e_34',['ResourcePtr&lt; SurfaceRef &gt;',['../classSDL_1_1ResourcePtr.html',1,'SDL']]],
+  ['resourceptrbase_35',['ResourcePtrBase',['../classSDL_1_1ResourcePtrBase.html',1,'SDL']]],
+  ['resourceptrbase_3c_20resource_2c_20defaultdeleter_3c_20resource_20_3e_20_3e_36',['ResourcePtrBase&lt; RESOURCE, DefaultDeleter&lt; RESOURCE &gt; &gt;',['../classSDL_1_1ResourcePtrBase.html',1,'SDL']]],
+  ['resourceptrbase_3c_20surfaceref_2c_20defaultdeleter_3c_20surfaceref_20_3e_20_3e_37',['ResourcePtrBase&lt; SurfaceRef, DefaultDeleter&lt; SurfaceRef &gt; &gt;',['../classSDL_1_1ResourcePtrBase.html',1,'SDL']]],
+  ['resourceunique_38',['ResourceUnique',['../classSDL_1_1ResourceUnique.html',1,'SDL']]],
+  ['resourceunique_3c_20surfaceref_20_3e_39',['ResourceUnique&lt; SurfaceRef &gt;',['../classSDL_1_1ResourceUnique.html',1,'SDL']]],
+  ['rwlock_40',['RWLock',['../structSDL_1_1RWLock.html',1,'SDL']]],
+  ['rwlockref_41',['RWLockRef',['../structSDL_1_1RWLockRef.html',1,'SDL']]],
+  ['rwlockunsafe_42',['RWLockUnsafe',['../structSDL_1_1RWLockUnsafe.html',1,'SDL']]]
 ];

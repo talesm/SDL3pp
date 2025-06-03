@@ -557,7 +557,7 @@ using RefArray = std::span<T>;
  * @tparam RESOURCE
  */
 template<class T, class RESOURCE>
-concept ResourceHandle = requires(T test) {
+concept ResourceHandle = requires(const T& test) {
   { *test } -> std::convertible_to<RESOURCE>;
 };
 
@@ -584,8 +584,8 @@ public:
   }
 
   /// Constructs from pointer like.
-  constexpr Resource(ResourceHandle<Resource<T>> auto resource)
-    : m_resource(*resource)
+  constexpr Resource(const ResourceHandle<Resource<T>> auto& resource)
+    : Resource(*resource)
   {
   }
 
@@ -726,7 +726,7 @@ public:
 
   /// Constructs pointer from anything compatible
   constexpr explicit ResourcePtr(RESOURCE other)
-    : base(std::move(other))
+    : base(other.get())
   {
   }
 
@@ -35089,7 +35089,7 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, SDL::LoadBMP(). SDL itself does not
+ * There is also a simple .bmp loader, Surface.LoadBMP(). SDL itself does not
  * provide loaders for various other file formats, but there are several
  * excellent external libraries that do, including its own satellite library,
  * SDL_image:
@@ -35190,8 +35190,9 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SurfaceRef.SurfaceRef
- * @sa SurfaceRef.reset
+ * @sa Surface.Create
+ * @sa Surface.CreateFrom
+ * @sa Surface.Destroy
  *
  * @cat resource
  *
@@ -35350,7 +35351,7 @@ struct SurfaceRef : Resource<SDL_Surface*>
    * alternate versions will not be updated when the original surface changes.
    *
    * This function adds a reference to the alternate version, so you should call
-   * SurfaceRef.Destroy() on the image after this call.
+   * Surface.Destroy() on the image after this call.
    *
    * @param image an alternate SurfaceRef to associate with this surface.
    * @throws Error on failure.
@@ -36818,53 +36819,48 @@ struct SurfaceRef : Resource<SDL_Surface*>
   /**
    * Get the width in pixels.
    */
-  int GetWidth() const { return get()->w; }
+  constexpr int GetWidth() const { return get()->w; }
 
   /**
    * Get the height in pixels.
    */
-  int GetHeight() const { return get()->h; }
+  constexpr int GetHeight() const { return get()->h; }
 
   /**
    * Get the size in pixels.
    */
-  Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+  constexpr Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+
+  /**
+   * Get pitch in bytes.
+   */
+  constexpr int GetPitch() const { return get()->pitch; }
 
   /**
    * Get the pixel format.
    */
-  PixelFormat GetFormat() const { return get()->format; }
+  constexpr PixelFormat GetFormat() const { return get()->format; }
 
-protected:
   /**
-   * Free a surface.
-   *
-   * It is safe to pass nullptr to this function.
-   *
-   *
-   * @threadsafety No other thread should be using the surface when it is freed.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Surface
+   * Get the pixels.
    */
-  void Destroy() { reset(); }
+  constexpr void* GetPixels() const { return get()->pixels; }
 
   /**
    * Free a surface.
    *
    * It is safe to pass nullptr to this function.
    *
+   * @param resource the Surface to free.
+   *
    * @threadsafety No other thread should be using the surface when it is freed.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
+   * @sa Surface.Create
+   * @sa Surface.CreateFrom
    */
-  void reset(SDL_Surface* newResource = {})
-  {
-    SDL_DestroySurface(release(newResource));
-  }
+  static void reset(SDL_Surface* resource) { SDL_DestroySurface(resource); }
 };
 
 /**
@@ -36876,21 +36872,9 @@ protected:
  *
  * @sa SurfaceRef
  */
-struct SurfaceUnsafe : SurfaceRef
+struct SurfaceUnsafe : ResourcePtr<SurfaceRef>
 {
-  using SurfaceRef::Destroy;
-
-  using SurfaceRef::SurfaceRef;
-
-  using SurfaceRef::reset;
-
-  /**
-   * Constructs SurfaceUnsafe from SurfaceRef.
-   */
-  constexpr SurfaceUnsafe(const SurfaceRef& other)
-    : SurfaceRef(other.get())
-  {
-  }
+  using ResourcePtr::ResourcePtr;
 
   SurfaceUnsafe(const Surface& other) = delete;
 
@@ -36898,15 +36882,6 @@ struct SurfaceUnsafe : SurfaceRef
    * Constructs SurfaceUnsafe from Surface.
    */
   constexpr explicit SurfaceUnsafe(Surface&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr SurfaceUnsafe& operator=(SurfaceUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
 };
 
 /**
@@ -36916,15 +36891,13 @@ struct SurfaceUnsafe : SurfaceRef
  *
  * @sa SurfaceRef
  */
-struct Surface : SurfaceUnsafe
+struct Surface : ResourceUnique<SurfaceRef>
 {
-  using SurfaceUnsafe::SurfaceUnsafe;
-
   /**
    * Constructs an empty Surface.
    */
   constexpr Surface()
-    : SurfaceUnsafe(nullptr)
+    : ResourceUnique(nullptr)
   {
   }
 
@@ -36932,123 +36905,8 @@ struct Surface : SurfaceUnsafe
    * Constructs from the underlying resource.
    */
   constexpr explicit Surface(SDL_Surface* resource)
-    : SurfaceUnsafe(resource)
+    : ResourceUnique(resource)
   {
-  }
-
-  constexpr Surface(const Surface& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Surface(Surface&& other)
-    : Surface(other.release())
-  {
-  }
-
-  /**
-   * Load an image from a filesystem path into a software surface.
-   *
-   * If available, this uses LoadSurface(StringParam), otherwise it uses
-   * LoadBMP(StringParam).
-   *
-   * @param file a path on the filesystem to load an image from.
-   * @post the new Surface with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadSurface(StringParam)
-   * @sa Surface.Load(StringParam)
-   * @sa Surface.LoadBMP(StringParam)
-   */
-  Surface(StringParam file)
-    : Surface(CheckError(Load(std::move(file))))
-  {
-  }
-
-  /**
-   * Load an image from a IOStreamRef into a software surface.
-   *
-   * If available, this uses LoadSurface(IOStreamRef&), otherwise it uses
-   * LoadBMP(IOStreamRef&).
-   *
-   * @param src an IOStreamRef to load an image from.
-   * @post the new Surface with loaded contents on success.
-   * @throws Error on failure.
-   *
-   * @sa LoadSurface(IOStreamRef)
-   * @sa Surface.Load(IOStreamRef)
-   * @sa Surface.LoadBMP(IOStreamRef)
-   */
-  Surface(IOStreamRef src)
-    : Surface(CheckError(Load(src)))
-  {
-  }
-
-  /**
-   * Allocate a new surface with a specific pixel format.
-   *
-   * The pixels of the new surface are initialized to zero.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @post the new Surface structure that is created.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Destroy
-   */
-  Surface(const SDL_Point& size, PixelFormat format)
-    : Surface(CheckError(SDL_CreateSurface(size.x, size.y, format)))
-  {
-  }
-
-  /**
-   * Allocate a new surface with a specific pixel format and existing pixel
-   * data.
-   *
-   * No copy is made of the pixel data. Pixel data is not managed
-   * automatically; you must free the surface before you free the pixel data.
-   *
-   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
-   * `width*4` for `PIXELFORMAT_RGBA8888`.
-   *
-   * You may pass nullptr for pixels and 0 for pitch to create a surface that
-   * you will fill in with valid values later.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @param pixels a pointer to existing pixel data.
-   * @param pitch the number of bytes between each row, including padding.
-   * @post the new Surface structure that is created.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SurfaceRef.Destroy
-   */
-  Surface(const SDL_Point& size, PixelFormat format, void* pixels, int pitch)
-    : Surface(CheckError(
-        SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Surface() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Surface& operator=(Surface other)
-  {
-    reset(other.release());
-    return *this;
   }
 
   /**
@@ -37061,7 +36919,6 @@ struct Surface : SurfaceUnsafe
    * @returns the new Surface with loaded contents on success or nullptr on
    *          failure; call GetError() for more information.
    *
-   * @sa Surface.Surface(StringParam)
    * @sa LoadSurface(StringParam)
    * @sa Surface.LoadBMP(StringParam)
    */
@@ -37077,11 +36934,56 @@ struct Surface : SurfaceUnsafe
    * @returns the new Surface with loaded contents on success or nullptr on
    *          failure; call GetError() for more information.
    *
-   * @sa Surface.Surface(IOStreamRef)
    * @sa LoadSurface(IOStreamRef)
    * @sa Surface.LoadBMP(IOStreamRef)
    */
   static Surface Load(IOStreamRef src);
+
+  /**
+   * Load a BMP image from a seekable SDL data stream.
+   *
+   * The new surface should be freed with Surface.Destroy(). Not doing so
+   * will result in a memory leak.
+   *
+   * @param src the data stream for the surface.
+   * @returns a pointer to a new SurfaceRef structure or nullptr on failure;
+   * call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadBMP
+   * @sa SurfaceRef.SaveBMP
+   */
+  static Surface LoadBMP(IOStreamRef src)
+  {
+    return Surface(SDL_LoadBMP_IO(src.get(), false));
+  }
+
+  /**
+   * Load a BMP image from a file.
+   *
+   * The new surface should be freed with Surface.Destroy(). Not doing so
+   * will result in a memory leak.
+   *
+   * @param file the BMP file to load.
+   * @returns a pointer to a new SurfaceRef structure or nullptr on failure;
+   * call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadBMP
+   * @sa SurfaceRef.SaveBMP
+   */
+  static Surface LoadBMP(StringParam file)
+  {
+    return Surface(SDL_LoadBMP(file));
+  }
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -37090,19 +36992,19 @@ struct Surface : SurfaceUnsafe
    *
    * @param size the width and height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
-   * @returns the new SurfaceRef structure that is created or nullptr on
-   * failure; call GetError() for more information.
+   * @returns the new Surface structure that is created on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
+   * @sa Surface.CreateFrom
    * @sa SurfaceRef.Destroy
    */
   static Surface Create(const SDL_Point& size, PixelFormat format)
   {
-    return Surface(size, format);
+    return Surface(SDL_CreateSurface(size.x, size.y, format));
   }
 
   /**
@@ -37129,7 +37031,7 @@ struct Surface : SurfaceUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
+   * @sa Surface.Create
    * @sa SurfaceRef.Destroy
    */
   static Surface CreateFrom(const SDL_Point& size,
@@ -37137,9 +37039,30 @@ struct Surface : SurfaceUnsafe
                             void* pixels,
                             int pitch)
   {
-    return Surface(size, format, pixels, pitch);
+    return Surface(
+      SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch));
   }
+
+  /**
+   * Free a surface.
+   *
+   * It is safe to pass nullptr to this function.
+   *
+   *
+   * @threadsafety No other thread should be using the surface when it is freed.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Create
+   * @sa Surface.CreateFrom
+   */
+  void Destroy() { reset(); }
 };
+
+constexpr SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
+  : SurfaceUnsafe(other.release())
+{
+}
 
 /**
  * Locks a Surface for access to its pixels
@@ -37220,11 +37143,6 @@ public:
   friend class SurfaceRef;
 };
 
-constexpr SurfaceUnsafe::SurfaceUnsafe(Surface&& other)
-  : SurfaceUnsafe(other.release())
-{
-}
-
 namespace prop::Surface {
 
 constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT;
@@ -37243,39 +37161,6 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
 } // namespace prop::Surface
-
-/**
- * Load a BMP image from a seekable SDL data stream.
- *
- * @param src the data stream for the surface.
- * @returns a Surface with the loaded content or nullptr on failure; call
- *          GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SaveBMP
- */
-inline Surface LoadBMP(IOStreamRef src)
-{
-  return Surface{SDL_LoadBMP_IO(src.get(), false)};
-}
-
-/**
- * Load a BMP image from a file.
- *
- * @param file the BMP file to load.
- * @returns a Surface with the loaded content or nullptr on failure; call
- *          GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SaveBMP
- */
-inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -49212,7 +49097,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Read pixels from the current rendering target.
    *
    * The returned surface contains pixels inside the desired area clipped to the
-   * current viewport, and should be freed with SurfaceRef.Destroy().
+   * current viewport, and should be freed with Surface.Destroy().
    *
    * Note that this returns the actual pixels on the screen, so if you are using
    * logical presentation you should use
@@ -51686,7 +51571,7 @@ inline TextureLock TextureRef::Lock(OptionalRef<const SDL_Rect> rect) &
  */
 inline Texture LoadTextureBMP(RendererRef& renderer, IOStreamRef& src)
 {
-  Surface surface{LoadBMP(src)};
+  auto surface{Surface::LoadBMP(src)};
   return Texture(renderer, surface);
 }
 
@@ -53966,6 +53851,43 @@ inline Surface LoadCUR(IOStreamRef src)
 }
 
 /**
+ * Load a BMP image directly.
+ *
+ * If you know you definitely have a BMP image, you can call this function,
+ * which will skip SDL_image's file format detection routines. Generally it's
+ * better to use the abstract interfaces; also, there is only an IOStreamRef
+ * interface available here.
+ *
+ * @param src an IOStreamRef to load image data from.
+ * @returns SDL surface, or nullptr on error.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadAVIF
+ * @sa LoadICO
+ * @sa LoadCUR
+ * @sa LoadGIF
+ * @sa LoadJPG
+ * @sa LoadJXL
+ * @sa LoadLBM
+ * @sa LoadPCX
+ * @sa LoadPNG
+ * @sa LoadPNM
+ * @sa LoadSVG
+ * @sa LoadQOI
+ * @sa LoadTGA
+ * @sa LoadTIF
+ * @sa LoadXCF
+ * @sa LoadXPM
+ * @sa LoadXV
+ * @sa LoadWEBP
+ */
+inline Surface LoadBMP(IOStreamRef src)
+{
+  return Surface{IMG_LoadBMP_IO(src.get())};
+}
+
+/**
  * Load a GIF image directly.
  *
  * If you know you definitely have a GIF image, you can call this function,
@@ -54530,7 +54452,7 @@ inline Surface LoadWEBP(IOStreamRef src)
  * preserve aspect ratio.
  *
  * When done with the returned surface, the app should dispose of it with a
- * call to SurfaceRef.reset().
+ * call to Surface.Destroy().
  *
  * @param src an IOStreamRef to load SVG data from.
  * @param width desired width of the generated surface, in pixels.

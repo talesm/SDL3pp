@@ -574,10 +574,10 @@ struct Main
     for (int i = 32; i < 127; i++) asciiChars[i - 32] = i;
     asciiChars[127 - 32] = 0;
 
-    SDL::Surface surface{
+    auto surface = SDL::Surface::Create(
       SDL::Point{SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * (127 - 32),
                  SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE},
-      SDL::PIXELFORMAT_RGBA32};
+      SDL::PIXELFORMAT_RGBA32);
     SDL::Renderer buffer{surface};
     buffer.SetDrawColor(SDL::Color{}); // Transparent
     buffer.RenderClear();

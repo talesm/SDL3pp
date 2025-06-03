@@ -1504,7 +1504,7 @@ struct RendererRef : Resource<SDL_Renderer*>
    * Read pixels from the current rendering target.
    *
    * The returned surface contains pixels inside the desired area clipped to the
-   * current viewport, and should be freed with SurfaceRef.Destroy().
+   * current viewport, and should be freed with Surface.Destroy().
    *
    * Note that this returns the actual pixels on the screen, so if you are using
    * logical presentation you should use
@@ -3978,7 +3978,7 @@ inline TextureLock TextureRef::Lock(OptionalRef<const SDL_Rect> rect) &
  */
 inline Texture LoadTextureBMP(RendererRef& renderer, IOStreamRef& src)
 {
-  Surface surface{LoadBMP(src)};
+  auto surface{Surface::LoadBMP(src)};
   return Texture(renderer, surface);
 }
 

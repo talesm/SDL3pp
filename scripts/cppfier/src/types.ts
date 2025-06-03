@@ -101,6 +101,7 @@ export interface ApiFileTransform {
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
+  resourcesNew?: Dict<ApiResource>;
   enumerations?: Dict<ApiEnumeration>;
   wrappers?: Dict<ApiWrapper>;
   namespacesMap?: StringMap;
@@ -153,11 +154,6 @@ export interface ApiResource extends ApiEntryTransform {
    * Anything marked as "ctor" is automatically added here
    */
   ctors?: string[]
-
-  /**
-   * If true does not generate static functions delegating to constructors.
-   */
-  noStaticCtors?: boolean;
 
   /**
    * If true it prepend an alias to DetachedResource

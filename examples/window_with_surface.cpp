@@ -19,13 +19,13 @@ int main(int argc, char** argv)
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   SDL::Window window{"Test", WINDOW_SZ};
   SDL::SurfaceRef screen = window.GetSurface();
-  SDL::Surface smileyImg(
+  auto smileyImg = SDL::Surface::Load(
     std::format("{}../assets/smiley.bmp", SDL::GetBasePath()));
 
   constexpr int WW = 64;
 
-  SDL::Point smileyPos{WINDOW_SZ.x / 2 - smileyImg.GetWidth() / 2,
-                       WINDOW_SZ.y / 2 - smileyImg.GetHeight() / 2};
+  SDL::Point smileyPos{WINDOW_SZ.x / 2 - smileyImg->GetWidth() / 2,
+                       WINDOW_SZ.y / 2 - smileyImg->GetHeight() / 2};
 
   SDL::Rect rects[] = {
     {10, 10, WW, WW},

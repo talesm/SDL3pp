@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1EnvironmentRef.html" title="A thread&#45;safe set of environment variables." alt="" coords="208,13,368,38"/>
-<area shape="poly" id="edge27_Node000000_Node000001" title=" " alt="" coords="173,23,208,23,208,28,173,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1EnvironmentUnsafe.html" title="Unsafe Handle to environment." alt="" coords="416,13,600,38"/>
-<area shape="poly" id="edge28_Node000001_Node000002" title=" " alt="" coords="382,23,416,23,416,28,382,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Environment.html" title="Handle to an owned environment." alt="" coords="648,13,787,38"/>
-<area shape="poly" id="edge29_Node000002_Node000003" title=" " alt="" coords="614,23,648,23,648,28,614,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1CursorRef.html" title="The structure used to identify an SDL cursor." alt="" coords="208,13,327,38"/>
+<area shape="poly" id="edge24_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor." alt="" coords="375,13,517,38"/>
+<area shape="poly" id="edge25_Node000001_Node000002" title=" " alt="" coords="340,23,374,23,374,28,340,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Cursor.html" title="Handle to an owned cursor." alt="" coords="565,13,663,38"/>
+<area shape="poly" id="edge26_Node000002_Node000003" title=" " alt="" coords="531,23,565,23,565,28,531,28"/>
 </map>

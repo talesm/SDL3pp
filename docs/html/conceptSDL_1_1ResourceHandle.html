@@ -82,7 +82,7 @@ $(function() {
 <a href="conceptSDL_1_1ResourceHandle.html#details">More...</a></p>
 <h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T, <span class="keyword">class</span> RESOURCE&gt;</div>
-<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptSDL_1_1ResourceHandle.html">SDL::ResourceHandle</a> =  <span class="keyword">requires</span>(T test) {</div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptSDL_1_1ResourceHandle.html">SDL::ResourceHandle</a> =  <span class="keyword">requires</span>(<span class="keyword">const</span> T&amp; test) {</div>
 <div class="line">  { *test } -&gt; std::convertible_to&lt;RESOURCE&gt;;</div>
 <div class="line">}</div>
 <div class="ttc" id="aconceptSDL_1_1ResourceHandle_html"><div class="ttname"><a href="conceptSDL_1_1ResourceHandle.html">SDL::ResourceHandle</a></div><div class="ttdoc">Concept representing a valid resource handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_resource.h:15</div></div>

@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1TrayRef.html" title="An opaque handle representing a toplevel system tray object." alt="" coords="208,13,312,38"/>
-<area shape="poly" id="edge76_Node000000_Node000001" title=" " alt="" coords="173,23,208,23,208,28,173,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1TrayUnsafe.html" title="Unsafe Handle to tray." alt="" coords="360,13,488,38"/>
-<area shape="poly" id="edge77_Node000001_Node000002" title=" " alt="" coords="326,23,359,23,359,28,326,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Tray.html" title="Handle to an owned tray." alt="" coords="536,13,619,38"/>
-<area shape="poly" id="edge78_Node000002_Node000003" title=" " alt="" coords="502,23,536,23,536,28,502,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1ThreadRef.html" title="The SDL thread object." alt="" coords="208,13,331,38"/>
+<area shape="poly" id="edge71_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1ThreadUnsafe.html" title="Unsafe Handle to thread." alt="" coords="379,13,525,38"/>
+<area shape="poly" id="edge72_Node000001_Node000002" title=" " alt="" coords="344,23,378,23,378,28,344,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1Thread.html" title="Handle to an owned thread." alt="" coords="573,13,673,38"/>
+<area shape="poly" id="edge73_Node000002_Node000003" title=" " alt="" coords="539,23,573,23,573,28,539,28"/>
 </map>
