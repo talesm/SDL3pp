@@ -825,27 +825,7 @@ function expandResources(sourceEntries, file, context) {
         type: `ResourceUnique<${refName}>`,
         doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
-          [uniqueName]: [{
-            kind: "function",
-            type: "",
-            constexpr: true,
-            parameters: [],
-            doc: `Constructs an empty ${uniqueName}.`,
-            hints: {
-              init: ["ResourceUnique(nullptr)"],
-            }
-          }, {
-            kind: "function",
-            type: "",
-            constexpr: true,
-            explicit: true,
-            parameters: [{
-              type: pointerType,
-              name: "resource"
-            }],
-            doc: "Constructs from the underlying resource.",
-            hints: { init: ["ResourceUnique(resource)"] }
-          }],
+          "ResourceUnique::ResourceUnique": "alias",
           ...uniqueSubEntries,
         },
         hints: { "super": uniqueName }

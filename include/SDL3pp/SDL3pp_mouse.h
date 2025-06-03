@@ -212,21 +212,7 @@ struct CursorUnsafe : ResourcePtr<CursorRef>
  */
 struct Cursor : ResourceUnique<CursorRef>
 {
-  /**
-   * Constructs an empty Cursor.
-   */
-  constexpr Cursor()
-    : ResourceUnique(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Cursor(SDL_Cursor* resource)
-    : ResourceUnique(resource)
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).

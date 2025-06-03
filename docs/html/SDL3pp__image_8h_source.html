@@ -565,14 +565,14 @@ $(document).ready(function() { init_codefold(0); });
 <div class="foldopen" id="foldopen02315" data-start="{" data-end="}">
 <div class="line"><a id="l02315" name="l02315"></a><span class="lineno"><a class="line" href="structSDL_1_1Surface.html#aab66636aceed59f89834330c7ad8f996"> 2315</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1Surface.html">Surface</a> <a class="code hl_function" href="structSDL_1_1Surface.html#aab66636aceed59f89834330c7ad8f996">Surface::Load</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> file)</div>
 <div class="line"><a id="l02316" name="l02316"></a><span class="lineno"> 2316</span>{</div>
-<div class="line"><a id="l02317" name="l02317"></a><span class="lineno"> 2317</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structSDL_1_1Surface.html#a9d6dfabb6ef7bc26600dea089b5707aa">Surface</a>(IMG_Load(file));</div>
+<div class="line"><a id="l02317" name="l02317"></a><span class="lineno"> 2317</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1Surface.html">Surface</a>(IMG_Load(file));</div>
 <div class="line"><a id="l02318" name="l02318"></a><span class="lineno"> 2318</span>}</div>
 </div>
 <div class="line"><a id="l02319" name="l02319"></a><span class="lineno"> 2319</span> </div>
 <div class="foldopen" id="foldopen02320" data-start="{" data-end="}">
 <div class="line"><a id="l02320" name="l02320"></a><span class="lineno"><a class="line" href="structSDL_1_1Surface.html#a5603c73a02817294070ed6a64a3525cd"> 2320</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1Surface.html">Surface</a> <a class="code hl_function" href="structSDL_1_1Surface.html#aab66636aceed59f89834330c7ad8f996">Surface::Load</a>(<a class="code hl_struct" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</div>
 <div class="line"><a id="l02321" name="l02321"></a><span class="lineno"> 2321</span>{</div>
-<div class="line"><a id="l02322" name="l02322"></a><span class="lineno"> 2322</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structSDL_1_1Surface.html#a9d6dfabb6ef7bc26600dea089b5707aa">Surface</a>(IMG_Load_IO(src.<a class="code hl_function" href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">get</a>(), <span class="keyword">false</span>));</div>
+<div class="line"><a id="l02322" name="l02322"></a><span class="lineno"> 2322</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1Surface.html">Surface</a>(IMG_Load_IO(src.<a class="code hl_function" href="classSDL_1_1Resource.html#ab273a0a0285b8eed1f70f5d3759f4167">get</a>(), <span class="keyword">false</span>));</div>
 <div class="line"><a id="l02323" name="l02323"></a><span class="lineno"> 2323</span>}</div>
 </div>
 <div class="line"><a id="l02324" name="l02324"></a><span class="lineno"> 2324</span> </div>
@@ -600,12 +600,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l02342" name="l02342"></a><span class="lineno"> 2342</span> </div>
 <div class="line"><a id="l02343" name="l02343"></a><span class="lineno"> 2343</span><span class="keyword">inline</span> Surface <a class="code hl_function" href="structSDL_1_1Surface.html#aab66636aceed59f89834330c7ad8f996">Surface::Load</a>(StringParam file)</div>
 <div class="line"><a id="l02344" name="l02344"></a><span class="lineno"> 2344</span>{</div>
-<div class="line"><a id="l02345" name="l02345"></a><span class="lineno"> 2345</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structSDL_1_1Surface.html#a9d6dfabb6ef7bc26600dea089b5707aa">Surface</a>(SDL_LoadBMP(file));</div>
+<div class="line"><a id="l02345" name="l02345"></a><span class="lineno"> 2345</span>  <span class="keywordflow">return</span> Surface(SDL_LoadBMP(file));</div>
 <div class="line"><a id="l02346" name="l02346"></a><span class="lineno"> 2346</span>}</div>
 <div class="line"><a id="l02347" name="l02347"></a><span class="lineno"> 2347</span> </div>
 <div class="line"><a id="l02348" name="l02348"></a><span class="lineno"> 2348</span><span class="keyword">inline</span> Surface <a class="code hl_function" href="structSDL_1_1Surface.html#aab66636aceed59f89834330c7ad8f996">Surface::Load</a>(IOStreamRef src)</div>
 <div class="line"><a id="l02349" name="l02349"></a><span class="lineno"> 2349</span>{</div>
-<div class="line"><a id="l02350" name="l02350"></a><span class="lineno"> 2350</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structSDL_1_1Surface.html#a9d6dfabb6ef7bc26600dea089b5707aa">Surface</a>(SDL_LoadBMP_IO(src.get(), <span class="keyword">false</span>));</div>
+<div class="line"><a id="l02350" name="l02350"></a><span class="lineno"> 2350</span>  <span class="keywordflow">return</span> Surface(SDL_LoadBMP_IO(src.get(), <span class="keyword">false</span>));</div>
 <div class="line"><a id="l02351" name="l02351"></a><span class="lineno"> 2351</span>}</div>
 <div class="line"><a id="l02352" name="l02352"></a><span class="lineno"> 2352</span> </div>
 <div class="line"><a id="l02353" name="l02353"></a><span class="lineno"> 2353</span><span class="keyword">inline</span> Texture <a class="code hl_function" href="structSDL_1_1Texture.html#acb74e6921b712ca4a1ae00ef7326e0fa">Texture::Load</a>(RendererRef renderer, StringParam file)</div>
@@ -710,7 +710,6 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="astructSDL_1_1RendererRef_html"><div class="ttname"><a href="structSDL_1_1RendererRef.html">SDL::RendererRef</a></div><div class="ttdoc">A structure representing rendering state.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:142</div></div>
 <div class="ttc" id="astructSDL_1_1SurfaceRef_html"><div class="ttname"><a href="structSDL_1_1SurfaceRef.html">SDL::SurfaceRef</a></div><div class="ttdoc">A collection of pixels used in software blitting.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:136</div></div>
 <div class="ttc" id="astructSDL_1_1Surface_html"><div class="ttname"><a href="structSDL_1_1Surface.html">SDL::Surface</a></div><div class="ttdoc">Handle to an owned surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1826</div></div>
-<div class="ttc" id="astructSDL_1_1Surface_html_a9d6dfabb6ef7bc26600dea089b5707aa"><div class="ttname"><a href="structSDL_1_1Surface.html#a9d6dfabb6ef7bc26600dea089b5707aa">SDL::Surface::Surface</a></div><div class="ttdeci">constexpr Surface()</div><div class="ttdoc">Constructs an empty Surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1830</div></div>
 <div class="ttc" id="astructSDL_1_1Surface_html_aab66636aceed59f89834330c7ad8f996"><div class="ttname"><a href="structSDL_1_1Surface.html#aab66636aceed59f89834330c7ad8f996">SDL::Surface::Load</a></div><div class="ttdeci">static Surface Load(StringParam file)</div><div class="ttdoc">Load an image from a filesystem path into a software surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2315</div></div>
 <div class="ttc" id="astructSDL_1_1Texture_html"><div class="ttname"><a href="structSDL_1_1Texture.html">SDL::Texture</a></div><div class="ttdoc">Handle to an owned texture.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:2864</div></div>
 <div class="ttc" id="astructSDL_1_1Texture_html_a88f5bd38f405ffdbc46d69a8b3fab1d2"><div class="ttname"><a href="structSDL_1_1Texture.html#a88f5bd38f405ffdbc46d69a8b3fab1d2">SDL::Texture::Texture</a></div><div class="ttdeci">constexpr Texture()</div><div class="ttdoc">Constructs an empty Texture.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:2870</div></div>

@@ -19207,40 +19207,11 @@
           "type": "ResourceUnique<SurfaceRef>",
           "doc": "Handle to an owned surface\n\n@cat resource\n\n@sa SurfaceRef",
           "entries": {
-            "Surface": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty Surface.",
-                "hints": {
-                  "init": [
-                    "ResourceUnique(nullptr)"
-                  ]
-                },
-                "name": "Surface"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Surface *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "ResourceUnique(resource)"
-                  ]
-                },
-                "name": "Surface"
-              }
-            ],
+            "ResourceUnique::ResourceUnique": {
+              "kind": "alias",
+              "name": "ResourceUnique::ResourceUnique",
+              "doc": ""
+            },
             "Load": [
               {
                 "name": "Load",
@@ -29520,40 +29491,11 @@
           "type": "ResourceUnique<CursorRef>",
           "doc": "Handle to an owned cursor\n\n@cat resource\n\n@sa CursorRef",
           "entries": {
-            "Cursor": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [],
-                "doc": "Constructs an empty Cursor.",
-                "hints": {
-                  "init": [
-                    "ResourceUnique(nullptr)"
-                  ]
-                },
-                "name": "Cursor"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Cursor *",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "ResourceUnique(resource)"
-                  ]
-                },
-                "name": "Cursor"
-              }
-            ],
+            "ResourceUnique::ResourceUnique": {
+              "kind": "alias",
+              "name": "ResourceUnique::ResourceUnique",
+              "doc": ""
+            },
             "Create": {
               "doc": "Create a cursor using the specified bitmap data and mask (in MSB format).\n\n`mask` has to be in MSB (Most Significant Bit) format.\n\nThe cursor width (`w`) must be a multiple of 8 bits.\n\nThe cursor is created in black and white according to the following:\n\n- data=0, mask=1: white\n- data=1, mask=1: black\n- data=0, mask=0: transparent\n- data=1, mask=0: inverted color if possible, black if not.\n\nCursors created with this function must be freed with Cursor.Destroy().\n\nIf you want to have a color cursor, or create your cursor from an\nSurfaceRef, you should use Cursor.CreateColor(). Alternately, you can\nhide the cursor and draw your own as part of your game's rendering, but it\nwill be bound to the framerate.\n\nAlso, Cursor.CreateSystem() is available, which provides several\nreadily-available system cursors to pick from.\n\n@param data the color value for each pixel of the cursor.\n@param mask the mask value for each pixel of the cursor.\n@param w the width of the cursor.\n@param h the height of the cursor.\n@param hot_x the x-axis offset from the left of the cursor image to the\n             mouse x position, in the range of 0 to `w` - 1.\n@param hot_y the y-axis offset from the top of the cursor image to the\n             mouse y position, in the range of 0 to `h` - 1.\n@returns a new cursor with the specified parameters on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.CreateColor\n@sa Cursor.CreateSystem\n@sa Cursor.Destroy\n@sa SetCursor",
               "name": "Create",

@@ -1824,21 +1824,7 @@ struct SurfaceUnsafe : ResourcePtr<SurfaceRef>
  */
 struct Surface : ResourceUnique<SurfaceRef>
 {
-  /**
-   * Constructs an empty Surface.
-   */
-  constexpr Surface()
-    : ResourceUnique(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Surface(SDL_Surface* resource)
-    : ResourceUnique(resource)
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -1886,7 +1872,7 @@ struct Surface : ResourceUnique<SurfaceRef>
    *
    * @sa Surface.Destroy
    * @sa Surface.LoadBMP
-   * @sa SurfaceRef.SaveBMP
+   * @sa SaveBMP
    */
   static Surface LoadBMP(IOStreamRef src)
   {
@@ -1909,7 +1895,7 @@ struct Surface : ResourceUnique<SurfaceRef>
    *
    * @sa Surface.Destroy
    * @sa Surface.LoadBMP
-   * @sa SurfaceRef.SaveBMP
+   * @sa SaveBMP
    */
   static Surface LoadBMP(StringParam file)
   {
@@ -1931,7 +1917,7 @@ struct Surface : ResourceUnique<SurfaceRef>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Surface.CreateFrom
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   static Surface Create(const SDL_Point& size, PixelFormat format)
   {
@@ -1963,7 +1949,7 @@ struct Surface : ResourceUnique<SurfaceRef>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Surface.Create
-   * @sa SurfaceRef.Destroy
+   * @sa Surface.Destroy
    */
   static Surface CreateFrom(const SDL_Point& size,
                             PixelFormat format,

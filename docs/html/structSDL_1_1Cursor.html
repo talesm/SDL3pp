@@ -99,17 +99,24 @@ Inheritance diagram for SDL::Cursor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4714bd9e6576f1bdfafa4301634ec1a2" id="r_a4714bd9e6576f1bdfafa4301634ec1a2"><td class="memItemLeft" align="right" valign="top"><a id="a4714bd9e6576f1bdfafa4301634ec1a2" name="a4714bd9e6576f1bdfafa4301634ec1a2"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Cursor</b> ()</td></tr>
-<tr class="memdesc:a4714bd9e6576f1bdfafa4301634ec1a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a>. <br /></td></tr>
-<tr class="separator:a4714bd9e6576f1bdfafa4301634ec1a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1884ac291911d9b369ed210ba09320a4" id="r_a1884ac291911d9b369ed210ba09320a4"><td class="memItemLeft" align="right" valign="top"><a id="a1884ac291911d9b369ed210ba09320a4" name="a1884ac291911d9b369ed210ba09320a4"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Cursor</b> (SDL_Cursor *resource)</td></tr>
-<tr class="memdesc:a1884ac291911d9b369ed210ba09320a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from the underlying resource. <br /></td></tr>
-<tr class="separator:a1884ac291911d9b369ed210ba09320a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a322f04685f5a6bd68d59a15787f9e7fc" id="r_a322f04685f5a6bd68d59a15787f9e7fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Cursor.html#a322f04685f5a6bd68d59a15787f9e7fc">Destroy</a> ()</td></tr>
 <tr class="memdesc:a322f04685f5a6bd68d59a15787f9e7fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
 <tr class="separator:a322f04685f5a6bd68d59a15787f9e7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top"><a id="a8eff4b7518626ecb1d6ee2e8f2662301" name="a8eff4b7518626ecb1d6ee2e8f2662301"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
+<tr class="memdesc:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a84be9e4b6d22fbaee39979c15cef0f" id="r_a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memItemLeft" align="right" valign="top"><a id="a2a84be9e4b6d22fbaee39979c15cef0f" name="a2a84be9e4b6d22fbaee39979c15cef0f"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourcePtrBase.html#afaf83443621b31f83daf2d7e911208c6">base::value_type</a> value)</td></tr>
+<tr class="memdesc:a2a84be9e4b6d22fbaee39979c15cef0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from raw type. <br /></td></tr>
+<tr class="separator:a2a84be9e4b6d22fbaee39979c15cef0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1bcf199c285e07c14ebc87b5abf6f2" id="r_abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memItemLeft" align="right" valign="top"><a id="abc1bcf199c285e07c14ebc87b5abf6f2" name="abc1bcf199c285e07c14ebc87b5abf6f2"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (<a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;&amp;other)</td></tr>
+<tr class="memdesc:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="separator:abc1bcf199c285e07c14ebc87b5abf6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d90c89aac04332912bb8f55c387aae" id="r_a59d90c89aac04332912bb8f55c387aae"><td class="memItemLeft" align="right" valign="top"><a id="a59d90c89aac04332912bb8f55c387aae" name="a59d90c89aac04332912bb8f55c387aae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> (const <a class="el" href="classSDL_1_1ResourceUnique.html">ResourceUnique</a> &amp;other)=delete</td></tr>
+<tr class="separator:a59d90c89aac04332912bb8f55c387aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSDL_1_1ResourceUnique"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSDL_1_1ResourceUnique')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSDL_1_1ResourceUnique.html">SDL::ResourceUnique&lt; CursorRef &gt;</a></td></tr>
 <tr class="memitem:a8eff4b7518626ecb1d6ee2e8f2662301 inherit pub_methods_classSDL_1_1ResourceUnique" id="r_a8eff4b7518626ecb1d6ee2e8f2662301"><td class="memItemLeft" align="right" valign="top">
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceUnique</b> ()=default</td></tr>
