@@ -817,16 +817,6 @@ function expandResources(sourceEntries, file, context) {
         doc: `Unsafe Handle to ${title}\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa ${refName}`,
         entries: {
           "ResourcePtr::ResourcePtr": "alias",
-          [unsafeName]: [{
-            kind: "function",
-            type: "",
-            proto: true,
-            parameters: [{
-              type: `const ${uniqueName} &`,
-              name: "other"
-            }],
-            hints: { delete: true },
-          }],
         },
       },
       {

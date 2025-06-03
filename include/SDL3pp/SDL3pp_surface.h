@@ -1809,8 +1809,6 @@ struct SurfaceUnsafe : ResourcePtr<SurfaceRef>
 {
   using ResourcePtr::ResourcePtr;
 
-  SurfaceUnsafe(const Surface& other) = delete;
-
   /**
    * Constructs SurfaceUnsafe from Surface.
    */

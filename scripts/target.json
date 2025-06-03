@@ -19179,44 +19179,26 @@
               "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "SurfaceUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Surface &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "SurfaceUnsafe",
-                "doc": ""
+            "SurfaceUnsafe": {
+              "kind": "function",
+              "name": "SurfaceUnsafe",
+              "type": "",
+              "explicit": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Surface &&",
+                  "name": "other"
+                }
+              ],
+              "doc": "Constructs SurfaceUnsafe from Surface.",
+              "hints": {
+                "init": [
+                  "SurfaceUnsafe(other.release())"
+                ]
               },
-              {
-                "kind": "function",
-                "name": "SurfaceUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Surface &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs SurfaceUnsafe from Surface.",
-                "hints": {
-                  "init": [
-                    "SurfaceUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ]
+              "proto": true
+            }
           }
         },
         "Surface": {
@@ -29270,7 +29252,7 @@
     },
     "SDL3pp_mouse.h": {
       "name": "SDL3pp_mouse.h",
-      "doc": "@defgroup CategoryMouse Category Mouse\n\nAny GUI application has to deal with the mouse, and SDL provides functions\nto manage mouse input and the displayed cursor.\n\nMost interactions with the mouse will come through the event subsystem.\nMoving a mouse generates an EVENT_MOUSE_MOTION event, pushing a button\ngenerates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the\ncurrent state of the mouse at any time with GetMouseState().\n\nFor certain games, it's useful to disassociate the mouse cursor from mouse\ninput. An FPS, for example, would not want the player's motion to stop as\nthe mouse hits the edge of the window. For these scenarios, use\nWindowRef.SetRelativeMouseMode(), which hides the cursor, grabs mouse input\nto the window, and reads mouse input no matter how far it moves.\n\nGames that want the system to track the mouse but want to draw their own\ncursor can use HideCursor() and ShowCursor(). It might be more\nefficient to let the system manage the cursor, if possible, using\nSetCursor() with a custom image made through Cursor.Cursor(),\nor perhaps just a specific system cursor from Cursor.Cursor().\n\nSDL can, on many platforms, differentiate between multiple connected mice,\nallowing for interesting input scenarios and multiplayer games. They can be\nenumerated with GetMice(), and SDL will send EVENT_MOUSE_ADDED and\nEVENT_MOUSE_REMOVED events as they are connected and unplugged.\n\nSince many apps only care about basic mouse input, SDL offers a virtual\nmouse device for touch and pen input, which often can make a desktop\napplication work on a touchscreen phone without any code changes. Apps that\ncare about touch/pen separately from mouse input should filter out events\nwith a `which` field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID.",
+      "doc": "@defgroup CategoryMouse Category Mouse\n\nAny GUI application has to deal with the mouse, and SDL provides functions\nto manage mouse input and the displayed cursor.\n\nMost interactions with the mouse will come through the event subsystem.\nMoving a mouse generates an EVENT_MOUSE_MOTION event, pushing a button\ngenerates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the\ncurrent state of the mouse at any time with GetMouseState().\n\nFor certain games, it's useful to disassociate the mouse cursor from mouse\ninput. An FPS, for example, would not want the player's motion to stop as\nthe mouse hits the edge of the window. For these scenarios, use\nWindowRef.SetRelativeMouseMode(), which hides the cursor, grabs mouse input\nto the window, and reads mouse input no matter how far it moves.\n\nGames that want the system to track the mouse but want to draw their own\ncursor can use HideCursor() and ShowCursor(). It might be more\nefficient to let the system manage the cursor, if possible, using\nSetCursor() with a custom image made through Cursor.CreateColor(),\nor perhaps just a specific system cursor from Cursor.CreateSystem().\n\nSDL can, on many platforms, differentiate between multiple connected mice,\nallowing for interesting input scenarios and multiplayer games. They can be\nenumerated with GetMice(), and SDL will send EVENT_MOUSE_ADDED and\nEVENT_MOUSE_REMOVED events as they are connected and unplugged.\n\nSince many apps only care about basic mouse input, SDL offers a virtual\nmouse device for touch and pen input, which often can make a desktop\napplication work on a touchscreen phone without any code changes. Apps that\ncare about touch/pen separately from mouse input should filter out events\nwith a `which` field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID.",
       "entries": {
         "CursorRef-forward": {
           "name": "CursorRef",
@@ -29283,7 +29265,7 @@
           "doc": ""
         },
         "SystemCursor": {
-          "doc": "Cursor types for Cursor.Cursor().\n\n@since This enum is available since SDL 3.2.0.",
+          "doc": "Cursor types for Cursor.CreateSystem().\n\n@since This enum is available since SDL 3.2.0.",
           "name": "SystemCursor",
           "kind": "alias",
           "sourceName": "SDL_SystemCursor",
@@ -29476,32 +29458,21 @@
               "name": "Resource::Resource",
               "doc": ""
             },
-            "Destroy": {
-              "doc": "Free a previously-created cursor.\n\nUse this function to free cursor resources created with Cursor.Cursor(),\nCursor.Cursor() or Cursor.Cursor().\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa Cursor.Cursor",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyCursor",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Free a previously-created cursor.\n\nUse this function to free cursor resources created with Cursor.Cursor(),\nCursor.Cursor() or Cursor.Cursor().\n\n@param cursor the cursor to free.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa Cursor.Cursor",
+              "doc": "Free a previously-created cursor.\n\nUse this function to free cursor resources created with Cursor.Create(),\nCursor.CreateColor() or Cursor.CreateSystem().\n\n@param cursor the cursor to free.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.CreateColor\n@sa Cursor.Create\n@sa Cursor.CreateSystem",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_Cursor *",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_Cursor *"
                 }
               ],
               "sourceName": "SDL_DestroyCursor",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyCursor(release(newResource));"
+                "body": "SDL_DestroyCursor(resource);"
               }
             }
           },
@@ -29513,109 +29484,42 @@
         "CursorUnsafe": {
           "name": "CursorUnsafe",
           "kind": "struct",
-          "type": "CursorRef",
+          "type": "ResourcePtr<CursorRef>",
           "doc": "Unsafe Handle to cursor\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa CursorRef",
           "entries": {
-            "CursorRef::CursorRef": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "CursorRef::CursorRef",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "CursorRef::Destroy": {
-              "kind": "alias",
-              "name": "CursorRef::Destroy",
-              "doc": ""
-            },
-            "CursorRef::reset": {
-              "kind": "alias",
-              "name": "CursorRef::reset",
-              "doc": ""
-            },
-            "CursorUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const CursorRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs CursorUnsafe from CursorRef.",
-                "hints": {
-                  "init": [
-                    "CursorRef(other.get())"
-                  ]
-                },
-                "name": "CursorUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Cursor &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "CursorUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "CursorUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Cursor &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs CursorUnsafe from Cursor.",
-                "hints": {
-                  "init": [
-                    "CursorUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "CursorUnsafe": {
               "kind": "function",
-              "type": "CursorUnsafe &",
+              "name": "CursorUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "CursorUnsafe",
+                  "type": "Cursor &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs CursorUnsafe from Cursor.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "CursorUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "Cursor": {
           "name": "Cursor",
           "kind": "struct",
-          "type": "CursorUnsafe",
+          "type": "ResourceUnique<CursorRef>",
           "doc": "Handle to an owned cursor\n\n@cat resource\n\n@sa CursorRef",
           "entries": {
-            "CursorUnsafe::CursorUnsafe": {
-              "kind": "alias",
-              "name": "CursorUnsafe::CursorUnsafe",
-              "doc": ""
-            },
             "Cursor": [
               {
                 "kind": "function",
@@ -29625,7 +29529,7 @@
                 "doc": "Constructs an empty Cursor.",
                 "hints": {
                   "init": [
-                    "CursorUnsafe(nullptr)"
+                    "ResourceUnique(nullptr)"
                   ]
                 },
                 "name": "Cursor"
@@ -29644,153 +29548,14 @@
                 "doc": "Constructs from the underlying resource.",
                 "hints": {
                   "init": [
-                    "CursorUnsafe(resource)"
+                    "ResourceUnique(resource)"
                   ]
                 },
                 "name": "Cursor"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Cursor &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Cursor",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Cursor &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Cursor(other.release())"
-                  ]
-                },
-                "name": "Cursor"
-              },
-              {
-                "doc": "Create a cursor using the specified bitmap data and mask (in MSB format).\n\n`mask` has to be in MSB (Most Significant Bit) format.\n\nThe cursor width (`w`) must be a multiple of 8 bits.\n\nThe cursor is created in black and white according to the following:\n\n- data=0, mask=1: white\n- data=1, mask=1: black\n- data=0, mask=0: transparent\n- data=1, mask=0: inverted color if possible, black if not.\n\nCursors created with this function must be freed with CursorRef.Destroy().\n\nIf you want to have a color cursor, or create your cursor from an\nSurfaceRef, you should use Cursor.Cursor(). Alternately, you can\nhide the cursor and draw your own as part of your game's rendering, but it\nwill be bound to the framerate.\n\nAlso, Cursor.Cursor() is available, which provides several\nreadily-available system cursors to pick from.\n\n@param data the color value for each pixel of the cursor.\n@param mask the mask value for each pixel of the cursor.\n@param w the width of the cursor.\n@param h the height of the cursor.\n@param hot_x the x-axis offset from the left of the cursor image to the\n             mouse x position, in the range of 0 to `w` - 1.\n@param hot_y the y-axis offset from the top of the cursor image to the\n             mouse y position, in the range of 0 to `h` - 1.\n@post a new cursor with the specified parameters on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa CursorRef.Destroy\n@sa SetCursor",
-                "name": "Cursor",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "data",
-                    "type": "const Uint8 *"
-                  },
-                  {
-                    "name": "mask",
-                    "type": "const Uint8 *"
-                  },
-                  {
-                    "name": "w",
-                    "type": "int"
-                  },
-                  {
-                    "name": "h",
-                    "type": "int"
-                  },
-                  {
-                    "name": "hot_x",
-                    "type": "int"
-                  },
-                  {
-                    "name": "hot_y",
-                    "type": "int"
-                  }
-                ],
-                "sourceName": "SDL_CreateCursor",
-                "hints": {
-                  "mayFail": true
-                },
-                "proto": false
-              },
-              {
-                "doc": "Create a color cursor.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param surface an SurfaceRef structure representing the cursor image.\n@param hot_x the x position of the cursor hot spot.\n@param hot_y the y position of the cursor hot spot.\n@post the new cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa CursorRef.Destroy\n@sa SetCursor",
-                "name": "Cursor",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "surface",
-                    "type": "SurfaceRef"
-                  },
-                  {
-                    "name": "hot_x",
-                    "type": "int"
-                  },
-                  {
-                    "name": "hot_y",
-                    "type": "int"
-                  }
-                ],
-                "sourceName": "SDL_CreateColorCursor",
-                "hints": {
-                  "mayFail": true
-                },
-                "proto": false
-              },
-              {
-                "doc": "Create a system cursor.\n\n@param id an SystemCursor enum value.\n@post a cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorRef.Destroy",
-                "name": "Cursor",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "id",
-                    "type": "SystemCursor"
-                  }
-                ],
-                "sourceName": "SDL_CreateSystemCursor",
-                "hints": {
-                  "mayFail": true
-                },
-                "proto": false
               }
             ],
-            "~Cursor": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Cursor"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Cursor &",
-              "parameters": [
-                {
-                  "type": "Cursor",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create a cursor using the specified bitmap data and mask (in MSB format).\n\n`mask` has to be in MSB (Most Significant Bit) format.\n\nThe cursor width (`w`) must be a multiple of 8 bits.\n\nThe cursor is created in black and white according to the following:\n\n- data=0, mask=1: white\n- data=1, mask=1: black\n- data=0, mask=0: transparent\n- data=1, mask=0: inverted color if possible, black if not.\n\nCursors created with this function must be freed with CursorRef.Destroy().\n\nIf you want to have a color cursor, or create your cursor from an\nSurfaceRef, you should use Cursor.Cursor(). Alternately, you can\nhide the cursor and draw your own as part of your game's rendering, but it\nwill be bound to the framerate.\n\nAlso, Cursor.Cursor() is available, which provides several\nreadily-available system cursors to pick from.\n\n@param data the color value for each pixel of the cursor.\n@param mask the mask value for each pixel of the cursor.\n@param w the width of the cursor.\n@param h the height of the cursor.\n@param hot_x the x-axis offset from the left of the cursor image to the\n             mouse x position, in the range of 0 to `w` - 1.\n@param hot_y the y-axis offset from the top of the cursor image to the\n             mouse y position, in the range of 0 to `h` - 1.\n@returns a new cursor with the specified parameters on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa CursorRef.Destroy\n@sa SetCursor",
+              "doc": "Create a cursor using the specified bitmap data and mask (in MSB format).\n\n`mask` has to be in MSB (Most Significant Bit) format.\n\nThe cursor width (`w`) must be a multiple of 8 bits.\n\nThe cursor is created in black and white according to the following:\n\n- data=0, mask=1: white\n- data=1, mask=1: black\n- data=0, mask=0: transparent\n- data=1, mask=0: inverted color if possible, black if not.\n\nCursors created with this function must be freed with Cursor.Destroy().\n\nIf you want to have a color cursor, or create your cursor from an\nSurfaceRef, you should use Cursor.CreateColor(). Alternately, you can\nhide the cursor and draw your own as part of your game's rendering, but it\nwill be bound to the framerate.\n\nAlso, Cursor.CreateSystem() is available, which provides several\nreadily-available system cursors to pick from.\n\n@param data the color value for each pixel of the cursor.\n@param mask the mask value for each pixel of the cursor.\n@param w the width of the cursor.\n@param h the height of the cursor.\n@param hot_x the x-axis offset from the left of the cursor image to the\n             mouse x position, in the range of 0 to `w` - 1.\n@param hot_y the y-axis offset from the top of the cursor image to the\n             mouse y position, in the range of 0 to `h` - 1.\n@returns a new cursor with the specified parameters on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.CreateColor\n@sa Cursor.CreateSystem\n@sa Cursor.Destroy\n@sa SetCursor",
               "name": "Create",
               "kind": "function",
               "type": "Cursor",
@@ -29804,31 +29569,22 @@
                   "type": "const Uint8 *"
                 },
                 {
-                  "name": "w",
-                  "type": "int"
+                  "name": "size",
+                  "type": "const SDL_Point &"
                 },
                 {
-                  "name": "h",
-                  "type": "int"
-                },
-                {
-                  "name": "hot_x",
-                  "type": "int"
-                },
-                {
-                  "name": "hot_y",
-                  "type": "int"
+                  "name": "hot",
+                  "type": "const SDL_Point &"
                 }
               ],
               "sourceName": "SDL_CreateCursor",
               "hints": {
-                "mayFail": true,
-                "body": "return Cursor(, , , , , );"
+                "mayFail": true
               },
               "static": true
             },
             "CreateColor": {
-              "doc": "Create a color cursor.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param surface an SurfaceRef structure representing the cursor image.\n@param hot_x the x position of the cursor hot spot.\n@param hot_y the y position of the cursor hot spot.\n@returns the new cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Cursor\n@sa Cursor.Cursor\n@sa CursorRef.Destroy\n@sa SetCursor",
+              "doc": "Create a color cursor.\n\nIf this function is passed a surface with alternate representations, the\nsurface will be interpreted as the content to be used for 100% display\nscale, and the alternate representations will be used for high DPI\nsituations. For example, if the original surface is 32x32, then on a 2x\nmacOS display or 200% display scale on Windows, a 64x64 version of the\nimage will be used, if available. If a matching version of the image isn't\navailable, the closest larger size image will be downscaled to the\nappropriate size and be used instead, if available. Otherwise, the closest\nsmaller image will be upscaled and be used instead.\n\n@param surface an SurfaceRef structure representing the cursor image.\n@param hot_x the x position of the cursor hot spot.\n@param hot_y the y position of the cursor hot spot.\n@returns the new cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Create\n@sa Cursor.CreateSystem\n@sa Cursor.Destroy\n@sa SetCursor",
               "name": "CreateColor",
               "kind": "function",
               "type": "Cursor",
@@ -29838,23 +29594,18 @@
                   "type": "SurfaceRef"
                 },
                 {
-                  "name": "hot_x",
-                  "type": "int"
-                },
-                {
-                  "name": "hot_y",
-                  "type": "int"
+                  "name": "hot",
+                  "type": "const SDL_Point &"
                 }
               ],
               "sourceName": "SDL_CreateColorCursor",
               "hints": {
-                "mayFail": true,
-                "body": "return Cursor(surface, hot_x, hot_y);"
+                "mayFail": true
               },
               "static": true
             },
             "CreateSystem": {
-              "doc": "Create a system cursor.\n\n@param id an SystemCursor enum value.\n@returns a cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa CursorRef.Destroy",
+              "doc": "Create a system cursor.\n\n@param id an SystemCursor enum value.\n@returns a cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.Destroy",
               "name": "CreateSystem",
               "kind": "function",
               "type": "Cursor",
@@ -29866,10 +29617,20 @@
               ],
               "sourceName": "SDL_CreateSystemCursor",
               "hints": {
-                "mayFail": true,
-                "body": "return Cursor(id);"
+                "mayFail": true
               },
               "static": true
+            },
+            "Destroy": {
+              "doc": "Free a previously-created cursor.\n\nUse this function to free cursor resources created with Cursor.Create(),\nCursor.CreateColor() or Cursor.CreateSystem().\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Cursor.CreateColor\n@sa Cursor.Create\n@sa Cursor.CreateSystem",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyCursor",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
@@ -30227,7 +29988,7 @@
           }
         },
         "GetCursor": {
-          "doc": "Get the active cursor.\n\nThis function returns a pointer to the current cursor which is owned by the\nlibrary. It is not necessary to free the cursor with CursorRef.Destroy().\n\n@returns the active cursor or nullptr if there is no mouse.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetCursor",
+          "doc": "Get the active cursor.\n\nThis function returns a pointer to the current cursor which is owned by the\nlibrary. It is not necessary to free the cursor with Cursor.Destroy().\n\n@returns the active cursor or nullptr if there is no mouse.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetCursor",
           "name": "GetCursor",
           "kind": "function",
           "type": "CursorRef",
@@ -30235,7 +29996,7 @@
           "sourceName": "SDL_GetCursor"
         },
         "GetDefaultCursor": {
-          "doc": "Get the default cursor.\n\nYou do not have to call CursorRef.Destroy() on the return value, but it is\nsafe to do so.\n\n@returns the default cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Get the default cursor.\n\nYou do not have to call Cursor.Destroy() on the return value, but it is\nsafe to do so.\n\n@returns the default cursor on success.\n@throws Error on failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetDefaultCursor",
           "kind": "function",
           "type": "CursorRef",

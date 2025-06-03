@@ -2752,7 +2752,7 @@ const transform = {
           ],
         },
       },
-      resources: {
+      resourcesNew: {
         "SDL_Cursor": {
           entries: {
             "SDL_CreateCursor": {
@@ -2760,13 +2760,17 @@ const transform = {
               parameters: [
                 { type: "const Uint8 *" },
                 { type: "const Uint8 *" },
-                {},
-                {},
-                {},
-                {},
+                { type: "const SDL_Point &", name: "size" },
+                { type: "const SDL_Point &", name: "hot" },
               ],
             },
-            "SDL_CreateColorCursor": "ctor",
+            "SDL_CreateColorCursor": {
+              name: "ctor",
+              parameters: [
+                {},
+                { type: "const SDL_Point &", name: "hot" },
+              ],
+            },
             "SDL_CreateSystemCursor": "ctor",
           }
         }

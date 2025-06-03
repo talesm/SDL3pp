@@ -97,7 +97,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga18c02aef67d85f2fbf2758204eba125d" id="r_ga18c02aef67d85f2fbf2758204eba125d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga18c02aef67d85f2fbf2758204eba125d">SDL::SystemCursor</a> = SDL_SystemCursor</td></tr>
-<tr class="memdesc:ga18c02aef67d85f2fbf2758204eba125d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> types for CursorRef.CursorRef().  <br /></td></tr>
+<tr class="memdesc:ga18c02aef67d85f2fbf2758204eba125d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> types for <a class="el" href="structSDL_1_1Cursor.html#aba9887ef7e2652a057660a5d9cf0d528" title="Create a system cursor.">Cursor.CreateSystem()</a>.  <br /></td></tr>
 <tr class="separator:ga18c02aef67d85f2fbf2758204eba125d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga733d09de50440ff2a5587b8a47080440" id="r_ga733d09de50440ff2a5587b8a47080440"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMouse.html#ga733d09de50440ff2a5587b8a47080440">SDL::MouseID</a> = SDL_MouseID</td></tr>
 <tr class="memdesc:ga733d09de50440ff2a5587b8a47080440"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a unique ID for a mouse for the time it is connected to the system, and is never reused for the lifetime of the application.  <br /></td></tr>
@@ -500,7 +500,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function returns a pointer to the current cursor which is owned by the library. It is not necessary to free the cursor with <a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e" title="Free a previously-created cursor.">CursorRef.reset()</a>.</p>
+<p>This function returns a pointer to the current cursor which is owned by the library. It is not necessary to free the cursor with <a class="el" href="structSDL_1_1CursorRef.html#aa1ac5239b074b044cbe04a33b481d2cd" title="Free a previously-created cursor.">CursorRef.reset()</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>the active cursor or nullptr if there is no mouse.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
@@ -530,7 +530,7 @@ constexpr <a class="el" href="group__CategoryMouse.html#ga9b8df445d428312de2e9e0
   </tr>
 </table>
 </div><div class="memdoc">
-<p>You do not have to call <a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e" title="Free a previously-created cursor.">CursorRef.reset()</a> on the return value, but it is safe to do so.</p>
+<p>You do not have to call <a class="el" href="structSDL_1_1CursorRef.html#aa1ac5239b074b044cbe04a33b481d2cd" title="Free a previously-created cursor.">CursorRef.reset()</a> on the return value, but it is safe to do so.</p>
 <dl class="section return"><dt>Returns</dt><dd>the default cursor on success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">

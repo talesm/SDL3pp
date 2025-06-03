@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1CursorRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::CursorRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesEvents.html">Input Events</a> &raquo; <a class="el" href="group__CategoryMouse.html">Mouse Support</a></div></div></div>
 </div><!--header-->
@@ -90,12 +90,8 @@ Inheritance diagram for SDL::CursorRef:</div>
 <div class="center"><img src="structSDL_1_1CursorRef__inherit__graph.png" border="0" usemap="#aSDL_1_1CursorRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1CursorRef_inherit__map" id="aSDL_1_1CursorRef_inherit__map">
 <area shape="rect" title="The structure used to identify an SDL cursor." alt="" coords="23,93,142,119"/>
-<area shape="rect" href="structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor." alt="" coords="11,167,154,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor." alt="" coords="34,240,131,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -167,14 +163,11 @@ constexpr SDL_Cursor *&#160;</td><td class="memItemRight" valign="bottom"><b>ope
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa8610d8c0d0820c3c1ce8957ab6d13a9" id="r_aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#aa8610d8c0d0820c3c1ce8957ab6d13a9">Destroy</a> ()</td></tr>
-<tr class="memdesc:aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
-<tr class="separator:aa8610d8c0d0820c3c1ce8957ab6d13a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4755b54c6a180957caa8047a2dc6817e" id="r_a4755b54c6a180957caa8047a2dc6817e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#a4755b54c6a180957caa8047a2dc6817e">reset</a> (SDL_Cursor *newResource={})</td></tr>
-<tr class="memdesc:a4755b54c6a180957caa8047a2dc6817e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
-<tr class="separator:a4755b54c6a180957caa8047a2dc6817e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa1ac5239b074b044cbe04a33b481d2cd" id="r_aa1ac5239b074b044cbe04a33b481d2cd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1CursorRef.html#aa1ac5239b074b044cbe04a33b481d2cd">reset</a> (SDL_Cursor *resource)</td></tr>
+<tr class="memdesc:aa1ac5239b074b044cbe04a33b481d2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a previously-created cursor.  <br /></td></tr>
+<tr class="separator:aa1ac5239b074b044cbe04a33b481d2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -190,8 +183,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Cursor.html" title="Handle to an owned cursor.">Cursor</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa8610d8c0d0820c3c1ce8957ab6d13a9" name="aa8610d8c0d0820c3c1ce8957ab6d13a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8610d8c0d0820c3c1ce8957ab6d13a9">&#9670;&#160;</a></span>Destroy()</h2>
+<a id="aa1ac5239b074b044cbe04a33b481d2cd" name="aa1ac5239b074b044cbe04a33b481d2cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1ac5239b074b044cbe04a33b481d2cd">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -200,52 +193,33 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::CursorRef::Destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Use this function to free cursor resources created with <a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor()</a>, <a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor()</a> or <a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor()</a>.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor</a> </dd></dl>
-
-</div>
-</div>
-<a id="a4755b54c6a180957caa8047a2dc6817e" name="a4755b54c6a180957caa8047a2dc6817e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4755b54c6a180957caa8047a2dc6817e">&#9670;&#160;</a></span>reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::CursorRef::reset </td>
+          <td class="memname">static void SDL::CursorRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_Cursor *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Use this function to free cursor resources created with <a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor()</a>, <a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor()</a> or <a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor()</a>.</p>
+<p>Use this function to free cursor resources created with <a class="el" href="structSDL_1_1Cursor.html#a48dbf88c7e023b64c00fed629d53f6e1" title="Create a cursor using the specified bitmap data and mask (in MSB format).">Cursor.Create()</a>, <a class="el" href="structSDL_1_1Cursor.html#a61bba15935de47459a5d32b9dcb8ef55" title="Create a color cursor.">Cursor.CreateColor()</a> or <a class="el" href="structSDL_1_1Cursor.html#aba9887ef7e2652a057660a5d9cf0d528" title="Create a system cursor.">Cursor.CreateSystem()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the cursor to free.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Cursor.html#a4714bd9e6576f1bdfafa4301634ec1a2" title="Constructs an empty Cursor.">Cursor.Cursor</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Cursor.html#a61bba15935de47459a5d32b9dcb8ef55" title="Create a color cursor.">Cursor.CreateColor</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Cursor.html#a48dbf88c7e023b64c00fed629d53f6e1" title="Create a cursor using the specified bitmap data and mask (in MSB format).">Cursor.Create</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Cursor.html#aba9887ef7e2652a057660a5d9cf0d528" title="Create a system cursor.">Cursor.CreateSystem</a> </dd></dl>
 
 </div>
 </div>

@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access." alt="" coords="208,13,335,38"/>
-<area shape="poly" id="edge63_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1StorageUnsafe.html" title="Unsafe Handle to storage." alt="" coords="383,13,533,38"/>
-<area shape="poly" id="edge64_Node000001_Node000002" title=" " alt="" coords="348,23,382,23,382,28,348,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Storage.html" title="Handle to an owned storage." alt="" coords="581,13,687,38"/>
-<area shape="poly" id="edge65_Node000002_Node000003" title=" " alt="" coords="547,23,581,23,581,28,547,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1SharedObjectRef.html" title="An opaque datatype that represents a loaded shared object." alt="" coords="208,13,372,38"/>
+<area shape="poly" id="edge58_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1SharedObjectUnsafe.html" title="Unsafe Handle to sharedObject." alt="" coords="420,13,608,38"/>
+<area shape="poly" id="edge59_Node000001_Node000002" title=" " alt="" coords="386,23,420,23,420,28,386,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="656,13,799,38"/>
+<area shape="poly" id="edge60_Node000002_Node000003" title=" " alt="" coords="622,23,656,23,656,28,622,28"/>
 </map>
