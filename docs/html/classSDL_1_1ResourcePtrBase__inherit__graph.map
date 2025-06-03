@@ -1,0 +1,7 @@
+<map id="SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;" name="SDL::ResourcePtrBase&lt; RESOURCE, DELETER &gt;">
+<area shape="rect" id="Node000001" title="Base class for resource pointer&#45;like objects." alt="" coords="137,5,326,45"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourcePtr.html" title="A dumb pointer to resource." alt="" coords="5,93,228,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,56,144,95,140,91,193,52"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourceUnique.html" title="Implement unique ownership for a resource." alt="" coords="253,93,442,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="270,52,323,91,320,95,266,56"/>
+</map>

@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream." alt="" coords="208,13,369,38"/>
-<area shape="poly" id="edge19_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1AudioStreamUnsafe.html" title="Unsafe Handle to audioStream." alt="" coords="417,13,603,38"/>
-<area shape="poly" id="edge20_Node000001_Node000002" title=" " alt="" coords="383,23,417,23,417,28,383,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1AudioStream.html" title="Handle to an owned audioStream." alt="" coords="651,13,789,38"/>
-<area shape="poly" id="edge21_Node000002_Node000003" title=" " alt="" coords="616,23,651,23,651,28,616,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1AudioDeviceRef.html" title="SDL Audio Device instance IDs." alt="" coords="208,13,367,38"/>
+<area shape="poly" id="edge15_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1AudioDeviceUnsafe.html" title="Unsafe Handle to audioDevice." alt="" coords="415,13,597,38"/>
+<area shape="poly" id="edge16_Node000001_Node000002" title=" " alt="" coords="381,23,414,23,414,28,381,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice." alt="" coords="645,13,783,38"/>
+<area shape="poly" id="edge17_Node000002_Node000003" title=" " alt="" coords="611,23,645,23,645,28,611,28"/>
 </map>

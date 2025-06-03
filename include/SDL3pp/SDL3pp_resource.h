@@ -6,6 +6,17 @@
 namespace SDL {
 
 /**
+ * Concept representing a valid resource handle
+ *
+ * @tparam T
+ * @tparam RESOURCE
+ */
+template<class T, class RESOURCE>
+concept ResourceHandle = requires(T test) {
+  { *test } -> std::convertible_to<RESOURCE>;
+};
+
+/**
  * @brief A SDL managed resource.
  *
  * @tparam T the underlying resource type.
@@ -18,9 +29,18 @@ class Resource
   T m_resource;
 
 public:
-  /// Constructs the underlying resource.
+  /// The raw resource type
+  using value_type = T;
+
+  /// Constructs from the underlying resource.
   constexpr Resource(T resource = {})
     : m_resource(std::move(resource))
+  {
+  }
+
+  /// Constructs from pointer like.
+  constexpr Resource(ResourceHandle<Resource<T>> auto resource)
+    : m_resource(*resource)
   {
   }
 
@@ -66,70 +86,161 @@ public:
   constexpr T operator->() { return get(); }
 };
 
-/**
- * A optional reference to resource.
- *
- * This is meant to be aliased like this:
- *
- * ```cpp
- * using OptionalTexture = OptionalResource<TextureRef, Texture>;
- * ```
- *
- * @tparam REF the *Type*Ref.
- * @tparam UNIQUE the *Type*.
- */
-template<class REF, class UNIQUE>
-class OptionalResource : public REF
+/// Default deleter
+template<class RESOURCE>
+struct DefaultDeleter
 {
-  bool m_owning = false;
+  /// Deletes resource
+  void operator()(RESOURCE& ref) const { RESOURCE::reset(ref.get()); }
+};
+
+/**
+ * @brief Base class for resource pointer-like objects.
+ *
+ * @tparam RESOURCE
+ */
+template<class RESOURCE, class DELETER>
+class ResourcePtrBase
+{
+public:
+  /// The reference resource type
+  using reference = RESOURCE;
+
+  /// The raw resource type
+  using value_type = typename reference::value_type;
+
+private:
+  /// The resource.
+  reference m_value;
+  DELETER m_deleter;
+
+protected:
+  /// Constructs from raw type.
+  constexpr ResourcePtrBase(value_type value = {})
+    : m_value(value)
+  {
+  }
+
+  /// Get reference
+  reference& get() { return m_value; }
+
+  /// Frees resource
+  void free() { m_deleter(m_value); }
 
 public:
-  using REF::REF;
+  /// Check if not null
+  constexpr operator bool() const { return bool(m_value); }
 
-  /// Constructs from a reference
-  constexpr OptionalResource(const REF& other)
-    : REF(other)
+  /// Comparison
+  constexpr bool operator==(const ResourcePtrBase&) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t) const { return !*this; }
+
+  /// Comparison
+  constexpr bool operator==(std::nullopt_t) const { return !*this; }
+
+  /// Gets reference.
+  constexpr reference operator*() const { return m_value; }
+
+  /// Gets addressable reference.
+  constexpr const reference* operator->() const { return &m_value; }
+
+  /// Gets addressable reference.
+  constexpr reference* operator->() { return &m_value; }
+
+  /// Get reference
+  reference get() const { return m_value; }
+
+  /// Returns reference and reset this
+  reference release()
+  {
+    reference value = m_value;
+    m_value = {};
+    return value;
+  }
+};
+
+/**
+ * A _dumb_ pointer to resource.
+ *
+ * This is not safe to generally use, but might be used to compose other
+ * pointers.
+ *
+ * @tparam RESOURCE
+ * @tparam DELETER
+ */
+template<class RESOURCE, class DELETER = DefaultDeleter<RESOURCE>>
+class ResourcePtr : public ResourcePtrBase<RESOURCE, DELETER>
+{
+  using base = ResourcePtrBase<RESOURCE, DELETER>;
+
+public:
+  /// Default constructor.
+  constexpr ResourcePtr() = default;
+
+  /// Constructs pointer from anything compatible
+  constexpr explicit ResourcePtr(RESOURCE other)
+    : base(std::move(other))
   {
   }
 
-  /// Constructs from a reference
-  constexpr OptionalResource(const UNIQUE& other)
-    : REF(other)
+  /// Resets the value, destroying the resource if not nullptr
+  void reset()
+  {
+    base::free();
+    base::release();
+  }
+};
+
+/**
+ * @brief Implement unique ownership for a resource.
+ *
+ * @tparam RESOURCE
+ */
+template<class RESOURCE, class DELETER = DefaultDeleter<RESOURCE>>
+class ResourceUnique : public ResourcePtrBase<RESOURCE, DELETER>
+{
+  using base = ResourcePtrBase<RESOURCE, DELETER>;
+
+public:
+  /// Default constructor.
+  constexpr ResourceUnique() = default;
+
+  /// Constructs from raw type.
+  constexpr explicit ResourceUnique(base::value_type value)
+    : base(value)
   {
   }
 
-  /// Constructs from a moved from unique
-  constexpr OptionalResource(UNIQUE&& other)
-    : REF(other.release())
-    , m_owning(true)
+  /// Move constructor.
+  constexpr ResourceUnique(ResourceUnique&& other)
+    : base(other)
   {
+    other.get() = {};
   }
 
-  OptionalResource(const OptionalResource& other) = delete;
+  ResourceUnique(const ResourceUnique& other) = delete;
 
-  /// Move ctor
-  OptionalResource(OptionalResource&& other)
-    : REF(other.release())
-    , m_owning(other.m_owning)
-  {
-    other.m_owning = false;
-  }
-
-  OptionalResource& operator=(const OptionalResource& other) = delete;
+  /**
+   * Destructor.
+   *
+   * This frees up the resource.
+   */
+  ~ResourceUnique() { base::free(); }
 
   /// Assignment operator.
-  OptionalResource& operator=(OptionalResource&& other)
+  constexpr ResourceUnique& operator=(ResourceUnique other)
   {
-    REF::operator=(REF(other.release()));
-    m_owning = other.m_owning;
-    other.m_owning = false;
+    std::swap(base::get(), other.get());
     return *this;
   }
 
-  /// Destructor
-  ~OptionalResource()
+  /// Resets the value, destroying the resource if not nullptr
+  void reset()
   {
-    if (m_owning) REF::reset();
+    base::free();
+    base::release();
   }
 };
 
