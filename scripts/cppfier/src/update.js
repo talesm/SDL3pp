@@ -599,6 +599,9 @@ function generateStruct(entry, prefix) {
  * @param {string} prefix 
  */
 function generateStructSignature(entry, prefix) {
+  if (entry.hints?.private) {
+    return `${prefix}class ${entry.name}`;
+  }
   return `${prefix}struct ${entry.name}`;
 }
 
