@@ -26,6 +26,9 @@ struct IOStreamRef;
 // Forward decl
 struct IOStream;
 
+// Forward decl
+struct IOStreamShared;
+
 /**
  * IOStreamRef status, set by a read or write operation.
  *
@@ -1650,6 +1653,11 @@ struct IOStream : IOStreamUnsafe
   }
 
   /**
+   * Transfer ownership to a IOStreamShared
+   */
+  IOStreamShared share();
+
+  /**
    * Use this function to create a new IOStreamRef structure for reading from
    * and/or writing to a named file.
    *
@@ -1884,6 +1892,101 @@ struct IOStream : IOStreamUnsafe
   {
     return IOStream(iface, userdata);
   }
+};
+
+/**
+ * Handle to a shared own iOStream
+ *
+ * @cat resource
+ *
+ * @sa IOStream
+ * @sa IOStreamRef
+ */
+class IOStreamShared : IOStreamRef
+{
+  std::shared_ptr<IOStream> m_shared;
+
+  IOStreamShared(std::shared_ptr<IOStream> resource)
+    : IOStreamRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  IOStreamShared(IOStream resource = {})
+    : IOStreamShared(resource ? std::make_shared<IOStream>(std::move(resource))
+                              : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(IOStream resource = {})
+  {
+    IOStreamRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  IOStream release()
+  {
+    IOStream r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class IOStreamWeak;
+};
+
+inline IOStreamShared IOStream::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own iOStream
+ *
+ * @cat resource
+ *
+ * @sa IOStreamShared
+ */
+class IOStreamWeak
+{
+  std::weak_ptr<IOStream> m_shared;
+
+public:
+  /**
+   * Constructs IOStreamWeak from a IOStreamShared.
+   */
+  IOStreamWeak(IOStreamShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid IOStreamShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a IOStreamShared, if still available.
+   */
+  IOStreamShared lock() const { return IOStreamShared(m_shared.lock()); }
 };
 
 constexpr IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)

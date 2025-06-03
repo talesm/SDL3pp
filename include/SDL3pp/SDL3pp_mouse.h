@@ -51,6 +51,9 @@ struct CursorRef;
 // Forward decl
 struct Cursor;
 
+// Forward decl
+struct CursorShared;
+
 /**
  * Cursor types for CursorRef.CursorRef().
  *
@@ -392,6 +395,11 @@ struct Cursor : CursorUnsafe
   }
 
   /**
+   * Transfer ownership to a CursorShared
+   */
+  CursorShared share();
+
+  /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
    *
    * `mask` has to be in MSB (Most Significant Bit) format.
@@ -492,6 +500,101 @@ struct Cursor : CursorUnsafe
    * @sa CursorRef.Destroy
    */
   static Cursor CreateSystem(SystemCursor id) { return Cursor(id); }
+};
+
+/**
+ * Handle to a shared own cursor
+ *
+ * @cat resource
+ *
+ * @sa Cursor
+ * @sa CursorRef
+ */
+class CursorShared : CursorRef
+{
+  std::shared_ptr<Cursor> m_shared;
+
+  CursorShared(std::shared_ptr<Cursor> resource)
+    : CursorRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  CursorShared(Cursor resource = {})
+    : CursorShared(resource ? std::make_shared<Cursor>(std::move(resource))
+                            : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Cursor resource = {})
+  {
+    CursorRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Cursor release()
+  {
+    Cursor r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class CursorWeak;
+};
+
+inline CursorShared Cursor::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own cursor
+ *
+ * @cat resource
+ *
+ * @sa CursorShared
+ */
+class CursorWeak
+{
+  std::weak_ptr<Cursor> m_shared;
+
+public:
+  /**
+   * Constructs CursorWeak from a CursorShared.
+   */
+  CursorWeak(CursorShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid CursorShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a CursorShared, if still available.
+   */
+  CursorShared lock() const { return CursorShared(m_shared.lock()); }
 };
 
 constexpr CursorUnsafe::CursorUnsafe(Cursor&& other)

@@ -45,7 +45,8 @@ export interface EntryHint {
   super?: string;
   static?: boolean;
   mayFail?: boolean;
-  removeParamThis?: boolean
+  removeParamThis?: boolean;
+  private?: boolean;
 }
 
 export interface VersionTag {

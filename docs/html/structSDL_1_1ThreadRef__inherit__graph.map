@@ -1,9 +1,11 @@
 <map id="SDL::ThreadRef" name="SDL::ThreadRef">
-<area shape="rect" id="Node000001" title="The SDL thread object." alt="" coords="21,93,144,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1ThreadUnsafe.html" title="Unsafe Handle to thread." alt="" coords="9,167,156,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1Thread.html" title="Handle to an owned thread." alt="" coords="33,240,133,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
+<area shape="rect" id="Node000001" title="The SDL thread object." alt="" coords="102,93,225,119"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ThreadShared.html" title="Handle to a shared own thread." alt="" coords="5,167,151,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="141,129,94,168,90,164,138,125"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1ThreadUnsafe.html" title="Unsafe Handle to thread." alt="" coords="175,167,322,192"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="189,125,236,164,233,168,186,129"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="86,5,241,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,59,166,93,161,93,161,59"/>
+<area shape="rect" id="Node000005" href="$structSDL_1_1Thread.html" title="Handle to an owned thread." alt="" coords="199,240,299,265"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="251,206,251,240,246,240,246,206"/>
 </map>

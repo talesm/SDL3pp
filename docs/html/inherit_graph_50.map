@@ -1,9 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1FontRef.html" title="The internal structure containing font information." alt="" coords="208,13,313,38"/>
-<area shape="poly" id="edge86_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1FontUnsafe.html" title="Unsafe Handle to font." alt="" coords="361,13,491,38"/>
-<area shape="poly" id="edge87_Node000001_Node000002" title=" " alt="" coords="327,23,361,23,361,28,327,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Font.html" title="Handle to an owned font." alt="" coords="539,13,621,38"/>
-<area shape="poly" id="edge88_Node000002_Node000003" title=" " alt="" coords="505,23,538,23,538,28,505,28"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,23,160,63"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1PaletteRef.html" title="A set of indexed colors representing a palette." alt="" coords="208,31,331,56"/>
+<area shape="poly" id="edge53_Node000000_Node000001" title=" " alt="" coords="174,41,208,41,208,46,174,46"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1PaletteShared.html" title="Handle to a shared own palette." alt="" coords="379,5,525,31"/>
+<area shape="poly" id="edge54_Node000001_Node000002" title=" " alt="" coords="344,30,378,25,379,31,345,36"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1PaletteUnsafe.html" title="Unsafe Handle to palette." alt="" coords="379,55,525,80"/>
+<area shape="poly" id="edge55_Node000001_Node000003" title=" " alt="" coords="345,51,379,55,378,60,344,56"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Palette.html" title="Handle to an owned palette." alt="" coords="573,55,673,80"/>
+<area shape="poly" id="edge56_Node000003_Node000004" title=" " alt="" coords="539,65,573,65,573,70,539,70"/>
 </map>

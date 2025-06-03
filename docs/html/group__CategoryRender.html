@@ -94,6 +94,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Renderer.html">SDL::Renderer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned renderer.  <a href="structSDL_1_1Renderer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1RendererShared.html">SDL::RendererShared</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared own renderer.  <a href="classSDL_1_1RendererShared.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1RendererWeak.html">SDL::RendererWeak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared own renderer.  <a href="classSDL_1_1RendererWeak.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureRef.html">SDL::TextureRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An efficient driver-specific representation of pixel data.  <a href="structSDL_1_1TextureRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,6 +108,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Texture.html">SDL::Texture</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned texture.  <a href="structSDL_1_1Texture.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1TextureShared.html">SDL::TextureShared</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared own texture.  <a href="classSDL_1_1TextureShared.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1TextureWeak.html">SDL::TextureWeak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared own texture.  <a href="classSDL_1_1TextureWeak.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1TextureLock.html">SDL::TextureLock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a> for access to its pixels.  <a href="classSDL_1_1TextureLock.html#details">More...</a><br /></td></tr>
@@ -162,10 +174,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1609bee148285fd49e3510d2c1cfb8e2" id="r_ga1609bee148285fd49e3510d2c1cfb8e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga1609bee148285fd49e3510d2c1cfb8e2">SDL::LoadTextureBMP</a> (<a class="el" href="structSDL_1_1RendererRef.html">RendererRef</a> &amp;renderer, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> file)</td></tr>
 <tr class="memdesc:ga1609bee148285fd49e3510d2c1cfb8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a file.  <br /></td></tr>
 <tr class="separator:ga1609bee148285fd49e3510d2c1cfb8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4edecfe0e4d1b55cc762a919ffa6b2c4" id="r_ga4edecfe0e4d1b55cc762a919ffa6b2c4"><td class="memItemLeft" align="right" valign="top"><a id="ga4edecfe0e4d1b55cc762a919ffa6b2c4" name="ga4edecfe0e4d1b55cc762a919ffa6b2c4"></a>
+<a class="el" href="classSDL_1_1RendererShared.html">RendererShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Renderer::share</b> ()</td></tr>
+<tr class="memdesc:ga4edecfe0e4d1b55cc762a919ffa6b2c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership to a <a class="el" href="classSDL_1_1RendererShared.html" title="Handle to a shared own renderer.">RendererShared</a>. <br /></td></tr>
+<tr class="separator:ga4edecfe0e4d1b55cc762a919ffa6b2c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2229eceb01921981a3fcc5cb01cf09fe" id="r_ga2229eceb01921981a3fcc5cb01cf09fe"><td class="memItemLeft" align="right" valign="top"><a id="ga2229eceb01921981a3fcc5cb01cf09fe" name="ga2229eceb01921981a3fcc5cb01cf09fe"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::RendererUnsafe::RendererUnsafe</b> (<a class="el" href="structSDL_1_1Renderer.html">Renderer</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:ga2229eceb01921981a3fcc5cb01cf09fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1RendererUnsafe.html" title="Unsafe Handle to renderer.">RendererUnsafe</a> from <a class="el" href="structSDL_1_1Renderer.html" title="Handle to an owned renderer.">Renderer</a>. <br /></td></tr>
 <tr class="separator:ga2229eceb01921981a3fcc5cb01cf09fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf272a5371b6a805043e5106dfebd12c" id="r_gaaf272a5371b6a805043e5106dfebd12c"><td class="memItemLeft" align="right" valign="top"><a id="gaaf272a5371b6a805043e5106dfebd12c" name="gaaf272a5371b6a805043e5106dfebd12c"></a>
+<a class="el" href="classSDL_1_1TextureShared.html">TextureShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Texture::share</b> ()</td></tr>
+<tr class="memdesc:gaaf272a5371b6a805043e5106dfebd12c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership to a <a class="el" href="classSDL_1_1TextureShared.html" title="Handle to a shared own texture.">TextureShared</a>. <br /></td></tr>
+<tr class="separator:gaaf272a5371b6a805043e5106dfebd12c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaee48c85e2507ee929240042f70aa6b2f" id="r_gaee48c85e2507ee929240042f70aa6b2f"><td class="memItemLeft" align="right" valign="top"><a id="gaee48c85e2507ee929240042f70aa6b2f" name="gaee48c85e2507ee929240042f70aa6b2f"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TextureUnsafe::TextureUnsafe</b> (<a class="el" href="structSDL_1_1Texture.html">Texture</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:gaee48c85e2507ee929240042f70aa6b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1TextureUnsafe.html" title="Unsafe Handle to texture.">TextureUnsafe</a> from <a class="el" href="structSDL_1_1Texture.html" title="Handle to an owned texture.">Texture</a>. <br /></td></tr>

@@ -30,10 +30,16 @@ struct TrayRef;
 struct Tray;
 
 // Forward decl
+struct TrayShared;
+
+// Forward decl
 struct TrayEntryRef;
 
 // Forward decl
 struct TrayEntry;
+
+// Forward decl
+struct TrayEntryShared;
 
 /**
  * A trayEntry result that will be owned only if assigned to a TrayEntry.
@@ -316,6 +322,11 @@ struct Tray : TrayUnsafe
   }
 
   /**
+   * Transfer ownership to a TrayShared
+   */
+  TrayShared share();
+
+  /**
    * Create an icon to be placed in the operating system's tray, or equivalent.
    *
    * Many platforms advise not using a system tray unless persistence is a
@@ -342,6 +353,101 @@ struct Tray : TrayUnsafe
   {
     return Tray(icon, std::move(tooltip));
   }
+};
+
+/**
+ * Handle to a shared own tray
+ *
+ * @cat resource
+ *
+ * @sa Tray
+ * @sa TrayRef
+ */
+class TrayShared : TrayRef
+{
+  std::shared_ptr<Tray> m_shared;
+
+  TrayShared(std::shared_ptr<Tray> resource)
+    : TrayRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TrayShared(Tray resource = {})
+    : TrayShared(resource ? std::make_shared<Tray>(std::move(resource))
+                          : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Tray resource = {})
+  {
+    TrayRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Tray release()
+  {
+    Tray r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TrayWeak;
+};
+
+inline TrayShared Tray::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own tray
+ *
+ * @cat resource
+ *
+ * @sa TrayShared
+ */
+class TrayWeak
+{
+  std::weak_ptr<Tray> m_shared;
+
+public:
+  /**
+   * Constructs TrayWeak from a TrayShared.
+   */
+  TrayWeak(TrayShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TrayShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TrayShared, if still available.
+   */
+  TrayShared lock() const { return TrayShared(m_shared.lock()); }
 };
 
 /**
@@ -882,6 +988,105 @@ struct TrayEntry : TrayEntryUnsafe
     reset(other.release());
     return *this;
   }
+  /**
+   * Transfer ownership to a TrayEntryShared
+   */
+  TrayEntryShared share();
+};
+
+/**
+ * Handle to a shared own trayEntry
+ *
+ * @cat resource
+ *
+ * @sa TrayEntry
+ * @sa TrayEntryRef
+ */
+class TrayEntryShared : TrayEntryRef
+{
+  std::shared_ptr<TrayEntry> m_shared;
+
+  TrayEntryShared(std::shared_ptr<TrayEntry> resource)
+    : TrayEntryRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TrayEntryShared(TrayEntry resource = {})
+    : TrayEntryShared(
+        resource ? std::make_shared<TrayEntry>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(TrayEntry resource = {})
+  {
+    TrayEntryRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  TrayEntry release()
+  {
+    TrayEntry r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TrayEntryWeak;
+};
+
+inline TrayEntryShared TrayEntry::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own trayEntry
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryShared
+ */
+class TrayEntryWeak
+{
+  std::weak_ptr<TrayEntry> m_shared;
+
+public:
+  /**
+   * Constructs TrayEntryWeak from a TrayEntryShared.
+   */
+  TrayEntryWeak(TrayEntryShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TrayEntryShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TrayEntryShared, if still available.
+   */
+  TrayEntryShared lock() const { return TrayEntryShared(m_shared.lock()); }
 };
 
 constexpr TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)

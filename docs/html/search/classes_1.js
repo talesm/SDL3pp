@@ -9,8 +9,12 @@ var searchData=
   ['colorspace_6',['Colorspace',['../classSDL_1_1Colorspace.html',1,'SDL']]],
   ['condition_7',['Condition',['../structSDL_1_1Condition.html',1,'SDL']]],
   ['conditionref_8',['ConditionRef',['../structSDL_1_1ConditionRef.html',1,'SDL']]],
-  ['conditionunsafe_9',['ConditionUnsafe',['../structSDL_1_1ConditionUnsafe.html',1,'SDL']]],
-  ['cursor_10',['Cursor',['../structSDL_1_1Cursor.html',1,'SDL']]],
-  ['cursorref_11',['CursorRef',['../structSDL_1_1CursorRef.html',1,'SDL']]],
-  ['cursorunsafe_12',['CursorUnsafe',['../structSDL_1_1CursorUnsafe.html',1,'SDL']]]
+  ['conditionshared_9',['ConditionShared',['../classSDL_1_1ConditionShared.html',1,'SDL']]],
+  ['conditionunsafe_10',['ConditionUnsafe',['../structSDL_1_1ConditionUnsafe.html',1,'SDL']]],
+  ['conditionweak_11',['ConditionWeak',['../classSDL_1_1ConditionWeak.html',1,'SDL']]],
+  ['cursor_12',['Cursor',['../structSDL_1_1Cursor.html',1,'SDL']]],
+  ['cursorref_13',['CursorRef',['../structSDL_1_1CursorRef.html',1,'SDL']]],
+  ['cursorshared_14',['CursorShared',['../classSDL_1_1CursorShared.html',1,'SDL']]],
+  ['cursorunsafe_15',['CursorUnsafe',['../structSDL_1_1CursorUnsafe.html',1,'SDL']]],
+  ['cursorweak_16',['CursorWeak',['../classSDL_1_1CursorWeak.html',1,'SDL']]]
 ];

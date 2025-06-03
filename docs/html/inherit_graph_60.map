@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structSDL_1_1TargetBytes.html" title="Target byte stream." alt="" coords="5,5,137,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,23,160,63"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1ThreadRef.html" title="The SDL thread object." alt="" coords="208,31,331,56"/>
+<area shape="poly" id="edge94_Node000000_Node000001" title=" " alt="" coords="174,41,208,41,208,46,174,46"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ThreadShared.html" title="Handle to a shared own thread." alt="" coords="379,5,525,31"/>
+<area shape="poly" id="edge95_Node000001_Node000002" title=" " alt="" coords="344,30,378,25,379,31,345,36"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1ThreadUnsafe.html" title="Unsafe Handle to thread." alt="" coords="379,55,525,80"/>
+<area shape="poly" id="edge96_Node000001_Node000003" title=" " alt="" coords="345,51,379,55,378,60,344,56"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Thread.html" title="Handle to an owned thread." alt="" coords="573,55,673,80"/>
+<area shape="poly" id="edge97_Node000003_Node000004" title=" " alt="" coords="539,65,573,65,573,70,539,70"/>
 </map>

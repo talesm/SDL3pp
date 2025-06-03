@@ -1,9 +1,11 @@
 <map id="SDL::AudioDeviceRef" name="SDL::AudioDeviceRef">
-<area shape="rect" id="Node000001" title="SDL Audio Device instance IDs." alt="" coords="17,93,176,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1AudioDeviceUnsafe.html" title="Unsafe Handle to audioDevice." alt="" coords="5,167,188,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="99,132,99,167,94,167,94,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="19,5,174,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,59,99,93,94,93,94,59"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice." alt="" coords="28,240,165,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="99,206,99,240,94,240,94,206"/>
+<area shape="rect" id="Node000001" title="SDL Audio Device instance IDs." alt="" coords="120,93,279,119"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1AudioDeviceShared.html" title="Handle to a shared own audioDevice." alt="" coords="5,167,188,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,129,115,169,112,164,170,124"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1AudioDeviceUnsafe.html" title="Unsafe Handle to audioDevice." alt="" coords="212,167,395,192"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="229,124,288,164,285,169,226,129"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="122,5,277,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,59,202,93,197,93,197,59"/>
+<area shape="rect" id="Node000005" href="$structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice." alt="" coords="235,240,372,265"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="306,206,306,240,301,240,301,206"/>
 </map>

@@ -46,16 +46,25 @@ struct FontRef;
 struct Font;
 
 // Forward decl
+struct FontShared;
+
+// Forward decl
 struct TextEngineRef;
 
 // Forward decl
 struct TextEngine;
 
 // Forward decl
+struct TextEngineShared;
+
+// Forward decl
 struct TextRef;
 
 // Forward decl
 struct Text;
+
+// Forward decl
+struct TextShared;
 
 /**
  * @name Font Style Flags
@@ -2016,6 +2025,11 @@ struct Font : FontUnsafe
   }
 
   /**
+   * Transfer ownership to a FontShared
+   */
+  FontShared share();
+
+  /**
    * Create a font from a file, using a specified point size.
    *
    * Some .fon fonts will have several sizes embedded in the file, so the point
@@ -2109,6 +2123,101 @@ struct Font : FontUnsafe
    * @sa FontRef.Close
    */
   static Font OpenWithProperties(PropertiesRef props) { return Font(props); }
+};
+
+/**
+ * Handle to a shared own font
+ *
+ * @cat resource
+ *
+ * @sa Font
+ * @sa FontRef
+ */
+class FontShared : FontRef
+{
+  std::shared_ptr<Font> m_shared;
+
+  FontShared(std::shared_ptr<Font> resource)
+    : FontRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  FontShared(Font resource = {})
+    : FontShared(resource ? std::make_shared<Font>(std::move(resource))
+                          : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Font resource = {})
+  {
+    FontRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Font release()
+  {
+    Font r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class FontWeak;
+};
+
+inline FontShared Font::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own font
+ *
+ * @cat resource
+ *
+ * @sa FontShared
+ */
+class FontWeak
+{
+  std::weak_ptr<Font> m_shared;
+
+public:
+  /**
+   * Constructs FontWeak from a FontShared.
+   */
+  FontWeak(FontShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid FontShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a FontShared, if still available.
+   */
+  FontShared lock() const { return FontShared(m_shared.lock()); }
 };
 
 constexpr FontUnsafe::FontUnsafe(Font&& other)
@@ -2318,6 +2427,105 @@ struct TextEngine : TextEngineUnsafe
     other.m_destroy = nullptr;
     return *this;
   }
+  /**
+   * Transfer ownership to a TextEngineShared
+   */
+  TextEngineShared share();
+};
+
+/**
+ * Handle to a shared own textEngine
+ *
+ * @cat resource
+ *
+ * @sa TextEngine
+ * @sa TextEngineRef
+ */
+class TextEngineShared : TextEngineRef
+{
+  std::shared_ptr<TextEngine> m_shared;
+
+  TextEngineShared(std::shared_ptr<TextEngine> resource)
+    : TextEngineRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TextEngineShared(TextEngine resource = {})
+    : TextEngineShared(
+        resource ? std::make_shared<TextEngine>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(TextEngine resource = {})
+  {
+    TextEngineRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  TextEngine release()
+  {
+    TextEngine r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TextEngineWeak;
+};
+
+inline TextEngineShared TextEngine::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own textEngine
+ *
+ * @cat resource
+ *
+ * @sa TextEngineShared
+ */
+class TextEngineWeak
+{
+  std::weak_ptr<TextEngine> m_shared;
+
+public:
+  /**
+   * Constructs TextEngineWeak from a TextEngineShared.
+   */
+  TextEngineWeak(TextEngineShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TextEngineShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TextEngineShared, if still available.
+   */
+  TextEngineShared lock() const { return TextEngineShared(m_shared.lock()); }
 };
 
 /**
@@ -3551,6 +3759,11 @@ struct Text : TextUnsafe
   }
 
   /**
+   * Transfer ownership to a TextShared
+   */
+  TextShared share();
+
+  /**
    * Create a text object from UTF-8 text and a text engine.
    *
    * @param engine the text engine to use when creating the text object, may be
@@ -3571,6 +3784,101 @@ struct Text : TextUnsafe
   {
     return Text(engine, font, text);
   }
+};
+
+/**
+ * Handle to a shared own text
+ *
+ * @cat resource
+ *
+ * @sa Text
+ * @sa TextRef
+ */
+class TextShared : TextRef
+{
+  std::shared_ptr<Text> m_shared;
+
+  TextShared(std::shared_ptr<Text> resource)
+    : TextRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TextShared(Text resource = {})
+    : TextShared(resource ? std::make_shared<Text>(std::move(resource))
+                          : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Text resource = {})
+  {
+    TextRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Text release()
+  {
+    Text r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TextWeak;
+};
+
+inline TextShared Text::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own text
+ *
+ * @cat resource
+ *
+ * @sa TextShared
+ */
+class TextWeak
+{
+  std::weak_ptr<Text> m_shared;
+
+public:
+  /**
+   * Constructs TextWeak from a TextShared.
+   */
+  TextWeak(TextShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TextShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TextShared, if still available.
+   */
+  TextShared lock() const { return TextShared(m_shared.lock()); }
 };
 
 /**

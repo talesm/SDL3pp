@@ -40,6 +40,9 @@ struct SurfaceRef;
 // Forward decl
 struct Surface;
 
+// Forward decl
+struct SurfaceShared;
+
 /**
  * The flags on an SurfaceRef.
  *
@@ -1985,6 +1988,11 @@ struct Surface : SurfaceUnsafe
   }
 
   /**
+   * Transfer ownership to a SurfaceShared
+   */
+  SurfaceShared share();
+
+  /**
    * Load an image from a filesystem path into a software surface.
    *
    * If available, this uses LoadSurface(StringParam), otherwise it uses
@@ -2072,6 +2080,101 @@ struct Surface : SurfaceUnsafe
   {
     return Surface(size, format, pixels, pitch);
   }
+};
+
+/**
+ * Handle to a shared own surface
+ *
+ * @cat resource
+ *
+ * @sa Surface
+ * @sa SurfaceRef
+ */
+class SurfaceShared : SurfaceRef
+{
+  std::shared_ptr<Surface> m_shared;
+
+  SurfaceShared(std::shared_ptr<Surface> resource)
+    : SurfaceRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  SurfaceShared(Surface resource = {})
+    : SurfaceShared(resource ? std::make_shared<Surface>(std::move(resource))
+                             : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Surface resource = {})
+  {
+    SurfaceRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Surface release()
+  {
+    Surface r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class SurfaceWeak;
+};
+
+inline SurfaceShared Surface::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own surface
+ *
+ * @cat resource
+ *
+ * @sa SurfaceShared
+ */
+class SurfaceWeak
+{
+  std::weak_ptr<Surface> m_shared;
+
+public:
+  /**
+   * Constructs SurfaceWeak from a SurfaceShared.
+   */
+  SurfaceWeak(SurfaceShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid SurfaceShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a SurfaceShared, if still available.
+   */
+  SurfaceShared lock() const { return SurfaceShared(m_shared.lock()); }
 };
 
 /**

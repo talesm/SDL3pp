@@ -97,6 +97,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDevice.html">SDL::AudioDevice</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned audioDevice.  <a href="structSDL_1_1AudioDevice.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AudioDeviceShared.html">SDL::AudioDeviceShared</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared own audioDevice.  <a href="classSDL_1_1AudioDeviceShared.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AudioDeviceWeak.html">SDL::AudioDeviceWeak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared own audioDevice.  <a href="classSDL_1_1AudioDeviceWeak.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html">SDL::AudioStreamRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The opaque handle that represents an audio stream.  <a href="structSDL_1_1AudioStreamRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -105,6 +111,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStream.html">SDL::AudioStream</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned audioStream.  <a href="structSDL_1_1AudioStream.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AudioStreamShared.html">SDL::AudioStreamShared</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared own audioStream.  <a href="classSDL_1_1AudioStreamShared.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1AudioStreamWeak.html">SDL::AudioStreamWeak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared own audioStream.  <a href="classSDL_1_1AudioStreamWeak.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamLock.html">SDL::AudioStreamLock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a <a class="el" href="structSDL_1_1AudioStream.html" title="Handle to an owned audioStream.">AudioStream</a>.  <a href="structSDL_1_1AudioStreamLock.html#details">More...</a><br /></td></tr>
@@ -181,10 +193,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga21787c751aa8f17579f1dca4a1b8b8ff" id="r_ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; Uint8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga21787c751aa8f17579f1dca4a1b8b8ff">SDL::ConvertAudioSamples</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;src_spec, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> src_data, const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;dst_spec)</td></tr>
 <tr class="memdesc:ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert some audio data of one format to another format.  <br /></td></tr>
 <tr class="separator:ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac6e8de2b7803c46131093a2d545b536f" id="r_gac6e8de2b7803c46131093a2d545b536f"><td class="memItemLeft" align="right" valign="top"><a id="gac6e8de2b7803c46131093a2d545b536f" name="gac6e8de2b7803c46131093a2d545b536f"></a>
+<a class="el" href="classSDL_1_1AudioDeviceShared.html">AudioDeviceShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AudioDevice::share</b> ()</td></tr>
+<tr class="memdesc:gac6e8de2b7803c46131093a2d545b536f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership to a <a class="el" href="classSDL_1_1AudioDeviceShared.html" title="Handle to a shared own audioDevice.">AudioDeviceShared</a>. <br /></td></tr>
+<tr class="separator:gac6e8de2b7803c46131093a2d545b536f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf498cfe18e4432ceb2d11aa48c2a4a84" id="r_gaf498cfe18e4432ceb2d11aa48c2a4a84"><td class="memItemLeft" align="right" valign="top"><a id="gaf498cfe18e4432ceb2d11aa48c2a4a84" name="gaf498cfe18e4432ceb2d11aa48c2a4a84"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AudioDeviceUnsafe::AudioDeviceUnsafe</b> (<a class="el" href="structSDL_1_1AudioDevice.html">AudioDevice</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:gaf498cfe18e4432ceb2d11aa48c2a4a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1AudioDeviceUnsafe.html" title="Unsafe Handle to audioDevice.">AudioDeviceUnsafe</a> from <a class="el" href="structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice.">AudioDevice</a>. <br /></td></tr>
 <tr class="separator:gaf498cfe18e4432ceb2d11aa48c2a4a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95a603801a2bcbce1bb6d10fe3611f64" id="r_ga95a603801a2bcbce1bb6d10fe3611f64"><td class="memItemLeft" align="right" valign="top"><a id="ga95a603801a2bcbce1bb6d10fe3611f64" name="ga95a603801a2bcbce1bb6d10fe3611f64"></a>
+<a class="el" href="classSDL_1_1AudioStreamShared.html">AudioStreamShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AudioStream::share</b> ()</td></tr>
+<tr class="memdesc:ga95a603801a2bcbce1bb6d10fe3611f64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership to a <a class="el" href="classSDL_1_1AudioStreamShared.html" title="Handle to a shared own audioStream.">AudioStreamShared</a>. <br /></td></tr>
+<tr class="separator:ga95a603801a2bcbce1bb6d10fe3611f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab8386584f68fa71cc8c1329f42f3e922" id="r_gab8386584f68fa71cc8c1329f42f3e922"><td class="memItemLeft" align="right" valign="top"><a id="gab8386584f68fa71cc8c1329f42f3e922" name="gab8386584f68fa71cc8c1329f42f3e922"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AudioStreamUnsafe::AudioStreamUnsafe</b> (<a class="el" href="structSDL_1_1AudioStream.html">AudioStream</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:gab8386584f68fa71cc8c1329f42f3e922"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1AudioStreamUnsafe.html" title="Unsafe Handle to audioStream.">AudioStreamUnsafe</a> from <a class="el" href="structSDL_1_1AudioStream.html" title="Handle to an owned audioStream.">AudioStream</a>. <br /></td></tr>
@@ -900,9 +920,9 @@ right, then it repeats for the next audio frame".</p>
 <p>It is required that the data source supports seeking.</p>
 <p>Example:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__CategoryAudio.html#gad77a85cd923a784b974e1f5097d9eddd">LoadWAV</a>(<a class="code hl_struct" href="structSDL_1_1IOStream.html">IOStream</a>.<a class="code hl_function" href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701">IOStream</a>(<span class="stringliteral">&quot;sample.wav&quot;</span>, <span class="stringliteral">&quot;rb&quot;</span>), <span class="keyword">true</span>, &amp;spec, &amp;buf, &amp;len);</div>
-<div class="ttc" id="agroup__CategoryAudio_html_gad77a85cd923a784b974e1f5097d9eddd"><div class="ttname"><a href="group__CategoryAudio.html#gad77a85cd923a784b974e1f5097d9eddd">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamRef src, AudioSpec *spec)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:3106</div></div>
-<div class="ttc" id="astructSDL_1_1IOStream_html"><div class="ttname"><a href="structSDL_1_1IOStream.html">SDL::IOStream</a></div><div class="ttdoc">Handle to an owned iOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:1489</div></div>
-<div class="ttc" id="astructSDL_1_1IOStream_html_afc716ed30645f0aeabfc13748ec84701"><div class="ttname"><a href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701">SDL::IOStream::IOStream</a></div><div class="ttdeci">constexpr IOStream()</div><div class="ttdoc">Constructs an empty IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:1495</div></div>
+<div class="ttc" id="agroup__CategoryAudio_html_gad77a85cd923a784b974e1f5097d9eddd"><div class="ttname"><a href="group__CategoryAudio.html#gad77a85cd923a784b974e1f5097d9eddd">SDL::LoadWAV</a></div><div class="ttdeci">OwnArray&lt; Uint8 &gt; LoadWAV(IOStreamRef src, AudioSpec *spec)</div><div class="ttdoc">Load the audio data of a WAVE file into memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_audio.h:3312</div></div>
+<div class="ttc" id="astructSDL_1_1IOStream_html"><div class="ttname"><a href="structSDL_1_1IOStream.html">SDL::IOStream</a></div><div class="ttdoc">Handle to an owned iOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:1492</div></div>
+<div class="ttc" id="astructSDL_1_1IOStream_html_afc716ed30645f0aeabfc13748ec84701"><div class="ttname"><a href="structSDL_1_1IOStream.html#afc716ed30645f0aeabfc13748ec84701">SDL::IOStream::IOStream</a></div><div class="ttdeci">constexpr IOStream()</div><div class="ttdoc">Constructs an empty IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:1498</div></div>
 </div><!-- fragment --><p>Note that the LoadWAV function does this same thing for you, but in a less messy way:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__CategoryAudio.html#gad77a85cd923a784b974e1f5097d9eddd">LoadWAV</a>(<span class="stringliteral">&quot;sample.wav&quot;</span>, &amp;spec, &amp;buf, &amp;len);</div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
@@ -956,7 +976,7 @@ right, then it repeats for the next audio frame".</p>
 <p>This is a convenience function that is effectively the same as:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__CategoryAudio.html#gad77a85cd923a784b974e1f5097d9eddd">LoadWAV</a>(<a class="code hl_struct" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a>.IOStreamRef(path, <span class="stringliteral">&quot;rb&quot;</span>), <span class="keyword">true</span>, spec, audio_buf,</div>
 <div class="line">audio_len);</div>
-<div class="ttc" id="astructSDL_1_1IOStreamRef_html"><div class="ttname"><a href="structSDL_1_1IOStreamRef.html">SDL::IOStreamRef</a></div><div class="ttdoc">The read/write operation structure.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:104</div></div>
+<div class="ttc" id="astructSDL_1_1IOStreamRef_html"><div class="ttname"><a href="structSDL_1_1IOStreamRef.html">SDL::IOStreamRef</a></div><div class="ttdoc">The read/write operation structure.</div><div class="ttdef"><b>Definition</b> SDL3pp_iostream.h:107</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">path</td><td>the file path of the WAV file to open. </td></tr>

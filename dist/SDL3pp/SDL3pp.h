@@ -1503,10 +1503,16 @@ struct EnvironmentRef;
 struct Environment;
 
 // Forward decl
+struct EnvironmentShared;
+
+// Forward decl
 struct IConvRef;
 
 // Forward decl
 struct IConv;
+
+// Forward decl
+struct IConvShared;
 
 #ifdef SDL3PP_DOC
 
@@ -2459,6 +2465,11 @@ struct Environment : EnvironmentUnsafe
   }
 
   /**
+   * Transfer ownership to a EnvironmentShared
+   */
+  EnvironmentShared share();
+
+  /**
    * Create a set of environment variables
    *
    * @param populated true to initialize it from the C runtime environment,
@@ -2479,6 +2490,100 @@ struct Environment : EnvironmentUnsafe
    * @sa EnvironmentRef.Destroy
    */
   static Environment Create(bool populated) { return Environment(populated); }
+};
+
+/**
+ * Handle to a shared own environment
+ *
+ * @cat resource
+ *
+ * @sa Environment
+ * @sa EnvironmentRef
+ */
+class EnvironmentShared : EnvironmentRef
+{
+  std::shared_ptr<Environment> m_shared;
+
+  EnvironmentShared(std::shared_ptr<Environment> resource)
+    : EnvironmentRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  EnvironmentShared(Environment resource = {})
+    : EnvironmentShared(
+        resource ? std::make_shared<Environment>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Environment resource = {})
+  {
+    EnvironmentRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Environment release()
+  {
+    Environment r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+  friend class EnvironmentWeak;
+};
+
+inline EnvironmentShared Environment::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own environment
+ *
+ * @cat resource
+ *
+ * @sa EnvironmentShared
+ */
+class EnvironmentWeak
+{
+  std::weak_ptr<Environment> m_shared;
+
+public:
+  /**
+   * Constructs EnvironmentWeak from a EnvironmentShared.
+   */
+  EnvironmentWeak(EnvironmentShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid EnvironmentShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a EnvironmentShared, if still available.
+   */
+  EnvironmentShared lock() const { return EnvironmentShared(m_shared.lock()); }
 };
 
 constexpr EnvironmentUnsafe::EnvironmentUnsafe(Environment&& other)
@@ -6829,6 +6934,11 @@ struct IConv : IConvUnsafe
   }
 
   /**
+   * Transfer ownership to a IConvShared
+   */
+  IConvShared share();
+
+  /**
    * This function allocates a context for the specified character set
    * conversion.
    *
@@ -6847,6 +6957,101 @@ struct IConv : IConvUnsafe
   {
     return IConv(std::move(tocode), std::move(fromcode));
   }
+};
+
+/**
+ * Handle to a shared own iConv
+ *
+ * @cat resource
+ *
+ * @sa IConv
+ * @sa IConvRef
+ */
+class IConvShared : IConvRef
+{
+  std::shared_ptr<IConv> m_shared;
+
+  IConvShared(std::shared_ptr<IConv> resource)
+    : IConvRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  IConvShared(IConv resource = {})
+    : IConvShared(resource ? std::make_shared<IConv>(std::move(resource))
+                           : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(IConv resource = {})
+  {
+    IConvRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  IConv release()
+  {
+    IConv r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class IConvWeak;
+};
+
+inline IConvShared IConv::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own iConv
+ *
+ * @cat resource
+ *
+ * @sa IConvShared
+ */
+class IConvWeak
+{
+  std::weak_ptr<IConv> m_shared;
+
+public:
+  /**
+   * Constructs IConvWeak from a IConvShared.
+   */
+  IConvWeak(IConvShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid IConvShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a IConvShared, if still available.
+   */
+  IConvShared lock() const { return IConvShared(m_shared.lock()); }
 };
 
 constexpr IConvUnsafe::IConvUnsafe(IConv&& other)
@@ -15265,6 +15470,9 @@ struct SharedObjectRef;
 // Forward decl
 struct SharedObject;
 
+// Forward decl
+struct SharedObjectShared;
+
 /**
  * An opaque datatype that represents a loaded shared object.
  *
@@ -15459,6 +15667,11 @@ struct SharedObject : SharedObjectUnsafe
   }
 
   /**
+   * Transfer ownership to a SharedObjectShared
+   */
+  SharedObjectShared share();
+
+  /**
    * Dynamically load a shared object.
    *
    * @param sofile a system-dependent name of the object file.
@@ -15475,6 +15688,105 @@ struct SharedObject : SharedObjectUnsafe
   static SharedObject LoadObject(StringParam sofile)
   {
     return SharedObject(std::move(sofile));
+  }
+};
+
+/**
+ * Handle to a shared own sharedObject
+ *
+ * @cat resource
+ *
+ * @sa SharedObject
+ * @sa SharedObjectRef
+ */
+class SharedObjectShared : SharedObjectRef
+{
+  std::shared_ptr<SharedObject> m_shared;
+
+  SharedObjectShared(std::shared_ptr<SharedObject> resource)
+    : SharedObjectRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  SharedObjectShared(SharedObject resource = {})
+    : SharedObjectShared(resource
+                           ? std::make_shared<SharedObject>(std::move(resource))
+                           : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(SharedObject resource = {})
+  {
+    SharedObjectRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  SharedObject release()
+  {
+    SharedObject r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class SharedObjectWeak;
+};
+
+inline SharedObjectShared SharedObject::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own sharedObject
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectShared
+ */
+class SharedObjectWeak
+{
+  std::weak_ptr<SharedObject> m_shared;
+
+public:
+  /**
+   * Constructs SharedObjectWeak from a SharedObjectShared.
+   */
+  SharedObjectWeak(SharedObjectShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid SharedObjectShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a SharedObjectShared, if still available.
+   */
+  SharedObjectShared lock() const
+  {
+    return SharedObjectShared(m_shared.lock());
   }
 };
 
@@ -16451,6 +16763,9 @@ struct PaletteRef;
 
 // Forward decl
 struct Palette;
+
+// Forward decl
+struct PaletteShared;
 
 #ifdef SDL3PP_DOC
 
@@ -18515,6 +18830,11 @@ struct Palette : PaletteUnsafe
   }
 
   /**
+   * Transfer ownership to a PaletteShared
+   */
+  PaletteShared share();
+
+  /**
    * Create a palette structure with the specified number of color entries.
    *
    * The palette entries are initialized to white.
@@ -18532,6 +18852,101 @@ struct Palette : PaletteUnsafe
    * @sa SurfaceRef.SetPalette
    */
   static Palette Create(int ncolors) { return Palette(ncolors); }
+};
+
+/**
+ * Handle to a shared own palette
+ *
+ * @cat resource
+ *
+ * @sa Palette
+ * @sa PaletteRef
+ */
+class PaletteShared : PaletteRef
+{
+  std::shared_ptr<Palette> m_shared;
+
+  PaletteShared(std::shared_ptr<Palette> resource)
+    : PaletteRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  PaletteShared(Palette resource = {})
+    : PaletteShared(resource ? std::make_shared<Palette>(std::move(resource))
+                             : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Palette resource = {})
+  {
+    PaletteRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Palette release()
+  {
+    Palette r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class PaletteWeak;
+};
+
+inline PaletteShared Palette::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own palette
+ *
+ * @cat resource
+ *
+ * @sa PaletteShared
+ */
+class PaletteWeak
+{
+  std::weak_ptr<Palette> m_shared;
+
+public:
+  /**
+   * Constructs PaletteWeak from a PaletteShared.
+   */
+  PaletteWeak(PaletteShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid PaletteShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a PaletteShared, if still available.
+   */
+  PaletteShared lock() const { return PaletteShared(m_shared.lock()); }
 };
 
 constexpr PaletteUnsafe::PaletteUnsafe(Palette&& other)
@@ -19274,6 +19689,9 @@ struct PropertiesLock;
 // Forward decl
 struct Properties;
 
+// Forward decl
+struct PropertiesShared;
+
 constexpr PropertyType PROPERTY_TYPE_INVALID =
   SDL_PROPERTY_TYPE_INVALID; ///< INVALID
 
@@ -19950,6 +20368,11 @@ struct Properties : PropertiesUnsafe
   }
 
   /**
+   * Transfer ownership to a PropertiesShared
+   */
+  PropertiesShared share();
+
+  /**
    * Create a group of properties.
    *
    * All properties are automatically destroyed when Quit() is called.
@@ -19964,6 +20387,101 @@ struct Properties : PropertiesUnsafe
    * @sa PropertiesRef.Destroy
    */
   static Properties Create() { return Properties(); }
+};
+
+/**
+ * Handle to a shared own properties
+ *
+ * @cat resource
+ *
+ * @sa Properties
+ * @sa PropertiesRef
+ */
+class PropertiesShared : PropertiesRef
+{
+  std::shared_ptr<Properties> m_shared;
+
+  PropertiesShared(std::shared_ptr<Properties> resource)
+    : PropertiesRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  PropertiesShared(Properties resource = {})
+    : PropertiesShared(
+        resource ? std::make_shared<Properties>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Properties resource = {})
+  {
+    PropertiesRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Properties release()
+  {
+    Properties r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class PropertiesWeak;
+};
+
+inline PropertiesShared Properties::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own properties
+ *
+ * @cat resource
+ *
+ * @sa PropertiesShared
+ */
+class PropertiesWeak
+{
+  std::weak_ptr<Properties> m_shared;
+
+public:
+  /**
+   * Constructs PropertiesWeak from a PropertiesShared.
+   */
+  PropertiesWeak(PropertiesShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid PropertiesShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a PropertiesShared, if still available.
+   */
+  PropertiesShared lock() const { return PropertiesShared(m_shared.lock()); }
 };
 
 /**
@@ -25014,6 +25532,9 @@ struct IOStreamRef;
 // Forward decl
 struct IOStream;
 
+// Forward decl
+struct IOStreamShared;
+
 /**
  * IOStreamRef status, set by a read or write operation.
  *
@@ -26638,6 +27159,11 @@ struct IOStream : IOStreamUnsafe
   }
 
   /**
+   * Transfer ownership to a IOStreamShared
+   */
+  IOStreamShared share();
+
+  /**
    * Use this function to create a new IOStreamRef structure for reading from
    * and/or writing to a named file.
    *
@@ -26872,6 +27398,101 @@ struct IOStream : IOStreamUnsafe
   {
     return IOStream(iface, userdata);
   }
+};
+
+/**
+ * Handle to a shared own iOStream
+ *
+ * @cat resource
+ *
+ * @sa IOStream
+ * @sa IOStreamRef
+ */
+class IOStreamShared : IOStreamRef
+{
+  std::shared_ptr<IOStream> m_shared;
+
+  IOStreamShared(std::shared_ptr<IOStream> resource)
+    : IOStreamRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  IOStreamShared(IOStream resource = {})
+    : IOStreamShared(resource ? std::make_shared<IOStream>(std::move(resource))
+                              : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(IOStream resource = {})
+  {
+    IOStreamRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  IOStream release()
+  {
+    IOStream r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class IOStreamWeak;
+};
+
+inline IOStreamShared IOStream::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own iOStream
+ *
+ * @cat resource
+ *
+ * @sa IOStreamShared
+ */
+class IOStreamWeak
+{
+  std::weak_ptr<IOStream> m_shared;
+
+public:
+  /**
+   * Constructs IOStreamWeak from a IOStreamShared.
+   */
+  IOStreamWeak(IOStreamShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid IOStreamShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a IOStreamShared, if still available.
+   */
+  IOStreamShared lock() const { return IOStreamShared(m_shared.lock()); }
 };
 
 constexpr IOStreamUnsafe::IOStreamUnsafe(IOStream&& other)
@@ -28111,6 +28732,9 @@ struct StorageRef;
 // Forward decl
 struct Storage;
 
+// Forward decl
+struct StorageShared;
+
 /**
  * Function interface for StorageRef.
  *
@@ -28735,6 +29359,11 @@ struct Storage : StorageUnsafe
   }
 
   /**
+   * Transfer ownership to a StorageShared
+   */
+  StorageShared share();
+
+  /**
    * Opens up a read-only container for the application's filesystem.
    *
    * @param override a path to override the backend's default title root.
@@ -28840,6 +29469,101 @@ struct Storage : StorageUnsafe
   }
 };
 
+/**
+ * Handle to a shared own storage
+ *
+ * @cat resource
+ *
+ * @sa Storage
+ * @sa StorageRef
+ */
+class StorageShared : StorageRef
+{
+  std::shared_ptr<Storage> m_shared;
+
+  StorageShared(std::shared_ptr<Storage> resource)
+    : StorageRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  StorageShared(Storage resource = {})
+    : StorageShared(resource ? std::make_shared<Storage>(std::move(resource))
+                             : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Storage resource = {})
+  {
+    StorageRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Storage release()
+  {
+    Storage r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class StorageWeak;
+};
+
+inline StorageShared Storage::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own storage
+ *
+ * @cat resource
+ *
+ * @sa StorageShared
+ */
+class StorageWeak
+{
+  std::weak_ptr<Storage> m_shared;
+
+public:
+  /**
+   * Constructs StorageWeak from a StorageShared.
+   */
+  StorageWeak(StorageShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid StorageShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a StorageShared, if still available.
+   */
+  StorageShared lock() const { return StorageShared(m_shared.lock()); }
+};
+
 constexpr StorageUnsafe::StorageUnsafe(Storage&& other)
   : StorageUnsafe(other.release())
 {
@@ -28939,6 +29663,9 @@ struct ThreadRef;
 
 // Forward decl
 struct Thread;
+
+// Forward decl
+struct ThreadShared;
 
 /**
  * The SDL thread priority.
@@ -29377,6 +30104,11 @@ struct Thread : ThreadUnsafe
   }
 
   /**
+   * Transfer ownership to a ThreadShared
+   */
+  ThreadShared share();
+
+  /**
    * Create a new thread with a default stack size.
    *
    * This is a convenience function, equivalent to calling
@@ -29478,6 +30210,101 @@ struct Thread : ThreadUnsafe
   {
     return Thread(props);
   }
+};
+
+/**
+ * Handle to a shared own thread
+ *
+ * @cat resource
+ *
+ * @sa Thread
+ * @sa ThreadRef
+ */
+class ThreadShared : ThreadRef
+{
+  std::shared_ptr<Thread> m_shared;
+
+  ThreadShared(std::shared_ptr<Thread> resource)
+    : ThreadRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  ThreadShared(Thread resource = {})
+    : ThreadShared(resource ? std::make_shared<Thread>(std::move(resource))
+                            : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Thread resource = {})
+  {
+    ThreadRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Thread release()
+  {
+    Thread r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class ThreadWeak;
+};
+
+inline ThreadShared Thread::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own thread
+ *
+ * @cat resource
+ *
+ * @sa ThreadShared
+ */
+class ThreadWeak
+{
+  std::weak_ptr<Thread> m_shared;
+
+public:
+  /**
+   * Constructs ThreadWeak from a ThreadShared.
+   */
+  ThreadWeak(ThreadShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid ThreadShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a ThreadShared, if still available.
+   */
+  ThreadShared lock() const { return ThreadShared(m_shared.lock()); }
 };
 
 constexpr ThreadUnsafe::ThreadUnsafe(Thread&& other)
@@ -29705,10 +30532,16 @@ struct AudioDeviceRef;
 struct AudioDevice;
 
 // Forward decl
+struct AudioDeviceShared;
+
+// Forward decl
 struct AudioStreamRef;
 
 // Forward decl
 struct AudioStream;
+
+// Forward decl
+struct AudioStreamShared;
 
 // Forward decl
 struct AudioStreamLock;
@@ -30731,6 +31564,11 @@ struct AudioDevice : AudioDeviceUnsafe
   }
 
   /**
+   * Transfer ownership to a AudioDeviceShared
+   */
+  AudioDeviceShared share();
+
+  /**
    * Open a specific audio device.
    *
    * You can open both playback and recording devices through this function.
@@ -30809,6 +31647,101 @@ struct AudioDevice : AudioDeviceUnsafe
   {
     return AudioDevice(devid, std::move(spec));
   }
+};
+
+/**
+ * Handle to a shared own audioDevice
+ *
+ * @cat resource
+ *
+ * @sa AudioDevice
+ * @sa AudioDeviceRef
+ */
+class AudioDeviceShared : public AudioDeviceRef
+{
+  std::shared_ptr<AudioDevice> m_shared;
+
+  AudioDeviceShared(std::shared_ptr<AudioDevice> resource)
+    : AudioDeviceRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  AudioDeviceShared(AudioDevice resource = {})
+    : AudioDeviceShared(
+        resource ? std::make_shared<AudioDevice>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(AudioDevice resource = {})
+  {
+    AudioDeviceRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Releases content, if unique()
+   */
+  AudioDevice release()
+  {
+    AudioDevice r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class AudioDeviceWeak;
+};
+
+inline AudioDeviceShared AudioDevice::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own audioDevice
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceShared
+ */
+class AudioDeviceWeak
+{
+  std::weak_ptr<AudioDevice> m_shared;
+
+public:
+  /**
+   * Constructs AudioDeviceWeak from a AudioDeviceShared.
+   */
+  AudioDeviceWeak(AudioDeviceShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid AudioDeviceShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a AudioDeviceShared, if still available.
+   */
+  AudioDeviceShared lock() const { return AudioDeviceShared(m_shared.lock()); }
 };
 
 constexpr AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
@@ -32200,6 +33133,11 @@ struct AudioStream : AudioStreamUnsafe
     return *this;
   }
   /**
+   * Transfer ownership to a AudioStreamShared
+   */
+  AudioStreamShared share();
+
+  /**
    * Create a new audio stream.
    *
    * @param src_spec the format details of the input audio.
@@ -32351,6 +33289,101 @@ struct AudioStream : AudioStreamUnsafe
   {
     return AudioStream(devid, std::move(spec), std::move(callback));
   }
+};
+
+/**
+ * Handle to a shared own audioStream
+ *
+ * @cat resource
+ *
+ * @sa AudioStream
+ * @sa AudioStreamRef
+ */
+class AudioStreamShared : AudioStreamRef
+{
+  std::shared_ptr<AudioStream> m_shared;
+
+  AudioStreamShared(std::shared_ptr<AudioStream> resource)
+    : AudioStreamRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  AudioStreamShared(AudioStream resource = {})
+    : AudioStreamShared(
+        resource ? std::make_shared<AudioStream>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(AudioStream resource = {})
+  {
+    AudioStreamRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Releases content, if unique()
+   */
+  AudioStream release()
+  {
+    AudioStream r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class AudioStreamWeak;
+};
+
+inline AudioStreamShared AudioStream::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own audioStream
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamShared
+ */
+class AudioStreamWeak
+{
+  std::weak_ptr<AudioStream> m_shared;
+
+public:
+  /**
+   * Constructs AudioStreamWeak from a AudioStreamShared.
+   */
+  AudioStreamWeak(AudioStreamShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid AudioStreamShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a AudioStreamShared, if still available.
+   */
+  AudioStreamShared lock() const { return AudioStreamShared(m_shared.lock()); }
 };
 
 /**
@@ -32920,10 +33953,16 @@ struct MutexRef;
 struct Mutex;
 
 // Forward decl
+struct MutexShared;
+
+// Forward decl
 struct RWLockRef;
 
 // Forward decl
 struct RWLock;
+
+// Forward decl
+struct RWLockShared;
 
 // Forward decl
 struct SemaphoreRef;
@@ -32932,10 +33971,16 @@ struct SemaphoreRef;
 struct Semaphore;
 
 // Forward decl
+struct SemaphoreShared;
+
+// Forward decl
 struct ConditionRef;
 
 // Forward decl
 struct Condition;
+
+// Forward decl
+struct ConditionShared;
 
 /**
  * A means to serialize access to a resource between threads.
@@ -33164,6 +34209,11 @@ struct Mutex : MutexUnsafe
   }
 
   /**
+   * Transfer ownership to a MutexShared
+   */
+  MutexShared share();
+
+  /**
    * Create a new mutex.
    *
    * All newly-created mutexes begin in the _unlocked_ state.
@@ -33184,6 +34234,100 @@ struct Mutex : MutexUnsafe
    * @sa MutexRef.Unlock
    */
   static Mutex Create() { return Mutex(); }
+};
+
+/**
+ * Handle to a shared own mutex
+ *
+ * @cat resource
+ *
+ * @sa Mutex
+ * @sa MutexRef
+ */
+class MutexShared : MutexRef
+{
+  std::shared_ptr<Mutex> m_shared;
+
+  MutexShared(std::shared_ptr<Mutex> resource)
+    : MutexRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  MutexShared(Mutex resource = {})
+    : MutexShared(resource ? std::make_shared<Mutex>(std::move(resource))
+                           : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Mutex resource = {})
+  {
+    MutexRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Mutex release()
+  {
+    Mutex r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+  friend class MutexWeak;
+};
+
+inline MutexShared Mutex::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own mutex
+ *
+ * @cat resource
+ *
+ * @sa MutexShared
+ */
+class MutexWeak
+{
+  std::weak_ptr<Mutex> m_shared;
+
+public:
+  /**
+   * Constructs MutexWeak from a MutexShared.
+   */
+  MutexWeak(MutexShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid MutexShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a MutexShared, if still available.
+   */
+  MutexShared lock() const { return MutexShared(m_shared.lock()); }
 };
 
 constexpr MutexUnsafe::MutexUnsafe(Mutex&& other)
@@ -33527,6 +34671,11 @@ struct RWLock : RWLockUnsafe
   }
 
   /**
+   * Transfer ownership to a RWLockShared
+   */
+  RWLockShared share();
+
+  /**
    * Create a new read/write lock.
    *
    * A read/write lock is useful for situations where you have multiple threads
@@ -33567,6 +34716,101 @@ struct RWLock : RWLockUnsafe
    * @sa RWLockRef.Unlock
    */
   static RWLock Create() { return RWLock(); }
+};
+
+/**
+ * Handle to a shared own rWLock
+ *
+ * @cat resource
+ *
+ * @sa RWLock
+ * @sa RWLockRef
+ */
+class RWLockShared : RWLockRef
+{
+  std::shared_ptr<RWLock> m_shared;
+
+  RWLockShared(std::shared_ptr<RWLock> resource)
+    : RWLockRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  RWLockShared(RWLock resource = {})
+    : RWLockShared(resource ? std::make_shared<RWLock>(std::move(resource))
+                            : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(RWLock resource = {})
+  {
+    RWLockRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  RWLock release()
+  {
+    RWLock r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class RWLockWeak;
+};
+
+inline RWLockShared RWLock::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own rWLock
+ *
+ * @cat resource
+ *
+ * @sa RWLockShared
+ */
+class RWLockWeak
+{
+  std::weak_ptr<RWLock> m_shared;
+
+public:
+  /**
+   * Constructs RWLockWeak from a RWLockShared.
+   */
+  RWLockWeak(RWLockShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid RWLockShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a RWLockShared, if still available.
+   */
+  RWLockShared lock() const { return RWLockShared(m_shared.lock()); }
 };
 
 constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
@@ -33826,6 +35070,11 @@ struct Semaphore : SemaphoreUnsafe
   }
 
   /**
+   * Transfer ownership to a SemaphoreShared
+   */
+  SemaphoreShared share();
+
+  /**
    * Create a semaphore.
    *
    * This function creates a new semaphore and initializes it with the value
@@ -33851,6 +35100,101 @@ struct Semaphore : SemaphoreUnsafe
   {
     return Semaphore(initial_value);
   }
+};
+
+/**
+ * Handle to a shared own semaphore
+ *
+ * @cat resource
+ *
+ * @sa Semaphore
+ * @sa SemaphoreRef
+ */
+class SemaphoreShared : SemaphoreRef
+{
+  std::shared_ptr<Semaphore> m_shared;
+
+  SemaphoreShared(std::shared_ptr<Semaphore> resource)
+    : SemaphoreRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  SemaphoreShared(Semaphore resource = {})
+    : SemaphoreShared(
+        resource ? std::make_shared<Semaphore>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Semaphore resource = {})
+  {
+    SemaphoreRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Semaphore release()
+  {
+    Semaphore r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class SemaphoreWeak;
+};
+
+inline SemaphoreShared Semaphore::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own semaphore
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreShared
+ */
+class SemaphoreWeak
+{
+  std::weak_ptr<Semaphore> m_shared;
+
+public:
+  /**
+   * Constructs SemaphoreWeak from a SemaphoreShared.
+   */
+  SemaphoreWeak(SemaphoreShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid SemaphoreShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a SemaphoreShared, if still available.
+   */
+  SemaphoreShared lock() const { return SemaphoreShared(m_shared.lock()); }
 };
 
 constexpr SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
@@ -34093,6 +35437,12 @@ struct Condition : ConditionUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Transfer ownership to a ConditionShared
+   */
+  ConditionShared share();
+
   /**
    * Create a condition variable.
    *
@@ -34108,6 +35458,101 @@ struct Condition : ConditionUnsafe
    * @sa ConditionRef.Destroy
    */
   static Condition Create() { return Condition(); }
+};
+
+/**
+ * Handle to a shared own condition
+ *
+ * @cat resource
+ *
+ * @sa Condition
+ * @sa ConditionRef
+ */
+class ConditionShared : ConditionRef
+{
+  std::shared_ptr<Condition> m_shared;
+
+  ConditionShared(std::shared_ptr<Condition> resource)
+    : ConditionRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  ConditionShared(Condition resource = {})
+    : ConditionShared(
+        resource ? std::make_shared<Condition>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Condition resource = {})
+  {
+    ConditionRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Condition release()
+  {
+    Condition r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class ConditionWeak;
+};
+
+inline ConditionShared Condition::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own condition
+ *
+ * @cat resource
+ *
+ * @sa ConditionShared
+ */
+class ConditionWeak
+{
+  std::weak_ptr<Condition> m_shared;
+
+public:
+  /**
+   * Constructs ConditionWeak from a ConditionShared.
+   */
+  ConditionWeak(ConditionShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid ConditionShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a ConditionShared, if still available.
+   */
+  ConditionShared lock() const { return ConditionShared(m_shared.lock()); }
 };
 
 constexpr ConditionUnsafe::ConditionUnsafe(Condition&& other)
@@ -34297,6 +35742,9 @@ struct ProcessRef;
 
 // Forward decl
 struct Process;
+
+// Forward decl
+struct ProcessShared;
 
 /**
  * Description of where standard I/O should be directed when creating a
@@ -34813,6 +36261,11 @@ struct Process : ProcessUnsafe
   }
 
   /**
+   * Transfer ownership to a ProcessShared
+   */
+  ProcessShared share();
+
+  /**
    * Create a new process.
    *
    * The path to the executable is supplied in args[0]. args[1..N] are
@@ -34924,6 +36377,101 @@ struct Process : ProcessUnsafe
   }
 };
 
+/**
+ * Handle to a shared own process
+ *
+ * @cat resource
+ *
+ * @sa Process
+ * @sa ProcessRef
+ */
+class ProcessShared : ProcessRef
+{
+  std::shared_ptr<Process> m_shared;
+
+  ProcessShared(std::shared_ptr<Process> resource)
+    : ProcessRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  ProcessShared(Process resource = {})
+    : ProcessShared(resource ? std::make_shared<Process>(std::move(resource))
+                             : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Process resource = {})
+  {
+    ProcessRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Process release()
+  {
+    Process r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class ProcessWeak;
+};
+
+inline ProcessShared Process::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own process
+ *
+ * @cat resource
+ *
+ * @sa ProcessShared
+ */
+class ProcessWeak
+{
+  std::weak_ptr<Process> m_shared;
+
+public:
+  /**
+   * Constructs ProcessWeak from a ProcessShared.
+   */
+  ProcessWeak(ProcessShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid ProcessShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a ProcessShared, if still available.
+   */
+  ProcessShared lock() const { return ProcessShared(m_shared.lock()); }
+};
+
 constexpr ProcessUnsafe::ProcessUnsafe(Process&& other)
   : ProcessUnsafe(other.release())
 {
@@ -34995,6 +36543,9 @@ struct SurfaceRef;
 
 // Forward decl
 struct Surface;
+
+// Forward decl
+struct SurfaceShared;
 
 /**
  * The flags on an SurfaceRef.
@@ -36941,6 +38492,11 @@ struct Surface : SurfaceUnsafe
   }
 
   /**
+   * Transfer ownership to a SurfaceShared
+   */
+  SurfaceShared share();
+
+  /**
    * Load an image from a filesystem path into a software surface.
    *
    * If available, this uses LoadSurface(StringParam), otherwise it uses
@@ -37028,6 +38584,101 @@ struct Surface : SurfaceUnsafe
   {
     return Surface(size, format, pixels, pitch);
   }
+};
+
+/**
+ * Handle to a shared own surface
+ *
+ * @cat resource
+ *
+ * @sa Surface
+ * @sa SurfaceRef
+ */
+class SurfaceShared : SurfaceRef
+{
+  std::shared_ptr<Surface> m_shared;
+
+  SurfaceShared(std::shared_ptr<Surface> resource)
+    : SurfaceRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  SurfaceShared(Surface resource = {})
+    : SurfaceShared(resource ? std::make_shared<Surface>(std::move(resource))
+                             : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Surface resource = {})
+  {
+    SurfaceRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Surface release()
+  {
+    Surface r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class SurfaceWeak;
+};
+
+inline SurfaceShared Surface::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own surface
+ *
+ * @cat resource
+ *
+ * @sa SurfaceShared
+ */
+class SurfaceWeak
+{
+  std::weak_ptr<Surface> m_shared;
+
+public:
+  /**
+   * Constructs SurfaceWeak from a SurfaceShared.
+   */
+  SurfaceWeak(SurfaceShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid SurfaceShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a SurfaceShared, if still available.
+   */
+  SurfaceShared lock() const { return SurfaceShared(m_shared.lock()); }
 };
 
 /**
@@ -37406,10 +39057,16 @@ struct TrayRef;
 struct Tray;
 
 // Forward decl
+struct TrayShared;
+
+// Forward decl
 struct TrayEntryRef;
 
 // Forward decl
 struct TrayEntry;
+
+// Forward decl
+struct TrayEntryShared;
 
 /**
  * A trayEntry result that will be owned only if assigned to a TrayEntry.
@@ -37692,6 +39349,11 @@ struct Tray : TrayUnsafe
   }
 
   /**
+   * Transfer ownership to a TrayShared
+   */
+  TrayShared share();
+
+  /**
    * Create an icon to be placed in the operating system's tray, or equivalent.
    *
    * Many platforms advise not using a system tray unless persistence is a
@@ -37718,6 +39380,101 @@ struct Tray : TrayUnsafe
   {
     return Tray(icon, std::move(tooltip));
   }
+};
+
+/**
+ * Handle to a shared own tray
+ *
+ * @cat resource
+ *
+ * @sa Tray
+ * @sa TrayRef
+ */
+class TrayShared : TrayRef
+{
+  std::shared_ptr<Tray> m_shared;
+
+  TrayShared(std::shared_ptr<Tray> resource)
+    : TrayRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TrayShared(Tray resource = {})
+    : TrayShared(resource ? std::make_shared<Tray>(std::move(resource))
+                          : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Tray resource = {})
+  {
+    TrayRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Tray release()
+  {
+    Tray r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TrayWeak;
+};
+
+inline TrayShared Tray::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own tray
+ *
+ * @cat resource
+ *
+ * @sa TrayShared
+ */
+class TrayWeak
+{
+  std::weak_ptr<Tray> m_shared;
+
+public:
+  /**
+   * Constructs TrayWeak from a TrayShared.
+   */
+  TrayWeak(TrayShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TrayShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TrayShared, if still available.
+   */
+  TrayShared lock() const { return TrayShared(m_shared.lock()); }
 };
 
 /**
@@ -38258,6 +40015,105 @@ struct TrayEntry : TrayEntryUnsafe
     reset(other.release());
     return *this;
   }
+  /**
+   * Transfer ownership to a TrayEntryShared
+   */
+  TrayEntryShared share();
+};
+
+/**
+ * Handle to a shared own trayEntry
+ *
+ * @cat resource
+ *
+ * @sa TrayEntry
+ * @sa TrayEntryRef
+ */
+class TrayEntryShared : TrayEntryRef
+{
+  std::shared_ptr<TrayEntry> m_shared;
+
+  TrayEntryShared(std::shared_ptr<TrayEntry> resource)
+    : TrayEntryRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TrayEntryShared(TrayEntry resource = {})
+    : TrayEntryShared(
+        resource ? std::make_shared<TrayEntry>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(TrayEntry resource = {})
+  {
+    TrayEntryRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  TrayEntry release()
+  {
+    TrayEntry r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TrayEntryWeak;
+};
+
+inline TrayEntryShared TrayEntry::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own trayEntry
+ *
+ * @cat resource
+ *
+ * @sa TrayEntryShared
+ */
+class TrayEntryWeak
+{
+  std::weak_ptr<TrayEntry> m_shared;
+
+public:
+  /**
+   * Constructs TrayEntryWeak from a TrayEntryShared.
+   */
+  TrayEntryWeak(TrayEntryShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TrayEntryShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TrayEntryShared, if still available.
+   */
+  TrayEntryShared lock() const { return TrayEntryShared(m_shared.lock()); }
 };
 
 constexpr TrayEntryUnsafe::TrayEntryUnsafe(TrayEntry&& other)
@@ -38653,6 +40509,9 @@ using HitTest = SDL_HitTest;
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
+// Forward decl
+struct WindowShared;
+
 /// @}
 
 // Forward decl
@@ -38660,6 +40519,9 @@ struct GLContextRef;
 
 // Forward decl
 struct GLContext;
+
+// Forward decl
+struct GLContextShared;
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -41239,6 +43101,11 @@ struct Window : WindowUnsafe
   }
 
   /**
+   * Transfer ownership to a WindowShared
+   */
+  WindowShared share();
+
+  /**
    * Create a window with the specified dimensions and flags.
    *
    * The window size is a request and may be different than expected based on
@@ -41529,6 +43396,100 @@ struct Window : WindowUnsafe
   }
 };
 
+/**
+ * Handle to a shared own window
+ *
+ * @cat resource
+ *
+ * @sa Window
+ * @sa WindowRef
+ */
+class WindowShared : WindowRef
+{
+  std::shared_ptr<Window> m_shared;
+
+  WindowShared(std::shared_ptr<Window> resource)
+    : WindowRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  WindowShared(Window resource = {})
+    : WindowShared(resource ? std::make_shared<Window>(std::move(resource))
+                            : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Window resource = {})
+  {
+    WindowRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Window release()
+  {
+    Window r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+  friend class WindowWeak;
+};
+
+inline WindowShared Window::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own window
+ *
+ * @cat resource
+ *
+ * @sa WindowShared
+ */
+class WindowWeak
+{
+  std::weak_ptr<Window> m_shared;
+
+public:
+  /**
+   * Constructs WindowWeak from a WindowShared.
+   */
+  WindowWeak(WindowShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid WindowShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a WindowShared, if still available.
+   */
+  WindowShared lock() const { return WindowShared(m_shared.lock()); }
+};
+
 constexpr WindowUnsafe::WindowUnsafe(Window&& other)
   : WindowUnsafe(other.release())
 {
@@ -41805,6 +43766,11 @@ struct GLContext : GLContextUnsafe
   }
 
   /**
+   * Transfer ownership to a GLContextShared
+   */
+  GLContextShared share();
+
+  /**
    * Create an OpenGL context for an OpenGL window, and make it current.
    *
    * Windows users new to OpenGL should note that, for historical reasons, GL
@@ -41827,6 +43793,101 @@ struct GLContext : GLContextUnsafe
    * @sa GLContextRef.MakeCurrent
    */
   static GLContext Create(WindowRef window) { return GLContext(window); }
+};
+
+/**
+ * Handle to a shared own gLContext
+ *
+ * @cat resource
+ *
+ * @sa GLContext
+ * @sa GLContextRef
+ */
+class GLContextShared : GLContextRef
+{
+  std::shared_ptr<GLContext> m_shared;
+
+  GLContextShared(std::shared_ptr<GLContext> resource)
+    : GLContextRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  GLContextShared(GLContext resource = {})
+    : GLContextShared(
+        resource ? std::make_shared<GLContext>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(GLContext resource = {})
+  {
+    GLContextRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  GLContext release()
+  {
+    GLContext r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class GLContextWeak;
+};
+
+inline GLContextShared GLContext::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own gLContext
+ *
+ * @cat resource
+ *
+ * @sa GLContextShared
+ */
+class GLContextWeak
+{
+  std::weak_ptr<GLContext> m_shared;
+
+public:
+  /**
+   * Constructs GLContextWeak from a GLContextShared.
+   */
+  GLContextWeak(GLContextShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid GLContextShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a GLContextShared, if still available.
+   */
+  GLContextShared lock() const { return GLContextShared(m_shared.lock()); }
 };
 
 constexpr GLContextUnsafe::GLContextUnsafe(GLContext&& other)
@@ -46660,6 +48721,9 @@ struct CursorRef;
 // Forward decl
 struct Cursor;
 
+// Forward decl
+struct CursorShared;
+
 /**
  * Cursor types for CursorRef.CursorRef().
  *
@@ -47001,6 +49065,11 @@ struct Cursor : CursorUnsafe
   }
 
   /**
+   * Transfer ownership to a CursorShared
+   */
+  CursorShared share();
+
+  /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
    *
    * `mask` has to be in MSB (Most Significant Bit) format.
@@ -47101,6 +49170,101 @@ struct Cursor : CursorUnsafe
    * @sa CursorRef.Destroy
    */
   static Cursor CreateSystem(SystemCursor id) { return Cursor(id); }
+};
+
+/**
+ * Handle to a shared own cursor
+ *
+ * @cat resource
+ *
+ * @sa Cursor
+ * @sa CursorRef
+ */
+class CursorShared : CursorRef
+{
+  std::shared_ptr<Cursor> m_shared;
+
+  CursorShared(std::shared_ptr<Cursor> resource)
+    : CursorRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  CursorShared(Cursor resource = {})
+    : CursorShared(resource ? std::make_shared<Cursor>(std::move(resource))
+                            : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Cursor resource = {})
+  {
+    CursorRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Cursor release()
+  {
+    Cursor r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class CursorWeak;
+};
+
+inline CursorShared Cursor::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own cursor
+ *
+ * @cat resource
+ *
+ * @sa CursorShared
+ */
+class CursorWeak
+{
+  std::weak_ptr<Cursor> m_shared;
+
+public:
+  /**
+   * Constructs CursorWeak from a CursorShared.
+   */
+  CursorWeak(CursorShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid CursorShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a CursorShared, if still available.
+   */
+  CursorShared lock() const { return CursorShared(m_shared.lock()); }
 };
 
 constexpr CursorUnsafe::CursorUnsafe(Cursor&& other)
@@ -47650,10 +49814,16 @@ struct RendererRef;
 struct Renderer;
 
 // Forward decl
+struct RendererShared;
+
+// Forward decl
 struct TextureRef;
 
 // Forward decl
 struct Texture;
+
+// Forward decl
+struct TextureShared;
 
 #ifdef SDL3PP_DOC
 
@@ -49582,6 +51752,11 @@ struct Renderer : RendererUnsafe
   }
 
   /**
+   * Transfer ownership to a RendererShared
+   */
+  RendererShared share();
+
+  /**
    * Create a 2D rendering context for a window.
    *
    * If you want a specific renderer, you can specify its name here. A list of
@@ -49699,6 +51874,101 @@ struct Renderer : RendererUnsafe
   {
     return Renderer(surface);
   }
+};
+
+/**
+ * Handle to a shared own renderer
+ *
+ * @cat resource
+ *
+ * @sa Renderer
+ * @sa RendererRef
+ */
+class RendererShared : RendererRef
+{
+  std::shared_ptr<Renderer> m_shared;
+
+  RendererShared(std::shared_ptr<Renderer> resource)
+    : RendererRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  RendererShared(Renderer resource = {})
+    : RendererShared(resource ? std::make_shared<Renderer>(std::move(resource))
+                              : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Renderer resource = {})
+  {
+    RendererRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Renderer release()
+  {
+    Renderer r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class RendererWeak;
+};
+
+inline RendererShared Renderer::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own renderer
+ *
+ * @cat resource
+ *
+ * @sa RendererShared
+ */
+class RendererWeak
+{
+  std::weak_ptr<Renderer> m_shared;
+
+public:
+  /**
+   * Constructs RendererWeak from a RendererShared.
+   */
+  RendererWeak(RendererShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid RendererShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a RendererShared, if still available.
+   */
+  RendererShared lock() const { return RendererShared(m_shared.lock()); }
 };
 
 constexpr RendererUnsafe::RendererUnsafe(Renderer&& other)
@@ -50715,6 +52985,11 @@ struct Texture : TextureUnsafe
   }
 
   /**
+   * Transfer ownership to a TextureShared
+   */
+  TextureShared share();
+
+  /**
    * Load an image from a filesystem path into a software surface.
    *
    * If available, this uses LoadSurface(StringParam), otherwise it uses
@@ -50923,6 +53198,101 @@ struct Texture : TextureUnsafe
   {
     return Texture(renderer, props);
   }
+};
+
+/**
+ * Handle to a shared own texture
+ *
+ * @cat resource
+ *
+ * @sa Texture
+ * @sa TextureRef
+ */
+class TextureShared : TextureRef
+{
+  std::shared_ptr<Texture> m_shared;
+
+  TextureShared(std::shared_ptr<Texture> resource)
+    : TextureRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TextureShared(Texture resource = {})
+    : TextureShared(resource ? std::make_shared<Texture>(std::move(resource))
+                             : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Texture resource = {})
+  {
+    TextureRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Texture release()
+  {
+    Texture r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TextureWeak;
+};
+
+inline TextureShared Texture::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own texture
+ *
+ * @cat resource
+ *
+ * @sa TextureShared
+ */
+class TextureWeak
+{
+  std::weak_ptr<Texture> m_shared;
+
+public:
+  /**
+   * Constructs TextureWeak from a TextureShared.
+   */
+  TextureWeak(TextureShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TextureShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TextureShared, if still available.
+   */
+  TextureShared lock() const { return TextureShared(m_shared.lock()); }
 };
 
 /**
@@ -52670,6 +55040,9 @@ struct AnimationRef;
 
 // Forward decl
 struct Animation;
+
+// Forward decl
+struct AnimationShared;
 
 #ifdef SDL3PP_DOC
 
@@ -54798,6 +57171,11 @@ struct Animation : AnimationUnsafe
   }
 
   /**
+   * Transfer ownership to a AnimationShared
+   */
+  AnimationShared share();
+
+  /**
    * Load an animation from a file.
    *
    * When done with the returned animation, the app should dispose of it with a
@@ -54861,6 +57239,101 @@ struct Animation : AnimationUnsafe
   {
     return Animation(src, std::move(type));
   }
+};
+
+/**
+ * Handle to a shared own animation
+ *
+ * @cat resource
+ *
+ * @sa Animation
+ * @sa AnimationRef
+ */
+class AnimationShared : AnimationRef
+{
+  std::shared_ptr<Animation> m_shared;
+
+  AnimationShared(std::shared_ptr<Animation> resource)
+    : AnimationRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  AnimationShared(Animation resource = {})
+    : AnimationShared(
+        resource ? std::make_shared<Animation>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Animation resource = {})
+  {
+    AnimationRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Animation release()
+  {
+    Animation r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class AnimationWeak;
+};
+
+inline AnimationShared Animation::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own animation
+ *
+ * @cat resource
+ *
+ * @sa AnimationShared
+ */
+class AnimationWeak
+{
+  std::weak_ptr<Animation> m_shared;
+
+public:
+  /**
+   * Constructs AnimationWeak from a AnimationShared.
+   */
+  AnimationWeak(AnimationShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid AnimationShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a AnimationShared, if still available.
+   */
+  AnimationShared lock() const { return AnimationShared(m_shared.lock()); }
 };
 
 constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
@@ -55002,16 +57475,25 @@ struct FontRef;
 struct Font;
 
 // Forward decl
+struct FontShared;
+
+// Forward decl
 struct TextEngineRef;
 
 // Forward decl
 struct TextEngine;
 
 // Forward decl
+struct TextEngineShared;
+
+// Forward decl
 struct TextRef;
 
 // Forward decl
 struct Text;
+
+// Forward decl
+struct TextShared;
 
 /**
  * @name Font Style Flags
@@ -56972,6 +59454,11 @@ struct Font : FontUnsafe
   }
 
   /**
+   * Transfer ownership to a FontShared
+   */
+  FontShared share();
+
+  /**
    * Create a font from a file, using a specified point size.
    *
    * Some .fon fonts will have several sizes embedded in the file, so the point
@@ -57065,6 +59552,101 @@ struct Font : FontUnsafe
    * @sa FontRef.Close
    */
   static Font OpenWithProperties(PropertiesRef props) { return Font(props); }
+};
+
+/**
+ * Handle to a shared own font
+ *
+ * @cat resource
+ *
+ * @sa Font
+ * @sa FontRef
+ */
+class FontShared : FontRef
+{
+  std::shared_ptr<Font> m_shared;
+
+  FontShared(std::shared_ptr<Font> resource)
+    : FontRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  FontShared(Font resource = {})
+    : FontShared(resource ? std::make_shared<Font>(std::move(resource))
+                          : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Font resource = {})
+  {
+    FontRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Font release()
+  {
+    Font r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class FontWeak;
+};
+
+inline FontShared Font::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own font
+ *
+ * @cat resource
+ *
+ * @sa FontShared
+ */
+class FontWeak
+{
+  std::weak_ptr<Font> m_shared;
+
+public:
+  /**
+   * Constructs FontWeak from a FontShared.
+   */
+  FontWeak(FontShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid FontShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a FontShared, if still available.
+   */
+  FontShared lock() const { return FontShared(m_shared.lock()); }
 };
 
 constexpr FontUnsafe::FontUnsafe(Font&& other)
@@ -57274,6 +59856,105 @@ struct TextEngine : TextEngineUnsafe
     other.m_destroy = nullptr;
     return *this;
   }
+  /**
+   * Transfer ownership to a TextEngineShared
+   */
+  TextEngineShared share();
+};
+
+/**
+ * Handle to a shared own textEngine
+ *
+ * @cat resource
+ *
+ * @sa TextEngine
+ * @sa TextEngineRef
+ */
+class TextEngineShared : TextEngineRef
+{
+  std::shared_ptr<TextEngine> m_shared;
+
+  TextEngineShared(std::shared_ptr<TextEngine> resource)
+    : TextEngineRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TextEngineShared(TextEngine resource = {})
+    : TextEngineShared(
+        resource ? std::make_shared<TextEngine>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(TextEngine resource = {})
+  {
+    TextEngineRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  TextEngine release()
+  {
+    TextEngine r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TextEngineWeak;
+};
+
+inline TextEngineShared TextEngine::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own textEngine
+ *
+ * @cat resource
+ *
+ * @sa TextEngineShared
+ */
+class TextEngineWeak
+{
+  std::weak_ptr<TextEngine> m_shared;
+
+public:
+  /**
+   * Constructs TextEngineWeak from a TextEngineShared.
+   */
+  TextEngineWeak(TextEngineShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TextEngineShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TextEngineShared, if still available.
+   */
+  TextEngineShared lock() const { return TextEngineShared(m_shared.lock()); }
 };
 
 /**
@@ -58507,6 +61188,11 @@ struct Text : TextUnsafe
   }
 
   /**
+   * Transfer ownership to a TextShared
+   */
+  TextShared share();
+
+  /**
    * Create a text object from UTF-8 text and a text engine.
    *
    * @param engine the text engine to use when creating the text object, may be
@@ -58527,6 +61213,101 @@ struct Text : TextUnsafe
   {
     return Text(engine, font, text);
   }
+};
+
+/**
+ * Handle to a shared own text
+ *
+ * @cat resource
+ *
+ * @sa Text
+ * @sa TextRef
+ */
+class TextShared : TextRef
+{
+  std::shared_ptr<Text> m_shared;
+
+  TextShared(std::shared_ptr<Text> resource)
+    : TextRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TextShared(Text resource = {})
+    : TextShared(resource ? std::make_shared<Text>(std::move(resource))
+                          : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Text resource = {})
+  {
+    TextRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Text release()
+  {
+    Text r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TextWeak;
+};
+
+inline TextShared Text::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own text
+ *
+ * @cat resource
+ *
+ * @sa TextShared
+ */
+class TextWeak
+{
+  std::weak_ptr<Text> m_shared;
+
+public:
+  /**
+   * Constructs TextWeak from a TextShared.
+   */
+  TextWeak(TextShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TextShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TextShared, if still available.
+   */
+  TextShared lock() const { return TextShared(m_shared.lock()); }
 };
 
 /**

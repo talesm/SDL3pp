@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Scancode.html" title="The SDL keyboard scancode representation." alt="" coords="5,5,123,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,23,160,63"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1RendererRef.html" title="A structure representing rendering state." alt="" coords="208,31,344,56"/>
+<area shape="poly" id="edge65_Node000000_Node000001" title=" " alt="" coords="174,41,207,41,207,46,174,46"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1RendererShared.html" title="Handle to a shared own renderer." alt="" coords="393,5,551,31"/>
+<area shape="poly" id="edge66_Node000001_Node000002" title=" " alt="" coords="357,30,392,26,393,31,358,35"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1RendererUnsafe.html" title="Unsafe Handle to renderer." alt="" coords="392,55,552,80"/>
+<area shape="poly" id="edge67_Node000001_Node000003" title=" " alt="" coords="358,51,392,55,391,60,358,56"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Renderer.html" title="Handle to an owned renderer." alt="" coords="600,55,715,80"/>
+<area shape="poly" id="edge68_Node000003_Node000004" title=" " alt="" coords="566,65,600,65,600,70,566,70"/>
 </map>

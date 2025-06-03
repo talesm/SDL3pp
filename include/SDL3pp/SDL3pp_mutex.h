@@ -35,10 +35,16 @@ struct MutexRef;
 struct Mutex;
 
 // Forward decl
+struct MutexShared;
+
+// Forward decl
 struct RWLockRef;
 
 // Forward decl
 struct RWLock;
+
+// Forward decl
+struct RWLockShared;
 
 // Forward decl
 struct SemaphoreRef;
@@ -47,10 +53,16 @@ struct SemaphoreRef;
 struct Semaphore;
 
 // Forward decl
+struct SemaphoreShared;
+
+// Forward decl
 struct ConditionRef;
 
 // Forward decl
 struct Condition;
+
+// Forward decl
+struct ConditionShared;
 
 /**
  * A means to serialize access to a resource between threads.
@@ -279,6 +291,11 @@ struct Mutex : MutexUnsafe
   }
 
   /**
+   * Transfer ownership to a MutexShared
+   */
+  MutexShared share();
+
+  /**
    * Create a new mutex.
    *
    * All newly-created mutexes begin in the _unlocked_ state.
@@ -299,6 +316,100 @@ struct Mutex : MutexUnsafe
    * @sa MutexRef.Unlock
    */
   static Mutex Create() { return Mutex(); }
+};
+
+/**
+ * Handle to a shared own mutex
+ *
+ * @cat resource
+ *
+ * @sa Mutex
+ * @sa MutexRef
+ */
+class MutexShared : MutexRef
+{
+  std::shared_ptr<Mutex> m_shared;
+
+  MutexShared(std::shared_ptr<Mutex> resource)
+    : MutexRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  MutexShared(Mutex resource = {})
+    : MutexShared(resource ? std::make_shared<Mutex>(std::move(resource))
+                           : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Mutex resource = {})
+  {
+    MutexRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Mutex release()
+  {
+    Mutex r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+  friend class MutexWeak;
+};
+
+inline MutexShared Mutex::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own mutex
+ *
+ * @cat resource
+ *
+ * @sa MutexShared
+ */
+class MutexWeak
+{
+  std::weak_ptr<Mutex> m_shared;
+
+public:
+  /**
+   * Constructs MutexWeak from a MutexShared.
+   */
+  MutexWeak(MutexShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid MutexShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a MutexShared, if still available.
+   */
+  MutexShared lock() const { return MutexShared(m_shared.lock()); }
 };
 
 constexpr MutexUnsafe::MutexUnsafe(Mutex&& other)
@@ -642,6 +753,11 @@ struct RWLock : RWLockUnsafe
   }
 
   /**
+   * Transfer ownership to a RWLockShared
+   */
+  RWLockShared share();
+
+  /**
    * Create a new read/write lock.
    *
    * A read/write lock is useful for situations where you have multiple threads
@@ -682,6 +798,101 @@ struct RWLock : RWLockUnsafe
    * @sa RWLockRef.Unlock
    */
   static RWLock Create() { return RWLock(); }
+};
+
+/**
+ * Handle to a shared own rWLock
+ *
+ * @cat resource
+ *
+ * @sa RWLock
+ * @sa RWLockRef
+ */
+class RWLockShared : RWLockRef
+{
+  std::shared_ptr<RWLock> m_shared;
+
+  RWLockShared(std::shared_ptr<RWLock> resource)
+    : RWLockRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  RWLockShared(RWLock resource = {})
+    : RWLockShared(resource ? std::make_shared<RWLock>(std::move(resource))
+                            : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(RWLock resource = {})
+  {
+    RWLockRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  RWLock release()
+  {
+    RWLock r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class RWLockWeak;
+};
+
+inline RWLockShared RWLock::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own rWLock
+ *
+ * @cat resource
+ *
+ * @sa RWLockShared
+ */
+class RWLockWeak
+{
+  std::weak_ptr<RWLock> m_shared;
+
+public:
+  /**
+   * Constructs RWLockWeak from a RWLockShared.
+   */
+  RWLockWeak(RWLockShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid RWLockShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a RWLockShared, if still available.
+   */
+  RWLockShared lock() const { return RWLockShared(m_shared.lock()); }
 };
 
 constexpr RWLockUnsafe::RWLockUnsafe(RWLock&& other)
@@ -941,6 +1152,11 @@ struct Semaphore : SemaphoreUnsafe
   }
 
   /**
+   * Transfer ownership to a SemaphoreShared
+   */
+  SemaphoreShared share();
+
+  /**
    * Create a semaphore.
    *
    * This function creates a new semaphore and initializes it with the value
@@ -966,6 +1182,101 @@ struct Semaphore : SemaphoreUnsafe
   {
     return Semaphore(initial_value);
   }
+};
+
+/**
+ * Handle to a shared own semaphore
+ *
+ * @cat resource
+ *
+ * @sa Semaphore
+ * @sa SemaphoreRef
+ */
+class SemaphoreShared : SemaphoreRef
+{
+  std::shared_ptr<Semaphore> m_shared;
+
+  SemaphoreShared(std::shared_ptr<Semaphore> resource)
+    : SemaphoreRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  SemaphoreShared(Semaphore resource = {})
+    : SemaphoreShared(
+        resource ? std::make_shared<Semaphore>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Semaphore resource = {})
+  {
+    SemaphoreRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Semaphore release()
+  {
+    Semaphore r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class SemaphoreWeak;
+};
+
+inline SemaphoreShared Semaphore::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own semaphore
+ *
+ * @cat resource
+ *
+ * @sa SemaphoreShared
+ */
+class SemaphoreWeak
+{
+  std::weak_ptr<Semaphore> m_shared;
+
+public:
+  /**
+   * Constructs SemaphoreWeak from a SemaphoreShared.
+   */
+  SemaphoreWeak(SemaphoreShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid SemaphoreShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a SemaphoreShared, if still available.
+   */
+  SemaphoreShared lock() const { return SemaphoreShared(m_shared.lock()); }
 };
 
 constexpr SemaphoreUnsafe::SemaphoreUnsafe(Semaphore&& other)
@@ -1208,6 +1519,12 @@ struct Condition : ConditionUnsafe
     reset(other.release());
     return *this;
   }
+
+  /**
+   * Transfer ownership to a ConditionShared
+   */
+  ConditionShared share();
+
   /**
    * Create a condition variable.
    *
@@ -1223,6 +1540,101 @@ struct Condition : ConditionUnsafe
    * @sa ConditionRef.Destroy
    */
   static Condition Create() { return Condition(); }
+};
+
+/**
+ * Handle to a shared own condition
+ *
+ * @cat resource
+ *
+ * @sa Condition
+ * @sa ConditionRef
+ */
+class ConditionShared : ConditionRef
+{
+  std::shared_ptr<Condition> m_shared;
+
+  ConditionShared(std::shared_ptr<Condition> resource)
+    : ConditionRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  ConditionShared(Condition resource = {})
+    : ConditionShared(
+        resource ? std::make_shared<Condition>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Condition resource = {})
+  {
+    ConditionRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Condition release()
+  {
+    Condition r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class ConditionWeak;
+};
+
+inline ConditionShared Condition::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own condition
+ *
+ * @cat resource
+ *
+ * @sa ConditionShared
+ */
+class ConditionWeak
+{
+  std::weak_ptr<Condition> m_shared;
+
+public:
+  /**
+   * Constructs ConditionWeak from a ConditionShared.
+   */
+  ConditionWeak(ConditionShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid ConditionShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a ConditionShared, if still available.
+   */
+  ConditionShared lock() const { return ConditionShared(m_shared.lock()); }
 };
 
 constexpr ConditionUnsafe::ConditionUnsafe(Condition&& other)

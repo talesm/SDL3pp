@@ -133,10 +133,16 @@ struct AudioDeviceRef;
 struct AudioDevice;
 
 // Forward decl
+struct AudioDeviceShared;
+
+// Forward decl
 struct AudioStreamRef;
 
 // Forward decl
 struct AudioStream;
+
+// Forward decl
+struct AudioStreamShared;
 
 // Forward decl
 struct AudioStreamLock;
@@ -1159,6 +1165,11 @@ struct AudioDevice : AudioDeviceUnsafe
   }
 
   /**
+   * Transfer ownership to a AudioDeviceShared
+   */
+  AudioDeviceShared share();
+
+  /**
    * Open a specific audio device.
    *
    * You can open both playback and recording devices through this function.
@@ -1237,6 +1248,101 @@ struct AudioDevice : AudioDeviceUnsafe
   {
     return AudioDevice(devid, std::move(spec));
   }
+};
+
+/**
+ * Handle to a shared own audioDevice
+ *
+ * @cat resource
+ *
+ * @sa AudioDevice
+ * @sa AudioDeviceRef
+ */
+class AudioDeviceShared : public AudioDeviceRef
+{
+  std::shared_ptr<AudioDevice> m_shared;
+
+  AudioDeviceShared(std::shared_ptr<AudioDevice> resource)
+    : AudioDeviceRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  AudioDeviceShared(AudioDevice resource = {})
+    : AudioDeviceShared(
+        resource ? std::make_shared<AudioDevice>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(AudioDevice resource = {})
+  {
+    AudioDeviceRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Releases content, if unique()
+   */
+  AudioDevice release()
+  {
+    AudioDevice r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class AudioDeviceWeak;
+};
+
+inline AudioDeviceShared AudioDevice::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own audioDevice
+ *
+ * @cat resource
+ *
+ * @sa AudioDeviceShared
+ */
+class AudioDeviceWeak
+{
+  std::weak_ptr<AudioDevice> m_shared;
+
+public:
+  /**
+   * Constructs AudioDeviceWeak from a AudioDeviceShared.
+   */
+  AudioDeviceWeak(AudioDeviceShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid AudioDeviceShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a AudioDeviceShared, if still available.
+   */
+  AudioDeviceShared lock() const { return AudioDeviceShared(m_shared.lock()); }
 };
 
 constexpr AudioDeviceUnsafe::AudioDeviceUnsafe(AudioDevice&& other)
@@ -2628,6 +2734,11 @@ struct AudioStream : AudioStreamUnsafe
     return *this;
   }
   /**
+   * Transfer ownership to a AudioStreamShared
+   */
+  AudioStreamShared share();
+
+  /**
    * Create a new audio stream.
    *
    * @param src_spec the format details of the input audio.
@@ -2779,6 +2890,101 @@ struct AudioStream : AudioStreamUnsafe
   {
     return AudioStream(devid, std::move(spec), std::move(callback));
   }
+};
+
+/**
+ * Handle to a shared own audioStream
+ *
+ * @cat resource
+ *
+ * @sa AudioStream
+ * @sa AudioStreamRef
+ */
+class AudioStreamShared : AudioStreamRef
+{
+  std::shared_ptr<AudioStream> m_shared;
+
+  AudioStreamShared(std::shared_ptr<AudioStream> resource)
+    : AudioStreamRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  AudioStreamShared(AudioStream resource = {})
+    : AudioStreamShared(
+        resource ? std::make_shared<AudioStream>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(AudioStream resource = {})
+  {
+    AudioStreamRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Releases content, if unique()
+   */
+  AudioStream release()
+  {
+    AudioStream r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class AudioStreamWeak;
+};
+
+inline AudioStreamShared AudioStream::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own audioStream
+ *
+ * @cat resource
+ *
+ * @sa AudioStreamShared
+ */
+class AudioStreamWeak
+{
+  std::weak_ptr<AudioStream> m_shared;
+
+public:
+  /**
+   * Constructs AudioStreamWeak from a AudioStreamShared.
+   */
+  AudioStreamWeak(AudioStreamShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid AudioStreamShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a AudioStreamShared, if still available.
+   */
+  AudioStreamShared lock() const { return AudioStreamShared(m_shared.lock()); }
 };
 
 /**

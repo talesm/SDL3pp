@@ -1,0 +1,7 @@
+<map id="SDL::AudioStreamShared" name="SDL::AudioStreamShared">
+<area shape="rect" id="Node000001" title="Handle to a shared own audioStream." alt="" coords="5,167,189,192"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream." alt="" coords="17,93,178,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,132,100,167,95,167,95,132"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1Resource.html" title=" " alt="" coords="20,5,175,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,59,100,93,95,93,95,59"/>
+</map>

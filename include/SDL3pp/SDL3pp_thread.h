@@ -101,6 +101,9 @@ struct ThreadRef;
 // Forward decl
 struct Thread;
 
+// Forward decl
+struct ThreadShared;
+
 /**
  * The SDL thread priority.
  *
@@ -538,6 +541,11 @@ struct Thread : ThreadUnsafe
   }
 
   /**
+   * Transfer ownership to a ThreadShared
+   */
+  ThreadShared share();
+
+  /**
    * Create a new thread with a default stack size.
    *
    * This is a convenience function, equivalent to calling
@@ -639,6 +647,101 @@ struct Thread : ThreadUnsafe
   {
     return Thread(props);
   }
+};
+
+/**
+ * Handle to a shared own thread
+ *
+ * @cat resource
+ *
+ * @sa Thread
+ * @sa ThreadRef
+ */
+class ThreadShared : ThreadRef
+{
+  std::shared_ptr<Thread> m_shared;
+
+  ThreadShared(std::shared_ptr<Thread> resource)
+    : ThreadRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  ThreadShared(Thread resource = {})
+    : ThreadShared(resource ? std::make_shared<Thread>(std::move(resource))
+                            : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Thread resource = {})
+  {
+    ThreadRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Thread release()
+  {
+    Thread r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class ThreadWeak;
+};
+
+inline ThreadShared Thread::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own thread
+ *
+ * @cat resource
+ *
+ * @sa ThreadShared
+ */
+class ThreadWeak
+{
+  std::weak_ptr<Thread> m_shared;
+
+public:
+  /**
+   * Constructs ThreadWeak from a ThreadShared.
+   */
+  ThreadWeak(ThreadShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid ThreadShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a ThreadShared, if still available.
+   */
+  ThreadShared lock() const { return ThreadShared(m_shared.lock()); }
 };
 
 constexpr ThreadUnsafe::ThreadUnsafe(Thread&& other)

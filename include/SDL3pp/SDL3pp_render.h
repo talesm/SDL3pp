@@ -53,10 +53,16 @@ struct RendererRef;
 struct Renderer;
 
 // Forward decl
+struct RendererShared;
+
+// Forward decl
 struct TextureRef;
 
 // Forward decl
 struct Texture;
+
+// Forward decl
+struct TextureShared;
 
 #ifdef SDL3PP_DOC
 
@@ -1985,6 +1991,11 @@ struct Renderer : RendererUnsafe
   }
 
   /**
+   * Transfer ownership to a RendererShared
+   */
+  RendererShared share();
+
+  /**
    * Create a 2D rendering context for a window.
    *
    * If you want a specific renderer, you can specify its name here. A list of
@@ -2102,6 +2113,101 @@ struct Renderer : RendererUnsafe
   {
     return Renderer(surface);
   }
+};
+
+/**
+ * Handle to a shared own renderer
+ *
+ * @cat resource
+ *
+ * @sa Renderer
+ * @sa RendererRef
+ */
+class RendererShared : RendererRef
+{
+  std::shared_ptr<Renderer> m_shared;
+
+  RendererShared(std::shared_ptr<Renderer> resource)
+    : RendererRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  RendererShared(Renderer resource = {})
+    : RendererShared(resource ? std::make_shared<Renderer>(std::move(resource))
+                              : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Renderer resource = {})
+  {
+    RendererRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Renderer release()
+  {
+    Renderer r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class RendererWeak;
+};
+
+inline RendererShared Renderer::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own renderer
+ *
+ * @cat resource
+ *
+ * @sa RendererShared
+ */
+class RendererWeak
+{
+  std::weak_ptr<Renderer> m_shared;
+
+public:
+  /**
+   * Constructs RendererWeak from a RendererShared.
+   */
+  RendererWeak(RendererShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid RendererShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a RendererShared, if still available.
+   */
+  RendererShared lock() const { return RendererShared(m_shared.lock()); }
 };
 
 constexpr RendererUnsafe::RendererUnsafe(Renderer&& other)
@@ -3118,6 +3224,11 @@ struct Texture : TextureUnsafe
   }
 
   /**
+   * Transfer ownership to a TextureShared
+   */
+  TextureShared share();
+
+  /**
    * Load an image from a filesystem path into a software surface.
    *
    * If available, this uses LoadSurface(StringParam), otherwise it uses
@@ -3326,6 +3437,101 @@ struct Texture : TextureUnsafe
   {
     return Texture(renderer, props);
   }
+};
+
+/**
+ * Handle to a shared own texture
+ *
+ * @cat resource
+ *
+ * @sa Texture
+ * @sa TextureRef
+ */
+class TextureShared : TextureRef
+{
+  std::shared_ptr<Texture> m_shared;
+
+  TextureShared(std::shared_ptr<Texture> resource)
+    : TextureRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  TextureShared(Texture resource = {})
+    : TextureShared(resource ? std::make_shared<Texture>(std::move(resource))
+                             : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Texture resource = {})
+  {
+    TextureRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Texture release()
+  {
+    Texture r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class TextureWeak;
+};
+
+inline TextureShared Texture::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own texture
+ *
+ * @cat resource
+ *
+ * @sa TextureShared
+ */
+class TextureWeak
+{
+  std::weak_ptr<Texture> m_shared;
+
+public:
+  /**
+   * Constructs TextureWeak from a TextureShared.
+   */
+  TextureWeak(TextureShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid TextureShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a TextureShared, if still available.
+   */
+  TextureShared lock() const { return TextureShared(m_shared.lock()); }
 };
 
 /**

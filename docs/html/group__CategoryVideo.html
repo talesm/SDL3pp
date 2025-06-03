@@ -96,6 +96,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Window.html">SDL::Window</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned window.  <a href="structSDL_1_1Window.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1WindowShared.html">SDL::WindowShared</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared own window.  <a href="classSDL_1_1WindowShared.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1WindowWeak.html">SDL::WindowWeak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared own window.  <a href="classSDL_1_1WindowWeak.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextRef.html">SDL::GLContextRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle to an OpenGL context.  <a href="structSDL_1_1GLContextRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,6 +110,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContext.html">SDL::GLContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned gLContext.  <a href="structSDL_1_1GLContext.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1GLContextShared.html">SDL::GLContextShared</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared own gLContext.  <a href="classSDL_1_1GLContextShared.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1GLContextWeak.html">SDL::GLContextWeak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared own gLContext.  <a href="classSDL_1_1GLContextWeak.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -257,10 +269,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga6a84664f815b581dab112cc87e75ed5a" id="r_ga6a84664f815b581dab112cc87e75ed5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga6a84664f815b581dab112cc87e75ed5a">SDL::GL_SwapWindow</a> (<a class="el" href="structSDL_1_1WindowRef.html">WindowRef</a> window)</td></tr>
 <tr class="memdesc:ga6a84664f815b581dab112cc87e75ed5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a window with OpenGL rendering.  <br /></td></tr>
 <tr class="separator:ga6a84664f815b581dab112cc87e75ed5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa9e8676a9485be38ebf97f8237ab89f1" id="r_gaa9e8676a9485be38ebf97f8237ab89f1"><td class="memItemLeft" align="right" valign="top"><a id="gaa9e8676a9485be38ebf97f8237ab89f1" name="gaa9e8676a9485be38ebf97f8237ab89f1"></a>
+<a class="el" href="classSDL_1_1WindowShared.html">WindowShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Window::share</b> ()</td></tr>
+<tr class="memdesc:gaa9e8676a9485be38ebf97f8237ab89f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership to a <a class="el" href="classSDL_1_1WindowShared.html" title="Handle to a shared own window.">WindowShared</a>. <br /></td></tr>
+<tr class="separator:gaa9e8676a9485be38ebf97f8237ab89f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf307f08bf87fb333eecce0c9c277bb24" id="r_gaf307f08bf87fb333eecce0c9c277bb24"><td class="memItemLeft" align="right" valign="top"><a id="gaf307f08bf87fb333eecce0c9c277bb24" name="gaf307f08bf87fb333eecce0c9c277bb24"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::WindowUnsafe::WindowUnsafe</b> (<a class="el" href="structSDL_1_1Window.html">Window</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:gaf307f08bf87fb333eecce0c9c277bb24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1WindowUnsafe.html" title="Unsafe Handle to window.">WindowUnsafe</a> from <a class="el" href="structSDL_1_1Window.html" title="Handle to an owned window.">Window</a>. <br /></td></tr>
 <tr class="separator:gaf307f08bf87fb333eecce0c9c277bb24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafb4f9d771ea22192c21d6a9aea2ea5e0" id="r_gafb4f9d771ea22192c21d6a9aea2ea5e0"><td class="memItemLeft" align="right" valign="top"><a id="gafb4f9d771ea22192c21d6a9aea2ea5e0" name="gafb4f9d771ea22192c21d6a9aea2ea5e0"></a>
+<a class="el" href="classSDL_1_1GLContextShared.html">GLContextShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::GLContext::share</b> ()</td></tr>
+<tr class="memdesc:gafb4f9d771ea22192c21d6a9aea2ea5e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership to a <a class="el" href="classSDL_1_1GLContextShared.html" title="Handle to a shared own gLContext.">GLContextShared</a>. <br /></td></tr>
+<tr class="separator:gafb4f9d771ea22192c21d6a9aea2ea5e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga598c1c0e36dc42fb952c786aea94395b" id="r_ga598c1c0e36dc42fb952c786aea94395b"><td class="memItemLeft" align="right" valign="top"><a id="ga598c1c0e36dc42fb952c786aea94395b" name="ga598c1c0e36dc42fb952c786aea94395b"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::GLContextUnsafe::GLContextUnsafe</b> (<a class="el" href="structSDL_1_1GLContext.html">GLContext</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:ga598c1c0e36dc42fb952c786aea94395b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1GLContextUnsafe.html" title="Unsafe Handle to gLContext.">GLContextUnsafe</a> from <a class="el" href="structSDL_1_1GLContext.html" title="Handle to an owned gLContext.">GLContext</a>. <br /></td></tr>

@@ -651,7 +651,8 @@ function expandResources(sourceEntries, file, context) {
     const uniqueName = resourceEntry.name || resourceEntry.uniqueName || transformName(sourceName, context);
     const refName = uniqueName + "Ref";
     const unsafeName = uniqueName + "Unsafe";
-    const optionalName = "Optional" + uniqueName;
+    const sharedName = uniqueName + "Shared";
+    const weakName = uniqueName + "Weak";
     const detachedName = "Detached" + uniqueName;
     const type = resourceEntry.type ?? sourceName;
     const sourceEntry =  /** @type {ApiEntry} */(sourceEntries[sourceName]);
@@ -661,7 +662,8 @@ function expandResources(sourceEntries, file, context) {
     const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
     referenceAliases.push(
       { name: refName, kind: "forward" },
-      { name: uniqueName, kind: "forward" }
+      { name: uniqueName, kind: "forward" },
+      { name: sharedName, kind: "forward" },
     );
     if (resourceEntry.aliasDetached) {
       referenceAliases.push({
@@ -977,9 +979,125 @@ function expandResources(sourceEntries, file, context) {
           }
         },
         hints: { "super": uniqueName }
-      }
+      },
+      {
+        name: sharedName,
+        kind: "struct",
+        type: refName,
+        doc: `Handle to a shared own ${title}\n\n@cat resource\n\n@sa ${uniqueName}\n@sa ${refName}`,
+        entries: {
+          "m_shared": {
+            kind: "var",
+            type: `std::shared_ptr<${uniqueName}>`,
+          },
+          [sharedName]: [{
+            kind: "function",
+            type: "",
+            parameters: [{
+              type: `std::shared_ptr<${uniqueName}>`,
+              name: "resource",
+            }],
+            hints: { init: [`${refName}(*resource)`, "m_shared(std::move(resource))"] }
+          }, {
+            kind: "function",
+            type: "",
+            doc: "Constructs from an existing resource",
+            parameters: [{
+              type: uniqueName,
+              name: "resource",
+              default: "{}",
+            }],
+            hints: { init: [`${sharedName}(resource? std::make_shared<${uniqueName}>(std::move(resource)) : nullptr)`] }
+          }],
+          "unique": {
+            kind: "function",
+            type: "bool",
+            doc: "returns if this is the last shared instance",
+            immutable: true,
+            constexpr: true,
+            parameters: [],
+            hints: { body: `return m_shared.unique();` }
+          },
+          "reset": {
+            kind: "function",
+            type: "void",
+            doc: "Resets content and optionally fill it with another value",
+            parameters: [{
+              type: uniqueName,
+              name: "resource",
+              default: "{}",
+            }],
+            hints: { body: `${refName}::release();\nm_shared.reset();\nif (resource) *this = std::move(resource);` }
+          },
+          "release": {
+            kind: "function",
+            type: uniqueName,
+            doc: "Reset, if unique(), then releases the content too",
+            parameters: [],
+            hints: { body: `${uniqueName} r;\nif (unique()) r = std::move(*m_shared);\nreset();\nreturn r;` }
+          }
+        },
+        hints: { private: true },
+      },
+      {
+        name: `${uniqueName}::share`,
+        kind: "function",
+        type: sharedName,
+        doc: `Transfer ownership to a ${sharedName}`,
+        parameters: [],
+        hints: { body: `return std::move(*this);` },
+      },
+      {
+        name: weakName,
+        kind: "struct",
+        doc: `Weak handle to a shared own ${title}\n\n@cat resource\n\n@sa ${sharedName}`,
+        entries: {
+          "m_shared": {
+            kind: "var",
+            type: `std::weak_ptr<${uniqueName}>`,
+          },
+          [weakName]: {
+            kind: "function",
+            type: "",
+            doc: `Constructs ${weakName} from a ${sharedName}.`,
+            parameters: [{
+              type: sharedName,
+              name: "resource",
+              default: "{}",
+            }],
+            hints: { init: [`m_shared(resource.m_shared)`] }
+          },
+          "expired": {
+            kind: "function",
+            type: "bool",
+            doc: "If true the target pointer is no longer viable.",
+            immutable: true,
+            constexpr: true,
+            parameters: [],
+            hints: { body: "return m_shared.expired();" }
+          },
+          "operator bool": {
+            kind: "function",
+            type: "",
+            doc: `Check if there is a valid ${sharedName} associated to it.`,
+            immutable: true,
+            constexpr: true,
+            parameters: [],
+            hints: { body: "return !expired();" }
+          },
+          "lock": {
+            kind: "function",
+            type: sharedName,
+            immutable: true,
+            doc: `Convert to a ${sharedName}, if still available.`,
+            parameters: [],
+            hints: { body: `return ${sharedName}(m_shared.lock());` }
+          },
+        },
+        hints: { private: true },
+      },
     ];
-    const derivedNames = new Set([uniqueName, unsafeName, optionalName]);
+    const derivedNames = new Set([uniqueName, unsafeName, sharedName]);
     if (resourceEntry.lock) {
       const lockEntry = resourceEntry.lock !== true ? resourceEntry.lock : {};
       lockEntry.kind = "struct";

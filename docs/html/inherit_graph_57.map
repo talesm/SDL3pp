@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1StringParam.html" title="Helpers to use C++ strings parameters." alt="" coords="5,5,140,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,23,160,63"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1StorageRef.html" title="An abstract interface for filesystem access." alt="" coords="208,31,335,56"/>
+<area shape="poly" id="edge81_Node000000_Node000001" title=" " alt="" coords="174,41,208,41,208,46,174,46"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1StorageShared.html" title="Handle to a shared own storage." alt="" coords="383,5,533,31"/>
+<area shape="poly" id="edge82_Node000001_Node000002" title=" " alt="" coords="348,30,382,26,383,31,349,36"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1StorageUnsafe.html" title="Unsafe Handle to storage." alt="" coords="383,55,533,80"/>
+<area shape="poly" id="edge83_Node000001_Node000003" title=" " alt="" coords="349,51,383,55,382,60,348,56"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Storage.html" title="Handle to an owned storage." alt="" coords="581,55,687,80"/>
+<area shape="poly" id="edge84_Node000003_Node000004" title=" " alt="" coords="547,65,581,65,581,70,547,70"/>
 </map>

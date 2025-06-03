@@ -1,9 +1,11 @@
 <map id="SDL::CursorRef" name="SDL::CursorRef">
-<area shape="rect" id="Node000001" title="The structure used to identify an SDL cursor." alt="" coords="23,93,142,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor." alt="" coords="11,167,154,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1Cursor.html" title="Handle to an owned cursor." alt="" coords="34,240,131,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
+<area shape="rect" id="Node000001" title="The structure used to identify an SDL cursor." alt="" coords="100,93,219,119"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1CursorShared.html" title="Handle to a shared own cursor." alt="" coords="5,167,148,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="137,130,92,168,88,164,134,126"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1CursorUnsafe.html" title="Unsafe Handle to cursor." alt="" coords="172,167,315,192"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="185,126,231,164,228,168,182,130"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="82,5,237,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,59,162,93,157,93,157,59"/>
+<area shape="rect" id="Node000005" href="$structSDL_1_1Cursor.html" title="Handle to an owned cursor." alt="" coords="195,240,292,265"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,206,246,240,241,240,241,206"/>
 </map>

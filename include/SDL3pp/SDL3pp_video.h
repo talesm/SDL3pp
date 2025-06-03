@@ -337,6 +337,9 @@ using HitTest = SDL_HitTest;
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
+// Forward decl
+struct WindowShared;
+
 /// @}
 
 // Forward decl
@@ -344,6 +347,9 @@ struct GLContextRef;
 
 // Forward decl
 struct GLContext;
+
+// Forward decl
+struct GLContextShared;
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -2923,6 +2929,11 @@ struct Window : WindowUnsafe
   }
 
   /**
+   * Transfer ownership to a WindowShared
+   */
+  WindowShared share();
+
+  /**
    * Create a window with the specified dimensions and flags.
    *
    * The window size is a request and may be different than expected based on
@@ -3213,6 +3224,100 @@ struct Window : WindowUnsafe
   }
 };
 
+/**
+ * Handle to a shared own window
+ *
+ * @cat resource
+ *
+ * @sa Window
+ * @sa WindowRef
+ */
+class WindowShared : WindowRef
+{
+  std::shared_ptr<Window> m_shared;
+
+  WindowShared(std::shared_ptr<Window> resource)
+    : WindowRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  WindowShared(Window resource = {})
+    : WindowShared(resource ? std::make_shared<Window>(std::move(resource))
+                            : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Window resource = {})
+  {
+    WindowRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Window release()
+  {
+    Window r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+  friend class WindowWeak;
+};
+
+inline WindowShared Window::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own window
+ *
+ * @cat resource
+ *
+ * @sa WindowShared
+ */
+class WindowWeak
+{
+  std::weak_ptr<Window> m_shared;
+
+public:
+  /**
+   * Constructs WindowWeak from a WindowShared.
+   */
+  WindowWeak(WindowShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid WindowShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a WindowShared, if still available.
+   */
+  WindowShared lock() const { return WindowShared(m_shared.lock()); }
+};
+
 constexpr WindowUnsafe::WindowUnsafe(Window&& other)
   : WindowUnsafe(other.release())
 {
@@ -3489,6 +3594,11 @@ struct GLContext : GLContextUnsafe
   }
 
   /**
+   * Transfer ownership to a GLContextShared
+   */
+  GLContextShared share();
+
+  /**
    * Create an OpenGL context for an OpenGL window, and make it current.
    *
    * Windows users new to OpenGL should note that, for historical reasons, GL
@@ -3511,6 +3621,101 @@ struct GLContext : GLContextUnsafe
    * @sa GLContextRef.MakeCurrent
    */
   static GLContext Create(WindowRef window) { return GLContext(window); }
+};
+
+/**
+ * Handle to a shared own gLContext
+ *
+ * @cat resource
+ *
+ * @sa GLContext
+ * @sa GLContextRef
+ */
+class GLContextShared : GLContextRef
+{
+  std::shared_ptr<GLContext> m_shared;
+
+  GLContextShared(std::shared_ptr<GLContext> resource)
+    : GLContextRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  GLContextShared(GLContext resource = {})
+    : GLContextShared(
+        resource ? std::make_shared<GLContext>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(GLContext resource = {})
+  {
+    GLContextRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  GLContext release()
+  {
+    GLContext r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class GLContextWeak;
+};
+
+inline GLContextShared GLContext::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own gLContext
+ *
+ * @cat resource
+ *
+ * @sa GLContextShared
+ */
+class GLContextWeak
+{
+  std::weak_ptr<GLContext> m_shared;
+
+public:
+  /**
+   * Constructs GLContextWeak from a GLContextShared.
+   */
+  GLContextWeak(GLContextShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid GLContextShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a GLContextShared, if still available.
+   */
+  GLContextShared lock() const { return GLContextShared(m_shared.lock()); }
 };
 
 constexpr GLContextUnsafe::GLContextUnsafe(GLContext&& other)

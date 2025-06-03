@@ -1,9 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1TextRef.html" title="Text created with TextRef.TextRef()" alt="" coords="208,13,312,38"/>
-<area shape="poly" id="edge89_Node000000_Node000001" title=" " alt="" coords="173,23,208,23,208,28,173,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1TextUnsafe.html" title="Unsafe Handle to text." alt="" coords="360,13,488,38"/>
-<area shape="poly" id="edge90_Node000001_Node000002" title=" " alt="" coords="326,23,359,23,359,28,326,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Text.html" title="Handle to an owned text." alt="" coords="536,13,619,38"/>
-<area shape="poly" id="edge91_Node000002_Node000003" title=" " alt="" coords="502,23,536,23,536,28,502,28"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,23,160,63"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1ProcessRef.html" title="An opaque handle representing a system process." alt="" coords="208,31,335,56"/>
+<area shape="poly" id="edge57_Node000000_Node000001" title=" " alt="" coords="174,41,208,41,208,46,174,46"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ProcessShared.html" title="Handle to a shared own process." alt="" coords="383,5,533,31"/>
+<area shape="poly" id="edge58_Node000001_Node000002" title=" " alt="" coords="348,30,382,26,383,31,349,36"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1ProcessUnsafe.html" title="Unsafe Handle to process." alt="" coords="383,55,533,80"/>
+<area shape="poly" id="edge59_Node000001_Node000003" title=" " alt="" coords="349,51,383,55,382,60,348,56"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Process.html" title="Handle to an owned process." alt="" coords="581,55,687,80"/>
+<area shape="poly" id="edge60_Node000003_Node000004" title=" " alt="" coords="547,65,581,65,581,70,547,70"/>
 </map>

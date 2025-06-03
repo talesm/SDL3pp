@@ -38,6 +38,9 @@ struct ProcessRef;
 // Forward decl
 struct Process;
 
+// Forward decl
+struct ProcessShared;
+
 /**
  * Description of where standard I/O should be directed when creating a
  * process.
@@ -553,6 +556,11 @@ struct Process : ProcessUnsafe
   }
 
   /**
+   * Transfer ownership to a ProcessShared
+   */
+  ProcessShared share();
+
+  /**
    * Create a new process.
    *
    * The path to the executable is supplied in args[0]. args[1..N] are
@@ -662,6 +670,101 @@ struct Process : ProcessUnsafe
   {
     return Process(props);
   }
+};
+
+/**
+ * Handle to a shared own process
+ *
+ * @cat resource
+ *
+ * @sa Process
+ * @sa ProcessRef
+ */
+class ProcessShared : ProcessRef
+{
+  std::shared_ptr<Process> m_shared;
+
+  ProcessShared(std::shared_ptr<Process> resource)
+    : ProcessRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  ProcessShared(Process resource = {})
+    : ProcessShared(resource ? std::make_shared<Process>(std::move(resource))
+                             : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Process resource = {})
+  {
+    ProcessRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Process release()
+  {
+    Process r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class ProcessWeak;
+};
+
+inline ProcessShared Process::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own process
+ *
+ * @cat resource
+ *
+ * @sa ProcessShared
+ */
+class ProcessWeak
+{
+  std::weak_ptr<Process> m_shared;
+
+public:
+  /**
+   * Constructs ProcessWeak from a ProcessShared.
+   */
+  ProcessWeak(ProcessShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid ProcessShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a ProcessShared, if still available.
+   */
+  ProcessShared lock() const { return ProcessShared(m_shared.lock()); }
 };
 
 constexpr ProcessUnsafe::ProcessUnsafe(Process&& other)

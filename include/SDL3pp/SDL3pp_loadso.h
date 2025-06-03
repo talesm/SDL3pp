@@ -47,6 +47,9 @@ struct SharedObjectRef;
 // Forward decl
 struct SharedObject;
 
+// Forward decl
+struct SharedObjectShared;
+
 /**
  * An opaque datatype that represents a loaded shared object.
  *
@@ -241,6 +244,11 @@ struct SharedObject : SharedObjectUnsafe
   }
 
   /**
+   * Transfer ownership to a SharedObjectShared
+   */
+  SharedObjectShared share();
+
+  /**
    * Dynamically load a shared object.
    *
    * @param sofile a system-dependent name of the object file.
@@ -257,6 +265,105 @@ struct SharedObject : SharedObjectUnsafe
   static SharedObject LoadObject(StringParam sofile)
   {
     return SharedObject(std::move(sofile));
+  }
+};
+
+/**
+ * Handle to a shared own sharedObject
+ *
+ * @cat resource
+ *
+ * @sa SharedObject
+ * @sa SharedObjectRef
+ */
+class SharedObjectShared : SharedObjectRef
+{
+  std::shared_ptr<SharedObject> m_shared;
+
+  SharedObjectShared(std::shared_ptr<SharedObject> resource)
+    : SharedObjectRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  SharedObjectShared(SharedObject resource = {})
+    : SharedObjectShared(resource
+                           ? std::make_shared<SharedObject>(std::move(resource))
+                           : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(SharedObject resource = {})
+  {
+    SharedObjectRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  SharedObject release()
+  {
+    SharedObject r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class SharedObjectWeak;
+};
+
+inline SharedObjectShared SharedObject::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own sharedObject
+ *
+ * @cat resource
+ *
+ * @sa SharedObjectShared
+ */
+class SharedObjectWeak
+{
+  std::weak_ptr<SharedObject> m_shared;
+
+public:
+  /**
+   * Constructs SharedObjectWeak from a SharedObjectShared.
+   */
+  SharedObjectWeak(SharedObjectShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid SharedObjectShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a SharedObjectShared, if still available.
+   */
+  SharedObjectShared lock() const
+  {
+    return SharedObjectShared(m_shared.lock());
   }
 };
 

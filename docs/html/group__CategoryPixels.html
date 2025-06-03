@@ -105,6 +105,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Palette.html">SDL::Palette</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned palette.  <a href="structSDL_1_1Palette.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PaletteShared.html">SDL::PaletteShared</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared own palette.  <a href="classSDL_1_1PaletteShared.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PaletteWeak.html">SDL::PaletteWeak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared own palette.  <a href="classSDL_1_1PaletteWeak.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -147,6 +153,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gad74c76d122c82eef85a4803c69ea7d85" id="r_gad74c76d122c82eef85a4803c69ea7d85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryPixels.html#gad74c76d122c82eef85a4803c69ea7d85">SDL::GetRGBA</a> (Uint32 pixel, const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> &amp;format, <a class="el" href="structSDL_1_1PaletteRef.html">PaletteRef</a> palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a)</td></tr>
 <tr class="memdesc:gad74c76d122c82eef85a4803c69ea7d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGBA values from a pixel in the specified format.  <br /></td></tr>
 <tr class="separator:gad74c76d122c82eef85a4803c69ea7d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga244738c2dbb29f6b96ef95da2ca2460b" id="r_ga244738c2dbb29f6b96ef95da2ca2460b"><td class="memItemLeft" align="right" valign="top"><a id="ga244738c2dbb29f6b96ef95da2ca2460b" name="ga244738c2dbb29f6b96ef95da2ca2460b"></a>
+<a class="el" href="classSDL_1_1PaletteShared.html">PaletteShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Palette::share</b> ()</td></tr>
+<tr class="memdesc:ga244738c2dbb29f6b96ef95da2ca2460b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership to a <a class="el" href="classSDL_1_1PaletteShared.html" title="Handle to a shared own palette.">PaletteShared</a>. <br /></td></tr>
+<tr class="separator:ga244738c2dbb29f6b96ef95da2ca2460b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga11cdf18344f314abe1146e323e624db0" id="r_ga11cdf18344f314abe1146e323e624db0"><td class="memItemLeft" align="right" valign="top"><a id="ga11cdf18344f314abe1146e323e624db0" name="ga11cdf18344f314abe1146e323e624db0"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::PaletteUnsafe::PaletteUnsafe</b> (<a class="el" href="structSDL_1_1Palette.html">Palette</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:ga11cdf18344f314abe1146e323e624db0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1PaletteUnsafe.html" title="Unsafe Handle to palette.">PaletteUnsafe</a> from <a class="el" href="structSDL_1_1Palette.html" title="Handle to an owned palette.">Palette</a>. <br /></td></tr>
@@ -940,7 +950,7 @@ constexpr SDL_Colorspace&#160;</td><td class="memItemRight" valign="bottom"><b>S
 </div><div class="memdoc">
 <p>For example, defining PIXELFORMAT_YV12 looks like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_define" href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a>(<span class="charliteral">&#39;Y&#39;</span>, <span class="charliteral">&#39;V&#39;</span>, <span class="charliteral">&#39;1&#39;</span>, <span class="charliteral">&#39;2&#39;</span>)</div>
-<div class="ttc" id="agroup__CategoryPixels_html_ga7dc1903b18ca972a3676628782873f71"><div class="ttname"><a href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a></div><div class="ttdeci">#define SDL_DEFINE_PIXELFOURCC(A, B, C, D)</div><div class="ttdoc">A macro for defining custom FourCC pixel formats.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:304</div></div>
+<div class="ttc" id="agroup__CategoryPixels_html_ga7dc1903b18ca972a3676628782873f71"><div class="ttname"><a href="group__CategoryPixels.html#ga7dc1903b18ca972a3676628782873f71">SDL_DEFINE_PIXELFOURCC</a></div><div class="ttdeci">#define SDL_DEFINE_PIXELFOURCC(A, B, C, D)</div><div class="ttdoc">A macro for defining custom FourCC pixel formats.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:307</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>the first character of the FourCC code. </td></tr>

@@ -1,0 +1,7 @@
+<map id="SDL::TextEngineShared" name="SDL::TextEngineShared">
+<area shape="rect" id="Node000001" title="Handle to a shared own textEngine." alt="" coords="5,167,176,192"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects." alt="" coords="17,93,165,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,132,93,167,88,167,88,132"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1Resource.html" title=" " alt="" coords="13,5,168,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,59,93,93,88,93,88,59"/>
+</map>

@@ -33,6 +33,9 @@ struct AnimationRef;
 // Forward decl
 struct Animation;
 
+// Forward decl
+struct AnimationShared;
+
 #ifdef SDL3PP_DOC
 
 /**
@@ -2160,6 +2163,11 @@ struct Animation : AnimationUnsafe
   }
 
   /**
+   * Transfer ownership to a AnimationShared
+   */
+  AnimationShared share();
+
+  /**
    * Load an animation from a file.
    *
    * When done with the returned animation, the app should dispose of it with a
@@ -2223,6 +2231,101 @@ struct Animation : AnimationUnsafe
   {
     return Animation(src, std::move(type));
   }
+};
+
+/**
+ * Handle to a shared own animation
+ *
+ * @cat resource
+ *
+ * @sa Animation
+ * @sa AnimationRef
+ */
+class AnimationShared : AnimationRef
+{
+  std::shared_ptr<Animation> m_shared;
+
+  AnimationShared(std::shared_ptr<Animation> resource)
+    : AnimationRef(*resource)
+    , m_shared(std::move(resource))
+  {
+  }
+
+public:
+  /**
+   * Constructs from an existing resource
+   */
+  AnimationShared(Animation resource = {})
+    : AnimationShared(
+        resource ? std::make_shared<Animation>(std::move(resource)) : nullptr)
+  {
+  }
+
+  /**
+   * returns if this is the last shared instance
+   */
+  constexpr bool unique() const { return m_shared.unique(); }
+
+  /**
+   * Resets content and optionally fill it with another value
+   */
+  void reset(Animation resource = {})
+  {
+    AnimationRef::release();
+    m_shared.reset();
+    if (resource) *this = std::move(resource);
+  }
+
+  /**
+   * Reset, if unique(), then releases the content too
+   */
+  Animation release()
+  {
+    Animation r;
+    if (unique()) r = std::move(*m_shared);
+    reset();
+    return r;
+  }
+
+  friend class AnimationWeak;
+};
+
+inline AnimationShared Animation::share() { return std::move(*this); }
+
+/**
+ * Weak handle to a shared own animation
+ *
+ * @cat resource
+ *
+ * @sa AnimationShared
+ */
+class AnimationWeak
+{
+  std::weak_ptr<Animation> m_shared;
+
+public:
+  /**
+   * Constructs AnimationWeak from a AnimationShared.
+   */
+  AnimationWeak(AnimationShared resource = {})
+    : m_shared(resource.m_shared)
+  {
+  }
+
+  /**
+   * If true the target pointer is no longer viable.
+   */
+  constexpr bool expired() const { return m_shared.expired(); }
+
+  /**
+   * Check if there is a valid AnimationShared associated to it.
+   */
+  constexpr operator bool() const { return !expired(); }
+
+  /**
+   * Convert to a AnimationShared, if still available.
+   */
+  AnimationShared lock() const { return AnimationShared(m_shared.lock()); }
 };
 
 constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)

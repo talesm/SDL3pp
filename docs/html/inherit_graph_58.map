@@ -1,3 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1SubStringIterator.html" title="Iterator for substrings." alt="" coords="5,5,171,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,47,160,87"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1SurfaceRef.html" title="A collection of pixels used in software blitting." alt="" coords="208,55,335,80"/>
+<area shape="poly" id="edge85_Node000000_Node000001" title=" " alt="" coords="174,65,208,65,208,70,174,70"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1SurfaceShared.html" title="Handle to a shared own surface." alt="" coords="383,5,533,31"/>
+<area shape="poly" id="edge86_Node000001_Node000002" title=" " alt="" coords="332,49,408,28,409,33,334,54"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1SurfaceUnsafe.html" title="Unsafe Handle to surface." alt="" coords="383,55,533,80"/>
+<area shape="poly" id="edge87_Node000001_Node000003" title=" " alt="" coords="348,65,382,65,382,70,348,70"/>
+<area shape="rect" id="Node000005" href="$classSDL_1_1TextureLock.html" title="Locks a Texture for access to its pixels." alt="" coords="391,104,525,129"/>
+<area shape="poly" id="edge89_Node000001_Node000005" title=" " alt="" coords="334,81,409,101,408,106,332,86"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1Surface.html" title="Handle to an owned surface." alt="" coords="581,55,685,80"/>
+<area shape="poly" id="edge88_Node000003_Node000004" title=" " alt="" coords="547,65,581,65,581,70,547,70"/>
 </map>

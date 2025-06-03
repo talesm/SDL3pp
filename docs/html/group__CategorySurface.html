@@ -93,6 +93,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Surface.html">SDL::Surface</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned surface.  <a href="structSDL_1_1Surface.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SurfaceShared.html">SDL::SurfaceShared</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a shared own surface.  <a href="classSDL_1_1SurfaceShared.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SurfaceWeak.html">SDL::SurfaceWeak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weak handle to a shared own surface.  <a href="classSDL_1_1SurfaceWeak.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SurfaceLock.html">SDL::SurfaceLock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a> for access to its pixels.  <a href="classSDL_1_1SurfaceLock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +138,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gaefae22d0ebf9382d8200ef17fb08aca4" id="r_gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySurface.html#gaefae22d0ebf9382d8200ef17fb08aca4">SDL::PremultiplyAlpha</a> (int width, int height, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> src_format, const void *src, int src_pitch, <a class="el" href="classSDL_1_1PixelFormat.html">PixelFormat</a> dst_format, void *dst, int dst_pitch, bool linear)</td></tr>
 <tr class="memdesc:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Premultiply the alpha on a block of pixels.  <br /></td></tr>
 <tr class="separator:gaefae22d0ebf9382d8200ef17fb08aca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga97e844c46255caa15bb2ac056a6a2a48" id="r_ga97e844c46255caa15bb2ac056a6a2a48"><td class="memItemLeft" align="right" valign="top"><a id="ga97e844c46255caa15bb2ac056a6a2a48" name="ga97e844c46255caa15bb2ac056a6a2a48"></a>
+<a class="el" href="classSDL_1_1SurfaceShared.html">SurfaceShared</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::Surface::share</b> ()</td></tr>
+<tr class="memdesc:ga97e844c46255caa15bb2ac056a6a2a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer ownership to a <a class="el" href="classSDL_1_1SurfaceShared.html" title="Handle to a shared own surface.">SurfaceShared</a>. <br /></td></tr>
+<tr class="separator:ga97e844c46255caa15bb2ac056a6a2a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga120e65132943adbab539b6b9dec2eb65" id="r_ga120e65132943adbab539b6b9dec2eb65"><td class="memItemLeft" align="right" valign="top"><a id="ga120e65132943adbab539b6b9dec2eb65" name="ga120e65132943adbab539b6b9dec2eb65"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SurfaceUnsafe::SurfaceUnsafe</b> (<a class="el" href="structSDL_1_1Surface.html">Surface</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:ga120e65132943adbab539b6b9dec2eb65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1SurfaceUnsafe.html" title="Unsafe Handle to surface.">SurfaceUnsafe</a> from <a class="el" href="structSDL_1_1Surface.html" title="Handle to an owned surface.">Surface</a>. <br /></td></tr>

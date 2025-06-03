@@ -1,5 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,100,31"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1FPoint.html" title="The structure that defines a point (using floating point values)." alt="" coords="148,5,244,31"/>
-<area shape="poly" id="edge98_Node000000_Node000001" title=" " alt="" coords="114,15,148,15,148,21,114,21"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,23,160,63"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1TextEngineRef.html" title="A text engine used to create text objects." alt="" coords="208,31,356,56"/>
+<area shape="poly" id="edge118_Node000000_Node000001" title=" " alt="" coords="174,41,207,41,207,46,174,46"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1TextEngineShared.html" title="Handle to a shared own textEngine." alt="" coords="405,5,575,31"/>
+<area shape="poly" id="edge119_Node000001_Node000002" title=" " alt="" coords="369,30,404,26,405,31,370,35"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1TextEngineUnsafe.html" title="Unsafe Handle to textEngine." alt="" coords="404,55,576,80"/>
+<area shape="poly" id="edge120_Node000001_Node000003" title=" " alt="" coords="370,51,404,55,403,60,369,56"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1TextEngine.html" title="Handle to an owned textEngine." alt="" coords="624,55,751,80"/>
+<area shape="poly" id="edge121_Node000003_Node000004" title=" " alt="" coords="590,65,624,65,624,70,590,70"/>
 </map>

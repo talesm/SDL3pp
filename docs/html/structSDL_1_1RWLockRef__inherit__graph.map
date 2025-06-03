@@ -1,9 +1,11 @@
 <map id="SDL::RWLockRef" name="SDL::RWLockRef">
-<area shape="rect" id="Node000001" title="A mutex that allows read&#45;only threads to run in parallel." alt="" coords="18,93,147,119"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock." alt="" coords="6,167,159,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1RWLock.html" title="Handle to an owned rWLock." alt="" coords="29,240,136,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
+<area shape="rect" id="Node000001" title="A mutex that allows read&#45;only threads to run in parallel." alt="" coords="105,93,234,119"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1RWLockShared.html" title="Handle to a shared own rWLock." alt="" coords="5,167,157,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,129,97,169,94,164,143,125"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock." alt="" coords="182,167,335,192"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="196,125,246,164,242,169,193,129"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="92,5,247,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,59,172,93,167,93,167,59"/>
+<area shape="rect" id="Node000005" href="$structSDL_1_1RWLock.html" title="Handle to an owned rWLock." alt="" coords="205,240,312,265"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="261,206,261,240,256,240,256,206"/>
 </map>
