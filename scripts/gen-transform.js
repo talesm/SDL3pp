@@ -3438,7 +3438,7 @@ const transform = {
           prefix: "SDL_PROPERTY_TYPE_"
         }
       },
-      resources: {
+      resourcesNew: {
         "SDL_PropertiesID": {
           uniqueName: "Properties",
           omitDefaultCtor: true,

@@ -1937,7 +1937,7 @@ struct Renderer : RendererUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    * @sa RendererRef.Destroy
    * @sa RendererRef.GetName
    */
@@ -2068,7 +2068,7 @@ struct Renderer : RendererUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    * @sa Renderer.Renderer
    * @sa Renderer.Renderer
    * @sa RendererRef.Destroy
@@ -3092,7 +3092,7 @@ struct Texture : TextureUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    * @sa TextureRef.Destroy
    * @sa TextureRef.GetSize
    * @sa TextureRef.Update
@@ -3315,7 +3315,7 @@ struct Texture : TextureUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    * @sa Texture.Texture
    * @sa Texture.Texture
    * @sa TextureRef.Destroy

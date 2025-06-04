@@ -1,9 +1,7 @@
 <map id="SDL::PropertiesUnsafe" name="SDL::PropertiesUnsafe">
-<area shape="rect" id="Node000001" title="Unsafe Handle to properties." alt="" coords="5,167,172,192"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1Properties.html" title="Handle to an owned properties." alt="" coords="28,240,149,265"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="91,206,91,240,86,240,86,206"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1PropertiesRef.html" title="Wrap properties id." alt="" coords="17,93,160,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,132,91,167,86,167,86,132"/>
-<area shape="rect" id="Node000003" href="$classSDL_1_1Resource.html" title=" " alt="" coords="11,5,166,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="91,59,91,93,86,93,86,59"/>
+<area shape="rect" id="Node000001" title="Unsafe Handle to properties." alt="" coords="29,181,196,207"/>
+<area shape="rect" id="Node000002" href="$classSDL_1_1ResourcePtr.html" title=" " alt="" coords="5,93,220,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,147,115,181,110,181,110,147"/>
+<area shape="rect" id="Node000003" href="$classSDL_1_1ResourcePtrBase.html" title="Base class for resource pointer&#45;like objects." alt="" coords="18,5,207,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,59,115,93,110,93,110,59"/>
 </map>

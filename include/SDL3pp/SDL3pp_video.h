@@ -2900,7 +2900,7 @@ struct Window : WindowUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    * @sa WindowRef.Destroy
    */
   Window(PropertiesRef props)
@@ -3203,7 +3203,7 @@ struct Window : WindowUnsafe
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Properties
+   * @sa Properties.Create
    * @sa Window.Window
    * @sa WindowRef.Destroy
    */

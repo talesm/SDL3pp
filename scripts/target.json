@@ -2698,7 +2698,7 @@
     },
     "SDL3pp_properties.h": {
       "name": "SDL3pp_properties.h",
-      "doc": "@defgroup CategoryProperties Category Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (PropertiesRef). A property\ngroup can be created with the Properties.Properties function and destroyed\nwith the PropertiesRef.Destroy function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- PropertiesRef.SetPointer and PropertiesRef.GetPointer operate on `void*`\n  pointer types.\n- PropertiesRef.SetString and PropertiesRef.GetString operate on string types.\n- PropertiesRef.SetNumber and PropertiesRef.GetNumber operate on signed 64-bit\n  integer types.\n- PropertiesRef.SetFloat and PropertiesRef.GetFloat operate on floating point\n  types.\n- PropertiesRef.SetBoolean and PropertiesRef.GetBoolean operate on boolean\n  types.\n\nProperties can be removed from a group by using PropertiesRef.Clear.",
+      "doc": "@defgroup CategoryProperties Category Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (PropertiesRef). A property\ngroup can be created with the Properties.Create function and destroyed\nwith the Properties.Destroy function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- PropertiesRef.SetPointer and PropertiesRef.GetPointer operate on `void*`\n  pointer types.\n- PropertiesRef.SetString and PropertiesRef.GetString operate on string types.\n- PropertiesRef.SetNumber and PropertiesRef.GetNumber operate on signed 64-bit\n  integer types.\n- PropertiesRef.SetFloat and PropertiesRef.GetFloat operate on floating point\n  types.\n- PropertiesRef.SetBoolean and PropertiesRef.GetBoolean operate on boolean\n  types.\n\nProperties can be removed from a group by using PropertiesRef.Clear.",
       "entries": {
         "PropertyType": {
           "doc": "SDL property type\n\n@since This enum is available since SDL 3.2.0.",
@@ -2797,7 +2797,7 @@
           "sourceName": "SDL_PROPERTY_TYPE_BOOLEAN"
         },
         "PropertiesRef": {
-          "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Properties\n@sa PropertiesRef",
+          "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource\n\n@sa Properties",
           "name": "PropertiesRef",
           "kind": "struct",
           "type": "Resource<SDL_PropertiesID>",
@@ -3188,32 +3188,21 @@
               "name": "GetCount",
               "doc": ""
             },
-            "Destroy": {
-              "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyProperties",
-              "hints": {
-                "body": "reset();"
-              }
-            },
             "reset": {
-              "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n@param props the properties to destroy.\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties",
+              "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n@param props the properties to destroy.\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create",
               "name": "reset",
               "kind": "function",
               "type": "void",
               "parameters": [
                 {
-                  "name": "newResource",
-                  "type": "SDL_PropertiesID",
-                  "default": "{}"
+                  "name": "resource",
+                  "type": "SDL_PropertiesID"
                 }
               ],
               "sourceName": "SDL_DestroyProperties",
+              "static": true,
               "hints": {
-                "body": "SDL_DestroyProperties(release(newResource));"
+                "body": "SDL_DestroyProperties(resource);"
               }
             }
           },
@@ -3225,214 +3214,90 @@
         "PropertiesUnsafe": {
           "name": "PropertiesUnsafe",
           "kind": "struct",
-          "type": "PropertiesRef",
+          "type": "ResourcePtr<PropertiesRef>",
           "doc": "Unsafe Handle to properties\n\nMust call manually reset() to free.\n\n@cat resource\n\n@sa PropertiesRef",
           "entries": {
-            "PropertiesRef::Destroy": {
+            "ResourcePtr::ResourcePtr": {
               "kind": "alias",
-              "name": "PropertiesRef::Destroy",
+              "name": "ResourcePtr::ResourcePtr",
               "doc": ""
             },
-            "PropertiesRef::PropertiesRef": {
-              "kind": "alias",
-              "name": "PropertiesRef::PropertiesRef",
-              "doc": ""
-            },
-            "PropertiesRef::reset": {
-              "kind": "alias",
-              "name": "PropertiesRef::reset",
-              "doc": ""
-            },
-            "PropertiesUnsafe": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "const PropertiesRef &",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs PropertiesUnsafe from PropertiesRef.",
-                "hints": {
-                  "init": [
-                    "PropertiesRef(other.get())"
-                  ]
-                },
-                "name": "PropertiesUnsafe"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Properties &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "PropertiesUnsafe",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "PropertiesUnsafe",
-                "type": "",
-                "explicit": true,
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Properties &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Constructs PropertiesUnsafe from Properties.",
-                "hints": {
-                  "init": [
-                    "PropertiesUnsafe(other.release())"
-                  ]
-                },
-                "proto": true
-              }
-            ],
-            "operator=": {
+            "PropertiesUnsafe": {
               "kind": "function",
-              "type": "PropertiesUnsafe &",
+              "name": "PropertiesUnsafe",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {
-                  "type": "PropertiesUnsafe",
+                  "type": "Properties &&",
                   "name": "other"
                 }
               ],
-              "doc": "Assignment operator.",
+              "doc": "Constructs PropertiesUnsafe from Properties.",
               "hints": {
-                "body": "release(other.release()); return *this;"
+                "init": [
+                  "PropertiesUnsafe(other.release())"
+                ]
               },
-              "name": "operator="
+              "proto": true
             }
           }
         },
         "Properties": {
           "name": "Properties",
           "kind": "struct",
-          "type": "PropertiesUnsafe",
+          "type": "ResourceUnique<PropertiesRef>",
           "doc": "Handle to an owned properties\n\n@cat resource\n\n@sa PropertiesRef",
           "entries": {
-            "PropertiesUnsafe::PropertiesUnsafe": {
+            "ResourceUnique::ResourceUnique": {
               "kind": "alias",
-              "name": "PropertiesUnsafe::PropertiesUnsafe",
+              "name": "ResourceUnique::ResourceUnique",
               "doc": ""
             },
-            "Properties": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "SDL_PropertiesID",
-                    "name": "resource"
-                  }
-                ],
-                "doc": "Constructs from the underlying resource.",
-                "hints": {
-                  "init": [
-                    "PropertiesUnsafe(resource)"
-                  ]
-                },
-                "name": "Properties"
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "proto": true,
-                "parameters": [
-                  {
-                    "type": "const Properties &",
-                    "name": "other"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "name": "Properties",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "Properties &&",
-                    "name": "other"
-                  }
-                ],
-                "doc": "Move constructor.",
-                "hints": {
-                  "init": [
-                    "Properties(other.release())"
-                  ]
-                },
-                "name": "Properties"
-              },
-              {
-                "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when Quit() is called.\n\n@post an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesRef.Destroy",
-                "name": "Properties",
-                "kind": "function",
-                "type": "",
-                "parameters": [],
-                "sourceName": "SDL_CreateProperties",
-                "proto": false
-              }
-            ],
-            "~Properties": {
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "doc": "Frees up resource when object goes out of scope.",
-              "hints": {
-                "body": "reset();"
-              },
-              "name": "~Properties"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Properties &",
-              "parameters": [
-                {
-                  "type": "Properties",
-                  "name": "other"
-                }
-              ],
-              "doc": "Assignment operator.",
-              "hints": {
-                "body": "reset(other.release());\nreturn *this;"
-              },
-              "name": "operator="
-            },
             "Create": {
-              "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PropertiesRef.Destroy",
+              "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Destroy",
               "name": "Create",
               "kind": "function",
               "type": "Properties",
               "parameters": [],
               "sourceName": "SDL_CreateProperties",
+              "static": true,
               "hints": {
-                "body": "return Properties();"
-              },
-              "static": true
+                "wrapSelf": true
+              }
+            },
+            "Destroy": {
+              "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyProperties",
+              "hints": {
+                "body": "reset();"
+              }
             }
           },
           "hints": {
-            "super": "Properties"
+            "self": "Properties"
+          }
+        },
+        "PropertiesUnsafe::PropertiesUnsafe": {
+          "kind": "function",
+          "name": "PropertiesUnsafe::PropertiesUnsafe",
+          "type": "",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Properties &&",
+              "name": "other"
+            }
+          ],
+          "hints": {
+            "init": [
+              "PropertiesUnsafe(other.release())"
+            ]
           }
         },
         "PropertiesLock": {
@@ -3529,23 +3394,6 @@
             }
           },
           "doc": ""
-        },
-        "PropertiesUnsafe::PropertiesUnsafe": {
-          "kind": "function",
-          "name": "PropertiesUnsafe::PropertiesUnsafe",
-          "type": "",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Properties &&",
-              "name": "other"
-            }
-          ],
-          "hints": {
-            "init": [
-              "PropertiesUnsafe(other.release())"
-            ]
-          }
         },
         "GetGlobalProperties": {
           "doc": "Get the global SDL properties.\n\n@returns a valid property ID on success.\n@throws Error on failure.\n\n@since This function is available since SDL 3.2.0.",
@@ -7069,7 +6917,7 @@
                 "proto": false
               },
               {
-                "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window\n- `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window\n- `prop::Window.CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `WINDOW_OPENGL` flag set.\n- `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in Window.Window().\n\nIf this window is being created to be used with an RendererRef, you should\nnot add a graphics API specific property\n(`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nWindowRef.Show().\n\n@param props the properties to use.\n@post the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Window.Window\n@sa WindowRef.Destroy",
+                "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window\n- `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window\n- `prop::Window.CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `WINDOW_OPENGL` flag set.\n- `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in Window.Window().\n\nIf this window is being created to be used with an RendererRef, you should\nnot add a graphics API specific property\n(`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nWindowRef.Show().\n\n@param props the properties to use.\n@post the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Window.Window\n@sa WindowRef.Destroy",
                 "name": "Window",
                 "kind": "function",
                 "type": "",
@@ -7165,7 +7013,7 @@
               "static": true
             },
             "CreateWithProperties": {
-              "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window\n- `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window\n- `prop::Window.CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `WINDOW_OPENGL` flag set.\n- `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in Window.Window().\n\nIf this window is being created to be used with an RendererRef, you should\nnot add a graphics API specific property\n(`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nWindowRef.Show().\n\n@param props the properties to use.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Window.Window\n@sa WindowRef.Destroy",
+              "doc": "Create a window with the specified properties.\n\nThe window size is a request and may be different than expected based on\nthe desktop layout and window manager policies. Your application should be\nprepared to handle a window of any size.\n\nThese are the supported properties:\n\n- `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should\n  be always on top\n- `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no\n  window decoration\n- `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the\n  window will be used with an externally managed graphics context.\n- `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should\n  accept keyboard input (defaults true)\n- `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should\n  start in fullscreen mode at desktop resolution\n- `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window\n- `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start\n  hidden\n- `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window\n  uses a high pixel density buffer if possible\n- `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should\n  start maximized\n- `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu\n- `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used\n  with Metal rendering\n- `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should\n  start minimized\n- `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to\n  its parent\n- `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts\n  with grabbed mouse focus\n- `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used\n  with OpenGL rendering\n- `prop::Window.CREATE_PARENT_POINTER`: an WindowRef that will be the\n  parent of this window, required for windows with the \"tooltip\", \"menu\",\n  and \"modal\" properties\n- `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be\n  resizable\n- `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8\n  encoding\n- `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show\n  transparent in the areas with alpha of 0\n- `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip\n- `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility\n  window, not showing in the task bar and window list\n- `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used\n  with Vulkan rendering\n- `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window\n- `prop::Window.CREATE_X_NUMBER`: the x position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n- `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or\n  `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is\n  relative to the parent for windows with the \"tooltip\" or \"menu\" property\n  set.\n\nThese are additional supported properties on macOS:\n\n- `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the\n  `(__unsafe_unretained)` NSWindow associated with the window, if you want\n  to wrap an existing window.\n- `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`\n  NSView associated with the window, defaults to `[window contentView]`\n\nThese are additional supported properties on Wayland:\n\n- `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if\n  the application wants to use the Wayland surface for a custom role and\n  does not want it attached to an XDG toplevel window. See\n  [README/wayland](README/wayland) for more information on using custom\n  surfaces.\n- `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the\n  application wants an associated `wl_egl_window` object to be created and\n  attached to the window, even if the window does not have the OpenGL\n  property or `WINDOW_OPENGL` flag set.\n- `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface\n  associated with the window, if you want to wrap an existing window. See\n  [README/wayland](README/wayland) for more information.\n\nThese are additional supported properties on Windows:\n\n- `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the\n  window, if you want to wrap an existing window.\n- `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,\n  another window to share pixel format with, useful for OpenGL windows\n\nThese are additional supported properties with X11:\n\n- `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated\n  with the window, if you want to wrap an existing window.\n\nThe window is implicitly shown if the \"hidden\" property is not set.\n\nWindows with the \"tooltip\" and \"menu\" properties are popup windows and have\nthe behaviors and guidelines outlined in Window.Window().\n\nIf this window is being created to be used with an RendererRef, you should\nnot add a graphics API specific property\n(`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that\ninternally when it chooses a renderer. However, SDL might need to recreate\nyour window at that point, which may cause the window to appear briefly,\nand then flicker as it is recreated. The correct approach to this is to\ncreate the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property\nset to true, then create the renderer, then show the window with\nWindowRef.Show().\n\n@param props the properties to use.\n@returns the window that was created or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Window.Window\n@sa WindowRef.Destroy",
               "name": "CreateWithProperties",
               "kind": "function",
               "type": "Window",
@@ -10473,7 +10321,7 @@
                 "proto": false
               },
               {
-                "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa RendererRef.GetName",
+                "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@post a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa RendererRef.GetName",
                 "name": "Renderer",
                 "kind": "function",
                 "type": "",
@@ -10548,7 +10396,7 @@
               "static": true
             },
             "CreateWithProperties": {
-              "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa RendererRef.GetName",
+              "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace\n  value describing the colorspace for output to the display, defaults to\n  COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by RendererRef.SetVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@returns a valid rendering context or nullptr if there was an error; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Renderer.Renderer\n@sa Renderer.Renderer\n@sa RendererRef.Destroy\n@sa RendererRef.GetName",
               "name": "CreateWithProperties",
               "kind": "function",
               "type": "Renderer",
@@ -11365,7 +11213,7 @@
                 "proto": false
               },
               {
-                "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
+                "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@post the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
                 "name": "Texture",
                 "kind": "function",
                 "type": "",
@@ -11497,7 +11345,7 @@
               "static": true
             },
             "CreateWithProperties": {
-              "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Properties\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
+              "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value\n  describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR\n  for floating point textures, COLORSPACE_HDR10 for 10-bit textures,\n  COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for\n  YUV textures.\n- `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  PixelFormat, defaults to the best RGBA format for the renderer\n- `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  TextureAccess, defaults to TEXTUREACCESS_STATIC\n- `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@returns the created texture or nullptr on failure; call GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Properties.Create\n@sa Texture.Texture\n@sa Texture.Texture\n@sa TextureRef.Destroy\n@sa SDL_GetTextureSize\n@sa TextureRef.Update",
               "name": "CreateWithProperties",
               "kind": "function",
               "type": "Texture",

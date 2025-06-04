@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1PropertiesRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::PropertiesRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a> &raquo; <a class="el" href="group__CategoryProperties.html">Object Properties</a></div></div></div>
 </div><!--header-->
@@ -89,13 +89,9 @@ Inheritance diagram for SDL::PropertiesRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1PropertiesRef__inherit__graph.png" border="0" usemap="#aSDL_1_1PropertiesRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1PropertiesRef_inherit__map" id="aSDL_1_1PropertiesRef_inherit__map">
-<area shape="rect" title="Wrap properties id." alt="" coords="17,93,160,119"/>
-<area shape="rect" href="structSDL_1_1PropertiesUnsafe.html" title="Unsafe Handle to properties." alt="" coords="5,167,172,192"/>
-<area shape="poly" title=" " alt="" coords="91,132,91,167,86,167,86,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="11,5,166,45"/>
-<area shape="poly" title=" " alt="" coords="91,59,91,93,86,93,86,59"/>
-<area shape="rect" href="structSDL_1_1Properties.html" title="Handle to an owned properties." alt="" coords="28,240,149,265"/>
-<area shape="poly" title=" " alt="" coords="91,206,91,240,86,240,86,206"/>
+<area shape="rect" title="Wrap properties id." alt="" coords="11,93,154,119"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -231,14 +227,11 @@ constexpr SDL_PropertiesID&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a99925951b2107d400258b2145246ebf8" id="r_a99925951b2107d400258b2145246ebf8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#a99925951b2107d400258b2145246ebf8">Destroy</a> ()</td></tr>
-<tr class="memdesc:a99925951b2107d400258b2145246ebf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a group of properties.  <br /></td></tr>
-<tr class="separator:a99925951b2107d400258b2145246ebf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f20ac4b4a713d7303f7bc8676e49d63" id="r_a1f20ac4b4a713d7303f7bc8676e49d63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#a1f20ac4b4a713d7303f7bc8676e49d63">reset</a> (SDL_PropertiesID newResource={})</td></tr>
-<tr class="memdesc:a1f20ac4b4a713d7303f7bc8676e49d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a group of properties.  <br /></td></tr>
-<tr class="separator:a1f20ac4b4a713d7303f7bc8676e49d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa663fb4af0813769671bb57b0195cc90" id="r_aa663fb4af0813769671bb57b0195cc90"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesRef.html#aa663fb4af0813769671bb57b0195cc90">reset</a> (SDL_PropertiesID resource)</td></tr>
+<tr class="memdesc:aa663fb4af0813769671bb57b0195cc90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a group of properties.  <br /></td></tr>
+<tr class="separator:aa663fb4af0813769671bb57b0195cc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -260,10 +253,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <li><a class="el" href="structSDL_1_1PropertiesRef.html#a672e9233f808df2b423be5cba5e40054" title="Set a boolean property in a group of properties.">SetBoolean()</a> and <a class="el" href="structSDL_1_1PropertiesRef.html#abf464e1b6e51b3916d3dd17722b4afd4" title="Get a boolean property from a group of properties.">GetBoolean()</a> operate on boolean types.</li>
 </ul>
 <p><a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> can be removed from a group by using SDL_ClearProperty.</p>
-<p>To create a new properties group use <a class="el" href="group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce" title="Create a group of properties.">CreateProperties()</a> or <a class="el" href="structSDL_1_1Properties.html#a5acd6793568e8ef1987b384363605d80" title="Create a group of properties.">Properties.Properties()</a>.</p>
+<p>To create a new properties group use <a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create()</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a5bfe865718adfd9f1059350a31fa4a81" title="Constructs from the underlying resource.">Properties.Properties</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Properties.html" title="Handle to an owned properties.">Properties</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -345,35 +338,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-</div>
-</div>
-<a id="a99925951b2107d400258b2145246ebf8" name="a99925951b2107d400258b2145246ebf8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99925951b2107d400258b2145246ebf8">&#9670;&#160;</a></span>Destroy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::PropertiesRef::Destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>All properties are deleted and their cleanup functions will be called, if any.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while these properties are locked or other threads might be setting or getting values from these properties.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a5bfe865718adfd9f1059350a31fa4a81" title="Constructs from the underlying resource.">Properties.Properties</a> </dd></dl>
 
 </div>
 </div>
@@ -883,8 +847,8 @@ template&lt;std::output_iterator&lt; const char * &gt; IT&gt; </div>
 
 </div>
 </div>
-<a id="a1f20ac4b4a713d7303f7bc8676e49d63" name="a1f20ac4b4a713d7303f7bc8676e49d63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f20ac4b4a713d7303f7bc8676e49d63">&#9670;&#160;</a></span>reset()</h2>
+<a id="aa663fb4af0813769671bb57b0195cc90" name="aa663fb4af0813769671bb57b0195cc90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa663fb4af0813769671bb57b0195cc90">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -893,23 +857,29 @@ template&lt;std::output_iterator&lt; const char * &gt; IT&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::PropertiesRef::reset </td>
+          <td class="memname">static void SDL::PropertiesRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_PropertiesID&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>All properties are deleted and their cleanup functions will be called, if any.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the properties to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while these properties are locked or other threads might be setting or getting values from these properties.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#a5bfe865718adfd9f1059350a31fa4a81" title="Constructs from the underlying resource.">Properties.Properties</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Properties.html#aa845d1a39b76e66f15be53f879eb7574" title="Create a group of properties.">Properties.Create</a> </dd></dl>
 
 </div>
 </div>
