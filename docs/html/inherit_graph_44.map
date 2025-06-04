@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1SharedObjectRef.html" title="An opaque datatype that represents a loaded shared object." alt="" coords="208,13,372,38"/>
-<area shape="poly" id="edge58_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1SharedObjectUnsafe.html" title="Unsafe Handle to sharedObject." alt="" coords="420,13,608,38"/>
-<area shape="poly" id="edge59_Node000001_Node000002" title=" " alt="" coords="386,23,420,23,420,28,386,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1SharedObject.html" title="Handle to an owned sharedObject." alt="" coords="656,13,799,38"/>
-<area shape="poly" id="edge60_Node000002_Node000003" title=" " alt="" coords="622,23,656,23,656,28,622,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1RWLockRef.html" title="A mutex that allows read&#45;only threads to run in parallel." alt="" coords="208,13,337,38"/>
+<area shape="poly" id="edge48_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1RWLockUnsafe.html" title="Unsafe Handle to rWLock." alt="" coords="385,13,539,38"/>
+<area shape="poly" id="edge49_Node000001_Node000002" title=" " alt="" coords="351,23,385,23,385,28,351,28"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1RWLock.html" title="Handle to an owned rWLock." alt="" coords="587,13,693,38"/>
+<area shape="poly" id="edge50_Node000002_Node000003" title=" " alt="" coords="552,23,587,23,587,28,552,28"/>
 </map>

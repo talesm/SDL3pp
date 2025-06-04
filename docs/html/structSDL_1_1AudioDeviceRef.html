@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1AudioDeviceRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::AudioDeviceRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoryAudio.html">Audio Playback, Recording, and Mixing</a></div></div></div>
 </div><!--header-->
@@ -89,13 +89,9 @@ Inheritance diagram for SDL::AudioDeviceRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1AudioDeviceRef__inherit__graph.png" border="0" usemap="#aSDL_1_1AudioDeviceRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1AudioDeviceRef_inherit__map" id="aSDL_1_1AudioDeviceRef_inherit__map">
-<area shape="rect" title="SDL Audio Device instance IDs." alt="" coords="17,93,176,119"/>
-<area shape="rect" href="structSDL_1_1AudioDeviceUnsafe.html" title="Unsafe Handle to audioDevice." alt="" coords="5,167,188,192"/>
-<area shape="poly" title=" " alt="" coords="99,132,99,167,94,167,94,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="19,5,174,45"/>
-<area shape="poly" title=" " alt="" coords="99,59,99,93,94,93,94,59"/>
-<area shape="rect" href="structSDL_1_1AudioDevice.html" title="Handle to an owned audioDevice." alt="" coords="28,240,165,265"/>
-<area shape="poly" title=" " alt="" coords="99,206,99,240,94,240,94,206"/>
+<area shape="rect" title="SDL Audio Device instance IDs." alt="" coords="5,93,164,119"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="7,5,162,45"/>
+<area shape="poly" title=" " alt="" coords="87,59,87,93,82,93,82,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -213,14 +209,11 @@ constexpr SDL_AudioDeviceID&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6fe3df0c15b9f1d8ff16b50b83aa8dc9" id="r_a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDeviceRef.html#a6fe3df0c15b9f1d8ff16b50b83aa8dc9">Close</a> ()</td></tr>
-<tr class="memdesc:a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a previously-opened audio device.  <br /></td></tr>
-<tr class="separator:a6fe3df0c15b9f1d8ff16b50b83aa8dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ce3124e400ae3dc2ea9086fb7b51575" id="r_a2ce3124e400ae3dc2ea9086fb7b51575"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDeviceRef.html#a2ce3124e400ae3dc2ea9086fb7b51575">reset</a> (SDL_AudioDeviceID newResource={})</td></tr>
-<tr class="memdesc:a2ce3124e400ae3dc2ea9086fb7b51575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a previously-opened audio device.  <br /></td></tr>
-<tr class="separator:a2ce3124e400ae3dc2ea9086fb7b51575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a523956e3dc1b862a6aa2dc49f43a9713" id="r_a523956e3dc1b862a6aa2dc49f43a9713"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioDeviceRef.html#a523956e3dc1b862a6aa2dc49f43a9713">reset</a> (SDL_AudioDeviceID resource)</td></tr>
+<tr class="memdesc:a523956e3dc1b862a6aa2dc49f43a9713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a previously-opened audio device.  <br /></td></tr>
+<tr class="separator:a523956e3dc1b862a6aa2dc49f43a9713"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -238,36 +231,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dd>
 <a class="el" href="structSDL_1_1AudioDeviceRef.html" title="SDL Audio Device instance IDs.">AudioDeviceRef</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6fe3df0c15b9f1d8ff16b50b83aa8dc9" name="a6fe3df0c15b9f1d8ff16b50b83aa8dc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fe3df0c15b9f1d8ff16b50b83aa8dc9">&#9670;&#160;</a></span>Close()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::AudioDeviceRef::Close </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The application should close open audio devices once they are no longer needed.</p>
-<p>This function may block briefly while pending audio data is played by the hardware, so that applications don't drop the last buffer of data they supplied if terminating immediately afterwards.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioDevice.html#a2a6c8adadf24f42a0b94d205e369636f" title="Constructs an empty AudioDevice.">AudioDevice.AudioDevice</a> </dd></dl>
-
-</div>
-</div>
 <a id="a927eff01c9a2b20e101f7224b69cfe81" name="a927eff01c9a2b20e101f7224b69cfe81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a927eff01c9a2b20e101f7224b69cfe81">&#9670;&#160;</a></span>GetChannelMap()</h2>
 
@@ -430,7 +393,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   </tr>
 </table>
 </div><div class="memdoc">
-<p>An <a class="el" href="structSDL_1_1AudioDeviceRef.html" title="SDL Audio Device instance IDs.">AudioDeviceRef</a> that represents physical hardware is a physical device; there is one for each piece of hardware that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> can see. Logical devices are created by calling <a class="el" href="structSDL_1_1AudioDevice.html#a2a6c8adadf24f42a0b94d205e369636f" title="Constructs an empty AudioDevice.">AudioDevice.AudioDevice</a> or <a class="el" href="structSDL_1_1AudioStream.html#aef481245627fd072c63f49e74dd1f496" title="Constructs an empty AudioStream.">AudioStream.AudioStream</a>, and while each is associated with a physical device, there can be any number of logical devices on one physical device.</p>
+<p>An <a class="el" href="structSDL_1_1AudioDeviceRef.html" title="SDL Audio Device instance IDs.">AudioDeviceRef</a> that represents physical hardware is a physical device; there is one for each piece of hardware that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> can see. Logical devices are created by calling <a class="el" href="structSDL_1_1AudioDevice.html#a6f6f17c055cf581ef5436e8e6cb3fcd7" title="Open a specific audio device.">AudioDevice.Open</a> or <a class="el" href="structSDL_1_1AudioStream.html#a34dabf3c0156652da1cc30c503d7eb0e" title="Convenience function for straightforward audio init for the common case.">AudioStream.OpenAudioDeviceStream</a>, and while each is associated with a physical device, there can be any number of logical devices on one physical device.</p>
 <p>For the most part, logical and physical IDs are interchangeable&ndash;if you try to open a logical device, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> understands to assign that effort to the underlying physical device, etc. However, it might be useful to know if an arbitrary device ID is physical or logical. This function reports which.</p>
 <p>This function may return either true or false for invalid device IDs.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if devid is a physical device, false if it is logical.</dd></dl>
@@ -493,7 +456,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <p>This function pauses audio processing for a given device. Any bound audio streams will not progress, and no audio will be generated. Pausing one device does not prevent other unpaused devices from running.</p>
 <p>Unlike in SDL2, audio devices start in an <em>unpaused</em> state, since an app has to bind a stream before any audio will flow. Pausing a paused device is a legal no-op.</p>
 <p>Pausing a device can be useful to halt all audio without unbinding all the audio streams. This might be useful while a game is paused, or a level is loading, etc.</p>
-<p>Physical devices can not be paused or unpaused, only logical devices created through <a class="el" href="structSDL_1_1AudioDevice.html#a2a6c8adadf24f42a0b94d205e369636f" title="Constructs an empty AudioDevice.">AudioDevice.AudioDevice()</a> can be.</p>
+<p>Physical devices can not be paused or unpaused, only logical devices created through <a class="el" href="structSDL_1_1AudioDevice.html#a6f6f17c055cf581ef5436e8e6cb3fcd7" title="Open a specific audio device.">AudioDevice.Open()</a> can be.</p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
@@ -531,7 +494,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </table>
 </div><div class="memdoc">
 <p>Unlike in SDL2, audio devices start in an <em>unpaused</em> state, since an app has to bind a stream before any audio will flow.</p>
-<p>Physical devices can not be paused or unpaused, only logical devices created through <a class="el" href="structSDL_1_1AudioDevice.html#a2a6c8adadf24f42a0b94d205e369636f" title="Constructs an empty AudioDevice.">AudioDevice.AudioDevice()</a> can be. Physical and invalid device IDs will report themselves as unpaused here.</p>
+<p>Physical devices can not be paused or unpaused, only logical devices created through <a class="el" href="structSDL_1_1AudioDevice.html#a6f6f17c055cf581ef5436e8e6cb3fcd7" title="Open a specific audio device.">AudioDevice.Open()</a> can be. Physical and invalid device IDs will report themselves as unpaused here.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if device is valid and paused, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -541,8 +504,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 
 </div>
 </div>
-<a id="a2ce3124e400ae3dc2ea9086fb7b51575" name="a2ce3124e400ae3dc2ea9086fb7b51575"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ce3124e400ae3dc2ea9086fb7b51575">&#9670;&#160;</a></span>reset()</h2>
+<a id="a523956e3dc1b862a6aa2dc49f43a9713" name="a523956e3dc1b862a6aa2dc49f43a9713"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a523956e3dc1b862a6aa2dc49f43a9713">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -551,24 +514,30 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::AudioDeviceRef::reset </td>
+          <td class="memname">static void SDL::AudioDeviceRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_AudioDeviceID&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>The application should close open audio devices once they are no longer needed.</p>
 <p>This function may block briefly while pending audio data is played by the hardware, so that applications don't drop the last buffer of data they supplied if terminating immediately afterwards.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>an audio device id previously returned by <a class="el" href="structSDL_1_1AudioDevice.html#a6f6f17c055cf581ef5436e8e6cb3fcd7" title="Open a specific audio device.">AudioDevice.Open()</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioDevice.html#a2a6c8adadf24f42a0b94d205e369636f" title="Constructs an empty AudioDevice.">AudioDevice.AudioDevice</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioDevice.html#a6f6f17c055cf581ef5436e8e6cb3fcd7" title="Open a specific audio device.">AudioDevice.Open</a> </dd></dl>
 
 </div>
 </div>
@@ -596,7 +565,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </div><div class="memdoc">
 <p>This function unpauses audio processing for a given device that has previously been paused with <a class="el" href="structSDL_1_1AudioDeviceRef.html#a3f8a6119aec1ec5c68f5d581d63d1e25" title="Use this function to pause audio playback on a specified device.">AudioDeviceRef.Pause()</a>. Once unpaused, any bound audio streams will begin to progress again, and audio can be generated.</p>
 <p>Unlike in SDL2, audio devices start in an <em>unpaused</em> state, since an app has to bind a stream before any audio will flow. Unpausing an unpaused device is a legal no-op.</p>
-<p>Physical devices can not be paused or unpaused, only logical devices created through <a class="el" href="structSDL_1_1AudioDevice.html#a2a6c8adadf24f42a0b94d205e369636f" title="Constructs an empty AudioDevice.">AudioDevice.AudioDevice()</a> can be.</p>
+<p>Physical devices can not be paused or unpaused, only logical devices created through <a class="el" href="structSDL_1_1AudioDevice.html#a6f6f17c055cf581ef5436e8e6cb3fcd7" title="Open a specific audio device.">AudioDevice.Open()</a> can be.</p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>

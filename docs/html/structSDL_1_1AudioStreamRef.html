@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1AudioStreamRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::AudioStreamRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoryAudio.html">Audio Playback, Recording, and Mixing</a></div></div></div>
 </div><!--header-->
@@ -89,13 +89,9 @@ Inheritance diagram for SDL::AudioStreamRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1AudioStreamRef__inherit__graph.png" border="0" usemap="#aSDL_1_1AudioStreamRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1AudioStreamRef_inherit__map" id="aSDL_1_1AudioStreamRef_inherit__map">
-<area shape="rect" title="The opaque handle that represents an audio stream." alt="" coords="17,93,179,119"/>
-<area shape="rect" href="structSDL_1_1AudioStreamUnsafe.html" title="Unsafe Handle to audioStream." alt="" coords="5,167,191,192"/>
-<area shape="poly" title=" " alt="" coords="101,132,101,167,95,167,95,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="21,5,175,45"/>
-<area shape="poly" title=" " alt="" coords="101,59,101,93,95,93,95,59"/>
-<area shape="rect" href="structSDL_1_1AudioStream.html" title="Handle to an owned audioStream." alt="" coords="29,240,167,265"/>
-<area shape="poly" title=" " alt="" coords="101,206,101,240,95,240,95,206"/>
+<area shape="rect" title="The opaque handle that represents an audio stream." alt="" coords="5,93,167,119"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="9,5,163,45"/>
+<area shape="poly" title=" " alt="" coords="89,59,89,93,83,93,83,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -263,14 +259,11 @@ constexpr SDL_AudioStream *&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a76662ed19c98da5b25da2cbc16603db3" id="r_a76662ed19c98da5b25da2cbc16603db3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a76662ed19c98da5b25da2cbc16603db3">Destroy</a> ()</td></tr>
-<tr class="memdesc:a76662ed19c98da5b25da2cbc16603db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free an audio stream.  <br /></td></tr>
-<tr class="separator:a76662ed19c98da5b25da2cbc16603db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62cda7f49aabc910a9e93b0fc395b687" id="r_a62cda7f49aabc910a9e93b0fc395b687"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#a62cda7f49aabc910a9e93b0fc395b687">reset</a> (SDL_AudioStream *newResource={})</td></tr>
-<tr class="memdesc:a62cda7f49aabc910a9e93b0fc395b687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free an audio stream.  <br /></td></tr>
-<tr class="separator:a62cda7f49aabc910a9e93b0fc395b687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aeb2a4553d507e256d83492f0f6a1b9e0" id="r_aeb2a4553d507e256d83492f0f6a1b9e0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AudioStreamRef.html#aeb2a4553d507e256d83492f0f6a1b9e0">reset</a> (SDL_AudioStream *resource)</td></tr>
+<tr class="memdesc:aeb2a4553d507e256d83492f0f6a1b9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free an audio stream.  <br /></td></tr>
+<tr class="separator:aeb2a4553d507e256d83492f0f6a1b9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -386,36 +379,6 @@ AudioDeviceRef.UnbindAudioStream </dd>
 <a class="el" href="structSDL_1_1AudioStreamRef.html#ade38f29483f90132ca77e77a40c6b37e" title="Get the number of bytes currently queued.">AudioStreamRef.GetQueued</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1AudioStreamRef.html#a98d44233259c85840a44328b83c42f57" title="Add data to the stream.">AudioStreamRef.PutData</a> </dd></dl>
-
-</div>
-</div>
-<a id="a76662ed19c98da5b25da2cbc16603db3" name="a76662ed19c98da5b25da2cbc16603db3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76662ed19c98da5b25da2cbc16603db3">&#9670;&#160;</a></span>Destroy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::AudioStreamRef::Destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This will release all allocated data, including any audio that is still queued. You do not need to manually clear the stream first.</p>
-<p>If this stream was bound to an audio device, it is unbound during this call. If this stream was created with <a class="el" href="structSDL_1_1AudioStream.html#aef481245627fd072c63f49e74dd1f496" title="Constructs an empty AudioStream.">AudioStream.AudioStream</a>, the audio device that was opened alongside this stream's creation will be closed, too.</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStream.html#aef481245627fd072c63f49e74dd1f496" title="Constructs an empty AudioStream.">AudioStream.AudioStream</a> </dd></dl>
 
 </div>
 </div>
@@ -992,8 +955,8 @@ AudioDeviceRef.UnbindAudioStream </dd>
 
 </div>
 </div>
-<a id="a62cda7f49aabc910a9e93b0fc395b687" name="a62cda7f49aabc910a9e93b0fc395b687"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62cda7f49aabc910a9e93b0fc395b687">&#9670;&#160;</a></span>reset()</h2>
+<a id="aeb2a4553d507e256d83492f0f6a1b9e0" name="aeb2a4553d507e256d83492f0f6a1b9e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb2a4553d507e256d83492f0f6a1b9e0">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1002,24 +965,30 @@ AudioDeviceRef.UnbindAudioStream </dd>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::AudioStreamRef::reset </td>
+          <td class="memname">static void SDL::AudioStreamRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_AudioStream *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>This will release all allocated data, including any audio that is still queued. You do not need to manually clear the stream first.</p>
-<p>If this stream was bound to an audio device, it is unbound during this call. If this stream was created with <a class="el" href="structSDL_1_1AudioStream.html#aef481245627fd072c63f49e74dd1f496" title="Constructs an empty AudioStream.">AudioStream.AudioStream</a>, the audio device that was opened alongside this stream's creation will be closed, too.</p>
+<p>If this stream was bound to an audio device, it is unbound during this call. If this stream was created with <a class="el" href="structSDL_1_1AudioStream.html#a34dabf3c0156652da1cc30c503d7eb0e" title="Convenience function for straightforward audio init for the common case.">AudioStream.OpenAudioDeviceStream</a>, the audio device that was opened alongside this stream's creation will be closed, too.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the audio stream to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStream.html#aef481245627fd072c63f49e74dd1f496" title="Constructs an empty AudioStream.">AudioStream.AudioStream</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1AudioStream.html#a4eea750a64781ac1b5d2567d58bc00de" title="Create a new audio stream.">AudioStream.Create</a> </dd></dl>
 
 </div>
 </div>
@@ -1046,7 +1015,7 @@ AudioDeviceRef.UnbindAudioStream </dd>
 </table>
 </div><div class="memdoc">
 <p>This function unpauses audio processing for a given device that has previously been paused. Once unpaused, any bound audio streams will begin to progress again, and audio can be generated.</p>
-<p>Remember, <a class="el" href="structSDL_1_1AudioStream.html#aef481245627fd072c63f49e74dd1f496" title="Constructs an empty AudioStream.">AudioStream.AudioStream</a> opens device in a paused state, so this function call is required for audio playback to begin on such device.</p>
+<p>Remember, <a class="el" href="structSDL_1_1AudioStream.html#a34dabf3c0156652da1cc30c503d7eb0e" title="Convenience function for straightforward audio init for the common case.">AudioStream.OpenAudioDeviceStream</a> opens device in a paused state, so this function call is required for audio playback to begin on such device.</p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>

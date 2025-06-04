@@ -22,17 +22,17 @@ struct Main
   SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
   SDL::Window window{"examples/audio/simple-playback-callback", windowSz};
   SDL::Renderer renderer{window};
-  SDL::AudioStream stream{
+  SDL::AudioStream stream = SDL::AudioStream::OpenAudioDeviceStream(
     SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK,
     SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000},
     [this](SDL::AudioStreamRef stream,
            int additional_amount,
            int total_amount) {
       FeedTheAudioStreamMore(stream, additional_amount, total_amount);
-    }};
+    });
   int current_sine_sample = 0;
 
-  Main() { stream.ResumeDevice(); }
+  Main() { stream->ResumeDevice(); }
 
   void FeedTheAudioStreamMore(SDL::AudioStreamRef stream,
                               int additional_amount,

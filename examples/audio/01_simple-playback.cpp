@@ -19,12 +19,12 @@ struct Main
   SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_AUDIO};
   SDL::Window window{"examples/audio/simple-playback", windowSz};
   SDL::Renderer renderer{window};
-  SDL::AudioStream stream{
+  SDL::AudioStream stream = SDL::AudioStream::OpenAudioDeviceStream(
     SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK,
-    SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000}};
+    SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000});
   int current_sine_sample = 0;
 
-  Main() { stream.ResumeDevice(); }
+  Main() { stream->ResumeDevice(); }
 
   SDL::AppResult Iterate()
   {
@@ -36,7 +36,7 @@ struct Main
     // 8000 float samples per second. Half of that.
     constexpr int minimum_audio = (8000 * sizeof(float)) / 2;
 
-    if (stream.GetQueued() < minimum_audio) {
+    if (stream->GetQueued() < minimum_audio) {
       // this will feed 512 samples each frame until we get to our maximum.
       static float samples[512];
       /* generate a 440Hz pure tone */
@@ -52,7 +52,7 @@ struct Main
 
       // feed the new data to the stream. It will queue at the end, and trickle
       // out as the hardware needs more data.
-      stream.PutData(samples);
+      stream->PutData(samples);
     }
 
     // we're not doing anything with the renderer, so just blank it out.
