@@ -7991,7 +7991,7 @@ const transform = {
           "name": "SDL3PP_ENABLE_IMAGE"
         }
       },
-      resources: {
+      resourcesNew: {
         "IMG_Animation": {
           returnType: "unique",
           free: "IMG_FreeAnimation",
@@ -8008,7 +8008,7 @@ const transform = {
               ]
             },
             "IMG_LoadAnimationTyped_IO": {
-              name: "Load",
+              name: "LoadTyped",
               parameters: [
                 {
                   "name": "src",

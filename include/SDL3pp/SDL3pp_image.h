@@ -2029,68 +2029,19 @@ struct AnimationRef : Resource<IMG_Animation*>
    */
   int GetDelay(int index) const { return get()->delays[index]; }
 
-protected:
   /**
    * Dispose of an AnimationRef and free its resources.
    *
-   * @since This function is available since SDL_image 3.0.0.
+   * The provided `anim` pointer is not valid once this call returns.
    *
-   * @sa Animation.Animation
-   */
-  void Free() { reset(); }
-
-  /**
-   * Dispose of an AnimationRef and free its resources.
+   * @param resource AnimationRef to dispose of.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Animation.Animation
+   * @sa Animation.Load
+   * @sa Animation.LoadTyped
    */
-  void reset(IMG_Animation* newResource = {})
-  {
-    IMG_FreeAnimation(release(newResource));
-  }
-};
-/**
- * Unsafe Handle to animation
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa AnimationRef
- */
-struct AnimationUnsafe : AnimationRef
-{
-  using AnimationRef::AnimationRef;
-
-  using AnimationRef::Free;
-
-  using AnimationRef::reset;
-
-  /**
-   * Constructs AnimationUnsafe from AnimationRef.
-   */
-  constexpr AnimationUnsafe(const AnimationRef& other)
-    : AnimationRef(other.get())
-  {
-  }
-
-  AnimationUnsafe(const Animation& other) = delete;
-
-  /**
-   * Constructs AnimationUnsafe from Animation.
-   */
-  constexpr explicit AnimationUnsafe(Animation&& other);
-
-  /**
-   * Assignment operator.
-   */
-  constexpr AnimationUnsafe& operator=(AnimationUnsafe other)
-  {
-    release(other.release());
-    return *this;
-  }
+  static void reset(IMG_Animation* resource) { IMG_FreeAnimation(resource); }
 };
 
 /**
@@ -2100,64 +2051,40 @@ struct AnimationUnsafe : AnimationRef
  *
  * @sa AnimationRef
  */
-struct Animation : AnimationUnsafe
+struct Animation : ResourceUnique<AnimationRef>
 {
-  using AnimationUnsafe::AnimationUnsafe;
-
-  /**
-   * Constructs an empty Animation.
-   */
-  constexpr Animation()
-    : AnimationUnsafe(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from the underlying resource.
-   */
-  constexpr explicit Animation(IMG_Animation* resource)
-    : AnimationUnsafe(resource)
-  {
-  }
-
-  constexpr Animation(const Animation& other) = delete;
-
-  /**
-   * Move constructor.
-   */
-  constexpr Animation(Animation&& other)
-    : Animation(other.release())
-  {
-  }
+  using ResourceUnique::ResourceUnique;
 
   /**
    * Load an animation from a file.
    *
    * @param file path on the filesystem containing an animated image.
-   * @post a new AnimationRef, or nullptr on error.
+   * @returns a new Animation, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.Free
+   * @sa Animation.LoadTyped
+   * @sa Animation.Free
    */
-  Animation(StringParam file)
-    : Animation(IMG_LoadAnimation(file))
+  static Animation Load(StringParam file)
   {
+    return Animation(IMG_LoadAnimation(file));
   }
 
   /**
    * Load an animation from an IOStreamRef.
    *
    * @param src an IOStreamRef that data will be read from.
-   * @post a new AnimationRef, or nullptr on error.
+   * @returns a new AnimationRef, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.Free
+   * @sa Animation.LoadTyped
+   * @sa Animation.Free
    */
-  Animation(IOStreamRef src)
-    : Animation(IMG_LoadAnimation_IO(src.get(), false))
+  static Animation Load(IOStreamRef src)
   {
+    return Animation(IMG_LoadAnimation_IO(src, false));
   }
 
   /**
@@ -2171,101 +2098,51 @@ struct Animation : AnimationUnsafe
    *
    * @param src an IOStreamRef that data will be read from.
    * @param type a filename extension that represent this data ("GIF", etc).
-   * @post a new AnimationRef, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa AnimationRef.Free
-   */
-  Animation(IOStreamRef src, StringParam type)
-    : Animation(IMG_LoadAnimationTyped_IO(src.get(), false, type))
-  {
-  }
-
-  /**
-   * Frees up resource when object goes out of scope.
-   */
-  ~Animation() { reset(); }
-
-  /**
-   * Assignment operator.
-   */
-  Animation& operator=(Animation other)
-  {
-    reset(other.release());
-    return *this;
-  }
-
-  /**
-   * Load an animation from a file.
-   *
-   * When done with the returned animation, the app should dispose of it with a
-   * call to AnimationRef.Free().
-   *
-   * @param file path on the filesystem containing an animated image.
    * @returns a new AnimationRef, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa AnimationRef.Free
+   * @sa Animation.Load
+   * @sa Animation.Free
    */
-  static Animation Load(StringParam file) { return Animation(std::move(file)); }
-
-  /**
-   * Load an animation from an IOStreamRef.
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * When done with the returned animation, the app should dispose of it with a
-   * call to AnimationRef.Free().
-   *
-   * @param src an IOStreamRef that data will be read from.
-   * @returns a new AnimationRef, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa AnimationRef.Free
-   */
-  static Animation Load(IOStreamRef src) { return Animation(src); }
-
-  /**
-   * Load an animation from an SDL datasource
-   *
-   * Even though this function accepts a file type, SDL_image may still try
-   * other decoders that are capable of detecting file type from the contents of
-   * the image data, but may rely on the caller-provided type string for formats
-   * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
-   * on its ability to guess the format.
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * When done with the returned animation, the app should dispose of it with a
-   * call to AnimationRef.Free().
-   *
-   * @param src an IOStreamRef that data will be read from.
-   * @param type a filename extension that represent this data ("GIF", etc).
-   * @returns a new AnimationRef, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa Animation.Animation
-   * @sa Animation.Animation
-   * @sa AnimationRef.Free
-   */
-  static Animation Load(IOStreamRef src, StringParam type)
+  static Animation LoadTyped(IOStreamRef src, StringParam type)
   {
-    return Animation(src, std::move(type));
+    return Animation(IMG_LoadAnimationTyped_IO(src, false, type));
   }
+
+  /**
+   * Dispose of an AnimationRef and free its resources.
+   *
+   * The provided `anim` pointer is not valid once this call returns.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa Animation.LoadTyped
+   */
+  void Free() { reset(); }
 };
 
-constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
-  : AnimationUnsafe(other.release())
+/**
+ * Unsafe Handle to animation
+ *
+ * Must call manually reset() to free.
+ *
+ * @cat resource
+ *
+ * @sa AnimationRef
+ */
+struct AnimationUnsafe : ResourceUnsafe<AnimationRef>
 {
-}
+  using ResourceUnsafe::ResourceUnsafe;
+
+  /**
+   * Constructs AnimationUnsafe from Animation.
+   */
+  constexpr explicit AnimationUnsafe(Animation&& other)
+    : AnimationUnsafe(other.release())
+  {
+  }
+};
 
 /**
  * Load a GIF animation directly.
@@ -2280,12 +2157,13 @@ constexpr AnimationUnsafe::AnimationUnsafe(Animation&& other)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa AnimationRef.AnimationRef
- * @sa AnimationRef.reset
+ * @sa Animation.Load
+ * @sa Animation.LoadTyped
+ * @sa Animation.Free
  */
 inline Animation LoadGIFAnimation(IOStreamRef src)
 {
-  return Animation{IMG_LoadGIFAnimation_IO(src.get())};
+  return Animation{IMG_LoadGIFAnimation_IO(src)};
 }
 
 /**
@@ -2301,11 +2179,13 @@ inline Animation LoadGIFAnimation(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa AnimationRef.AnimationRef
+ * @sa Animation.Load
+ * @sa Animation.LoadTyped
+ * @sa Animation.Free
  */
 inline Animation LoadWEBPAnimation(IOStreamRef src)
 {
-  return Animation{IMG_LoadWEBPAnimation_IO(src.get())};
+  return Animation{IMG_LoadWEBPAnimation_IO(src)};
 }
 
 #pragma region impl

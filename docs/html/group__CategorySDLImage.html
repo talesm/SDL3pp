@@ -86,11 +86,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationRef.html">SDL::AnimationRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animated image support.  <a href="structSDL_1_1AnimationRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationUnsafe.html">SDL::AnimationUnsafe</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to animation.  <a href="structSDL_1_1AnimationUnsafe.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Animation.html">SDL::Animation</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned animation.  <a href="structSDL_1_1Animation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationUnsafe.html">SDL::AnimationUnsafe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsafe Handle to animation.  <a href="structSDL_1_1AnimationUnsafe.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -269,10 +269,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf4b68c50bea4dafb6ccaca4de9687f04" id="r_gaf4b68c50bea4dafb6ccaca4de9687f04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Animation.html">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gaf4b68c50bea4dafb6ccaca4de9687f04">SDL::LoadWEBPAnimation</a> (<a class="el" href="structSDL_1_1IOStreamRef.html">IOStreamRef</a> src)</td></tr>
 <tr class="memdesc:gaf4b68c50bea4dafb6ccaca4de9687f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a WEBP animation directly.  <br /></td></tr>
 <tr class="separator:gaf4b68c50bea4dafb6ccaca4de9687f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf0ac4d00b080c63941f27eb85fa2c061" id="r_gaf0ac4d00b080c63941f27eb85fa2c061"><td class="memItemLeft" align="right" valign="top"><a id="gaf0ac4d00b080c63941f27eb85fa2c061" name="gaf0ac4d00b080c63941f27eb85fa2c061"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AnimationUnsafe::AnimationUnsafe</b> (<a class="el" href="structSDL_1_1Animation.html">Animation</a> &amp;&amp;other)</td></tr>
-<tr class="memdesc:gaf0ac4d00b080c63941f27eb85fa2c061"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs <a class="el" href="structSDL_1_1AnimationUnsafe.html" title="Unsafe Handle to animation.">AnimationUnsafe</a> from <a class="el" href="structSDL_1_1Animation.html" title="Handle to an owned animation.">Animation</a>. <br /></td></tr>
-<tr class="separator:gaf0ac4d00b080c63941f27eb85fa2c061"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>A simple library to load images of various formats as <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surfaces </p>
@@ -1952,9 +1948,11 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AnimationUn
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1Animation.html" title="Handle to an owned animation.">Animation</a>, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>AnimationRef.AnimationRef </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Animation.html#a52e8642092d5bb05ee6c3206e9b1ee75" title="Load an animation from a file.">Animation.Load</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1AnimationRef.html#a49c1ef08e98328123aa1722d3f4dbc65" title="Dispose of an AnimationRef and free its resources.">AnimationRef.reset</a> </dd></dl>
+<a class="el" href="structSDL_1_1Animation.html#ade894c4ac382194be6a6faa9d8859192" title="Load an animation from an SDL datasource.">Animation.LoadTyped</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Animation.html#a7860e37888e4ffae92f1b33e217196ce" title="Dispose of an AnimationRef and free its resources.">Animation.Free</a> </dd></dl>
 
 </div>
 </div>
@@ -3182,7 +3180,11 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::AnimationUn
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structSDL_1_1Animation.html" title="Handle to an owned animation.">Animation</a>, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>AnimationRef.AnimationRef </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Animation.html#a52e8642092d5bb05ee6c3206e9b1ee75" title="Load an animation from a file.">Animation.Load</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Animation.html#ade894c4ac382194be6a6faa9d8859192" title="Load an animation from an SDL datasource.">Animation.LoadTyped</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Animation.html#a7860e37888e4ffae92f1b33e217196ce" title="Dispose of an AnimationRef and free its resources.">Animation.Free</a> </dd></dl>
 
 </div>
 </div>
