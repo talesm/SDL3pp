@@ -1,9 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1RendererRef.html" title="A structure representing rendering state." alt="" coords="208,13,344,38"/>
-<area shape="poly" id="edge31_Node000000_Node000001" title=" " alt="" coords="174,23,207,23,207,28,174,28"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1RendererUnsafe.html" title="Unsafe Handle to renderer." alt="" coords="392,13,552,38"/>
-<area shape="poly" id="edge32_Node000001_Node000002" title=" " alt="" coords="358,23,392,23,392,28,358,28"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1Renderer.html" title="Handle to an owned renderer." alt="" coords="600,13,715,38"/>
-<area shape="poly" id="edge33_Node000002_Node000003" title=" " alt="" coords="566,23,600,23,600,28,566,28"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1ProcessRef.html" title="An opaque handle representing a system process." alt="" coords="208,13,335,38"/>
+<area shape="poly" id="edge25_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
 </map>

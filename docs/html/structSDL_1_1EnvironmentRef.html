@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1EnvironmentRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::EnvironmentRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryStdinc.html">Standard Library Functionality</a></div></div></div>
 </div><!--header-->
@@ -89,13 +89,9 @@ Inheritance diagram for SDL::EnvironmentRef:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSDL_1_1EnvironmentRef__inherit__graph.png" border="0" usemap="#aSDL_1_1EnvironmentRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1EnvironmentRef_inherit__map" id="aSDL_1_1EnvironmentRef_inherit__map">
-<area shape="rect" title="A thread&#45;safe set of environment variables." alt="" coords="17,93,177,119"/>
-<area shape="rect" href="structSDL_1_1EnvironmentUnsafe.html" title="Unsafe Handle to environment." alt="" coords="5,167,189,192"/>
-<area shape="poly" title=" " alt="" coords="100,132,100,167,95,167,95,132"/>
-<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="20,5,175,45"/>
-<area shape="poly" title=" " alt="" coords="100,59,100,93,95,93,95,59"/>
-<area shape="rect" href="structSDL_1_1Environment.html" title="Handle to an owned environment." alt="" coords="28,240,167,265"/>
-<area shape="poly" title=" " alt="" coords="100,206,100,240,95,240,95,206"/>
+<area shape="rect" title="A thread&#45;safe set of environment variables." alt="" coords="5,93,165,119"/>
+<area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="8,5,163,45"/>
+<area shape="poly" title=" " alt="" coords="88,59,88,93,83,93,83,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -186,14 +182,11 @@ constexpr SDL_Environment *&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6a586e850f99bf507bd510a402e4241e" id="r_a6a586e850f99bf507bd510a402e4241e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#a6a586e850f99bf507bd510a402e4241e">Destroy</a> ()</td></tr>
-<tr class="memdesc:a6a586e850f99bf507bd510a402e4241e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a set of environment variables.  <br /></td></tr>
-<tr class="separator:a6a586e850f99bf507bd510a402e4241e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c9ccd5b2fca5133811cd981b55c40e9" id="r_a6c9ccd5b2fca5133811cd981b55c40e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#a6c9ccd5b2fca5133811cd981b55c40e9">reset</a> (SDL_Environment *newResource={})</td></tr>
-<tr class="memdesc:a6c9ccd5b2fca5133811cd981b55c40e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a set of environment variables.  <br /></td></tr>
-<tr class="separator:a6c9ccd5b2fca5133811cd981b55c40e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ab9ee1efd14f4708d0a27fec2c714909c" id="r_ab9ee1efd14f4708d0a27fec2c714909c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentRef.html#ab9ee1efd14f4708d0a27fec2c714909c">reset</a> (SDL_Environment *resource)</td></tr>
+<tr class="memdesc:ab9ee1efd14f4708d0a27fec2c714909c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a set of environment variables.  <br /></td></tr>
+<tr class="separator:ab9ee1efd14f4708d0a27fec2c714909c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -220,34 +213,6 @@ EnvironmentRef.EnvironmentRef </dd>
 <dd>
 <a class="el" href="structSDL_1_1EnvironmentRef.html#a2b6d72ef09306d457e4a4ee1e8a114d9" title="Clear a variable from the environment.">EnvironmentRef.UnsetVariable</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6a586e850f99bf507bd510a402e4241e" name="a6a586e850f99bf507bd510a402e4241e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a586e850f99bf507bd510a402e4241e">&#9670;&#160;</a></span>Destroy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::EnvironmentRef::Destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the environment is no longer in use.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Environment.html#ac3110f15824b0ae7f983e4bc2e32d5b1" title="Constructs an empty Environment.">Environment.Environment</a> </dd></dl>
-
-</div>
-</div>
 <a id="af38b4128673800ba9e46e954a9b38998" name="af38b4128673800ba9e46e954a9b38998"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af38b4128673800ba9e46e954a9b38998">&#9670;&#160;</a></span>GetVariable()</h2>
 
@@ -282,7 +247,7 @@ EnvironmentRef.EnvironmentRef </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Environment.html#ac3110f15824b0ae7f983e4bc2e32d5b1" title="Constructs an empty Environment.">Environment.Environment</a> </dd>
+Environment.Environment </dd>
 <dd>
 <a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
 <dd>
@@ -352,7 +317,7 @@ EnvironmentRef.EnvironmentRef </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Environment.html#ac3110f15824b0ae7f983e4bc2e32d5b1" title="Constructs an empty Environment.">Environment.Environment</a> </dd>
+Environment.Environment </dd>
 <dd>
 <a class="el" href="structSDL_1_1EnvironmentRef.html#ab6a4e611b554cb8b580bccfb33596e05" title="Get all variables in the environment.">EnvironmentRef.GetVariables</a> </dd>
 <dd>
@@ -362,8 +327,8 @@ EnvironmentRef.EnvironmentRef </dd>
 
 </div>
 </div>
-<a id="a6c9ccd5b2fca5133811cd981b55c40e9" name="a6c9ccd5b2fca5133811cd981b55c40e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c9ccd5b2fca5133811cd981b55c40e9">&#9670;&#160;</a></span>reset()</h2>
+<a id="ab9ee1efd14f4708d0a27fec2c714909c" name="ab9ee1efd14f4708d0a27fec2c714909c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9ee1efd14f4708d0a27fec2c714909c">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -372,23 +337,28 @@ EnvironmentRef.EnvironmentRef </dd>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SDL::EnvironmentRef::reset </td>
+          <td class="memname">static void SDL::EnvironmentRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_Environment *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This object becomes empty after the call.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>the environment to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the environment is no longer in use.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Environment.html#ac3110f15824b0ae7f983e4bc2e32d5b1" title="Constructs an empty Environment.">Environment.Environment</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Environment.html#a5a9bd97e706bc30e6a69f5df41d4f193" title="Create a set of environment variables.">Environment.Create</a> </dd></dl>
 
 </div>
 </div>
@@ -449,7 +419,7 @@ EnvironmentRef.EnvironmentRef </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Environment.html#ac3110f15824b0ae7f983e4bc2e32d5b1" title="Constructs an empty Environment.">Environment.Environment</a> </dd>
+Environment.Environment </dd>
 <dd>
 <a class="el" href="structSDL_1_1EnvironmentRef.html#af38b4128673800ba9e46e954a9b38998" title="Get the value of a variable in the environment.">EnvironmentRef.GetVariable</a> </dd>
 <dd>
@@ -498,7 +468,7 @@ EnvironmentRef.EnvironmentRef </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1Environment.html#ac3110f15824b0ae7f983e4bc2e32d5b1" title="Constructs an empty Environment.">Environment.Environment</a> </dd>
+Environment.Environment </dd>
 <dd>
 <a class="el" href="structSDL_1_1EnvironmentRef.html#af38b4128673800ba9e46e954a9b38998" title="Get the value of a variable in the environment.">EnvironmentRef.GetVariable</a> </dd>
 <dd>

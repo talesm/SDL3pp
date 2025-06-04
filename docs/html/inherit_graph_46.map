@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1AudioStreamRef.html" title="The opaque handle that represents an audio stream." alt="" coords="208,13,369,38"/>
-<area shape="poly" id="edge14_Node000000_Node000001" title=" " alt="" coords="174,23,208,23,208,28,174,28"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,161,45"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1AnimationRef.html" title="Animated image support." alt="" coords="209,13,353,38"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="176,23,209,23,209,28,176,28"/>
 </map>

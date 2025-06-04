@@ -5419,7 +5419,7 @@ const transform = {
           doc: "Converts a time to seconds (float) since epoch."
         }],
       },
-      resources: {
+      resourcesNew: {
         "SDL_Environment": {
           entries: {
             "SDL_CreateEnvironment": "ctor",
@@ -5444,7 +5444,11 @@ const transform = {
           entries: {
             "SDL_iconv_open": { name: "open" },
             "SDL_iconv": "function",
-            "SDL_iconv_close": { name: "close" },
+            "SDL_iconv_close": {
+              name: "close",
+              type: "void",
+              hints: { mayFail: true },
+            },
           }
         }
       },

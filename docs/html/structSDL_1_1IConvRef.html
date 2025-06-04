@@ -76,7 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structSDL_1_1IConvRef-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::IConvRef Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a> &raquo; <a class="el" href="group__CategoryStdinc.html">Standard Library Functionality</a></div></div></div>
 </div><!--header-->
@@ -90,12 +90,8 @@ Inheritance diagram for SDL::IConvRef:</div>
 <div class="center"><img src="structSDL_1_1IConvRef__inherit__graph.png" border="0" usemap="#aSDL_1_1IConvRef_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSDL_1_1IConvRef_inherit__map" id="aSDL_1_1IConvRef_inherit__map">
 <area shape="rect" title="An opaque handle representing string encoding conversion state." alt="" coords="25,93,140,119"/>
-<area shape="rect" href="structSDL_1_1IConvUnsafe.html" title="Unsafe Handle to iConv." alt="" coords="13,167,152,192"/>
-<area shape="poly" title=" " alt="" coords="85,132,85,167,80,167,80,132"/>
 <area shape="rect" href="classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
 <area shape="poly" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-<area shape="rect" href="structSDL_1_1IConv.html" title="Handle to an owned iConv." alt="" coords="37,240,129,265"/>
-<area shape="poly" title=" " alt="" coords="85,206,85,240,80,240,80,206"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -174,14 +170,11 @@ constexpr SDL_iconv_data_t *&#160;</td><td class="memItemRight" valign="bottom">
 <tr class="memdesc:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fields. <br /></td></tr>
 <tr class="separator:a1bac10eb8bfedf254b67081d767c1a68 inherit pub_methods_classSDL_1_1Resource"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a3aad736a0e4c6002dcda917c4ebe6fa0" id="r_a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a3aad736a0e4c6002dcda917c4ebe6fa0">close</a> ()</td></tr>
-<tr class="memdesc:a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
-<tr class="separator:a3aad736a0e4c6002dcda917c4ebe6fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00d5226c826fac585e10502357237d4c" id="r_a00d5226c826fac585e10502357237d4c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a00d5226c826fac585e10502357237d4c">reset</a> (SDL_iconv_data_t *newResource={})</td></tr>
-<tr class="memdesc:a00d5226c826fac585e10502357237d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
-<tr class="separator:a00d5226c826fac585e10502357237d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a2c1bf8fc6a05b29fbba0b5ff182afb08" id="r_a2c1bf8fc6a05b29fbba0b5ff182afb08"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvRef.html#a2c1bf8fc6a05b29fbba0b5ff182afb08">reset</a> (SDL_iconv_data_t *resource)</td></tr>
+<tr class="memdesc:a2c1bf8fc6a05b29fbba0b5ff182afb08"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
+<tr class="separator:a2c1bf8fc6a05b29fbba0b5ff182afb08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -198,44 +191,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 <dd>
 <a class="el" href="structSDL_1_1IConv.html" title="Handle to an owned iConv.">IConv</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3aad736a0e4c6002dcda917c4ebe6fa0" name="a3aad736a0e4c6002dcda917c4ebe6fa0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3aad736a0e4c6002dcda917c4ebe6fa0">&#9670;&#160;</a></span>close()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int SDL::IConvRef::close </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763" title="This function converts text between encodings, reading from and writing to a buffer.">IConvRef.iconv</a> </dd>
-<dd>
-<a class="el" href="structSDL_1_1IConv.html#a103f9bb7ff2adfebf953c7924c135031" title="Constructs an empty IConv.">IConv.IConv</a> </dd>
-<dd>
-<a class="el" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string</a> </dd></dl>
-
-</div>
-</div>
 <a id="a1986bf1e484c1388ea3508010b7cb763" name="a1986bf1e484c1388ea3508010b7cb763"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1986bf1e484c1388ea3508010b7cb763">&#9670;&#160;</a></span>iconv()</h2>
 
@@ -300,16 +255,16 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the number of conversions on success, or a negative error code.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConv.html#a103f9bb7ff2adfebf953c7924c135031" title="Constructs an empty IConv.">IConv.IConv</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>IConv.IConv </dd>
 <dd>
-<a class="el" href="structSDL_1_1IConvRef.html#a3aad736a0e4c6002dcda917c4ebe6fa0" title="This function frees a context used for character set conversion.">IConvRef.close</a> </dd>
+IConvRef.close </dd>
 <dd>
 <a class="el" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string</a> </dd></dl>
 
 </div>
 </div>
-<a id="a00d5226c826fac585e10502357237d4c" name="a00d5226c826fac585e10502357237d4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00d5226c826fac585e10502357237d4c">&#9670;&#160;</a></span>reset()</h2>
+<a id="a2c1bf8fc6a05b29fbba0b5ff182afb08" name="a2c1bf8fc6a05b29fbba0b5ff182afb08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c1bf8fc6a05b29fbba0b5ff182afb08">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,24 +273,35 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = SDL
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int SDL::IConvRef::reset </td>
+          <td class="memname">static void SDL::IConvRef::reset </td>
           <td>(</td>
           <td class="paramtype">SDL_iconv_data_t *&#160;</td>
-          <td class="paramname"><em>newResource</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>resource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>0 on success, or -1 on failure.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resource</td><td>The character set conversion handle. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763" title="This function converts text between encodings, reading from and writing to a buffer.">IConvRef.iconv</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1IConv.html#a103f9bb7ff2adfebf953c7924c135031" title="Constructs an empty IConv.">IConv.IConv</a> </dd>
+<a class="el" href="structSDL_1_1IConv.html#a48e796161ef683fbbfafcb8a8ebdc83a" title="This function allocates a context for the specified character set conversion.">IConv.open</a> </dd>
 <dd>
 <a class="el" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string</a> </dd></dl>
 

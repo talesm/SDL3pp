@@ -2,10 +2,10 @@ var searchData=
 [
   ['i_20o_20abstractions_0',['i o abstractions',['../ApiByCategory.html#file-and-io-abstractions',1,'File and I/O Abstractions'],['../group__CategoriesFileIO.html',1,'File and I/O Abstractions']]],
   ['i_20o_20streams_1',['I/O Streams',['../group__CategoryIOStream.html',1,'']]],
-  ['iconv_2',['iconv',['../structSDL_1_1IConv.html#ad00682796994d4371e2a8efb913b1b26',1,'SDL::IConv::IConv(StringParam tocode, StringParam fromcode)'],['../structSDL_1_1IConv.html#add45eb34659b553bbbc0754dd8afaf32',1,'SDL::IConv::IConv(IConv &amp;&amp;other)'],['../structSDL_1_1IConv.html',1,'SDL::IConv'],['../structSDL_1_1IConv.html#a23f9084da3e9fe0f5d60a56f76a789e7',1,'SDL::IConv::IConv()'],['../structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763',1,'SDL::IConvRef::iconv()'],['../structSDL_1_1IConv.html#a103f9bb7ff2adfebf953c7924c135031',1,'SDL::IConv::IConv()']]],
+  ['iconv_2',['iconv',['../structSDL_1_1IConvRef.html#a1986bf1e484c1388ea3508010b7cb763',1,'SDL::IConvRef::iconv()'],['../structSDL_1_1IConv.html',1,'SDL::IConv']]],
   ['iconv_5fstring_3',['iconv_string',['../group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a',1,'SDL']]],
   ['iconvref_4',['IConvRef',['../structSDL_1_1IConvRef.html',1,'SDL']]],
-  ['iconvunsafe_5',['iconvunsafe',['../structSDL_1_1IConvUnsafe.html',1,'SDL::IConvUnsafe'],['../structSDL_1_1IConvUnsafe.html#a2ca93efd935de9a3c4432e6832b0ea1b',1,'SDL::IConvUnsafe::IConvUnsafe(const IConvRef &amp;other)'],['../group__CategoryStdinc.html#gabf8db39e9e9e5a7df5f74a6fc007a02a',1,'SDL::IConvUnsafe::IConvUnsafe(IConv &amp;&amp;other)'],['../structSDL_1_1IConv.html#a2ca93efd935de9a3c4432e6832b0ea1b',1,'SDL::IConv::IConvUnsafe(const IConvRef &amp;other)'],['../structSDL_1_1IConv.html#abf8db39e9e9e5a7df5f74a6fc007a02a',1,'SDL::IConv::IConvUnsafe(IConv &amp;&amp;other)']]],
+  ['iconvunsafe_5',['iconvunsafe',['../structSDL_1_1IConvUnsafe.html',1,'SDL::IConvUnsafe'],['../structSDL_1_1IConvUnsafe.html#abf8db39e9e9e5a7df5f74a6fc007a02a',1,'SDL::IConvUnsafe::IConvUnsafe()']]],
   ['image_5falpha_6',['IMAGE_ALPHA',['../group__CategorySDLTTF.html#gaac774949dbaf241044133f1cf318d9cc',1,'SDL']]],
   ['image_5fcolor_7',['IMAGE_COLOR',['../group__CategorySDLTTF.html#ga36c9d8459e55e75177980c0b39a6a1d0',1,'SDL']]],
   ['image_5finvalid_8',['IMAGE_INVALID',['../group__CategorySDLTTF.html#ga4dd9f3045551989a7c5190ab92f2d358',1,'SDL']]],
